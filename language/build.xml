@@ -685,23 +685,27 @@
         
         <mkdir dir="${test.reports}"/>
         <junit printsummary="yes" haltonfailure="no" 
-            errorproperty="test.fail.junit"
-            failureproperty="test.fail.junit" dir="${basedir}">
-          <classpath refid="test.run.classpath"/>
-          <formatter type="xml"/>
+               errorproperty="test.fail.junit"
+               failureproperty="test.fail.junit" dir="${basedir}">
+            <classpath refid="test.run.classpath"/>
+            <syspropertyset>
+                <propertyref prefix="ceylon.tests." />
+            </syspropertyset>
 
-          <batchtest fork="yes" todir="${test.reports}">
-            <fileset dir="${build.test}">
-              <include name="**/*Test.class"/>
-            </fileset>
-          </batchtest>
+            <formatter type="xml"/>
+
+            <batchtest fork="yes" todir="${test.reports}">
+                <fileset dir="${build.test}">
+                    <include name="**/*Test.class"/>
+                </fileset>
+            </batchtest>
         </junit>
      
         <junitreport todir="${test.reports}">
-          <fileset dir="${test.reports}">
-            <include name="TEST-*.xml"/>
-          </fileset>
-          <report format="frames" todir="${test.reports}"/>
+            <fileset dir="${test.reports}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${test.reports}"/>
         </junitreport>
         
         <fail if="${test.fail.ceylon}" message="There were failures in the Ceylon tests"/>

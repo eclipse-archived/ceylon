@@ -224,6 +224,9 @@ Some super-charged ant tasks:
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+            <propertyset>
+                <propertyref prefix="ceylon.tests." />
+            </propertyset>
             <dirset refid="testdirs"/>
         </subant>
     </target>

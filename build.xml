@@ -104,6 +104,9 @@ Some super-charged ant tasks:
              inheritall="false"
              useNativeBasedir="true">
             <property name="buildid" value="${buildid}" />
+            <propertyset>
+                <propertyref prefix="ceylon.tests." />
+            </propertyset>
         </ant>
     </target>
     
@@ -113,6 +116,9 @@ Some super-charged ant tasks:
              inheritall="false"
              useNativeBasedir="true">
             <property name="buildid" value="${buildid}" />
+            <propertyset>
+                <propertyref prefix="ceylon.tests." />
+            </propertyset>
         </ant>
     </target>
     

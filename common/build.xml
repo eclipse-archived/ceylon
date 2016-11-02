@@ -258,6 +258,9 @@
         <mkdir dir="${test.reports}" />
         <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed" dir="${basedir}">
             <classpath refid="test.run.classpath" />
+            <syspropertyset>
+                <propertyref prefix="ceylon.tests." />
+            </syspropertyset>
 
             <formatter type="xml" />
             <test
