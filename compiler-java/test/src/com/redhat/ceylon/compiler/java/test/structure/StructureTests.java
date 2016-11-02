@@ -150,6 +150,11 @@ public class StructureTests extends CompilerTests {
     }
     
     @Test
+    public void testAtrSmallCharacter(){
+        compareWithJavaSource("attribute/SmallCharacter");
+    }
+    
+    @Test
     public void testAtrSmallCharacterError(){
         assertErrors("attribute/SmallCharacterError", true,
                 CompilerError.warning(3, "literal value is not small but is assignable to small declaration 'c'"));
