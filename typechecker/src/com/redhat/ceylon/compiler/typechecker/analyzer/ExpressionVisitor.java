@@ -1194,22 +1194,26 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 Type et = e.getTypeModel();
-                if (!isTypeUnknown(et)) {
-                    if (!unit.isIterableType(et) &&
-                        !unit.isJavaIterableType(et) &&
-                        !unit.isJavaObjectArrayType(et) &&
-                        !unit.isJavaPrimitiveArrayType(et)) {
-                        se.addError("expression is not iterable: '" + 
-                                et.asString(unit) + 
-                                "' is not a subtype of 'Iterable'");
-                    }
-                    else if (et!=null && unit.isEmptyType(et)) {
-                        se.addUsageWarning(Warning.redundantIteration,
-                                "iterated expression is definitely empty: '" +
-                                et.asString(unit) + 
-                                "' is a subtype of 'Empty'");
-                    }
-                }
+                checkContainer(se, et, 
+                        "iterated expression");
+            }
+        }
+    }
+
+    private void checkContainer(Node e, Type et, String desc) {
+        if (!isTypeUnknown(et)) {
+            if (!unit.isContainerType(et)) {
+                e.addError(desc + 
+                        " is not iterable: '" + 
+                        et.asString(unit) + 
+                        "' is not a subtype of 'Iterable'");
+            }
+            else if (unit.isEmptyType(et)) {
+                e.addUsageWarning(Warning.redundantIteration,
+                        desc + 
+                        " is definitely empty: '" +
+                        et.asString(unit) + 
+                        "' is a subtype of 'Empty'");
             }
         }
     }
@@ -4291,14 +4295,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    /*private void checkSpreadArgumentSequential(Tree.SpreadArgument arg,
-            Type argTuple) {
-        if (!unit.isSequentialType(argTuple)) {
-            arg.addError("spread argument expression is not sequential: " +
-                    argTuple.asString(unit) + " is not a sequence type");
-        }
-    }*/
-    
     private void checkNamedArguments(ParameterList pl, 
             Reference pr, 
             Tree.NamedArgumentList nal) {
@@ -4768,24 +4764,18 @@ public class ExpressionVisitor extends Visitor {
             List<Parameter> params) {
         a.setParameter(p);
         Type rat = arg.getTypeModel();
-        if (!isTypeUnknown(rat)) {
-            if (!unit.isIterableType(rat)) {
-                //note: check already done by visit(SpreadArgument)
-                /*arg.addError("spread argument is not iterable: " + 
-                        rat.asString(unit) + 
-                        " is not a subtype of Iterable");*/
-            }
-            else {
-                Type at = spreadType(rat, unit, true);
-                //checkSpreadArgumentSequential(arg, at);
-                Type ptt = 
-                        unit.getParameterTypesAsTupleType(
-                                params, pr);
-                if (!isTypeUnknown(at) && 
-                        !isTypeUnknown(ptt)) {
-                    checkAssignable(at, ptt, arg, 
-                            "spread argument not assignable to parameter types");
-                }
+        if (!isTypeUnknown(rat)
+                //note: we already checked that it's an
+                //      iterable in visit(SpreadArgument)
+                && unit.isContainerType(rat)) {
+            Type at = spreadType(rat, unit, true);
+            Type ptt = 
+                    unit.getParameterTypesAsTupleType(
+                            params, pr);
+            if (!isTypeUnknown(at) && 
+                    !isTypeUnknown(ptt)) {
+                checkAssignable(at, ptt, arg, 
+                        "spread argument not assignable to parameter types");
             }
         }
     }
@@ -4934,21 +4924,15 @@ public class ExpressionVisitor extends Visitor {
 
     private void checkSpreadIndirectArgument(Tree.SpreadArgument sa,
             Type tailType, Type at) {
-        //checkSpreadArgumentSequential(sa, at);
-        if (!isTypeUnknown(at)) {
-            if (unit.isIterableType(at)) {
-                Type sat = spreadType(at, unit, true);
-                if (!isTypeUnknown(sat) && 
-                        !isTypeUnknown(tailType)) {
-                    checkAssignable(sat, tailType, sa, 
-                            "spread argument not assignable to parameter types");
-                }
-            }
-            else {
-              //note: check already done by visit(SpreadArgument)
-              /*sa.addError("spread argument is not iterable: " + 
-                      at.asString(unit) + 
-                      " is not a subtype of Iterable");*/
+        if (!isTypeUnknown(at) 
+                //note: we already checked that it's an
+                //      iterable in visit(SpreadArgument)
+                && unit.isContainerType(at)) {
+            Type sat = spreadType(at, unit, true);
+            if (!isTypeUnknown(sat) && 
+                    !isTypeUnknown(tailType)) {
+                checkAssignable(sat, tailType, sa, 
+                        "spread argument not assignable to parameter types");
             }
         }
     }
@@ -5128,20 +5112,11 @@ public class ExpressionVisitor extends Visitor {
         Tree.Expression e = that.getExpression();
         if (e!=null) {
             Type t = e.getTypeModel();
-            if (!isTypeUnknown(t)) {
-                if (!unit.isIterableType(t)
-                        && !unit.isJavaIterableType(t)
-                        && !unit.isJavaObjectArrayType(t)
-                        && !unit.isJavaPrimitiveArrayType(t)) {
-                    e.addError("spread argument is not iterable: '" + 
-                            t.asString(unit) + 
-                            "' is not a subtype of 'Iterable'");
-                }
-            }
+            checkContainer(e, t, "spread argument");
             that.setTypeModel(t);
         }
     }
-    
+
     @Override public void visit(Tree.ListedArgument that) {
         super.visit(that);
         Tree.Expression e = that.getExpression();
@@ -5161,8 +5136,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression lb = er.getLowerBound();
             Tree.Expression ub = er.getUpperBound();
             return lb!=null && 
-                        isTypeUnknown(lb.getTypeModel()) ||
-                    ub!=null && 
+                        isTypeUnknown(lb.getTypeModel())
+                || ub!=null && 
                         isTypeUnknown(ub.getTypeModel());
         }
     }

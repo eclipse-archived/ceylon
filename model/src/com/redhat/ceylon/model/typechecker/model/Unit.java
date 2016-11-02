@@ -1527,6 +1527,13 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return it;
     }
 
+    public boolean isContainerType(Type t) {
+        return isIterableType(t)
+            || isJavaIterableType(t)
+            || isJavaObjectArrayType(t)
+            || isJavaPrimitiveArrayType(t);
+    }
+    
     public boolean isIterableType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getIterableDeclaration());
