@@ -200,8 +200,9 @@ public class TopLevelToolTests {
 "ceylon example: Unrecognised long option '--file=.' to command 'ceylon'\n" + 
 "\n" + 
 "Usage:\n" + 
-"ceylon [--config=<file>] [--cwd=<dir>] [--define=<key>=<value>...] [--no-pager]\n" + 
-"       [--paginate] [--stacktraces] [--version] [--] [<tool-arguments...>]\n" + 
+"ceylon [--config=<file>] [--cwd=<dir>] [--define=<key>=<value>...] [--\n" + 
+"       distribution=<version-or-url>] [--no-config] [--no-pager] [--paginate] [\n" + 
+"       --show-home] [--stacktraces] [--version] [--] [<tool-arguments...>]\n" + 
 "\n" + 
 "Run 'ceylon help example' for more help",
                     out.getErr().trim().replace("\r", ""));
