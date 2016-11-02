@@ -218,4 +218,9 @@ void javaArrayInSpreadArgument() {
     
     javaArrayInSpreadArgumentByte();
     
+    value entries = ObjectArray(2, 1);
+    javaArrayInSpreadArgumentVariadic(*entries);
+    value entries2 = IntArray(2, 1);
+    javaArrayInSpreadArgumentVariadic(*entries2);
 }
+void javaArrayInSpreadArgumentVariadic(Integer* ints) {}
