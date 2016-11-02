@@ -456,6 +456,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), Arrays.asList(
                 "--cwd", destDir.getPath(),
+                "--cacherep", getCachePath(),
                 "--sysrep", getSysRepPath(),
                 "--descriptor", "test-descriptor.properties", 
                 "importtest/1.0", "test.jar"));

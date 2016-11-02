@@ -50,6 +50,10 @@ public abstract class ModulesTest {
         return new File(getClass().getResource("/repo").toURI());
     }
 
+    protected File getCache() throws Throwable {
+        return new File(new File(getClass().getResource("/").toURI()), "cache");
+    }
+
     protected File getAlternative() throws Throwable {
         return new File(getClass().getResource("/alternative").toURI());
     }
@@ -146,6 +150,7 @@ public abstract class ModulesTest {
 
     protected void car(String module, Map<String, String> extra) throws Throwable {
         Map<String, String> args = new LinkedHashMap<String, String>();
+        args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.OFFLINE.toString(), "");
         args.put(Constants.CEYLON_ARGUMENT_PREFIX + Argument.REPOSITORY.toString(), getRepo().getPath());
         args.putAll(extra);
 
@@ -185,7 +190,9 @@ public abstract class ModulesTest {
         List<String> args = new ArrayList<String>();
         for (Map.Entry<String, String> entry : map.entrySet()) {
             args.add(entry.getKey());
-            args.add(entry.getValue());
+            if (!entry.getValue().isEmpty()) {
+                args.add(entry.getValue());
+            }
         }
         execute(module, args);
     }
@@ -199,6 +206,9 @@ public abstract class ModulesTest {
         // default Ceylon runtime args
         args.add(Constants.IMPL_ARGUMENT_PREFIX + Argument.EXECUTABLE.toString());
         args.add(RUNTIME_IMPL);
+        // Set the -cacherep
+        args.add(Constants.CEYLON_ARGUMENT_PREFIX + Argument.CACHE_REPOSITORY.toString());
+        args.add(getCache().getPath());
         // extra args
         args.addAll(extra);
         // module_ args

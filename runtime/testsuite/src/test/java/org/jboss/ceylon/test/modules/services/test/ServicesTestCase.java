@@ -26,6 +26,7 @@ import org.jboss.ceylon.test.modules.ModulesTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -52,7 +53,7 @@ public class ServicesTestCase extends ModulesTest {
         testArchive(module, lib1, lib2);
     }
 
-    @Test
+    @Test @Ignore("See https://github.com/ceylon/ceylon/issues/4856")
     public void testAudioMixerServices() throws Throwable {
         Mixer mixer = AudioSystem.getMixer(null);
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();

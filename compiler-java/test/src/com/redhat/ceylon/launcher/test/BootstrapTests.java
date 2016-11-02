@@ -21,12 +21,13 @@ import java.util.zip.ZipOutputStream;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.launcher.Bootstrap;
-import com.redhat.ceylon.launcher.LauncherUtil;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -34,6 +35,11 @@ import com.sun.net.httpserver.HttpServer;
 public class BootstrapTests {
 
     private static File distZip;
+    
+    @BeforeClass
+    public static void checkPreConditions() {
+        Assume.assumeTrue(CompilerTests.allowNetworkTests());
+    }
     
     /**
      * Make the zip file for the server to serve
