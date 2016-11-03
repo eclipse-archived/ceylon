@@ -1,9 +1,11 @@
 import ceylon.language.meta.model { Class, Attribute, Function, Method, MemberClass }
-import ceylon.language.meta { type }
+import ceylon.language.meta { type, typeLiteral }
 import java.lang { ByteArray, ShortArray, IntArray, LongArray, FloatArray, DoubleArray, CharArray, BooleanArray, ObjectArray,
     JByte = Byte, JShort = Short, JInteger = Integer, JLong = Long, JFloat = Float, JDouble = Double,
     JCharacter = Character, JBoolean = Boolean
 }
+
+import com.redhat.ceylon.compiler.java.test.metamodel { JavaType { StaticClass, StaticInterface }}
 
 void interopRuntime(){
     Class<JavaType,[Boolean,Byte,Integer,Integer,Integer,Float,Float,Character,String,Object]> javaType = `JavaType`;
@@ -223,11 +225,21 @@ void interopRuntime(){
     //assert(staticClass(null)(2).v == 2);
     // make sure it also works with an instance
     assert(staticClass(null)(4).v == 4);
+    
+    assert(typeLiteral<JavaType.StaticClass>() 
+        == typeLiteral<StaticClass>());
 
     // make sure this passes too
     javaType.getClass<JavaType,JavaType.StaticClass,[Integer]>("StaticClass");
     // FIXME: support later
     //javaType.getClass<Null,JavaType.StaticClass,[Integer]>("StaticClass");
+
+    value staticInterface = `JavaType.StaticInterface`;
+
+    // make sure this passes too
+    javaType.getInterface<JavaType,JavaType.StaticInterface>("StaticInterface");
+    // FIXME: support later
+    //javaType.getInterface<Null,JavaType.StaticInterface>("StaticInterface");
 
     //
     // Member types

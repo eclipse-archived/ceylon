@@ -1,3 +1,5 @@
+import com.redhat.ceylon.compiler.java.test.structure.reified { JavaClass { StaticMember }}
+
 native("jvm") class CeylonClass<Element>()
     extends JavaClass<Element>()
     satisfies JavaInterface<Element>{
@@ -6,6 +8,8 @@ native("jvm") class CeylonClass<Element>()
 }
 
 native("jvm") interface CeylonInterface<Element> satisfies JavaInterface<Element>{}
+
+void foo<T>(){}
 
 native("jvm") void reifiedInstantiateInterop(){
     value c = CeylonClass<Integer>();
@@ -16,4 +20,11 @@ native("jvm") void reifiedInstantiateInterop(){
     value c2 = JavaClass<Integer>();
     value constr = JavaClass<Integer>;
     value c3 = constr();
+    
+    // These three should be the same with a raw container
+    foo<JavaClass<String>.StaticMember<Integer>>();
+    foo<JavaClass.StaticMember<Integer>>();
+    foo<StaticMember<Integer>>();
+    // This one must have its non-raw container
+    foo<JavaClass<String>.Member<Integer>>();
 }

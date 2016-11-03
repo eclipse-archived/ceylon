@@ -239,4 +239,7 @@ public class JavaType {
             this.v = v;
         }
     }
+
+    public static interface StaticInterface{
+    }
 }

@@ -21,5 +21,6 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 public class JavaClass<T> {
-
+    public static class StaticMember<U>{}
+    public class Member<U>{}
 }
