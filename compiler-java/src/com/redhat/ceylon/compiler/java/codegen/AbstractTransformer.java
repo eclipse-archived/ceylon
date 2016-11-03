@@ -5388,7 +5388,8 @@ public abstract class AbstractTransformer implements Transformation {
         // same as makeReifiedTypeArgumentsResolved(typeArguments, false) but resolve each element
         List<JCExpression> ret = List.nil();
         for(int i=typeArguments.size()-1;i>=0;i--){
-            ret = ret.prepend(makeReifiedTypeArgumentResolved(typeArguments.get(i).resolveAliases(), false, typeArgumentAccessor));
+            ret = ret.prepend(makeReifiedTypeArgumentResolved(typeArguments.get(i).resolveAliases(), 
+                    false, typeArgumentAccessor, false));
         }
         return ret;
     }
@@ -5398,13 +5399,13 @@ public abstract class AbstractTransformer implements Transformation {
             TypeArgumentAccessor typeArgumentAccessor) {
         List<JCExpression> ret = List.nil();
         for(int i=typeArguments.size()-1;i>=0;i--){
-            ret = ret.prepend(makeReifiedTypeArgumentResolved(typeArguments.get(i), qualified, typeArgumentAccessor));
+            ret = ret.prepend(makeReifiedTypeArgumentResolved(typeArguments.get(i), qualified, typeArgumentAccessor, false));
         }
         return ret;
     }
 
     public JCExpression makeReifiedTypeArgument(Type pt) {
-        return makeReifiedTypeArgumentResolved(pt.resolveAliases(), false, fred);
+        return makeReifiedTypeArgumentResolved(pt.resolveAliases(), false, fred, false);
     }
     
     class TypeArgumentAccessor {
@@ -5436,10 +5437,11 @@ public abstract class AbstractTransformer implements Transformation {
     TypeArgumentAccessor fred = new TypeArgumentAccessor();
     
     private JCExpression makeReifiedTypeArgumentResolved(Type pt, boolean qualified) {
-        return makeReifiedTypeArgumentResolved(pt, qualified, fred);
+        return makeReifiedTypeArgumentResolved(pt, qualified, fred, false);
     }
     
-    private JCExpression makeReifiedTypeArgumentResolved(Type pt, boolean qualified, TypeArgumentAccessor typeArgumentAccessor) {
+    private JCExpression makeReifiedTypeArgumentResolved(Type pt, boolean qualified, 
+            TypeArgumentAccessor typeArgumentAccessor, boolean wantsRaw) {
         if(pt.isUnion()){
             // FIXME: refactor this shite
             List<JCExpression> typeTestArguments = List.nil();
@@ -5492,46 +5494,50 @@ public abstract class AbstractTransformer implements Transformation {
                     return tupleType;
             }
             // no alias, must build it
-            List<JCExpression> typeTestArguments = makeReifiedTypeArgumentsResolved(pt.getTypeArgumentList(), qualified, typeArgumentAccessor);
+            List<JCExpression> typeTestArguments;
             JCExpression thisType = makeUnerasedClassLiteral(declaration);
-            // do we have variance overrides?
-            Map<TypeParameter, SiteVariance> varianceOverrides = pt.getVarianceOverrides();
-            if(!varianceOverrides.isEmpty()){
-                // we need to pass them as second argument then, in an array
-                ListBuffer<JCExpression> varianceElements = new ListBuffer<JCExpression>();
-                for(TypeParameter typeParameter : declaration.getTypeParameters()){
-                    SiteVariance useSiteVariance = varianceOverrides.get(typeParameter);
-                    String selector;
-                    if(useSiteVariance != null){
-                        switch(useSiteVariance){
-                        case IN:
-                            selector = "IN";
-                            break;
-                        case OUT:
-                            selector = "OUT";
-                            break;
-                        default:
+            if(!wantsRaw){
+                typeTestArguments = makeReifiedTypeArgumentsResolved(pt.getTypeArgumentList(), qualified, typeArgumentAccessor);
+                // do we have variance overrides?
+                Map<TypeParameter, SiteVariance> varianceOverrides = pt.getVarianceOverrides();
+                if(!varianceOverrides.isEmpty()){
+                    // we need to pass them as second argument then, in an array
+                    ListBuffer<JCExpression> varianceElements = new ListBuffer<JCExpression>();
+                    for(TypeParameter typeParameter : declaration.getTypeParameters()){
+                        SiteVariance useSiteVariance = varianceOverrides.get(typeParameter);
+                        String selector;
+                        if(useSiteVariance != null){
+                            switch(useSiteVariance){
+                            case IN:
+                                selector = "IN";
+                                break;
+                            case OUT:
+                                selector = "OUT";
+                                break;
+                            default:
+                                selector = "NONE";
+                                break;
+                            }
+                        }else{
                             selector = "NONE";
-                            break;
                         }
-                    }else{
-                        selector = "NONE";
+                        JCExpression varianceElement = make().Select(makeIdent(syms().ceylonVarianceType), names().fromString(selector));
+                        varianceElements.append(varianceElement);
                     }
-                    JCExpression varianceElement = make().Select(makeIdent(syms().ceylonVarianceType), names().fromString(selector));
-                    varianceElements.append(varianceElement);
+                    JCNewArray varianceArray = make().NewArray(makeIdent(syms().ceylonVarianceType), List.<JCExpression>nil(), varianceElements.toList());
+                    typeTestArguments = typeTestArguments.prepend(varianceArray);
                 }
-                JCNewArray varianceArray = make().NewArray(makeIdent(syms().ceylonVarianceType), List.<JCExpression>nil(), varianceElements.toList());
-                typeTestArguments = typeTestArguments.prepend(varianceArray);
+            }else{
+                typeTestArguments = List.nil();
             }
             typeTestArguments = typeTestArguments.prepend(thisType);
             JCExpression classDescriptor = make().Apply(null, makeSelect(makeTypeDescriptorType(), "klass"), typeTestArguments);
             Type qualifyingType = pt.getQualifyingType();
             JCExpression containerType = null;
-            if(qualifyingType == null
-                    // ignore qualifying types of static java declarations
-                    && (Decl.isCeylon(declaration)
-                            || !declaration.isStatic())){
+            if(qualifyingType == null){
                 // it may be contained in a function or value, and we want its type
+                // or static class members may have no qualifying type but we want the TDs to treat
+                // them as members anyway
                 Declaration enclosingDeclaration = getDeclarationContainer(declaration);
                 if(enclosingDeclaration instanceof TypedDeclaration)
                     containerType = makeTypedDeclarationTypeDescriptorResolved((TypedDeclaration) enclosingDeclaration, typeArgumentAccessor);
@@ -5553,9 +5559,12 @@ public abstract class AbstractTransformer implements Transformation {
                             return makeSelect(
                                     naming.makeQualifiedThis(makeJavaType(t, JT_RAW)), naming.getTypeArgumentDescriptorName(tp));
                         }
-                    });
+                    }, false);
                 } else {
-                    containerType = makeReifiedTypeArgumentResolved(qualifyingType, true, typeArgumentAccessor);
+                    containerType = makeReifiedTypeArgumentResolved(qualifyingType, true, typeArgumentAccessor,
+                            // if the declaration is static (and implicitly does not support reified, so a java one)
+                            // we want raw containers, since we can't capture their TPs
+                            declaration.isStatic());
                 }
             }
             if(containerType == null){
