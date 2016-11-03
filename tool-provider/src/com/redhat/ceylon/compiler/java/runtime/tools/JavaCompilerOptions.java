@@ -33,6 +33,14 @@ public class JavaCompilerOptions extends CompilerOptions {
         this.autoExportMavenDependencies = autoExportMavenDependencies;
     }
 
+    public boolean isFullyExportMavenDependencies() {
+        return fullyExportMavenDependencies;
+    }
+
+    public void setFullyExportMavenDependencies(boolean fullyExportMavenDependencies) {
+        this.fullyExportMavenDependencies = fullyExportMavenDependencies;
+    }
+
     public String getJdkProvider() {
         return jdkProvider;
     }
@@ -71,6 +79,7 @@ public class JavaCompilerOptions extends CompilerOptions {
         setModules(DefaultToolOptions.getCompilerModules(config, Backend.Java));
         setFlatClasspath(DefaultToolOptions.getDefaultFlatClasspath(config));
         setAutoExportMavenDependencies(DefaultToolOptions.getDefaultAutoExportMavenDependencies(config));
+        setFullyExportMavenDependencies(DefaultToolOptions.getDefaultFullyExportMavenDependencies(config));
         setJdkProvider(DefaultToolOptions.getCompilerJdkProvider(config));
         setJavacOptions(DefaultToolOptions.getCompilerJavac(config));
         setJavacTarget(DefaultToolOptions.getCompilerTargetVersion());
@@ -99,13 +108,5 @@ public class JavaCompilerOptions extends CompilerOptions {
         JavaCompilerOptions options = new JavaCompilerOptions();
         options.mapOptions(config);
         return options;
-    }
-
-    public boolean isFullyExportMavenDependencies() {
-        return fullyExportMavenDependencies;
-    }
-
-    public void setFullyExportMavenDependencies(boolean fullyExportMavenDependencies) {
-        this.fullyExportMavenDependencies = fullyExportMavenDependencies;
     }
 }
