@@ -651,18 +651,30 @@ public class Metamodel {
                 reifiedArguments = TypeDescriptor.NothingType;
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
 
-            if(declaration.isToplevel() || isLocalType(declaration) || declaration.isStatic())
+            if(declaration.isToplevel() || isLocalType(declaration))
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, pt, null, null);
             
-            TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
+            // Workaround for old binaries where static members could have some qualified TDs
+            // but not always. If the qualifying type is missing treat it as a toplevel
+            com.redhat.ceylon.model.typechecker.model.Type qt = pt.getQualifyingType();
+            if(qt == null && declaration.isStatic()){
+                qt = ((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)declaration.getContainer()).getType();
+            }
+            TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(qt);
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl(reifiedContainer, reifiedType, reifiedArguments, pt);
         }
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Interface){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
-            if(declaration.isToplevel() || isLocalType(declaration) || declaration.isStatic())
+            if(declaration.isToplevel() || isLocalType(declaration))
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.InterfaceImpl<T>(reifiedType, pt, null, null);
 
-            TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
+            // Workaround for old binaries where static members could have some qualified TDs
+            // but not always. If the qualifying type is missing treat it as a toplevel
+            com.redhat.ceylon.model.typechecker.model.Type qt = pt.getQualifyingType();
+            if(qt == null && declaration.isStatic()){
+                qt = ((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)declaration.getContainer()).getType();
+            }
+            TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(qt);
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.MemberInterfaceImpl(reifiedContainer, reifiedType, pt);
         }
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.UnionType){
