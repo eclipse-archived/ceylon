@@ -26,7 +26,7 @@ shared void staticTest() {
         `function StaticMembers.method`.invoke();
         assert(false);
     } catch (TypeApplicationException e) {
-        // TODO
+        assert (e.message == "Cannot apply a static declaration with no container type: use staticApply");
     } 
     assert(is String staticResult = `function StaticMembers.method`.staticInvoke(`StaticMembers<String>`, [`Integer`], *["", 1]),
         staticResult == "");
@@ -36,7 +36,17 @@ shared void staticTest() {
     
     assert(`class StaticMembers.MemberClass`.name == "MemberClass");
     assert(`class StaticMembers.MemberClass`.static);
-    //assert(`value StaticMembers.attribute`.invoke());
+    try {
+        `class StaticMembers.MemberClass`.instantiate();
+        assert(false);
+    } catch (TypeApplicationException e) {
+        assert(e.message == "Cannot apply a static declaration with no container type: use staticApply");
+    } 
+    assert(is String staticMemberResult = `class StaticMembers.MemberClass`.staticInstantiate(`StaticMembers<String>`, [`String`, `Integer`], *["", 1]),
+        staticMemberResult == "");
+    assert(is String memberMemberResult = `class StaticMembers.MemberClass`.memberInstantiate(StaticMembers<String>(), [`String`, `Integer`], *["", 1]),
+        memberMemberResult == "");
+    
     // TODO interfaces
     // TODO aliases
     // TODO static object

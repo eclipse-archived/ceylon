@@ -114,7 +114,7 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
             defaultedMethods = firstDefaulted != -1 ? new Member[dispatch.length] : null;
             if(MethodHandleUtil.isJavaArray(javaClass)){
                 found = MethodHandleUtil.setupArrayConstructor(javaClass, defaultedMethods);
-            }else if(!javaClass.isMemberClass() 
+            }else if(!(javaClass.isMemberClass() && !Modifier.isStatic(javaClass.getModifiers())) 
                     || !Metamodel.isCeylon((com.redhat.ceylon.model.typechecker.model.Class)freeClass.declaration)
                     // private ceylon member classes don't have any outer constructor method so treat them like java members
                     || !classDecl.isShared()){
@@ -498,6 +498,9 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
             }
             isJavaArray = false;
             typeParametersCount = javaClass.getTypeParameters().length;
+            if (javaClass.isMemberClass() && Modifier.isStatic(javaClass.getModifiers())) {
+                typeParametersCount += javaClass.getEnclosingClass().getTypeParameters().length;
+            }
             if (functionOrConstructorModel instanceof com.redhat.ceylon.model.typechecker.model.Constructor) {
                 constructorModel = (com.redhat.ceylon.model.typechecker.model.Constructor)functionOrConstructorModel;
                 reifiedTypeParameters = ModelUtil.getConstructedClass(constructorModel).getTypeParameters();

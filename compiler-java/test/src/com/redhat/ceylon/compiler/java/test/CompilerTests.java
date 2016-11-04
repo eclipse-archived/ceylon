@@ -55,6 +55,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -894,6 +895,48 @@ public abstract class CompilerTests {
                 return result;
             }catch(InvocationTargetException x){
                 throw new RuntimeException(x.getTargetException());
+            }catch(Exception x){
+                throw new RuntimeException(x);
+            } finally {
+                if (loader != null) {
+                    try {
+                        loader.close();
+                    } catch (IOException e) {
+                        // ignore
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+    
+    public void compileAndReflect(String ceylon, String main, ReflectionCallback callback) {
+        compile(ceylon);
+        reflect(main, callback, getDestModuleWithArtifact(main));
+    }
+    
+    public interface ReflectionCallback {
+        public void reflect(Class c);
+    }
+    
+    protected void reflect(String main, ReflectionCallback callback, ModuleWithArtifact... modules) {
+        synchronized(RUN_LOCK){
+            // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
+            // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
+            // we set up the module system while another thread is setting it up for other modules we're toast
+            Object result = null;
+            URLClassLoader loader = null;
+            try{
+                // make sure we load the stuff from the Car
+
+                loader = getClassLoader(main, modules);
+                String mainClass = main;
+                String mainMethod = main.replaceAll("^.*\\.", "");
+                if (JvmBackendUtil.isInitialLowerCase(mainMethod)) {
+                    mainClass = main + "_";
+                }
+                java.lang.Class<?> klass = java.lang.Class.forName(mainClass, true, loader);
+                callback.reflect(klass);
             }catch(Exception x){
                 throw new RuntimeException(x);
             } finally {

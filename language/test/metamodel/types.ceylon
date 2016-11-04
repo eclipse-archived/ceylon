@@ -1085,7 +1085,7 @@ class OpenEnumValueConstructors {
 class StaticMembers<T> {
     shared static String attribute => "";
     shared static T method<U>(T t, U u) => t;
-    shared static class MemberClass(T t) {
+    shared static class MemberClass<U>(T t, U u) {
         shared T attribute => nothing;
         shared T method(T t) => t;
     }

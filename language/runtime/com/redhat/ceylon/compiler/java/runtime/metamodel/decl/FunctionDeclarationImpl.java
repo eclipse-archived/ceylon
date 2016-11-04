@@ -121,8 +121,15 @@ public class FunctionDeclarationImpl
             @Ignore TypeDescriptor $reifiedReturn,
             @Ignore TypeDescriptor $reifiedArguments,
             @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
-        if(!getToplevel())
-            throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
+        if(!getToplevel()) {
+            String msg;
+            if (getStatic()) {
+                msg = "Cannot apply a static declaration with no container type: use staticApply";
+            } else {
+                msg = "Cannot apply a member declaration with no container type: use memberApply";
+            }
+            throw new ceylon.language.meta.model.TypeApplicationException(msg);
+        }
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.model.typechecker.model.Reference appliedFunction = declaration.appliedReference(null, producedTypes);
