@@ -18,17 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.ResourceBundle;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
-import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
@@ -40,6 +37,7 @@ import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
@@ -55,9 +53,6 @@ import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.ToolUsageError;
-import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.tools.CeylonToolLoader;
-import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 public abstract class RepoUsingTool extends CeylonBaseTool {
@@ -332,7 +327,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         // finding a single compiled version in the output repo is a lot cheaper than query everything so let's
         // try that first
         if (version == null && !ModuleUtil.isDefaultModule(name) && versions == null) {
-            versions = findCompiledVersions(repoMgr, name, version, type, 
+            versions = findCompiledVersions(repoMgr, name, type, 
             		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
             if (versions != null && versions.size() == 1) {
                 ModuleVersionDetails compiledVersion = versions.iterator().next();
@@ -350,7 +345,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         // a lot cheaper than looking the version up
         ModuleVersionDetails srcVersion = null;
         if (allowCompilation || (versions != null && versions.size() > 1)) {
-            srcVersion = getVersionFromSource(name);
+            srcVersion = getModuleVersionDetailsFromSource(name);
             if (srcVersion != null && version == null) {
                 if (versions == null) {
                     // we found some source and no local compiled versions exist,
@@ -396,7 +391,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         
         if (version != null && (versions.isEmpty() || exactSingleMatch(versions, version))) {
             // Here we either have a single version or none
-            if (versions.isEmpty() || forceCompilation || shouldRecompile(checkCompilation, repoMgr, name, version, type)) {
+            if (versions.isEmpty() || forceCompilation || (checkCompilation && shouldRecompile(repoMgr, name, version, type, true))) {
                 if (allowCompilation) {
                     if (srcVersion != null) {
                         if (version.equals(srcVersion.getVersion())) {
@@ -433,7 +428,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     // There seems to be source code
                     // Let's see if we can compile it...
                     String srcver = srcVersion.getVersion();
-                    if (!checkCompilation || shouldRecompile(checkCompilation, repoMgr, name, srcver, type)) {
+                    if (!checkCompilation || shouldRecompile(repoMgr, name, srcver, type, true)) {
                         if (!runCompiler(repoMgr, name, type)) {
                             throw new ToolUsageError(Messages.msg(bundle, "compilation.failed"));
                         }
@@ -493,7 +488,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return version != null && (versions.size() == 1) && !version.equals(versions.iterator().next().getVersion());
     }
     
-    private Collection<ModuleVersionDetails> findCompiledVersions(RepositoryManager repoMgr, String name, String version, 
+    private Collection<ModuleVersionDetails> findCompiledVersions(RepositoryManager repoMgr,
+            String name, 
     		Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) throws IOException {
@@ -521,7 +517,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 }
             }
             if(rep != null && rep.isSearchable()){
-                ModuleVersionQuery query = getModuleVersionQuery(name, version, type, 
+                ModuleVersionQuery query = getModuleVersionQuery(name, null, type, 
                 		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 ModuleVersionResult result = new ModuleVersionResult(query.getName());
                 rep.completeVersions(query, result);
@@ -559,15 +555,15 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return err.toString();
     }
 
-    private boolean shouldRecompile(boolean checkCompilation, RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) throws IOException {
-        if (checkCompilation) {
-            ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
-            ac.setIgnoreDependencies(true);
-            ac.setThrowErrorIfMissing(false);
-            File artifile = repoMgr.getArtifact(ac);
-            if (artifile == null) {
-                return true;
-            }
+    protected boolean shouldRecompile(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, boolean checkTime) throws IOException {
+        ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
+        ac.setIgnoreDependencies(true);
+        ac.setThrowErrorIfMissing(false);
+        File artifile = repoMgr.getArtifact(ac);
+        if (artifile == null) {
+            return true;
+        }
+        if (checkTime) {
             long oldestArtifact;
             if (type == ModuleQuery.Type.JVM) {
                 oldestArtifact = JarUtils.oldestFileTime(artifile);
@@ -612,38 +608,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return true;
     }
     
-    protected ModuleVersionDetails getVersionFromSource(String name) {
-        try {
-            List<File> srcDirs = getSourceDirs();
-            for (File srcDir : srcDirs) {
-                try{
-                    ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, applyCwd(srcDir));
-                    String module = mdr.getModuleName();
-                    String version = mdr.getModuleVersion();
-                    // PS In case the module descriptor was found but could not be parsed
-                    // we'll create an invalid details object
-                    ModuleVersionDetails mvd = new ModuleVersionDetails(null, module != null ? module : "", version != null ? version : "");
-                    mvd.setLicense(mdr.getModuleLicense());
-                    List<String> by = mdr.getModuleAuthors();
-                    if (by != null) {
-                        mvd.getAuthors().addAll(by);
-                    }
-                    SortedSet<ModuleDependencyInfo> dependencies = new TreeSet<>();
-                    for(Object[] dep : mdr.getModuleImports()){
-                        dependencies.add(new ModuleDependencyInfo((String)dep[0], (String)dep[1], (String)dep[2], (Boolean)dep[3], (Boolean)dep[4]));
-                    }
-                    mvd.setDependencies(dependencies);
-                    mvd.setRemote(false);
-                    mvd.setOrigin("Local source folder");
-                    return mvd;
-                }catch(ModuleDescriptorReader.NoSuchModuleException x){
-                    // skip this source folder and look in the next one
-                }
-            }
-        } catch (Exception ex) {
-            // Just continue as if nothing happened
-        }
-        return null;
+    protected ModuleVersionDetails getModuleVersionDetailsFromSource(String moduleName) {
+        return SourceDependencyResolver.getModuleVersionDetailsFromSource(getCwd(), getSourceDirs(), moduleName);
     }
 
     /**

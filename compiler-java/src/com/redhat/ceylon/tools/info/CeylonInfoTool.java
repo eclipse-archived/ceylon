@@ -303,7 +303,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                 		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 if (versions.isEmpty()) {
                     // try from source
-                    ModuleVersionDetails fromSource = getVersionFromSource(name);
+                    ModuleVersionDetails fromSource = getModuleVersionDetailsFromSource(name);
                     if (fromSource != null) {
                         // is it the version we're after?
                         versions = Arrays.asList(fromSource);

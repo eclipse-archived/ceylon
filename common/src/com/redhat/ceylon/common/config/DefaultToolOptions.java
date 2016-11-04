@@ -35,6 +35,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_SUPPRESSWARNING = "compiler.suppresswarning";
     public final static String COMPILER_PROGRESS = "compiler.progress";
     public final static String COMPILER_MODULES = "compiler.module";
+    public final static String COMPILER_INCLUDE_DEPENDENCIES = "compiler.compiledependencies";
     // JVM-only, needing backward compatibility (only for pre-1.3.0 options)
     public final static String COMPILER_NOOSGI = "compiler.jvm.noosgi";
     public final static String COMPILER_OSGIPROVIDEDBUNDLES = "compiler.jvm.osgiprovidedbundles";
@@ -308,6 +309,14 @@ public class DefaultToolOptions {
     public static boolean getCompilerProgress() {
         return getCompilerProgress(CeylonConfig.get());
     }
+
+    public static String getCompilerIncludeDependencies() {
+        return getCompilerIncludeDependencies(CeylonConfig.get());
+    }
+
+    public static String getCompilerIncludeDependencies(CeylonConfig config) {
+        return config.getOption(COMPILER_INCLUDE_DEPENDENCIES, Constants.DEFAULT_COMPILER_COMPILATION_FLAGS);
+    }
     
     public static String getCompilerJdkProvider() {
         return getCompilerJdkProvider(CeylonConfig.get());
@@ -381,7 +390,7 @@ public class DefaultToolOptions {
         String[] values = config.getOptionValues(COMPILER_EE_ANNOTATION);
         return values != null ? Arrays.asList(values) : null;
     }
-
+    
     public static String getRunToolCompileFlags() {
         return getRunToolCompileFlags(CeylonConfig.get());
     }

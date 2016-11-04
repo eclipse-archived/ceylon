@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleSpec;
@@ -52,6 +54,7 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
+import com.redhat.ceylon.common.tools.SourceDependencyResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
@@ -187,6 +190,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean progress = DefaultToolOptions.getCompilerProgress();
     private List<String> javac = DefaultToolOptions.getCompilerJavac();
     private String encoding;
+    private String includeDependencies;
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
     private String osgiProvidedBundles = DefaultToolOptions.getCompilerOsgiProvidedBundles();
@@ -347,6 +351,14 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         this.encoding = encoding;
     }
 
+    @Option
+    @OptionArgument(argumentName = "flags")
+    @Description("Determines if and how compilation of dependencies should be handled. " +
+            "Allowed flags include: `never`, `once`, `force`, `check`.")
+    public void setIncludeDependencies(String includeDependencies) {
+        this.includeDependencies = includeDependencies;
+    }
+
     @Argument(argumentName="moduleOrFile", multiplicity="*")
     public void setModule(List<String> moduleOrFile) {
         this.modulesOrFiles = moduleOrFile;
@@ -458,7 +470,16 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         super.initialize(mainTool);
         compiler = new Main("ceylon compile");
         helper.options.clear();
-        Options options = Options.instance(new Context());
+        Options.instance(new Context());
+        
+        if (includeDependencies == null) {
+            includeDependencies = DefaultToolOptions.getCompilerIncludeDependencies();
+            if (includeDependencies.isEmpty()) {
+                includeDependencies = COMPILE_NEVER;
+            }
+        } else if (includeDependencies.isEmpty()) {
+            includeDependencies = COMPILE_CHECK;
+        }
         
         if (modulesOrFiles.isEmpty() &&
                 !javac.contains("-help") &&
@@ -672,7 +693,23 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEFILE, moduleOrFile, moduleOrFile);
         }
         
-        validateSourceArguments(expandedModulesOrFiles);
+        // We validate that all source arguments are correct
+        SourceArgumentsResolver sar = new SourceArgumentsResolver(this.sources, this.resources, Constants.CEYLON_SUFFIX, Constants.JAVA_SUFFIX);
+        sar.cwd(cwd).parse(expandedModulesOrFiles);
+        
+        if (includeDependencies != null && !COMPILE_NEVER.equals(includeDependencies)) {
+            // Determine any dependencies that might need compiling as well
+            SourceDependencyResolver sdr = new SourceDependencyResolver(this.sources);
+            if (sdr.cwd(cwd).traverseDependencies(sar.getSourceFiles())) {
+                for (ModuleVersionDetails mvd : sdr.getAdditionalModules()) {
+                    if (COMPILE_FORCE.equals(includeDependencies)
+                            || (COMPILE_CHECK.equals(includeDependencies) && shouldRecompile(getRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, true))
+                            || (COMPILE_ONCE.equals(includeDependencies) && shouldRecompile(getRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, false))) {
+                        expandedModulesOrFiles.add(mvd.getModule());
+                    }
+                }
+            }
+        }
         
         arguments.addAll(expandedModulesOrFiles);
         
@@ -682,11 +719,6 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         }
     }
 
-    private void validateSourceArguments(List<String> modulesOrFiles) throws IOException {
-        SourceArgumentsResolver resolver = new SourceArgumentsResolver(this.sources, this.resources, Constants.CEYLON_SUFFIX, Constants.JAVA_SUFFIX);
-        resolver.cwd(cwd).parse(modulesOrFiles);
-    }
-    
     private static com.redhat.ceylon.langtools.tools.javac.main.Option getJavacOpt(String optionName) {
         for (com.redhat.ceylon.langtools.tools.javac.main.Option o : com.redhat.ceylon.langtools.tools.javac.main.Option.getJavaCompilerOptions()) {
             if (optionName.equals(o.text)) {

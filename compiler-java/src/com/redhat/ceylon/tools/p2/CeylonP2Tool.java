@@ -155,7 +155,7 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
          *  so let's leave it like this for now.
          */
         // try from source first
-        ModuleVersionDetails fromSource = getVersionFromSource(module.getName());
+        ModuleVersionDetails fromSource = getModuleVersionDetailsFromSource(module.getName());
         if(fromSource != null){
             // is it the version we're after?
             return fromSource.getVersion();

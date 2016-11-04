@@ -48,6 +48,7 @@ public abstract class Constants {
     
     public static final String DEFAULT_RESOURCE_ROOT = "ROOT";
     
+    public static final String DEFAULT_COMPILER_COMPILATION_FLAGS = "never";
     public static final String DEFAULT_RUNTOOL_COMPILATION_FLAGS = "never";
     public static final String DEFAULT_TESTTOOL_COMPILATION_FLAGS = "never";
     

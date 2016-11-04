@@ -387,7 +387,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
 
         String version;
         if (!module.getName().equals(Module.DEFAULT_MODULE_NAME)){
-            ModuleVersionDetails mvd = getVersionFromSource(module.getName());
+            ModuleVersionDetails mvd = getModuleVersionDetailsFromSource(module.getName());
             if (mvd == null) {
                 errorMsg("error.no.script.version", module.getName());
                 return false;
