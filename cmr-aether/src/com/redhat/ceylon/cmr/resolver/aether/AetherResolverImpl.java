@@ -21,12 +21,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
+import org.apache.maven.settings.Activation;
 import org.apache.maven.settings.Mirror;
 import org.apache.maven.settings.Profile;
 import org.apache.maven.settings.Proxy;
@@ -178,39 +181,20 @@ public class AetherResolverImpl implements AetherResolver {
         List<RemoteRepository> repos = new ArrayList<>();
         RemoteRepository central = new RemoteRepository.Builder( "central", "default", "http://repo1.maven.org/maven2/" ).build();
         repos.add(central);
-        for(String profileId : set.getActiveProfiles()){
-        	Profile profile = set.getProfilesAsMap().get(profileId);
-        	if(profile != null){
-        		for(Repository repo : profile.getRepositories()){
-        	        RemoteRepository.Builder remoteRepo = new RemoteRepository.Builder( repo.getId(), repo.getLayout(), repo.getUrl() );
-
-        	        // policies
-        	        org.apache.maven.settings.RepositoryPolicy repoReleasePolicy = repo.getReleases();
-        	        if(repoReleasePolicy != null){
-        	            String updatePolicy = repoReleasePolicy.getUpdatePolicy();
-                        // This is the default anyway and saves us a message on STDERR
-        	            if(updatePolicy == null || updatePolicy.isEmpty())
-        	                updatePolicy = RepositoryPolicy.UPDATE_POLICY_NEVER;
-        	        	RepositoryPolicy releasePolicy = new RepositoryPolicy(repoReleasePolicy.isEnabled(), updatePolicy, 
-        	        			repoReleasePolicy.getChecksumPolicy());
-        	        	remoteRepo.setReleasePolicy(releasePolicy );
-        	        }
-        	        
-        	        org.apache.maven.settings.RepositoryPolicy repoSnapshotPolicy = repo.getSnapshots();
-        	        if(repoSnapshotPolicy != null){
-                        String updatePolicy = repoSnapshotPolicy.getUpdatePolicy();
-                        // This is the default anyway and saves us a message on STDERR
-                        if(updatePolicy == null || updatePolicy.isEmpty())
-                            updatePolicy = RepositoryPolicy.UPDATE_POLICY_NEVER;
-        	        	RepositoryPolicy snapshotPolicy = new RepositoryPolicy(repoSnapshotPolicy.isEnabled(), updatePolicy, 
-        	        			repoSnapshotPolicy.getChecksumPolicy());
-        	        	remoteRepo.setSnapshotPolicy(snapshotPolicy);
-        	        }
-					
-					// auth, proxy and mirrors are done in the session
-        			repos.add(remoteRepo.build());
-        		}
-        	}
+        Set<String> activeProfiles = new HashSet<>();
+        activeProfiles.addAll(set.getActiveProfiles());
+        for (Profile profile : set.getProfiles()) {
+            Activation activation = profile.getActivation();
+            if(activation != null){
+                if(activation.isActiveByDefault())
+                    activeProfiles.add(profile.getId());
+            }
+        }
+        for(String profileId : activeProfiles){
+            Profile profile = set.getProfilesAsMap().get(profileId);
+            if(profile != null){
+                addReposFromProfile(repos, profile);
+            }
         }
         
         // connection settings
@@ -223,6 +207,38 @@ public class AetherResolverImpl implements AetherResolver {
         return repos;
     }
     
+    private void addReposFromProfile(List<RemoteRepository> repos, Profile profile) {
+        for(Repository repo : profile.getRepositories()){
+            RemoteRepository.Builder remoteRepo = new RemoteRepository.Builder( repo.getId(), repo.getLayout(), repo.getUrl() );
+
+            // policies
+            org.apache.maven.settings.RepositoryPolicy repoReleasePolicy = repo.getReleases();
+            if(repoReleasePolicy != null){
+                String updatePolicy = repoReleasePolicy.getUpdatePolicy();
+                // This is the default anyway and saves us a message on STDERR
+                if(updatePolicy == null || updatePolicy.isEmpty())
+                    updatePolicy = RepositoryPolicy.UPDATE_POLICY_NEVER;
+                RepositoryPolicy releasePolicy = new RepositoryPolicy(repoReleasePolicy.isEnabled(), updatePolicy, 
+                        repoReleasePolicy.getChecksumPolicy());
+                remoteRepo.setReleasePolicy(releasePolicy );
+            }
+            
+            org.apache.maven.settings.RepositoryPolicy repoSnapshotPolicy = repo.getSnapshots();
+            if(repoSnapshotPolicy != null){
+                String updatePolicy = repoSnapshotPolicy.getUpdatePolicy();
+                // This is the default anyway and saves us a message on STDERR
+                if(updatePolicy == null || updatePolicy.isEmpty())
+                    updatePolicy = RepositoryPolicy.UPDATE_POLICY_NEVER;
+                RepositoryPolicy snapshotPolicy = new RepositoryPolicy(repoSnapshotPolicy.isEnabled(), updatePolicy, 
+                        repoSnapshotPolicy.getChecksumPolicy());
+                remoteRepo.setSnapshotPolicy(snapshotPolicy);
+            }
+            
+            // auth, proxy and mirrors are done in the session
+            repos.add(remoteRepo.build());
+        }
+    }
+
     private static final DependencySelector NoChildSelector = new DependencySelector(){
 
 		@Override

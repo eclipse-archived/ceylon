@@ -706,7 +706,23 @@ public class CMRTests extends CompilerTests {
     public void testMdlAetherDependencyCustom() throws IOException{
         // Try to compile the ceylon module
         File settingsFile = new File(getPackagePath(), "modules/aethercustom/settings.xml");
-        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether:" + settingsFile.getAbsolutePath(), "-verbose:cmr"), 
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, 
+                "-rep", "aether:" + settingsFile.getAbsolutePath(), 
+                "-verbose:cmr"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/aethercustom/module.ceylon", "modules/aethercustom/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+        File restletJar = new File("build/test-cars/cmr-repository", "org/restlet/org.restlet/1.1.10/org.restlet-1.1.10.jar");
+        assertTrue(restletJar.exists());
+    }
+
+    @Test
+    public void testMdlAetherDependencyCustomAutoActive() throws IOException{
+        // Try to compile the ceylon module
+        File settingsFile = new File(getPackagePath(), "modules/aethercustom/settings-autoactive.xml");
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, 
+                "-rep", "aether:" + settingsFile.getAbsolutePath(), 
+                "-verbose:cmr"), 
                 (DiagnosticListener<? super FileObject>)null, 
                 "modules/aethercustom/module.ceylon", "modules/aethercustom/foo.ceylon");
         assertEquals(Boolean.TRUE, ceylonTask.call());
