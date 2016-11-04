@@ -5205,6 +5205,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && isFunctionalResult(expr.getTypeModel())
                 && checkForFunctionalInterface(expectedType) != null) {
             result = transformFunctionalInterfaceBridge(expr, (Value)decl, expectedType);
+        } else if (coerced
+                && decl instanceof Functional
+                && decl.isParameter()
+                && isFunctionalResult(expr.getTypeModel())
+                && checkForFunctionalInterface(expectedType) != null) {
+            result = transformFunctional(expr, (Functional)decl, expectedType);
 //        } else if (coerced
 //                && decl instanceof Value
 //                && isJavaFunctionalInterfaceResult(expr.getTypeModel())

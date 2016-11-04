@@ -1228,6 +1228,13 @@ class CallableInvocation extends DirectInvocation {
                 transformedSelector = samRef.getDeclaration().getName();
             else
                 transformedSelector = Naming.getCallableMethodName();
+        }else if(getPrimaryDeclaration() instanceof Function
+                && getPrimaryDeclaration().isParameter()
+                // This is fishy at best
+                && transformedPrimary == null){
+            // FIXME: there's a good chance this should be merged with the previous block
+            transformedPrimary = gen.makeUnquotedIdent(selector);
+            transformedSelector = Naming.getCallableMethodName();
         }else if(isCallableToFunctionalInterfaceBridge){
             transformedSelector = Naming.getCallableMethodName();
         }
