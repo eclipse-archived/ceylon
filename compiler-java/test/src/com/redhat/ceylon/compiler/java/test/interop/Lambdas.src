@@ -1318,6 +1318,50 @@ final class lambdas_ {
                 );
             }
         });
+        final .java.lang.String capturedString = "";
+        j.stringFunction2(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#24") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Function<.java.lang.String, .java.lang.String>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#24")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(capturedString);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)).toString();
+            }
+        });
+        final .ceylon.language.String capturedString2 = .ceylon.language.String.instance("");
+        j.stringFunction2(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#25") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Function<.java.lang.String, .java.lang.String>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#25")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return capturedString2;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$4 = $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
+                    }
+                    returning $ceylontmp$4 != null ? $ceylontmp$4.toString() : null;
+                );
+            }
+        });
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.CompileTimeError
@@ -1377,9 +1421,9 @@ public final class bug6634_ {
                 return (
                     let
                     {
-                        .ceylon.language.Integer $ceylontmp$4 = i;
+                        .ceylon.language.Integer $ceylontmp$5 = i;
                     }
-                    returning $ceylontmp$4 != null ? $ceylontmp$4 : .ceylon.language.Integer.instance(0L);
+                    returning $ceylontmp$5 != null ? $ceylontmp$5 : .ceylon.language.Integer.instance(0L);
                 );
             }
             
@@ -1423,9 +1467,9 @@ public final class bug6634_ {
                 return (
                     let
                     {
-                        .ceylon.language.Integer $ceylontmp$5 = i;
+                        .ceylon.language.Integer $ceylontmp$6 = i;
                     }
-                    returning $ceylontmp$5 != null ? $ceylontmp$5 : .ceylon.language.Integer.instance(0L);
+                    returning $ceylontmp$6 != null ? $ceylontmp$6 : .ceylon.language.Integer.instance(0L);
                 );
             }
             
@@ -1513,9 +1557,9 @@ public final class bug6634_ {
             let
             {
                 
-                class anonymous_29_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.function.Function<.ceylon.language.Integer, .java.lang.Object> {
+                class anonymous_31_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.function.Function<.ceylon.language.Integer, .java.lang.Object> {
                     
-                    private anonymous_29_() {
+                    private anonymous_31_() {
                     }
                     
                     @.java.lang.Override
@@ -1525,11 +1569,11 @@ public final class bug6634_ {
                     
                     @.java.lang.Override
                     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.interop.bug6634_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_29_.class));
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.interop.bug6634_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_31_.class));
                     }
                 }
             }
-            returning new anonymous_29_();
+            returning new anonymous_31_();
         );
         .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
             

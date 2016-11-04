@@ -130,6 +130,11 @@ void lambdas() {
     j.stringFunction((String s) => s);
     j.stringFunction((String? s) => s);
     j.stringFunction((String s) => (s of String?));
+
+    String capturedString = "";
+    j.stringFunction2((String s) => capturedString);
+    String? capturedString2 = "";
+    j.stringFunction2((String s) => capturedString2);
 }
 
 @noanno

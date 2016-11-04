@@ -82,6 +82,9 @@ public class LambdasJava {
     public void consumeTwoIntegers(ConsumeTwoIntegers f){
     }
 
+    public void stringFunction2(Function<? super String, String> f){
+    }
+
     public void klassMethod(Class<?> k){}
     
     public Class<?> getKlass(){ return null; }
