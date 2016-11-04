@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.codegen.recovery;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.java.codegen.TypeVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
@@ -10,8 +11,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.model.LazyClass;
+import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -169,9 +174,47 @@ class DeclarationErrorVisitor extends Visitor {
         }
         // type inference is used but the type of 
         // the inferred expression is unknown due to other errors
-        if (that.getTypeModel().containsUnknowns()) {
+        if (containsUnknowns(that.getTypeModel())) {
             newplan(new Drop(that, new AnalysisError(that, "unknown type", Backend.Java)));
         }
+    }
+    
+    boolean containsUnknowns(Type t) {
+        class UnknownVisitor extends TypeVisitor {
+            boolean staticJavaMember = false;
+            boolean unknowns = false;
+            @Override
+            public void visitUnknown() {
+                unknowns = true;
+            }
+            @Override
+            public void visitTypeArguments(Type typeConstructor, List<Type> typeArguments) {
+                if (!staticJavaMember) {
+                    super.visitTypeArguments(typeConstructor, typeArguments);
+                }
+            }
+            @Override
+            public void visitQualifyingType(Type qualified, Type qualifying) {
+                boolean unknownOk = this.staticJavaMember;
+                this.staticJavaMember = isJava(qualifying) && qualified.getDeclaration().isStatic();
+                super.visitQualifyingType(qualified, qualifying);
+                this.staticJavaMember = unknownOk;
+            }
+            private boolean isJava(Type type) {
+                boolean isjava;
+                if (type.getDeclaration() instanceof LazyClass) {
+                    isjava = !((LazyClass)type.getDeclaration()).isCeylon(); 
+                } else if (type.getDeclaration() instanceof LazyInterface) {
+                    isjava = !((LazyInterface)type.getDeclaration()).isCeylon(); 
+                } else {
+                    isjava = false;
+                }
+                return isjava;
+            }
+        };
+        UnknownVisitor uv = new UnknownVisitor();
+        uv.visitType(t);
+        return uv.unknowns;
     }
     
     @Override
