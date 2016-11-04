@@ -20,9 +20,6 @@ void javaArrayInSpreadArgumentString() {
     it[1] = "b";
     it[2] = "c";
     
-    // positional spread
-    assert(javaArrayInSpreadArgumentFunc(*it) == ["a", "b", "c"]);
-    
     // named args spread (as sequenced arg)
     assert(javaArrayInSpreadArgumentFunc<String>{*it} == ["a", "b", "c"]);
     assert(javaArrayInSpreadArgumentFunc<String>{"z", *it} == ["z", "a", "b", "c"]);
@@ -40,9 +37,6 @@ void javaArrayInSpreadArgumentBoolean() {
     it[0] = true;
     it[1] = false;
     it[2] = true;
-    
-    // positional spread
-    assert(javaArrayInSpreadArgumentFunc(*it) == [true, false, true]);
     
     // named args spread (as sequenced arg)
     assert(javaArrayInSpreadArgumentFunc<Boolean>{*it} == [true, false, true]);
@@ -62,9 +56,6 @@ void javaArrayInSpreadArgumentShort() {
     it[1] = 2;
     it[2] = 3;
     
-    // positional spread
-    assert(javaArrayInSpreadArgumentFunc(*it) == [1, 2, 3]);
-    
     // named args spread (as sequenced arg)
     assert(javaArrayInSpreadArgumentFunc<Integer>{*it} == [1, 2, 3]);
     assert(javaArrayInSpreadArgumentFunc<Integer>{0, *it} == [0, 1, 2, 3]);
@@ -83,9 +74,6 @@ void javaArrayInSpreadArgumentInt() {
     it[1] = 2;
     it[2] = 3;
     
-    // positional spread
-    assert(javaArrayInSpreadArgumentFunc(*it) == [1, 2, 3]);
-    
     // named args spread (as sequenced arg)
     assert(javaArrayInSpreadArgumentFunc<Integer>{*it} == [1, 2, 3]);
     assert(javaArrayInSpreadArgumentFunc<Integer>{0, *it} == [0, 1, 2, 3]);
@@ -103,9 +91,6 @@ void javaArrayInSpreadArgumentLong() {
     it[0] = 1;
     it[1] = 2;
     it[2] = 3;
-    
-    // positional spread
-    assert(javaArrayInSpreadArgumentFunc(*it) == [1, 2, 3]);
     
     // named args spread (as sequenced arg)
     assert(javaArrayInSpreadArgumentFunc<Integer>{*it} == [1, 2, 3]);
@@ -126,9 +111,6 @@ void javaArrayInSpreadArgumentChar() {
     it[1] = 'b';
     it[2] = 'c';
     
-    // positional spread
-    assert(javaArrayInSpreadArgumentFunc(*it) == ['a', 'b', 'c']);
-    
     // named args spread (as sequenced arg)
     assert(javaArrayInSpreadArgumentFunc<Character>{*it} == ['a', 'b', 'c']);
     assert(javaArrayInSpreadArgumentFunc<Character>{'z', *it} == ['z', 'a', 'b', 'c']);
@@ -146,9 +128,6 @@ void javaArrayInSpreadArgumentFloat() {
     it[0] = 1.0;
     it[1] = 2.0;
     it[2] = 3.0;
-    
-    // positional spread
-    assert(javaArrayInSpreadArgumentFunc(*it) == [1.0, 2.0, 3.0]);
     
     // named args spread (as sequenced arg)
     assert(javaArrayInSpreadArgumentFunc<Float>{*it} == [1.0, 2.0, 3.0]);
@@ -168,9 +147,6 @@ void javaArrayInSpreadArgumentDouble() {
     it[1] = 2.0;
     it[2] = 3.0;
     
-    // positional spread
-    assert(javaArrayInSpreadArgumentFunc(*it) == [1.0, 2.0, 3.0]);
-    
     // named args spread (as sequenced arg)
     assert(javaArrayInSpreadArgumentFunc<Float>{*it} == [1.0, 2.0, 3.0]);
     assert(javaArrayInSpreadArgumentFunc<Float>{0.0, *it} == [0.0, 1.0, 2.0, 3.0]);
@@ -188,9 +164,6 @@ void javaArrayInSpreadArgumentByte() {
     it[0] = 1.byte;
     it[1] = 2.byte;
     it[2] = 3.byte;
-    
-    // positional spread
-    assert(javaArrayInSpreadArgumentFunc(*it) == [1.byte, 2.byte, 3.byte]);
     
     // named args spread (as sequenced arg)
     assert(javaArrayInSpreadArgumentFunc<Byte>{*it} == [1.byte, 2.byte, 3.byte]);

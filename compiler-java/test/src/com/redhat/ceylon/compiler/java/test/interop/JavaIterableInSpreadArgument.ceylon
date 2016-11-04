@@ -9,9 +9,6 @@ void javaIterableInSpreadArgument() {
     al.add("a");al.add("b");al.add("c");
     JIterable<String> it = al;
     
-    // positional spread
-    assert(javaIterableInSpreadArgumentFunc(*it) == ["a", "b", "c"]);
-    
     // named args spread (as sequenced arg)
     assert(javaIterableInSpreadArgumentFunc{*it} == ["a", "b", "c"]);
     assert(javaIterableInSpreadArgumentFunc{"z", *it} == ["z", "a", "b", "c"]);
