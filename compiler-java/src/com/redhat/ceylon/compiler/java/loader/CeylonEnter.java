@@ -764,6 +764,7 @@ public class CeylonEnter extends Enter {
                 @Override
                 protected void out(UnexpectedError err) {
                     if(err instanceof CodeGenError){
+                        setSource();
                         CodeGenError error = ((CodeGenError)err);
                         String location = locationInfo(error);
                         logError(getPosition(err.getTreeNode()), 
