@@ -546,6 +546,17 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         }
     }
 
+
+    public Class getJavaStringDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("String", null, false);
+        }
+    }
+
     public Class getJavaClassDeclaration() {
         Package lang = getJavaLangPackage();
         if (lang==null) {

@@ -2667,7 +2667,21 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return pt;
     }
-    
+
+    /**
+     * Does not care about underlying type: just the declared type
+     */
+    boolean isJavaStringExactly(Type type) {
+        Class javaStringDeclaration = typeFact.getJavaStringDeclaration();
+        // Frankly this is weird, but it happens
+        if(javaStringDeclaration == null)
+            return false;
+        return type.isExactly(javaStringDeclaration.getType());
+    }
+
+    /**
+     * Only looks for the underlying type
+     */
     boolean isJavaString(Type type) {
         return "java.lang.String".equals(type.getUnderlyingType());
     }

@@ -1202,8 +1202,11 @@ public class CallableBuilder {
                 && ((Function)methodOrValue).isDeclaredVoid())
             body = gen.make().Exec(call);
         else{
-            if(CodegenUtil.isUnBoxed(methodOrValue)){
-                Type callableReturnType = gen.getReturnTypeOfCallable(typeModel);
+            Type callableReturnType = gen.getReturnTypeOfCallable(typeModel);
+            Type simpleReturnType = gen.simplifyType(returnType);
+            boolean unboxed = CodegenUtil.isUnBoxed(methodOrValue)
+                    || gen.isJavaStringExactly(simpleReturnType);
+            if(unboxed){
                 call = gen.expressionGen().applyErasureAndBoxing(call, 
                         callableReturnType, 
                         true, 
