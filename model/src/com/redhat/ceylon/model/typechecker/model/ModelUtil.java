@@ -2225,10 +2225,7 @@ public class ModelUtil {
                 t = model.getType();
             }
             else if (model instanceof Function) {
-                t = appliedType(
-                        unit.getCallableDeclaration(),
-                        model.getType(),
-                        unit.getUnknownType());
+                t = model.getTypedReference().getFullType();
             }
             else {
                 t = unit.getUnknownType();
