@@ -48,8 +48,10 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 
 /**
  * FIXME: we still need to define how add/remove/set works with replace or recursive replacements.
@@ -243,6 +245,8 @@ public class Overrides {
             String depVersion = dep.getVersion();
             boolean optional = dep.isOptional();
             boolean export = dep.isExport();
+            ModuleScope scope = dep.getModuleScope();
+            Backends backends = dep.getNativeBackends();
             ArtifactContext ctx = new ArtifactContext(depNamespace, depName, depVersion);
             if((artifactOverrides != null && artifactOverrides.isRemoved(ctx))
                     || isRemoved(ctx))
@@ -265,7 +269,7 @@ public class Overrides {
                     optional = artifactOverrides.isOptional(ctx);
             }
 
-            result.add(new ModuleDependencyInfo(depNamespace, depName, depVersion, optional, export));
+            result.add(new ModuleDependencyInfo(depNamespace, depName, depVersion, optional, export, backends, scope));
         }
         String filter = source.getFilter();
         if(artifactOverrides != null){

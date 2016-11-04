@@ -19,6 +19,7 @@ import org.xml.sax.SAXException;
 
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 
 /**
@@ -114,7 +115,7 @@ public class MavenUtils {
                         scope = ModuleScope.COMPILE;
 
                     ret.add(new ModuleDependencyInfo("maven", depGroupId+":"+depArtifactId, depVersion, 
-                            "true".equals(depOptional), false, scope));
+                            "true".equals(depOptional), false, Backends.JAVA, scope));
                 }
             }
         }

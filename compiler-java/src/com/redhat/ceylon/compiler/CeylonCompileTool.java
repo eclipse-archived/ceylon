@@ -35,6 +35,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -692,7 +693,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         if (includeDependencies != null && !COMPILE_NEVER.equals(includeDependencies)) {
             // Determine any dependencies that might need compiling as well
-            SourceDependencyResolver sdr = new SourceDependencyResolver(this.sources);
+            SourceDependencyResolver sdr = new SourceDependencyResolver(this.sources, Backends.JS);
             if (sdr.cwd(cwd).traverseDependencies(sar.getSourceFiles())) {
                 for (ModuleVersionDetails mvd : sdr.getAdditionalModules()) {
                     if (COMPILE_FORCE.equals(includeDependencies)

@@ -26,6 +26,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 
 /**
@@ -61,7 +62,7 @@ public final class PropertiesDependencyResolver extends ModulesDependencyResolve
                 }
                 String namespace = ModuleUtil.getNamespaceFromUri(depUri);
                 String modName = ModuleUtil.getModuleNameFromUri(depUri);
-                infos.add(new ModuleDependencyInfo(namespace, modName, version, optional, shared));
+                infos.add(new ModuleDependencyInfo(namespace, modName, version, optional, shared, Backends.JAVA));
             }
             ModuleInfo ret = new ModuleInfo(moduleName, moduleVersion, null, infos);
             if(overrides != null)

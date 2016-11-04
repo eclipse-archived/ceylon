@@ -56,6 +56,7 @@ import com.redhat.ceylon.cmr.resolver.aether.AetherResolverImpl;
 import com.redhat.ceylon.cmr.resolver.aether.DependencyDescriptor;
 import com.redhat.ceylon.cmr.resolver.aether.ExclusionDescriptor;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
@@ -368,7 +369,7 @@ class AetherUtils {
                     }
                 }
                 ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(namespace, depName, depVersion, 
-                        optional, export, toModuleScope(dep));
+                        optional, export, Backends.JAVA, toModuleScope(dep));
                 dependencies.add(moduleDependencyInfo);
             }
             if(artifactOverrides != null){
@@ -380,6 +381,7 @@ class AetherUtils {
                             ac.getVersion(),
                             add.isOptional(), 
                             add.isShared(),
+                            Backends.JAVA,
                             ModuleScope.COMPILE);
                     dependencies.add(moduleDependencyInfo);
                 }

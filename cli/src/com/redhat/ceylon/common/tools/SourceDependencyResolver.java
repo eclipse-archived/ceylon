@@ -28,6 +28,7 @@ import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
@@ -224,7 +225,7 @@ public class SourceDependencyResolver {
         }
         SortedSet<ModuleDependencyInfo> dependencies = new TreeSet<>();
         for(Object[] dep : mdr.getModuleImports()){
-            dependencies.add(new ModuleDependencyInfo((String)dep[0], (String)dep[1], (String)dep[2], (Boolean)dep[3], (Boolean)dep[4]));
+            dependencies.add(new ModuleDependencyInfo((String)dep[0], (String)dep[1], (String)dep[2], (Boolean)dep[3], (Boolean)dep[4], (Backends)dep[5]));
         }
         mvd.setDependencies(dependencies);
         mvd.setRemote(false);

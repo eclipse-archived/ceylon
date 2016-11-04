@@ -37,6 +37,7 @@ import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.PathFilterParser;
+import com.redhat.ceylon.common.Backends;
 
 /**
  * Read module info from module.xml.
@@ -56,7 +57,7 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
             final Module module = parse(stream);
             final Set<ModuleDependencyInfo> infos = new LinkedHashSet<>();
             for (ModuleIdentifier mi : module.getDependencies()) {
-                infos.add(new ModuleDependencyInfo(null, mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport()));
+                infos.add(new ModuleDependencyInfo(null, mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport(), Backends.JAVA));
             }
             ModuleInfo ret = new ModuleInfo(name, version, module.getFilter(), infos);
             if(overrides != null)

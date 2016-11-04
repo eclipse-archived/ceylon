@@ -35,6 +35,7 @@ import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.common.Backends;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -145,7 +146,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
                 log.warning(String.format("Parameter %s is not directive or attribute.", param));
             }
         }
-        return new ModuleDependencyInfo(null, name, version, optional, shared);
+        return new ModuleDependencyInfo(null, name, version, optional, shared, Backends.JAVA);
     }
 
     private String[] parseDirective(String parameter) {

@@ -212,7 +212,8 @@ class ModuleDescriptorReader {
                     dep.getModule().getNameAsString(), 
                     dep.getModule().getVersion(),
                     dep.isOptional(),
-                    dep.isExport()
+                    dep.isExport(),
+                    dep.getNativeBackends()
             });
         }
         return imports;

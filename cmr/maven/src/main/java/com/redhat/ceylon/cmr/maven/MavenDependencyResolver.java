@@ -32,6 +32,7 @@ import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.resolver.aether.DependencyDescriptor;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -110,7 +111,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         Set<ModuleDependencyInfo> infos = new HashSet<>();
         for (DependencyDescriptor dep : descriptor.getDependencies()) {
             infos.add(new ModuleDependencyInfo("maven", AetherUtils.toCanonicalForm(dep.getGroupId(), 
-                    dep.getArtifactId()), dep.getVersion(), dep.isOptional(), false, AetherUtils.toModuleScope(dep)));
+                    dep.getArtifactId()), dep.getVersion(), dep.isOptional(), false, Backends.JAVA, AetherUtils.toModuleScope(dep)));
         }
         String descrName = descriptor.getGroupId()+":"+descriptor.getArtifactId();
         // if it's not the descriptor we wanted, let's not return it

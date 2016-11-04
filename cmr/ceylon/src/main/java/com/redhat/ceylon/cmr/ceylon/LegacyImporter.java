@@ -29,6 +29,7 @@ import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.JarUtils;
 import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.log.Logger;
@@ -342,7 +343,7 @@ public class LegacyImporter {
                     feedback.beforeJdkModules();
                     for (String mod : jdkModules) {
                         ModuleDependencyInfo dep = new ModuleDependencyInfo(null, mod, jdkProvider.getJDKVersion(), 
-                        		false, publicApiJdkModules.contains(mod));
+                        		false, publicApiJdkModules.contains(mod), Backends.JAVA);
                         feedback.dependency(DependencyResults.DEP_JDK, dep);
                         expectedDependencies.add(dep);
                     }
@@ -533,7 +534,7 @@ public class LegacyImporter {
                     if (!dep.isExport()) {
                         feedback.dependency(DependencyResults.DEP_OK, dep);
                     } else {
-                        dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), false);
+                        dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), false, dep.getNativeBackends(), dep.getModuleScope());
                         feedback.dependency(DependencyResults.DEP_MARK_UNSHARED, dep);
                     }
                     break;
@@ -541,14 +542,14 @@ public class LegacyImporter {
                     if (dep.isExport()) {
                         feedback.dependency(DependencyResults.DEP_OK, dep);
                     } else {
-                        dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), true);
+                        dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), true, dep.getNativeBackends(), dep.getModuleScope());
                         feedback.dependency(DependencyResults.DEP_MARK_SHARED, dep);
                         hasProblems = true;
                     }
                     break;
                 default:
                     // not used at all
-                    dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), false);
+                    dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), false, dep.getNativeBackends(), dep.getModuleScope());
                     feedback.dependency(DependencyResults.DEP_OK_UNUSED, dep);
                 }
             }

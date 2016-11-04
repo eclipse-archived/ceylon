@@ -37,6 +37,8 @@ import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.langtools.classfile.Annotation;
@@ -335,7 +337,15 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
             boolean export = asBoolean(moduleInfo, dep, "export");
             boolean optional = asBoolean(moduleInfo, dep, "optional");
             
-            result.add(new ModuleDependencyInfo(namespace, modName, depVersion, optional, export));
+            Backends backends = Backends.ANY;
+            Object[] backendNames = (Object[])ClassFileUtil.getAnnotationValue(moduleInfo, dep, "dependencies");
+            if (backendNames != null) {
+                for (Object backend : backendNames) {
+                    backends = backends.merged(Backend.fromAnnotation((String)backend));
+                }
+            }
+            
+            result.add(new ModuleDependencyInfo(namespace, modName, depVersion, optional, export, backends));
         }
         
         if (overrides != null) {

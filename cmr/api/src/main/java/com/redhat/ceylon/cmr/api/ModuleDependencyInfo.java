@@ -16,6 +16,7 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 
@@ -31,20 +32,27 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
     private boolean optional;
     private boolean shared;
     private ModuleScope scope;
+    private Backends backends;
 
     public ModuleDependencyInfo(String namespace, String name, String version, 
             boolean optional, boolean shared) {
-        this(namespace, name, version, optional, shared, ModuleScope.COMPILE);
+        this(namespace, name, version, optional, shared, Backends.ANY);
     }
     
     public ModuleDependencyInfo(String namespace, String name, String version, 
-            boolean optional, boolean shared, ModuleScope scope) {
+            boolean optional, boolean shared, Backends backends) {
+        this(namespace, name, version, optional, shared, backends, ModuleScope.COMPILE);
+    }
+    
+    public ModuleDependencyInfo(String namespace, String name, String version, 
+            boolean optional, boolean shared, Backends backends, ModuleScope scope) {
         this.namespace = namespace;
         this.name = name;
         this.version = version;
         this.optional = optional;
         this.shared = shared;
         this.scope = scope;
+        this.backends = backends != null ? backends : Backends.ANY;
         assert(ModuleUtil.validNamespace(namespace));
     }
 
@@ -70,6 +78,10 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
 
     public ModuleScope getModuleScope() {
         return scope;
+    }
+
+    public Backends getNativeBackends() {
+        return backends;
     }
 
     @Override

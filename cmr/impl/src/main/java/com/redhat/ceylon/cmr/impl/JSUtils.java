@@ -35,6 +35,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.cmr.spi.Node;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
@@ -216,7 +217,7 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
             String depUri = ModuleUtil.moduleName(module);
             String namespace = ModuleUtil.getNamespaceFromUri(depUri);
             String modName = ModuleUtil.getModuleNameFromUri(depUri);
-            deps.add(new ModuleDependencyInfo(namespace, modName, ModuleUtil.moduleVersion(module), optional, exported));
+            deps.add(new ModuleDependencyInfo(namespace, modName, ModuleUtil.moduleVersion(module), optional, exported, Backends.JS));
         }
         ModuleInfo result = new ModuleInfo(moduleName, version, null, deps);
         if(overrides != null)

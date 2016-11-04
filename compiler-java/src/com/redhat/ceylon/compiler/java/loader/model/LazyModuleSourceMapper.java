@@ -146,7 +146,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             for (ModuleImport i : module.getImports()) {
                 Module m = i.getModule();
                 if (m != null) {
-                    existingModuleDependencies.add(new ModuleDependencyInfo(i.getNamespace(), m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
+                    existingModuleDependencies.add(new ModuleDependencyInfo(i.getNamespace(), m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport(), i.getNativeBackends()));
                 }
             }
             ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), null, existingModuleDependencies);
