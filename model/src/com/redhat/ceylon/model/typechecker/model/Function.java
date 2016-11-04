@@ -144,8 +144,12 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
                     else {
                         params.append(", ");
                     }
-                    if (p.getType()!=null) {
-                        params.append(p.getType().asString());
+                    FunctionOrValue model = p.getModel();
+                    if(model != null && model.getType() != null){
+                        if(model.isFunctional())
+                            params.append(model.getTypedReference().getFullType().asString());
+                        else
+                            params.append(model.getType().asString());
                         params.append(" ");
                     }
                     params.append(p.getName());
