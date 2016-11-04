@@ -1620,6 +1620,26 @@ class Sub extends .com.redhat.ceylon.compiler.java.test.interop.LambdasJava impl
         super(c);
     }
     
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void runWithLock(@.com.redhat.ceylon.compiler.java.metadata.Name("action")
+    @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("!()")
+    @.com.redhat.ceylon.common.NonNull
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
+    final .ceylon.language.Callable<? extends .java.lang.Object> action) {
+        synchronizedRun(new .java.lang.Runnable(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                return action.$call$();
+            }
+            
+            @.java.lang.Override
+            public void run() {
+                $call$();
+            }
+        });
+    }
+    
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {

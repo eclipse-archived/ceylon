@@ -97,6 +97,9 @@ public class LambdasJava {
     public void setStr(String s){}
     
     public static void takeInt(int i){}
+    
+    final public void synchronizedRun(final Runnable action) {}
+
 }
 
 interface InterfaceWithCoercedMembers {

@@ -162,7 +162,9 @@ shared void bug6634() {
     longStream.map((Integer? i) => null).forEach(print); // error
 }
 
-class Sub(IntConsumer c) extends LambdasJava(c){}
+class Sub(IntConsumer c) extends LambdasJava(c){
+    shared void runWithLock(void action()) => synchronizedRun(action);
+}
 
 class Sub2() satisfies InterfaceWithCoercedMembers {
     shared actual void m(CharSequence cs, IntSupplier l){}
