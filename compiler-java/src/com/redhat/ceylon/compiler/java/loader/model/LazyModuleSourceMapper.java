@@ -40,11 +40,8 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.config.CeylonConfig;
-import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.java.loader.CompilerModuleLoader;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
-import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleHelper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -319,10 +316,13 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         }
         Set<Module> compiledModules = getCompiledModules();
         Map<String,String> modules = new HashMap<>();
+        ModuleImport anyImport = null;
         for (Module module : compiledModules) {
             for (ModuleImport imp : module.getImports()) {
                 if(imp.getModule() == null
                         || !compiledModules.contains(imp.getModule())){
+                    if(anyImport == null)
+                        anyImport = imp;
                     modules.put(imp.getModule().getNameAsString(), imp.getModule().getVersion());
                 }
             }
@@ -338,10 +338,12 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             return;
         Entry<String, String> first = modules.entrySet().iterator().next();
         CompilerModuleLoader ml = new CompilerModuleLoader(repositoryManager, null, modules, verbose, statusPrinter, log);
+        boolean giveup = false;
         try {
             ml.loadModule(first.getKey(), first.getValue(), ModuleScope.COMPILE);
         } catch (ModuleNotFoundException e) {
-            log.error("ceylon", "Pre-resolving of module failed: "+e.getMessage());
+            attachErrorToDependencyDeclaration(anyImport, "Pre-resolving of module failed: "+e.getMessage(), true);
+            giveup = true;
         }
         if(statusPrinter != null){
             statusPrinter.clearLine();
@@ -350,6 +352,8 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         if(verbose){
             log.printRawLines(WriterKind.NOTICE, "[Pre-resolved "+ml.getModuleCount()+" modules]");
         }
+        if(giveup)
+            return;
         Overrides overrides = repositoryManager.getOverrides();
         if(overrides == null){
             overrides = Overrides.create();

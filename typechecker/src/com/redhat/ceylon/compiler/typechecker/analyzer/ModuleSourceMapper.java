@@ -198,7 +198,7 @@ public class ModuleSourceMapper {
         }
     }
 
-    private boolean attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error, boolean isError) {
+    protected boolean attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error, boolean isError) {
         WeakHashMap<Node, Object> moduleDepError = moduleImportToNode.get(moduleImport);
         if (moduleDepError != null) {
             for ( Node definition :  moduleDepError.keySet() ) {
