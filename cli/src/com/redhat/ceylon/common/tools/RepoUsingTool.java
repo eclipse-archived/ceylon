@@ -417,7 +417,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                         if (version.equals(srcVersion.getVersion())) {
                             // There seems to be source code that has the proper version
                             // Let's see if we can compile it...
-                            if (!runCompiler(repoMgr, name, type)) {
+                            if (!runCompiler(repoMgr, name, type, compileFlags)) {
                                 throw new ToolUsageError(Messages.msg(bundle, "compilation.failed"));
                             }
                         } else {
@@ -454,7 +454,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     // Let's see if we can compile it...
                     String srcver = srcVersion.getVersion();
                     if (!checkCompilation || shouldRecompile(getOfflineRepositoryManager(), name, srcver, type, true)) {
-                        if (!runCompiler(repoMgr, name, type)) {
+                        if (!runCompiler(repoMgr, name, type, compileFlags)) {
                             throw new ToolUsageError(Messages.msg(bundle, "compilation.failed"));
                         }
                     }
@@ -730,7 +730,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         }
     }
     
-    protected List<String> getCompilerFlags() {
+    protected List<String> getCompilerArguments() {
         List<String> args = new ArrayList<String>();
         if (noDefRepos) {
             args.add("--no-default-repositories");
@@ -758,8 +758,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return args;
     }
 
-    private boolean runCompiler(RepositoryManager repoMgr, String name, ModuleQuery.Type type) {
-        List<String> args = getCompilerFlags();
+    private boolean runCompiler(RepositoryManager repoMgr, String name, ModuleQuery.Type type, String compileFlags) {
+        List<String> args = getCompilerArguments();
+        if (compileFlags != null) {
+            args.add("--include-dependencies=" + compileFlags);
+        }
         args.add(name);
         
         ToolFactory pluginFactory = new ToolFactory();
