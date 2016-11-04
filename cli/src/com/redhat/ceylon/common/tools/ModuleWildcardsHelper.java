@@ -200,7 +200,9 @@ public abstract class ModuleWildcardsHelper {
             for (File f : files) {
                 if (f.isDirectory() && f.canRead() && isNamePart(f.getName())) {
                     findModules(modules, root, f, prefix, forBackend, false);
-                } else if (f.isFile() && f.canRead() && f.getName().endsWith(Constants.CEYLON_SUFFIX)) {
+                } else if (f.isFile() && f.canRead()
+                        && f.getName().endsWith(Constants.CEYLON_SUFFIX)
+                        && (prefix == null || prefix.isEmpty())) {
                     modules.add("default");
                 }
             }
