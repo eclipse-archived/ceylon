@@ -2,6 +2,7 @@ package com.redhat.ceylon.cmr.api;
 
 import java.util.Arrays;
 import java.util.NavigableSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -138,24 +139,50 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     
     @Override
     public int hashCode() {
-        // This only work well for versions within the same module!
-        return version.hashCode();
+        int hash = 17;
+        hash = 37 * hash + (module != null ? module.hashCode() : 0);
+        hash = 37 * hash + (version != null ? version.hashCode() : 0);
+        return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
-        // This only work well for versions within the same module!
-        if (obj instanceof ModuleVersionDetails) {
-            return version.equals(((ModuleVersionDetails) obj).version);
+        if(obj == this)
+            return true;
+        if (obj instanceof ModuleVersionDetails == false) {
+            return false;
         }
-        return false;
+        ModuleVersionDetails other = (ModuleVersionDetails)obj;
+        return Objects.equals(namespace, other.namespace)
+                && Objects.equals(module, other.module)
+                && Objects.equals(version, other.version);
     }
 
     @Override
     public int compareTo(ModuleVersionDetails o) {
-        return VersionComparator.compareVersions(version, o.version);
+        int result = compare(namespace, o.namespace);
+        if (result == 0) {
+            result = compare(module, o.module);
+            if (result == 0) {
+                result = VersionComparator.compareVersions(version, o.version);
+            }
+        }
+        return result;
     }
 
+    private int compare(String str1, String str2) {
+        if (str1 == null && str2 == null) {
+            return 0;
+        }
+        if (str1 == null) {
+            return -1;
+        }
+        if (str2 == null) {
+            return 1;
+        }
+        return str1.compareTo(str2);
+    }
+    
     @Override
     public String toString() {
         return "ModuleVersionDetails[ "
