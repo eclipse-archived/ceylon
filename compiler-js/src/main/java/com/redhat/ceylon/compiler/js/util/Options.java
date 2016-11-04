@@ -41,6 +41,7 @@ public class Options {
     private boolean srcmap;
     private boolean minify;
     private String encoding = System.getProperty("file.encoding");
+    private String includeDependencies;
     private Logger logger;
     private Writer outWriter;
     private DiagnosticListener diagnosticListener;
@@ -301,6 +302,15 @@ public class Options {
             encoding = System.getProperty("file.encoding");
         }
         this.encoding = encoding;
+        return this;
+    }
+
+    public String getIncludeDependencies() {
+        return includeDependencies;
+    }
+    
+    public Options includeDependencies(String includeDependencies) {
+        this.includeDependencies = includeDependencies;
         return this;
     }
 

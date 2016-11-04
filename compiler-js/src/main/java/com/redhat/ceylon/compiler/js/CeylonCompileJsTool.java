@@ -10,8 +10,11 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -29,6 +32,7 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
+import com.redhat.ceylon.common.tools.SourceDependencyResolver;
 import com.redhat.ceylon.compiler.js.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -79,6 +83,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     private boolean skipSrc = false;
 
     private String encoding = DefaultToolOptions.getDefaultEncoding();
+    private String includeDependencies;
 
     private List<File> roots = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
@@ -115,6 +120,14 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
 
     public String getEncoding(){
         return encoding;
+    }
+
+    @Option
+    @OptionArgument(argumentName = "flags")
+    @Description("Determines if and how compilation of dependencies should be handled. " +
+            "Allowed flags include: `never`, `once`, `force`, `check`.")
+    public void setIncludeDependencies(String includeDependencies) {
+        this.includeDependencies = includeDependencies;
     }
 
     @Option
@@ -248,6 +261,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 .stdin(false)
                 .generateSourceArchive(!skipSrc)
                 .encoding(encoding)
+                .includeDependencies(processCompileFlags(includeDependencies))
                 .diagnosticListener(diagnosticListener)
                 .outWriter(writer)
                 .suppressWarnings(suppwarns);
@@ -320,6 +334,22 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             resolver
                 .cwd(cwd)
                 .expandAndParse(files, Backend.JavaScript);
+            
+            if (includeDependencies != null && !COMPILE_NEVER.equals(includeDependencies)) {
+                // Determine any dependencies that might need compiling as well
+                SourceDependencyResolver sdr = new SourceDependencyResolver(roots, Backends.JS);
+                if (sdr.cwd(cwd).traverseDependencies(resolver.getSourceFiles())) {
+                    for (ModuleVersionDetails mvd : sdr.getAdditionalModules()) {
+                        if (COMPILE_FORCE.equals(includeDependencies)
+                                || (COMPILE_CHECK.equals(includeDependencies) && shouldRecompile(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, true))
+                                || (COMPILE_ONCE.equals(includeDependencies) && shouldRecompile(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, false))) {
+                            files.add(mvd.getModule());
+                            resolver.expandAndParse(files, Backend.JavaScript);
+                        }
+                    }
+                }
+            }
+            
             onlySources = resolver.getSourceFiles();
             onlyResources = resolver.getResourceFiles();
             

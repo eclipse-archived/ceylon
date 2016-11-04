@@ -34,6 +34,7 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
 import com.redhat.ceylon.common.ModuleDescriptorReader.NoSuchModuleException;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 
 /**
  * This class takes a list of source files and determines which modules
@@ -44,6 +45,7 @@ import com.redhat.ceylon.common.ModuleUtil;
  */
 public class SourceDependencyResolver {
     private final Iterable<File> sourceDirs;
+    private Backends forBackends = Backends.ANY;
     
     private File cwd;
 
@@ -51,8 +53,9 @@ public class SourceDependencyResolver {
     private Set<ModuleVersionDetails> allModules;
     private Set<ModuleVersionDetails> additionalModules;
     
-    public SourceDependencyResolver(Iterable<File> sourceDirs) {
+    public SourceDependencyResolver(Iterable<File> sourceDirs, Backends forBackends) {
         this.sourceDirs = sourceDirs;
+        this.forBackends = forBackends;
     }
     
     /**
@@ -130,7 +133,8 @@ public class SourceDependencyResolver {
         for (ModuleDependencyInfo dep : mvd.getDependencies()) {
             if (dep.getNamespace() == null
                     && !modules.contains(dep)
-                    && hasSources(dep.getName())) {
+                    && hasSources(dep.getName())
+                    && ModelUtil.isForBackend(dep.getNativeBackends(), forBackends)) {
                 collectModulesFromDependencies(modules, dep.getName());
             }
         }
