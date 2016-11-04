@@ -108,7 +108,6 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
         for (ModuleSpec module : modules) {
             String moduleName = module.getName();
             String version = checkModuleVersionsOrShowSuggestions(
-                    getRepositoryManager(),
                     moduleName,
                     module.isVersioned() ? module.getVersion() : null,
                     ModuleQuery.Type.JVM,

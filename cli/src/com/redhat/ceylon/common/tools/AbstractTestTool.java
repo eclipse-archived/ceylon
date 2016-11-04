@@ -117,7 +117,6 @@ public abstract class AbstractTestTool extends RepoUsingTool {
         String moduleVersion = ModuleUtil.moduleVersion(moduleNameOptVersion);
 
         moduleVersion = checkModuleVersionsOrShowSuggestions(
-                getRepositoryManager(),
                 moduleName,
                 moduleVersion,
                 type,

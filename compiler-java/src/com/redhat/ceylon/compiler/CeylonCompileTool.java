@@ -703,8 +703,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             if (sdr.cwd(cwd).traverseDependencies(sar.getSourceFiles())) {
                 for (ModuleVersionDetails mvd : sdr.getAdditionalModules()) {
                     if (COMPILE_FORCE.equals(includeDependencies)
-                            || (COMPILE_CHECK.equals(includeDependencies) && shouldRecompile(getRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, true))
-                            || (COMPILE_ONCE.equals(includeDependencies) && shouldRecompile(getRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, false))) {
+                            || (COMPILE_CHECK.equals(includeDependencies) && shouldRecompile(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, true))
+                            || (COMPILE_ONCE.equals(includeDependencies) && shouldRecompile(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, false))) {
                         expandedModulesOrFiles.add(mvd.getModule());
                     }
                 }

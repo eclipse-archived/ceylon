@@ -65,6 +65,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected boolean offline;
     
     private RepositoryManager rm;
+    private RepositoryManager rmoffline;
     private Logger log;
     
     private Appendable out = System.out;
@@ -238,6 +239,18 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return rm;
     }
     
+    protected synchronized RepositoryManager getOfflineRepositoryManager() {
+        if (offline) {
+            return getRepositoryManager();
+        }
+        if (rmoffline == null) {
+            CeylonUtils.CeylonRepoManagerBuilder rmb = createRepositoryManagerBuilder();
+            rmb.offline(true);
+            rmoffline = rmb.buildManager();   
+        }
+        return rmoffline;
+    }
+    
     protected ModuleVersionQuery getModuleVersionQuery(String name, String version, ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
@@ -277,11 +290,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return versionMap.values();
     }
 
-    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, 
+    protected String checkModuleVersionsOrShowSuggestions(String name, String version, 
     		ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) throws IOException {
-        return checkModuleVersionsOrShowSuggestions(repoMgr, name, version, type, 
+        return checkModuleVersionsOrShowSuggestions(name, version, type, 
         		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor, COMPILE_NEVER);
     }
     
@@ -290,11 +303,12 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected static final String COMPILE_CHECK = "check";
     protected static final String COMPILE_FORCE = "force";
     
-    protected String checkModuleVersionsOrShowSuggestions(RepositoryManager repoMgr, String name, String version, 
+    protected String checkModuleVersionsOrShowSuggestions(String name, String version, 
     		ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor, 
     		String compileFlags) throws IOException {
+        RepositoryManager repoMgr = getRepositoryManager();
         if (compileFlags == null || compileFlags.isEmpty() || !compilationPossible()) {
             compileFlags = COMPILE_NEVER;
         }
@@ -327,7 +341,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         // finding a single compiled version in the output repo is a lot cheaper than query everything so let's
         // try that first
         if (version == null && !ModuleUtil.isDefaultModule(name) && versions == null) {
-            versions = findCompiledVersions(repoMgr, name, type, 
+            versions = findCompiledVersions(getOfflineRepositoryManager(), name, type, 
             		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
             if (versions != null && versions.size() == 1) {
                 ModuleVersionDetails compiledVersion = versions.iterator().next();
@@ -369,8 +383,14 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         
         // find versions unless we have one in sources waiting to be compiled
         if (versions == null) {
-            versions = getModuleVersions(repoMgr, name, version, false, type, 
+            // First see which versions we have available locally
+            versions = getModuleVersions(getOfflineRepositoryManager(), name, version, false, type, 
             		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+            if (versions.isEmpty() && !offline) {
+                // No local versions and we're not offline, so let's try again online
+                versions = getModuleVersions(repoMgr, name, version, false, type, 
+                        jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+            }
             if (version != null && !versions.isEmpty()) {
                 // We have one or more matching versions, let's see if one is exactly the same
                 // while not having any partial matches
@@ -391,7 +411,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         
         if (version != null && (versions.isEmpty() || exactSingleMatch(versions, version))) {
             // Here we either have a single version or none
-            if (versions.isEmpty() || forceCompilation || (checkCompilation && shouldRecompile(repoMgr, name, version, type, true))) {
+            if (versions.isEmpty() || forceCompilation || (checkCompilation && shouldRecompile(getOfflineRepositoryManager(), name, version, type, true))) {
                 if (allowCompilation) {
                     if (srcVersion != null) {
                         if (version.equals(srcVersion.getVersion())) {
@@ -409,9 +429,14 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 }
                 if (versions.isEmpty()) {
                     // Maybe the user specified the wrong version?
-                    // Let's see if we can find any and suggest them
-                    versions = getModuleVersions(repoMgr, name, null, false, type, 
+                    // Let's see if we can find any locally and suggest them
+                    versions = getModuleVersions(getOfflineRepositoryManager(), name, null, false, type,
                     		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+                    if (versions.isEmpty() && !offline) {
+                        // No local versions and we're not offline, so let's try again online
+                        versions = getModuleVersions(repoMgr, name, null, false, type,
+                                jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+                    }
                     suggested = true;
                 }
             }
@@ -428,7 +453,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     // There seems to be source code
                     // Let's see if we can compile it...
                     String srcver = srcVersion.getVersion();
-                    if (!checkCompilation || shouldRecompile(repoMgr, name, srcver, type, true)) {
+                    if (!checkCompilation || shouldRecompile(getOfflineRepositoryManager(), name, srcver, type, true)) {
                         if (!runCompiler(repoMgr, name, type)) {
                             throw new ToolUsageError(Messages.msg(bundle, "compilation.failed"));
                         }

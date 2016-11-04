@@ -64,7 +64,6 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
     
 	protected String moduleVersion(String moduleNameOptVersion) throws IOException {
 		return checkModuleVersionsOrShowSuggestions(
-				getRepositoryManager(),
 				ModuleUtil.moduleName(moduleNameOptVersion),
 				ModuleUtil.moduleVersion(moduleNameOptVersion),
 				ModuleQuery.Type.JVM,

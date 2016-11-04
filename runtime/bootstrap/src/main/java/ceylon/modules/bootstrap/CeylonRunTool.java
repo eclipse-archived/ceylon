@@ -212,7 +212,6 @@ public class CeylonRunTool extends RepoUsingTool {
         
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(
-                getRepositoryManager(),
                 module,
                 ModuleUtil.moduleVersion(moduleNameOptVersion),
                 ModuleQuery.Type.JVM,

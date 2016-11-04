@@ -190,7 +190,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         artifacts.toArray(artifactsArray);
         for (ModuleSpec module : modules) {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
-                String version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, 
+                String version = checkModuleVersionsOrShowSuggestions(module.getName(), null, 
                 		ModuleQuery.Type.ALL, null, null, null, null);
                 module = new ModuleSpec(module.getName(), version);
             }

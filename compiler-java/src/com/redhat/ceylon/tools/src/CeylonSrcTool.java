@@ -113,7 +113,7 @@ public class CeylonSrcTool extends RepoUsingTool {
         // First check if all the arguments point to source archives
         for (ModuleSpec module : modules) {
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
-                if (checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, 
+                if (checkModuleVersionsOrShowSuggestions(module.getName(), null, 
                 		ModuleQuery.Type.SRC, null, null, null, null) == null) {
                     return;
                 }
@@ -123,7 +123,7 @@ public class CeylonSrcTool extends RepoUsingTool {
         for (ModuleSpec module : modules) {
             String version = module.getVersion();
             if (module != ModuleSpec.DEFAULT_MODULE && !module.isVersioned()) {
-                version = checkModuleVersionsOrShowSuggestions(getRepositoryManager(), module.getName(), null, 
+                version = checkModuleVersionsOrShowSuggestions(module.getName(), null, 
                 		ModuleQuery.Type.SRC, null, null, null, null);
             }
             msg("retrieving.module", module).newline();
