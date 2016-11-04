@@ -303,6 +303,26 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected static final String COMPILE_CHECK = "check";
     protected static final String COMPILE_FORCE = "force";
     
+    protected String processCompileFlags(String compileFlags) {
+        if (compileFlags == null) {
+            compileFlags = DefaultToolOptions.getTestToolCompileFlags();
+            if (compileFlags.isEmpty() || !validCompileFlags(compileFlags)) {
+                compileFlags = COMPILE_NEVER;
+            }
+        } else if (compileFlags.isEmpty()) {
+            compileFlags = COMPILE_CHECK;
+        } else if (!validCompileFlags(compileFlags)) { 
+            throw new IllegalArgumentException("Invalid compile flag '" + compileFlags + "', should be one of: once, check, force, never");
+        }
+        
+        return compileFlags;
+    }
+    
+    private boolean validCompileFlags(String compileFlags) {
+        return (COMPILE_NEVER.equals(compileFlags) || COMPILE_ONCE.equals(compileFlags)
+                || COMPILE_CHECK.equals(compileFlags) || COMPILE_FORCE.equals(compileFlags));
+    }
+
     protected String checkModuleVersionsOrShowSuggestions(String name, String version, 
     		ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,

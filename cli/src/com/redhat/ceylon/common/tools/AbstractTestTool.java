@@ -10,19 +10,17 @@ import java.util.ResourceBundle;
 
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
+import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Rest;
 import com.redhat.ceylon.common.tool.ToolUsageError;
-import com.redhat.ceylon.common.tools.CeylonTool;
 
 public abstract class AbstractTestTool extends RepoUsingTool {
     
@@ -161,17 +159,6 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     protected void processArgumentList(List<String> args) {
         if (argumentList != null) {
             args.addAll(argumentList);
-        }
-    }
-
-    protected void processCompileFlags() {
-        if (compileFlags == null) {
-            compileFlags = DefaultToolOptions.getTestToolCompileFlags();
-            if (compileFlags.isEmpty()) {
-                compileFlags = COMPILE_NEVER;
-            }
-        } else if (compileFlags.isEmpty()) {
-            compileFlags = COMPILE_CHECK;
         }
     }
 

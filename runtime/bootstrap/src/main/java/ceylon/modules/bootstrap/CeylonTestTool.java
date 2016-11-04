@@ -13,6 +13,7 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.AbstractTestTool;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 @Summary("Executes tests on the JVM")
 @Description(
@@ -40,6 +41,8 @@ public class CeylonTestTool extends AbstractTestTool {
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean linkWithCurrentDistribution;
 
+    private CeylonRunTool ceylonRunTool;
+    
     public CeylonTestTool() {
         super(CeylonMessages.RESOURCE_BUNDLE, ModuleQuery.Type.JVM, 
         		Versions.JVM_BINARY_MAJOR_VERSION, Versions.JVM_BINARY_MINOR_VERSION, 
@@ -71,9 +74,10 @@ public class CeylonTestTool extends AbstractTestTool {
     public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
         this.autoExportMavenDependencies = autoExportMavenDependencies;
     }
-
     @Override
-    public void run() throws Exception {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
+        
         List<String> args = new ArrayList<String>();
         List<String> moduleAndVersionList = new ArrayList<String>();
 
@@ -81,14 +85,14 @@ public class CeylonTestTool extends AbstractTestTool {
         processTestList(args);
         processTagList(args);
         processArgumentList(args);
-        processCompileFlags();
+        compileFlags = processCompileFlags(compileFlags);
         processTapOption(args);
         processReportOption(args);
         processColors(args);
         
         resolveVersion(moduleAndVersionList);
 
-        CeylonRunTool ceylonRunTool = new CeylonRunTool();
+        ceylonRunTool = new CeylonRunTool();
         ceylonRunTool.setModule(TEST_MODULE_NAME + "/" + version);
         ceylonRunTool.setRun(TEST_RUN_FUNCTION);
         ceylonRunTool.setArgs(args);
@@ -112,12 +116,15 @@ public class CeylonTestTool extends AbstractTestTool {
                 ceylonRunTool.addExtraModule(moduleName, moduleVersion);
             }
         }
-        
-        try{
+    }
+
+    @Override
+    public void run() throws Exception {
+        try {
             ceylonRunTool.run();
-        }catch(Throwable x){
+        } catch(Throwable x) {
             // Get around class loader issues where we can't compare the class statically
-            if(x.getClass().getCanonicalName().equals("ceylon.test.engine.internal.TestFailureException")) {
+            if (x.getClass().getCanonicalName().equals("ceylon.test.engine.internal.TestFailureException")) {
                 throw new CeylonTestFailureError();
             }
             throw x;

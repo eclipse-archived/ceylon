@@ -16,6 +16,7 @@ import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.AbstractTestTool;
+import com.redhat.ceylon.common.tools.CeylonTool;
 
 @Summary("Executes tests on Node.js")
 @Description(
@@ -42,6 +43,8 @@ public class CeylonTestJsTool extends AbstractTestTool {
     private String nodeExe;
     private boolean debug = true;
 
+    private CeylonRunJsTool ceylonRunJsTool;
+    
     public CeylonTestJsTool() {
         super(CeylonRunJsMessages.RESOURCE_BUNDLE, 
         		ModuleQuery.Type.JS,
@@ -63,7 +66,9 @@ public class CeylonTestJsTool extends AbstractTestTool {
     }
 
     @Override
-    public void run() throws Exception {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
+        
         final List<String> args = new ArrayList<String>();
         final List<String> moduleAndVersionList = new ArrayList<String>();
 
@@ -71,14 +76,14 @@ public class CeylonTestJsTool extends AbstractTestTool {
         processTestList(args);
         processTagList(args);
         processArgumentList(args);
-        processCompileFlags();
+        compileFlags = processCompileFlags(compileFlags);
         processTapOption(args);
         processReportOption(args);
         processColors(args);
         
         resolveVersion(moduleAndVersionList);
 
-        CeylonRunJsTool ceylonRunJsTool = new CeylonRunJsTool() {
+        ceylonRunJsTool = new CeylonRunJsTool() {
             @Override
             protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman, Set<String> loadedDependencies) throws IOException {
                 for (String moduleAndVersion : moduleAndVersionList) {
@@ -104,6 +109,10 @@ public class CeylonTestJsTool extends AbstractTestTool {
         ceylonRunJsTool.setDebug(debug);
         ceylonRunJsTool.setCompile(compileFlags);
         ceylonRunJsTool.setCwd(cwd);
+    }
+
+    @Override
+    public void run() throws Exception {
         ceylonRunJsTool.run();
     }
 

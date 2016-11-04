@@ -472,14 +472,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         helper.options.clear();
         Options.instance(new Context());
         
-        if (includeDependencies == null) {
-            includeDependencies = DefaultToolOptions.getCompilerIncludeDependencies();
-            if (includeDependencies.isEmpty()) {
-                includeDependencies = COMPILE_NEVER;
-            }
-        } else if (includeDependencies.isEmpty()) {
-            includeDependencies = COMPILE_CHECK;
-        }
+        includeDependencies = processCompileFlags(includeDependencies);
         
         if (modulesOrFiles.isEmpty() &&
                 !javac.contains("-help") &&
