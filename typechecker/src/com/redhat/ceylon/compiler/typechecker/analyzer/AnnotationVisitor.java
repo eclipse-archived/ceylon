@@ -1034,8 +1034,16 @@ public class AnnotationVisitor extends Visitor {
                                 (Tree.AttributeDeclaration) that;
                         Tree.SpecifierOrInitializerExpression se = 
                                 ad.getSpecifierOrInitializerExpression();
-                        if (se!=null) {
-                            Value model = ad.getDeclarationModel();
+                        Value model = ad.getDeclarationModel();
+                        boolean parameter = 
+                                model.isParameter();
+                        if (se==null) {
+                            if (target.contains(PARAMETER) &&
+                                    parameter) {
+                                ok = true;
+                            }
+                        }
+                        else {
                             if (se instanceof Tree.LazySpecifierExpression 
                                     || model.isFormal()) {
                                 if (target.contains(METHOD)) {
@@ -1050,8 +1058,6 @@ public class AnnotationVisitor extends Visitor {
                                 //getter or setter!
                                 boolean classMember = 
                                         model.isClassMember();
-                                boolean parameter = 
-                                        model.isParameter();
                                 boolean local = 
                                         !model.isClassOrInterfaceMember() &&
                                         !model.isToplevel();
