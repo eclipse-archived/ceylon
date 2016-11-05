@@ -11,6 +11,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
@@ -76,7 +77,7 @@ public class CeylonTestJsTool extends AbstractTestTool {
         processTestList(args);
         processTagList(args);
         processArgumentList(args);
-        compileFlags = processCompileFlags(compileFlags);
+        compileFlags = processCompileFlags(compileFlags, DefaultToolOptions.getTestToolCompileFlags());
         processTapOption(args);
         processReportOption(args);
         processColors(args);

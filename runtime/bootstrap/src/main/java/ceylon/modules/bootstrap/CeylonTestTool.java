@@ -85,7 +85,7 @@ public class CeylonTestTool extends AbstractTestTool {
         processTestList(args);
         processTagList(args);
         processArgumentList(args);
-        compileFlags = processCompileFlags(compileFlags);
+        compileFlags = processCompileFlags(compileFlags, DefaultToolOptions.getTestToolCompileFlags());
         processTapOption(args);
         processReportOption(args);
         processColors(args);

@@ -261,7 +261,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 .stdin(false)
                 .generateSourceArchive(!skipSrc)
                 .encoding(encoding)
-                .includeDependencies(processCompileFlags(includeDependencies))
+                .includeDependencies(processCompileFlags(includeDependencies, DefaultToolOptions.getCompilerIncludeDependencies()))
                 .diagnosticListener(diagnosticListener)
                 .outWriter(writer)
                 .suppressWarnings(suppwarns);

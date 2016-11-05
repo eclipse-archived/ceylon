@@ -201,14 +201,7 @@ public class CeylonRunTool extends RepoUsingTool {
 
     @Override
     public void run() throws IOException {
-        if (compileFlags == null) {
-            compileFlags = DefaultToolOptions.getRunToolCompileFlags();
-            if (compileFlags.isEmpty()) {
-                compileFlags = COMPILE_NEVER;
-            }
-        } else if (compileFlags.isEmpty()) {
-            compileFlags = COMPILE_CHECK;
-        }
+        compileFlags = processCompileFlags(compileFlags, DefaultToolOptions.getRunToolCompileFlags());
         
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(

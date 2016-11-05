@@ -303,9 +303,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected static final String COMPILE_CHECK = "check";
     protected static final String COMPILE_FORCE = "force";
     
-    protected String processCompileFlags(String compileFlags) {
+    protected String processCompileFlags(String compileFlags, String configFlags) {
         if (compileFlags == null) {
-            compileFlags = DefaultToolOptions.getTestToolCompileFlags();
+            compileFlags = configFlags;
             if (compileFlags.isEmpty() || !validCompileFlags(compileFlags)) {
                 compileFlags = COMPILE_NEVER;
             }

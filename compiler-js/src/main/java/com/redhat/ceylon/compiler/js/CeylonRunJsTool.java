@@ -433,14 +433,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
             modname = ModuleUtil.moduleName(module);
         }
 
-        if (compileFlags == null) {
-            compileFlags = DefaultToolOptions.getRunToolCompileFlags();
-            if (compileFlags.isEmpty()) {
-                compileFlags = COMPILE_NEVER;
-            }
-        } else if (compileFlags.isEmpty()) {
-            compileFlags = COMPILE_CHECK;
-        }
+        compileFlags = processCompileFlags(compileFlags, DefaultToolOptions.getRunToolCompileFlags());
         
         version = checkModuleVersionsOrShowSuggestions(
                 modname, version, ModuleQuery.Type.JS,

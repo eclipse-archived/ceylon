@@ -35,7 +35,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_SUPPRESSWARNING = "compiler.suppresswarning";
     public final static String COMPILER_PROGRESS = "compiler.progress";
     public final static String COMPILER_MODULES = "compiler.module";
-    public final static String COMPILER_INCLUDE_DEPENDENCIES = "compiler.compiledependencies";
+    public final static String COMPILER_INCLUDE_DEPENDENCIES = "compiler.includedependencies";
     // JVM-only, needing backward compatibility (only for pre-1.3.0 options)
     public final static String COMPILER_NOOSGI = "compiler.jvm.noosgi";
     public final static String COMPILER_OSGIPROVIDEDBUNDLES = "compiler.jvm.osgiprovidedbundles";
