@@ -40,6 +40,8 @@ import com.redhat.ceylon.model.cmr.ArtifactResult;
         "The `module` may optionally include a version."
 )
 @RemainingSections(
+        RepoUsingTool.DOCSECTION_COMPILE_FLAGS +
+        "\n\n" +
         "## Configuration file" +
         "\n\n" +
         "The run-js tool accepts the following option from the Ceylon configuration file: " +

@@ -57,17 +57,7 @@ import ceylon.modules.bootstrap.loader.InitialModuleLoader;
                 "The `module` may optionally include a version."
 )
 @RemainingSections(
-        "## Compile flags" +
-        "\n\n" +
-        "The `--compile` option can take the following flags: " +
-        "\n\n" +
-        " - **never** - Never perform any compilation\n" +
-        " - **once** - Only compile when the compiled module is not available\n" +
-        " - **check** - Compile when the sources are newer than the compiled module\n" +
-        " - **force** - Always compile" +
-        "\n\n" +
-        "If the `--compile` flag is given without an argument it's the same as specifying `check`. " +
-        "If no flag is given at all it's the same as specifying `never`.\n" +
+        RepoUsingTool.DOCSECTION_COMPILE_FLAGS +
         "\n\n" +
         "## Configuration file" +
         "\n\n" +

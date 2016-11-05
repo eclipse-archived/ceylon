@@ -14,12 +14,15 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.AbstractTestTool;
 import com.redhat.ceylon.common.tools.CeylonTool;
+import com.redhat.ceylon.common.tools.RepoUsingTool;
 
 @Summary("Executes tests on the JVM")
 @Description(
         "Executes tests in specified `<modules>`. " +
         "The `<modules>` arguments are the names of the modules to test with an optional version.")
 @RemainingSections(
+        RepoUsingTool.DOCSECTION_COMPILE_FLAGS +
+        "\n\n" +
         "## Configuration file" +
         "\n\n" +
         "The test tool accepts the following option from the Ceylon configuration file: " +

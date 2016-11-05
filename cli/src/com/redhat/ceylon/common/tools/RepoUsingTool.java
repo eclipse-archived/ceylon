@@ -76,6 +76,26 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     private static final List<String> EMPTY_STRINGS = new ArrayList<String>(0);
     private static final List<URI> EMPTY_URIS = new ArrayList<URI>(0);
     
+    private static final String DOCSECTION_FLAGS = " - **never** - Never perform any compilation\n" +
+            " - **once** - Only compile when the compiled module is not available\n" +
+            " - **check** - Compile when the sources are newer than the compiled module\n" +
+            " - **force** - Always compile" +
+            "\n\n" +
+            "If the flag is given without an argument it's the same as specifying `check`. " +
+            "If no flag is given at all it's the same as specifying `never`.\n";
+
+    public static final String DOCSECTION_COMPILE_FLAGS = "## Compile flags" +
+            "\n\n" +
+            "The `--compile` option can take the following flags: " +
+            "\n\n" +
+            DOCSECTION_FLAGS;
+
+    public static final String DOCSECTION_INCLUDE_DEPS = "## Compiling dependencies" +
+            "\n\n" +
+            "The `--include-dependencies` option can take the following flags: " +
+            "\n\n" +
+            DOCSECTION_FLAGS;
+
     public static class TimeoutParser implements ArgumentParser<Integer> {
         @Override
         public Integer parse(String argument, Tool tool) {

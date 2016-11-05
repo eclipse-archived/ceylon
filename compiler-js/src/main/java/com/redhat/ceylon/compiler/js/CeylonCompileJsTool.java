@@ -31,6 +31,7 @@ import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
+import com.redhat.ceylon.common.tools.RepoUsingTool;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.common.tools.SourceDependencyResolver;
 import com.redhat.ceylon.compiler.js.loader.JsModuleManagerFactory;
@@ -44,6 +45,8 @@ import com.redhat.ceylon.model.typechecker.context.TypeCache;
 @Summary("Compiles Ceylon source code to JavaScript and directly produces " +
         "module and source archives in a module repository")
 @RemainingSections(
+        RepoUsingTool.DOCSECTION_INCLUDE_DEPS +
+        "\n\n" +
         OutputRepoUsingTool.DOCSECTION_CONFIG_COMPILER +
         "\n\n" +
         OutputRepoUsingTool.DOCSECTION_REPOSITORIES)

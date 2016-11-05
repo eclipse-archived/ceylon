@@ -54,6 +54,7 @@ import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
+import com.redhat.ceylon.common.tools.RepoUsingTool;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.common.tools.SourceDependencyResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
@@ -103,6 +104,8 @@ import com.redhat.ceylon.langtools.tools.javac.util.Options;
         "* source archives in the specified repositories, and\n"+
         "* module directories in the specified source directories.\n")
 @RemainingSections(
+        RepoUsingTool.DOCSECTION_INCLUDE_DEPS +
+        "\n\n" +
         OutputRepoUsingTool.DOCSECTION_CONFIG_COMPILER +
         "\n\n" +
         OutputRepoUsingTool.DOCSECTION_REPOSITORIES +
