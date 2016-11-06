@@ -81,6 +81,7 @@ import java.util.Set;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
+import com.redhat.ceylon.compiler.typechecker.tree.ErrorCode;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -7885,7 +7886,7 @@ public class ExpressionVisitor extends Visitor {
                         + member.getName(unit) 
                         + "' is a static member of '"
                         + pt.getSupertype(outer).asString(unit)
-                        + "'");
+                        + "'", 14000);
             }
         }
     }
