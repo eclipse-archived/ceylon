@@ -220,11 +220,15 @@ public class ImportVisitor extends Visitor {
                     //in the current package without providing an
                     //alias:
                     !isLegalAliasFreeImport(d, idec)) {
+                String qn = d.getQualifiedNameString();
                 if (alias==null) {
-                    id.addError("toplevel declaration with this name declared in this unit: '" + n + "'");
+                    String iqn = idec.getQualifiedNameString();
+                    id.addError("toplevel declaration with this name declared in this unit: imported '" 
+                            + iqn + "' would hide '" + qn + "' (add an alias to the import)");
                 }
                 else {
-                    alias.addError("toplevel declaration with this name declared in this unit: '" + n + "'");
+                    alias.addError("toplevel declaration with this name declared in this unit: imported '" 
+                            + n + "' would hide '" + qn + "' (choose a different alias for the import)");
                 }
                 return true;
             }
@@ -286,12 +290,12 @@ public class ImportVisitor extends Visitor {
             if (d instanceof TypeDeclaration &&
                     tt!=CeylonLexer.UIDENTIFIER) {
                 id.addError("imported type should have uppercase alias: '" +
-                        d.getName() + "'");
+                        d.getName() + "' is a type declaration");
             }
             else if (d instanceof TypedDeclaration &&
                     tt!=CeylonLexer.LIDENTIFIER) {
                 id.addError("imported member should have lowercase alias: '" +
-                        d.getName() + "'");
+                        d.getName() + "' is not a type declaration");
             }
         }
     }
