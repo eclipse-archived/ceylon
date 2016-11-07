@@ -29,6 +29,7 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportPath;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
@@ -1465,7 +1466,7 @@ public class AnalyzerUtil {
         return type;
     }
 
-    static Package importedPackage(Tree.ImportPath path, Unit unit) {
+    static List<Package> importedPackages(Tree.ImportPath path, Unit unit) {
         if (path!=null && 
                 !path.getIdentifiers().isEmpty()) {
             String nameToImport = 
@@ -1474,37 +1475,15 @@ public class AnalyzerUtil {
                     path.getUnit()
                         .getPackage()
                         .getModule();
-            Package pkg = module.getPackage(nameToImport);
-            if (pkg != null) {
-                Module pkgMod = pkg.getModule();
-                if (pkgMod.equals(module)) {
-                    return pkg;
+            List<Package> pkgs = module.getPackages(nameToImport);
+            List<Package> ret = new ArrayList<Package>();
+            if (!pkgs.isEmpty()) {
+                for(Package pkg : pkgs){
+                    if(checkPackage(module, pkg, path))
+                        ret.add(pkg);
                 }
-                if (!pkg.isShared()) {
-                    path.addError("imported package is not shared: '" + 
-                            nameToImport + "' is not annotated 'shared' in '" +
-                            pkgMod.getNameAsString() + "'", 402);
-                }
-//                if (module.isDefault() && 
-//                        !pkg.getModule().isDefault() &&
-//                        !pkg.getModule().getNameAsString()
-//                            .equals(Module.LANGUAGE_MODULE_NAME)) {
-//                    path.addError("package belongs to a module and may not be imported by default module: " +
-//                            nameToImport);
-//                }
-                //check that the package really does belong to
-                //an imported module, to work around bug where
-                //default package thinks it can see stuff in
-                //all modules in the same source dir
-                Set<Module> visited = new HashSet<Module>();
-                for (ModuleImport mi: module.getImports()) {
-                    if (findModuleInTransitiveImports(
-                            mi.getModule(), 
-                            pkgMod, 
-                            visited)) {
-                        return pkg; 
-                    }
-                }
+                if(!ret.isEmpty())
+                    return ret;
             }
             else {
                 for (ModuleImport mi: module.getImports()) {
@@ -1517,13 +1496,13 @@ public class AnalyzerUtil {
                                               .getSupportedBackends()) &&
                                 (nameToImport.equals(name) ||
                                  nameToImport.startsWith(name + "."))) {
-                            return null;
+                            return Collections.emptyList();
                         }
                         if (!isForBackend(Backend.Java.asSet(), 
                                           path.getUnit()
                                               .getSupportedBackends()) &&
                                 unit.isJdkPackage(nameToImport)) {
-                            return null;
+                            return Collections.emptyList();
                         }
                     }
                 }
@@ -1535,9 +1514,42 @@ public class AnalyzerUtil {
             path.addError("package not found in imported modules: '" + 
                     nameToImport + "'" + help, 7000);
         }
-        return null;
+        return Collections.emptyList();
     }
     
+    private static boolean checkPackage(Module currentModule, Package pkg, ImportPath path) {
+        Module pkgMod = pkg.getModule();
+        if (pkgMod.equals(currentModule)) {
+            return true;
+        }
+        if (!pkg.isShared()) {
+            path.addError("imported package is not shared: '" + 
+                    pkg.getNameAsString() + "' is not annotated 'shared' in '" +
+                    pkgMod.getNameAsString() + "'", 402);
+        }
+//        if (module.isDefault() && 
+//                !pkg.getModule().isDefault() &&
+//                !pkg.getModule().getNameAsString()
+//                    .equals(Module.LANGUAGE_MODULE_NAME)) {
+//            path.addError("package belongs to a module and may not be imported by default module: " +
+//                    nameToImport);
+//        }
+        //check that the package really does belong to
+        //an imported module, to work around bug where
+        //default package thinks it can see stuff in
+        //all modules in the same source dir
+        Set<Module> visited = new HashSet<Module>();
+        for (ModuleImport mi: currentModule.getImports()) {
+            if (findModuleInTransitiveImports(
+                    mi.getModule(), 
+                    pkgMod, 
+                    visited)) {
+                return true; 
+            }
+        }
+        return false;
+    }
+
     static Module importedModule(Tree.ImportPath path) {
         if (path!=null && 
                 !path.getIdentifiers().isEmpty()) {

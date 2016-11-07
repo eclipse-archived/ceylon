@@ -352,7 +352,20 @@ public class Module
         }
         return null;
     }
-    
+
+    public List<Package> getPackages(String name) {
+        List<Package> ret = new ArrayList<Package>();
+        Package pkg = getDirectPackage(name);
+        if(pkg != null)
+            ret.add(pkg);
+        for (ModuleImport mi: imports) {
+            pkg = mi.getModule().getDirectPackage(name);
+            if(pkg != null)
+                ret.add(pkg);
+        }
+        return ret;
+    }
+
     public Package getRootPackage() {
         return getPackage(getNameAsString());
     }

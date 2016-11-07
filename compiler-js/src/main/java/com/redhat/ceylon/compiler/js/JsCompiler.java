@@ -254,19 +254,23 @@ public class JsCompiler {
             final Visitor importVisitor = new Visitor() {
                 private final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION + ".";
                 public void visit(Tree.Import that) {
-                    ImportableScope scope =
-                            that.getImportMemberOrTypeList().getImportList().getImportedScope();
+                    List<? extends ImportableScope> scopes =
+                            that.getImportMemberOrTypeList().getImportList().getImportedScopes();
                     Module _m = that.getUnit().getPackage().getModule();
-                    if (scope instanceof Package) {
-                        Package pkg = (Package)scope;
-                        Module om = pkg.getModule();
-                        if (!om.equals(_m) && (!om.isNative() ||
-                                om.getNativeBackends().supports(Backend.JavaScript))) {
-                            Module impmod = ((Package) scope).getModule();
-                            if (impmod instanceof NpmAware && ((NpmAware)impmod).getNpmPath() != null) {
-                                output.get(_m).requireFromNpm(impmod, names);
-                            } else {
-                                output.get(_m).require(impmod, names);
+                    for (ImportableScope scope : scopes) {
+                        if (scope instanceof Package) {
+                            Package pkg = (Package)scope;
+                            Module om = pkg.getModule();
+                            if (!om.equals(_m) && (!om.isNative() ||
+                                    om.getNativeBackends().supports(Backend.JavaScript))) {
+                                Module impmod = ((Package) scope).getModule();
+                                if (impmod instanceof NpmAware && ((NpmAware)impmod).getNpmPath() != null) {
+                                    output.get(_m).requireFromNpm(impmod, names);
+                                } else {
+                                    output.get(_m).require(impmod, names);
+                                }
+                                // JS does not have split packages: if we found it, make sure we don't find another
+                                break;
                             }
                         }
                     }

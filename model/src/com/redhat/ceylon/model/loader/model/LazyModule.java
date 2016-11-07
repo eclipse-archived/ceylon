@@ -2,6 +2,7 @@ package com.redhat.ceylon.model.loader.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -89,6 +90,51 @@ public abstract class LazyModule extends Module {
         return pkg;
     }
 
+    @Override
+    public List<Package> getPackages(String name) {
+        List<Package> ret = new ArrayList<>();
+        // try here first
+        
+        // unless we're the default module, in which case we have to check this at the end,
+        // since every package can be part of the default module
+        boolean defaultModule = isDefaultModule();
+        if(!defaultModule){
+            Package pkg = findPackageInModule(this, name);
+            if(pkg != null)
+                ret.add(pkg);
+        }
+        // then try in dependencies
+        Set<Module> visited = new HashSet<Module>();
+        for(ModuleImport dependency : getImports()){
+            // we don't have to worry about the default module here since we can't depend on it
+            addPackagesFromImport(name, dependency, ret, visited);
+        }
+        AbstractModelLoader modelLoader = getModelLoader();
+        JdkProvider jdkProvider = modelLoader.getJdkProvider();
+        // The JDK uses arrays, which we pretend are in java.lang, and ByteArray needs ceylon.language.Byte,
+        // so we pretend the JDK imports the language module
+        if(jdkProvider.isJDKModule(getNameAsString())){
+            Module languageModule = getModelLoader().getLanguageModule();
+            if(languageModule instanceof LazyModule){
+                Package pkg = findPackageInModule((LazyModule) languageModule, name);
+                if(pkg != null)
+                    ret.add(pkg);
+            }
+        }
+        // never try to load java packages from the default module because it would
+        // work and appear to come from there
+        if(!ret.isEmpty() || jdkProvider.isJDKPackage(name)){
+            return ret;
+        }
+        // do the lookup of the default module last
+        if(defaultModule){
+            Package pkg = modelLoader.findExistingPackage(this, name);
+            if(pkg != null)
+                ret.add(pkg);
+        }
+        return ret;
+    }
+
     private Package findPackageInImport(String name, ModuleImport dependency, Set<Module> visited) {
         Module module = dependency.getModule();
         // only visit modules once
@@ -112,6 +158,27 @@ public abstract class LazyModule extends Module {
         }
         else
             return module.getPackage(name);
+    }
+
+    private void addPackagesFromImport(String name, ModuleImport dependency, List<Package> ret, Set<Module> visited) {
+        Module module = dependency.getModule();
+        // only visit modules once
+        if(!visited.add(module))
+            return;
+        if (module instanceof LazyModule) {
+            // this is the equivalent of getDirectPackage, it does not recurse
+            Package pkg =  findPackageInModule((LazyModule) dependency.getModule(), name);
+            if(pkg != null)
+                ret.add(pkg);
+            // not found, try in its exported dependencies
+            for(ModuleImport dep : module.getImports()){
+                if(!dep.isExport())
+                    continue;
+                addPackagesFromImport(name, dep, ret, visited);
+            }
+        }else{
+            ret.addAll(module.getPackages(name));
+        }
     }
 
     private Package findPackageInModule(final LazyModule module, final String name) {

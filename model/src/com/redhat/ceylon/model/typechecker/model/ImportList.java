@@ -2,6 +2,7 @@ package com.redhat.ceylon.model.typechecker.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import com.redhat.ceylon.common.Backends;
 public class ImportList implements Scope {
     
     private Scope container;
-    private ImportableScope importedScope;
+    private List<? extends ImportableScope> importedScopes;
     private List<Import> imports = new ArrayList<Import>();
     private Unit unit;
     
@@ -88,12 +89,16 @@ public class ImportList implements Scope {
     @Override
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit,
             String startingWith, int proximity, Cancellable canceller) {
-        if (importedScope!=null) {
-            if (unit.getPackage().equals(importedScope)) {
+        if (importedScopes!=null) {
+            if (unit.getPackage().equals(importedScopes)) {
                 return unit.getPackage().getMatchingDeclarations(unit, startingWith, proximity, canceller);
             }
             else {
-                return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity, canceller);
+                Map<String, DeclarationWithProximity> ret = new HashMap<>();
+                for (ImportableScope importedScope : importedScopes) {
+                    ret.putAll(importedScope.getImportableDeclarations(unit, startingWith, imports, proximity, canceller));
+                }
+                return ret;
             }
         }
         else {
@@ -101,12 +106,12 @@ public class ImportList implements Scope {
         }
     }
     
-    public ImportableScope getImportedScope() {
-        return importedScope;
+    public List<? extends ImportableScope> getImportedScopes() {
+        return importedScopes;
     }
     
-    public void setImportedScope(ImportableScope importedScope) {
-        this.importedScope = importedScope;
+    public void setImportedScopes(List<? extends ImportableScope> importedScopes) {
+        this.importedScopes = importedScopes;
     }
         
     public List<Import> getImports() {

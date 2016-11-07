@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importCorrectionMessage;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackage;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackages;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
@@ -91,22 +91,22 @@ public class ImportVisitor extends Visitor {
             return;
         }
         
-        Package importedPackage = 
-                importedPackage(that.getImportPath(), unit);
-        if (importedPackage!=null) {
-            that.getImportPath().setModel(importedPackage);
+        List<Package> importedPackages = 
+                importedPackages(that.getImportPath(), unit);
+        if (!importedPackages.isEmpty()) {
+            that.getImportPath().setModel(importedPackages);
             Tree.ImportMemberOrTypeList imtl = 
                     that.getImportMemberOrTypeList();
             if (imtl!=null) {
                 ImportList il = imtl.getImportList();
-                il.setImportedScope(importedPackage);
+                il.setImportedScopes(importedPackages);
                 Set<String> names = new HashSet<String>();
                 for (Tree.ImportMemberOrType member: 
                         imtl.getImportMemberOrTypes()) {
-                    names.add(importMember(member, importedPackage, il));
+                    names.add(importMember(member, importedPackages, il));
                 }
                 if (imtl.getImportWildcard()!=null) {
-                    importAllMembers(importedPackage, names, il);
+                    importAllMembers(importedPackages, names, il);
                 } 
                 else if (imtl.getImportMemberOrTypes().isEmpty()) {
                     imtl.addError("empty import list", 1020);
@@ -124,14 +124,16 @@ public class ImportVisitor extends Visitor {
                 (ImportScope) scope : unit;
     }
     
-    private void importAllMembers(Package importedPackage, 
+    private void importAllMembers(List<Package> importedPackages, 
             Set<String> ignoredMembers, ImportList il) {
-        for (Declaration dec: importedPackage.getMembers()) {
-            if (dec.isShared() && 
-                    isResolvable(dec) &&
-                    !ignoredMembers.contains(dec.getName()) &&
-                    !isNonimportable(importedPackage, dec.getName())) {
-                addWildcardImport(il, dec);
+        for(Package importedPackage : importedPackages){
+            for (Declaration dec: importedPackage.getMembers()) {
+                if (dec.isShared() && 
+                        isResolvable(dec) &&
+                        !ignoredMembers.contains(dec.getName()) &&
+                        !isNonimportable(importedPackage, dec.getName())) {
+                    addWildcardImport(il, dec);
+                }
             }
         }
     }
@@ -261,7 +263,7 @@ public class ImportVisitor extends Visitor {
                 Set<String> names = new HashSet<String>();
                 ImportList til = imtl.getImportList();
                 TypeDeclaration td = (TypeDeclaration) d;
-                til.setImportedScope(td);
+                til.setImportedScopes(Arrays.asList(td));
                 List<Tree.ImportMemberOrType> imts = 
                         imtl.getImportMemberOrTypes();
                 for (Tree.ImportMemberOrType imt: imts) {
@@ -298,7 +300,7 @@ public class ImportVisitor extends Visitor {
     }
     
     private String importMember(Tree.ImportMemberOrType member,
-            Package importedPackage, ImportList il) {
+            List<Package> importedPackages, ImportList il) {
         Tree.Identifier id = 
                 member.getIdentifier();
         if (id==null) {
@@ -314,33 +316,37 @@ public class ImportVisitor extends Visitor {
         else {
             i.setAlias(name(alias.getIdentifier()));
         }
-        if (isNonimportable(importedPackage, name)) {
-            id.addError("root type may not be imported: '" +
-                    name + "' in '" + 
-                    importedPackage.getNameAsString() + 
-                    "' is represented by '" + 
-                    name + "' in 'ceylon.language'");
-            return name;
-        }        
-        Declaration d = 
-                importedPackage.getMember(name, null, false);
-        if (d == null) {
-            String newName;
-            if (JvmBackendUtil.isInitialLowerCase(name)) {
-                newName = NamingBase.capitalize(name);
+        Declaration d = null;
+        for(Package importedPackage : importedPackages){
+            if (isNonimportable(importedPackage, name)) {
+                id.addError("root type may not be imported: '" +
+                        name + "' in '" + 
+                        importedPackage.getNameAsString() + 
+                        "' is represented by '" + 
+                        name + "' in 'ceylon.language'");
+                return name;
+            }        
+            d = importedPackage.getMember(name, null, false);
+            if (d == null) {
+                String newName;
+                if (JvmBackendUtil.isInitialLowerCase(name)) {
+                    newName = NamingBase.capitalize(name);
+                }
+                else {
+                    newName = NamingBase.getJavaBeanName(name);
+                }
+                d = importedPackage.getMember(newName, null, false);
+                // only do this for Java declarations we fudge
+                if(d != null && !d.isJava())
+                    d = null;
             }
-            else {
-                newName = NamingBase.getJavaBeanName(name);
-            }
-            d = importedPackage.getMember(newName, null, false);
-            // only do this for Java declarations we fudge
-            if(d != null && !d.isJava())
-                d = null;
+            if(d != null)
+                break;
         }
         if (d==null) {
             id.addError("imported declaration not found: '" 
                     + name + "'" 
-                    + importCorrectionMessage(name, importedPackage, 
+                    + importCorrectionMessage(name, importedPackages.get(0), 
                             unit, cancellable), 
                     100);
             unit.setUnresolvedReferences();

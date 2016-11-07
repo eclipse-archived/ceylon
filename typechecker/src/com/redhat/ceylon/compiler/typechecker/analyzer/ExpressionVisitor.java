@@ -21,7 +21,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getUnspecifiedParameter;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedModule;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackage;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackages;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
@@ -9678,11 +9678,12 @@ public class ExpressionVisitor extends Visitor {
             path = new Tree.ImportPath(null);
             that.setImportPath(path);
             pack = unit.getPackage();
+            path.setModel(Arrays.asList(pack));
         }
         else {
-            pack = importedPackage(path, unit);
+            List<Package> packages = importedPackages(path, unit);
+            path.setModel(packages);
         }
-        path.setModel(pack);
         that.setTypeModel(unit.getPackageDeclarationType());
     }
     
