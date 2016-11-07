@@ -28,6 +28,11 @@ public class EeTests extends CompilerTests {
     }
     
     @Test
+    public void testJavaCollectionBoxes() {
+        compareWithJavaSource("JavaCollectionBoxes");
+    }
+    
+    @Test
     public void testEeModeEnabling() {
         compareWithJavaSource("enabledModule/Class");
         compareWithJavaSource("enabledModuleMaven/Class");

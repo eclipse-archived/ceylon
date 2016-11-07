@@ -1,8 +1,8 @@
 @noanno
-class JavaCollectionBoxes(listString, mapString, setString) {
+class JavaCollectionBoxes(listString/*, mapString, setString*/) {
     shared variable List<String> listString;
-    shared variable Map<String,String> mapString;
-    shared variable Set<String> setString;
+    //shared variable Map<String,String> mapString;
+    //shared variable Set<String> setString;
     /*
     shared variable List<Integer>? listInteger = null;
     shared variable Map<Integer,Integer>? mapInteger = null;
