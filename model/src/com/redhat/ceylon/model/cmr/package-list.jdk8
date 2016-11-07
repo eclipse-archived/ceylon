@@ -305,3 +305,97 @@ javax.lang.model.element
 javax.lang.model.type
 javax.lang.model.util
 javax.annotation.processing
+
+=javafx.base
+# imports jdk.jfr
+# imports java.desktop
+# imports java.base
+javafx.beans
+javafx.beans.binding
+javafx.beans.property
+javafx.beans.property.adapter
+javafx.beans.value
+javafx.collections
+javafx.collections.transformation
+javafx.event
+javafx.util
+javafx.util.converter
+
+=javafx.controls
+# imports shared javafx.base
+# imports shared javafx.graphics
+# imports java.base
+javafx.scene.chart
+javafx.scene.control
+javafx.scene.control.cell
+#javafx.scene.control.skin
+
+=javafx.deploy
+# imports javafx.graphics
+# imports jdk.javaws
+# imports javafx.base
+# imports jdk.deploy
+# imports jdk.plugin
+# imports java.desktop
+# imports javafx.controls
+# imports java.base
+
+=javafx.fxml
+# imports javafx.graphics
+# imports shared javafx.base
+# imports java.scripting
+# imports java.xml
+# imports java.logging
+# imports java.base
+javafx.fxml
+
+=javafx.graphics
+# imports shared javafx.base
+# imports java.xml
+# imports java.desktop
+# imports java.base
+javafx.animation
+javafx.application
+javafx.concurrent
+javafx.css
+#javafx.css.converter
+javafx.geometry
+javafx.print
+javafx.scene
+javafx.scene.canvas
+javafx.scene.effect
+javafx.scene.image
+javafx.scene.input
+javafx.scene.layout
+javafx.scene.paint
+javafx.scene.shape
+javafx.scene.text
+javafx.scene.transform
+javafx.stage
+
+=javafx.media
+# imports shared javafx.base
+# imports shared javafx.graphics
+# imports java.base
+javafx.scene.media
+
+=javafx.swing
+# imports java.datatransfer
+# imports shared java.desktop
+# imports javafx.base
+# imports shared javafx.graphics
+# imports java.base
+javafx.embed.swing
+
+=javafx.web
+# imports shared javafx.base
+# imports shared javafx.controls
+# imports java.logging
+# imports jdk.xml.dom
+# imports shared javafx.graphics
+# imports jdk.plugin
+# imports javafx.media
+# imports java.desktop
+# imports shared java.xml
+# imports java.base
+javafx.scene.web
