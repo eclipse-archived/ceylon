@@ -526,4 +526,18 @@ public class MiscTests extends CompilerTests {
             Assert.fail("Ceylon script execution failed");
         }
     }
+
+    @Ignore
+    @Test
+    public void testIntelliJIdeCompilation(){
+        ErrorCollector c = new ErrorCollector();
+        List<String> options = Arrays.asList(
+                "-rep", "flat:../../ceylon-ide-intellij/plugin-ceylon-code/intellij-repository",
+                "-rep", "../../ceylon-ide-common/repo",
+                "-src", "../../ceylon-ide-intellij/plugin-ceylon-code/source",
+                "-src", "../../ceylon-ide-intellij/plugin-ceylon-code/src",
+                "-src", "../../ceylon-ide-intellij/plugin-ceylon-code/gen",
+                "-overrides", "../../ceylon-ide-intellij/plugin-ceylon-code/overrides.xml");
+        assertCompilesOk(c, getCompilerTask(options, c, Arrays.asList("org.intellij.plugins.ceylon.ide.ceylonCode")).call2());
+    }
 }
