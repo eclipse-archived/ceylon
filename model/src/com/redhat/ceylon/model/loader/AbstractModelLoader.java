@@ -1677,7 +1677,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * we can't use the package itself a the cache key.
      */
     protected String getPackageCacheKey(LazyPackage pkg) {
-        String key = pkg.getQualifiedNameString()+"/"+pkg.getModule().getVersion();
+        String key = pkg.getQualifiedNameString()+"/"+pkg.getModule().getNameAsString()+"/"+pkg.getModule().getVersion();
         return key;
     }
 
