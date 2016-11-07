@@ -95,6 +95,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     }
 
     @Test
+    public void testBug6552() {
+        compile("bug65xx/bug6552/Bug6552.ceylon");
+    }
+
+    @Test
     public void testBug6566() throws IOException {
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
