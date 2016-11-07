@@ -941,6 +941,8 @@ public class InteropTests extends CompilerTests {
     
     @Test
     public void testBug6635() {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
         compileAndRun("com.redhat.ceylon.compiler.java.test.interop.run6635", 
                 "Bug6635.ceylon");
     }
