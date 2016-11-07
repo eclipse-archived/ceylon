@@ -175,7 +175,7 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
         if (typeFactory == null) {
             if (module.isAvailable()) {
                 Package languagePackage =
-                        module.getPackage(Module.LANGUAGE_MODULE_NAME);
+                        module.getDirectPackage(Module.LANGUAGE_MODULE_NAME);
                 if (languagePackage != null) {
                     typeFactory = new CacheTypeFactory();
                     typeFactory.setPackage(languagePackage);
@@ -189,7 +189,7 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
         if (module.isAvailable()) {
             if (languagePackage==null) {
                 languagePackage = 
-                        module.getPackage(LANGUAGE_MODULE_NAME);
+                        module.getDirectPackage(LANGUAGE_MODULE_NAME);
             }
             if (languagePackage != null) {
                 Declaration d = 

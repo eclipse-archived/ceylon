@@ -1559,8 +1559,10 @@ public class AnalyzerUtil {
                     path.getUnit()
                         .getPackage()
                         .getModule();
-            Package pkg = module.getPackage(nameToImport);
-            if (pkg != null) {
+            List<Package> pkgs = module.getPackages(nameToImport);
+            if (!pkgs.isEmpty()) {
+                // FIXME: check if we have more than one?
+                Package pkg = pkgs.get(0);
                 Module mod = pkg.getModule();
                 String moduleName = mod.getNameAsString();
                 if (!pkg.getNameAsString().equals(moduleName)) {

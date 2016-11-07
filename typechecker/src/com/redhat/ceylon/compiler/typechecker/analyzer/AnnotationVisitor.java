@@ -695,12 +695,12 @@ public class AnnotationVisitor extends Visitor {
             }
         }
         else {
-            Package pack = 
+            List<Package> packs = 
                     that.getUnit()
                         .getPackage()
                         .getModule()
-                        .getPackage(packageName);
-            if (pack == null) {
+                        .getPackages(packageName);
+            if (packs.isEmpty()) {
                 if (DOC_LINK_MODULE.equals(kind)) {
                     that.addUsageWarning(Warning.doclink, 
                                 "module is missing: '" + 
@@ -712,17 +712,18 @@ public class AnnotationVisitor extends Visitor {
                 }
             }
             else {
+                Package pack = packs.get(0);
                 that.setPkg(pack);
                 if (DOC_LINK_MODULE.equals(kind)) {
                     Package rootPack = 
                             pack.getModule()
-                                .getRootPackage();
+                            .getRootPackage();
                     if (pack.equals(rootPack)) {
                         that.setModule(pack.getModule());
                     } else {
                         that.addUsageWarning(Warning.doclink,
-                                    "module is missing: '" + 
-                                            packageName + "'");
+                                "module is missing: '" + 
+                                        packageName + "'");
                     }
                 }
                 if (names.length > 0) {

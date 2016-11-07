@@ -595,7 +595,7 @@ public class CeylonEnter extends Enter {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
         
         Module jdk = modelLoader.getJDKBaseModule();
-        Package javaLangPackage = jdk.getPackage("java.lang");
+        Package javaLangPackage = jdk.getPackages("java.lang").get(0);
         for (PhasedUnit pu : listOfUnits) {
         	pu.getUnit().setJavaLangPackage(javaLangPackage);
         }

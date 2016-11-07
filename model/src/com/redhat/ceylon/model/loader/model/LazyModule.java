@@ -46,49 +46,49 @@ public abstract class LazyModule extends Module {
         return findPackageInModule(this, name);
     }
     
-    @Override
-    public Package getPackage(String name) {
-        // try here first
-        Package pkg = null;
-        
-        // unless we're the default module, in which case we have to check this at the end,
-        // since every package can be part of the default module
-        boolean defaultModule = isDefaultModule();
-        if(!defaultModule){
-            pkg = findPackageInModule(this, name);
-            if(pkg != null)
-                return pkg;
-        }
-        // then try in dependencies
-        Set<Module> visited = new HashSet<Module>();
-        for(ModuleImport dependency : getImports()){
-            // we don't have to worry about the default module here since we can't depend on it
-            pkg = findPackageInImport(name, dependency, visited);
-            if(pkg != null)
-                return pkg;
-        }
-        AbstractModelLoader modelLoader = getModelLoader();
-        JdkProvider jdkProvider = modelLoader.getJdkProvider();
-        // The JDK uses arrays, which we pretend are in java.lang, and ByteArray needs ceylon.language.Byte,
-        // so we pretend the JDK imports the language module
-        if(jdkProvider.isJDKModule(getNameAsString())){
-            Module languageModule = getModelLoader().getLanguageModule();
-            if(languageModule instanceof LazyModule){
-                pkg = findPackageInModule((LazyModule) languageModule, name);
-                if(pkg != null)
-                    return pkg;
-            }
-        }
-        // never try to load java packages from the default module because it would
-        // work and appear to come from there
-        if(jdkProvider.isJDKPackage(name)){
-            return null;
-        }
-        // do the lookup of the default module last
-        if(defaultModule)
-            pkg = modelLoader.findExistingPackage(this, name);
-        return pkg;
-    }
+//    @Override
+//    public Package getPackage(String name) {
+//        // try here first
+//        Package pkg = null;
+//        
+//        // unless we're the default module, in which case we have to check this at the end,
+//        // since every package can be part of the default module
+//        boolean defaultModule = isDefaultModule();
+//        if(!defaultModule){
+//            pkg = findPackageInModule(this, name);
+//            if(pkg != null)
+//                return pkg;
+//        }
+//        // then try in dependencies
+//        Set<Module> visited = new HashSet<Module>();
+//        for(ModuleImport dependency : getImports()){
+//            // we don't have to worry about the default module here since we can't depend on it
+//            pkg = findPackageInImport(name, dependency, visited);
+//            if(pkg != null)
+//                return pkg;
+//        }
+//        AbstractModelLoader modelLoader = getModelLoader();
+//        JdkProvider jdkProvider = modelLoader.getJdkProvider();
+//        // The JDK uses arrays, which we pretend are in java.lang, and ByteArray needs ceylon.language.Byte,
+//        // so we pretend the JDK imports the language module
+//        if(jdkProvider.isJDKModule(getNameAsString())){
+//            Module languageModule = getModelLoader().getLanguageModule();
+//            if(languageModule instanceof LazyModule){
+//                pkg = findPackageInModule((LazyModule) languageModule, name);
+//                if(pkg != null)
+//                    return pkg;
+//            }
+//        }
+//        // never try to load java packages from the default module because it would
+//        // work and appear to come from there
+//        if(jdkProvider.isJDKPackage(name)){
+//            return null;
+//        }
+//        // do the lookup of the default module last
+//        if(defaultModule)
+//            pkg = modelLoader.findExistingPackage(this, name);
+//        return pkg;
+//    }
 
     @Override
     public List<Package> getPackages(String name) {
@@ -135,30 +135,30 @@ public abstract class LazyModule extends Module {
         return ret;
     }
 
-    private Package findPackageInImport(String name, ModuleImport dependency, Set<Module> visited) {
-        Module module = dependency.getModule();
-        // only visit modules once
-        if(!visited.add(module))
-            return null;
-        if (module instanceof LazyModule) {
-            // this is the equivalent of getDirectPackage, it does not recurse
-            Package pkg =  findPackageInModule((LazyModule) dependency.getModule(), name);
-            if(pkg != null)
-                return pkg;
-            // not found, try in its exported dependencies
-            for(ModuleImport dep : module.getImports()){
-                if(!dep.isExport())
-                    continue;
-                pkg = findPackageInImport(name, dep, visited);
-                if(pkg != null)
-                    return pkg;
-            }
-            // not found
-            return null;
-        }
-        else
-            return module.getPackage(name);
-    }
+//    private Package findPackageInImport(String name, ModuleImport dependency, Set<Module> visited) {
+//        Module module = dependency.getModule();
+//        // only visit modules once
+//        if(!visited.add(module))
+//            return null;
+//        if (module instanceof LazyModule) {
+//            // this is the equivalent of getDirectPackage, it does not recurse
+//            Package pkg =  findPackageInModule((LazyModule) dependency.getModule(), name);
+//            if(pkg != null)
+//                return pkg;
+//            // not found, try in its exported dependencies
+//            for(ModuleImport dep : module.getImports()){
+//                if(!dep.isExport())
+//                    continue;
+//                pkg = findPackageInImport(name, dep, visited);
+//                if(pkg != null)
+//                    return pkg;
+//            }
+//            // not found
+//            return null;
+//        }
+//        else
+//            return module.getPackage(name);
+//    }
 
     private void addPackagesFromImport(String name, ModuleImport dependency, List<Package> ret, Set<Module> visited) {
         Module module = dependency.getModule();

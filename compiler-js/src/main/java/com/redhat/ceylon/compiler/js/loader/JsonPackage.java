@@ -63,6 +63,7 @@ import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
+import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -993,7 +994,8 @@ public class JsonPackage extends LazyPackage {
                         rp = getModule().getDirectPackage(pname);
                     }
                 } else {
-                    rp = getModule().getPackage(pname);
+                    List<Package> packages = getModule().getPackages(pname);
+                    rp = packages.isEmpty() ? null : packages.get(0);
                 }
                 if (rp == null) {
                     throw new CompilerErrorException("Package not found: " + pname);

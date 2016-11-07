@@ -341,17 +341,17 @@ public class Module
         return null;
     }
     
-    public Package getPackage(String name) {
-        Package pkg = getDirectPackage(name);
-        if(pkg != null)
-            return pkg;
-        for (ModuleImport mi: imports) {
-            pkg = mi.getModule().getDirectPackage(name);
-            if(pkg != null)
-                return pkg;
-        }
-        return null;
-    }
+//    public Package getPackage(String name) {
+//        Package pkg = getDirectPackage(name);
+//        if(pkg != null)
+//            return pkg;
+//        for (ModuleImport mi: imports) {
+//            pkg = mi.getModule().getDirectPackage(name);
+//            if(pkg != null)
+//                return pkg;
+//        }
+//        return null;
+//    }
 
     public List<Package> getPackages(String name) {
         List<Package> ret = new ArrayList<Package>();
@@ -367,7 +367,7 @@ public class Module
     }
 
     public Package getRootPackage() {
-        return getPackage(getNameAsString());
+        return getDirectPackage(getNameAsString());
     }
     
     public String getNameAsString() {

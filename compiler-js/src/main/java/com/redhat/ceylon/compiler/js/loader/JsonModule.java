@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.js.loader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -80,14 +82,14 @@ public class JsonModule extends Module implements NpmAware {
     }
 
     @Override
-    public Package getPackage(String name) {
+    public List<Package> getPackages(String name) {
         if ("default".equals(name)) {
             name = "";
         }
         // search direct packages
         Package p = getDirectPackage(name);
         if (p != null) {
-            return p;
+            return Arrays.asList(p);
         }
 
         // search imported modules
@@ -96,12 +98,12 @@ public class JsonModule extends Module implements NpmAware {
         for (ModuleImport imp : getImports()) {
             p = getPackageFromImport(name, imp.getModule(), visited);
             if (p != null) {
-                return p;
+                return Arrays.asList(p);
             }
         }
 
         // not found
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

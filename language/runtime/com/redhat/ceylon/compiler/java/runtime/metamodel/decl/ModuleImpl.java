@@ -116,8 +116,9 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language.meta.declaration::Package")
     public Package findImportedPackage(@Name("name") String name) {
-        com.redhat.ceylon.model.typechecker.model.Package pkg = declaration.getPackage(name);
-        return pkg == null ? null : Metamodel.getOrCreateMetamodel(pkg);
+        List<com.redhat.ceylon.model.typechecker.model.Package> pkgs = declaration.getPackages(name);
+        // FIXME: multiple packages
+        return pkgs.isEmpty() ? null : Metamodel.getOrCreateMetamodel(pkgs.get(0));
     }
 
     @Override

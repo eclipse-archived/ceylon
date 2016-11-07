@@ -82,7 +82,8 @@ public class TypeParserTests {
     }
     
     private static final Module mockLang = new Module(){
-        public Package getPackage(String name) {
+        @Override
+        public Package getDirectPackage(String name) {
             return mockLangPackage;
         }
     };
@@ -103,14 +104,25 @@ public class TypeParserTests {
     
     
     private static final Module mockDefaultModule = new Module(){
-        
-        public Package getPackage(String name) {
+
+        @Override
+        public Package getDirectPackage(String name) {
             if (name.isEmpty()) {
                 return mockDefaultPackage;
             } else if ("pkg".equals(name)) {
                 return mockDefaultPackage;
+            }
+            throw new RuntimeException(name);
+        }
+
+        @Override
+        public List<Package> getPackages(String name) {
+            if (name.isEmpty()) {
+                return Arrays.asList(mockDefaultPackage);
+            } else if ("pkg".equals(name)) {
+                return Arrays.asList(mockDefaultPackage);
             } else if ("ceylon.language".equals(name)) {
-                return mockLangPackage;
+                return Arrays.asList(mockLangPackage);
             }
             throw new RuntimeException(name);
         }
@@ -128,17 +140,26 @@ public class TypeParserTests {
     
     private static final Module mockPkgModule = new Module(){
         
-        public Package getPackage(String name) {
+        @Override
+        public Package getDirectPackage(String name) {
             if ("pkg".equals(name)) {
                 return mockPkgPackage;
-            } else if (name.isEmpty()) {
-                return mockDefaultPackage;
-            } else if ("ceylon.language".equals(name)) {
-                return mockLangPackage;
             }
             throw new RuntimeException();
         }
-    };
+
+        @Override
+        public List<Package> getPackages(String name) {
+            if ("pkg".equals(name)) {
+                return Arrays.asList(mockPkgPackage);
+            } else if (name.isEmpty()) {
+                return Arrays.asList(mockDefaultPackage);
+            } else if ("ceylon.language".equals(name)) {
+                return Arrays.asList(mockLangPackage);
+            }
+            throw new RuntimeException();
+        }
+};
     private static final Package mockPkgPackage = new MockPackage(mockPkgModule);
     static {
         mockPkgModule.setLanguageModule(mockLang);
@@ -156,10 +177,10 @@ public class TypeParserTests {
 
         private Map<String, ClassOrInterface> classes = new HashMap<String,ClassOrInterface>();
         private Module defaultModule = mockDefaultModule;
-        private Package defaultPkg = mockDefaultModule.getPackage("");
+        private Package defaultPkg = mockDefaultModule.getDirectPackage("");
         private Unit unit = mockDefaultUnit;
         private Module lang = mockLang;
-        private Package langPkg = mockLang.getPackage("ceylon.language");
+        private Package langPkg = mockLang.getDirectPackage("ceylon.language");
         
         private MockLoader(){
             //defaultModule.setName(Arrays.asList(""));

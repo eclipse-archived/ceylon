@@ -1940,9 +1940,10 @@ public class Resolve {
                         // Ugly special case where we skip the test when we're compiling the language module itself
                         if (scopeModule != modelLoader.getLanguageModule()) {
                             String importedPackageName = modelLoader.getPackageNameForQualifiedClassName(pkgName(nameString), nameString);
-                            com.redhat.ceylon.model.typechecker.model.Package importedPackage = scopeModule.getPackage(importedPackageName);
+                            java.util.List<com.redhat.ceylon.model.typechecker.model.Package> importedPackages 
+                                = scopeModule.getPackages(importedPackageName);
                             // Don't check if we failed to find it
-                            if(importedPackage == null){
+                            if(importedPackages.isEmpty()){
                                 return new ImportError(c, scopeModule);
                             }
                         }

@@ -309,7 +309,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             }
             if (languagePackage==null) {
                 languagePackage = 
-                        languageModule.getPackage(LANGUAGE_MODULE_NAME);
+                        languageModule.getDirectPackage(LANGUAGE_MODULE_NAME);
             }
             if (languagePackage!=null) {
                 Declaration d = 
@@ -343,7 +343,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         if (languageModule!=null && 
                 languageModule.isAvailable()) {
             Package languageScope = 
-                    languageModule.getPackage("ceylon.language.meta.model");
+                    languageModule.getDirectPackage("ceylon.language.meta.model");
             if (languageScope!=null) {
                 Declaration d = 
                         languageScope.getMember(name, 
@@ -366,7 +366,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         if (languageModule!=null && 
                 languageModule.isAvailable()) {
             Package languageScope = 
-                    languageModule.getPackage("ceylon.language.meta.declaration");
+                    languageModule.getDirectPackage("ceylon.language.meta.declaration");
             if (languageScope!=null) {
                 Declaration d = 
                         languageScope.getMember(name, 
@@ -389,7 +389,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         if (languageModule!=null && 
                 languageModule.isAvailable()) {
             Package languageScope = 
-                    languageModule.getPackage("ceylon.language.serialization");
+                    languageModule.getDirectPackage("ceylon.language.serialization");
             if (languageScope!=null) {
                 Declaration d = 
                         languageScope.getMember(name, 
@@ -708,11 +708,13 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     }
 
     protected Package getJavaLangPackage() {
-        return getPackage().getModule().getPackage("java.lang");
+        List<Package> pkgs = getPackage().getModule().getPackages("java.lang");
+        return pkgs.isEmpty() ? null : pkgs.get(0);
     }
     
     protected Package getJavaUtilPackage() {
-        return getPackage().getModule().getPackage("java.util");
+        List<Package> pkgs = getPackage().getModule().getPackages("java.util");
+        return pkgs.isEmpty() ? null : pkgs.get(0);
     }
     
     @Override

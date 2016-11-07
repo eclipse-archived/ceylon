@@ -671,11 +671,16 @@ public class TypeParser {
         try{
             Declaration newDeclaration;
             if(qualifyingType == null){
-                // FIXME: this only works for packages not contained in multiple modules
-                Package foundPackage = moduleScope.getPackage(pkg);
-                if(foundPackage != null)
-                    newDeclaration = loader.getDeclaration(foundPackage.getModule(), pkg, fullName, scope);
-                else if(scope != null){
+                List<Package> foundPackages = moduleScope.getPackages(pkg);
+                if(!foundPackages.isEmpty()){
+                    // Try them all
+                    newDeclaration = null;
+                    for(Package foundPackage : foundPackages){
+                        newDeclaration = loader.getDeclaration(foundPackage.getModule(), pkg, fullName, scope);
+                        if(newDeclaration != null)
+                            break;
+                    }
+                }else if(scope != null){
                     // if we did not find any package and the scope is null, chances are we're after a type variable
                     // or a relative type, so use the module scope
                     newDeclaration = loader.getDeclaration(moduleScope, pkg, fullName, scope);

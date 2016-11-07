@@ -238,18 +238,24 @@ public class TypeFactory extends Unit {
                 && (args.isSequential() || args.isSequence());
     }
     
+    protected Package getJavaIoPackage() {
+        java.util.List<Package> pkgs = getPackage().getModule().getPackages("java.io");
+        return pkgs.isEmpty() ? null : pkgs.get(0);
+    }
+
     /**
      * Get the interface for {@code java.io.Serializable} from
      * {@code java.base}, or null if it could not be found.
      * @return
      */
     public Interface getJavaIoSerializable() {
-        for (com.redhat.ceylon.model.typechecker.model.Module m : context.getModules().getListOfModules()) {
-            if ("java.base".equals(m.getNameAsString())) {
-                return (Interface)m.getPackage("java.io").getDirectMember("Serializable", null, false);
-            }
+        Package io = getJavaIoPackage();
+        if (io==null) {
+            return null;
         }
-        return null;
+        else {
+            return (Interface) io.getMember("Serializable", null, false);
+        }
     }
     
     public Type getJavaIoSerializableType() {
@@ -261,10 +267,6 @@ public class TypeFactory extends Unit {
         }
     }
 
-    protected Package getJavaUtilPackage() {
-        return getPackage().getModule().getPackage("java.util");
-    }
-    
     public Interface getJavaIteratorDeclaration() {
         Package lang = getJavaUtilPackage();
         if (lang==null) {

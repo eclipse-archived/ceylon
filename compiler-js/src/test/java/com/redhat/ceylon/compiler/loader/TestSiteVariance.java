@@ -76,7 +76,7 @@ public class TestSiteVariance {
         //Typecheck phase2
         opts = options("src/test/resources/variance/phase2");
         tc = typeChecker(opts);
-        Function m2 = (Function)tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule().getPackage("phase1").getDirectMember("m2", null, false);
+        Function m2 = (Function)tc.getPhasedUnits().getPhasedUnits().get(0).getPackage().getModule().getDirectPackage("phase1").getDirectMember("m2", null, false);
         Assert.assertNotNull("phase1::m2 missing", m2);
         Assert.assertFalse("Missing variance overrides in return type",
                 m2.getType().getVarianceOverrides().isEmpty());

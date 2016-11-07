@@ -592,7 +592,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Module languageModule = modules.getLanguageModule();
         if(languageModule == null)
             throw new RuntimeException("Assertion failed: language module is null");
-        Package languagePackage = languageModule.getPackage(CEYLON_LANGUAGE);
+        Package languagePackage = languageModule.getDirectPackage(CEYLON_LANGUAGE);
         if(languagePackage == null)
             throw new RuntimeException("Assertion failed: language package is null");
         typeFactory.setPackage(languagePackage);
@@ -1835,7 +1835,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 if(namePartDot != -1)
                                     namePart = namePart.substring(0, namePartDot);
                                 if(packagePart.startsWith(modulePackagePrefix) || packagePart.equals(module.getNameAsString())){
-                                    Package pkg = module.getPackage(packagePart);
+                                    Package pkg = module.getDirectPackage(packagePart);
                                     if(pkg instanceof LazyPackage){
                                         Declaration memberFromSource = ((LazyPackage) pkg).getDirectMemberFromSource(namePart, Backends.JAVA);
                                         if(memberFromSource != null){
@@ -5969,7 +5969,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(!isBootstrap || !name.startsWith(CEYLON_LANGUAGE)) {
                     if(scope != null && pkgName != null){
                         Package containingPackage = ModelUtil.getPackageContainer(scope);
-                        Package pkg = containingPackage.getModule().getPackage(pkgName);
+                        Package pkg = containingPackage.getModule().getDirectPackage(pkgName);
                         String relativeName = null;
                         String unquotedName = name.replace("$", "");
                         if(!pkgName.isEmpty()){

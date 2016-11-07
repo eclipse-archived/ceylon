@@ -38,6 +38,7 @@ import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -392,7 +393,7 @@ public class LinkRenderer {
             String pkgName = text.substring(8);
             for (Module m : ceylonDocTool.getTypeChecker().getContext().getModules().getListOfModules()) {
                 if (pkgName.startsWith(m.getNameAsString() + ".")) {
-                    Package pkg = m.getPackage(pkgName);
+                    Package pkg = m.getDirectPackage(pkgName);
                     if (pkg != null) {
                         return processPackage(pkg);
                     }
@@ -414,35 +415,40 @@ public class LinkRenderer {
         
         
         String declName;
-        Scope currentScope;
+        List<? extends Scope> currentScopes;
         
         int pkgSeparatorIndex = text.indexOf("::");
         if( pkgSeparatorIndex == -1 ) {
             declName = text;
-            currentScope = resolveScope(scope);
+            currentScopes = resolveScopes(scope);
         } else {
             String pkgName = text.substring(0, pkgSeparatorIndex);
             declName = text.substring(pkgSeparatorIndex+2, text.length());
-            currentScope = ceylonDocTool.getCurrentModule().getPackage(pkgName);
+            currentScopes = ceylonDocTool.getCurrentModule().getPackages(pkgName);
         }
         
-        String[] declNames = declName.split("\\.");
         Declaration currentDecl = null;
-        boolean isNested = false;
-        for (String currentDeclName : declNames) {
-            currentDecl = resolveDeclaration(currentScope, currentDeclName, isNested);
-            if (currentDecl != null) {
-                if( isValueWithTypeObject(currentDecl) ) {
-                    TypeDeclaration objectType = ((Value)currentDecl).getTypeDeclaration();
-                    currentScope = objectType;
-                    currentDecl = objectType;
+        for(Scope currentScope : currentScopes){
+            String[] declNames = declName.split("\\.");
+            boolean isNested = false;
+            for (String currentDeclName : declNames) {
+                currentDecl = resolveDeclaration(currentScope, currentDeclName, isNested);
+                if (currentDecl != null) {
+                    if( isValueWithTypeObject(currentDecl) ) {
+                        TypeDeclaration objectType = ((Value)currentDecl).getTypeDeclaration();
+                        currentScope = objectType;
+                        currentDecl = objectType;
+                    } else {
+                        List<? extends Scope> resolvedScopes = resolveScopes(currentDecl);
+                        currentScope = resolvedScopes.isEmpty() ? null : resolvedScopes.get(0);
+                    }
+                    isNested = true;
                 } else {
-                    currentScope = resolveScope(currentDecl);
+                    break;
                 }
-                isNested = true;
-            } else {
-                break;
             }
+            if(currentDecl != null)
+                break;
         }
         
         // we can't link to parameters yet, unless they're toplevel
@@ -520,7 +526,7 @@ public class LinkRenderer {
                 decl = new NothingType(scope.getUnit());
             }
         } else {
-            Package pkg = ceylonDocTool.getCurrentModule().getPackage(AbstractModelLoader.CEYLON_LANGUAGE);
+            Package pkg = ceylonDocTool.getCurrentModule().getPackages(AbstractModelLoader.CEYLON_LANGUAGE).get(0);
             if (pkg != null) {
                 decl = resolveDeclaration(pkg, declName, isNested);
             }
@@ -529,13 +535,13 @@ public class LinkRenderer {
         return decl;
     }
 
-    private Scope resolveScope(Referenceable referenceable) {
+    private List<? extends Scope> resolveScopes(Referenceable referenceable) {
         if (referenceable instanceof Module) {
-            return ((Module) referenceable).getPackage(referenceable.getNameAsString());
+            return ((Module) referenceable).getPackages(referenceable.getNameAsString());
         } else if (referenceable instanceof Scope) {
-            return (Scope) referenceable;
+            return Arrays.asList((Scope) referenceable);
         } else if (referenceable instanceof Declaration) {
-            return ((Declaration) referenceable).getContainer();
+            return Arrays.asList(((Declaration) referenceable).getContainer());
         } else {
             return null;
         }
