@@ -21,6 +21,13 @@ class BaseList<Element>()
         extends Object()
         satisfies SearchableList<Element> {}
 
+since("1.3.1")
+shared abstract serializable
+class BaseSet<Element>()
+        extends Object()
+        satisfies Set<Element> 
+        given Element satisfies Object {}
+
 since("1.1.0")
 shared abstract class BaseCharacterList()
         extends Object()
