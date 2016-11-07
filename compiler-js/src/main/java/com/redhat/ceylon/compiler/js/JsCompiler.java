@@ -272,8 +272,8 @@ public class JsCompiler {
                     }
                 }
                 public void visit(Tree.ImportModule that) {
-                    if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module) {
-                        Module m = (Module)that.getImportPath().getModel();
+                    if (that.getImportPath() != null && that.getImportPath().getModel().get(0) instanceof Module) {
+                        Module m = (Module)that.getImportPath().getModel().get(0);
                         //Binary version check goes here now
                         String binVersion = m.getJsMajor() + ".";
                         if (m.getJsMajor() == 0) {

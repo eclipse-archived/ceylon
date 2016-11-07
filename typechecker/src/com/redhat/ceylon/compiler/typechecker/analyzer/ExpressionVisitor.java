@@ -9697,7 +9697,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             m = importedModule(that.getImportPath());
         }
-        that.getImportPath().setModel(m);
+        that.getImportPath().setModel(Arrays.asList(m));
         that.setTypeModel(unit.getModuleDeclarationType());
     }
     

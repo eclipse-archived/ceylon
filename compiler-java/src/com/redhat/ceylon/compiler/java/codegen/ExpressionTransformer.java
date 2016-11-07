@@ -1341,14 +1341,15 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCTree transform(Tree.PackageLiteral expr) {
         at(expr);
         
-        Package pkg = (Package) expr.getImportPath().getModel();
+        // FIXME: error if more than one
+        Package pkg = (Package) expr.getImportPath().getModel().get(0);
         return makePackageLiteralCall(pkg);
     }
 
     public JCTree transform(Tree.ModuleLiteral expr) {
         at(expr);
 
-        Module mod = (Module) expr.getImportPath().getModel();
+        Module mod = (Module) expr.getImportPath().getModel().get(0);
         return makeModuleLiteralCall(mod);
     }
 
@@ -7644,9 +7645,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (ml instanceof Tree.MemberLiteral) {
             return ml.getDeclaration();
         } else if (ml instanceof Tree.PackageLiteral) {
-            return ((Tree.PackageLiteral)ml).getImportPath().getModel();
+            // FIXME: there can be more than one package :(
+            return ((Tree.PackageLiteral)ml).getImportPath().getModel().get(0);
         } else if (ml instanceof Tree.ModuleLiteral) {
-            return ((Tree.ModuleLiteral)ml).getImportPath().getModel();
+            return ((Tree.ModuleLiteral)ml).getImportPath().getModel().get(0);
         } 
         return null;
     }

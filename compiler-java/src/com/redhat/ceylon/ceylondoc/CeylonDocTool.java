@@ -826,16 +826,21 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                     super.visit(that);
                 }
                 public void visit(Tree.PackageDescriptor that) {
-                    if (that.getImportPath() != null && that.getImportPath().getModel() != null) {
-                        Referenceable model = that.getImportPath().getModel();
+                    if (that.getImportPath() != null 
+                            && that.getImportPath().getModel() != null
+                            && !that.getImportPath().getModel().isEmpty()) {
+                        // FIXME: there can be more than one package :(
+                        Referenceable model = that.getImportPath().getModel().get(0);
                         modelUnitMap.put(model, pu);
                         modelNodeMap.put(model, that);
                     }
                     super.visit(that);
                 }
                 public void visit(Tree.ModuleDescriptor that) {
-                    if (that.getImportPath() != null && that.getImportPath().getModel() != null) {
-                        Referenceable model = that.getImportPath().getModel();
+                    if (that.getImportPath() != null 
+                            && that.getImportPath().getModel() != null
+                            && !that.getImportPath().getModel().isEmpty()) {
+                        Referenceable model = that.getImportPath().getModel().get(0);
                         modelUnitMap.put(model, pu);
                         modelNodeMap.put(model, that);
                     }

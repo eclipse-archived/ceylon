@@ -10,6 +10,7 @@ import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_N
 import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -204,7 +205,7 @@ public class ModuleVisitor extends Visitor {
                     mainModule = 
                             moduleManager.getOrCreateModule(
                                     name, version);
-                    importPath.setModel(mainModule);
+                    importPath.setModel(Arrays.asList(mainModule));
                     if (!completeOnlyAST) {
                         mainModule.setUnit(unit.getUnit());
                         mainModule.setVersion(version);
@@ -291,7 +292,7 @@ public class ModuleVisitor extends Visitor {
                             Warning.javaNamespace,
                             "discouraged package name: this namespace is used by Java platform modules");
                 }
-                importPath.setModel(pkg);
+                importPath.setModel(Arrays.asList(pkg));
                 Unit u = unit.getUnit();
                 if (!completeOnlyAST) {
                     pkg.setUnit(u);
@@ -400,7 +401,7 @@ public class ModuleVisitor extends Visitor {
                         moduleManager.getOrCreateModule(
                                 name, version);
                 if (importPath!=null) {
-                	importPath.setModel(importedModule);
+                	importPath.setModel(Arrays.asList(importedModule));
                 }
                 if (!completeOnlyAST && mainModule != null) {
                     if (importedModule.getVersion() == null) {

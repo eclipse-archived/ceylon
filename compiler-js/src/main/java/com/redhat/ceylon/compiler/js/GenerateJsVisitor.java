@@ -346,8 +346,8 @@ public class GenerateJsVisitor extends Visitor {
                         }
                         @Override
                         public List<Annotation> getAnnotations() {
-                            if (im.getImportPath().getModel() instanceof Module) {
-                                return ((Module)im.getImportPath().getModel()).getAnnotations();
+                            if (im.getImportPath().getModel().get(0) instanceof Module) {
+                                return ((Module)im.getImportPath().getModel().get(0)).getAnnotations();
                             }
                             return null;
                         }
@@ -3551,14 +3551,14 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.PackageLiteral that) {
-        Package pkg = (Package)that.getImportPath().getModel();
+        Package pkg = (Package)that.getImportPath().getModel().get(0);
         MetamodelHelper.findModule(pkg.getModule(), this);
         out(".findPackage('", pkg.getNameAsString(), "')");
     }
 
     @Override
     public void visit(Tree.ModuleLiteral that) {
-        Module m = (Module)that.getImportPath().getModel();
+        Module m = (Module)that.getImportPath().getModel().get(0);
         MetamodelHelper.findModule(m, this);
     }
 

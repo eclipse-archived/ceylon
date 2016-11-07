@@ -414,7 +414,7 @@ public class ModuleValidator {
             Node node;
             if (imp.getImportPath()!=null) {
                 node = imp.getImportPath();
-                importedModule = (Module)imp.getImportPath().getModel();
+                importedModule = (Module)imp.getImportPath().getModel().get(0);
             } else {
                 node = imp.getQuotedLiteral();
                 importedModule = moduleManagerUtil.getModuleForNode(node);

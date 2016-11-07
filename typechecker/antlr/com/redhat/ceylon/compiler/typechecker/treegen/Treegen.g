@@ -92,6 +92,11 @@ field : t=TYPE_NAME f=FIELD_NAME
           { println("        public boolean get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
           { println("        public void set" + initialUpper($f.text) + "(boolean value) { " + $f.text + " = value; }\n"); }
         ';'
+      | l=TYPE_NAME '<<' t=TYPE_NAME '>' f=FIELD_NAME
+          { println("        private " + $l.text + "<? extends com.redhat.ceylon.model.typechecker.model." + $t.text + "> " + $f.text+ ";"); }
+          { println("        public " + $l.text + "<? extends com.redhat.ceylon.model.typechecker.model." + $t.text + "> get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }
+          { println("        public void set" + initialUpper($f.text) + "(" + $l.text + "<? extends com.redhat.ceylon.model.typechecker.model." + $t.text + "> value) { " + $f.text + " = value; }\n"); }
+        ';'
       | l=TYPE_NAME '<' t=TYPE_NAME '>' f=FIELD_NAME
           { println("        private " + $l.text + "<com.redhat.ceylon.model.typechecker.model." + $t.text + "> " + $f.text+ ";"); }
           { println("        public " + $l.text + "<com.redhat.ceylon.model.typechecker.model." + $t.text + "> get" + initialUpper($f.text) + "() { return " + $f.text + "; }"); }

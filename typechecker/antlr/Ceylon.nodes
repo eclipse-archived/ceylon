@@ -43,7 +43,7 @@
 "A reference to a package or module."
 ^(IMPORT_PATH 
     IDENTIFIER*
-    Referenceable model;)
+    List<<Referenceable> model;)
 
 "A list of declarations imported from a package."
 ^(IMPORT_MEMBER_OR_TYPE_LIST
