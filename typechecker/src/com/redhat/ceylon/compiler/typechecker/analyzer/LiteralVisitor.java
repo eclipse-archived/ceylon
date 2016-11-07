@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
+import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
@@ -695,7 +696,7 @@ public class LiteralVisitor extends Visitor {
 
     private Tree.IsCase createIsCase(Tree.Type type, 
             Tree.Identifier id, Tree.PatternCase item) {
-        Tree.IsCase ic = new Tree.IsCase(item.getToken());
+        Tree.IsCase ic = new CustomTree.IsCase(item.getToken());
         ic.setEndToken(item.getEndToken());
         ic.setType(type);
         ic.setVariable(createVariable(id));
