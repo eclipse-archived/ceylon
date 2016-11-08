@@ -782,7 +782,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 ClassOrInterface container = getContainer(pkg.getModule(), classMirror);
                 if (d.isNativeHeader() && container.isNative()) {
                    container = (ClassOrInterface)ModelUtil.getNativeHeader(container);
+                }else if (d.isNativeImplementation()
+                        // Here we check if it's a native header, not just native, otherwise it would match
+                        // for every Java declaration, who don't have native headers
+                        && container.isNativeHeader()) {
+                    container = (ClassOrInterface)ModelUtil.getNativeDeclaration(container, Backend.Java);
                 }
+
                 d.setContainer(container);
                 d.setScope(container);
                 if(d instanceof LazyInterface && ((LazyInterface) d).isCeylon()){
