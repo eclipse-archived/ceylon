@@ -347,10 +347,18 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         }
         if(statusPrinter != null){
             statusPrinter.clearLine();
-            statusPrinter.log("Pre-resolving resolved "+ml.getModuleCount());
+            // don't try to read the module count if pre-resolving failed
+            if(giveup)
+                statusPrinter.log("Pre-resolving failed");
+            else
+                statusPrinter.log("Pre-resolving resolved "+ml.getModuleCount());
         }
         if(verbose){
-            log.printRawLines(WriterKind.NOTICE, "[Pre-resolved "+ml.getModuleCount()+" modules]");
+            // don't try to read the module count if pre-resolving failed
+            if(giveup)
+                log.printRawLines(WriterKind.NOTICE, "[Pre-resolved failed]");
+            else
+                log.printRawLines(WriterKind.NOTICE, "[Pre-resolved "+ml.getModuleCount()+" modules]");
         }
         if(giveup)
             return;
