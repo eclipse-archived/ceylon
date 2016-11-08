@@ -54,9 +54,19 @@ if "%ValueValue%" NEQ "" (
     set "JAVA_CURRENT=%KEY_NAME%\%ValueValue%"
 ) else (
     rem Try again for 64bit systems
-    
+
     FOR /F "usebackq skip=2 tokens=3" %%A IN (`REG QUERY "%KEY_NAME2%" /v CurrentVersion 2^>nul`) DO (
         set "JAVA_CURRENT=%KEY_NAME2%\%%A"
+    )
+)
+
+if "%ValueValue%" NEQ "" (
+    set "JAVA_CURRENT=%KEY_NAME%\%ValueValue%"
+) else (
+    rem Try again for 64bit systems from a 32-bit process
+
+    FOR /F "usebackq skip=2 tokens=3" %%A IN (`REG QUERY "%KEY_NAME%" /v CurrentVersion /reg:64 2^>nul`) DO (
+        set "JAVA_CURRENT=%KEY_NAME%\%%A"
     )
 )
 
@@ -69,6 +79,13 @@ if "%JAVA_CURRENT%" == "" (
 :: get the javahome
 FOR /F "usebackq skip=2 tokens=3*" %%A IN (`REG QUERY "%JAVA_CURRENT%" /v JavaHome 2^>nul`) DO (
     set "JAVA_HOME=%%A %%B"
+)
+
+if "%JAVA_HOME%" EQU "" (
+    rem Try again for 64bit systems from a 32-bit process
+    FOR /F "usebackq skip=2 tokens=3*" %%A IN (`REG QUERY "%JAVA_CURRENT%" /v JavaHome /reg:64 2^>nul`) DO (
+        set "JAVA_HOME=%%A %%B"
+    )
 )
 
 :javaend
