@@ -3,17 +3,33 @@ package com.redhat.ceylon.compiler.java.wrapping;
 import java.util.AbstractMap;
 
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Union;
 
 import ceylon.language.Collection;
 import ceylon.language.Entry;
 import ceylon.language.Integer;
 import ceylon.language.List;
+import ceylon.language.Null;
 
 public class Wrappings {
-    public static class Identity<From> implements Wrapping<From,From> {
-        private Identity() {}
+    static void checkNull(Object o, String msg) {
+        if (o == null) {
+            throw new ceylon.language.AssertionError("null value present in wrapping" + (msg != null ? " "+ msg : ""));
+        }
+    }
+    static class Identity<From> implements Wrapping<From,From> {
+        private final boolean allowNull;
+        Identity(boolean allowNull) {
+            this.allowNull = allowNull;
+        }
         @Override
         public From wrap(From from) {
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, null);
+                }
+                return null;
+            }
             return from;
         }
         @Override
@@ -21,41 +37,72 @@ public class Wrappings {
             return this;
         }
     };
+    /** The identity wrapping but throwing on null */
+    public static final Identity DEFINITE_IDENTITY = new Identity(false);
     /** The identity wrapping */
-    public static final Identity IDENTITY  = new Identity();
-    /** The identity wrapping */
-    public static <From> Wrapping<From,From> identity() {
-        return IDENTITY;
-    }
+    public static final Identity MAYBE_IDENTITY = new Identity(true);
     
-    private static <Java, Ceylon> Wrapping<Java, Ceylon> elementMapping(TypeDescriptor $reified$Element) {
-        // TODO recursive lists,sets,maps
+    static <Java, Ceylon> Wrapping<Java, Ceylon> elementMapping(TypeDescriptor $reified$Element) {
+        boolean allowNull = false;
+        if ($reified$Element.containsNull()) {
+            allowNull = true;
+            if ($reified$Element instanceof TypeDescriptor.Union
+                    && ((TypeDescriptor.Union)$reified$Element).getMembers().length == 2) {
+                Union union = (TypeDescriptor.Union)$reified$Element;
+                if (union.getMembers()[0].containsNull()) {
+                    $reified$Element = union.getMembers()[1]; 
+                } else if (union.getMembers()[1].containsNull()) {
+                    $reified$Element = union.getMembers()[0]; 
+                }
+            }
+        }
         Wrapping<Java,Ceylon> elementWrapping;
         if ($reified$Element == ceylon.language.Integer.$TypeDescriptor$) {
-            elementWrapping = (Wrapping)TO_CEYLON_INTEGER;
+            elementWrapping = (Wrapping) (allowNull ? TO_CEYLON_INTEGER_OR_NULL : TO_CEYLON_INTEGER);
         } else if ($reified$Element == ceylon.language.Float.$TypeDescriptor$) {
-            elementWrapping = (Wrapping)TO_CEYLON_FLOAT;
+            elementWrapping = (Wrapping) (allowNull ? TO_CEYLON_FLOAT_OR_NULL : TO_CEYLON_FLOAT);
         } else if ($reified$Element == ceylon.language.Byte.$TypeDescriptor$) {
-            elementWrapping = (Wrapping)TO_CEYLON_BYTE;
+            elementWrapping = (Wrapping) (allowNull ? TO_CEYLON_BYTE_OR_NULL : TO_CEYLON_BYTE);
         } else if ($reified$Element == ceylon.language.Boolean.$TypeDescriptor$) {
-            elementWrapping = (Wrapping)TO_CEYLON_BOOLEAN;
+            elementWrapping = (Wrapping) (allowNull ? TO_CEYLON_BOOLEAN_OR_NULL : TO_CEYLON_BOOLEAN);
         } else if ($reified$Element == ceylon.language.Character.$TypeDescriptor$) {
-            elementWrapping = (Wrapping)TO_CEYLON_CHARACTER;
+            elementWrapping = (Wrapping) (allowNull ? TO_CEYLON_CHARACTER_OR_NULL : TO_CEYLON_CHARACTER);
         } else if ($reified$Element == ceylon.language.String.$TypeDescriptor$) {
-            elementWrapping = (Wrapping)TO_CEYLON_STRING;
+            elementWrapping = (Wrapping) (allowNull ? TO_CEYLON_STRING_OR_NULL : TO_CEYLON_STRING);
+        } else if ($reified$Element instanceof TypeDescriptor.Class) {
+            TypeDescriptor.Class classDescriptor = (TypeDescriptor.Class)$reified$Element;
+            if (classDescriptor.getKlass() == ceylon.language.List.class) {
+            elementWrapping = (Wrapping)toCeylonList(classDescriptor.getTypeArgument(0), allowNull);
+            } else if (classDescriptor.getKlass() == ceylon.language.Set.class) {
+                elementWrapping = (Wrapping)toCeylonSet(classDescriptor.getTypeArgument(0), allowNull);
+            } else if (classDescriptor.getKlass() == ceylon.language.Map.class) {
+                elementWrapping = (Wrapping)toCeylonMap(classDescriptor.getTypeArgument(0), classDescriptor.getTypeArgument(1), allowNull);
+            } else {
+                elementWrapping = allowNull ? MAYBE_IDENTITY : DEFINITE_IDENTITY;
+            }
         } else {
-          elementWrapping = IDENTITY;  
+            elementWrapping = allowNull ? MAYBE_IDENTITY : DEFINITE_IDENTITY;
         }
         return elementWrapping;
     }
     
     /** The wrapping {@code java.lang.Long} → {@code ceylon.language.Integer} */
-    private static class ToCeylonInteger implements Wrapping<Long, ceylon.language.Integer> {
-        private FromCeylonInteger from = new FromCeylonInteger(this);
-        private ToCeylonInteger() {}
+    static class ToCeylonInteger implements Wrapping<Long, ceylon.language.Integer> {
+        private final FromCeylonInteger from;
+        private final boolean allowNull;
+        public ToCeylonInteger(boolean allowNull) {
+            this.allowNull = allowNull;
+            from = new FromCeylonInteger(this, allowNull);
+        }
         @Override
         public Integer wrap(Long from) {
-            return from == null ? null : Integer.instance(from);
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of java.lang.Long into ceylon.language.Integer");
+                }
+                return null;
+            }
+            return Integer.instance(from);
         }
         @Override
         public Wrapping<Integer, Long> inverted() {
@@ -63,30 +110,50 @@ public class Wrappings {
         }
     }
     /** The wrapping {@code java.lang.Long} ← {@code ceylon.language.Integer} */
-    private static class FromCeylonInteger implements Wrapping<ceylon.language.Integer, Long> {
-        private ToCeylonInteger to;
-        private FromCeylonInteger(ToCeylonInteger to) {
+    static class FromCeylonInteger implements Wrapping<ceylon.language.Integer, Long> {
+        private final ToCeylonInteger to;
+        private final boolean allowNull;
+        public FromCeylonInteger(ToCeylonInteger to, boolean allowNull) {
             this.to = to;
+            this.allowNull = allowNull;
         }
         @Override
         public Long wrap(Integer from) {
-            return from == null ? null : from.longValue();
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of ceylon.language.Integer into java.lang.Long");
+                }
+                return null;
+            }
+            return from.longValue();
         }
         @Override
         public Wrapping<Long, Integer> inverted() {
             return to;
         }
     }
-    /** The wrapping {@code java.lang.Long} → {@code ceylon.language.Integer} */
-    public static final ToCeylonInteger TO_CEYLON_INTEGER = new ToCeylonInteger();
+    /** The wrapping {@code java.lang.Long} → {@code ceylon.language.Integer} (throws on null) */
+    public static final ToCeylonInteger TO_CEYLON_INTEGER = new ToCeylonInteger(false);
+    /** The wrapping {@code java.lang.Long?} → {@code ceylon.language.Integer?} (passes null) */
+    public static final ToCeylonInteger TO_CEYLON_INTEGER_OR_NULL = new ToCeylonInteger(true);
     
     /** The wrapping {@code java.lang.Double} → {@code ceylon.language.Float} */
-    private static class ToCeylonFloat implements Wrapping<Double, ceylon.language.Float> {
-        private FromCeylonFloat from = new FromCeylonFloat(this);
-        private ToCeylonFloat() {}
+    static class ToCeylonFloat implements Wrapping<Double, ceylon.language.Float> {
+        private final FromCeylonFloat from;
+        private final boolean allowNull;
+        public ToCeylonFloat(boolean allowNull) {
+            this.allowNull = allowNull;
+            from = new FromCeylonFloat(this, allowNull);
+        }
         @Override
         public ceylon.language.Float wrap(Double from) {
-            return from == null ? null : ceylon.language.Float.instance(from);
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of java.lang.Double into ceylon.language.Float");
+                }
+                return null;
+            }
+            return ceylon.language.Float.instance(from);
         }
         @Override
         public Wrapping<ceylon.language.Float, Double> inverted() {
@@ -94,30 +161,50 @@ public class Wrappings {
         }
     }
     /** The wrapping {@code java.lang.Double} ← {@code ceylon.language.Float} */
-    private static class FromCeylonFloat implements Wrapping<ceylon.language.Float, Double> {
-        private ToCeylonFloat to;
-        private FromCeylonFloat(ToCeylonFloat to) {
+    static class FromCeylonFloat implements Wrapping<ceylon.language.Float, Double> {
+        private final ToCeylonFloat to;
+        private final boolean allowNull;
+        public FromCeylonFloat(ToCeylonFloat to, boolean allowNull) {
             this.to = to;
+            this.allowNull = allowNull;
         }
         @Override
         public Double wrap(ceylon.language.Float from) {
-            return from == null ? null : from.doubleValue();
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of ceylon.language.Float into java.lang.Double");
+                }
+                return null;
+            }
+            return from.doubleValue();
         }
         @Override
         public Wrapping<Double, ceylon.language.Float> inverted() {
             return to;
         }
     }
-    /** The wrapping {@code java.lang.Double} → {@code ceylon.language.Float} */
-    public static final ToCeylonFloat TO_CEYLON_FLOAT = new ToCeylonFloat();
+    /** The wrapping {@code java.lang.Double} → {@code ceylon.language.Float} (throws on null) */
+    public static final ToCeylonFloat TO_CEYLON_FLOAT = new ToCeylonFloat(false);
+    /** The wrapping {@code java.lang.Double?} → {@code ceylon.language.Float?} (alllws null) */
+    public static final ToCeylonFloat TO_CEYLON_FLOAT_OR_NULL = new ToCeylonFloat(true);
     
     /** The wrapping {@code java.lang.Byte} → {@code ceylon.language.Byte} */
-    private static class ToCeylonByte implements Wrapping<java.lang.Byte, ceylon.language.Byte> {
-        private FromCeylonByte from = new FromCeylonByte(this);
-        private ToCeylonByte() {}
+    static class ToCeylonByte implements Wrapping<java.lang.Byte, ceylon.language.Byte> {
+        private final FromCeylonByte from;
+        private final boolean allowNull;
+        public ToCeylonByte(boolean allowNull) {
+            this.allowNull = allowNull;
+            from = new FromCeylonByte(this, allowNull);
+        }
         @Override
         public ceylon.language.Byte wrap(java.lang.Byte from) {
-            return from == null ? null : ceylon.language.Byte.instance(from);
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of java.lang.Byte into ceylon.language.Byte");
+                }
+                return null;
+            }
+            return ceylon.language.Byte.instance(from);
         }
         @Override
         public Wrapping<ceylon.language.Byte, java.lang.Byte> inverted() {
@@ -125,30 +212,50 @@ public class Wrappings {
         }
     }
     /** The wrapping {@code java.lang.Byte} ← {@code ceylon.language.Byte} */
-    private static class FromCeylonByte implements Wrapping<ceylon.language.Byte, java.lang.Byte> {
-        private ToCeylonByte to;
-        private FromCeylonByte(ToCeylonByte to) {
+    static class FromCeylonByte implements Wrapping<ceylon.language.Byte, java.lang.Byte> {
+        private final ToCeylonByte to;
+        private final boolean allowNull;
+        public FromCeylonByte(ToCeylonByte to, boolean allowNull) {
             this.to = to;
+            this.allowNull = allowNull;
         }
         @Override
         public java.lang.Byte wrap(ceylon.language.Byte from) {
-            return from == null ? null : from.byteValue();
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of ceylon.language.Byte into java.lang.Byte");
+                }
+                return null;
+            }
+            return from.byteValue();
         }
         @Override
         public Wrapping<java.lang.Byte, ceylon.language.Byte> inverted() {
             return to;
         }
     }
-    /** The wrapping {@code java.lang.Long} → {@code ceylon.language.Integer} */
-    public static final ToCeylonByte TO_CEYLON_BYTE = new ToCeylonByte();
+    /** The wrapping {@code java.lang.Byte} → {@code ceylon.language.Byte} (throws on null) */
+    public static final ToCeylonByte TO_CEYLON_BYTE = new ToCeylonByte(false);
+    /** The wrapping {@code java.lang.Byte?} → {@code ceylon.language.Byte?} (allows null) */
+    public static final ToCeylonByte TO_CEYLON_BYTE_OR_NULL = new ToCeylonByte(false);
     
     /** The wrapping {@code java.lang.Boolean} → {@code ceylon.language.Boolean} */
-    private static class ToCeylonBoolean implements Wrapping<java.lang.Boolean, ceylon.language.Boolean> {
-        private FromCeylonBoolean from = new FromCeylonBoolean(this);
-        private ToCeylonBoolean() {}
+    static class ToCeylonBoolean implements Wrapping<java.lang.Boolean, ceylon.language.Boolean> {
+        private final FromCeylonBoolean from;
+        private final boolean allowNull;
+        public ToCeylonBoolean(boolean allowNull) {
+            this.allowNull = allowNull;
+            from = new FromCeylonBoolean(this, allowNull);
+        }
         @Override
         public ceylon.language.Boolean wrap(java.lang.Boolean from) {
-            return from == null ? null : ceylon.language.Boolean.instance(from);
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of java.lang.Boolean into ceylon.language.Boolean");
+                }
+                return null;
+            }
+            return ceylon.language.Boolean.instance(from);
         }
         @Override
         public Wrapping<ceylon.language.Boolean, java.lang.Boolean> inverted() {
@@ -156,30 +263,50 @@ public class Wrappings {
         }
     }
     /** The wrapping {@code java.lang.Boolean} ← {@code ceylon.language.Boolean} */
-    private static class FromCeylonBoolean implements Wrapping<ceylon.language.Boolean, java.lang.Boolean> {
-        private ToCeylonBoolean to;
-        private FromCeylonBoolean(ToCeylonBoolean to) {
+    static class FromCeylonBoolean implements Wrapping<ceylon.language.Boolean, java.lang.Boolean> {
+        private final ToCeylonBoolean to;
+        private final boolean allowNull;
+        public FromCeylonBoolean(ToCeylonBoolean to, boolean allowNull) {
             this.to = to;
+            this.allowNull = allowNull;
         }
         @Override
         public java.lang.Boolean wrap(ceylon.language.Boolean from) {
-            return from == null ? null : from.booleanValue();
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of ceylon.language.Boolean into java.lang.Boolean");
+                }
+                return null;
+            }
+            return from.booleanValue();
         }
         @Override
         public Wrapping<java.lang.Boolean, ceylon.language.Boolean> inverted() {
             return to;
         }
     }
-    /** The wrapping {@code java.lang.Boolean} → {@code ceylon.language.Boolean} */
-    public static final ToCeylonBoolean TO_CEYLON_BOOLEAN = new ToCeylonBoolean();
+    /** The wrapping {@code java.lang.Boolean} → {@code ceylon.language.Boolean} (throws on null*/
+    public static final ToCeylonBoolean TO_CEYLON_BOOLEAN = new ToCeylonBoolean(false);
+    /** The wrapping {@code java.lang.Boolean?} → {@code ceylon.language.Boolean?} (allows null)*/
+    public static final ToCeylonBoolean TO_CEYLON_BOOLEAN_OR_NULL = new ToCeylonBoolean(true);
     
     /** The wrapping {@code java.lang.Integer} → {@code ceylon.language.Character} */
-    private static class ToCeylonCharacter implements Wrapping<java.lang.Integer, ceylon.language.Character> {
-        private FromCeylonCharacter from = new FromCeylonCharacter(this);
-        private ToCeylonCharacter() {}
+    static class ToCeylonCharacter implements Wrapping<java.lang.Integer, ceylon.language.Character> {
+        private final FromCeylonCharacter from;
+        private final boolean allowNull;
+        public ToCeylonCharacter(boolean allowNull) {
+            this.allowNull = allowNull;
+            from = new FromCeylonCharacter(this, allowNull);
+        }
         @Override
         public ceylon.language.Character wrap(java.lang.Integer from) {
-            return from == null ? null : ceylon.language.Character.instance(from);
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of java.lang.Character into ceylon.language.Character");
+                }
+                return null;
+            }
+            return ceylon.language.Character.instance(from);
         }
         @Override
         public Wrapping<ceylon.language.Character, java.lang.Integer> inverted() {
@@ -187,30 +314,50 @@ public class Wrappings {
         }
     }
     /** The wrapping {@code java.lang.Integer} ← {@code ceylon.language.Character} */
-    private static class FromCeylonCharacter implements Wrapping<ceylon.language.Character, java.lang.Integer> {
-        private ToCeylonCharacter to;
-        private FromCeylonCharacter(ToCeylonCharacter to) {
+    static class FromCeylonCharacter implements Wrapping<ceylon.language.Character, java.lang.Integer> {
+        private final ToCeylonCharacter to;
+        private final boolean allowNull;
+        public FromCeylonCharacter(ToCeylonCharacter to, boolean allowNull) {
             this.to = to;
+            this.allowNull = allowNull;
         }
         @Override
         public java.lang.Integer wrap(ceylon.language.Character from) {
-            return from == null ? null : from.codePoint;
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of ceylon.language.Character into java.lang.Character");
+                }
+                return null;
+            }
+            return from.codePoint;
         }
         @Override
         public Wrapping<java.lang.Integer, ceylon.language.Character> inverted() {
             return to;
         }
     }
-    /** The wrapping {@code java.lang.Integer} → {@code ceylon.language.Character} */
-    public static final ToCeylonCharacter TO_CEYLON_CHARACTER = new ToCeylonCharacter();
+    /** The wrapping {@code java.lang.Integer} → {@code ceylon.language.Character} (throws on null) */
+    public static final ToCeylonCharacter TO_CEYLON_CHARACTER = new ToCeylonCharacter(false);
+    /** The wrapping {@code java.lang.Integer} → {@code ceylon.language.Character} (allows null) */
+    public static final ToCeylonCharacter TO_CEYLON_CHARACTER_OR_NULL = new ToCeylonCharacter(true);
     
     /** The wrapping {@code java.lang.String} → {@code ceylon.language.String} */
-    private static class ToCeylonString implements Wrapping<java.lang.String, ceylon.language.String> {
-        private FromCeylonString from = new FromCeylonString(this);
-        private ToCeylonString() {}
+    static class ToCeylonString implements Wrapping<java.lang.String, ceylon.language.String> {
+        private final FromCeylonString from;
+        private final boolean allowNull;
+        public ToCeylonString(boolean allowNull) {
+            this.allowNull = allowNull;
+            from = new FromCeylonString(this, allowNull);
+        }
         @Override
         public ceylon.language.String wrap(java.lang.String from) {
-            return from == null ? null : ceylon.language.String.instance(from);
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of java.lang.String into ceylon.language.String");
+                }
+                return null;
+            }
+            return ceylon.language.String.instance(from);
         }
         @Override
         public Wrapping<ceylon.language.String, java.lang.String> inverted() {
@@ -218,25 +365,35 @@ public class Wrappings {
         }
     }
     /** The wrapping {@code java.lang.String} ← {@code ceylon.language.String} */
-    private static class FromCeylonString implements Wrapping<ceylon.language.String, java.lang.String> {
-        private ToCeylonString to;
-        private FromCeylonString(ToCeylonString to) {
+    static class FromCeylonString implements Wrapping<ceylon.language.String, java.lang.String> {
+        private final ToCeylonString to;
+        private final boolean allowNull;
+        public FromCeylonString(ToCeylonString to, boolean allowNull) {
             this.to = to;
+            this.allowNull = allowNull;
         }
         @Override
         public java.lang.String wrap(ceylon.language.String from) {
-            return from == null ? null : from.value;
+            if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of ceylon.language.String into java.lang.String");
+                }
+                return null;
+            }
+            return from.value;
         }
         @Override
         public Wrapping<java.lang.String, ceylon.language.String> inverted() {
             return to;
         }
     }
-    /** The wrapping {@code java.lang.Long} → {@code ceylon.language.Integer} */
-    public static final ToCeylonString TO_CEYLON_STRING = new ToCeylonString();
+    /** The wrapping {@code java.lang.Long} → {@code ceylon.language.Integer} (throws on null) */
+    public static final ToCeylonString TO_CEYLON_STRING = new ToCeylonString(false);
+    /** The wrapping {@code java.lang.Long?} → {@code ceylon.language.Integer?} (allows null) */
+    public static final ToCeylonString TO_CEYLON_STRING_OR_NULL = new ToCeylonString(true);
     
     /** The wrapping {@code java.util.Map.Entry} → {@code ceylon.language.Entry} */
-    public static <JavaKey,JavaItem,CeylonKey,CeylonItem> Wrapping<java.util.Map.Entry<JavaKey, JavaItem>, ceylon.language.Entry<CeylonKey, CeylonItem>> toCeylonEntry(
+    static <JavaKey,JavaItem,CeylonKey,CeylonItem> Wrapping<java.util.Map.Entry<JavaKey, JavaItem>, ceylon.language.Entry<CeylonKey, CeylonItem>> toCeylonEntry(
             final TypeDescriptor $reified$Key, final TypeDescriptor $reified$Item,
             final Wrapping<JavaKey,CeylonKey> keyWrapping, 
             final Wrapping<JavaItem,CeylonItem> itemWrapping) {
@@ -251,9 +408,6 @@ public class Wrappings {
             
             @Override
             public Entry<CeylonKey, CeylonItem> wrap(java.util.Map.Entry<JavaKey, JavaItem> from) {
-                if (from == null) {
-                    return null;
-                }
                 return new ceylon.language.Entry<CeylonKey, CeylonItem>($reified$Key, $reified$Item, 
                         keyWrapping.wrap(from.getKey()), 
                         itemWrapping.wrap(from.getValue()));
@@ -266,11 +420,11 @@ public class Wrappings {
         return new ToCeylonEntry();
     }
     /** The wrapping {@code java.util.Map.Entry} ← {@code ceylon.language.Entry} */
-    private static class FromCeylonEntry<CeylonKey,CeylonItem,JavaKey,JavaItem> implements Wrapping<ceylon.language.Entry<CeylonKey, CeylonItem>, java.util.Map.Entry<JavaKey, JavaItem>> {
+    static class FromCeylonEntry<CeylonKey,CeylonItem,JavaKey,JavaItem> implements Wrapping<ceylon.language.Entry<CeylonKey, CeylonItem>, java.util.Map.Entry<JavaKey, JavaItem>> {
         private final Wrapping<java.util.Map.Entry<JavaKey, JavaItem>, Entry<CeylonKey, CeylonItem>> from;
         private final Wrapping<CeylonKey,JavaKey> keyWrapping;
         private final Wrapping<CeylonItem,JavaItem> itemWrapping;
-        FromCeylonEntry(Wrapping<java.util.Map.Entry<JavaKey, JavaItem>, Entry<CeylonKey, CeylonItem>> from,
+        public FromCeylonEntry(Wrapping<java.util.Map.Entry<JavaKey, JavaItem>, Entry<CeylonKey, CeylonItem>> from,
                 Wrapping<CeylonKey,JavaKey> keyWrapping, Wrapping<CeylonItem,JavaItem> itemWrapping) {
             this.from = from;
             this.keyWrapping = keyWrapping;
@@ -278,9 +432,6 @@ public class Wrappings {
         }
         @Override
         public java.util.Map.Entry<JavaKey, JavaItem> wrap(Entry<CeylonKey, CeylonItem> from) {
-            if (from == null) {
-                return null;
-            }
             return new AbstractMap.SimpleEntry<JavaKey,JavaItem>(
                     keyWrapping.wrap((CeylonKey)from.getKey()), 
                     itemWrapping.wrap((CeylonItem)from.getItem()));
@@ -291,21 +442,26 @@ public class Wrappings {
         }
     }
     
-    private static class ToCeylonList<Java,Ceylon> implements Wrapping<java.util.List<Java>, ceylon.language.List<Ceylon>> {
+    static class ToCeylonList<Java,Ceylon> implements Wrapping<java.util.List<Java>, ceylon.language.List<Ceylon>> {
 
         private final FromCeylonList<Ceylon,Java> from;
         private TypeDescriptor $reified$Element;
         private Wrapping<Java, Ceylon> elementWrapping;
+        private boolean allowNull;
         
-        public ToCeylonList(TypeDescriptor $reified$Element, Wrapping<Java, Ceylon> elementWrapping) {
+        public ToCeylonList(TypeDescriptor $reified$Element, Wrapping<Java, Ceylon> elementWrapping, boolean allowNull) {
             this.$reified$Element = $reified$Element;
             this.elementWrapping = elementWrapping;
-            from = new FromCeylonList<Ceylon,Java>(this, elementWrapping.inverted());
+            this.allowNull = allowNull;
+            from = new FromCeylonList<Ceylon,Java>(this, elementWrapping.inverted(), allowNull);
         }
         
         @Override
         public List<Ceylon> wrap(java.util.List<Java> from) {
             if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of java.util.List into ceylon.language.List");
+                }
                 return null;
             }
             if (from instanceof WrappedCeylonList) {
@@ -322,19 +478,24 @@ public class Wrappings {
         
     }
     
-    private static class FromCeylonList<Ceylon,Java> implements Wrapping<ceylon.language.List<Ceylon>, java.util.List<Java>> {
+    static class FromCeylonList<Ceylon,Java> implements Wrapping<ceylon.language.List<Ceylon>, java.util.List<Java>> {
 
         private final ToCeylonList<Java,Ceylon> to;
         private final Wrapping<Ceylon,Java> elementWrapping;
+        private final boolean allowNull;
 
-        public FromCeylonList(ToCeylonList<Java,Ceylon> to, Wrapping<Ceylon,Java> elementWrapping) {
+        public FromCeylonList(ToCeylonList<Java,Ceylon> to, Wrapping<Ceylon,Java> elementWrapping, boolean allowNull) {
             this.to = to;
             this.elementWrapping = elementWrapping;
+            this.allowNull = allowNull;
         }
         
         @Override
         public java.util.List<Java> wrap(List<Ceylon> from) {
             if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of ceylon.language.List into java.util.List");
+                }
                 return null;
             }
             if (from instanceof WrappedJavaList) {
@@ -350,26 +511,43 @@ public class Wrappings {
         }
     }
     
-    public static <Java,Ceylon> Wrapping<java.util.List<Java>, ceylon.language.List<Ceylon>> toCeylonList(TypeDescriptor $reified$Element) {
+    /** 
+     * Returns a Wrapping to convert a java.util.List into a ceylon.language.List
+     * 
+     * If the given {@code $reified$Element} represents:
+     * <ul><li>Boolean, Byte, Integer, Float, Character or String or</li>
+     * <li>List, Set or Map</li>
+     * <li>or optional types of these</li>
+     * </ul>
+     * the elements will also be wrapped/unwrapped as needed. 
+     * 
+     * The given {@code allowNull} determines whether the toplevel list is allowed to be null 
+     */
+    public static <Java,Ceylon> Wrapping<java.util.List<Java>, ceylon.language.List<Ceylon>> toCeylonList(TypeDescriptor $reified$Element, boolean allowNull) {
         Wrapping<Java, Ceylon> elementWrapping = elementMapping($reified$Element);
-        return new ToCeylonList<Java,Ceylon>($reified$Element, elementWrapping);
+        return new ToCeylonList<Java,Ceylon>($reified$Element, elementWrapping, allowNull);
     }
     
-    private static class ToCeylonSet<Java,Ceylon> implements Wrapping<java.util.Set<Java>, ceylon.language.Set<Ceylon>> {
+    static class ToCeylonSet<Java,Ceylon> implements Wrapping<java.util.Set<Java>, ceylon.language.Set<Ceylon>> {
 
         private final FromCeylonSet<Ceylon,Java> from;
-        private TypeDescriptor $reified$Element;
-        private Wrapping<Java, Ceylon> elementWrapping;
+        private final TypeDescriptor $reified$Element;
+        private final Wrapping<Java, Ceylon> elementWrapping;
+        private final boolean allowNull;
         
-        public ToCeylonSet(TypeDescriptor $reified$Element, Wrapping<Java, Ceylon> elementWrapping) {
+        public ToCeylonSet(TypeDescriptor $reified$Element, Wrapping<Java, Ceylon> elementWrapping, boolean allowNull) {
             this.$reified$Element = $reified$Element;
             this.elementWrapping = elementWrapping;
-            from = new FromCeylonSet<Ceylon,Java>(this, elementWrapping.inverted());
+            this.allowNull = allowNull;
+            from = new FromCeylonSet<Ceylon,Java>(this, elementWrapping.inverted(), allowNull);
         }
         
         @Override
         public ceylon.language.Set<Ceylon> wrap(java.util.Set<Java> from) {
             if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of java.util.Set into ceylon.language.Set");
+                }
                 return null;
             }
             if (from instanceof WrappedCeylonSet) {
@@ -388,19 +566,24 @@ public class Wrappings {
         
     }
     
-    private static class FromCeylonSet<Ceylon,Java> implements Wrapping<ceylon.language.Set<Ceylon>, java.util.Set<Java>> {
+    static class FromCeylonSet<Ceylon,Java> implements Wrapping<ceylon.language.Set<Ceylon>, java.util.Set<Java>> {
 
         private final ToCeylonSet<Java,Ceylon> to;
         private final Wrapping<Ceylon,Java> elementWrapping;
+        private final boolean allowNull;
 
-        public FromCeylonSet(ToCeylonSet<Java,Ceylon> to, Wrapping<Ceylon,Java> elementWrapping) {
+        public FromCeylonSet(ToCeylonSet<Java,Ceylon> to, Wrapping<Ceylon,Java> elementWrapping, boolean allowNull) {
             this.to = to;
             this.elementWrapping = elementWrapping;
+            this.allowNull = allowNull;
         }
         
         @Override
         public java.util.Set<Java> wrap(ceylon.language.Set<Ceylon> from) {
             if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of ceylon.language.Set into java.util.Set");
+                }
                 return null;
             }
             if (from instanceof WrappedJavaSet) {
@@ -415,30 +598,47 @@ public class Wrappings {
         }
     }
     
-    public static<Java,Ceylon> Wrapping<java.util.Set<Java>, ceylon.language.Set<Ceylon>> toCeylonSet(TypeDescriptor $reified$Element) {
+    /** 
+     * Returns a Wrapping to convert a java.util.Set into a ceylon.language.Set
+     * 
+     * If the given {@code $reified$Element} represents:
+     * <ul><li>Boolean, Byte, Integer, Float, Character or String or</li>
+     * <li>List, Set or Map</li>
+     * <li>or optional types of these</li>
+     * </ul>
+     * the elements will also be wrapped/unwrapped as needed. 
+     * 
+     * The given {@code allowNull} determines whether the toplevel set is allowed to be null 
+     */
+    public static<Java,Ceylon> Wrapping<java.util.Set<Java>, ceylon.language.Set<Ceylon>> toCeylonSet(TypeDescriptor $reified$Element, boolean allowNull) {
         Wrapping<Java, Ceylon> elementWrapping = elementMapping($reified$Element);
-        return new ToCeylonSet<Java,Ceylon>($reified$Element, elementWrapping);
+        return new ToCeylonSet<Java,Ceylon>($reified$Element, elementWrapping, allowNull);
     }
     
-    private static class ToCeylonMap<JavaKey,JavaItem,CeylonKey,CeylonItem> implements Wrapping<java.util.Map<JavaKey,JavaItem>, ceylon.language.Map<CeylonKey,CeylonItem>> {
+    static class ToCeylonMap<JavaKey,JavaItem,CeylonKey,CeylonItem> implements Wrapping<java.util.Map<JavaKey,JavaItem>, ceylon.language.Map<CeylonKey,CeylonItem>> {
 
         private final FromCeylonMap<CeylonKey,CeylonItem,JavaKey,JavaItem> from;
-        private TypeDescriptor $reified$Key;
-        private TypeDescriptor $reified$Item;
-        private Wrapping<JavaKey, CeylonKey> keyWrapping;
-        private Wrapping<JavaItem, CeylonItem> itemWrapping;
+        private final TypeDescriptor $reified$Key;
+        private final TypeDescriptor $reified$Item;
+        private final Wrapping<JavaKey, CeylonKey> keyWrapping;
+        private final Wrapping<JavaItem, CeylonItem> itemWrapping;
+        private boolean allowNull;
         
-        public ToCeylonMap(TypeDescriptor $reified$Key, TypeDescriptor $reified$Item, Wrapping<JavaKey, CeylonKey> keyWrapping, Wrapping<JavaItem, CeylonItem> itemWrapping) {
+        public ToCeylonMap(TypeDescriptor $reified$Key, TypeDescriptor $reified$Item, Wrapping<JavaKey, CeylonKey> keyWrapping, Wrapping<JavaItem, CeylonItem> itemWrapping, boolean allowNull) {
             this.$reified$Key = $reified$Key;
             this.$reified$Item = $reified$Item;
             this.keyWrapping = keyWrapping;
             this.itemWrapping = itemWrapping;
-            from = new FromCeylonMap<CeylonKey,CeylonItem,JavaKey,JavaItem>($reified$Key, $reified$Item, this, keyWrapping.inverted(), itemWrapping.inverted());
+            this.allowNull = allowNull;
+            from = new FromCeylonMap<CeylonKey,CeylonItem,JavaKey,JavaItem>($reified$Key, $reified$Item, this, keyWrapping.inverted(), itemWrapping.inverted(), allowNull);
         }
         
         @Override
         public ceylon.language.Map<CeylonKey,CeylonItem> wrap(java.util.Map<JavaKey, JavaItem> from) {
             if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of java.util.Map into ceylon.language.Map");
+                }
                 return null;
             }
             if (from instanceof WrappedCeylonMap) {
@@ -456,30 +656,35 @@ public class Wrappings {
         
     }
     
-    private static class FromCeylonMap<CeylonKey,CeylonItem,JavaKey,JavaItem> implements Wrapping<ceylon.language.Map<CeylonKey,CeylonItem>, java.util.Map<JavaKey,JavaItem>> {
+    static class FromCeylonMap<CeylonKey,CeylonItem,JavaKey,JavaItem> implements Wrapping<ceylon.language.Map<CeylonKey,CeylonItem>, java.util.Map<JavaKey,JavaItem>> {
 
         private final TypeDescriptor $reified$Key;
         private final TypeDescriptor $reified$Item;
         private final ToCeylonMap<JavaKey,JavaItem,CeylonKey,CeylonItem> to;
         private final Wrapping<CeylonKey,JavaKey> keyWrapping;
         private final Wrapping<CeylonItem,JavaItem> itemWrapping;
+        private final boolean allowNull;
 
         public FromCeylonMap(
                 TypeDescriptor $reified$Key,
                 TypeDescriptor $reified$Item,
                 ToCeylonMap<JavaKey,JavaItem,CeylonKey,CeylonItem> to, 
                 Wrapping<CeylonKey,JavaKey> keyWrapping, 
-                Wrapping<CeylonItem,JavaItem> itemWrapping) {
+                Wrapping<CeylonItem,JavaItem> itemWrapping, boolean allowNull) {
             this.$reified$Key = $reified$Key;
             this.$reified$Item = $reified$Item;
             this.to = to;
             this.keyWrapping = keyWrapping;
             this.itemWrapping = itemWrapping;
+            this.allowNull = allowNull;
         }
         
         @Override
         public java.util.Map<JavaKey, JavaItem> wrap(ceylon.language.Map<CeylonKey, CeylonItem> from) {
             if (from == null) {
+                if (!allowNull) {
+                    checkNull(from, "of ceylon.language.Map into java.util.Map");
+                }
                 return null;
             }
             if (from instanceof WrappedJavaMap<?,?,?,?>) {
@@ -497,9 +702,23 @@ public class Wrappings {
         }
     }
     
-    public static<JavaKey,JavaItem,CeylonKey,CeylonItem> Wrapping<java.util.Map<JavaKey,JavaItem>, ceylon.language.Map<CeylonKey,CeylonItem>> toCeylonMap(TypeDescriptor $reified$Key, TypeDescriptor $reified$Item) {
+    /** 
+     * Returns a Wrapping to convert a java.util.Map into a ceylon.language.Map
+     * 
+     * If the given {@code $reified$Key} and {@code $reified$Item} represents:
+     * <ul><li>Boolean, Byte, Integer, Float, Character or String or</li>
+     * <li>List, Set or Map</li>
+     * <li>or optional types of these</li>
+     * </ul>
+     * the elements will also be wrapped/unwrapped as needed. 
+     * 
+     * The given {@code allowNull} determines whether the toplevel map is allowed to be null 
+     */
+    public static<JavaKey,JavaItem,CeylonKey,CeylonItem> Wrapping<java.util.Map<JavaKey,JavaItem>, ceylon.language.Map<CeylonKey,CeylonItem>> toCeylonMap(TypeDescriptor $reified$Key, TypeDescriptor $reified$Item, boolean allowNull) {
         Wrapping<JavaKey, CeylonKey> keyWrapping = elementMapping($reified$Key);
-        Wrapping<JavaItem, CeylonItem> itemWrapping = elementMapping($reified$Item);
-        return new ToCeylonMap<JavaKey,JavaItem,CeylonKey,CeylonItem>($reified$Key, $reified$Item, keyWrapping, itemWrapping);
+        // Because you get a null value when looking for a not-present key
+        // we must ensure that the item wrapping admits null
+        Wrapping<JavaItem, CeylonItem> itemWrapping = elementMapping($reified$Item.containsNull() ? $reified$Item : TypeDescriptor.union($reified$Item, Null.$TypeDescriptor$));
+        return new ToCeylonMap<JavaKey,JavaItem,CeylonKey,CeylonItem>($reified$Key, $reified$Item, keyWrapping, itemWrapping, allowNull);
     }
 }
