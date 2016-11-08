@@ -2357,10 +2357,13 @@ public class Type extends Reference {
             return false;
         }
         else {
-            Type qt = getQualifyingType();
-            if (qt!=null && 
-                    qt.containsUnknowns()) {
-                return true;
+            TypeDeclaration dec = getDeclaration();
+            if (!dec.isJava() || !dec.isStatic()) {
+                Type qt = getQualifyingType();
+                if (qt!=null &&
+                        qt.containsUnknowns()) {
+                    return true;
+                }
             }
             if (!isTypeConstructor()) {
                 for (Type at: getTypeArgumentList()) {
@@ -2431,13 +2434,16 @@ public class Type extends Reference {
                     }
                 }
             }
-            Type qt = getQualifyingType();
-            if (qt!=null) {
-                String error = 
-                        qt.getFirstUnknownTypeError(
-                                includeSuperTypes);
-                if (error!=null) {
-                    return error;
+            TypeDeclaration dec = getDeclaration();
+            if (!dec.isJava() || !dec.isStatic()) {
+                Type qt = getQualifyingType();
+                if (qt!=null) {
+                    String error = 
+                            qt.getFirstUnknownTypeError(
+                                    includeSuperTypes);
+                    if (error!=null) {
+                        return error;
+                    }
                 }
             }
             List<Type> tas = getTypeArgumentList();
