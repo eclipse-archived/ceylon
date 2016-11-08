@@ -34,4 +34,9 @@ class WrappedCeylonIterator<Out, In> implements java.util.Iterator<Out> {
         this.next = cIterator.next();
         return (Out)elementWrapping.wrap((In)next);
     }
+    
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
 }
