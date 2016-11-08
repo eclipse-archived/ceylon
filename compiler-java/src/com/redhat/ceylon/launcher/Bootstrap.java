@@ -166,7 +166,7 @@ public class Bootstrap {
             return result.intValue();
         } finally {
             if (cl != null) {
-                cl.clearCache();
+                cl.clearCacheButNotWithThisNameToKeepSpringBootHappy();
                 try {
                     cl.close();
                 } catch (IOException e) {

@@ -140,7 +140,7 @@ public class Util {
                 Object reference = project.getReference(CEYLON_CLASSLOADER_REFERENCE);
                 project.getReferences().remove(CEYLON_CLASSLOADER_REFERENCE);
                 if(reference instanceof CeylonClassLoader){
-                    ((CeylonClassLoader) reference).clearCache();
+                    ((CeylonClassLoader) reference).clearCacheButNotWithThisNameToKeepSpringBootHappy();
                 }
             }
 

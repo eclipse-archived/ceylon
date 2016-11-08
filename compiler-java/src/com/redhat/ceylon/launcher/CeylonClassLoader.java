@@ -269,8 +269,10 @@ public class CeylonClassLoader extends URLClassLoader {
     /**
      * Cleans up any resource associated with this class loader. This class loader will not be usable after calling this
      * method, so any code using it to run better not be running anymore.
+     * DO NOT call this method "clearCache" as Spring Boot has reserved that name: 
+     * https://github.com/ceylon/ceylon/issues/6681
      */
-    public void clearCache() {
+    public void clearCacheButNotWithThisNameToKeepSpringBootHappy() {
         try {
             Class<?> klass = java.net.URLClassLoader.class;
             Field ucp = klass.getDeclaredField("ucp");
