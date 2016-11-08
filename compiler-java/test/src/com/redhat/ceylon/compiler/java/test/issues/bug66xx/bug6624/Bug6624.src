@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug66xx.bug6624;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class bug6624_ {
+    
+    private bug6624_() {
+    }
+    
+    @.ceylon.language.NativeAnnotation$annotation$(backends = "jvm")
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug6624() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug66xx.bug6624.bug6624_.bug6624();
+    }
+}

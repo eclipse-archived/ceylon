@@ -250,7 +250,8 @@ public abstract class DeclarationVisitor extends Visitor {
                     // Abstraction-less native implementation, check
                     // it's not shared
                     if (!isHeader && 
-                            mustHaveHeader(model)) {
+                            mustHaveHeader(model) &&
+                            !moduleBackends.equals(mbackends)) {
                         that.addError("shared native implementation must have a header: '" +
                                 model.getName() + "' has no native header");
                     }
