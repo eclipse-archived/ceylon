@@ -167,7 +167,7 @@ public class MiscTests extends CompilerTests {
                 "com/redhat/ceylon/compiler/java/runtime/metamodel/decl",
                 "com/redhat/ceylon/compiler/java/runtime/metamodel/meta",
                 "com/redhat/ceylon/compiler/java/runtime/serialization",
-                "com/redhat/ceylon/compiler/java/wrappings", 
+                "com/redhat/ceylon/compiler/java/wrapping", 
                 };
         for(String pkg : javaPackages){
             File pkgDir = new File(javaSourcePath, pkg.replaceAll("\\.", "/"));
