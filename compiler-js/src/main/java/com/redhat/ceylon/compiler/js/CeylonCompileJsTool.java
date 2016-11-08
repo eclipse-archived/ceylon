@@ -241,6 +241,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         super.initialize(mainTool);
+        includeDependencies = processCompileFlags(includeDependencies, DefaultToolOptions.getCompilerIncludeDependencies());
     }
 
     @Override
@@ -264,7 +265,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 .stdin(false)
                 .generateSourceArchive(!skipSrc)
                 .encoding(encoding)
-                .includeDependencies(processCompileFlags(includeDependencies, DefaultToolOptions.getCompilerIncludeDependencies()))
+                .includeDependencies(includeDependencies)
                 .diagnosticListener(diagnosticListener)
                 .outWriter(writer)
                 .suppressWarnings(suppwarns);
