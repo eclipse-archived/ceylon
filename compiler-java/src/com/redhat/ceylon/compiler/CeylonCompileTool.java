@@ -696,7 +696,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         
         if (includeDependencies != null && !COMPILE_NEVER.equals(includeDependencies)) {
             // Determine any dependencies that might need compiling as well
-            SourceDependencyResolver sdr = new SourceDependencyResolver(this.sources, Backends.JS);
+            SourceDependencyResolver sdr = new SourceDependencyResolver(this.sources, Backends.JAVA);
             if (sdr.cwd(cwd).traverseDependencies(sar.getSourceFiles())) {
                 for (ModuleVersionDetails mvd : sdr.getAdditionalModules()) {
                     if (COMPILE_FORCE.equals(includeDependencies)
