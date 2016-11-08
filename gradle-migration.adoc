@@ -1,8 +1,5 @@
 = Tracking Gradle Migration
 
-Builds currently go to `builtByGradle` directory instead of `build` in order to make it easier to compare
-Ant & Gradle builds.
-
 == Overall TODO for each project
 
 * ide-quick

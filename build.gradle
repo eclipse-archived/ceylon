@@ -15,7 +15,7 @@ allprojects {
     apply from : "${rootProject.projectDir}/dependencies.gradle"
 
     ext {
-        buildPrefix = 'builtByGradle'
+        buildPrefix = 'build'
         buildRelease = false
 
         distDir =      file("${rootProject.projectDir}/${buildPrefix}/distribution")
