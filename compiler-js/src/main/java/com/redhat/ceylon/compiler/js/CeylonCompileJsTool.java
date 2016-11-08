@@ -344,8 +344,8 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 if (sdr.cwd(cwd).traverseDependencies(resolver.getSourceFiles())) {
                     for (ModuleVersionDetails mvd : sdr.getAdditionalModules()) {
                         if (COMPILE_FORCE.equals(includeDependencies)
-                                || (COMPILE_CHECK.equals(includeDependencies) && shouldRecompile(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, true))
-                                || (COMPILE_ONCE.equals(includeDependencies) && shouldRecompile(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, false))) {
+                                || (COMPILE_CHECK.equals(includeDependencies) && shouldRecompile(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JS, true))
+                                || (COMPILE_ONCE.equals(includeDependencies) && shouldRecompile(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JS, false))) {
                             files.add(mvd.getModule());
                             resolver.expandAndParse(files, Backend.JavaScript);
                         }
