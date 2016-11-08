@@ -3990,6 +3990,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     JCExpression boxJavaType(JCExpression expr, Type type) {
+        JCExpression allowNull = make().Literal(!type.isSubtypeOf(typeFact().getObjectType()));
         type = simplifyType(type);
         if (type.isSubtypeOf(typeFact().getNullType())) {
             return expr;
@@ -4004,7 +4005,7 @@ public abstract class AbstractTransformer implements Transformation {
                     makeSelect(make().Apply(List.<JCExpression>of(isJavaBoxableType(elementType, true) ? javaBoxType(elementType) : makeJavaType(elementType, JT_TYPE_ARGUMENT),
                                 makeJavaType(elementType, JT_TYPE_ARGUMENT)), 
                             makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonList"), 
-                            List.<JCExpression>of(makeReifiedTypeArgument(elementType))),
+                            List.<JCExpression>of(makeReifiedTypeArgument(elementType), allowNull)),
                             "inverted"), 
                     List.<JCExpression>nil()), "wrap"),
                     List.<JCExpression>of(expr));
@@ -4016,7 +4017,7 @@ public abstract class AbstractTransformer implements Transformation {
                     makeSelect(make().Apply(List.<JCExpression>of(isJavaBoxableType(elementType, true) ? javaBoxType(elementType) : makeJavaType(elementType, JT_TYPE_ARGUMENT),
                                 makeJavaType(elementType, JT_TYPE_ARGUMENT)), 
                             makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonSet"), 
-                            List.<JCExpression>of(makeReifiedTypeArgument(elementType))),
+                            List.<JCExpression>of(makeReifiedTypeArgument(elementType), allowNull)),
                             "inverted"), 
                     List.<JCExpression>nil()), "wrap"),
                     List.<JCExpression>of(expr));
@@ -4032,7 +4033,7 @@ public abstract class AbstractTransformer implements Transformation {
                                 makeJavaType(keyType, JT_TYPE_ARGUMENT),
                                 makeJavaType(itemType, JT_TYPE_ARGUMENT)), 
                             makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonMap"), 
-                            List.<JCExpression>of(makeReifiedTypeArgument(keyType),makeReifiedTypeArgument(itemType))),
+                            List.<JCExpression>of(makeReifiedTypeArgument(keyType),makeReifiedTypeArgument(itemType), allowNull)),
                             "inverted"), 
                     List.<JCExpression>nil()), "wrap"),
                     List.<JCExpression>of(expr));
@@ -4044,7 +4045,9 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
-    JCExpression unboxJavaType(JCExpression expr, Type type) {
+    JCExpression unboxJavaType(JCExpression expr, Type t) {
+        JCExpression allowNull = make().Literal(!t.isSubtypeOf(typeFact().getObjectType()));
+        Type type = typeFact().getDefiniteType(t);
         String method;
         if (type.isString()) {
             return expr;
@@ -4058,7 +4061,7 @@ public abstract class AbstractTransformer implements Transformation {
             method = "booleanValue";
         } else if (type.isCharacter()) {
             method = "intValue";
-        } else if (type.getDeclaration().equals(typeFact().getListDeclaration())) {
+        } else if (typeFact().getListDeclaration().equals(type.getDeclaration())) {
             // Wrappings.toCeylonList().inverse()
             Type elementType = type.getTypeArgumentList().get(0);
             return make().Apply(null,
@@ -4066,19 +4069,19 @@ public abstract class AbstractTransformer implements Transformation {
                             isJavaBoxableType(elementType, true) ? javaBoxType(elementType) : makeJavaType(elementType, JT_TYPE_ARGUMENT),
                                     makeJavaType(elementType, JT_TYPE_ARGUMENT)), 
                             makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonList"), 
-                            List.<JCExpression>of(makeReifiedTypeArgument(elementType))),
+                            List.<JCExpression>of(makeReifiedTypeArgument(elementType), allowNull)),
                             "wrap"),
                     List.<JCExpression>of(expr));
-        } else if (type.getDeclaration().equals(typeFact().getSetDeclaration())) {
+        } else if (typeFact().getSetDeclaration().equals(type.getDeclaration())) {
             Type elementType = type.getTypeArgumentList().get(0);
             return make().Apply(null,
                     makeSelect(make().Apply(List.<JCExpression>of(isJavaBoxableType(elementType, true) ? javaBoxType(elementType) : makeJavaType(elementType, JT_TYPE_ARGUMENT),makeJavaType(elementType, JT_TYPE_ARGUMENT)), 
                             makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonSet"), 
-                            List.<JCExpression>of(makeReifiedTypeArgument(elementType))),
+                            List.<JCExpression>of(makeReifiedTypeArgument(elementType), allowNull)),
                             "wrap"),
                     List.<JCExpression>of(expr));
             
-        } else if (type.getDeclaration().equals(typeFact().getMapDeclaration())) {
+        } else if (typeFact().getMapDeclaration().equals(type.getDeclaration())) {
             Type keyType = type.getTypeArgumentList().get(0);
             Type itemType = type.getTypeArgumentList().get(1);
             return make().Apply(null,
@@ -4087,7 +4090,7 @@ public abstract class AbstractTransformer implements Transformation {
                                 makeJavaType(keyType, JT_TYPE_ARGUMENT),
                                 makeJavaType(itemType, JT_TYPE_ARGUMENT)), 
                             makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonMap"), 
-                            List.<JCExpression>of(makeReifiedTypeArgument(keyType),makeReifiedTypeArgument(itemType))),
+                            List.<JCExpression>of(makeReifiedTypeArgument(keyType),makeReifiedTypeArgument(itemType), allowNull)),
                         "wrap"),
                     List.<JCExpression>of(expr));
             

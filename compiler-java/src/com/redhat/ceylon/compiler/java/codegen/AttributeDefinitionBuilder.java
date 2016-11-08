@@ -732,7 +732,7 @@ public class AttributeDefinitionBuilder {
             returnExpr = owner.make().Conditional(
                     owner.make().Binary(JCTree.Tag.EQ, makeValueFieldAccess(), owner.makeNull()), 
                     owner.makeNull(), 
-                    owner.boxType(owner.unboxJavaType(returnExpr, owner.simplifyType(attrType)),
+                    owner.boxType(owner.unboxJavaType(returnExpr, attrType),
                             owner.simplifyType(attrType)));
         }
         if (attrTypedDecl.isStatic()) {
