@@ -3944,12 +3944,48 @@ public abstract class AbstractTransformer implements Transformation {
             return make().Type(syms().stringType);
         } else if (t.isByte()) {
             return makeQuotedQualIdentFromString("java.lang.Byte");
+        } else if (t.isCharacter()) {
+            return makeQuotedQualIdentFromString("java.lang.Integer");
         } else if (t.isBoolean()
                 || typeFact().getBooleanTrueDeclaration().getType().isExactly(t)
                 || typeFact().getBooleanFalseDeclaration().getType().isExactly(t)) {
             return make().Type(syms().booleanObjectType);
         } else {
-            throw BugException.unhandledTypeCase(t);
+            Type elementType = t.getTypeArgumentList().get(0);
+            if (t.getDeclaration().equals(typeFact().getListDeclaration())) {
+                JCExpression ta;
+                if (isJavaBoxableType(elementType, true)) {
+                    ta = javaBoxType(elementType);
+                } else {
+                    ta = makeJavaType(elementType, JT_TYPE_ARGUMENT);
+                }
+                return make().TypeApply(make().QualIdent(syms().listType.tsym), List.<JCExpression>of(ta));
+            } else if (t.getDeclaration().equals(typeFact().getSetDeclaration())) {
+                JCExpression ta;
+                if (isJavaBoxableType(elementType, true)) {
+                    ta = javaBoxType(elementType);
+                } else {
+                    ta = makeJavaType(elementType, JT_TYPE_ARGUMENT);
+                }
+                return make().TypeApply(make().QualIdent(syms().setType.tsym), List.<JCExpression>of(ta));
+            } else if (t.getDeclaration().equals(typeFact().getMapDeclaration())) {
+                JCExpression ta;
+                if (isJavaBoxableType(elementType, true)) {
+                    ta = javaBoxType(elementType);
+                } else {
+                    ta = makeJavaType(elementType, JT_TYPE_ARGUMENT);
+                }
+                Type itemType = t.getTypeArgumentList().get(1);
+                JCExpression itemta;
+                if (isJavaBoxableType(itemType, true)) {
+                    itemta = javaBoxType(elementType);
+                } else {
+                    itemta = makeJavaType(itemType, JT_TYPE_ARGUMENT);
+                }
+                return make().TypeApply(make().QualIdent(syms().mapType.tsym), List.<JCExpression>of(ta,itemta));
+            } else {
+                throw BugException.unhandledTypeCase(t);
+            }
         }
     }
     
@@ -3959,6 +3995,48 @@ public abstract class AbstractTransformer implements Transformation {
             return expr;
         } else if (type.isString()) {
             return expr;
+        } else if (type.getDeclaration().equals(typeFact().getListDeclaration())) {
+            // Wrappings.toCeylonList().inverse()
+            Type elementType = type.getTypeArgumentList().get(0);
+            return make().Apply(null,
+                    makeSelect(
+                    make().Apply(null,
+                    makeSelect(make().Apply(List.<JCExpression>of(isJavaBoxableType(elementType, true) ? javaBoxType(elementType) : makeJavaType(elementType, JT_TYPE_ARGUMENT),
+                                makeJavaType(elementType, JT_TYPE_ARGUMENT)), 
+                            makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonList"), 
+                            List.<JCExpression>of(makeReifiedTypeArgument(elementType))),
+                            "inverted"), 
+                    List.<JCExpression>nil()), "wrap"),
+                    List.<JCExpression>of(expr));
+        } else if (type.getDeclaration().equals(typeFact().getSetDeclaration())) {
+            Type elementType = type.getTypeArgumentList().get(0);
+            return make().Apply(null,
+                    makeSelect(
+                    make().Apply(null,
+                    makeSelect(make().Apply(List.<JCExpression>of(isJavaBoxableType(elementType, true) ? javaBoxType(elementType) : makeJavaType(elementType, JT_TYPE_ARGUMENT),
+                                makeJavaType(elementType, JT_TYPE_ARGUMENT)), 
+                            makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonSet"), 
+                            List.<JCExpression>of(makeReifiedTypeArgument(elementType))),
+                            "inverted"), 
+                    List.<JCExpression>nil()), "wrap"),
+                    List.<JCExpression>of(expr));
+            
+        } else if (type.getDeclaration().equals(typeFact().getMapDeclaration())) {
+            Type keyType = type.getTypeArgumentList().get(0);
+            Type itemType = type.getTypeArgumentList().get(1);
+            return make().Apply(null,
+                    makeSelect(
+                    make().Apply(null,
+                    makeSelect(make().Apply(List.<JCExpression>of(isJavaBoxableType(keyType, true) ? javaBoxType(keyType) : makeJavaType(keyType, JT_TYPE_ARGUMENT),
+                            isJavaBoxableType(itemType, true) ? javaBoxType(itemType) : makeJavaType(itemType, JT_TYPE_ARGUMENT),
+                                makeJavaType(keyType, JT_TYPE_ARGUMENT),
+                                makeJavaType(itemType, JT_TYPE_ARGUMENT)), 
+                            makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonMap"), 
+                            List.<JCExpression>of(makeReifiedTypeArgument(keyType),makeReifiedTypeArgument(itemType))),
+                            "inverted"), 
+                    List.<JCExpression>nil()), "wrap"),
+                    List.<JCExpression>of(expr));
+            
         } else {
             return make().Apply(null,
                     makeSelect(javaBoxType(type), "valueOf"),
@@ -3978,6 +4056,41 @@ public abstract class AbstractTransformer implements Transformation {
             method = "byteValue";
         } else if (type.isBoolean()) {
             method = "booleanValue";
+        } else if (type.isCharacter()) {
+            method = "intValue";
+        } else if (type.getDeclaration().equals(typeFact().getListDeclaration())) {
+            // Wrappings.toCeylonList().inverse()
+            Type elementType = type.getTypeArgumentList().get(0);
+            return make().Apply(null,
+                    makeSelect(make().Apply(List.<JCExpression>of(
+                            isJavaBoxableType(elementType, true) ? javaBoxType(elementType) : makeJavaType(elementType, JT_TYPE_ARGUMENT),
+                                    makeJavaType(elementType, JT_TYPE_ARGUMENT)), 
+                            makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonList"), 
+                            List.<JCExpression>of(makeReifiedTypeArgument(elementType))),
+                            "wrap"),
+                    List.<JCExpression>of(expr));
+        } else if (type.getDeclaration().equals(typeFact().getSetDeclaration())) {
+            Type elementType = type.getTypeArgumentList().get(0);
+            return make().Apply(null,
+                    makeSelect(make().Apply(List.<JCExpression>of(isJavaBoxableType(elementType, true) ? javaBoxType(elementType) : makeJavaType(elementType, JT_TYPE_ARGUMENT),makeJavaType(elementType, JT_TYPE_ARGUMENT)), 
+                            makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonSet"), 
+                            List.<JCExpression>of(makeReifiedTypeArgument(elementType))),
+                            "wrap"),
+                    List.<JCExpression>of(expr));
+            
+        } else if (type.getDeclaration().equals(typeFact().getMapDeclaration())) {
+            Type keyType = type.getTypeArgumentList().get(0);
+            Type itemType = type.getTypeArgumentList().get(1);
+            return make().Apply(null,
+                    makeSelect(make().Apply(List.<JCExpression>of(isJavaBoxableType(keyType, true) ? javaBoxType(keyType) : makeJavaType(keyType, JT_TYPE_ARGUMENT),
+                                isJavaBoxableType(itemType, true) ? javaBoxType(itemType) : makeJavaType(itemType, JT_TYPE_ARGUMENT),
+                                makeJavaType(keyType, JT_TYPE_ARGUMENT),
+                                makeJavaType(itemType, JT_TYPE_ARGUMENT)), 
+                            makeQuotedFQIdent("com.redhat.ceylon.compiler.java.wrapping.Wrappings.toCeylonMap"), 
+                            List.<JCExpression>of(makeReifiedTypeArgument(keyType),makeReifiedTypeArgument(itemType))),
+                        "wrap"),
+                    List.<JCExpression>of(expr));
+            
         } else {
             return expr;// ??
         }
@@ -6086,16 +6199,36 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     public boolean useJavaBox(Declaration decl, Type attrType) {
-        if (isEe(decl)
-                && typeFact().isOptionalType(attrType)) {
-            Type t = simplifyType(attrType);
+        return useJavaBoxInternal(decl, attrType, false);
+    }
+    public boolean useJavaBoxInternal(Declaration decl, Type attrType, boolean optional) {
+        if (isEe(decl)) {
+            return isJavaBoxableType(attrType, optional);
+        }
+        return false;
+    }
+
+    protected boolean isJavaBoxableType(Type type, boolean optional) {
+        Type t = simplifyType(type);
+        if (optional || typeFact().isOptionalType(type)) {
             if (t.isInteger() 
                     || t.isFloat()
                     || t.isString()
                     || t.isByte()
+                    || t.isCharacter()
                     || t.isBoolean()) {
                 return true;
             }
+        }
+        
+        if (typeFact().getListDeclaration().equals(t.getDeclaration())) {
+            return true;
+        }
+        if (typeFact().getSetDeclaration().equals(t.getDeclaration())) {
+            return true;
+        }
+        if (typeFact().getMapDeclaration().equals(t.getDeclaration())) {
+            return true;
         }
         return false;
     }

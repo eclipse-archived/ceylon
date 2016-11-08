@@ -153,6 +153,8 @@ public class Symtab {
     public final Type annotationType;
     public final TypeSymbol enumSym;
     public final Type listType;
+    public final Type setType;
+    public final Type mapType;
     public final Type collectionsType;
     public final Type comparableType;
     public final Type comparatorType;
@@ -634,6 +636,8 @@ public class Symtab {
                                             List.<Type>nil(), methodClass),
                              enumSym);
         listType = enterClass("java.util.List");
+        setType = enterClass("java.util.Set");
+        mapType = enterClass("java.util.Map");
         collectionsType = enterClass("java.util.Collections");
         comparableType = enterClass("java.lang.Comparable");
         comparatorType = enterClass("java.util.Comparator");

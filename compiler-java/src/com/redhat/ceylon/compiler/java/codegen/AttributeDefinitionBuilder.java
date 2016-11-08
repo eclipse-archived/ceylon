@@ -537,6 +537,47 @@ public class AttributeDefinitionBuilder {
         );
     }
     
+    JCExpression javaBoxType(Type t) {
+        if (owner.typeFact().getListDeclaration().equals(t.getDeclaration())) {
+            Type elementType = t.getTypeArgumentList().get(0);
+            JCExpression expr;
+            if (owner.useJavaBoxInternal(attrTypedDecl, elementType, true)) {
+                expr = javaBoxType(elementType);
+            } else {
+                expr = owner.makeJavaType(elementType, AbstractTransformer.JT_TYPE_ARGUMENT);
+            }
+            return owner.make().TypeApply(owner.make().QualIdent(owner.syms().listType.tsym), List.of(expr));
+        }
+        if (owner.typeFact().getSetDeclaration().equals(t.getDeclaration())) {
+            Type elementType = t.getTypeArgumentList().get(0);
+            JCExpression expr;
+            if (owner.useJavaBoxInternal(attrTypedDecl, elementType, true)) {
+                expr = javaBoxType(elementType);
+            } else {
+                expr = owner.makeJavaType(elementType, AbstractTransformer.JT_TYPE_ARGUMENT);
+            }
+            return owner.make().TypeApply(owner.make().QualIdent(owner.syms().setType.tsym), List.of(expr));
+        }
+        if (owner.typeFact().getMapDeclaration().equals(t.getDeclaration())) {
+            Type keyType = t.getTypeArgumentList().get(0);
+            Type itemType = t.getTypeArgumentList().get(1);
+            JCExpression keyexpr;
+            if (owner.useJavaBoxInternal(attrTypedDecl, keyType, true)) {
+                keyexpr = javaBoxType(keyType);
+            } else {
+                keyexpr = owner.makeJavaType(keyType, AbstractTransformer.JT_TYPE_ARGUMENT);
+            }
+            JCExpression itemexpr;
+            if (owner.useJavaBoxInternal(attrTypedDecl, itemType, true)) {
+                itemexpr = javaBoxType(itemType);
+            } else {
+                itemexpr = owner.makeJavaType(itemType, AbstractTransformer.JT_TYPE_ARGUMENT);
+            }
+            return owner.make().TypeApply(owner.make().QualIdent(owner.syms().mapType.tsym), List.of(keyexpr, itemexpr));
+        }
+        return owner.javaBoxType(t);
+    }
+    
     JCExpression valueFieldType() {
         //owner.classGen().transformClassParameterType(attrTypedDecl);
         if (attrTypedDecl.getContainer() instanceof Class
@@ -551,7 +592,7 @@ public class AttributeDefinitionBuilder {
         }
         if (useJavaBox) {
             Type t = owner.simplifyType(attrType);
-            return owner.javaBoxType(t);
+            return javaBoxType(t);
         } else {
             return owner.makeJavaType(attrType, typeFlags);
         }
@@ -742,10 +783,8 @@ public class AttributeDefinitionBuilder {
                             owner.makeQuotedIdent(setterParameterName()), 
                             owner.makeNull()),
                     owner.makeNull(),
-                    owner.make().Apply(null,
-                            owner.makeSelect(valueFieldType(), "valueOf"),
-                            List.<JCExpression>of(
-                    owner.unboxType(setValue, owner.simplifyType(attrType)))));
+                    owner.boxJavaType(
+                    owner.unboxType(setValue, owner.simplifyType(attrType)), attrType));
         }
         List<JCStatement> stmts = List.<JCStatement>of(owner.make().Exec(
                 owner.make().Assign(
