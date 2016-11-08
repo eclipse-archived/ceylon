@@ -210,4 +210,23 @@ void spreadIssues() {
   } else {
     fail("#583.3");
   }
+
+
+  alias CallableWithRest6536<Out, First, Rest, RestTypes>
+      =>  Callable<Out, Tuple<First | RestTypes, First, Rest>>;
+
+  Out(*In) fix6536<Out, In, InTypes>
+          (CallableWithRest6536<Out, Out(*In), In, InTypes> f)
+          given In satisfies [InTypes*]
+      =>  flatten((In arguments) => f(fix6536(f), *arguments));
+
+  "Returns the factorial of the first argument multipled by the second argument."
+  value factorial6536
+      =   fix6536((Integer(Integer, Integer=) factorial,
+              Integer x, Integer factor = 1)
+          =>  if (x < 2)
+              then factor
+              else factorial((x - 1), factor * x));
+
+  check(factorial6536(10)==3628800, "#6536");
 }
