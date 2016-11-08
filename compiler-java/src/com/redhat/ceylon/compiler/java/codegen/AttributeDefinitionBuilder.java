@@ -137,7 +137,8 @@ public class AttributeDefinitionBuilder {
         this.attrType = nonWideningType;
         this.useJavaBox = owner.useJavaBox(attrTypedDecl, this.attrType) 
                 || 
-                (owner.useJavaBox(attrTypedDecl, ((TypedDeclaration)attrTypedDecl.getRefinedDeclaration()).getType())
+                (owner.isJavaPrimitiveBoxableType(((TypedDeclaration)attrTypedDecl.getRefinedDeclaration()).getType(), true)
+                && owner.useJavaBox(attrTypedDecl, ((TypedDeclaration)attrTypedDecl.getRefinedDeclaration()).getType())
                 && !CodegenUtil.isUnBoxed((TypedDeclaration)attrTypedDecl.getRefinedDeclaration()));
         this.typeFlags = typeFlags;
         this.attrName = attrName;

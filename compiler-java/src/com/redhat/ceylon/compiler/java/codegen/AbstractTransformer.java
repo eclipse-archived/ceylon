@@ -6197,8 +6197,16 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
+    /** 
+     * Is the given declaration to be compiled in "EE mode" 
+     */
     public boolean isEe(Declaration d) {
         return getEeVisitor().isEeMode(Decl.getToplevelDeclarationContainer(d));
+    }
+    
+    boolean javaBoxExpression(Type expressionType, Type declarationType) {
+        return (typeFact().getDefiniteType(expressionType).isExactly(typeFact().getDefiniteType(declarationType)))
+                || ((expressionType.isNull() || expressionType.isNullValue()) && typeFact().isOptionalType(declarationType));
     }
     
     public boolean useJavaBox(Declaration decl, Type attrType) {
@@ -6211,9 +6219,9 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
-    protected boolean isJavaBoxableType(Type type, boolean optional) {
+    boolean isJavaPrimitiveBoxableType(Type type, boolean requireOptional) {
         Type t = simplifyType(type);
-        if (optional || typeFact().isOptionalType(type)) {
+        if (requireOptional || typeFact().isOptionalType(type)) {
             if (t.isInteger() 
                     || t.isFloat()
                     || t.isString()
@@ -6223,7 +6231,14 @@ public abstract class AbstractTransformer implements Transformation {
                 return true;
             }
         }
-        
+        return false;
+    }
+    
+    protected boolean isJavaBoxableType(Type type, boolean optional) {
+        if (isJavaPrimitiveBoxableType(type, optional)) {
+            return true;
+        }
+        Type t = simplifyType(type);
         if (typeFact().getListDeclaration().equals(t.getDeclaration())) {
             return true;
         }
