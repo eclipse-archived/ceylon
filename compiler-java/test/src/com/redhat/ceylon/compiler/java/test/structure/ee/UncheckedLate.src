@@ -12,7 +12,7 @@ class UncheckedLate implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     public void setA1(final .ceylon.language.String a1) {
-        this.a1 = a1 == null ? null : .java.lang.String.valueOf(a1.toString());
+        this.a1 = a1 == null ? null : a1.toString();
     }
     private long a2;
     
@@ -59,6 +59,6 @@ final class uncheckedLateToplevel_ {
     }
     
     public static void set_(final .ceylon.language.String uncheckedLateToplevel) {
-        .com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.$object$ = uncheckedLateToplevel == null ? null : .java.lang.String.valueOf(uncheckedLateToplevel.toString());
+        .com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.$object$ = uncheckedLateToplevel == null ? null : uncheckedLateToplevel.toString();
     }
 }

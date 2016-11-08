@@ -1,9 +1,9 @@
 @noanno
-class JavaCollectionBoxes(listString/*, mapString, setString*/) {
+class JavaCollectionBoxes<T>(listString, mapString, setString) {
     shared variable List<String> listString;
-    //shared variable Map<String,String> mapString;
-    //shared variable Set<String> setString;
-    /*
+    shared variable Map<String,String> mapString;
+    shared variable Set<String> setString;
+    
     shared variable List<Integer>? listInteger = null;
     shared variable Map<Integer,Integer>? mapInteger = null;
     shared variable Set<Integer>? setInteger = null;
@@ -26,5 +26,9 @@ class JavaCollectionBoxes(listString/*, mapString, setString*/) {
     
     shared variable List<List<Float>>? listNested = null;
     shared variable Map<Map<Float,Float>,Map<Float,Float>>? mapNested = null;
-    shared variable Set<Set<Float>>? setNested = null;*/
+    shared variable Set<Set<Float>>? setNested = null;
+    
+    shared variable List<T>? listT = null;
+    shared variable Map<T,T>? mapT = null;
+    shared variable Set<T>? setT = null;
 }

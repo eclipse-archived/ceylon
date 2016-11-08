@@ -56,7 +56,7 @@ class JavaBoxes implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public void setS(final .ceylon.language.String s) {
-        this.s = s == null ? null : .java.lang.String.valueOf(s.toString());
+        this.s = s == null ? null : s.toString();
     }
     private java.lang.Byte o;
     
@@ -356,7 +356,7 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
     }
     
     public void setFirstName(final .ceylon.language.String firstName) {
-        this.firstName = firstName == null ? null : .java.lang.String.valueOf(firstName.toString());
+        this.firstName = firstName == null ? null : firstName.toString();
     }
     private .java.lang.String lastName;
     
@@ -365,7 +365,7 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
     }
     
     public void setLastName(final .ceylon.language.String lastName) {
-        this.lastName = lastName == null ? null : .java.lang.String.valueOf(lastName.toString());
+        this.lastName = lastName == null ? null : lastName.toString();
     }
     
     @.java.lang.Override
@@ -446,7 +446,7 @@ public final class sJavaBoxes_ {
     
     public static void set_(final .ceylon.language.String sJavaBoxes) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.$object$ = sJavaBoxes == null ? null : .java.lang.String.valueOf(sJavaBoxes.toString());
+        .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.$object$ = sJavaBoxes == null ? null : sJavaBoxes.toString();
     }
 }
 public final class oJavaBoxes_ {
