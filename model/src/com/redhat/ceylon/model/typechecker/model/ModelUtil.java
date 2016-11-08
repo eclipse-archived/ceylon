@@ -449,6 +449,12 @@ public class ModelUtil {
                                         otherType)) {
                             return false;
                         }
+                        if (ptd.equals(otd)) {
+                            if (argumentType.isSubtypeOf(otherType)
+                                    && !argumentType.isSubtypeOf(paramType)) {
+                                return false;
+                            }
+                        }
                     }
                     // check sequenced parameters last
                     if (dhsp && rhsp) {

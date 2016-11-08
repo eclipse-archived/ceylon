@@ -41,3 +41,12 @@ void test(Interface i) {
     i.wrong(null);
     i.wrong(object {});
 }
+
+class X() {
+    shared void execute(void run()) => run();
+    @error shared T execute<T>(T run()) given T satisfies Object => run();
+}
+
+void do() {
+    X().execute(void () {});
+}
