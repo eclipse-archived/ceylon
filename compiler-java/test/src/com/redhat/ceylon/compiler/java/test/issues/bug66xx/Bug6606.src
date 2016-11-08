@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.issues.bug65xx;
+package com.redhat.ceylon.compiler.java.test.issues.bug66xx;
 
 class Bug6606 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -14,9 +14,9 @@ class Bug6606 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug65xx.Bug6606.$TypeDescriptor$;
+        return .com.redhat.ceylon.compiler.java.test.issues.bug66xx.Bug6606.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug65xx.Bug6606.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug66xx.Bug6606.class);
 }
 class Bug6606_2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -32,9 +32,9 @@ class Bug6606_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug65xx.Bug6606_2.$TypeDescriptor$;
+        return .com.redhat.ceylon.compiler.java.test.issues.bug66xx.Bug6606_2.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug65xx.Bug6606_2.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug66xx.Bug6606_2.class);
 }
 class Bug6606_3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     private static final .java.lang.String equals;
@@ -43,7 +43,7 @@ class Bug6606_3 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     private static final .java.lang.String getEquals$priv$() {
-        return (.java.lang.String).com.redhat.ceylon.compiler.java.test.issues.bug65xx.Bug6606_3.equals;
+        return (.java.lang.String).com.redhat.ceylon.compiler.java.test.issues.bug66xx.Bug6606_3.equals;
     }
     
     private final void string$priv$() {
@@ -57,7 +57,7 @@ class Bug6606_3 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.issues.bug65xx.Bug6606_3.$TypeDescriptor$;
+        return .com.redhat.ceylon.compiler.java.test.issues.bug66xx.Bug6606_3.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug65xx.Bug6606_3.class);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug66xx.Bug6606_3.class);
 }
