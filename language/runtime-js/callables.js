@@ -226,7 +226,7 @@ function spread$2(f) {
       } else if (is$(e.first,pt)) {
         a.push(e.first);
         args[j]=e.rest;
-      } else if ((is$(e,{t:Empty}) || e.size===0) && params[i].def>0) {
+      } else if (e.size<=i && params[i].def>0) {
         a.push(undefined);
       } else {
         console.log("SPREAD WTF2",e&&e.string,"vs",params[i]);
