@@ -160,7 +160,7 @@ void issues() {
     //543
     check(`module nesting`.annotations<AuthorsAnnotation>() nonempty, "#543.1");
     if (exists p543=`module nesting`.members.first) {
-      check(p543.annotations<AuthorsAnnotation>() nonempty, "#543.2");
+      check(p543.annotations<AuthorsAnnotation>() nonempty, "#543.2 missing 'by' annotation on ``p543``");
     } else {
       fail("WTF #543");
     }
