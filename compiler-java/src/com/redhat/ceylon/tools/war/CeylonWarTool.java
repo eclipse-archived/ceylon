@@ -31,6 +31,7 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
@@ -161,6 +162,12 @@ public class CeylonWarTool extends ModuleLoadingTool {
         }
     }
 
+    @Override
+    protected boolean skipDependency(ArtifactResult dep) {
+        // skip any provided dep
+        return dep.moduleScope() == ModuleScope.PROVIDED;
+    }
+    
     @Override
     public void run() throws Exception {
         final String moduleName = ModuleUtil.moduleName(this.moduleNameOptVersion);

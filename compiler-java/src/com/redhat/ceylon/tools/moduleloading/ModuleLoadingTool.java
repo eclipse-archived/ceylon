@@ -24,6 +24,7 @@ import com.redhat.ceylon.common.tools.RepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.JdkProvider;
 
 public abstract class ModuleLoadingTool extends RepoUsingTool {
@@ -128,6 +129,11 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         loadedModules.put(key, result);
         if(result != null && !provided){
             for(ArtifactResult dep : result.dependencies()){
+                // Skip those
+                if(dep.moduleScope() == ModuleScope.TEST)
+                    continue;
+                if(skipDependency(dep))
+                    continue;
                 if(!dep.optional()){
                     internalLoadModule(dep.namespace(), dep.name(), dep.version());
                 }
@@ -137,7 +143,14 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         return true;
     }
 	
-	protected void errorOnConflictingModule(String module, String version) throws IOException{
+	/**
+	 * For subclasses.
+	 */
+	protected boolean skipDependency(ArtifactResult dep) {
+        return false;
+    }
+
+    protected void errorOnConflictingModule(String module, String version) throws IOException{
 	    boolean duplicate = false;
 	    for(Map.Entry<String, SortedSet<String>> entry : loadedModuleVersions.entrySet()){
 	        if(entry.getValue().size() > 1){
