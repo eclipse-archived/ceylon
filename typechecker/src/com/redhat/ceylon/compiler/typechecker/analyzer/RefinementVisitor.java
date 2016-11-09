@@ -933,7 +933,7 @@ public class RefinementVisitor extends Visitor {
                             message(member) + 
                             " refines " + 
                             message(refined) +
-                            "which is not annotated 'formal' or 'default'", 
+                            " which is not annotated 'formal' or 'default'", 
                             500);
                 }
                 if (checkTypes && !type.isInconsistentType()) {
