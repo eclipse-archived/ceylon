@@ -36,6 +36,8 @@ public class EeVisitor extends Visitor {
         if (options.getMulti(Option.CEYLONEEIMPORTS) != null) {
             this.imports = new HashSet<String>(options.getMulti(Option.CEYLONEEIMPORTS));
         } else {
+            // If you're updating this also update 
+            // https://ceylon-lang.org/documentation/1.3/reference/interoperability/ee-mode/#activating_ee_mode
             imports = new HashSet<String>();
             imports.add("javax.javaeeapi");
             imports.add("maven:\"javax:javaee-api\"");
@@ -43,6 +45,8 @@ public class EeVisitor extends Visitor {
         if (options.getMulti(Option.CEYLONEEANNOTATIONS) != null) {
             this.annotations = new HashSet<String>(options.getMulti(Option.CEYLONEEANNOTATIONS));
         } else {
+            // If you're updating this also update 
+            // https://ceylon-lang.org/documentation/1.3/reference/interoperability/ee-mode/#activating_ee_mode
             annotations = new HashSet<String>();
             annotations.add("javax.xml.bind.annotation.XmlAccessorType");
             annotations.add("javax.persistence.Entity");
