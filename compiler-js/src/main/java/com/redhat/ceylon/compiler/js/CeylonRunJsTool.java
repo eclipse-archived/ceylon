@@ -286,9 +286,11 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
         final boolean isDefault = ModuleUtil.isDefaultModule(module);
         String moduleString = isDefault ? module : module +"/"+version;
+        final String overrideRequire = "function $$ceylon$require(a,b,c){return b(c[0].startsWith('ceylon/language/')?'ceylon/language/" +
+                Versions.CEYLON_VERSION_NUMBER + "/ceylon.language-" + Versions.CEYLON_VERSION_NUMBER + "':c[0]);};";
         //The timeout is to have enough time to start reading on the process streams
-        
         String eval = String.format("if(typeof setTimeout==='function'){setTimeout(function(){},50)};" +
+                overrideRequire +
                 "var __entry_point__=require('%s%s/%s%s').%s;if (__entry_point__===undefined){" +
                 "console.log('The specified method \"%s\" does not exist or is not shared in the %s module');" +
                 "process.exit(1);}else __entry_point__();",
