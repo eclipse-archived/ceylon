@@ -13,11 +13,15 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
 public class Operators {
 
-    static void unwrappedNumberOrTerm(final Tree.Term term, final GenerateJsVisitor gen) {
+    static void unwrappedNumberOrTerm(final Tree.Term term, final boolean wrapFloat, final GenerateJsVisitor gen) {
         if (term instanceof Tree.NaturalLiteral) {
             gen.out("(", Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)term, false)), ")");
         } else if (term instanceof Tree.FloatLiteral) {
-            gen.out(gen.getClAlias(), "Float(", term.getText(), ")");
+            if (wrapFloat) {
+                gen.out(gen.getClAlias(), "Float(", term.getText(), ")");
+            } else {
+                gen.out("(", term.getText(), ")");
+            }
         } else {
             gen.box(term);
         }
@@ -28,12 +32,12 @@ public class Operators {
             gen.out(before);
         }
         if (op.charAt(0)!='.' && exp.getLeftTerm() instanceof Tree.NaturalLiteral) {
-            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm(), false)));
+            gen.out("(", Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm(), false)), ")");
         } else {
-            unwrappedNumberOrTerm(exp.getLeftTerm(), gen);
+            unwrappedNumberOrTerm(exp.getLeftTerm(), ".divided(".equals(op), gen);
         }
         gen.out(op);
-        unwrappedNumberOrTerm(exp.getRightTerm(), gen);
+        unwrappedNumberOrTerm(exp.getRightTerm(), ".divided(".equals(op), gen);
         if (after != null) {
             gen.out(after);
         }

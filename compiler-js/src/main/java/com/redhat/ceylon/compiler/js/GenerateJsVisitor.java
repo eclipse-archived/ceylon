@@ -2890,7 +2890,8 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     @Override public void visit(final Tree.PowerOp that) {
-        Operators.simpleBinaryOp(that, null, ".power(", ")", this);
+        final Type left = that.getLeftTerm().getTypeModel();
+        Operators.simpleBinaryOp(that, null, left.isFloat()?".$fpower(":".power(", ")", this);
     }
 
     @Override public void visit(final Tree.AddAssignOp that) {
