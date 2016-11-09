@@ -322,7 +322,7 @@ public class InteropTests extends CompilerTests {
     public void testIopRefinesDefaultAccessMethodWithShared(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("access/RefinesDefaultAccessMethodWithShared",
-                new CompilerError(22, "non-actual member collides with an inherited member: 'defaultAccessMethod' in 'RefinesDefaultAccessMethodWithShared' refines 'defaultAccessMethod' in 'JavaAccessModifiers'"));
+                new CompilerError(22, "non-actual member collides with an inherited member: 'defaultAccessMethod' in 'RefinesDefaultAccessMethodWithShared' refines 'defaultAccessMethod' in 'JavaAccessModifiers' but is not annotated 'actual'"));
     }
 
     @Test
@@ -423,7 +423,7 @@ public class InteropTests extends CompilerTests {
     public void testIopRefinesDefaultAccessMethodInAnotherPkg(){
         compile("access/JavaAccessModifiers.java");
         assertErrors("RefinesDefaultAccessMethodInAnotherPkg",
-                new CompilerError(27, "refined declaration is not visible: 'defaultAccessMethod' in 'RefinesDefaultAccessMethodInAnotherPkg' refines 'defaultAccessMethod' in 'JavaAccessModifiers'"));
+                new CompilerError(27, "refined declaration is not visible: 'defaultAccessMethod' in 'RefinesDefaultAccessMethodInAnotherPkg' refines 'defaultAccessMethod' in 'JavaAccessModifiers' which has package visibility"));
     }
 
     @Test
@@ -444,8 +444,8 @@ public class InteropTests extends CompilerTests {
     public void testIopOverrideStaticMethods(){
         compile("JavaWithStaticMembers.java");
         assertErrors("OverrideStaticMethods",
-                new CompilerError(26, "member refines a non-default, non-formal member: 'topMethod' in 'StaticMethodsOverriding' refines 'topMethod' in 'JavaWithStaticMembers'"),
-                new CompilerError(28, "member refines a non-default, non-formal member: 'topField' in 'StaticMethodsOverriding' refines 'topField' in 'JavaWithStaticMembers'")
+                new CompilerError(26, "member refines a non-default, non-formal member: 'topMethod' in 'StaticMethodsOverriding' refines 'topMethod' in 'JavaWithStaticMembers' which is not annotated 'formal' or 'default'"),
+                new CompilerError(28, "member refines a non-default, non-formal member: 'topField' in 'StaticMethodsOverriding' refines 'topField' in 'JavaWithStaticMembers' which is not annotated 'formal' or 'default'")
         );
     }
     
