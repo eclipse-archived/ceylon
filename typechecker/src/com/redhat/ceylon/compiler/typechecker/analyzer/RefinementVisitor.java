@@ -746,15 +746,29 @@ public class RefinementVisitor extends Visitor {
                 type instanceof Class) {
             Class c = (Class) type;
             if (!c.isAbstract() && !c.isFormal()) {
-                that.addError("formal member belongs to non-abstract, non-formal class: " + 
-                        message(member), 1100);
+                if (c.isClassOrInterfaceMember()) {
+                    that.addError("formal member belongs to non-abstract, non-formal nested class: '" 
+                            + member.getName() 
+                            + "' is a member of class '" 
+                            + c.getName()
+                            + "' which is neither 'abstract' nor 'formal'", 1100);
+                }
+                else {
+                    that.addError("formal member belongs to non-abstract class: '" 
+                            + member.getName() 
+                            + "' is a member of class '" 
+                            + c.getName()
+                            + "' which is not annotated 'abstract'", 1100);
+                }
             }
         }
         if (member.isStatic() 
                 && !type.isToplevel()) {
-            that.addError("static member belongs to a nested class: '" + 
-                    member.getName() + 
-                    "' is a member of nested type '" + type.getName() + "'");
+            that.addError("static member belongs to a nested class: '" 
+                    + member.getName() 
+                    + "' is a member of nested type '" 
+                    + type.getName() 
+                    + "'");
         }
         if (type.isDynamic()) {
             if (member instanceof Class) {
@@ -777,8 +791,14 @@ public class RefinementVisitor extends Visitor {
             member.setRefinedDeclaration(member);
             if (member.isActual()) {
                 that.addError(
-                        "actual member does not refine any inherited member: " + 
-                                message(member), 1300);
+                        "actual member does not refine any inherited member: "
+                                + message(member)
+                                + " is annotated 'actual' but '"
+                                + type.getName()
+                                + "' does not inherit any member named '"
+                                + name +
+                                "'",
+                        1300);
             }
             else if (!legallyOverloaded) {
                 if (member.isActual()) {
@@ -807,14 +827,17 @@ public class RefinementVisitor extends Visitor {
                 that.addError(
                         "refined declaration is not visible: " + 
                         message(member) + 
-                        " refines " + message(root));
+                        " refines " + 
+                        message(root) +
+                        " which has package visibility");
             }
             if (root.isCoercionPoint()) {
                 // FIXME: add message pointing to the real method?
                 that.addError(
                         "refined declaration is not a real method: " + 
                         message(member) + 
-                        " refines " + message(root));
+                        " refines " + 
+                        message(root));
             }
             boolean found = false;
             TypeDeclaration rootType = 
@@ -847,7 +870,8 @@ public class RefinementVisitor extends Visitor {
                         that.addError(
                                 "refined declaration is not a method: " + 
                                 message(member) + 
-                                " refines " + message(refined));
+                                " refines " + 
+                                message(refined));
                         checkTypes = false;
                     }
                 }
@@ -856,7 +880,8 @@ public class RefinementVisitor extends Visitor {
                         that.addError(
                                 "refined declaration is not a class: " + 
                                 message(member) + 
-                                " refines " + message(refined));
+                                " refines " + 
+                                message(refined));
                         checkTypes = false;
                     }
                 }
@@ -866,7 +891,8 @@ public class RefinementVisitor extends Visitor {
                         that.addError(
                                 "refined declaration is not an attribute: " + 
                                 message(member) + 
-                                " refines " + message(refined));
+                                " refines " + 
+                                message(refined));
                         checkTypes = false;
                     }
                     else if (refined instanceof TypedDeclaration) {
@@ -876,7 +902,9 @@ public class RefinementVisitor extends Visitor {
                                 that.addError(
                                         "non-variable attribute refines a variable attribute: " + 
                                         message(member) + 
-                                        " refines " + message(refined), 
+                                        " refines variable " + 
+                                        message(refined) + 
+                                        " and so must be 'variable' or have a setter", 
                                         804);
                             }
                             else {
@@ -884,7 +912,8 @@ public class RefinementVisitor extends Visitor {
                                 that.addError(
                                         "non-variable attribute refines a variable attribute: " + 
                                         message(member) + 
-                                        " refines " + message(refined));
+                                        " refines variable " + 
+                                        message(refined));
                             }
                         }
                     }
@@ -893,14 +922,18 @@ public class RefinementVisitor extends Visitor {
                     that.addError(
                             "non-actual member collides with an inherited member: " + 
                             message(member) + 
-                            " refines " + message(refined), 
+                            " refines " + 
+                            message(refined) +
+                            " but is not annotated 'actual'", 
                             600);
                 }
                 else if (!refined.isDefault() && !refined.isFormal()) {
                     that.addError(
                             "member refines a non-default, non-formal member: " + 
                             message(member) + 
-                            " refines " + message(refined), 
+                            " refines " + 
+                            message(refined) +
+                            "which is not annotated 'formal' or 'default'", 
                             500);
                 }
                 if (checkTypes && !type.isInconsistentType()) {
