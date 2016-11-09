@@ -82,7 +82,7 @@ public class ArtifactOverrides {
         return classifier;
     }
     
-    void setClassifier(String classifier) {
+    public void setClassifier(String classifier) {
         this.classifier = classifier;
     }
 
@@ -139,7 +139,7 @@ public class ArtifactOverrides {
         return filter;
     }
 
-    void setFilter(String filter) {
+    public void setFilter(String filter) {
         this.filter = filter;
     }
 }
