@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -813,7 +814,10 @@ public class JvmBackendUtil {
                 java.lang.Class<?> virtualFileClass = java.lang.Class.forName("org.jboss.vfs.VirtualFile");
                 java.lang.Class<?> vfsClass = java.lang.Class.forName("org.jboss.vfs.VFS");
                 Method getChild = vfsClass.getMethod("getChild", URL.class);
-                Object thisJar = getChild.invoke(null, url);
+                // Fix any improper spaces in the path part
+                // See https://github.com/ceylon/ceylon-sdk/issues/629
+                URL properURL = new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath().replace(" ", "%20"));
+                Object thisJar = getChild.invoke(null, properURL);
                 Method getParent = virtualFileClass.getMethod("getParent");
                 Object libDir = getParent.invoke(thisJar);
                 if(libDir != null){
@@ -831,7 +835,7 @@ public class JvmBackendUtil {
                         }
                     }
                 }
-            } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | MalformedURLException e) {
                 throw new RuntimeException("Failed to read current fat jar list of entries", e);
             }
         }else{
