@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isExecutableStatement;
+import static com.redhat.ceylon.model.loader.model.AnnotationTarget.ANNOTATION_TYPE;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.CONSTRUCTOR;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.FIELD;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.LOCAL_VARIABLE;
@@ -1013,8 +1014,20 @@ public class AnnotationVisitor extends Visitor {
                             //it goes on the constructor
                             ok = true;
                         }
+                        if (target.contains(ANNOTATION_TYPE) &&
+                                c.getDeclarationModel()
+                                 .isAnnotation()) {
+                            //it goes on the annotation type
+                            ok = true;
+                        }
                     }
-                    if (that instanceof Tree.Constructor) {
+                    if (that instanceof Tree.ObjectDefinition) {
+                        if (target.contains(FIELD)) {
+                            ok = true;
+                        }
+                    }
+                    if (that instanceof Tree.Constructor ||
+                        that instanceof Tree.Enumerated) {
                         if (target.contains(CONSTRUCTOR)) {
                             ok = true;
                         }
@@ -1032,47 +1045,44 @@ public class AnnotationVisitor extends Visitor {
                     if (that instanceof Tree.AttributeDeclaration) {
                         Tree.AttributeDeclaration ad = 
                                 (Tree.AttributeDeclaration) that;
-                        Tree.SpecifierOrInitializerExpression se = 
-                                ad.getSpecifierOrInitializerExpression();
                         Value model = ad.getDeclarationModel();
                         boolean parameter = 
                                 model.isParameter();
-                        if (se==null) {
-                            if (target.contains(PARAMETER) &&
-                                    parameter) {
+                        boolean classMember = 
+                                model.isClassMember();
+                        boolean toplevel = 
+                                model.isToplevel();
+                        boolean local =
+                                !toplevel &&
+                                !model.isClassOrInterfaceMember();
+                        if (target.contains(PARAMETER) &&
+                                parameter) {
+                            //in this case there is a parameter,
+                            //so the annotation *never* goes on
+                            //the field, getter, nor setter
+                            ok = true;
+                        }
+                        Tree.SpecifierOrInitializerExpression se = 
+                                ad.getSpecifierOrInitializerExpression();
+                        if (se instanceof Tree.LazySpecifierExpression 
+                                || model.isFormal()) {
+                            if (target.contains(METHOD)) {
+                                //there is no field, so it
+                                //goes on the getter
                                 ok = true;
                             }
                         }
                         else {
-                            if (se instanceof Tree.LazySpecifierExpression 
-                                    || model.isFormal()) {
-                                if (target.contains(METHOD)) {
-                                    //there is no field, so it
-                                    //goes on the getter
-                                    ok = true;
-                                }
+                            //there is some sort of field or local
+                            //in this case it *never* goes on the
+                            //getter or setter!
+                            if (target.contains(FIELD) &&
+                                    (classMember||toplevel)) {
+                                ok = true;
                             }
-                            else {
-                                //there is some sort of field or local
-                                //in this case it *never* goes on the
-                                //getter or setter!
-                                boolean classMember = 
-                                        model.isClassMember();
-                                boolean local = 
-                                        !model.isClassOrInterfaceMember() &&
-                                        !model.isToplevel();
-                                if (target.contains(FIELD) &&
-                                        classMember) {
-                                    ok = true;
-                                }
-                                if (target.contains(PARAMETER) &&
-                                        parameter) {
-                                    ok = true;
-                                }
-                                if (target.contains(LOCAL_VARIABLE) &&
-                                        !parameter && local) {
-                                    ok = true;
-                                }
+                            if (target.contains(LOCAL_VARIABLE) &&
+                                    !parameter && local) {
+                                ok = true;
                             }
                         }
                     }
