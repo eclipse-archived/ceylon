@@ -174,14 +174,15 @@ public class ModelUtil {
             return true;
         }
         else {
-            return !d.isOverloaded() || d.isAbstraction();
+            return !d.isOverloaded() 
+                 || d.isAbstraction();
         }
     }
     
     public static boolean isOverloadedVersion(Declaration decl) {
-        return decl!=null && 
-                (decl.isOverloaded() && 
-                !decl.isAbstraction());
+        return decl!=null 
+            && decl.isOverloaded() 
+            && !decl.isAbstraction();
     }
 
     public static boolean hasMatchingSignature(
@@ -283,6 +284,7 @@ public class ModelUtil {
                     // params and we have a spread operator, 
                     // let's not use it since we expect a 
                     // variadic function
+                    // TODO: WHAT ABOUT SPREADING A TUPLE!!
                     return false;
                 }
                 return true;
@@ -362,7 +364,7 @@ public class ModelUtil {
     }
     
     static boolean betterMatch(Declaration d, Declaration r, 
-            List<Type> signature) {
+            List<Type> signature, boolean variadic) {
         //always prefer a non-coerced member 
         //over a coerced one
         if (!d.isCoercionPoint() && r.isCoercionPoint()) {
@@ -385,10 +387,40 @@ public class ModelUtil {
                 List<Parameter> rpl = rpls0.getParameters();
                 int dplSize = dpl.size();
                 int rplSize = rpl.size();
-                //ignore sequenced parameters
+                
                 boolean dhsp = dpls0.hasSequencedParameter();
                 boolean rhsp = rpls0.hasSequencedParameter();
-                //always prefer a signature without varargs 
+                int size = signature.size();
+                if (variadic && signature.size()>0) {
+                    Type lastType = signature.get(size-1);
+                    if (lastType.isTuple()) {
+                        //we're spreading a tuple, so adjust 
+                        //the number of args
+                        size += d.getUnit()
+                                 .getTupleMinimumLength(lastType) 
+                                 - 1;
+                    }
+                    else {
+                        //we're spreading something arbitrarily 
+                        //long so prefer the one that has a 
+                        //variadic param
+                        if (!dhsp && rhsp) {
+                            return false;
+                        }
+                        if (dhsp && !rhsp) {
+                            return true;
+                        }
+                    }
+                }
+                //prefer the longer signature in the case that
+                //one of them doesn't have enough params
+                if (size>dplSize && (rhsp||dplSize<rplSize)) {
+                    return false;
+                }
+                if (size>rplSize && (dhsp||rplSize<dplSize)) {
+                    return true;
+                }
+                //otherwise prefer a signature without varargs 
                 //over one with a varargs parameter
                 if (!dhsp && rhsp) {
                     return true;
@@ -396,6 +428,7 @@ public class ModelUtil {
                 if (dhsp && !rhsp) {
                     return false;
                 }
+                
                 //ignore sequenced parameters
                 if (dhsp) dplSize--;
                 if (rhsp) rplSize--;
@@ -420,7 +453,7 @@ public class ModelUtil {
                                 unit.getDefiniteType(rplt);
                         Type argumentType = 
                                 signature != null && 
-                                i < signature.size() ? 
+                                i < size ? 
                                         signature.get(i) : 
                                         null;
                         if (isTypeUnknown(otherType) || 
@@ -2122,7 +2155,8 @@ public class ModelUtil {
                                 results = new ArrayList<Declaration>(2);
                                 results.add(result);
                             }
-                            addIfBetterMatch(results, d, signature);
+                            addIfBetterMatch(results, d, 
+                                    signature, variadic);
                         }
                     }
                 }
@@ -2156,16 +2190,16 @@ public class ModelUtil {
 
     private static void addIfBetterMatch(
             List<Declaration> results, Declaration d, 
-            List<Type> signature) {
-        boolean add=true;
+            List<Type> signature, boolean variadic) {
+        boolean add = true;
         for (Iterator<Declaration> i = results.iterator(); 
                 i.hasNext();) {
             Declaration o = i.next();
-            if (betterMatch(d, o, signature)) {
+            if (betterMatch(d, o, signature, variadic)) {
                 i.remove();
             }
-            else if (betterMatch(o, d, signature)) { //TODO: note asymmetry here resulting in nondeterminate behavior!
-                add=false;
+            else if (betterMatch(o, d, signature, variadic)) { //TODO: note asymmetry here resulting in nondeterminate behavior!
+                add = false;
             }
         }
         if (add) results.add(d);
@@ -2184,7 +2218,7 @@ public class ModelUtil {
             if (hasMatchingSignature(overloaded, 
                     signature, variadic, false)) {
                 addIfBetterMatch(results, 
-                        overloaded, signature);
+                        overloaded, signature, variadic);
             }
         }
         if (results.size() == 1) {
@@ -2196,6 +2230,34 @@ public class ModelUtil {
     public static boolean isTypeUnknown(Type type) {
         return type==null || type.getDeclaration()==null ||
                 type.containsUnknowns();
+    }
+    
+    public static boolean isVariadic(
+            Declaration dec) {
+        if (!(dec instanceof Functional)) {
+            return false;
+        }
+        Functional fun = (Functional) dec;
+        List<ParameterList> parameterLists = 
+                fun.getParameterLists();
+        if (parameterLists == null || 
+                parameterLists.isEmpty()) {
+            return false;
+        }
+        ParameterList parameterList = 
+                parameterLists.get(0);
+        if (parameterList == null) {
+            return false;
+        }
+        List<Parameter> parameters = 
+                parameterList.getParameters();
+        if (parameters == null ||
+                parameters.isEmpty()) {
+            return false;
+        }
+        Parameter last = 
+                parameters.get(parameters.size()-1);
+        return last!=null && last.isSequenced();
     }
 
     public static List<Type> getSignature(
@@ -2578,7 +2640,17 @@ public class ModelUtil {
     }
     
     public static List<Declaration> getInterveningRefinements(
-            String name, List<Type> signature, 
+            Declaration dec,
+            Declaration root,
+            TypeDeclaration bottom, TypeDeclaration top) {
+        return getInterveningRefinements(dec.getName(), 
+                getSignature(dec),
+                isVariadic(dec),
+                root, bottom, top);
+    }
+    
+    public static List<Declaration> getInterveningRefinements(
+            String name, List<Type> signature, boolean variadic,
             Declaration root,
             TypeDeclaration bottom, TypeDeclaration top) {
         boolean rootOverloaded = isOverloadedVersion(root);
@@ -2591,11 +2663,11 @@ public class ModelUtil {
                         std.getDirectMember(name,
                                 //TODO: should we use the 
                                 //signature of root here?
-                                signature, false,
+                                signature, variadic,
                                 rootOverloaded);
-                if (member!=null && 
-                        member.isShared() && 
-                        !isAbstraction(member)) {
+                if (member!=null 
+                        && member.isShared() 
+                        && !isAbstraction(member)) {
                     TypeDeclaration td = 
                             (TypeDeclaration) 
                                 member.getContainer();
@@ -2604,7 +2676,7 @@ public class ModelUtil {
                             isOverloadedVersion(member);
                     Declaration refined = 
                             td.getRefinedMember(name, 
-                                    signature, false,
+                                    signature, variadic,
                                     overloaded);
                     if (refined!=null && 
                             refined.equals(root)) {

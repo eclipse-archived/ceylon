@@ -411,9 +411,9 @@ public class TypeHierarchyVisitor extends Visitor {
                 for (Declaration f: members.formals) {
                     if (isOverloadedVersion(f) && !f.isCoercionPoint()) {
                         boolean found = false;
-                        List<com.redhat.ceylon.model.typechecker.model.Type>
-                                signature = ModelUtil.getSignature(f);
-                        boolean variadic = f.isVariadic();
+//                        List<com.redhat.ceylon.model.typechecker.model.Type>
+//                                signature = ModelUtil.getSignature(f);
+//                        boolean variadic = f.isVariadic();
                         for (Declaration a: members.actualsNonFormals) {
                             if (f.getRefinedDeclaration()
                                     .equals(a.getRefinedDeclaration())) {

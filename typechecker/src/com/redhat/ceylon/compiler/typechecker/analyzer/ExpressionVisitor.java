@@ -52,7 +52,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getIntervening
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeParameters;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
@@ -683,14 +682,16 @@ public class ExpressionVisitor extends Visitor {
         if (!isVariadicPattern(lastPattern)) {
             Pattern pattern = lastPattern;
             if (pattern==null) pattern = tuplePattern;
-            pattern.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
+            pattern.addError(
+                    "assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
                     sequenceType.asString(unit) + 
                     "' is not a tuple type");
         }
         else if (/*nonempty && length>1 ||*/ length>2) {
             Pattern pattern = patterns.get(2);
             if (pattern==null) pattern = tuplePattern;
-            pattern.addError("assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
+            pattern.addError(
+                    "assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
                     sequenceType.asString(unit) + 
                     "' is not a tuple type");
         }
@@ -698,7 +699,8 @@ public class ExpressionVisitor extends Visitor {
                 !unit.isSequenceType(sequenceType)) {
             Pattern pattern = patterns.get(1);
             if (pattern==null) pattern = tuplePattern;
-            pattern.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
+            pattern.addError(
+                    "assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
                     sequenceType.asString(unit) + 
                     "' is not a subtype of 'Sequence'");
         }
@@ -719,7 +721,8 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         if (that instanceof CustomTree.GuardedVariable) {
             CustomTree.GuardedVariable gv = 
-                    (CustomTree.GuardedVariable) that;
+                    (CustomTree.GuardedVariable) 
+                        that;
             setTypeForGuardedVariable(that, 
                     gv.getConditionList(), 
                     gv.isReversed());
@@ -766,7 +769,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void initOriginalDeclaration(Tree.Variable that) {
-        if (that.getType() instanceof Tree.SyntheticVariable) {
+        if (that.getType() 
+                instanceof Tree.SyntheticVariable) {
             TypedDeclaration td = 
                     (TypedDeclaration) 
                         that.getDeclarationModel();
@@ -776,7 +780,8 @@ public class ExpressionVisitor extends Visitor {
                         .getExpression()
                         .getTerm();
             TypedDeclaration d = 
-                    (TypedDeclaration) bme.getDeclaration();
+                    (TypedDeclaration) 
+                        bme.getDeclaration();
             td.setOriginalDeclaration(d);
         }
     }
@@ -889,7 +894,8 @@ public class ExpressionVisitor extends Visitor {
                             type.asString(unit));*/
                 }
                 else {
-                    that.addError("condition tests assignability to bottom type 'Nothing': intersection of '" +
+                    that.addError(
+                            "condition tests assignability to bottom type 'Nothing': intersection of '" +
                             knownType.asString(unit) + 
                             "' and '" + 
                             type.asString(unit) + 
@@ -932,17 +938,15 @@ public class ExpressionVisitor extends Visitor {
 
     private Type narrow(Type type,
             Type knownType, boolean not) {
-	    Type it;
 	    if (not) {
 	        //a !is condition, narrow to complement
-	        it = /*unit.denotableType(*/knownType.minus(type);
+	        return /*unit.denotableType(*/knownType.minus(type);
 	    }
 	    else {
 	        //narrow to the intersection of the outer type 
 	        //and the type specified in the condition
-	        it = intersectionType(type, knownType, unit);
+	        return intersectionType(type, knownType, unit);
 	    }
-	    return it;
     }
     
     @Override public void visit(Tree.SatisfiesCondition that) {
@@ -1124,10 +1128,13 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.BooleanCondition that) {
         super.visit(that);
         if (that.getExpression()!=null) {
-            Type t = 
-                    that.getExpression().getTypeModel();
-            if (!isTypeUnknown(t)) {
-                checkAssignable(t, unit.getBooleanType(), that, 
+            Type type = 
+                    that.getExpression()
+                        .getTypeModel();
+            if (!isTypeUnknown(type)) {
+                checkAssignable(type, 
+                        unit.getBooleanType(), 
+                        that, 
                         "expression must be of boolean type");
             }
         }
@@ -1170,7 +1177,8 @@ public class ExpressionVisitor extends Visitor {
                     Type act = unit.getJavaAutoCloseableType();
                     if (!t.isSubtypeOf(act)) {
                         if (isInstantiationExpression(e)) {
-                            if (!t.isSubtypeOf(dt) && !t.isSubtypeOf(ot)) {
+                            if (!t.isSubtypeOf(dt) 
+                             && !t.isSubtypeOf(ot)) {
                                 typedNode.addError("resource must be either obtainable or destroyable: '" +
                                         t.asString(unit) + 
                                         "' is neither 'Obtainable' nor 'Destroyable'");
@@ -1222,10 +1230,10 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Tree.Variable v = that.getVariable();
         if (v!=null) {
-            inferContainedType(v, 
-                    that.getSpecifierExpression());
-            checkContainedType(v, 
-                    that.getSpecifierExpression());
+            Tree.SpecifierExpression se = 
+                    that.getSpecifierExpression();
+            inferContainedType(v, se);
+            checkContainedType(v, se);
         }
     }
 
@@ -1622,8 +1630,7 @@ public class ExpressionVisitor extends Visitor {
                 (TypeDeclaration) 
                     root.getContainer();
         List<Declaration> interveningRefinements = 
-                getInterveningRefinements(value.getName(), 
-                        null, root, ci, td);
+                getInterveningRefinements(value, root, ci, td);
         accountForIntermediateRefinements(that, 
                 refinedValue, value, ci, 
                 interveningRefinements);
@@ -1642,8 +1649,7 @@ public class ExpressionVisitor extends Visitor {
                 (TypeDeclaration) 
                     root.getContainer();
         List<Declaration> interveningRefinements = 
-                getInterveningRefinements(method.getName(), 
-                        getSignature(method), root, ci, td);
+                getInterveningRefinements(method, root, ci, td);
         if (interveningRefinements.isEmpty()) {
             that.getBaseMemberExpression()
                 .addError("shortcut refinement does not exactly refine any overloaded inherited member");

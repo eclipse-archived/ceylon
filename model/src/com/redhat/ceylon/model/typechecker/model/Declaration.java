@@ -838,7 +838,8 @@ public abstract class Declaration
     }
 
     /** 
-     * true if the JVM backend generated this method in the model loader to mark coercion points,
+     * true if the JVM backend generated this method 
+     * in the model loader to mark coercion points,
      * but it does not exist.
      */
     public boolean isCoercionPoint() {

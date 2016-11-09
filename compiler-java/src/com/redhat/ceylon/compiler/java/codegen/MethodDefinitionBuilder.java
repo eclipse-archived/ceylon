@@ -45,7 +45,6 @@ import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
@@ -613,21 +612,19 @@ public class MethodDefinitionBuilder
         // Taken pretty much straight from RefinementVisitor
         ClassOrInterface type = (ClassOrInterface) member.getContainer();
         java.util.List<Type> signature = ModelUtil.getSignature(member);
+        boolean variadic = ModelUtil.isVariadic(member);
         
-        Declaration root = type.getRefinedMember(name, signature, false);
+        Declaration root = type.getRefinedMember(name, signature, variadic);
         if(root == null)
             return null;
         TypeDeclaration rootType =  (TypeDeclaration) root.getContainer();
         
         java.util.List<Declaration> interveningRefinements = 
-                ModelUtil.getInterveningRefinements(name, 
-                        signature, root, 
-                        type, rootType);
+                getInterveningRefinements(member, root, type, rootType);
         for (Declaration refined: interveningRefinements) {
-            TypeDeclaration interveningType = (TypeDeclaration) refined.getContainer();
-            if (getInterveningRefinements(name, 
-                        signature, root, 
-                        type, interveningType)
+            TypeDeclaration interveningType = 
+                    (TypeDeclaration) refined.getContainer();
+            if (getInterveningRefinements(member, root, type, interveningType)
                     .size()>1) {
                 continue;
             }

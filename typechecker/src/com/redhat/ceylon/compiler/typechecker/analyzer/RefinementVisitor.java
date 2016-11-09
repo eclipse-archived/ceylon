@@ -30,6 +30,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isObject;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isVariadic;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
@@ -779,9 +780,10 @@ public class RefinementVisitor extends Visitor {
             }
         }
         List<Type> signature = getSignature(member);
+        boolean variadic = isVariadic(member);
         Declaration root = 
                 type.getRefinedMember(name, 
-                        signature, false);
+                        signature, variadic);
         boolean legallyOverloaded = 
                 !isOverloadedVersion(member) ||
                 isOverloadedVersion(root) ||
@@ -844,16 +846,14 @@ public class RefinementVisitor extends Visitor {
                     (TypeDeclaration) 
                         root.getContainer();
             List<Declaration> interveningRefinements = 
-                    getInterveningRefinements(name, 
-                            signature, root, 
-                            type, rootType);
+                    getInterveningRefinements(member, 
+                            root, type, rootType);
             for (Declaration refined: interveningRefinements) {
                 TypeDeclaration interveningType = 
                         (TypeDeclaration) 
                             refined.getContainer();
-                if (getInterveningRefinements(name, 
-                            signature, root, 
-                            type, interveningType)
+                if (getInterveningRefinements(member, 
+                            root, type, interveningType)
                         .size()>1) {
                     continue;
                 }
@@ -943,7 +943,7 @@ public class RefinementVisitor extends Visitor {
             }
             if (!found) {
                 if (member instanceof Function && 
-                        root instanceof Function) { //see the condition in DeclarationVisitor.checkForDuplicateDeclaration()
+                      root instanceof Function) { //see the condition in DeclarationVisitor.checkForDuplicateDeclaration()
                     that.addError(
                             "overloaded member does not refine any inherited member: " + 
                                     message(member));
@@ -2015,12 +2015,16 @@ public class RefinementVisitor extends Visitor {
             Type intersection() {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rv.getType());
-                for (Declaration d: getInterveningRefinements(name, null, root, c, ci)) {
+                for (Declaration d: getInterveningRefinements(name, 
+                        null, false, root, c, ci)) {
                     addToIntersection(list,
-                            c.getType().getTypedReference(d, NO_TYPE_ARGS).getType(),
+                            c.getType()
+                             .getTypedReference(d, NO_TYPE_ARGS)
+                             .getType(),
                             getUnit());
                 }
-                IntersectionType it = new IntersectionType(getUnit()); 
+                IntersectionType it = 
+                        new IntersectionType(getUnit()); 
                 it.setSatisfiedTypes(list);
                 return it.canonicalize().getType();
             }
@@ -2044,7 +2048,8 @@ public class RefinementVisitor extends Visitor {
                     type.getDeclaration();
             }
             @Override
-            public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+            public Map<TypeParameter, SiteVariance> 
+            getVarianceOverrides() {
                 Type type = intersection();
                 return type==null ? null : 
                     type.getVarianceOverrides();
@@ -2061,8 +2066,10 @@ public class RefinementVisitor extends Visitor {
                     sm.getContainer();
         final String name = sm.getName();
         final List<Type> signature = getSignature(sm);
+        final boolean variadic = isVariadic(sm);
         Declaration refined = 
-                ci.getRefinedMember(name, signature, false);
+                ci.getRefinedMember(name,
+                        signature, variadic);
         final Function root = 
                 refined instanceof Function ? 
                         (Function) refined : sm;
@@ -2145,7 +2152,8 @@ public class RefinementVisitor extends Visitor {
                                     .getDeclaration();
                         }
                         @Override
-                        public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+                        public Map<TypeParameter, SiteVariance> 
+                        getVarianceOverrides() {
                             return rm.getTypedParameter(p)
                                     .getFullType()
                                     .getVarianceOverrides();
@@ -2256,7 +2264,8 @@ public class RefinementVisitor extends Visitor {
             Type intersection() {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rm.getType());
-                for (Declaration d: getInterveningRefinements(name, signature, root, c, ci)) {
+                for (Declaration d: getInterveningRefinements(name, 
+                        signature, variadic, root, c, ci)) {
                     addToIntersection(list,
                             c.getType().getTypedReference(d, NO_TYPE_ARGS).getType(),
                             getUnit());

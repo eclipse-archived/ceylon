@@ -1,6 +1,7 @@
 package com.redhat.ceylon.model.loader;
 
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isVariadic;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -206,7 +207,8 @@ public class JvmBackendUtil {
                 decl = ctor.getFirstParameterList().getParameters().get(index).getModel();
             }
             if (decl.isShared()) {
-                Declaration refinedDecl = c.getRefinedMember(decl.getName(), getSignature(decl), false);//?? ellipsis=false??
+                Declaration refinedDecl = 
+                        c.getRefinedMember(decl.getName(), getSignature(decl), isVariadic(decl));
                 if(refinedDecl != null && !ModelUtil.equal(refinedDecl, decl)) {
                     return getTopmostRefinedDeclaration(refinedDecl, methodOverrides);
                 }

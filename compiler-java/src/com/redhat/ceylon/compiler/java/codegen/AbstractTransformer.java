@@ -982,7 +982,8 @@ public abstract class AbstractTransformer implements Transformation {
                     && !isTypeParameter(typedReference.getType())){
                 ClassOrInterface declaringType = (ClassOrInterface) qualifyingDeclaration;
                 Set<TypedDeclaration> refinedMembers = getRefinedMembers(declaringType, decl.getName(), 
-                        com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature(decl), false);
+                        com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature(decl), 
+                        com.redhat.ceylon.model.typechecker.model.ModelUtil.isVariadic(decl));
                 // now we must select a different refined declaration if we refine it more than once
                 if(refinedMembers.size() > (forMixinMethod ? 0 : 1)){
                     // first case
@@ -1108,6 +1109,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(decl.getContainer() instanceof ClassOrInterface == false)
             return decl;
         java.util.List<Type> signature = com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature(decl);
+        boolean variadic = com.redhat.ceylon.model.typechecker.model.ModelUtil.isVariadic(decl);
         boolean overloaded = decl.isOverloaded() || decl.isAbstraction();
         Declaration refinedDeclaration = decl.getRefinedDeclaration();
         if(refinedDeclaration != null){
@@ -1116,7 +1118,7 @@ public abstract class AbstractTransformer implements Transformation {
         ClassOrInterface container = (ClassOrInterface) decl.getContainer();
         HashSet<TypeDeclaration> visited = new HashSet<TypeDeclaration>();
         // start looking for it, but skip this type, only lookup upwards of it
-        TypedDeclaration firstRefinedDeclaration = getFirstRefinedDeclaration(container, decl, signature, visited, true, overloaded);
+        TypedDeclaration firstRefinedDeclaration = getFirstRefinedDeclaration(container, decl, signature, variadic, visited, true, overloaded);
         // only keep the first refined decl if its type can be trusted: if it is not itself widening
         if(firstRefinedDeclaration != null){
             if(CodegenUtil.hasUntrustedType(firstRefinedDeclaration))
@@ -1126,25 +1128,25 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private TypedDeclaration getFirstRefinedDeclaration(TypeDeclaration typeDecl, TypedDeclaration decl, 
-            java.util.List<Type> signature, HashSet<TypeDeclaration> visited,
+            java.util.List<Type> signature, boolean variadic, HashSet<TypeDeclaration> visited,
             boolean skipType, boolean isOverloaded) {
         if(!visited.add(typeDecl))
             return null;
         if(!skipType){
-            TypedDeclaration member = (TypedDeclaration) typeDecl.getDirectMember(decl.getName(), signature, false, isOverloaded);
+            TypedDeclaration member = (TypedDeclaration) typeDecl.getDirectMember(decl.getName(), signature, variadic, isOverloaded);
             if(member != null && !member.isStatic())
                 return member;
         }
         // look up
         // first look in super types
         if(typeDecl.getExtendedType() != null){
-            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(typeDecl.getExtendedType().getDeclaration(), decl, signature, visited, false, isOverloaded);
+            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(typeDecl.getExtendedType().getDeclaration(), decl, signature, variadic, visited, false, isOverloaded);
             if(refinedDecl != null && refinedDecl.isShared())
                 return refinedDecl;
         }
         // look in interfaces
         for(Type interf : typeDecl.getSatisfiedTypes()){
-            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(interf.getDeclaration(), decl, signature, visited, false, isOverloaded);
+            TypedDeclaration refinedDecl = getFirstRefinedDeclaration(interf.getDeclaration(), decl, signature, variadic, visited, false, isOverloaded);
             if(refinedDecl != null && refinedDecl.isShared())
                 return refinedDecl;
         }

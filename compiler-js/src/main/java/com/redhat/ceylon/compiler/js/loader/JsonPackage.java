@@ -36,6 +36,7 @@ import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.METATYPE_O
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.annotationBits;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.partiallyQualifiedName;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isVariadic;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
@@ -682,7 +683,7 @@ public class JsonPackage extends LazyPackage {
         //fill refined declarations
         for (Declaration d : coi.getMembers()) {
             if (d.isActual()) {
-                Declaration refined = coi.getRefinedMember(d.getName(), getSignature(d), false);
+                Declaration refined = coi.getRefinedMember(d.getName(), getSignature(d), isVariadic(d));
                 if (refined==null) refined = d;
                 d.setRefinedDeclaration(refined);
             }

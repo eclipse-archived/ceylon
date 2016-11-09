@@ -694,6 +694,8 @@ public abstract class TypeDeclaration extends Declaration
             final Declaration member) {
         final List<Type> signature = 
                 getSignature(member);
+        final boolean variadic =
+                ModelUtil.isVariadic(member);
         class Criteria implements Type.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -704,7 +706,8 @@ public abstract class TypeDeclaration extends Declaration
                     Declaration dm = 
                             type.getDirectMember(
                                     member.getName(), 
-                                    signature, member.isVariadic());
+                                    signature, 
+                                    variadic);
                     return dm!=null && dm.equals(member);
                 }
             }
