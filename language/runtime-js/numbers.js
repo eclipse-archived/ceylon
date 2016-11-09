@@ -246,6 +246,20 @@ JSNum$proto.power = function(exp) {
     }
     return toInt(Math.pow(this, exp));
 }
+JSNum$proto.$fpower=function(exp){
+  if (typeof(exp)!=='number'&&exp.constructor!==Number)throw new TypeError("Number expected");
+  if (nflt$(exp)) {
+    if(this == 1.0)
+        return this;
+    if(this == -1.0 && (exp == Infinity || exp == -Infinity))
+        return Float(1.0);
+    var ret = Float(Math.pow(this, exp));
+    if(this == 0.0 && this.fmz$ && exp.fractionalPart == 0 && !exp.wholePart.even)
+        ret = ret.negated;
+    return ret;
+  }
+  return Float(Math.pow(this, exp));
+}
 $addnm$('power',Exponentiable.$$.prototype.power);
 $specialiseForNumber$(Integer, 'power', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','power']};})
 $specialiseForNumber$(Float, 'power', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Float},nm:'other'}],d:['$','Float','$m','power']};})
