@@ -655,7 +655,12 @@ public abstract class DeclarationVisitor extends Visitor {
         Function newMethod = 
                 (Function) model;
         newMethod.setOverloaded(true);
-        if (!method.isAbstraction()) {
+        if (method.isAbstraction()) {
+            abstraction = method;
+            abstraction.getOverloads()
+                .add(model);
+        }
+        else {
             //create the "abstraction" 
             //for the overloaded method
             method.setOverloaded(true);
@@ -673,11 +678,10 @@ public abstract class DeclarationVisitor extends Visitor {
             abstraction.initOverloads(
                     method, newMethod);
             scope.addMember(abstraction);
-        }
-        else {
-            abstraction = method;
-            abstraction.getOverloads()
-                .add(model);
+            //put the abstraction first
+            //TODO: is this hack really necessary?
+            scope.getMembers().remove(method);
+            scope.getMembers().add(method);
         }
     }
 

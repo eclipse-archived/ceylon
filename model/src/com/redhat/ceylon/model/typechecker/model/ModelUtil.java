@@ -897,6 +897,7 @@ public class ModelUtil {
     }
     
     static TypeDeclaration erase(Type paramType, Unit unit) {
+        paramType = paramType.resolveAliases();
         if (paramType.isTypeParameter()) {
             if (paramType.getSatisfiedTypes().isEmpty()) {
                 Type et = 
@@ -2298,6 +2299,9 @@ public class ModelUtil {
             else {
                 t = unit.getUnknownType();
             }
+            if (t!=null) {
+                t = t.resolveAliases();
+            }
             signature.add(t);
         }
         return signature;
@@ -2337,6 +2341,9 @@ public class ModelUtil {
                     typedParameter==null ? 
                         unit.getUnknownType() : 
                         typedParameter.getType();
+            if (t!=null) {
+                t = t.resolveAliases();
+            }
             signature.add(t);
         }
         return signature;

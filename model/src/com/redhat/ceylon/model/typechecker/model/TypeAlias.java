@@ -215,6 +215,6 @@ public class TypeAlias extends TypeDeclaration {
     
     @Override
     public String toString() {
-        return "type " + toStringName();
+        return "alias " + toStringName();
     }
 }
