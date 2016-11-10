@@ -67,7 +67,7 @@ public class MetamodelHelper {
             }
             if (d.isMember()) {
                 //Make the chain to the top-level container
-                ArrayList<Declaration> parents = new ArrayList<Declaration>(2);
+                ArrayList<Declaration> parents = new ArrayList<>(2);
                 Declaration pd = (Declaration)d.getContainer();
                 while (pd!=null) {
                     parents.add(0,pd);
@@ -257,7 +257,7 @@ public class MetamodelHelper {
                     gen.qualify(that, ltype.getDeclaration());
                 }
                 gen.out(gen.getNames().name(ltype.getDeclaration()));
-                gen.out(".$$.prototype.");
+                gen.out(d.isStatic()?".$st$.":".$$.prototype.");
             }
             if (d instanceof Value) {
                 gen.out(gen.getNames().getter(d, true), ",");
@@ -317,7 +317,7 @@ public class MetamodelHelper {
             } else {
                 gen.qualify(that, ltype.getDeclaration());
                 gen.out(gen.getNames().name(ltype.getDeclaration()));
-                gen.out(".$$.prototype.");
+                gen.out(d.isStatic()?".$st$.":".$$.prototype.");
             }
             if (d instanceof Value) {
                 gen.out(gen.getNames().getter(d, true),",");
@@ -335,7 +335,7 @@ public class MetamodelHelper {
             } else {
                 gen.qualify(that, ltype.getDeclaration());
                 gen.out(gen.getNames().name(ltype.getDeclaration()));
-                gen.out(".$$.prototype.");
+                gen.out(d.isStatic()?".$st$.":".$$.prototype.");
             }
             if (d instanceof Value) {
                 gen.out(gen.getNames().getter(d, true));
@@ -369,23 +369,37 @@ public class MetamodelHelper {
             }
             boolean first=true;
             boolean imported=false;
+            boolean parentIsObject=false;
             for (Declaration _d : parents) {
-                if (first){
+                if (first) {
                     imported = gen.qualify(that, _d);
                     first=false;
+                } else if (parentIsObject) {
+                    gen.out(".");
+                    parentIsObject=false;
+                } else {
+                    gen.out(_d.isStatic()?".$st$.":".$$.prototype.");
                 }
                 if (_d.isAnonymous()) {
                     final String oname = gen.getNames().objectName(_d);
                     if (_d.isToplevel()) {
-                        gen.out(oname, ".");
+                        gen.out(oname);
+                        parentIsObject = true;
                     } else {
-                        gen.out("$init$", oname, "().$$.prototype.");
+                        gen.out("$init$", oname, "()");
                     }
                 } else {
                     if (!imported)gen.out("$init$");
-                    gen.out(gen.getNames().name(_d), imported?".$$.prototype.":"().$$.prototype.");
+                    gen.out(gen.getNames().name(_d), imported?"":"()");
                 }
                 imported=true;
+            }
+            if (!parents.isEmpty()) {
+                if (parentIsObject) {
+                    gen.out(".");
+                } else {
+                    gen.out(d.isStatic()?".$st$.":".$$.prototype.");
+                }
             }
         }
     }

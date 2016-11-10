@@ -3227,7 +3227,7 @@ public class GenerateJsVisitor extends Visitor {
             out("!");
         }
         out(getClAlias(), "is$(");
-        if (coerceDynamic) {
+        if (isInDynamicBlock() && coerceDynamic) {
             out(getClAlias(), "dre$$(");
         }
         if (term instanceof Term) {
@@ -3235,7 +3235,7 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             conds.specialConditionRHS(termString, tmpvar);
         }
-        if (coerceDynamic) {
+        if (isInDynamicBlock() && coerceDynamic) {
             out(",");
             TypeUtils.typeNameOrList(term, type, this, false);
             out(",false)");
