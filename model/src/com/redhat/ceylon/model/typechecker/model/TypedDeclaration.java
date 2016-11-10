@@ -234,6 +234,8 @@ public abstract class TypedDeclaration
             return false;
         }
         if (isOverloaded() && o!=this) {
+            //necessary, since we don't want to
+            //go comparing parameter lists!
             return false;
         }
         TypedDeclaration b = (TypedDeclaration) o;
