@@ -52,7 +52,7 @@ class HeuristicTarget2(
 //typeTarget
 //constructorTarget
 fieldTarget
-methodTarget
+//methodTarget
 object heuristicTarget3 {
 }
 

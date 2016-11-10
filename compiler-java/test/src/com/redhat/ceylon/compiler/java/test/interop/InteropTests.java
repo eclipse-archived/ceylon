@@ -470,8 +470,6 @@ public class InteropTests extends CompilerTests {
                 new CompilerError(6, "function or value is not defined: 'javaAnnotationNoTarget__FIELD' might be misspelled or is not imported (did you mean 'javaAnnotationFieldTarget__FIELD'?)"),
                 new CompilerError(7, "function or value is not defined: 'javaAnnotationNoTarget__GETTER' might be misspelled or is not imported (did you mean 'javaAnnotationMethodTarget__GETTER'?)"),
                 new CompilerError(8, "function or value is not defined: 'javaAnnotationNoTarget__SETTER' might be misspelled or is not imported (did you mean 'javaAnnotationMethodTarget__SETTER'?)"),
-                new CompilerError(11, "annotated program element does not satisfy annotation constraint: 'FunctionDeclaration' is not assignable to 'Nothing'"),
-                new CompilerError(11, "no target for javaAnnotationNoTarget annotation: @Target of @interface JavaAnnotationNoTarget lists [] but annotated element tranforms to [METHOD]"),
                 new CompilerError(12, "function or value is not defined: 'javaAnnotationNoTarget__PARAMETER' might be misspelled or is not imported (did you mean 'javaAnnotationDefaultTarget__PARAMETER'?)"),
                 new CompilerError(14, "function or value is not defined: 'javaAnnotationNoTarget__LOCAL_VARIABLE' might be misspelled or is not imported (did you mean 'javaAnnotationDefaultTarget__LOCAL_VARIABLE'?)"),
                 new CompilerError(19, "function or value is not defined: 'javaAnnotationNoTarget__ANNOTATION_TYPE' might be misspelled or is not imported (did you mean 'javaAnnotationDefaultTarget__ANNOTATION_TYPE'?)"),
