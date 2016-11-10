@@ -158,16 +158,19 @@ public class AnalyzerUtil {
                 // the one we wanted to import, so try imports first.
                 result = unit.getImportedDeclaration(name, 
                         signature, ellipsis);
-                if(result != null && !result.isJava()){
+                if (result != null && !result.isJava()) {
                     result = null;
-                }else if(result instanceof TypedDeclaration)
+                }
+                else if (result instanceof TypedDeclaration) {
                     return (TypedDeclaration) result;
+                }
                 result = 
                         scope.getMemberOrParameter(unit, 
                                 name, signature, ellipsis);
-                if(result != null && !result.isJava()){
+                if (result != null && !result.isJava()) {
                     result = null;
-                }else if (result instanceof TypedDeclaration) {
+                }
+                else if (result instanceof TypedDeclaration) {
                     return (TypedDeclaration) result;
                 }
             }
@@ -202,9 +205,10 @@ public class AnalyzerUtil {
                 // the one we wanted to import, so try imports first.
                 result = unit.getImportedDeclaration(name, 
                         signature, ellipsis);
-                if(result != null && !result.isJava()){
+                if (result != null && !result.isJava()) {
                     result = null;
-                }else if (result instanceof TypeDeclaration) {
+                }
+                else if (result instanceof TypeDeclaration) {
                     return (TypeDeclaration) result;
                 }
                 else if (result instanceof TypedDeclaration) {
@@ -214,9 +218,10 @@ public class AnalyzerUtil {
                 result = 
                         scope.getMemberOrParameter(unit, 
                                 name, signature, ellipsis);
-                if(result != null && !result.isJava()){
+                if (result != null && !result.isJava()) {
                     result = null;
-                }else if (result instanceof TypeDeclaration) {
+                }
+                else if (result instanceof TypeDeclaration) {
                     return (TypeDeclaration) result;
                 }
                 else if (result instanceof TypedDeclaration) {
@@ -267,7 +272,7 @@ public class AnalyzerUtil {
             TypeDeclaration typeDeclaration = 
                     type.getDeclaration();
             if ((typeDeclaration instanceof Class ||
-                typeDeclaration instanceof Constructor) &&
+                 typeDeclaration instanceof Constructor) &&
                     typeDeclaration.isAnonymous() &&
                     isNamed(name, typeDeclaration)) {
                 return typeDeclaration;
