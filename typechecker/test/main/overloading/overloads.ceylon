@@ -50,3 +50,21 @@ class X() {
 void do() {
     X().execute(void () {});
 }
+
+interface Inter<T> {}
+
+class Clazz() {
+    shared void find<T>(Inter<T> c) {
+        find(c);
+    }
+    @error shared void find<T>() {
+        Inter<T> list = nothing of Inter<T>;
+    }
+    
+    shared class Find<T>(Inter<T> c) {
+        Find(c);
+    }
+    @error shared class Find<T>() {
+        Inter<T> list = nothing of Inter<T>;
+    }
+}
