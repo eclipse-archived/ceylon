@@ -547,7 +547,9 @@ public abstract class DeclarationVisitor extends Visitor {
                                 !(that instanceof Tree.Constructor ||
                                   that instanceof Tree.Enumerated) &&
                                 scope instanceof ClassOrInterface &&
-                                !member.isNative();
+                                !member.isNative() &&
+                                member.isShared() &&
+                                model.isShared();
                         boolean legalOverloadedMethod =
                                 possibleOverloadedMethod &&
                                 model.isActual() &&
@@ -570,13 +572,18 @@ public abstract class DeclarationVisitor extends Visitor {
                         }
                         else {
                             dup = true;
-                            that.addError("duplicate declaration: the name '" + 
-                                    name + "' is not unique in this scope");
                             if (possibleOverloadedMethod) {
                                 //not a legal overload but treat 
                                 //it as overloading anyway
-                                initOverload(model, member, 
-                                        scope, unit);
+                                if (initOverload(model, member, 
+                                        scope, unit)) {
+                                    that.addError("duplicate declaration: the name '" + 
+                                            name + "' is not unique in this scope (overloading is only supported when refining Java methods)");
+                                }
+                            }
+                            else {
+                                that.addError("duplicate declaration: the name '" + 
+                                        name + "' is not unique in this scope");
                             }
                         }
                         if (dup) {
@@ -640,7 +647,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
     }
 
-    private static void initOverload(
+    private static boolean initOverload(
             Declaration model, Declaration member,
             Scope scope, Unit unit) {
         //even though Ceylon does not 
@@ -659,8 +666,10 @@ public abstract class DeclarationVisitor extends Visitor {
             abstraction = method;
             abstraction.getOverloads()
                 .add(model);
+            return false;
         }
         else {
+            String name = model.getName();
             //create the "abstraction" 
             //for the overloaded method
             method.setOverloaded(true);
@@ -669,7 +678,7 @@ public abstract class DeclarationVisitor extends Visitor {
             abstraction.setType(
                     new UnknownType(unit)
                         .getType());
-            abstraction.setName(model.getName());
+            abstraction.setName(name);
             abstraction.setShared(true);
             abstraction.setActual(true);
             abstraction.setContainer(scope);
@@ -682,6 +691,7 @@ public abstract class DeclarationVisitor extends Visitor {
             //TODO: is this hack really necessary?
             scope.getMembers().remove(method);
             scope.getMembers().add(method);
+            return true;
         }
     }
 

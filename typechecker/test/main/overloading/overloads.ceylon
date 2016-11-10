@@ -16,16 +16,16 @@ void run() {
 interface Interface {
     shared formal void run(String str);
     @error shared formal void run(String str1, String str2);
-    @error shared formal void run(Integer int);
-    @error shared formal void run(Integer int1, Integer int2);
-    @error shared formal void run(Integer* int);
-    @error shared formal void run(Integer? int);
+    shared formal void run(Integer int);
+    shared formal void run(Integer int1, Integer int2);
+    shared formal void run(Integer* int);
+    shared formal void run(Integer? int);
     
     shared formal void wrong(Integer int);
     @error shared formal void wrong(Integer? int);
-    @error shared formal void wrong(String string);
-    @error shared formal void wrong(Object thing);
-    @error shared formal void wrong(Anything thing);
+    shared formal void wrong(String string);
+    shared formal void wrong(Object thing);
+    shared formal void wrong(Anything thing);
 }
 
 void test(Interface i) {
