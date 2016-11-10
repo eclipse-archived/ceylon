@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.loader.model;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import com.redhat.ceylon.model.loader.ModelCompleter;
@@ -25,10 +26,13 @@ public class AnnotationProxyMethod extends Function {
     private boolean isLoaded2;
 
     private boolean isLoaded;
+
+    private OutputElement outputElement;
     
-    public AnnotationProxyMethod(ModelCompleter completer, AnnotationProxyClass proxyClass) {
+    public AnnotationProxyMethod(ModelCompleter completer, AnnotationProxyClass proxyClass, OutputElement outputElement) {
         this.completer = completer;
         this.proxyClass = proxyClass;
+        this.outputElement = outputElement;
     }
 
     public AnnotationProxyClass getProxyClass() {
@@ -45,6 +49,17 @@ public class AnnotationProxyMethod extends Function {
      */
     public OutputElement getAnnotationTarget() {
         return this.annotationTarget;
+    }
+    
+    /**
+     * The elements in the {@code @Target} annotation, or null if 
+     * the annotation type lacks the {@code @Target} annotation.
+     */
+    @Override
+    public EnumSet<AnnotationTarget> getAnnotationTargets() {
+        return outputElement != null 
+                ? EnumSet.of(outputElement.toAnnotationTarget()) 
+                : AnnotationTarget.getAnnotationTarget(proxyClass.iface);
     }
 
     @Override

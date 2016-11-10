@@ -26,15 +26,6 @@ public class AnnotationProxyClass extends Class {
         this.iface = iface;
         this.completer = completer;
     }
-    
-    /**
-     * The elements in the {@code @Target} annotation, or null if 
-     * the annotation type lacks the {@code @Target} annotation.
-     */
-    @Override
-    public EnumSet<AnnotationTarget> getAnnotationTarget() {
-        return AnnotationTarget.getAnnotationTarget(iface);
-    }
 
     @Override
     public List<Declaration> getMembers() {

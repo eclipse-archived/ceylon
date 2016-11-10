@@ -301,7 +301,7 @@ public class AnnotationUtil {
                 // Foo__WHATEVER, so honour the WHATEVER
                 return true;
             }
-            interopTargets = annotationProxyMethod.getProxyClass().getAnnotationTarget(); 
+            interopTargets = annotationProxyMethod.getAnnotationTargets(); 
         } else {
             interopTargets = null;
         }

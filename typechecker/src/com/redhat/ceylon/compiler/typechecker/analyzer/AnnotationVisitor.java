@@ -18,6 +18,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -983,9 +984,14 @@ public class AnnotationVisitor extends Visitor {
                         }
                     }
                 }
-                TypeDeclaration td = t.getDeclaration();
-                EnumSet<AnnotationTarget> target = 
-                        td.getAnnotationTarget();
+                EnumSet<AnnotationTarget> target = null;
+                Tree.Primary primary = annotation.getPrimary();
+                if (primary instanceof Tree.MemberOrTypeExpression) {
+                    Declaration ac = ((Tree.MemberOrTypeExpression)primary).getDeclaration();
+                    if (ac instanceof TypedDeclaration) {
+                        target = ((TypedDeclaration)ac).getAnnotationTargets();
+                    }
+                }
                 if (target!=null) {
                     //check the *Java* annotation constraints
                     boolean ok = false;

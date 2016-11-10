@@ -11,14 +11,21 @@ package com.redhat.ceylon.model.loader.model;
  * @see AnnotationTarget
  */
 public enum OutputElement {
-    TYPE,
-    FIELD,
-    METHOD,
-    GETTER,
-    SETTER,
-    PARAMETER,
-    CONSTRUCTOR,
-    LOCAL_VARIABLE,
-    ANNOTATION_TYPE,
-    PACKAGE;
+    TYPE(AnnotationTarget.TYPE),
+    FIELD(AnnotationTarget.FIELD),
+    METHOD(AnnotationTarget.METHOD),
+    GETTER(AnnotationTarget.METHOD),
+    SETTER(AnnotationTarget.METHOD),
+    PARAMETER(AnnotationTarget.PARAMETER),
+    CONSTRUCTOR(AnnotationTarget.CONSTRUCTOR),
+    LOCAL_VARIABLE(AnnotationTarget.LOCAL_VARIABLE),
+    ANNOTATION_TYPE(AnnotationTarget.ANNOTATION_TYPE),
+    PACKAGE(AnnotationTarget.PACKAGE);
+    private final AnnotationTarget target;
+    OutputElement(AnnotationTarget target) {
+        this.target = target;
+    }
+    public AnnotationTarget toAnnotationTarget() {
+        return target;
+    }
 }

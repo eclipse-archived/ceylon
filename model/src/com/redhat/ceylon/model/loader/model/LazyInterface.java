@@ -373,17 +373,4 @@ public class LazyInterface extends Interface implements LazyContainer {
         load();
         return super.getSamName();
     }
-    
-    @Override
-    public EnumSet<AnnotationTarget> getAnnotationTarget() {
-        load();
-        if (isAnnotationType) {
-            String name = getName();
-            Declaration ctor = getScope().getDirectMember(name.substring(0, 1).toLowerCase()+name.substring(1), null, false);
-            if (ctor instanceof AnnotationProxyMethod) {
-                return ((AnnotationProxyMethod)ctor).proxyClass.getAnnotationTarget();
-            }
-        }
-        return super.getAnnotationTarget();
-    }
 }
