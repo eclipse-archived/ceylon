@@ -148,13 +148,12 @@ public abstract class DeclarationVisitor extends Visitor {
         checkFormalMember(that, model);
         
         Tree.Identifier id = that.getIdentifier();
-        if (setModelName(that, model, id)) {
-            if (checkDupe) {
-                checkForNativeAnnotation(that, 
-                        model, scope);
-                checkForDuplicateDeclaration(that, 
-                        model, scope);
-            }
+        if (setModelName(that, model, id) 
+                && checkDupe) {
+            checkForNativeAnnotation(that, 
+                    model, scope);
+            checkForDuplicateDeclaration(that, 
+                    model, scope);
         }
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
