@@ -9111,6 +9111,12 @@ public class ExpressionVisitor extends Visitor {
                     parent.getScope()
                         .getDeclaringType(dec);
         }
+        
+        boolean enforceConstraints = 
+                modelLiteral ||
+                !(parent instanceof Tree.SimpleType) ||
+                ((Tree.SimpleType) parent).getInherited();
+
         int max = params.size();
         int args = typeArguments.size();
         if (args<=max && args>=min) {
@@ -9131,6 +9137,29 @@ public class ExpressionVisitor extends Visitor {
                                     "' is a type constructor");
                     }
                     else*/
+                    if (enforceConstraints 
+                            && argType.isTypeParameter()) {
+                        TypeParameter tp = 
+                                (TypeParameter) 
+                                    argType.getDeclaration();
+                        if (!tp.isReified() && param.isReified()) {
+                            if (explicit) {
+                                typeArgNode(tas, i, parent)
+                                    .addError("type parameter '" + param.getName() 
+                                            + "' of declaration '" + dec.getName(unit)
+                                            + "' has argument '" 
+                                            + tp.getName()
+                                            + "' which is not a reified type");
+                            }
+                            else {
+                                parent.addError("inferred type argument '" 
+                                        + tp.getName()
+                                        + "' to type parameter '" + param.getName()
+                                        + "' of declaration '" + dec.getName(unit)
+                                        + "' is not a reified type");
+                            }
+                        }
+                    }
                     if (!argType.isTypeConstructor() && 
                             param.isTypeConstructor()) {
                         typeArgNode(tas, i, parent)
@@ -9158,10 +9187,6 @@ public class ExpressionVisitor extends Visitor {
                 boolean hasConstraints = 
                         !sts.isEmpty() || 
                         param.getCaseTypes()!=null;
-                boolean enforceConstraints = 
-                        modelLiteral ||
-                        !(parent instanceof Tree.SimpleType) ||
-                        ((Tree.SimpleType) parent).getInherited();
                 if (//!isCondition && 
                         hasConstraints &&
                         enforceConstraints) {
