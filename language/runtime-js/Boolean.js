@@ -12,6 +12,8 @@ $_Boolean.$crtmm$=function(){
   mod:$CCMM$,d:['$','Boolean']};
 };
 ex$.$_Boolean=$_Boolean;
+function $init$$_Boolean(){return $_Boolean;}
+ex$.$init$$_Boolean=$init$$_Boolean;
 function $_true() {return true;}
 initType($_true, "ceylon.language::true", $_Boolean);
 $_true.$crtmm$=function(){return{'super':{t:$_Boolean},mod:$CCMM$,pa:65,d:['$','true']}};
