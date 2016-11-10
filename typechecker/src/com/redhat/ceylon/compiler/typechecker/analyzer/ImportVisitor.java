@@ -315,7 +315,13 @@ public class ImportVisitor extends Visitor {
             i.setAlias(name);
         }
         else {
-            i.setAlias(name(alias.getIdentifier()));
+            String al = name(alias.getIdentifier());
+            if (name.equals(al)) {
+                alias.addUsageWarning(
+                        Warning.redundantImportAlias, 
+                        "redundant import alias");
+            }
+            i.setAlias(al);
         }
         if (isNonimportable(importedPackage, name)) {
             id.addError("root type may not be imported: '" +

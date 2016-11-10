@@ -9,6 +9,7 @@ public enum Warning {
     expressionTypeNothing("Expressions of type 'Nothing'"),
     unusedDeclaration("Unused declarations"),
     unusedImport("Unused imports"),
+    redundantImportAlias("Redundant import aliases"),
     ceylonNamespace("Discouraged 'ceylon' namespaces"),
     javaNamespace("Discouraged 'java' namespaces"),
     suppressedAlready("Redundant warning supression"),
