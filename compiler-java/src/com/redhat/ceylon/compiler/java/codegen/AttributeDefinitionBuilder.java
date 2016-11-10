@@ -152,7 +152,7 @@ public class AttributeDefinitionBuilder {
         
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
-        this.initTest = owner.isEe(attrTypedDecl) ? new NoInitTest() : 
+        this.initTest = owner.isEe(attrTypedDecl) && hasInitFlag ? new NoInitTest() : 
                         hasInitFlag ? new FieldInitTest() : 
                             new NullnessInitTest();
         if (!field) {
