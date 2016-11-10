@@ -7,7 +7,7 @@ class AnnotationInteropError() {
     javaAnnotationNoTarget__GETTER
     javaAnnotationNoTarget__SETTER
     shared variable String tom = "";
-    
+    @error:"annotated program element does not satisfy annotation constraint: []"
     javaAnnotationNoTarget
     shared void method(javaAnnotationNoTarget__PARAMETER
                        Integer param){
