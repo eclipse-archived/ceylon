@@ -542,15 +542,17 @@ public abstract class DeclarationVisitor extends Visitor {
                     if (member!=null && member!=model) {
                         boolean dup = false;
                         boolean possibleOverloadedMethod = 
-                                model.isActual() &&
-                                member.isActual() &&
                                 member instanceof Function && 
                                 model instanceof Function &&
                                 !(that instanceof Tree.Constructor ||
                                   that instanceof Tree.Enumerated) &&
                                 scope instanceof ClassOrInterface &&
                                 !member.isNative();
-                        if (possibleOverloadedMethod) {
+                        boolean legalOverloadedMethod =
+                                possibleOverloadedMethod &&
+                                model.isActual() &&
+                                member.isActual();
+                        if (legalOverloadedMethod) {
                             // anticipate that it might be
                             // an overloaded method 
                             // overriding a method inherited 
@@ -570,6 +572,12 @@ public abstract class DeclarationVisitor extends Visitor {
                             dup = true;
                             that.addError("duplicate declaration: the name '" + 
                                     name + "' is not unique in this scope");
+                            if (possibleOverloadedMethod) {
+                                //not a legal overload but treat 
+                                //it as overloading anyway
+                                initOverload(model, member, 
+                                        scope, unit);
+                            }
                         }
                         if (dup) {
                             unit.getDuplicateDeclarations()
