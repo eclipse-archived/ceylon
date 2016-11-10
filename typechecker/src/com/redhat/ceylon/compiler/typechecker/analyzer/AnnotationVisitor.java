@@ -1080,11 +1080,14 @@ public class AnnotationVisitor extends Visitor {
                         }
                         else {
                             //there is some sort of field or local
-                            //in this case it *never* goes on the
-                            //getter or setter!
-                            if (target.contains(FIELD) &&
-                                    (classMember||toplevel)) {
-                                ok = true;
+                            //in this case only goes on the getter or setter
+                            //if it's cannot go on the field
+                            if (classMember||toplevel) {
+                                if (target.contains(FIELD)) {
+                                    ok = true;
+                                } else if (target.contains(METHOD)) {
+                                    ok = true;
+                                }
                             }
                             if (target.contains(LOCAL_VARIABLE) &&
                                     !parameter && local) {
