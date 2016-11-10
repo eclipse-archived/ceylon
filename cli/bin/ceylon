@@ -59,6 +59,12 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.width=$CEYL_COLS"
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.progname=$(basename "$PRG")"
 fi
+for arg; do
+    case $arg in
+        --java=*) JAVA_OPTS="${arg#--java=}";;
+        [!-]*) break;;
+    esac
+done
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
 
 BOOTSTRAP="$LIB/ceylon-bootstrap.jar"

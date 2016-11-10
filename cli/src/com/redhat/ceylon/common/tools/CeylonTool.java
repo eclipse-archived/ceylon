@@ -241,6 +241,13 @@ public class CeylonTool implements Tool {
         // It's just here so it will show up in the help
         this.showDistributionError = !distribution.isEmpty() && !distribution.equals(Versions.CEYLON_VERSION_NUMBER);
     }
+
+    @OptionArgument(argumentName="options")
+    @Description("Flags added to the java command line, "
+            + "overriding the JAVA_OPTS environment variable.")
+    public void setJava(String javaOptions) {
+        // handled by wrapper script, nothing to do here
+    }
     
     private void setSystemProperties() {
         if (defines != null) {
