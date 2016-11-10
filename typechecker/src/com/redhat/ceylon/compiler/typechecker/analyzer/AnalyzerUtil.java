@@ -1133,16 +1133,58 @@ public class AnalyzerUtil {
     }
     
     static String message(Declaration dec) {
-        String qualifier;
+        return "'" 
+                + dec.getName() 
+                + "'" 
+                + messageQualifier(dec);
+    }
+    
+    static String message(Declaration dec, 
+            List<Type> signature, boolean variadic, 
+            Unit unit) {
+        if (signature!=null) {
+            return "'" 
+                    + dec.getName() 
+                    + parameterTypes(signature, variadic, unit) 
+                    + "'" 
+                    + messageQualifier(dec);
+        }
+        else {
+            return message(dec);
+        }
+    }
+
+    private static String messageQualifier(Declaration dec) {
         Scope container = dec.getContainer();
         if (container instanceof Declaration) {
             Declaration cd = (Declaration) container;
-            qualifier = " in '" + cd.getName() + "'";
+            return " in '" + cd.getName() + "'";
         }
         else {
-            qualifier = "";
+            return "";
         }
-        return "'" + dec.getName() + "'" + qualifier;
+    }
+    
+    static String parameterTypes(List<Type> signature, 
+            boolean variadic, Unit unit) {
+        if (signature!=null) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("(");
+            for (Type t: signature) {
+                if (builder.length()>1) {
+                    builder.append(", ");
+                }
+                if (t!=null) {
+                    //TODO: handle variadic!!
+                    builder.append(t.asString(unit));
+                }
+            }
+            builder.append(")");
+            return builder.toString();
+        }
+        else {
+            return "";
+        }
     }
     
     static Node getParameterTypeErrorNode(Tree.Parameter p) {

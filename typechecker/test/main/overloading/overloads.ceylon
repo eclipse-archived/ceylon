@@ -68,3 +68,23 @@ class Clazz() {
         Inter<T> list = nothing of Inter<T>;
     }
 }
+
+interface Iface {
+    shared formal void y();
+    @error shared formal void y(String s);
+    shared formal void y(Integer i);
+}
+
+class Clas() satisfies Iface {
+    shared actual void y() {}
+    shared actual void y(String s) {}
+    shared actual void y(Integer i) {}
+    @error shared actual void y(Float x) {}
+    @error shared void y(Byte x) {}
+    @error void y(Character x) {}
+    @error String y = "";
+}
+
+class My() {
+    @error shared void equals() {}
+}

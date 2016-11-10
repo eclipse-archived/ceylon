@@ -105,15 +105,19 @@ public class RefinementVisitor extends Visitor {
         if (rd!=d && 
                 rd instanceof Functional && 
                 d instanceof Functional) {
+            Functional fd = (Functional) d;
+            Functional frd = (Functional) rd;
             List<ParameterList> tdpls = 
-                    ((Functional) d).getParameterLists();
+                    fd.getParameterLists();
             List<ParameterList> rdpls = 
-                    ((Functional) rd).getParameterLists();
+                    frd.getParameterLists();
             if (!tdpls.isEmpty() && !rdpls.isEmpty()) {
                 List<Parameter> tdps = 
-                        tdpls.get(0).getParameters();
+                        tdpls.get(0)
+                            .getParameters();
                 List<Parameter> rdps = 
-                        rdpls.get(0).getParameters();
+                        rdpls.get(0)
+                            .getParameters();
                 for (int i=0; 
                         i<tdps.size() && i<rdps.size(); 
                         i++) {
@@ -803,29 +807,27 @@ public class RefinementVisitor extends Visitor {
                         1300);
             }
             else if (!legallyOverloaded) {
-                if (member.isActual()) {
-                    that.addError(
-                            "overloaded member does not refine an inherited overloaded member: " + 
-                                    message(member));
-                }
-                else {
-                    that.addError(
-                            "duplicate or overloaded member name: " + 
-                                    message(member));
-                }
+                that.addError(
+                        "duplicate or overloaded member name: " 
+                                + message(member));
             }
             else {
-                if (!getInheritedDeclarations(name, type).isEmpty()) {
+                List<Declaration> inheritedDeclarations = 
+                        getInheritedDeclarations(name, type);
+                if (!inheritedDeclarations.isEmpty()) {
                     that.addError(
-                            "duplicate or overloaded member name in type hierarchy: " + 
-                                    message(member));
+                            "duplicate or overloaded member name in type hierarchy: " 
+                                    + message(member)
+                                    + " collides with "
+                                    + message(inheritedDeclarations.get(0)));
                 }
             }
         }
         else {
             member.setRefinedDeclaration(root);
+            Unit unit = that.getUnit();
             if (root.isPackageVisibility() && 
-                    !declaredInPackage(root, that.getUnit())) {
+                    !declaredInPackage(root, unit)) {
                 that.addError(
                         "refined declaration is not visible: " + 
                         message(member) + 
@@ -941,18 +943,22 @@ public class RefinementVisitor extends Visitor {
                             member, type, refined);
                 }
             }
-            /*if (!found) {
+            if (!found) {
                 if (member instanceof Function && 
                       root instanceof Function) { //see the condition in DeclarationVisitor.checkForDuplicateDeclaration()
                     that.addError(
-                            "overloaded member does not refine any inherited member: " + 
-                                    message(member));
+                            "overloaded member does not exactly refine an inherited overloaded member: " 
+                                    + message(member, signature, variadic, unit)
+                                    + " does not match any overloaded version of "
+                                    + message(root));
                 }
             }
-            else*/ if (!legallyOverloaded) {
+            else if (!legallyOverloaded) {
                 that.addError(
-                        "overloaded member does not exactly refine an inherited overloaded member: " +
-                                message(member));
+                        "overloaded member does not exactly refine an inherited overloaded member: " 
+                                + message(member, signature, variadic, unit)
+                                + " does not match any overloaded version of "
+                                + message(root));
             }
         }
     }
@@ -1060,10 +1066,12 @@ public class RefinementVisitor extends Visitor {
             Reference refinedMember, 
             Reference refiningMember,
             boolean forNative) {
-		List<ParameterList> refiningParamLists = 
-		        ((Functional) refining).getParameterLists();
-		List<ParameterList> refinedParamLists = 
-		        ((Functional) refined).getParameterLists();
+		Functional refiningFun = (Functional) refining;
+        Functional refinedFun = (Functional) refined;
+        List<ParameterList> refiningParamLists = 
+		        refiningFun.getParameterLists();
+        List<ParameterList> refinedParamLists = 
+		        refinedFun.getParameterLists();
 		if (refinedParamLists.size()!=refiningParamLists.size()) {
 		    String subject = 
 		            forNative ? 
@@ -1100,8 +1108,15 @@ public class RefinementVisitor extends Visitor {
 
 	private boolean refinedMemberIsVariable(
 	        Declaration refinedMemberDec) {
-	    return refinedMemberDec instanceof TypedDeclaration &&
-                ((TypedDeclaration) refinedMemberDec).isVariable();
+	    if (refinedMemberDec instanceof TypedDeclaration) {
+	        TypedDeclaration typedDec = 
+	                (TypedDeclaration) 
+	                    refinedMemberDec;
+	        return typedDec.isVariable();
+	    }
+	    else {
+	        return false;
+	    }
     }
 
 	private void checkRefinedMemberDynamicallyTyped(
@@ -1135,7 +1150,7 @@ public class RefinementVisitor extends Visitor {
 	private boolean refiningMemberIsDynamicallyTyped(
             Declaration refinedMemberDec, Declaration refiningMemberDec) {
 	    return refinedMemberDec instanceof TypedDeclaration && 
-				refiningMemberDec instanceof TypedDeclaration && 
+			   refiningMemberDec instanceof TypedDeclaration && 
         		((TypedDeclaration) refiningMemberDec)
         		    .isDynamicallyTyped();
     }
@@ -1144,7 +1159,7 @@ public class RefinementVisitor extends Visitor {
             Declaration refinedMemberDec, 
             Declaration refiningMemberDec) {
 	    return refinedMemberDec instanceof TypedDeclaration && 
-				refiningMemberDec instanceof TypedDeclaration && 
+			   refiningMemberDec instanceof TypedDeclaration && 
         		((TypedDeclaration) refinedMemberDec)
         		    .isDynamicallyTyped();
     }
