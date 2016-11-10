@@ -47,6 +47,8 @@ function getAnnotationsForBitmask(bits) {
   if (bits&256)ans.push($_abstract());
   if (bits&512)ans.push(annotation());
   if (bits&1024)ans.push(variable());
+  if (bits&2048)ans.push(serializable());
+  if (bits&4096)ans.push($_static());
   return ans;
 }
 //Retrieve the docs from the specified path of the compile-time model
