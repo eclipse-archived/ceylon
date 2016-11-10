@@ -1245,10 +1245,6 @@ public abstract class TypeDeclaration extends Declaration
     public boolean isCallable() {
         return false;
     }
-    
-    public EnumSet<AnnotationTarget> getAnnotationTarget() {
-        return null;
-    }
 
     public boolean isSam() {
         return getSamName() != null;

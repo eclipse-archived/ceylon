@@ -5122,7 +5122,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public AnnotationProxyMethod makeInteropAnnotationConstructor(LazyInterface iface,
             AnnotationProxyClass klass, OutputElement oe, Scope scope){
         String ctorName = oe == null ? NamingBase.getJavaBeanName(iface.getName()) : NamingBase.getDisambigAnnoCtorName(iface, oe);
-        AnnotationProxyMethod ctor = new AnnotationProxyMethod(this, klass);
+        AnnotationProxyMethod ctor = new AnnotationProxyMethod(this, klass, oe);
         ctor.setAnnotationTarget(oe);
         ctor.setContainer(scope);
         ctor.setScope(scope);

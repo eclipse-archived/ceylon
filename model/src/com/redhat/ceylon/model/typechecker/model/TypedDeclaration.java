@@ -3,8 +3,11 @@ package com.redhat.ceylon.model.typechecker.model;
 import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.*;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+
+import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 
 
 /**
@@ -249,5 +252,9 @@ public abstract class TypedDeclaration
     // implemented in Value
     public boolean isSelfCaptured() {
         return false;
+    }
+    
+    public EnumSet<AnnotationTarget> getAnnotationTargets() {
+        return null;
     }
 }
