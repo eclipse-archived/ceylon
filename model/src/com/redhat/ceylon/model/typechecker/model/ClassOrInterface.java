@@ -194,7 +194,10 @@ public abstract class ClassOrInterface extends TypeDeclaration {
     
     @Override
     protected boolean equalsForCache(Object o) {
-        if (o == null || !(o instanceof ClassOrInterface)) {
+        if (o==this) {
+            return true;
+        }
+        if (o==null || !(o instanceof ClassOrInterface)) {
             return false;
         }
         ClassOrInterface b = (ClassOrInterface) o;
@@ -202,13 +205,13 @@ public abstract class ClassOrInterface extends TypeDeclaration {
             return false;
         }
         if (isToplevel()) {
-            if (!b.isToplevel()) return false;
-            return getQualifiedNameString()
+            return b.isToplevel() &&
+                    getQualifiedNameString()
                         .equals(b.getQualifiedNameString());
         }
         else {
-            if (b.isToplevel()) return false;
-            return getContainer().equals(b.getContainer()) && 
+            return !b.isToplevel() &&
+                    getContainer().equals(b.getContainer()) && 
                     Objects.equals(getName(), b.getName());
         }
     }

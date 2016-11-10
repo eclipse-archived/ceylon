@@ -291,8 +291,12 @@ public class TypeParameter extends TypeDeclaration {
 
     @Override
     protected boolean equalsForCache(Object o) {
-        if(o == null || !(o instanceof TypeParameter))
+        if (o==this) {
+            return true;
+        }
+        if (o==null || !(o instanceof TypeParameter)) {
             return false;
+        }
         TypeParameter b = (TypeParameter) o;
         return getDeclaration().equalsForCache(b.getDeclaration())
                 && Objects.equals(getName(),b.getName());

@@ -1500,7 +1500,9 @@ public class Type extends Reference {
         if (canCache) {
             TypeCache cache = dec.getUnit().getCache();
             Type ret = cache.get(this, dec);
-            if(ret != null) return ret == TypeCache.NULL_VALUE ? null : ret;
+            if (ret != null) {
+                return ret == TypeCache.NULL_VALUE ? null : ret;
+            }
         }
         
         while (dec.isAlias()) {

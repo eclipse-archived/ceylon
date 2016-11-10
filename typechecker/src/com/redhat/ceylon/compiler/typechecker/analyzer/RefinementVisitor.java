@@ -941,7 +941,7 @@ public class RefinementVisitor extends Visitor {
                             member, type, refined);
                 }
             }
-            if (!found) {
+            /*if (!found) {
                 if (member instanceof Function && 
                       root instanceof Function) { //see the condition in DeclarationVisitor.checkForDuplicateDeclaration()
                     that.addError(
@@ -949,7 +949,7 @@ public class RefinementVisitor extends Visitor {
                                     message(member));
                 }
             }
-            else if (!legallyOverloaded) {
+            else*/ if (!legallyOverloaded) {
                 that.addError(
                         "overloaded member does not exactly refine an inherited overloaded member: " +
                                 message(member));

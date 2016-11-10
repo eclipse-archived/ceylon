@@ -227,7 +227,13 @@ public abstract class TypedDeclaration
 
     @Override
     protected boolean equalsForCache(Object o) {
+        if (o==this) {
+            return true;
+        }
         if (o == null || !(o instanceof TypedDeclaration)) {
+            return false;
+        }
+        if (isOverloaded() && o!=this) {
             return false;
         }
         TypedDeclaration b = (TypedDeclaration) o;
