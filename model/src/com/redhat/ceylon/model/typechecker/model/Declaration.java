@@ -529,7 +529,7 @@ public abstract class Declaration
             if (thisName!=thatName && 
                     (thisName==null || thatName==null || 
                         !thisName.equals(thatName)) ||
-                that.getDeclarationKind()!=getDeclarationKind() ||
+                that.getDeclarationKind() != getDeclarationKind() ||
                 thisContainer==null || thatContainer==null ||
                     !thisContainer.equals(thatContainer)) {
                 return false;
@@ -570,7 +570,7 @@ public abstract class Declaration
                     List<Parameter> thatParams = 
                             thatParamLists.get(i)
                                 .getParameters();
-                    if (thisParams.size()!=thatParams.size()) {
+                    if (thisParams.size() != thatParams.size()) {
                         return false;
                     }
                     for (int j=0; j<thisParams.size(); j++) {
@@ -756,7 +756,7 @@ public abstract class Declaration
         this.qualifier = qualifier;
     }
     
-    public String getPrefixedName(){
+    public String getPrefixedName() {
         String qualifier = getQualifier();
         return qualifier==null || isParameter() ? 
                 name : qualifier + name;

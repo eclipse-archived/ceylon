@@ -80,7 +80,7 @@ public class LocalDeclarationVisitor extends Visitor {
                 && (isTopLevelObjectExpressionType(model)
                         || (!model.isToplevel() && !model.isMember())) 
                 && !(model instanceof Function && model.isParameter())
-                && localNames!=null){
+                && localNames!=null) {
             Integer counter = localNames.get(model.getName());
             if (counter == null) {
                 counter = 1;

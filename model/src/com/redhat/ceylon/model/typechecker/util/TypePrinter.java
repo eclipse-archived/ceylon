@@ -778,8 +778,9 @@ public class TypePrinter {
         }
         if (printQualifier()) {
             String qualifier = declaration.getQualifier();
-            if(qualifier != null)
+            if (qualifier != null) {
                 ptn.append(qualifier);
+            }
         }
         ptn.append(getSimpleDeclarationName(declaration, unit));
     }
