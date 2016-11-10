@@ -1151,7 +1151,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getUnknownType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getUnknownType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getUnknownType();
         }
         return null;
     }
@@ -1160,7 +1161,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getNothingType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getNothingType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getNothingType();
         }
         return null;
     }
@@ -1169,7 +1171,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getEmptyType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getEmptyType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getEmptyType();
         }
         return null;
     }
@@ -1178,7 +1181,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getAnythingType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getAnythingType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getAnythingType();
         }
         return null;
     }
@@ -1187,7 +1191,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getObjectType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getObjectType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getObjectType();
         }
         return null;
     }
@@ -1196,7 +1201,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getIdentifiableType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getIdentifiableType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getIdentifiableType();
         }
         return null;
     }
@@ -1205,7 +1211,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getBasicType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getBasicType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getBasicType();
         }
         return null;
     }
@@ -1214,7 +1221,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getNullType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getNullType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getNullType();
         }
         return null;
     }
@@ -1223,7 +1231,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getThrowableType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getThrowableType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getThrowableType();
         }
         return null;
     }
@@ -1232,7 +1241,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getExceptionType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getExceptionType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getExceptionType();
         }
         return null;
     }
@@ -1241,7 +1251,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getBooleanType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getBooleanType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getBooleanType();
         }
         return null;
     }
@@ -1250,7 +1261,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getStringType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getStringType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getStringType();
         }
         return null;
     }
@@ -1259,7 +1271,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getIntegerType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getIntegerType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getIntegerType();
         }
         return null;
     }
@@ -1268,7 +1281,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getFloatType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getFloatType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getFloatType();
         }
         return null;
     }
@@ -1277,7 +1291,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getCharacterType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getCharacterType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getCharacterType();
         }
         return null;
     }
@@ -1286,7 +1301,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getByteType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getByteType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getByteType();
         }
         return null;
     }
@@ -1295,7 +1311,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getComparisonType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getComparisonType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getComparisonType();
         }
         return null;
     }
@@ -1304,7 +1321,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getDestroyableType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getDestroyableType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getDestroyableType();
         }
         return null;
     }
@@ -1313,7 +1331,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getObtainableType() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getObtainableType();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getObtainableType();
         }
         return null;
     }
