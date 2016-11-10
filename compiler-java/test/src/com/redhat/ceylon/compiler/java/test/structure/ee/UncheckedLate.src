@@ -41,6 +41,23 @@ class UncheckedLate implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     public void setA4(final boolean a4) {
         this.a4 = a4;
     }
+    private .java.lang.Object a5;
+    
+    public .java.lang.Object getA5() {
+        if (this.a5 != null) {
+            return this.a5;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'a5\'");
+        }
+    }
+    
+    public void setA5(final .java.lang.Object a5) {
+        if (this.a5 == null) {
+            this.a5 = a5;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
