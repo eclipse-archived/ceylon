@@ -7,4 +7,5 @@ public interface ImportScope {
     public void addImport(Import imp);
     public void removeImport(Import imp);
     public Import getImport(String name);
+    public List<Declaration> getMembers();
 }

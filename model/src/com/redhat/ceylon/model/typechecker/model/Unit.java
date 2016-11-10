@@ -89,6 +89,20 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         }
     }
     
+    public List<Declaration> getMembers() {
+        synchronized (declarations) {
+            ArrayList<Declaration> list = 
+                    new ArrayList<Declaration>
+                        (declarations.size());
+            for (Declaration d: declarations) {
+                if (d.isToplevel()) {
+                    list.add(d);
+                }
+            }
+            return list;
+        }
+    }
+    
     public void addDeclaration(Declaration declaration) {
         synchronized (declarations) {
             declarations.add(declaration);
