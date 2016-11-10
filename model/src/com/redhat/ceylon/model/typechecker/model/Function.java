@@ -1,7 +1,9 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.FunctionFlags.DEFERRED;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.FunctionFlags.NO_NAME;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.FunctionFlags.VOID;
 import static java.util.Collections.emptyList;
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.FunctionFlags.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,37 +130,34 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
     
     @Override
     public String toString() {
-        Type type = getType();
-        if (type==null) {
-            return "function " + toStringName();
-        }
-        else {
-            StringBuilder params = new StringBuilder();
-            for (ParameterList pl: getParameterLists()) {
-                params.append("(");
-                boolean first = true;
-                for (Parameter p: pl.getParameters()) {
-                    if (first) {
-                        first = false;
+        StringBuilder params = new StringBuilder();
+        for (ParameterList pl: getParameterLists()) {
+            params.append("(");
+            boolean first = true;
+            for (Parameter p: pl.getParameters()) {
+                if (first) {
+                    first = false;
+                }
+                else {
+                    params.append(", ");
+                }
+                FunctionOrValue model = p.getModel();
+                if (model!=null && model.getType()!=null) {
+                    if (model.isFunctional()) {
+                        params.append(model.getTypedReference().getFullType().asString());
                     }
                     else {
-                        params.append(", ");
+                        params.append(model.getType().asString());
                     }
-                    FunctionOrValue model = p.getModel();
-                    if(model != null && model.getType() != null){
-                        if(model.isFunctional())
-                            params.append(model.getTypedReference().getFullType().asString());
-                        else
-                            params.append(model.getType().asString());
-                        params.append(" ");
-                    }
-                    params.append(p.getName());
+                    params.append(" ");
                 }
-                params.append(")");
+                params.append(p.getName());
             }
-            return "function " + toStringName() + params + 
-                    " => " + type.asString();
+            params.append(")");
         }
+        Type type = getType();
+        return "function " + toStringName() + params + 
+                (type==null ? "" : " => " + type.asString());
     }
 
     public Function getRealFunction() {
