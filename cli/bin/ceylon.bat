@@ -104,6 +104,18 @@ if NOT "%PRESERVE_JAVA_OPTS%" == "true" (
     set PREPEND_JAVA_OPTS=%JAVA_DEBUG_OPTS%
     rem Other java opts go here
 )
+
+rem Find any --java options and add their values to JAVA_OPTS
+:loop_args
+    if "%~1" == "" goto :done_args
+    if "%~1" == "--java" (
+        set "JAVA_OPTS=%JAVA_OPTS% %~2"
+        shift
+    )
+    shift
+    goto loop_args
+:done_args
+
 set "JAVA_OPTS=%PREPEND_JAVA_OPTS% %JAVA_OPTS%"
 
 "%JAVA%" ^
