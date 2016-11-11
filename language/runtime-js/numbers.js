@@ -183,6 +183,31 @@ $addnm$('timesInteger');
 $specialiseForNumber$(Integer, 'timesInteger', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Integer','$m','timesInteger']};})
 $specialiseForNumber$(Float, 'timesInteger', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','timesInteger']};})
 
+//Divide two integers
+function i$div(a,b) {
+  if (b===0) {
+    throw Exception("Division by Zero");
+  }
+  return toInt(a/b);
+}
+ex$.i$div=i$div;
+//Divide two floats
+function f$div(a,b) {
+  if (a.fmz$) {
+    if (b == 0 || b.$_undefined) {
+        return NaN;
+    }
+    return a;
+  }
+  var ret = Float(a/b);
+  // make sure that if we expect a negative result, we get one, like 1/-0 -> -Infinity
+  if(!a.negative && b.fmz$ && !ret.negative){
+    ret = ret.negated;
+  }
+  return ret;
+}
+ex$.f$div=f$div;
+
 JSNum$proto.divided=function(other) {
   if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
   if (this.fmz$) {
@@ -197,12 +222,9 @@ JSNum$proto.divided=function(other) {
     // make sure that if we expect a negative result, we get one, like 1/-0 -> -Infinity
     if((!this.negative && other.fmz$ && !ret.negative)
         ||(!otherFloat&&ret==-Infinity&&!this.negative)){ ret = ret.negated; }
-      return ret;
-    }
-    if (other == 0) {
-      throw Exception("Division by Zero");
-    }
-    return toInt(this/other);
+    return ret;
+  }
+  return i$div(this,other);
 }
 $addnm$('divided');
 $specialiseForNumber$(Integer, 'divided', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divided']};})

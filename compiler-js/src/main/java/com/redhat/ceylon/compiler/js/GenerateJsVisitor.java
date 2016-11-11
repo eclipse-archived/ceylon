@@ -2874,8 +2874,16 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.QuotientOp that) {
-        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        Type ltype = that.getLeftTerm().getTypeModel();
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(ltype)) {
             Operators.nativeBinaryOp(that, "divided", "/", null, this);
+        } else if (TypeUtils.bothInts(ltype, that.getRightTerm().getTypeModel())
+                || TypeUtils.bothFloats(ltype, that.getRightTerm().getTypeModel())) {
+            out(getClAlias(), TypeUtils.bothInts(ltype, that.getRightTerm().getTypeModel()) ? "i$div(" : "f$div(");
+            Operators.unwrappedNumberOrTerm(that.getLeftTerm(), false, this);
+            out(",");
+            Operators.unwrappedNumberOrTerm(that.getRightTerm(), false, this);
+            out(")");
         } else {
             Operators.simpleBinaryOp(that, null, ".divided(", ")", this);
         }
