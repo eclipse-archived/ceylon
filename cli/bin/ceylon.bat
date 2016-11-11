@@ -28,7 +28,7 @@ popd
 set "LIB=%CEYLON_HOME%\lib"
 
 if "%~1" == "--show-home" (
-    echo %CEYLON_HOME%
+    @echo %CEYLON_HOME%
     exit /b 1
 )
 
@@ -106,15 +106,16 @@ if NOT "%PRESERVE_JAVA_OPTS%" == "true" (
 )
 
 rem Find any --java options and add their values to JAVA_OPTS
-:loop_args
-    if "%~1" == "" goto :done_args
-    if "%~1" == "--java" (
-        set "JAVA_OPTS=%JAVA_OPTS% %~2"
-        shift
+for %%x in (%*) do (
+    set ARG=%%~x
+    if "!ARG:~0,7!" EQU "--java=" (
+        set OPT=!ARG:~7!
+        set "JAVA_OPTS=!JAVA_OPTS! !OPT!"
+    ) else if "!ARG!" EQU "--java" (
+        @echo Error: use --java options with an equal sign and quotes, eg: "--java=-Xmx500m"
+        exit /b 1
     )
-    shift
-    goto loop_args
-:done_args
+)
 
 set "JAVA_OPTS=%PREPEND_JAVA_OPTS% %JAVA_OPTS%"
 
