@@ -114,8 +114,11 @@ for %%x in (%*) do (
     ) else if "!ARG!" EQU "--java" (
         @echo Error: use --java options with an equal sign and quotes, eg: "--java=-Xmx500m"
         exit /b 1
+    ) else if "!ARG:~0,1!" NEQ "-" (
+        goto :breakloop
     )
 )
+:breakloop
 
 set "JAVA_OPTS=%PREPEND_JAVA_OPTS% %JAVA_OPTS%"
 
