@@ -16,6 +16,7 @@ shared native class OpenValue(pkg,meta) satisfies ValueDeclaration {
   shared native actual default String name;
   shared native actual default Value<Get, Set> apply<Get=Anything, Set=Nothing>();
   shared native actual default Attribute<Container, Get, Set> memberApply<Container=Nothing, Get=Anything, Set=Nothing>(AppliedType<Object> containerType);
+  shared native actual Value<Get, Set> staticApply<Get=Anything, Set=Nothing>(AppliedType<Object> containerType);
   shared native actual default void memberSet(Object container, Anything newValue);
   shared native actual default Boolean variable;
   shared native actual default Boolean late;
@@ -36,6 +37,7 @@ shared native class OpenValue(pkg,meta) satisfies ValueDeclaration {
   shared native actual default Boolean default;
   shared native actual default Boolean shared;
   shared native actual default Boolean toplevel;
+  shared native actual default Boolean static;
   shared native actual default Package|NestableDeclaration container;
   shared native actual default String qualifiedName;
   shared native actual default Boolean equals(Object other);

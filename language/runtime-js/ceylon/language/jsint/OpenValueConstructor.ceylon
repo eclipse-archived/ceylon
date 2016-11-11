@@ -11,11 +11,13 @@ shared native class OpenValueConstructor(containingPackage, shared Anything meta
   shared actual native ClassDeclaration container;
   shared actual native ValueConstructor<Result> apply<Result=Anything>();
   shared actual native MemberClassValueConstructor<Container, Result> memberApply<Container=Nothing, Result=Anything>(Type<Object> containerType);
+  shared actual native Anything staticGet(Type<Object> containerType);
 
   shared actual native Boolean shared;
   shared actual native Boolean formal;
   shared actual native Boolean default;
   shared actual native Boolean actual;
+  shared actual native Boolean static;
   //Contained
   toplevel=false;
   shared actual Package containingPackage;
