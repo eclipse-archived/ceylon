@@ -31,7 +31,7 @@ node : '^' '('
 
 subnode : n=NODE_NAME f=FIELD_NAME
           { println("        if (that.get" + initialUpper($f.text) + "()==null)"); }
-          { println("            that.addError(\"missing tokens\");"); }
+          { println("            that.addError(\"missing " + description($f.text) + "\");"); }
         | n=NODE_NAME
           { println("        if (that.get" + className($n.text) + "()==null)"); }
           { println("            that.addError(\"missing " + description($n.text) + "\");"); }

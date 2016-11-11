@@ -1,10 +1,19 @@
 function $_Boolean(value) {return Boolean(value)}
+$_Boolean.$st$={
+  parse:function(s){
+    var b=parseBoolean(s);
+    return b==null?ParseException('illegal format for Boolean'):b;
+  }
+};
+$_Boolean.$st$.parse.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:$_Boolean},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}}],$cont:$_Boolean,pa:4097,an:function(){return[tagged($arr$sa$(["Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Boolean','$m','parse']};};
 initExistingTypeProto($_Boolean, Boolean, 'ceylon.language::Boolean');
 $_Boolean.$crtmm$=function(){
   return{ps:[],pa:257,of:[getTrue,getFalse],
   mod:$CCMM$,d:['$','Boolean']};
 };
 ex$.$_Boolean=$_Boolean;
+function $init$$_Boolean(){return $_Boolean;}
+ex$.$init$$_Boolean=$init$$_Boolean;
 function $_true() {return true;}
 initType($_true, "ceylon.language::true", $_Boolean);
 $_true.$crtmm$=function(){return{'super':{t:$_Boolean},mod:$CCMM$,pa:65,d:['$','true']}};

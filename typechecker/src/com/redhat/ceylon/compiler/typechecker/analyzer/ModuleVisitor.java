@@ -102,7 +102,7 @@ public class ModuleVisitor extends Visitor {
 
     private static String getVersionString(Tree.QuotedLiteral quoted) {
         if (quoted==null) {
-            return null;
+            return "0";
         }
         else {
             String versionString = quoted.getText();
@@ -160,8 +160,7 @@ public class ModuleVisitor extends Visitor {
                         that.getUnit());
         super.visit(that);
         if (phase==Phase.SRC_MODULE) {
-            String version = 
-                    getVersionString(that.getVersion());
+            String version = getVersionString(that.getVersion());
             Tree.ImportPath importPath = that.getImportPath();
             List<String> name = getNameAsList(importPath);
             if (pkg.getNameAsString().isEmpty()) {
@@ -326,13 +325,9 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
         if (phase==Phase.REMAINING) {
             Tree.ImportPath importPath = that.getImportPath();
-            if (that.getVersion()==null) {
-                that.addError("missing module version");
-            }
-            String version = 
-                    getVersionString(that.getVersion());
-            String namespace = that.getNamespace() != null ? 
-                    that.getNamespace().getText() : null;
+            String version = getVersionString(that.getVersion());
+            Tree.Identifier ns = that.getNamespace();
+            String namespace = ns!=null ? ns.getText() : null;
             List<String> name;
             Node node;
             if (importPath!=null) {
@@ -350,7 +345,8 @@ public class ModuleVisitor extends Visitor {
             	node = null;
             }
             boolean hasMavenName = ModuleUtil.isMavenModule(ModelUtil.formatPath(name));
-            boolean forCeylon = (importPath != null && namespace == null)
+            boolean forCeylon 
+                     = (importPath != null && namespace == null)
                     || (importPath == null && namespace == null && !hasMavenName)
                     || DefaultRepository.NAMESPACE.equals(namespace);
             if (name.isEmpty()) {

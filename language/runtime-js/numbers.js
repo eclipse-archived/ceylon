@@ -40,6 +40,9 @@ Integer.$st$={
     return x===null?ParseException("illegal format for Integer"):x;
   }
 };
+Integer.$st$.format.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}},{nm:'radix',mt:'prm',def:1,$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Integer().$st$.format),OpenFunction$jsint(lmp$(ex$,'$'),Float.$st$.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Integer','$m','parse']};};
+Integer.$st$.parse.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}},{nm:'radix',mt:'prm',def:1,$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Integer().$$.prototype.format),OpenFunction$jsint(lmp$(ex$,'$'),Float.$st$.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Integer','$m','parse']};};
+
 initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number, JSNumber,
         $init$Integral(), $init$Exponentiable(), $init$Binary());
 Integer.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
@@ -70,8 +73,11 @@ Float.$st$={
     return x===null?ParseException("illegal format for Float"):x;
   }
 };
+Float.$st$.format.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_String},ps:[{nm:'float',mt:'prm',$t:{t:Float}},{nm:'minDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'maxDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'decimalSeparator',mt:'prm',def:1,$t:{t:Character}},{nm:'thousandsSeparator',mt:'prm',def:1,$t:{t:'u',l:[{t:Null},{t:Character}]}}],$cont:Float,pa:4097,an:function(){return[tagged($arr$sa$(["Numbers"],{t:$_String})),see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Float().$$.prototype.parse),OpenFunction$jsint(lmp$(ex$,'$'),Integer.$$.prototype.format)],{t:FunctionDeclaration$meta$declaration})),since("1.3.1")];},d:['$','Float','$m','format']};};
+Float.$st$.parse.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Float},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}}],$cont:Float,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Float().$$.prototype.format),OpenFunction$jsint(lmp$(ex$,'$'),Integer.$$.prototype.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Float','$m','parse']};};
 initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,$init$Exponentiable(), JSNumber);
 Float.$crtmm$=function(){return{pa:97,mod:$CCMM$,d:['$','Float']};}
+function $init$Float(){return Float;}
 atr$(Float.$$.prototype,'integer',function(){ return Integer(Math.floor(this)); },undefined,
      function(){return {mod:$CCMM$,$t:{t:Integer},pa:65,$cont:Float,d:['$','Float','$at','integer']};});
 
@@ -177,6 +183,31 @@ $addnm$('timesInteger');
 $specialiseForNumber$(Integer, 'timesInteger', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Integer','$m','timesInteger']};})
 $specialiseForNumber$(Float, 'timesInteger', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','timesInteger']};})
 
+//Divide two integers
+function i$div(a,b) {
+  if (b===0) {
+    throw Exception("Division by Zero");
+  }
+  return toInt(a/b);
+}
+ex$.i$div=i$div;
+//Divide two floats
+function f$div(a,b) {
+  if (a.fmz$) {
+    if (b == 0 || b.$_undefined) {
+        return NaN;
+    }
+    return a;
+  }
+  var ret = Float(a/b);
+  // make sure that if we expect a negative result, we get one, like 1/-0 -> -Infinity
+  if(!a.negative && b.fmz$ && !ret.negative){
+    ret = ret.negated;
+  }
+  return ret;
+}
+ex$.f$div=f$div;
+
 JSNum$proto.divided=function(other) {
   if (typeof(other)!=='number'&&other.constructor!==Number)throw new TypeError("Number expected");
   if (this.fmz$) {
@@ -191,12 +222,9 @@ JSNum$proto.divided=function(other) {
     // make sure that if we expect a negative result, we get one, like 1/-0 -> -Infinity
     if((!this.negative && other.fmz$ && !ret.negative)
         ||(!otherFloat&&ret==-Infinity&&!this.negative)){ ret = ret.negated; }
-      return ret;
-    }
-    if (other == 0) {
-      throw Exception("Division by Zero");
-    }
-    return toInt(this/other);
+    return ret;
+  }
+  return i$div(this,other);
 }
 $addnm$('divided');
 $specialiseForNumber$(Integer, 'divided', function(){return {mod:$CCMM$,$t:{t:Integer},pa:67,$cont:Integer,ps:[{$t:{t:Integer},nm:'other'}],d:['$','Integer','$m','divided']};})

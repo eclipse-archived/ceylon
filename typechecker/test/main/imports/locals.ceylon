@@ -28,3 +28,14 @@ void withoutImport() {
     @error Int i = 0;
     @error print(fs);
 }
+
+void hiding() {
+    import ceylon.language.meta { 
+        @error type, 
+        typeLiteral 
+    }
+    String type;
+    if (1==1) {
+        String typeLiteral = "";
+    }
+}

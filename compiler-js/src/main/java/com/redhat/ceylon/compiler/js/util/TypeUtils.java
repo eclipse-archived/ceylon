@@ -171,15 +171,14 @@ public class TypeUtils {
                     if (!first) {
                         if (p.isStatic()) {
                             sb.append("$st$.");
-                        } else if (gen.opts.isOptimize()) {
+                        } else if (p.getContainer() != scope &&
+                                p.getContainer() instanceof ClassOrInterface && gen.opts.isOptimize()) {
                             sb.append("$$.prototype.");
                         }
                     }
                     sb.append(gen.getNames().name(p)).append('.');
                 }
-                if (first) {
-                    first = false;
-                }
+                first = false;
             }
             if (t.isStatic()) {
                 sb.append("$st$.");

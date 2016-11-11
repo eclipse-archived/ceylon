@@ -150,7 +150,7 @@ public class ImportVisitor extends Visitor {
     
     private void addWildcardImport(ImportList il, 
             Declaration dec) {
-        if (!hidesToplevel(dec)) {
+        if (!hidesToplevel(dec, il)) {
             Import i = new Import();
             i.setAlias(dec.getName());
             i.setDeclaration(dec);
@@ -161,7 +161,7 @@ public class ImportVisitor extends Visitor {
     
     private void addWildcardImport(ImportList il, 
             Declaration dec, TypeDeclaration td) {
-        if (!hidesToplevel(dec)) {
+        if (!hidesToplevel(dec, il)) {
             Import i = new Import();
             i.setAlias(dec.getName());
             i.setDeclaration(dec);
@@ -197,8 +197,9 @@ public class ImportVisitor extends Visitor {
         }
     }
     
-    private boolean hidesToplevel(Declaration dec) {
-        for (Declaration d: unit.getDeclarations()) {
+    private boolean hidesToplevel(Declaration dec, ImportList il) {
+        ImportScope scope = getImportScope(il); 
+        for (Declaration d: scope.getMembers()) {
             String n = d.getName();
             if (d.isToplevel() && n!=null && 
                     dec.getName().equals(n)) {
@@ -209,11 +210,12 @@ public class ImportVisitor extends Visitor {
     }
     
     private boolean checkForHiddenToplevel(Tree.Identifier id, 
-            Import i, Tree.Alias alias) {
-        for (Declaration d: unit.getDeclarations()) {
+            Import i, Tree.Alias alias, ImportList il) {
+        ImportScope scope = getImportScope(il); 
+        for (Declaration d: scope.getMembers()) {
             String n = d.getName();
             Declaration idec = i.getDeclaration();
-            if (d.isToplevel() && n!=null && 
+            if (n!=null && 
                     i.getAlias().equals(n) &&
                     !idec.equals(d) && 
                     //it is legal to import an object declaration 
@@ -221,14 +223,19 @@ public class ImportVisitor extends Visitor {
                     //alias:
                     !isLegalAliasFreeImport(d, idec)) {
                 String qn = d.getQualifiedNameString();
+                String message = scope instanceof Unit ?
+                        "toplevel declaration with this name declared in this unit" :
+                        "declaration with this name declared in this scope";
                 if (alias==null) {
                     String iqn = idec.getQualifiedNameString();
-                    id.addError("toplevel declaration with this name declared in this unit: imported '" 
-                            + iqn + "' would hide '" + qn + "' (add an alias to the import)");
+                    id.addError(message + ": imported '" 
+                            + iqn + "' would hide '" + qn + 
+                            "' (add an alias to the import)");
                 }
                 else {
-                    alias.addError("toplevel declaration with this name declared in this unit: imported '" 
-                            + n + "' would hide '" + qn + "' (choose a different alias for the import)");
+                    alias.addError(message + ": imported '" 
+                            + n + "' would hide '" + qn + 
+                            "' (choose a different alias for the import)");
                 }
                 return true;
             }
@@ -315,7 +322,13 @@ public class ImportVisitor extends Visitor {
             i.setAlias(name);
         }
         else {
-            i.setAlias(name(alias.getIdentifier()));
+            String al = name(alias.getIdentifier());
+            if (name.equals(al)) {
+                alias.addUsageWarning(
+                        Warning.redundantImportAlias, 
+                        "redundant import alias");
+            }
+            i.setAlias(al);
         }
         if (isNonimportable(importedPackage, name)) {
             id.addError("root type may not be imported: '" +
@@ -369,7 +382,7 @@ public class ImportVisitor extends Visitor {
             if (il.hasImport(d)) {
                 id.addError("already imported: '" + name + "'");
             }
-            else if (!checkForHiddenToplevel(id, i, alias)) {
+            else if (!checkForHiddenToplevel(id, i, alias, il)) {
                 addImport(member, il, i);
             }
             checkAliasCase(alias, d);
@@ -490,7 +503,7 @@ public class ImportVisitor extends Visitor {
                 if (isStaticNonGeneric(m, td) ||
                         isToplevelClassConstructor(td, m) ||
                         isToplevelAnonymousClass(m.getContainer())) {
-                    if (!checkForHiddenToplevel(id, i, alias)) {
+                    if (!checkForHiddenToplevel(id, i, alias, il)) {
                         addImport(member, il, i);
                     }
                 }

@@ -25,18 +25,18 @@ public abstract class Element implements Scoped, ImportScope {
     
     Element() {}
     
-	private Scope container;
-	private Scope scope;
-	protected Unit unit;
-	
-	private List<Import> imports = null;
-	
-	@Override
-	public List<Import> getImports() {
+    private Scope container;
+    private Scope scope;
+    protected Unit unit;
+    
+    private List<Import> imports = null;
+    
+    @Override
+    public List<Import> getImports() {
         return imports;
     }
-	
-	@Override
+    
+    @Override
     public void addImport(Import imp) {
         if (imports==null) {
             imports = new ArrayList<Import>(3);
@@ -65,12 +65,12 @@ public abstract class Element implements Scoped, ImportScope {
         return null;
     }
 
-	@Override
-	public List<Declaration> getMembers() {
+    @Override
+    public List<Declaration> getMembers() {
         return emptyList();
     }
     
-	@Override
+    @Override
     public Unit getUnit() {
         return unit;
     }
@@ -105,11 +105,11 @@ public abstract class Element implements Scoped, ImportScope {
      */
     @Override
     public Scope getScope() {
-		return scope;
-	}
+        return scope;
+    }
     
     public void setScope(Scope scope) {
-    	this.scope = scope;
+        this.scope = scope;
     }
     
     @Override
@@ -331,10 +331,10 @@ public abstract class Element implements Scoped, ImportScope {
     public Map<String, DeclarationWithProximity> 
     getMatchingDeclarations(Unit unit, String startingWith, 
             int proximity, Cancellable canceller) {
-    	Map<String, DeclarationWithProximity> result = 
-    	        getScope()
-    			    .getMatchingDeclarations(unit, 
-    			            startingWith, proximity+1, canceller);
+        Map<String, DeclarationWithProximity> result = 
+                getScope()
+                    .getMatchingDeclarations(unit, 
+                            startingWith, proximity+1, canceller);
         for (Declaration d: getMembers()) {
             if (canceller != null
                     && canceller.isCancelled()) {
@@ -356,7 +356,7 @@ public abstract class Element implements Scoped, ImportScope {
                 }
             }
         }
-    	return result;
+        return result;
     }
 
     @Override

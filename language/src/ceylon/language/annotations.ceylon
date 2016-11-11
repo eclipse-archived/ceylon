@@ -430,6 +430,7 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `expressionTypeIterable`,
      `unusedDeclaration`,
      `unusedImport`,
+     `redundantImportAlias`,
      `ceylonNamespace`,
      `javaNamespace,` 
      `suppressedAlready`, 

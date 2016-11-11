@@ -96,7 +96,7 @@ public class MetamodelGenerator {
         model.put("$mod-version", module.getVersion());
         model.put("$mod-bin", Versions.JS_BINARY_MAJOR_VERSION+"."+Versions.JS_BINARY_MINOR_VERSION);
         if (module.isNative()) {
-            List<String> backends = new ArrayList<String>(1);
+            List<String> backends = new ArrayList<>(1);
             for(Backend backend : module.getNativeBackends()) {
                 backends.add(backend.nativeAnnotation);
             }
@@ -126,7 +126,7 @@ public class MetamodelGenerator {
                         optimp.put("exp", 1);
                     }
                     if (mi.isNative()) {
-                        List<String> backends = new ArrayList<String>(1);
+                        List<String> backends = new ArrayList<>(1);
                         for(Backend backend : mi.getNativeBackends())
                             backends.add(backend.nativeAnnotation);
                         optimp.put("nat", backends);

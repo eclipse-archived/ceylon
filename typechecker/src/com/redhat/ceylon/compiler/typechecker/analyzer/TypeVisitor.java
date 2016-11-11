@@ -18,7 +18,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDecla
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
@@ -43,6 +42,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -1672,11 +1672,7 @@ public class TypeVisitor extends Visitor {
         return hdr;
     }
     
-    // We use this for situations where the backend compiler can't check the
-    // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(Backends backends) {
-        return !backends.none() &&
-                !backends.header() &&
-                !isForBackend(backends, unit.getSupportedBackends());
-    }    
+        return ModelUtil.isNativeForWrongBackend(backends, unit.getSupportedBackends());
+    }
 }
