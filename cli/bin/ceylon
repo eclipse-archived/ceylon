@@ -61,7 +61,7 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
 fi
 for arg; do
     case $arg in
-        --java=*) JAVA_OPTS="${arg#--java=}";;
+        --java=*) JAVA_OPTS="$JAVA_OPTS ${arg#--java=}";;
         [!-]*) break;;
     esac
 done
