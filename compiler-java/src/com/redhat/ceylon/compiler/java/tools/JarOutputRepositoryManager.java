@@ -21,7 +21,6 @@
 package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,9 +33,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
-import java.util.zip.ZipEntry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactCreator;
@@ -60,6 +57,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JdkProvider;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.OsgiUtil;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -139,6 +137,7 @@ public class JarOutputRepositoryManager {
         */
         private static final String META_INF = "META-INF";
         private static final String MAPPING_FILE = META_INF+"/mapping.txt";
+        private static final String QUOTED_MODULE_DESCRIPTOR = NamingBase.MODULE_DESCRIPTOR_CLASS_NAME + ".clas";
         /** Jar we're "updating" (i.e. will copy any entries not added to the output */
         private File originalJarFile;
         
@@ -171,6 +170,7 @@ public class JarOutputRepositoryManager {
         private Log log;
 		private JdkProvider jdkProvider;
         private Map<ClassOrInterface, Set<Class>> services;
+        private boolean validModule;
 
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, 
         		Options options, CeyloncFileManager ceyloncFileManager, MultiTaskListener taskListener) throws IOException{
@@ -215,6 +215,7 @@ public class JarOutputRepositoryManager {
             
             this.originalJarFile = repoManager.getArtifact(carContext);
             this.outputJarTempFolder = FileUtil.makeTempDir("ceylon-compiler-");
+            this.validModule = module.isDefaultModule();
         }
 
         private Map<String, Set<String>> getPreviousServices() throws IOException {
@@ -301,24 +302,29 @@ public class JarOutputRepositoryManager {
                     addOriginalJarFiles(outputJarTempFolder, originalJarFile, jarFilter);
                 }
 
-                File finalCarFile = IOUtils.zipFolder(manifestObject, outputJarTempFolder);
-            
-                if (options.isSet(Option.CEYLONPACK200)) {
-                    JarUtils.repack(finalCarFile, cmrLog);
-                }
-                File sha1File = ShaSigner.sign(finalCarFile, cmrLog, options.get(Option.VERBOSE) != null);
-                JarUtils.publish(finalCarFile, sha1File, carContext, repoManager, cmrLog);
+                // We only create the final .car file if we found a module descriptor.
+                // Otherwise something has gone seriously wrong during compilation and
+                // we would be generating output that does more harm than good
+                if (validModule) {
+                    File finalCarFile = IOUtils.zipFolder(manifestObject, outputJarTempFolder);
                 
-                String info;
-                if(module.isDefaultModule())
-                    info = module.getNameAsString();
-                else
-                    info = module.getNameAsString() + "/" + module.getVersion();
-                cmrLog.info("Created module " + info);
-                if(taskListener != null){
-                    for(TaskListener listener : taskListener.getTaskListeners()){
-                        if(listener instanceof CeylonTaskListener){
-                            ((CeylonTaskListener) listener).moduleCompiled(module.getNameAsString(), module.getVersion());
+                    if (options.isSet(Option.CEYLONPACK200)) {
+                        JarUtils.repack(finalCarFile, cmrLog);
+                    }
+                    File sha1File = ShaSigner.sign(finalCarFile, cmrLog, options.get(Option.VERBOSE) != null);
+                    JarUtils.publish(finalCarFile, sha1File, carContext, repoManager, cmrLog);
+                    
+                    String info;
+                    if(module.isDefaultModule())
+                        info = module.getNameAsString();
+                    else
+                        info = module.getNameAsString() + "/" + module.getVersion();
+                    cmrLog.info("Created module " + info);
+                    if(taskListener != null){
+                        for(TaskListener listener : taskListener.getTaskListeners()){
+                            if(listener instanceof CeylonTaskListener){
+                                ((CeylonTaskListener) listener).moduleCompiled(module.getNameAsString(), module.getVersion());
+                            }
                         }
                     }
                 }
@@ -335,6 +341,12 @@ public class JarOutputRepositoryManager {
                 while (inEntries.hasMoreElements()) {
                     JarEntry entry = inEntries.nextElement();
                     String name = entry.getName();
+                    // is the file a module descriptor?
+                    if (name.equals(QUOTED_MODULE_DESCRIPTOR)
+                            || name.endsWith("/" + QUOTED_MODULE_DESCRIPTOR)) {
+                        // Mark this module as being valid (enough)
+                        validModule = true;
+                    }
                     if (filter != null && filter.avoid(name)) {
                         continue;
                     }
@@ -487,7 +499,12 @@ public class JarOutputRepositoryManager {
             if (sourceFile != null) {
                 modifiedSourceFiles.add(sourceFile.getPath());
                 // record the class file we produce so that we don't save it from the original jar
-            	addMappingEntry(entryName, JarUtils.toPlatformIndependentPath(srcCreator.getPaths(), sourceFile.getPath()));
+                addMappingEntry(entryName, JarUtils.toPlatformIndependentPath(srcCreator.getPaths(), sourceFile.getPath()));
+                // is the file a module descriptor?
+                if (Constants.MODULE_DESCRIPTOR.equals(sourceFile.getName())) {
+                    // Mark this module as being valid (enough)
+                    validModule = true;
+                }
             } else {
                 modifiedResourceFilesRel.add(entryName);
                 File full = FileUtil.applyPath(resourceCreator.getPaths(), fileName);
