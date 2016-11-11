@@ -2780,6 +2780,15 @@ public class ModelUtil {
         return backends.none() || supported.supports(backends);
     }
     
+    // We use this to check for similar situations as "dynamic"
+    // where in this case the backend compiler can't check the
+    // validity of the code for the other backend 
+    public static boolean isNativeForWrongBackend(Backends backends, Backends supportedbackends) {
+        return !backends.none() &&
+                !backends.header() &&
+                !isForBackend(backends, supportedbackends);
+    }
+    
     /**
      * The list of type parameters of the given generic
      * declaration as types. (As viewed within the body of

@@ -10263,13 +10263,7 @@ public class ExpressionVisitor extends Visitor {
         return dec;
     }
     
-    // We use this to check for similar situations as "dynamic"
-    // where in this case the backend compiler can't check the
-    // validity of the code for the other backend 
     private boolean isNativeForWrongBackend(Backends backends) {
-        return !backends.none() &&
-                !backends.header() &&
-                !isForBackend(backends, unit.getSupportedBackends());
+        return ModelUtil.isNativeForWrongBackend(backends, unit.getSupportedBackends());
     }
-    
 }
