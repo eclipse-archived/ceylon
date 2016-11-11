@@ -41,6 +41,7 @@ shared native class OpenInterface(shared Package pkg, shared Object meta) satisf
   shared actual native Boolean default;
   shared actual native Boolean shared;
   shared actual native Boolean toplevel;
+  shared actual native Boolean static;
   shared actual native String qualifiedName;
   shared actual native NestableDeclaration|Package container;
 

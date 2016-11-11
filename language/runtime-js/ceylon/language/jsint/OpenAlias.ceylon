@@ -26,6 +26,7 @@ shared native class OpenAlias(shared Object _alias) satisfies AliasDeclaration {
   shared actual native Boolean actual;
   shared actual native Boolean formal;
   shared actual native Boolean default;
+  shared actual native Boolean static;
   shared actual String string => "alias ``qualifiedName``";
   shared actual Integer hash => string.hash;
 }
