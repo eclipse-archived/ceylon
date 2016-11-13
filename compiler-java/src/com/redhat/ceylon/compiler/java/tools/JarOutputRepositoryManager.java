@@ -291,10 +291,12 @@ public class JarOutputRepositoryManager {
                     writeJava9Module(outputJarTempFolder, module);
                 }
 
+                // Write services to the META-INF/services
+                writeServicesJarEntry(outputJarTempFolder);
+                
                 // Add META-INF/mapping.txt
                 Properties previousMapping = getPreviousMapping();
                 JarEntryFilter jarFilter = getJarFilter(previousMapping, copiedSourceFiles);
-                writeServicesJarEntry(outputJarTempFolder);
                 writeMappingJarEntry(outputJarTempFolder, previousMapping, jarFilter);
                 
                 // Now add the old jar remains
