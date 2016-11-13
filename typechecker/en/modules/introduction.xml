@@ -448,9 +448,8 @@ interface Sink&lt;in Item&gt; { ... }</programlisting>
             <para>
             A function belonging to a type is called a <emphasis>method</emphasis>. 
             A value belonging to a type is called an <emphasis>attribute</emphasis>.  
-            There are no <literal>static</literal> members. Instead, a function or 
-            value may be declared as a direct <emphasis>toplevel</emphasis> member 
-            of a package, or as a member of a singleton anonymous class. This 
+            A function or value may be declared as a direct <emphasis>toplevel</emphasis> 
+            member of a package, or as a member of a singleton anonymous class. This 
             approach, along with certain other features, gives the language a more 
             regular block structure.
             </para>
