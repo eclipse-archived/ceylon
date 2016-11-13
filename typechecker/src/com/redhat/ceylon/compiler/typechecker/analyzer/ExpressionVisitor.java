@@ -2604,9 +2604,9 @@ public class ExpressionVisitor extends Visitor {
     private void setDefiniteTypeFromOptionalType(
             Tree.Variable that, Tree.LocalModifier local, 
             Tree.SpecifierExpression se) {
-        Tree.Expression e = se.getExpression();
-        if (e!=null) {
-            Type expressionType = e.getTypeModel();
+        Tree.Expression ex = se.getExpression();
+        if (ex!=null) {
+            Type expressionType = ex.getTypeModel();
             if (!isTypeUnknown(expressionType)) {
                 if (unit.isOptionalType(expressionType)) {
                     expressionType = 
@@ -2624,25 +2624,26 @@ public class ExpressionVisitor extends Visitor {
             Tree.Variable that, Tree.LocalModifier local,
             Tree.SpecifierExpression se) {
         Type nullType = unit.getNullType();
-        Tree.Expression e = se.getExpression();
-        if (e!=null) {
-            Type et = e.getTypeModel();
+        Value dec = that.getDeclarationModel();
+        Tree.Expression ex = se.getExpression();
+        if (ex!=null) {
+            Type et = ex.getTypeModel();
             if (!isTypeUnknown(et)) {
                 nullType = 
                         intersectionType(et, nullType, unit);
             }
+            handleUncheckedNulls(local, ex, dec);
         }
         local.setTypeModel(nullType);
-        that.getDeclarationModel()
-            .setType(nullType);
+        dec.setType(nullType);
     }
 
     private void setNonemptyTypeFromSequenceType(
             Tree.Variable that, Tree.LocalModifier local, 
             Tree.SpecifierExpression se) {
-        Tree.Expression e = se.getExpression();
-        if (e!=null) {
-            Type expressionType = e.getTypeModel();
+        Tree.Expression ex = se.getExpression();
+        if (ex!=null) {
+            Type expressionType = ex.getTypeModel();
             if (!isTypeUnknown(expressionType)) {
                 if (unit.isPossiblyEmptyType(expressionType)) {
                     expressionType = 
@@ -2660,18 +2661,25 @@ public class ExpressionVisitor extends Visitor {
             Tree.Variable that, Tree.LocalModifier local,
             Tree.SpecifierExpression se) {
         Type emptyType = unit.getEmptyType();
-        Tree.Expression e = se.getExpression();
-        if (e!=null) {
-            Type expressionType = e.getTypeModel();
+        Value dec = that.getDeclarationModel();
+        Tree.Expression ex = se.getExpression();
+        if (ex!=null) {
+            Type expressionType = ex.getTypeModel();
             if (!isTypeUnknown(expressionType)) {
+                Type nullType = unit.getNullType();
                 emptyType = 
-                        intersectionType(expressionType, 
-                                emptyType, unit);
+                        intersectionType(
+                            expressionType, 
+                            unionType(
+                                emptyType, 
+                                nullType, 
+                                unit),
+                            unit);
             }
+            handleUncheckedNulls(local, ex, dec);
         }
         local.setTypeModel(emptyType);
-        that.getDeclarationModel()
-            .setType(emptyType);
+        dec.setType(emptyType);
     }
 
     private void setTypeFromIterableType(
@@ -2757,7 +2765,7 @@ public class ExpressionVisitor extends Visitor {
             Type type, Tree.Term term,
             Declaration declaration) {
         if (type!=null 
-                && !type.isNothing()
+//                && !type.isNothing()
                 && !type.isUnknown()
                 && !unit.isOptionalType(type)) {
             if (declaration 
@@ -2788,7 +2796,8 @@ public class ExpressionVisitor extends Visitor {
         Unit unit = local.getUnit();
         if (term instanceof Tree.InvocationExpression) {
             Tree.InvocationExpression ie = 
-                    (Tree.InvocationExpression) term;
+                    (Tree.InvocationExpression) 
+                        term;
             Tree.Term p = ie.getPrimary();
             if (p instanceof Tree.StaticMemberOrTypeExpression) {
                 Tree.StaticMemberOrTypeExpression bme = 
@@ -2807,7 +2816,8 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (term instanceof Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression bme = 
-                    (Tree.StaticMemberOrTypeExpression) term;
+                    (Tree.StaticMemberOrTypeExpression) 
+                        term;
             Declaration dec = bme.getDeclaration();
             if (dec!=null) {
                 local.addUsageWarning(Warning.inferredNotNull, 
@@ -8333,8 +8343,8 @@ public class ExpressionVisitor extends Visitor {
                 that.getExpressionList()
                     .getExpressions()) {
             if (e!=null) {
-                Type t = e.getTypeModel();
-                if (!isTypeUnknown(t)) {
+                Type caseType = e.getTypeModel();
+                if (!isTypeUnknown(caseType)) {
                     if (switchStatementOrExpression!=null) {
                         Tree.Switched switched = 
                                 switchClause().getSwitched();
@@ -8343,19 +8353,20 @@ public class ExpressionVisitor extends Visitor {
                                     switched.getExpression();
                             Tree.Variable switchVariable = 
                                     switched.getVariable();
-                            Type st = 
+                            Type switchType = 
                                     getSwitchType(switchExpression,
                                             switchVariable);
-                            if (st!=null) {
-                                Type it = 
-                                        intersectionType(t, st, unit);
-                                if (it.isNothing() &&
-                                        mayNotBeNothing(switchExpression, 
-                                                switchVariable, t)) {
+                            if (switchType!=null) {
+                                Type narrowedType = 
+                                        intersectionType(
+                                                caseType, switchType, 
+                                                unit);
+                                if (isDefinitelyNothing(switched,
+                                        caseType, narrowedType)) {
                                     e.addError("value is not a case of the switched type: '" +
-                                                t.asString(unit) +
-                                                "' is not a case of the type '" +
-                                                st.asString(unit) + "'");
+                                            caseType.asString(unit) +
+                                            "' is not a case of the type '" +
+                                            switchType.asString(unit) + "'");
                                 }
                             }
                         }
@@ -8441,34 +8452,39 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Variable switchVariable = 
                         switched.getVariable();
                 Tree.Variable v = that.getVariable();
-                Type st = 
+                Type switchType = 
                         getSwitchType(switchExpression,
                                 switchVariable);
-                if (st!=null) {
+                if (switchType!=null) {
                     if (v!=null) {
                         if (dynamic || 
-                                !isTypeUnknown(st)) { //eliminate dupe errors
+                                !isTypeUnknown(switchType)) { //eliminate dupe errors
                             v.visit(this);
                         }
                         initOriginalDeclaration(v);
                     }
                     if (t!=null) {
-                        Type pt = t.getTypeModel();
-                        checkReified(t, pt, st, false);
+                        Type caseType = t.getTypeModel();
+                        checkReified(t, 
+                                caseType, switchType, 
+                                false);
 //                        if (!isTypeUnknown(pt)) {
-                        Type it = 
-                                intersectionType(pt, st, unit);
-                        if (it.isNothing() &&
-                                mayNotBeNothing(switchExpression, 
-                                        switchVariable, pt)) {
+                        Type narrowedType = 
+                                intersectionType(
+                                        caseType, switchType, 
+                                        unit);
+                        if (isDefinitelyNothing(switched, 
+                                caseType, narrowedType)) {
                             that.addError("narrows to bottom type 'Nothing': '" + 
-                                    pt.asString(unit) + 
+                                    caseType.asString(unit) + 
                                     "' has empty intersection with '" + 
-                                    st.asString(unit) + "'");
+                                    switchType.asString(unit) + "'");
                         }
                         if (v!=null) {
-                            v.getType().setTypeModel(it);
-                            v.getDeclarationModel().setType(it);
+                            v.getType()
+                             .setTypeModel(narrowedType);
+                            v.getDeclarationModel()
+                             .setType(narrowedType);
                         }
 //                        }
                     }
@@ -8477,14 +8493,18 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private static boolean mayNotBeNothing(Tree.Expression switchExpression,
-            Tree.Variable switchVariable, Type pt) {
-        return switchVariable!=null || 
-                switchExpression!=null &&
-                (!hasUncheckedNulls(switchExpression.getTerm()) || 
-                        !pt.isNull());
+    private static boolean isDefinitelyNothing(
+            Tree.Switched switched, 
+            Type caseType, Type narrowedType) {
+        Type nullType = 
+                switched.getUnit()
+                    .getNullValueDeclaration()
+                    .getType();
+        return narrowedType.isNothing() 
+                && !(switchHasUncheckedNulls(switched) 
+                    && nullType.isSubtypeOf(caseType));
     }
-
+    
     @Override
     public void visit(Tree.SatisfiesCase that) {
         super.visit(that);
@@ -8542,8 +8562,10 @@ public class ExpressionVisitor extends Visitor {
                         //the switch expression type then the 
                         //switch is exhaustive
                         if (!caseUnionType.covers(switchExpressionType)) {
-                            switchClause.addError("case types must cover all cases of the switch type or an else clause must appear: '" +
-                                    caseUnionType.asString(unit) + "' does not cover '" + 
+                            switchClause.addError(
+                                    "case types must cover all cases of the switch type or an else clause must appear: '" +
+                                    caseUnionType.asString(unit) + 
+                                    "' does not cover '" + 
                                     switchExpressionType.asString(unit) + "'", 
                                     10000);
                         }
@@ -8569,6 +8591,26 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         return null;
+    }
+    
+    private static boolean switchHasUncheckedNulls(
+            Tree.Switched switched) {
+        if (switched!=null) {
+            Tree.Expression e = switched.getExpression();
+            Tree.Variable v = switched.getVariable();
+            if (e!=null) {
+                return hasUncheckedNulls(e);
+            }
+            else if (v!=null) {
+                Tree.SpecifierExpression se = 
+                        v.getSpecifierExpression();
+                if (se!=null) {
+                    e = se.getExpression();
+                    return hasUncheckedNulls(e);
+                }
+            }
+        }
+        return false;
     }
     
     @Override
@@ -8632,8 +8674,23 @@ public class ExpressionVisitor extends Visitor {
                     if (!isCompletelyVisible(dec, complementType)) {
                         complementType = switchExpressionType;
                     }
-                    var.getType().setTypeModel(complementType);
+                    Tree.Type local = var.getType();
+                    local.setTypeModel(complementType);
                     dec.setType(complementType);
+                    if (local instanceof Tree.LocalModifier
+                        && switchHasUncheckedNulls(switched)
+                            && caseUnionType.isSubtypeOf(
+                                    unit.getObjectType())) {
+                        handleUncheckedNulls(
+                                (Tree.LocalModifier)
+                                    local, 
+                                complementType, 
+                                switched.getExpression(), //TODO!!! 
+                                dec);
+                    }
+                    else {
+                        dec.setUncheckedNullType(false);
+                    }
                 }
             }
         }
@@ -8662,19 +8719,40 @@ public class ExpressionVisitor extends Visitor {
         else if (c instanceof Tree.IsCondition) {
             Tree.IsCondition ic = 
                     (Tree.IsCondition) c;
-            Tree.Expression e = se.getExpression();
-            Type expressionType = e.getTypeModel();
+            Tree.Expression ex = se.getExpression();
+            Type expressionType = ex.getTypeModel();
+            Type type = ic.getType().getTypeModel();
             Type narrowedType = 
-                    narrow(ic.getType().getTypeModel(), 
-                            expressionType,
+                    narrow(type, expressionType,
                             ic.getNot() ^ reversed);
             Value dec = var.getDeclarationModel();
             if (!isCompletelyVisible(dec, narrowedType)) {
                 narrowedType = expressionType;
             }
-            var.getType().setTypeModel(narrowedType);
+            Tree.Type local = var.getType();
+            local.setTypeModel(narrowedType);
             dec.setType(narrowedType);
+            if (local instanceof Tree.LocalModifier 
+                    && handlesNull(ic, type)
+                    && hasUncheckedNulls(ex)) {
+               handleUncheckedNulls(
+                    (Tree.LocalModifier)
+                        local, 
+                    narrowedType, ex, dec);
+            }
+            else {
+                dec.setUncheckedNullType(false);
+            }
         }
+    }
+
+    private boolean handlesNull(Tree.IsCondition ic, Type type) {
+        return ic.getNot() ?
+                unit.getNullValueDeclaration()
+                    .getType()
+                    .isSubtypeOf(type) :
+                type.isSubtypeOf(
+                    unit.getObjectType());
     }
     
     private void checkCases(Tree.SwitchCaseList switchCaseList) {
@@ -8682,7 +8760,8 @@ public class ExpressionVisitor extends Visitor {
                 switchCaseList.getCaseClauses();
         boolean hasIsCase = false;
         for (Tree.CaseClause cc: cases) {
-            if (cc.getCaseItem() instanceof Tree.IsCase) {
+            if (cc.getCaseItem() 
+                    instanceof Tree.IsCase) {
                 hasIsCase = true;
             }
             for (Tree.CaseClause occ: cases) {
