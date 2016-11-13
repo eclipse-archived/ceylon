@@ -744,11 +744,12 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>there must be at least one declaration with the given name or 
-                    imported into the toplevel namespace of the compilation unit, as
-                    defined in <xref linkend="imports"/>, and aliased to the given 
-                    imported name, as defined in <xref linkend="importedname"/>, in scope 
-                    at the program element, and</para>
+                    <para>there must be at least one declaration with the given name 
+                    in scope at the program element, or imported into the toplevel 
+                    namespace of the containing compilation unit or into a containing 
+                    block, class body, or interface body, as defined in 
+                    <xref linkend="imports"/>, and aliased to the given imported name,
+                    as defined in <xref linkend="importedname"/>, and</para>
                 </listitem>
                 <listitem>
                     <para>if multiple declarations with the given name or imported name 

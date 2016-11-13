@@ -285,10 +285,10 @@ TypeConstraints?
             <itemizedlist>
                 <listitem>
                     <para>if the import element imports into the toplevel namespace of 
-                    the compilation unit, and if a nested import element is a reference 
-                    to a constructor, the nested import element imports into the toplevel 
-                    namespace of the compilation unit, and need not specify an alias, or,
-                    otherwise</para>
+                    the compilation unit or into a local scope, and if a nested import 
+                    element is a reference to a constructor, then the nested import 
+                    element also imports into the toplevel namespace or local scope, 
+                    and need not specify an alias, or, otherwise</para>
                 </listitem>
                 <listitem>
                     <para>the nested import element only defines an alias for the 
@@ -323,14 +323,14 @@ TypeConstraints?
             <itemizedlist>
                 <listitem>
                     <para>if the import element imports into the toplevel namespace of 
-                    the compilation unit, a nested import element imports into the 
-                    toplevel namespace of the compilation unit, and need not specify 
-                    an alias, or, otherwise</para>
+                    the compilation unit or into a local scope, then a nested import 
+                    element also imports into the toplevel namespace or local scope, 
+                    and need not specify an alias, or, otherwise</para>
                 </listitem>
                 <listitem>
                     <para>the nested import element only defines an alias for the 
-                    referenced member of the imported type, and this alias must be 
-                    specified explicitly.</para>
+                    referenced member of the imported anonymous class, and this alias 
+                    must be specified explicitly.</para>
                 </listitem>
             </itemizedlist>
             
@@ -363,7 +363,8 @@ TypeConstraints?
             
             <para>An alias assigns a different name to the imported declaration, or to a
             member of the imported declaration. This name is visible within the compilation
-            unit in which the <literal>import</literal> statement occurs.</para>
+            unit, block, class body, or interface body in which the <literal>import</literal> 
+            statement occurs.</para>
             
             <programlisting>import java.util { JavaMap = Map }</programlisting>
             
@@ -390,8 +391,8 @@ TypeConstraints?
             <literal>import</literal> statements. An <literal>import</literal> statement 
             that specifies a wildcard imports every toplevel declaration of the imported 
             package, except for any declaration whose name collides with the name of a 
-            toplevel declaration in the compilation unit in which the <literal>import</literal> 
-            statement appears.</para>
+            declaration contained directly in the compilation unit, block, class body, or
+            interface body in which the <literal>import</literal> statement occurs.</para>
             
             <synopsis>ImportWildcard: "..."</synopsis>
             
@@ -428,11 +429,12 @@ TypeConstraints?
             </itemizedlist>
             
             <para>An import element may not result in an imported name that is the same
-            as the name of a toplevel declaration contained in the compilation unit in
-            which the import element occurs.</para>
+            as the name of a declaration directly contained in the compilation unit,
+            block, class body, or interface body in which the import element occurs.</para>
             
-            <para>Two import elements occurring in the same compilation unit, which import 
-            into the toplevel namespace of the compilation unit, may not result in the same 
+            <para>Two import elements occurring in the same compilation unit, block, 
+            class body, or interface body, which import into the toplevel namespace of 
+            the compilation unit, or into a local scope, may not result in the same 
             imported name.</para>
             
             <para>Two nested import elements belonging to the same import element may not 
