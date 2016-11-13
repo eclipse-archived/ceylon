@@ -1167,9 +1167,11 @@ Integer f(Integer n) => n+package.n;</programlisting>
         <title>Blocks and statements</title>
             
         <para>A <emphasis>block</emphasis> is list of semicolon-delimited statements, 
-        control structures, and declarations, surrounded by braces.</para>
+        control structures, and declarations, surrounded by braces. A block may begin 
+        with a list of local <literal>import</literal> statements, as defined in
+        <xref linkend="imports"/>.</para>
         
-        <synopsis>Block: "{" (Declaration | Statement)* "}"</synopsis>
+        <synopsis>Block: "{" Import* (Declaration | Statement)* "}"</synopsis>
         
         <para>A <emphasis>statement</emphasis> is an assignment or specification, an 
         invocation of a method, an instantiation of a class, a destructuring statement,

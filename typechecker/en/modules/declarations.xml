@@ -150,8 +150,27 @@ TypeConstraints?
         
         <synopsis>Import: "import" FullPackageName ImportElements</synopsis>
         
-        <para>For a given package, there may be at most one <literal>import</literal>
-        statement per compilation unit.</para>
+        <para>A <emphasis>toplevel</emphasis> <literal>import</literal> statement is an 
+        <literal>import</literal> statement that occurs at the beginning of a compilation
+        unit. A <emphasis>local</emphasis> <literal>import</literal> statement is an
+        <literal>import</literal> statement that occurs at the beginning of a block, as
+        defined in <xref linkend="blocksandstatements"/>, class body, as defined in
+        <xref linkend="classes"/>, or interface body, as defined in 
+        <xref linkend="interfaces"/>.</para>
+        
+        <para>For a given package:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>in each compilation unit, there may be at most one toplevel 
+                <literal>import</literal> statement that imports the package,
+                and</para>
+            </listitem>
+            <listitem>
+                <para>in each body, there may be at most one local 
+                <literal>import</literal> statement that imports the package.</para>
+            </listitem>
+        </itemizedlist>
         
         <para>An <literal>import</literal> statement may import from a package if and 
         only if:</para>
@@ -195,7 +214,8 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <para>An import element may either:</para>
+        <para>An import element belonging to a toplevel <literal>import</literal> may 
+        either:</para>
         
         <itemizedlist>
             <listitem>
@@ -203,14 +223,32 @@ TypeConstraints?
                 of the compilation unit in which it occurs, or</para>
             </listitem>
             <listitem>
-                <para>result in an alias for a member of a type within the 
-                compilation unit in which it occurs.</para>
+                <para>result in an alias for a member of a type within the compilation 
+                unit in which it occurs.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Every import element belonging directly to an <literal>import</literal> 
-        statement imports into the <emphasis>toplevel namespace</emphasis> of the 
+        <para>Every import element belonging directly to a toplevel 
+        <literal>import</literal> statement imports into the toplevel namespace of the 
         compilation unit.</para>
+        
+        <para>An import element belonging to a local <literal>import</literal> may 
+        either:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>import a name into the scope of the body in which it occurs, 
+                or</para>
+            </listitem>
+            <listitem>
+                <para>result in an alias for a member of a type within the scope of 
+                the body in which it occurs.</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>Every import element belonging directly to a local
+        <literal>import</literal> statement imports into the scope of the body in which
+        it occurs.</para>
         
         <para>An import element may not refer to a declaration that is not visible to
         the compilation unit, as defined by <xref linkend="visibility"/>.</para>
@@ -765,6 +803,10 @@ TypeConstraints?
         
         <itemizedlist>
             <listitem>
+                <para>an optional list of local <literal>import</literal> statements,
+                </para>
+            </listitem>
+            <listitem>
                 <para>member (method, attribute, and member class) declarations,
                 </para>
             </listitem>
@@ -779,7 +821,7 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <synopsis>InterfaceBody: "{" (Declaration | Specification)* "}"</synopsis>
+        <synopsis>InterfaceBody: "{" Import* (Declaration | Specification)* "}"</synopsis>
         
         <para>Unlike the body of a class, method, or attribute, the body of an 
         interface is not executable, and does not directly contain procedural 
@@ -1048,6 +1090,10 @@ TypeConstraints?
         
         <itemizedlist>
             <listitem>
+                <para>an optional list of local <literal>import</literal> statements,
+                </para>
+            </listitem>
+            <listitem>
                 <para>member (method, attribute, and member class) declarations,</para>
             </listitem>
             <listitem>
@@ -1060,7 +1106,7 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
 
-        <synopsis>ClassBody: "{" (Declaration | Statement | ConstructorDeclaration)* "}"</synopsis>
+        <synopsis>ClassBody: "{" Import* (Declaration | Statement | ConstructorDeclaration)* "}"</synopsis>
         
         <para>The body of a class may contain executable code.</para>
         
