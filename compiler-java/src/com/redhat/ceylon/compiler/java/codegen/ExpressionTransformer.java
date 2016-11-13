@@ -308,7 +308,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transformExpression(final Tree.Term expr) {
-        return transformExpression(expr, BoxingStrategy.BOXED, expr.getTypeModel());
+        return transformExpression(expr, 0);
+    }
+
+    JCExpression transformExpression(final Tree.Term expr, int flags) {
+        return transformExpression(expr, BoxingStrategy.BOXED, expr.getTypeModel(), flags);
     }
 
     JCExpression transformExpression(final Tree.Term expr, BoxingStrategy boxingStrategy, Type expectedType) {

@@ -46,14 +46,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RangeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Switched;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TuplePattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
@@ -4498,7 +4496,8 @@ public class StatementTransformer extends AbstractTransformer {
                 bs = BoxingStrategy.BOXED;
                 selectorType = makeJavaType(switchExpressionType, JT_NO_PRIMITIVES|JT_RAW);
             }
-            JCExpression selectorExpr = expressionGen().transformExpression(getSwitchExpression(switchClause), bs, switchExpressionType);
+            JCExpression selectorExpr = expressionGen().transformExpression(getSwitchExpression(switchClause), bs, switchExpressionType,
+                    acceptsNulls(caseList) ? ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL : 0);
             
             JCVariableDecl selector = makeVar(selectorAlias, selectorType, selectorExpr);
             
@@ -4520,6 +4519,45 @@ public class StatementTransformer extends AbstractTransformer {
                 }
             }
             return at(node).Block(0, List.of(selector, last));
+        }
+
+        private boolean acceptsNulls(Tree.SwitchCaseList caseList) {
+            
+            Tree.ElseClause elseClause = caseList.getElseClause();
+            if (elseClause!=null) { 
+                Tree.Variable variable = elseClause.getVariable();
+                if (variable!=null && variable.getDeclarationModel().hasUncheckedNullType()) {
+                    return true;
+                }
+            }
+
+            Type nullType = caseList.getUnit().getNullValueDeclaration().getType();
+            for (Tree.CaseClause clause: caseList.getCaseClauses()) {
+                Tree.CaseItem item = clause.getCaseItem();
+                if (item instanceof Tree.IsCase) {
+                    Tree.IsCase isCase = (Tree.IsCase) item;
+                    Tree.Type type = isCase.getType();
+                    if (type!=null) {
+                        Type ct = type.getTypeModel();
+                        if (ct!=null && nullType.isSubtypeOf(ct)) {
+                            return true;
+                        }
+                    }
+                }
+                if (item instanceof Tree.MatchCase) {
+                    Tree.MatchCase isCase = (Tree.MatchCase) item;
+                    for (Tree.Expression ex: isCase.getExpressionList().getExpressions()) {
+                        if (ex!=null) {
+                            Type ct = ex.getTypeModel();
+                            if (ct!=null && nullType.isSubtypeOf(ct)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return false;
         }
         
     }
@@ -5097,7 +5135,8 @@ public class StatementTransformer extends AbstractTransformer {
         Tree.ConditionList conditionList = that.getConditionList();
         Tree.Condition condition = conditionList.getConditions().get(0);
         
-        JCExpression val = expressionGen().transformExpression(expr);
+        JCExpression val = expressionGen().transformExpression(expr, 
+                newValue.hasUncheckedNullType() ? ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL : 0);
         at(that);
         if(condition instanceof Tree.IsCondition){
             if(!willEraseToObject(toType)){
