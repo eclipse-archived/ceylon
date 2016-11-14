@@ -128,6 +128,7 @@ class CSmall implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         major = 8,
         minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1LocalClass"})
 final class lambdas_ {
     
     private lambdas_() {
@@ -849,11 +850,34 @@ final class lambdas_ {
         j.charSequences();
         j.charSequences(.ceylon.language.String.instance("a").toString());
         j.charSequences(.ceylon.language.String.instance("a").toString(), .ceylon.language.String.instance("b").toString());
-        j.setKlass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
-        j.klassMethod(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
-        final .ceylon.language.meta.declaration.ClassWithInitializerDeclaration klass = (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
-        j.setKlass(.com.redhat.ceylon.compiler.java.Util.javaClassForDeclaration(klass));
-        j.klassMethod(.com.redhat.ceylon.compiler.java.Util.javaClassForDeclaration(klass));
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("LocalClass")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            LocalClass() {
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.interop.lambdas_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
+            }
+        }
+        j.setKlass(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
+        j.setKlass(.com.redhat.ceylon.compiler.java.Util.classErasure(LocalClass.class));
+        j.setKlass(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.StaticMemberClass.class));
+        j.setKlass(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.MemberClass.class));
+        j.klassMethod(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
+        final .java.lang.Class<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava> jklass1 = j.<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterised(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
+        final .java.lang.Class<? extends .com.redhat.ceylon.compiler.java.test.interop.LambdasJava> jklass2 = j.<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterisedCovariant(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
+        final .java.lang.Class<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava> jklass3 = j.<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterisedWithBounds(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
+        final .ceylon.language.meta.model.Class klass = (.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
+        j.setKlass(.com.redhat.ceylon.compiler.java.Util.javaClassForModel(klass));
+        j.klassMethod(.com.redhat.ceylon.compiler.java.Util.javaClassForModel(klass));
         j.intConsumer(null);
         new .com.redhat.ceylon.compiler.java.test.interop.LambdasJava(null);
         j.intConsumer(new .java.util.function.IntConsumer(){

@@ -39,6 +39,9 @@ interface StringFunction {
 
 public class LambdasJava {
 
+    public static class StaticMemberClass{}
+    public class MemberClass{}
+    
     public LambdasJava(){}
     public LambdasJava(IntConsumer consumer){}
 
@@ -86,7 +89,11 @@ public class LambdasJava {
     }
 
     public void klassMethod(Class<?> k){}
-    
+
+    public <T> Class<T> klassMethodParameterised(Class<T> k){ return k; }
+    public <T> Class<? extends T> klassMethodParameterisedCovariant(Class<? extends T> k){ return k; }
+    public <T extends LambdasJava> Class<T> klassMethodParameterisedWithBounds(Class<T> k){ return k; }
+
     public Class<?> getKlass(){ return null; }
     public void setKlass(Class<?> k){}
     

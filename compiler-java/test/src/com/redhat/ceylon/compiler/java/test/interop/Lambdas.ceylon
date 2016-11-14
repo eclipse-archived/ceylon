@@ -85,10 +85,18 @@ void lambdas() {
     j.charSequences("a");
     j.charSequences("a", "b");
     
+    class LocalClass(){}
+
     // use constants
-    j.setKlass(`class LambdasJava`);
-    j.klassMethod(`class LambdasJava`);
-    value klass = `class LambdasJava`;
+    j.setKlass(`LambdasJava`);
+    j.setKlass(`LocalClass`);
+    j.setKlass(`LambdasJava.StaticMemberClass`);
+    j.setKlass(`LambdasJava.MemberClass`);
+    j.klassMethod(`LambdasJava`);
+    value jklass1 = j.klassMethodParameterised(`LambdasJava`);
+    value jklass2 = j.klassMethodParameterisedCovariant(`LambdasJava`);
+    value jklass3 = j.klassMethodParameterisedWithBounds(`LambdasJava`);
+    value klass = `LambdasJava`;
     // use Util function
     j.setKlass(klass);
     j.klassMethod(klass);
