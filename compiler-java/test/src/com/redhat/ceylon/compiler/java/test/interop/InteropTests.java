@@ -858,6 +858,7 @@ public class InteropTests extends CompilerTests {
         List<String> options = Arrays.asList("-source", "8", "-target", "8");
         compile(options, "LambdasJava.java");
         compareWithJavaSource(options, "Lambdas.src", "Lambdas.ceylon");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.interop.classModelCoercionTest", "LambdasRuntime.ceylon");
         assertErrors("LambdasErrors", new CompilerError(12, "refined declaration is not a real method: 'm' in 'Sub3' refines 'm' in 'InterfaceWithCoercedMembers'"));
     }
 
