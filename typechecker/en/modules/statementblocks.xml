@@ -264,8 +264,11 @@
                     the loop contains the declaration,</para>
                 </listitem-->
                 <listitem>
-                    <para>the declaration is imported by the compilation unit containing the 
-                    program element and is visible to the program element, or</para>
+                    <para>the declaration is imported into the toplevel namespace of the 
+                    compilation unit containing the program element, or into the local 
+                    namespace of a body containing the program element, as defined by 
+                    <xref linkend="imports"/>, and is visible to the program element,
+                    as defined below in <xref linkend="visibility"/>, or</para>
                 </listitem>
                 <listitem>
                     <para>the declaration is a toplevel declaration in the package containing 
@@ -418,8 +421,8 @@
             <title>Hidden declarations</title>
         
             <para>If two declarations with the same name or imported name, as defined in 
-            <xref linkend="importedname"/>, are both in scope at a certain program element, then 
-            one declaration may <emphasis>hide</emphasis> the other declaration.</para>
+            <xref linkend="importedname"/>, are both in scope at a certain program element, 
+            then one declaration may <emphasis>hide</emphasis> the other declaration.</para>
             
             <!--
             <itemizedlist>
@@ -442,33 +445,31 @@
             <itemizedlist>
                 <listitem>
                     <para>If an inner body is contained (directly or indirectly) in an outer 
-                    body, a declaration that is in scope in the inner body but is not in 
-                    scope in the outer body hides a declaration that is in scope in the outer 
-                    body. (In particular, a declaration inherited by a nested class or 
-                    interface hides a declaration of the containing body.)</para>
+                    body, then a declaration that is in scope in the inner body, but is not 
+                    in scope in the outer body, hides a declaration that is in scope in the 
+                    outer body. In particular, a declaration inherited by a nested class or 
+                    interface hides a declaration of the containing body.</para>
                 </listitem>
                 <listitem>
                     <para>An un-<literal>shared</literal> declaration occurring directly in 
-                    the body of a class containing the program element hides a declaration 
-                    inherited by the class.</para>
+                    the body of a class containing the program element, or imported into the 
+                    local namespace of the class body, hides a declaration inherited by the 
+                    class.</para>
                 </listitem>
                 <listitem>
                     <para>An <literal>actual</literal> declaration hides the declaration it
                     refines.</para>
                 </listitem>
                 <listitem>
-                    <para>A declaration occurring in a body containing the program element 
-                    hides a declaration imported by the compilation unit containing the body
-                    or implicitly imported from the module <literal>ceylon.language</literal>.</para>
+                    <para>A declaration occurring in a body containing the program element, or
+                    imported into the local namespace of a body containing the program element, 
+                    hides a declaration imported into the toplevel namespace of the compilation 
+                    unit containing the program element or implicitly imported from the module 
+                    <literal>ceylon.language</literal>.</para>
                 </listitem>
                 <listitem>
                     <para>A toplevel declaration of the package containing the program element 
                     hides a declaration implicitly imported from the module 
-                    <literal>ceylon.language</literal>.</para>
-                </listitem>
-                <listitem>
-                    <para>A declaration explicitly imported by the compilation unit containing
-                    the program element hides a declaration implicitly imported from the module 
                     <literal>ceylon.language</literal>.</para>
                 </listitem>
                 <!--listitem>
@@ -476,14 +477,16 @@
                     element hides a declaration explicitly imported by the compilation unit.</para>
                 </listitem-->
                 <listitem>
-                    <para>A declaration explicitly imported by the compilation unit containing 
-                    the program element hides a toplevel declaration of <!--another compilation unit
-                    in--> the package containing the compilation unit.</para>
+                    <para>A declaration imported into the toplevel namespace of the compilation 
+                    unit containing the program element, or into the local namespace of a body 
+                    containing the program element, hides a toplevel declaration of 
+                    <!--another compilation unit in--> the package containing the compilation 
+                    unit in which the program element occurs.</para>
                 </listitem>
                 <listitem>
-                    <para>A declaration explicity imported by name in the compilation unit 
-                    containing the program element hides a declaration explicitly imported 
-                    by wildcard in the compilation unit.</para>
+                    <para>A declaration explicitly imported by name into a namespace containing 
+                    the program element hides a declaration imported by wildcard into the same
+                    namespace.</para>
                 </listitem>
             </itemizedlist>
             
@@ -554,6 +557,10 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <itemizedlist>
                 <listitem>
+                    <para>the declaration is imported from a different compilation 
+                    unit,</para>
+                </listitem>
+                <listitem>
                     <para>the program element occurs within the lexical scope of the 
                     declaration,</para>
                 </listitem>
@@ -605,8 +612,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>a declaration that occurs in a block, as specified in 
-                    <xref linkend="blocksandstatements"/>, or in an class initializer section, as
-                    specified in <xref linkend="initializersection"/>, and
+                    <xref linkend="blocksandstatements"/>, or in an class initializer section, 
+                    as specified in <xref linkend="initializersection"/>, and
                     </para>
                 </listitem>
                 <listitem>
@@ -744,17 +751,15 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>there must be at least one declaration with the given name 
-                    in scope at the program element, or imported into the toplevel 
-                    namespace of the containing compilation unit or into a containing 
-                    block, class body, or interface body, as defined in 
-                    <xref linkend="imports"/>, and aliased to the given imported name,
-                    as defined in <xref linkend="importedname"/>, and</para>
+                    <para>there must be at least one declaration in scope at the program 
+                    element with the given name, or aliased to the given name by an 
+                    <literal>import</literal> statement, as defined in 
+                    <xref linkend="importedname"/>, and</para>
                 </listitem>
                 <listitem>
-                    <para>if multiple declarations with the given name or imported name 
-                    are in scope at the program element where the given name occurs, then 
-                    it is guaranteed by the type system and 
+                    <para>if multiple declarations with the given name or aliased to the
+                    given name are in scope at the program element where the given name 
+                    occurs, then it is guaranteed by the type system and 
                     <xref linkend="declarationnameuniqueness"/> that there is exactly one 
                     such declaration which is not hidden by any other declaration.</para>
                 </listitem>

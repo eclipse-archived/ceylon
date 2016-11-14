@@ -158,6 +158,22 @@ TypeConstraints?
         <xref linkend="classes"/>, or interface body, as defined in 
         <xref linkend="interfaces"/>.</para>
         
+        <para>An <literal>import</literal> statement may introduce names into a 
+        <emphasis>namespace</emphasis>:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>A toplevel <literal>import</literal> statement may introduce names 
+                into the <emphasis>toplevel namespace</emphasis> of the compilation unit 
+                in which it occurs.</para>
+            </listitem>
+            <listitem>
+                <para>A local <literal>import</literal> statement may introduce names into 
+                the <emphasis>local namespace</emphasis> of block, class body, or interface
+                body in which it occurs.</para>
+            </listitem>
+        </itemizedlist>
+        
         <para>For a given package:</para>
         
         <itemizedlist>
@@ -167,8 +183,9 @@ TypeConstraints?
                 and</para>
             </listitem>
             <listitem>
-                <para>in each body, there may be at most one local 
-                <literal>import</literal> statement that imports the package.</para>
+                <para>in each block, class body, or interface body, there may be at 
+                most one local <literal>import</literal> statement that imports the 
+                package.</para>
             </listitem>
         </itemizedlist>
         
@@ -219,8 +236,8 @@ TypeConstraints?
         
         <itemizedlist>
             <listitem>
-                <para>import a name into the <emphasis>toplevel namespace</emphasis> 
-                of the compilation unit in which it occurs, or</para>
+                <para>introduce a name into the toplevel namespace of the compilation 
+                unit in which it occurs, or</para>
             </listitem>
             <listitem>
                 <para>result in an alias for a member of a type within the compilation 
@@ -228,27 +245,27 @@ TypeConstraints?
             </listitem>
         </itemizedlist>
         
-        <para>Every import element belonging directly to a toplevel 
-        <literal>import</literal> statement imports into the toplevel namespace of the 
-        compilation unit.</para>
+        <para>Every import element belonging <emphasis>directly</emphasis> to a toplevel 
+        <literal>import</literal> statement introduces a name into the toplevel namespace 
+        of the compilation unit.</para>
         
         <para>An import element belonging to a local <literal>import</literal> may 
         either:</para>
         
         <itemizedlist>
             <listitem>
-                <para>import a name into the scope of the body in which it occurs, 
-                or</para>
+                <para>introduce a name into the namespace of the block, class body, or
+                interface body in which it occurs, or</para>
             </listitem>
             <listitem>
-                <para>result in an alias for a member of a type within the scope of 
-                the body in which it occurs.</para>
+                <para>result in an alias for a member of a type within the block, class 
+                body, or interface body in which it occurs.</para>
             </listitem>
         </itemizedlist>
         
-        <para>Every import element belonging directly to a local
-        <literal>import</literal> statement imports into the scope of the body in which
-        it occurs.</para>
+        <para>Every import element belonging <emphasis>directly</emphasis> to a local
+        <literal>import</literal> statement introduces a name into the namespace of the 
+        block, class body, or interface body in which it occurs.</para>
         
         <para>An import element may not refer to a declaration that is not visible to
         the compilation unit, as defined by <xref linkend="visibility"/>.</para>
@@ -284,10 +301,9 @@ TypeConstraints?
             
             <itemizedlist>
                 <listitem>
-                    <para>if the import element imports into the toplevel namespace of 
-                    the compilation unit or into a local scope, and if a nested import 
-                    element is a reference to a constructor, then the nested import 
-                    element also imports into the toplevel namespace or local scope, 
+                    <para>if the import element introduces a name into a namespace, and 
+                    if a nested import element is a reference to a constructor, then the 
+                    nested import element also introduces a name into the same namespace, 
                     and need not specify an alias, or, otherwise</para>
                 </listitem>
                 <listitem>
@@ -322,9 +338,8 @@ TypeConstraints?
             
             <itemizedlist>
                 <listitem>
-                    <para>if the import element imports into the toplevel namespace of 
-                    the compilation unit or into a local scope, then a nested import 
-                    element also imports into the toplevel namespace or local scope, 
+                    <para>if the import element introduces a name into a namespace, then 
+                    a nested import element also introduces a name into the same namespace, 
                     and need not specify an alias, or, otherwise</para>
                 </listitem>
                 <listitem>
