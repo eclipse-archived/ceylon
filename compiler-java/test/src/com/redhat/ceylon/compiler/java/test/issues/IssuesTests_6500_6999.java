@@ -163,4 +163,10 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     public void testBug6660() {
         compareWithJavaSource("bug66xx/Bug6660");
     }
+
+    @Test
+    public void testBug6682() {
+        compile("bug66xx/Bug6682Java.java");
+        compile("bug66xx/Bug6682.ceylon");
+    }
 }
