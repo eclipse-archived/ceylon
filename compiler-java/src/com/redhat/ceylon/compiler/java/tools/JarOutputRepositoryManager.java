@@ -21,6 +21,7 @@
 package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,12 +51,16 @@ import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.StandardLocation;
+import com.redhat.ceylon.langtools.classfile.Annotation;
+import com.redhat.ceylon.langtools.classfile.ClassFile;
+import com.redhat.ceylon.langtools.classfile.ConstantPoolException;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.tools.javac.api.MultiTaskListener;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.loader.ClassFileUtil;
 import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.OsgiUtil;
@@ -136,8 +141,12 @@ public class JarOutputRepositoryManager {
         * * And finally rename final.jar to original.car
         */
         private static final String META_INF = "META-INF";
-        private static final String MAPPING_FILE = META_INF+"/mapping.txt";
-        private static final String QUOTED_MODULE_DESCRIPTOR = NamingBase.MODULE_DESCRIPTOR_CLASS_NAME + ".clas";
+        private static final String FILE_MAPPING = META_INF + "/mapping.txt";
+        private static final String FILE_ERRORS = META_INF + "/errors.txt";
+        private static final String QUOTED_MODULE_DESCRIPTOR = NamingBase.MODULE_DESCRIPTOR_CLASS_NAME + ".class";
+
+        private static final String ANNOTATION_COMPILE_ERROR = "com.redhat.ceylon.compiler.java.metadata.CompileTimeError";
+        
         /** Jar we're "updating" (i.e. will copy any entries not added to the output */
         private File originalJarFile;
         
@@ -229,10 +238,18 @@ public class JarOutputRepositoryManager {
         }
         
         private Properties getPreviousMapping() throws IOException {
+            return getPreviousProperties(FILE_MAPPING);
+        }
+
+        private Properties getPreviousErrors() throws IOException {
+            return getPreviousProperties(FILE_ERRORS);
+        }
+
+        private Properties getPreviousProperties(String propFileName) throws IOException {
             JarFile jarFile = JarUtils.validJar(originalJarFile);
             if (jarFile != null) {
                 try {
-                    JarEntry entry = jarFile.getJarEntry(MAPPING_FILE);
+                    JarEntry entry = jarFile.getJarEntry(propFileName);
                     if (entry != null) {
                         InputStream inputStream = jarFile.getInputStream(entry);
                         try {
@@ -291,13 +308,16 @@ public class JarOutputRepositoryManager {
                     writeJava9Module(outputJarTempFolder, module);
                 }
 
-                // Write services to the META-INF/services
-                writeServicesJarEntry(outputJarTempFolder);
-                
                 // Add META-INF/mapping.txt
                 Properties previousMapping = getPreviousMapping();
                 JarEntryFilter jarFilter = getJarFilter(previousMapping, copiedSourceFiles);
                 writeMappingJarEntry(outputJarTempFolder, previousMapping, jarFilter);
+                
+                // Write services to the META-INF/services
+                writeServicesJarEntry(outputJarTempFolder);
+                
+                // Add META-INF/errors.txt
+                writeErrorsJarEntry(outputJarTempFolder, copiedSourceFiles);
                 
                 // Now add the old jar remains
                 if (originalJarFile != null && JarUtils.isValidJar(originalJarFile)) {
@@ -381,7 +401,8 @@ public class JarOutputRepositoryManager {
                         return classWasUpdated;
                     } else {
                         return modifiedResourceFilesRel.contains(entryFullName)
-                                || entryFullName.equals(MAPPING_FILE)
+                                || entryFullName.equals(FILE_MAPPING)
+                                || entryFullName.equals(FILE_ERRORS)
                                 || (writeOsgiManifest && OsgiUtil.OsgiManifest.isManifestFileName(entryFullName))
                                 || (writeMavenManifest && MavenPomUtil.isMavenDescriptor(entryFullName, module));
                     }
@@ -446,21 +467,6 @@ public class JarOutputRepositoryManager {
             FileUtil.mkdirs(new File(outputFolder, META_INF+"/services/"));
             
             MetaInfServices.writeAllServices(outputFolder, previousServices);
-            
-            /*
-            Properties newMapping = new Properties();
-            newMapping.putAll(writtenClassesMapping);
-            if (previousMapping != null) {
-                // Add the previous mapping entries that are not related to an updated source file 
-                for (String classFullName : previousMapping.stringPropertyNames()) {
-                    if (!filter.avoid(classFullName)) {
-                        newMapping.setProperty(classFullName, previousMapping.getProperty(classFullName));
-                    }
-                }
-            }
-            // Write the mapping file to the Jar
-            
-            */
         }
 
         /** 
@@ -479,12 +485,60 @@ public class JarOutputRepositoryManager {
                 }
             }
             // Write the mapping file to the Jar
-            try(OutputStream os = new FileOutputStream(new File(outputFolder, MAPPING_FILE))) {
+            try (OutputStream os = new FileOutputStream(new File(outputFolder, FILE_MAPPING))) {
                 FileUtil.mkdirs(new File(outputFolder, META_INF));
                 newMapping.store(os, "");
-            }
-            catch(IOException e) {
+            } catch (IOException e) {
                 // TODO : log to the right place
+            }
+        }
+
+        /** 
+         * Add a {@code META-INF/errors.txt} entry
+         * which records which .class files have compile errors
+         * (ie the classes have CompileTimeError annotations)
+         */
+        private void writeErrorsJarEntry(File outputFolder, Set<String> copiedSourceFiles) throws IOException {
+            Properties newErrors = new Properties();
+            // Check the new class files for errors
+            for (String classFullName : writtenClassesMapping.stringPropertyNames()) {
+                if (hasErrors(new File(outputFolder, classFullName))) {
+                    String sourceFile = writtenClassesMapping.getProperty(classFullName);
+                    newErrors.setProperty(classFullName, sourceFile);
+                }
+            }
+            Properties previousErrors = getPreviousErrors();
+            if (previousErrors != null) {
+                // Add the previous error entries that are not related to an updated source file
+                for (String classFullName : previousErrors.stringPropertyNames()) {
+                    String sourceFile = previousErrors.getProperty(classFullName);
+                    if (!copiedSourceFiles.contains(sourceFile)) {
+                        newErrors.setProperty(classFullName, sourceFile);
+                    }
+                }
+            }
+            // Write the errors file to the Jar
+            try (OutputStream os = new FileOutputStream(new File(outputFolder, FILE_ERRORS))) {
+                FileUtil.mkdirs(new File(outputFolder, META_INF));
+                newErrors.store(os, "");
+            } catch(IOException e) {
+                // TODO : log to the right place
+            }
+        }
+
+        /** 
+         * Determines if the given .class file has compile errors
+         * (ie the class has a CompileTimeError annotation)
+         */
+        private boolean hasErrors(File classFile) {
+            try (InputStream stream = new FileInputStream(classFile)) {
+                ClassFile cls = ClassFile.read(stream);
+                Annotation annot = ClassFileUtil.findAnnotation(cls, ANNOTATION_COMPILE_ERROR);
+                return annot != null;
+            } catch (ConstantPoolException e) {
+                return true;
+            } catch (IOException e) {
+                return true;
             }
         }
         
@@ -501,7 +555,8 @@ public class JarOutputRepositoryManager {
             if (sourceFile != null) {
                 modifiedSourceFiles.add(sourceFile.getPath());
                 // record the class file we produce so that we don't save it from the original jar
-                addMappingEntry(entryName, JarUtils.toPlatformIndependentPath(srcCreator.getPaths(), sourceFile.getPath()));
+                String sourcePath = JarUtils.toPlatformIndependentPath(srcCreator.getPaths(), sourceFile.getPath());
+                writtenClassesMapping.put(entryName, sourcePath);
                 // is the file a module descriptor?
                 if (Constants.MODULE_DESCRIPTOR.equals(sourceFile.getName())) {
                     // Mark this module as being valid (enough)
@@ -522,11 +577,6 @@ public class JarOutputRepositoryManager {
                 }
             }
             return new JarEntryFileObject(outputJarTempFolder, entryName);
-        }
-
-        private void addMappingEntry(String className,
-                String sourcePath) {
-            writtenClassesMapping.put(className, sourcePath);
         }
     }
 }
