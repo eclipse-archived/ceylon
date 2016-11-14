@@ -33,6 +33,7 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 @Summary("Generate a Ceylon executable jar for a given module")
@@ -126,8 +127,10 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
             if(!force)
                 errorOnConflictingModule(moduleName, version);
         }
-        
-        File outputJar = applyCwd(out != null ? out : new File(firstModuleName+"-"+firstModuleVersion+".jar"));
+        String versionSuffix = firstModuleVersion != null && !firstModuleVersion.isEmpty()
+                ? "-"+firstModuleVersion
+                : "";
+        File outputJar = applyCwd(out != null ? out : new File(firstModuleName+versionSuffix+".jar"));
         if(outputJar.getParentFile() != null && !outputJar.getParentFile().exists()){
             FileUtil.mkdirs(outputJar.getParentFile());
         }

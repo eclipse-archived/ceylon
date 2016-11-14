@@ -26,6 +26,7 @@ import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.JdkProvider;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 public abstract class ModuleLoadingTool extends RepoUsingTool {
 
@@ -137,6 +138,10 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
                 if(!dep.optional()){
                     internalLoadModule(dep.namespace(), dep.name(), dep.version());
                 }
+            }
+            if(name.equals(Module.DEFAULT_MODULE_NAME)){
+                // make sure we pull the language module for the default module which has no dependency
+                internalLoadModule(namespace, Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER);
             }
         }
         

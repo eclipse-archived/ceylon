@@ -201,14 +201,19 @@ public class CeylonWarTool extends ModuleLoadingTool {
         }
         
         if (this.name == null) {
-            this.name = String.format("%s-%s.war", moduleName, moduleVersion);
+            this.name = moduleVersion != null && !moduleVersion.isEmpty() 
+                    ? String.format("%s-%s.war", moduleName, moduleVersion)
+                    : String.format("%s.war", moduleName);
             debug("default.name", this.name);
         }
         
         final File jarFile = getJarFile();
         writeJarFile(jarFile, staticMetamodelEntries);
-                
-        append(CeylonWarMessages.msg("archive.created", moduleName, moduleVersion, jarFile.getAbsolutePath()));
+        
+        String descr = moduleVersion != null && !moduleVersion.isEmpty()
+                ? moduleName + "/" + moduleVersion
+                : moduleName;
+        append(CeylonWarMessages.msg("archive.created", descr, jarFile.getAbsolutePath()));
         newline();
     }
 
@@ -310,8 +315,12 @@ public class CeylonWarTool extends ModuleLoadingTool {
 
             // use "-" for the version separator
             // use ".jar" so they'll get loaded by the container classloader
+            String version = ModuleUtil.moduleVersion(moduleName);
+            String versionSuffix = version != null && !version.isEmpty()
+                    ? "-" + version
+                    : "";
             final String name = ModuleUtil.moduleName(moduleName).replace(":", ".")
-                                    + "-" + ModuleUtil.moduleVersion(moduleName) + ".jar";
+                                    + versionSuffix + ".jar";
             if (name.contains("/") || name.contains("\\") || name.length() == 0) {
                 throw new ToolUsageError(CeylonWarMessages.msg("module.name.illegal", name));
             }

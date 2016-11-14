@@ -84,6 +84,37 @@ public class FatJarToolTests extends AbstractToolTests {
     }
 
     @Test
+    public void testDefaultJar() throws Exception {
+        compile("fatjar/source/def/hello.ceylon");
+        
+        ToolModel<CeylonFatJarTool> model = pluginLoader.loadToolModel("fat-jar");
+        Assert.assertNotNull(model);
+        File out = new File(getOutPath(), "fatjar.jar");
+        CeylonFatJarTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.asList(
+                        "--rep", "../dist/dist/repo",
+                        "--rep", getOutPath(),
+                        "--out", out.getAbsolutePath(),
+                        "--run", "com.redhat.ceylon.tools.test.fatjar.source.def::hello",
+                        "default"));
+        tool.run();
+        
+        Assert.assertTrue(out.exists());
+        try(ZipFile zf = new ZipFile(out)){
+            Assert.assertNotNull(zf.getEntry("ceylon/language/true_.class"));
+            // dependency
+            Assert.assertNotNull(zf.getEntry("com/redhat/ceylon/common/log/Logger.class"));
+            Assert.assertNull(zf.getEntry("META-INF/INDEX.LIST"));
+            Assert.assertNull(zf.getEntry("META-INF/mapping.txt"));
+            ZipEntry manifestEntry = zf.getEntry("META-INF/MANIFEST.MF");
+            Assert.assertNotNull(manifestEntry);
+            Manifest manifest = new Manifest(zf.getInputStream(manifestEntry));
+            Attributes attributes = manifest.getMainAttributes();
+            Assert.assertEquals("com.redhat.ceylon.tools.test.fatjar.source.def.hello_", attributes.getValue("Main-Class"));
+        }
+    }
+
+    @Test
     public void testResources() throws Throwable {
         compile(Arrays.asList("-out", getOutPath(), 
                 "-src", getPackagePath()+"fatjar/source",

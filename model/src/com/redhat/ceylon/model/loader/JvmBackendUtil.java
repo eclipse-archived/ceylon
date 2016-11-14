@@ -500,7 +500,10 @@ public class JvmBackendUtil {
     }
 
     private static void writeStaticMetamodel(Writer metamodelOs, ArtifactResult entry, JdkProvider jdkProvider, Set<String> providedModules) throws IOException {
-        metamodelOs.write("="+entry.name()+"/"+entry.version()+"\n");
+        if(entry.version() != null)
+            metamodelOs.write("="+entry.name()+"/"+entry.version()+"\n");
+        else // default module
+            metamodelOs.write("="+entry.name()+"\n");
         // skip dependencies of provided modules as they're not trusted
         if(!providedModules.contains(entry.name())){
             for (ArtifactResult dep : entry.dependencies()) {
