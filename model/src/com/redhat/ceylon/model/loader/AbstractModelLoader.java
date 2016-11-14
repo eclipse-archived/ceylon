@@ -3712,55 +3712,110 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(bounds.size() == 1
                     && !bounds.get(0).isObject())
                 continue;
-            int useCount = countTypeParameterUsage(typeParameter, method.getType());
-            // if it's used as return value don't change it
-            if(useCount == 0){
+            TypeParameterSubstitutionType substitutionType = null;
+            if(substituteIfOnlyUsedOnce(method, typeParameter)){
+                substitutionType = TypeParameterSubstitutionType.ERASE;
+            }else if(substituteIfUsedCovariantly(method, typeParameter)){
+                substitutionType = TypeParameterSubstitutionType.COVARIANT;
+            }else if(substituteIfUsedContravariantly(method, typeParameter)){
+                substitutionType = TypeParameterSubstitutionType.CONTRAVARIANT;
+            }
+            if(substitutionType != null){
+                // we can substitute it
                 for (Parameter parameter : method.getFirstParameterList().getParameters()) {
                     FunctionOrValue model = parameter.getModel();
-                    if(parameter.isSequenced()){
-                        // don't do it for sequenced parameters, it causes tests to fail
-                        useCount = 3;
-                        break;
-                    }
-                    useCount += countTypeParameterUsage(typeParameter, model.getType());
-                    if(useCount > 1)
-                        break;
-                }
-                if(useCount == 1){
-                    // we can substitute it
-                    for (Parameter parameter : method.getFirstParameterList().getParameters()) {
-                        FunctionOrValue model = parameter.getModel();
-                        model.setType(substituteTypeParameter(typeParameter, model.getType()));
-                    }
+                    model.setType(substituteTypeParameter(typeParameter, model.getType(), substitutionType));
                 }
             }
         }
     }
     
+    private boolean substituteIfUsedCovariantly(JavaMethod method, TypeParameter typeParameter) {
+        // Do this iff:
+        // - T never occurs contravariantly in the return type, and
+        if(method.getType().occursContravariantly(typeParameter))
+            return false;
+        // - T occurs exactly once, invariantly, in the parameter list.
+        int useCount = 0;
+        for (Parameter parameter : method.getFirstParameterList().getParameters()) {
+            Type pType = parameter.getType();
+            if(pType.occursContravariantly(typeParameter)
+                    || pType.occursCovariantly(typeParameter))
+                return false;
+            useCount += countTypeParameterUsage(typeParameter, pType);
+            if(useCount > 1)
+                return false;
+        }
+        return useCount == 1;
+    }
+
+    private boolean substituteIfUsedContravariantly(JavaMethod method, TypeParameter typeParameter) {
+        // Do this iff:
+        // - T never occurs covariantly in the return type, and
+        if(method.getType().occursCovariantly(typeParameter))
+            return false;
+        // - T occurs exactly once, invariantly, in the parameter list
+        int useCount = 0;
+        for (Parameter parameter : method.getFirstParameterList().getParameters()) {
+            Type pType = parameter.getType();
+            if(pType.occursContravariantly(typeParameter)
+                    || pType.occursCovariantly(typeParameter))
+                return false;
+            useCount += countTypeParameterUsage(typeParameter, pType);
+            if(useCount > 1)
+                return false;
+        }
+        return useCount == 1;
+    }
+
+    private boolean substituteIfOnlyUsedOnce(JavaMethod method, TypeParameter typeParameter) {
+        int useCount = countTypeParameterUsage(typeParameter, method.getType());
+        // if it's used as return value don't change it
+        if(useCount == 0){
+            for (Parameter parameter : method.getFirstParameterList().getParameters()) {
+                FunctionOrValue model = parameter.getModel();
+                if(parameter.isSequenced()){
+                    // don't do it for sequenced parameters, it causes tests to fail
+                    useCount = 3;
+                    break;
+                }
+                useCount += countTypeParameterUsage(typeParameter, model.getType());
+                if(useCount > 1)
+                    break;
+            }
+            return useCount == 1;
+        }
+        return false;
+    }
     
-    private Type substituteTypeParameter(TypeParameter typeParameter, Type type) {
+    private enum TypeParameterSubstitutionType {
+        ERASE, COVARIANT, CONTRAVARIANT;
+    }
+    
+    private Type substituteTypeParameter(TypeParameter typeParameter, Type type, TypeParameterSubstitutionType substitutionType) {
         if(type.isUnknown() || type.isNothing())
             return type;
         if(type.isUnion()){
             List<Type> caseTypes = type.getCaseTypes();
             List<Type> substitutedCaseTypes = new ArrayList<Type>(caseTypes.size());
             for (Type ct : caseTypes) {
-                substitutedCaseTypes.add(substituteTypeParameter(typeParameter, ct));
+                substitutedCaseTypes.add(substituteTypeParameter(typeParameter, ct, substitutionType));
             }
             return ModelUtil.union(substitutedCaseTypes, typeFactory);
         }else if(type.isIntersection()){
             List<Type> satisfiedTypes = type.getSatisfiedTypes();
             List<Type> substitutedSatisfiedTypes = new ArrayList<Type>(satisfiedTypes.size());
             for (Type ct : satisfiedTypes) {
-                substitutedSatisfiedTypes.add(substituteTypeParameter(typeParameter, ct));
+                substitutedSatisfiedTypes.add(substituteTypeParameter(typeParameter, ct, substitutionType));
             }
             return ModelUtil.intersection(substitutedSatisfiedTypes, typeFactory);
         }else{
             Type qualifyingType = null;
             if(type.getQualifyingType() != null)
-                qualifyingType = substituteTypeParameter(typeParameter, type.getQualifyingType());
+                qualifyingType = substituteTypeParameter(typeParameter, type.getQualifyingType(), substitutionType);
             TypeDeclaration declaration = (TypeDeclaration) type.getDeclaration();
-            if(declaration.equals(typeParameter))
+            if(substitutionType == TypeParameterSubstitutionType.ERASE
+                    && declaration.equals(typeParameter))
                 declaration = typeFactory.getObjectDeclaration();
             Map<TypeParameter, Type> typeArguments = type.getTypeArguments();
             List<TypeParameter> typeParameters = declaration.getTypeParameters();
@@ -3772,9 +3827,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(ta == null)
                     substitutedTypeArguments.add(null);
                 else{
-                    substitutedTypeArguments.add(substituteTypeParameter(typeParameter, ta));
+                    substitutedTypeArguments.add(substituteTypeParameter(typeParameter, ta, substitutionType));
                     if(ta.isTypeParameter() && ta.getDeclaration().equals(typeParameter)){
-                        substitutedVarianceOverrides.put(tp, SiteVariance.OUT);
+                        switch(substitutionType){
+                        case CONTRAVARIANT:
+                            substitutedVarianceOverrides.put(tp, SiteVariance.IN);
+                            break;
+                        case COVARIANT:
+                        case ERASE:
+                            substitutedVarianceOverrides.put(tp, SiteVariance.OUT);
+                            break;
+                        }
                     }else if(varianceOverrides.containsKey(tp)){
                         substitutedVarianceOverrides.put(tp, varianceOverrides.get(tp));
                     }
