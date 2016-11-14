@@ -572,8 +572,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(expectedType != null)
             expectedType = expectedType.resolveAliases();
         boolean canCast = false;
+        boolean coerced = (flags & EXPR_IS_COERCED) != 0;
 
         if (expectedType != null
+                // don't cast if we're coercing
+                && !coerced
                 // don't add cast to an erased type 
                 && !willEraseToObject(expectedType)) {
 
@@ -705,7 +708,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy, exprBoxed, exprSmall, flags);
         // Don't rely on coerced member because for SOME reason this is called
         // _after_ we reset it in transformExpression()
-        if((flags & EXPR_IS_COERCED) != 0)
+        if(coerced)
             ret = applyJavaCoercions(ret, exprType, expectedType);
         return ret;
     }
@@ -722,30 +725,54 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(isJavaCharSequence(exprType) && expectedType.isExactly(typeFact().getStringDeclaration().getType())){
             return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
         }
-        if(isCeylonClassOrInterfaceDeclaration(exprType) && isJavaClass(expectedType)){
+        if(isCeylonClassOrInterfaceModel(exprType) && isJavaClass(expectedType)){
             // FIXME: perhaps cast as RAW?
             JCTree arg = ret;
-            // try to turn (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration)
-            //  .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(
-            //  .com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class))
-            // into .com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class
+            // try to turn (.ceylon.language.meta.model.Class)
+            //  .ceylon.language.meta.typeLiteral_.typeLiteral(
+            //   .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(
+            //    .com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class))
+            // into Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class)
             while(arg instanceof JCTree.JCTypeCast)
                 arg = ((JCTree.JCTypeCast)arg).getExpression();
             if(arg instanceof JCTree.JCMethodInvocation){
                 JCExpression methodSelect = ((JCTree.JCMethodInvocation) arg).getMethodSelect();
                 if(methodSelect instanceof JCTree.JCFieldAccess){
                     JCTree.JCFieldAccess methodField = (JCTree.JCFieldAccess) methodSelect;
-                    if(methodField.getIdentifier().toString().equals("getOrCreateMetamodel")
+                    if(methodField.getIdentifier().toString().equals("typeLiteral")
                             && methodField.getExpression() instanceof JCTree.JCFieldAccess
-                            && ((JCTree.JCFieldAccess)methodField.getExpression()).sym == syms().ceylonMetamodelType.tsym){
-                        // that one takes a class literal as param, just return it
-                        return ((JCTree.JCMethodInvocation) arg).getArguments().get(0);
+                            && ((JCTree.JCFieldAccess)methodField.getExpression()).toString().equals(".ceylon.language.meta.typeLiteral_")){
+                        JCExpression classLiteral = extractClassLiteralFromTypeDescriptor(((JCTree.JCMethodInvocation) arg).getArguments().get(0));
+                        if(classLiteral != null)
+                            // FIXME: pass type arg explicitly?
+                            return utilInvocation().classErasure(classLiteral);
                     }
                 }
             }
-            return utilInvocation().javaClassForDeclaration(ret);
+            // FIXME: pass type arg explicitly?
+            return utilInvocation().javaClassForModel(ret);
         }
         return ret;
+    }
+
+    private JCExpression extractClassLiteralFromTypeDescriptor(JCExpression arg) {
+        if(arg instanceof JCTree.JCMethodInvocation){
+            JCExpression methodSelect = ((JCTree.JCMethodInvocation) arg).getMethodSelect();
+            if(methodSelect instanceof JCTree.JCFieldAccess){
+                JCTree.JCFieldAccess methodField = (JCTree.JCFieldAccess) methodSelect;
+                if(methodField.getIdentifier().toString().equals("klass")
+                        && methodField.getExpression() instanceof JCTree.JCFieldAccess
+                        && ((JCTree.JCFieldAccess)methodField.getExpression()).toString().equals(".com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor")){
+                    return ((JCTree.JCMethodInvocation) arg).getArguments().get(0);
+                }
+                if(methodField.getIdentifier().toString().equals("member")
+                        && methodField.getExpression() instanceof JCTree.JCFieldAccess
+                        && ((JCTree.JCFieldAccess)methodField.getExpression()).toString().equals(".com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor")){
+                    return extractClassLiteralFromTypeDescriptor(((JCTree.JCMethodInvocation) arg).getArguments().get(1));
+                }
+            }
+        }
+        return null;
     }
 
     boolean needsCast(Type exprType, Type expectedType, 

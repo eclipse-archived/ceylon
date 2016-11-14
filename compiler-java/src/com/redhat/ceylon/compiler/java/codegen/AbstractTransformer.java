@@ -1640,7 +1640,11 @@ public abstract class AbstractTransformer implements Transformation {
     boolean isCeylonClassOrInterfaceDeclaration(Type type){
         return type != null && type.isSubtypeOf(typeFact().getClassOrInterfaceDeclarationType());
     }
-    
+
+    boolean isCeylonClassOrInterfaceModel(Type type){
+        return type != null && type.getDeclaration().inherits(typeFact().getClassOrInterfaceModelDeclaration());
+    }
+
     boolean isCeylonString(Type type) {
         return type != null && type.isExactly(typeFact.getStringType());
     }

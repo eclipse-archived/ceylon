@@ -4488,7 +4488,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 TypeMirror variadicType = typeMirror.getComponentType();
                 // we pretend it's toplevel because we want to get magic string conversion for variadic methods
                 if(isCoercedMethod && isCoercedType(variadicType)){
-                    type = applyTypeCoercion(variadicType, module, scope);
+                    type = applyTypeCoercion(variadicType, paramMirror, methodMirror, paramName, (Declaration)decl, module, scope);
                     coercedParameter = true;
                 }else{
                     type = obtainType(module, variadicType, scope, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
@@ -4504,7 +4504,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 type = typeFactory.getSequentialType(type);
             }else{
                 if(isCoercedMethod && isCoercedType(typeMirror)){
-                    type = applyTypeCoercion(typeMirror, module, scope);
+                    type = applyTypeCoercion(typeMirror, paramMirror, methodMirror, paramName, (Declaration)decl, module, scope);
                     coercedParameter = true;
                 }else{
                     type = obtainType(typeMirror, paramMirror, scope, module, VarianceLocation.CONTRAVARIANT,
@@ -4673,12 +4673,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return false;
     }
     
-    private Type applyTypeCoercion(TypeMirror type, Module module, Scope scope) {
+    private Type applyTypeCoercion(TypeMirror type, AnnotatedMirror annotatedMirror,
+            MethodMirror methodMirror, String paramName, Declaration decl, 
+            Module module, Scope scope) {
         if(sameType(type, CHAR_SEQUENCE_TYPE))
             return typeFactory.getStringType();
         if(sameType(type, CLASS_TYPE)){
-            // Note we lose the upper bound (method had type Class<? extends Foo>), see #5918
-            return typeFactory.getClassOrInterfaceDeclarationType();
+            // It's much easier to obtain the java.lang.Class<...> type and extract its TP than
+            // just obtain its TP, because wildcards are dealt with in obtainTypeArguments, not
+            // for "toplevel" wildcards
+            Type classType = obtainType(type, annotatedMirror, scope, module, VarianceLocation.CONTRAVARIANT,
+                    "parameter '"+paramName+"' of method '"+methodMirror.getName()+"'", (Declaration)decl);
+            // gracefully give up with the original type in case of errors
+            if(classType.isUnknown() || classType.getTypeArgumentList().isEmpty())
+                return classType;
+            return typeFactory.getClassOrInterfaceModelType(classType.getTypeArgumentList().get(0));
         }
         return getFunctionalInterfaceAsCallable(module, scope, type);
     }

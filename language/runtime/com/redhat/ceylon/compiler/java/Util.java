@@ -36,6 +36,7 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.sequence_;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
+import ceylon.language.meta.model.ClassOrInterface;
 
 /**
  * Helper class for generated Ceylon code that needs to call implementation logic.
@@ -2227,19 +2228,23 @@ public class Util {
         };
     }
     
+    // Used by the code generator
     // Copied from ceylon.interop.java
-    public static java.lang.Class<? extends java.lang.Object> javaClassForDeclaration(ClassOrInterfaceDeclaration decl) {
+    @SuppressWarnings("unchecked")
+    public static <T> java.lang.Class<? extends T> javaClassForModel(ClassOrInterface<? extends T> model) {
+        ClassOrInterfaceDeclaration decl = model.getDeclaration();
         if(decl instanceof ClassOrInterfaceDeclarationImpl){
-                ClassOrInterfaceDeclarationImpl ci =
-                        (ClassOrInterfaceDeclarationImpl) decl;
-            return erase(ci.getJavaClass());
+            ClassOrInterfaceDeclarationImpl ci =
+                    (ClassOrInterfaceDeclarationImpl) decl;
+            return (java.lang.Class<? extends T>) classErasure(ci.getJavaClass());
         }
         throw new ceylon.language.AssertionError("Unsupported declaration type: "+decl);
     }
-    
+
+    // Used by the code generator
     // Copied from ceylon.interop.java
     @SuppressWarnings("unchecked")
-    private static <T> java.lang.Class<? extends T> erase(java.lang.Class<? extends T> klass){
+    public static <T> java.lang.Class<? extends T> classErasure(java.lang.Class<? extends T> klass){
       // dirty but keeps the logic in one place
       return (java.lang.Class<? extends T>)
               TypeDescriptor.klass(klass)

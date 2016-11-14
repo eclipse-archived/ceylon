@@ -9950,12 +9950,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (d instanceof Class) {
 //                    checkNonlocal(that, t.getDeclaration());
-                    if (((Class) d).isAbstraction()) {
-                        errorNode.addError("class constructor is overloaded");
-                    }
-                    else {
-                        that.setTypeModel(unit.getClassMetatype(t));
-                    }
+                    that.setTypeModel(unit.getClassMetatype(t));
                 }
                 else if (d instanceof Interface) {
                     that.setTypeModel(unit.getInterfaceMetatype(t));

@@ -278,7 +278,11 @@ class RuntimeUtil {
         return makeUtilInvocation(null, "toIterable", List.of(javaIterable));
     }
 
-    public JCExpression javaClassForDeclaration(JCExpression metamodelDeclaration) {
-        return makeUtilInvocation(null, "javaClassForDeclaration", List.of(metamodelDeclaration));
+    public JCExpression javaClassForModel(JCExpression metamodelModel) {
+        return makeUtilInvocation(null, "javaClassForModel", List.of(metamodelModel));
+    }
+
+    public JCExpression classErasure(JCExpression javaClass) {
+        return makeUtilInvocation(null, "classErasure", List.of(javaClass));
     }
 }

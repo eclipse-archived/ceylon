@@ -15,6 +15,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2661,7 +2662,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         Type parameterTuple;
         if ((declaration.isClassOrInterfaceMember() 
                 || declaration.isToplevel()) 
-            && parameterList!=null) {
+            && parameterList!=null
+            && !declaration.isAbstraction()) {
             List<Parameter> params = 
                     parameterList.getParameters();
             parameterTuple = 
@@ -2824,6 +2826,17 @@ public class Unit implements LanguageModuleProvider, ImportScope {
 
     public Type getClassOrInterfaceDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ClassOrInterfaceDeclaration"));
+    }
+
+    public TypeDeclaration getClassOrInterfaceModelDeclaration(){
+        return getLanguageModuleModelTypeDeclaration("ClassOrInterface");
+    }
+
+    public Type getClassOrInterfaceModelType(Type classType){
+        TypeDeclaration decl = getClassOrInterfaceModelDeclaration();
+        if(decl == null)
+            return null;
+        return decl.appliedType(null, Arrays.asList(classType));
     }
 
     public Type getClassDeclarationType(Class clazz) {
