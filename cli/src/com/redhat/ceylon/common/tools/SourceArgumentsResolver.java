@@ -8,9 +8,11 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.FileUtil;
@@ -29,6 +31,8 @@ public class SourceArgumentsResolver {
     private List<String> resModules;
     private List<File> srcFiles;
     private List<File> resFiles;
+    private Map<String,List<File>> srcModuleFiles;
+    private Map<String,List<File>> resModuleFiles;
     
     public SourceArgumentsResolver(Iterable<File> sourceDirs, Iterable<File> resourceDirs, String... sourceSuffixes) {
         this.sourceDirs = sourceDirs;
@@ -38,6 +42,8 @@ public class SourceArgumentsResolver {
         this.resModules = new LinkedList<String>();
         this.srcFiles = new LinkedList<File>();
         this.resFiles = new LinkedList<File>();
+        this.srcModuleFiles = new HashMap<String,List<File>>();
+        this.resModuleFiles = new HashMap<String,List<File>>();
     }
     
     public SourceArgumentsResolver cwd(File cwd) {
@@ -73,6 +79,14 @@ public class SourceArgumentsResolver {
         return resFiles;
     }
 
+    public Map<String,List<File>> getSourceFilesByModule() {
+        return srcModuleFiles;
+    }
+
+    public Map<String,List<File>> getResourceFilesByModule() {
+        return resModuleFiles;
+    }
+
     public void expandAndParse(List<String> modulesOrFiles, Backend forBackend) throws IOException {
         Iterable<File> srcs = FileUtil.applyCwd(cwd, sourceDirs);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs, modulesOrFiles, forBackend);
@@ -85,6 +99,8 @@ public class SourceArgumentsResolver {
         HashSet<String> singleFileMods = new HashSet<String>();
         srcFiles = new LinkedList<File>();
         resFiles = new LinkedList<File>();
+        srcModuleFiles = new HashMap<String,List<File>>();
+        resModuleFiles = new HashMap<String,List<File>>();
         Iterable<File> srcs = FileUtil.applyCwd(cwd, sourceDirs);
         Iterable<File> resrcs = FileUtil.applyCwd(cwd, resourceDirs);
         for (String moduleOrFile : modulesOrFiles) {
@@ -99,17 +115,18 @@ public class SourceArgumentsResolver {
                         String srcPath = sourceDirs.toString();
                         throw new ToolUsageError(CeylonToolMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));
                     }
+                    String module = moduleName(srcs, path, file);
                     if (!expandSingleSources) {
                         String relFileName = FileUtil.relativeFile(srcs, file.getPath());
-                        srcFiles.add(new File(path, relFileName));
+                        addFile(srcFiles, srcModuleFiles, module, new File(path, relFileName));
                     } else {
                         // Instead of adding the source file itself we remember
                         // its module name and at the end we expand that and
                         // add all its files
-                        singleFileMods.add(moduleName(srcs, path, file));
+                        singleFileMods.add(module);
                     }
                     // Determine the module path from the file path
-                    srcMods.add(moduleName(srcs, path, file));
+                    srcMods.add(module);
                 } else {
                     if (resrcs != null) {
                         path = FileUtil.selectPath(resrcs, moduleOrFile);
@@ -117,17 +134,18 @@ public class SourceArgumentsResolver {
                             String resrcPath = resourceDirs.toString();
                             throw new ToolUsageError(CeylonToolMessages.msg("error.not.in.resource.path", moduleOrFile, resrcPath));
                         }
+                        String module = moduleName(srcs, path, file);
                         String relFileName = FileUtil.relativeFile(resrcs, file.getPath());
-                        resFiles.add(new File(path, relFileName));
+                        addFile(resFiles, resModuleFiles, module, new File(path, relFileName));
                         // Determine the module path from the file path
-                        resMods.add(moduleName(srcs, path, file));
+                        resMods.add(module);
                     }
                 }
             } else {
-                visitModuleFiles(srcFiles, srcs, moduleOrFile, sourceSuffixes);
+                visitModuleFiles(srcFiles, srcModuleFiles, srcs, moduleOrFile, sourceSuffixes);
                 srcMods.add(moduleOrFile);
                 if (resrcs != null) {
-                    visitModuleFiles(resFiles, resrcs, moduleOrFile, null);
+                    visitModuleFiles(resFiles, resModuleFiles, resrcs, moduleOrFile, null);
                     resMods.add(moduleOrFile);
                 }
             }
@@ -137,19 +155,29 @@ public class SourceArgumentsResolver {
         }
         // Now expand the sources of any single source modules we encountered
         for (String modName : singleFileMods) {
-            visitModuleFiles(srcFiles, srcs, modName, sourceSuffixes);
+            visitModuleFiles(srcFiles, srcModuleFiles, srcs, modName, sourceSuffixes);
         }
         srcModules = new ArrayList<String>(srcMods);
         resModules = new ArrayList<String>(resMods);
     }
 
-    private void visitModuleFiles(List<File> files, Iterable<File> paths, String modName, String[] suffixes) throws IOException {
+    private void addFile(List<File> files, Map<String, List<File>> moduleFiles, String module, File file) {
+        files.add(file);
+        List<File> mfiles = moduleFiles.get(module);
+        if (mfiles == null) {
+            mfiles = new ArrayList<File>();
+            moduleFiles.put(module, mfiles);
+        }
+        mfiles.add(file);
+    }
+    
+    private void visitModuleFiles(List<File> files, Map<String, List<File>> moduleFiles, Iterable<File> paths, String modName, String[] suffixes) throws IOException {
         if (ModuleUtil.isDefaultModule(modName)) {
-            visitFiles(paths, null, new RootedFileVisitor(files, true, suffixes));
+            visitFiles(paths, null, new RootedFileVisitor(files, moduleFiles, true, suffixes));
         } else {
             File modPath = ModuleUtil.moduleToPath(modName);
             if (isModuleFolder(modPath)) {
-                visitFiles(paths, modPath, new RootedFileVisitor(files, false, suffixes));
+                visitFiles(paths, modPath, new RootedFileVisitor(files, moduleFiles, false, suffixes));
             } else {
                 File dir = searchModulePath(modPath);
                 if (dir == null || !dir.isDirectory()) {
@@ -189,24 +217,39 @@ public class SourceArgumentsResolver {
     }
     
     private class RootedFileVisitor extends SimpleFileVisitor<Path> {
-        private final List<File> result;
+        private final List<File> files;
+        private final Map<String, List<File>> moduleFiles;
         private final boolean excludeModules;
         private final String[] acceptedSuffixes;
         
+        private String module;
+        
         public File rootPath;
         
-        public RootedFileVisitor(List<File> result, boolean excludeModules, String[] acceptedFiles) {
-            this.result = result;
+        public RootedFileVisitor(List<File> files, Map<String, List<File>> moduleFiles, boolean excludeModules, String[] acceptedFiles) {
+            this.files = files;
+            this.moduleFiles = moduleFiles;
             this.excludeModules = excludeModules;
             this.acceptedSuffixes = acceptedFiles;
         }
         
         @Override
         public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-            if (excludeModules && isModuleFolder(rootPath, dir.toFile())) {
-                return FileVisitResult.SKIP_SUBTREE;
+            if (isModuleFolder(rootPath, dir.toFile())) {
+                if (excludeModules) {
+                    return FileVisitResult.SKIP_SUBTREE;
+                }
+                module = moduleName(rootPath, dir.toFile());
             }
             return super.preVisitDirectory(dir, attrs);
+        }
+        
+        @Override
+        public FileVisitResult postVisitDirectory(Path dir, IOException ex) throws IOException {
+            if (isModuleFolder(rootPath, dir.toFile())) {
+                module = "default";
+            }
+            return super.postVisitDirectory(dir, ex);
         }
         
         @Override
@@ -216,7 +259,7 @@ public class SourceArgumentsResolver {
                 add = hasAcceptedSuffix(file.toFile(), acceptedSuffixes);
             }
             if (add) {
-                result.add(file.toFile());
+                addFile(files, moduleFiles, module, file.toFile());
             }
             return super.visitFile(file, attrs);
         }
@@ -244,6 +287,11 @@ public class SourceArgumentsResolver {
     private File searchModulePath(File modPath) {
         Iterable<File> srcs = FileUtil.applyCwd(cwd, sourceDirs);
         return FileUtil.searchPaths(srcs, modPath.getPath());
+    }
+    
+    private String moduleName(File rootPath, File file) {
+        Iterable<File> srcs = FileUtil.applyCwd(cwd, sourceDirs);
+        return moduleName(srcs, rootPath, file);
     }
     
     private String moduleName(Iterable<File> srcs, File rootPath, File file) {
