@@ -143,6 +143,7 @@ public class JarOutputRepositoryManager {
         private static final String META_INF = "META-INF";
         private static final String FILE_MAPPING = META_INF + "/mapping.txt";
         private static final String FILE_ERRORS = META_INF + "/errors.txt";
+        private static final String FILE_HASHES = META_INF + "/hashes.txt";
         private static final String QUOTED_MODULE_DESCRIPTOR = NamingBase.MODULE_DESCRIPTOR_CLASS_NAME + ".class";
 
         private static final String ANNOTATION_COMPILE_ERROR = "com.redhat.ceylon.compiler.java.metadata.CompileTimeError";
@@ -157,7 +158,8 @@ public class JarOutputRepositoryManager {
         final private Set<String> modifiedResourceFilesRel = new HashSet<String>();
         final private Set<String> modifiedResourceFilesFull = new HashSet<String>();
         /** Mapping of class file name to originating source file name*/
-        final private Properties writtenClassesMapping = new Properties(); 
+        final private Properties writtenClassesMapping = new Properties();
+        final private Properties entrySourceMapping = new Properties();
         private Logger cmrLog;
         private Options options;
         private RepositoryManager repoManager;
@@ -238,33 +240,15 @@ public class JarOutputRepositoryManager {
         }
         
         private Properties getPreviousMapping() throws IOException {
-            return getPreviousProperties(FILE_MAPPING);
+            return JarUtils.getMetaInfProperties(originalJarFile, FILE_MAPPING);
         }
 
         private Properties getPreviousErrors() throws IOException {
-            return getPreviousProperties(FILE_ERRORS);
+            return JarUtils.getMetaInfProperties(originalJarFile, FILE_ERRORS);
         }
 
-        private Properties getPreviousProperties(String propFileName) throws IOException {
-            JarFile jarFile = JarUtils.validJar(originalJarFile);
-            if (jarFile != null) {
-                try {
-                    JarEntry entry = jarFile.getJarEntry(propFileName);
-                    if (entry != null) {
-                        InputStream inputStream = jarFile.getInputStream(entry);
-                        try {
-                            Properties previousMapping = new Properties();
-                            previousMapping.load(inputStream);
-                            return previousMapping;
-                        } finally {
-                            inputStream.close();
-                        }
-                    }
-                } finally {
-                    jarFile.close();
-                }
-            }
-            return null;
+        private Properties getPreviousHashes() throws IOException {
+            return JarUtils.getMetaInfProperties(originalJarFile, FILE_HASHES);
         }
 
         private Manifest getPreviousManifest() throws IOException {
@@ -318,6 +302,9 @@ public class JarOutputRepositoryManager {
                 
                 // Add META-INF/errors.txt
                 writeErrorsJarEntry(outputJarTempFolder, copiedSourceFiles);
+                
+                // Add META-INF/hashes.txt
+                writeHashesJarEntry(outputJarTempFolder);
                 
                 // Now add the old jar remains
                 if (originalJarFile != null && JarUtils.isValidJar(originalJarFile)) {
@@ -403,6 +390,7 @@ public class JarOutputRepositoryManager {
                         return modifiedResourceFilesRel.contains(entryFullName)
                                 || entryFullName.equals(FILE_MAPPING)
                                 || entryFullName.equals(FILE_ERRORS)
+                                || entryFullName.equals(FILE_HASHES)
                                 || (writeOsgiManifest && OsgiUtil.OsgiManifest.isManifestFileName(entryFullName))
                                 || (writeMavenManifest && MavenPomUtil.isMavenDescriptor(entryFullName, module));
                     }
@@ -485,9 +473,9 @@ public class JarOutputRepositoryManager {
                 }
             }
             // Write the mapping file to the Jar
+            FileUtil.mkdirs(new File(outputFolder, META_INF));
             try (OutputStream os = new FileOutputStream(new File(outputFolder, FILE_MAPPING))) {
-                FileUtil.mkdirs(new File(outputFolder, META_INF));
-                newMapping.store(os, "");
+                newMapping.store(os, "List of all class files and their originating source files");
             } catch (IOException e) {
                 // TODO : log to the right place
             }
@@ -518,9 +506,9 @@ public class JarOutputRepositoryManager {
                 }
             }
             // Write the errors file to the Jar
+            FileUtil.mkdirs(new File(outputFolder, META_INF));
             try (OutputStream os = new FileOutputStream(new File(outputFolder, FILE_ERRORS))) {
-                FileUtil.mkdirs(new File(outputFolder, META_INF));
-                newErrors.store(os, "");
+                newErrors.store(os, "List of class files that have compile errors");
             } catch(IOException e) {
                 // TODO : log to the right place
             }
@@ -541,22 +529,46 @@ public class JarOutputRepositoryManager {
                 return true;
             }
         }
+
+        /** 
+         * Add a {@code META-INF/hashes.txt} entry
+         * which records the SHA1 hashes for all input files
+         */
+        private void writeHashesJarEntry(File outputFolder) throws IOException {
+            Properties newHashes = new Properties();
+            // Add the SHA1 hashes for all the new/updated (re)source files
+            for (String entryName : entrySourceMapping.stringPropertyNames()) {
+                File file = new File(entrySourceMapping.getProperty(entryName));
+                newHashes.setProperty(entryName, ShaSigner.sha1(file));
+            }
+            Properties previousHashes = getPreviousHashes();
+            if (previousHashes != null) {
+                // Add the previous hash entries that are not related to an updated (re)source file
+                for (String inputFile : previousHashes.stringPropertyNames()) {
+                    if (!entrySourceMapping.keySet().contains(inputFile)) {
+                        String hash = previousHashes.getProperty(inputFile);
+                        newHashes.setProperty(inputFile, hash);
+                    }
+                }
+            }
+            // Write the errors file to the Jar
+            FileUtil.mkdirs(new File(outputFolder, META_INF));
+            try (OutputStream os = new FileOutputStream(new File(outputFolder, FILE_HASHES))) {
+                newHashes.store(os, "List of input (re)source files and their SHA1 hashes");
+            } catch(IOException e) {
+                // TODO : log to the right place
+            }
+        }
         
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
             String quotedFileName = JVMModuleUtil.quoteJavaKeywordsInFilename(fileName);
-            String entryName = quotedFileName.replace(File.separatorChar, '/');
-            
-            if (!resourceRootPath.isEmpty() && entryName.startsWith(resourceRootPath)) {
-                // Files in the special "resource root path" get moved
-                // to the root of the output JAR/CAR
-                entryName = entryName.substring(resourceRootPath.length());
-            }
-            
+            String entryName = handleResourceRoot(quotedFileName.replace(File.separatorChar, '/'));
             if (sourceFile != null) {
                 modifiedSourceFiles.add(sourceFile.getPath());
                 // record the class file we produce so that we don't save it from the original jar
                 String sourcePath = JarUtils.toPlatformIndependentPath(srcCreator.getPaths(), sourceFile.getPath());
                 writtenClassesMapping.put(entryName, sourcePath);
+                entrySourceMapping.put(sourcePath, sourceFile.getPath());
                 // is the file a module descriptor?
                 if (Constants.MODULE_DESCRIPTOR.equals(sourceFile.getName())) {
                     // Mark this module as being valid (enough)
@@ -566,8 +578,11 @@ public class JarOutputRepositoryManager {
                 modifiedResourceFilesRel.add(entryName);
                 File full = FileUtil.applyPath(resourceCreator.getPaths(), fileName);
                 // this can be null for APT-generated resources
-                if(full != null)
+                if (full != null) {
                     modifiedResourceFilesFull.add(full.getPath());
+                    String resourcePath = JarUtils.toPlatformIndependentPath(resourceCreator.getPaths(), full.getPath());
+                    entrySourceMapping.put(handleResourceRoot(resourcePath), full.getPath());
+                }
                 // FIXME: surely this can be written much easily
                 if (OsgiUtil.CeylonManifest.isManifestFileName(entryName) && 
                         (module.isDefaultModule() || writeOsgiManifest)) {
@@ -577,6 +592,15 @@ public class JarOutputRepositoryManager {
                 }
             }
             return new JarEntryFileObject(outputJarTempFolder, entryName);
+        }
+
+        private String handleResourceRoot(String entryName) {
+            if (!resourceRootPath.isEmpty() && entryName.startsWith(resourceRootPath)) {
+                // Files in the special "resource root path" get moved
+                // to the root of the output JAR/CAR
+                entryName = entryName.substring(resourceRootPath.length());
+            }
+            return entryName;
         }
     }
 }

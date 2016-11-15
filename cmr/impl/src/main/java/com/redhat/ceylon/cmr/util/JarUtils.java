@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -233,5 +234,27 @@ public final class JarUtils {
             return null;
         // include the last slash to create a folder
         return fileName.substring(0, lastSep+1);
+    }
+
+    public static Properties getMetaInfProperties(File jarFile, String propFileName) throws IOException {
+        JarFile jar = validJar(jarFile);
+        if (jar != null) {
+            try {
+                JarEntry entry = jar.getJarEntry(propFileName);
+                if (entry != null) {
+                    InputStream inputStream = jar.getInputStream(entry);
+                    try {
+                        Properties previousMapping = new Properties();
+                        previousMapping.load(inputStream);
+                        return previousMapping;
+                    } finally {
+                        inputStream.close();
+                    }
+                }
+            } finally {
+                jar.close();
+            }
+        }
+        return null;
     }
 }
