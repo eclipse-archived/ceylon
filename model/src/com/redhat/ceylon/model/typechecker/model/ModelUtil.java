@@ -414,10 +414,10 @@ public class ModelUtil {
                 }
                 //prefer the longer signature in the case that
                 //one of them doesn't have enough params
-                if (size>dplSize && (rhsp||dplSize<rplSize)) {
+                if ((!dhsp && size>dplSize) && (rhsp||dplSize<rplSize)) {
                     return false;
                 }
-                if (size>rplSize && (dhsp||rplSize<dplSize)) {
+                if ((!rhsp && size>rplSize) && (dhsp||rplSize<dplSize)) {
                     return true;
                 }
                 //otherwise prefer a signature without varargs 
