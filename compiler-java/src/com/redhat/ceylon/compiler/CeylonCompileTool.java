@@ -27,17 +27,25 @@ import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
+import com.redhat.ceylon.cmr.ceylon.ShaSigner;
+import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -195,6 +203,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private List<String> javac = DefaultToolOptions.getCompilerJavac();
     private String encoding;
     private String includeDependencies;
+    private boolean incremental = DefaultToolOptions.getCompilerIncremental();
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
     private String osgiProvidedBundles = DefaultToolOptions.getCompilerOsgiProvidedBundles();
@@ -363,6 +372,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         this.includeDependencies = includeDependencies;
     }
 
+    @Option(longName="incremental")
+    @Description("Enables incremental compilation.")
+    public void setIncremental(boolean incremental) {
+        this.incremental = incremental;
+    }
+
     @Argument(argumentName="moduleOrFile", multiplicity="*")
     public void setModule(List<String> moduleOrFile) {
         this.modulesOrFiles = moduleOrFile;
@@ -452,6 +467,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Override
     protected List<File> getSourceDirs() {
         return sources;
+    }
+
+    @Override
+    protected List<File> getResourceDirs() {
+        return resources;
     }
 
     private void validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option option, String argument, String value) {
@@ -673,7 +693,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         addJavacArguments(arguments, javac);
         
         List<File> srcs = applyCwd(this.sources);
-        List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles, Backend.Java);
+        Collection<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles, Backend.Java);
+        expandedModulesOrFiles = normalizeFileNames(expandedModulesOrFiles);
         if (expandedModulesOrFiles.isEmpty()) {
             String msg = CeylonCompileMessages.msg("error.no.sources");
             if (ModuleWildcardsHelper.onlyGlobArgs(this.modulesOrFiles)) {
@@ -703,8 +724,67 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                             || (COMPILE_CHECK.equals(includeDependencies) && shouldRecompile(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, true))
                             || (COMPILE_ONCE.equals(includeDependencies) && shouldRecompile(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM, false))) {
                         expandedModulesOrFiles.add(mvd.getModule());
+                        if (incremental) {
+                            sar.parse(expandedModulesOrFiles);
+                        }
                     }
                 }
+            }
+        }
+        
+        if (incremental) {
+            for (String module : sar.getModules()) {
+                // Determine module version from source
+                ModuleVersionDetails mvd = getModuleVersionReader().fromSource(module);
+                if (mvd != null) {
+                    // Find the module's CAR file
+                    File carFile = getModuleArtifact(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM);
+                    if (carFile != null) {
+                        // Check if it has META-INF/hashes.txt
+                        Properties oldHashes = getMetaInfHashes(carFile);
+                        if (oldHashes != null) {
+                            // Get the hashes for the new files
+                            List<File> files = sar.getFilesByModule().get(module);
+                            Properties newHashes = getFileHashes(module, files);
+                            // Compare the two and make list of changed files
+                            Collection<String> changedFiles = determineChangedFiles(module, oldHashes, newHashes, carFile);
+                            if (changedFiles == null) {
+                                // This shouldn't happen, but if it does we just skip any
+                                // special treatment and compile this module normally
+                            } else if (changedFiles.isEmpty()) {
+                                // No files were changed, we shouldn't compile the module
+                                expandedModulesOrFiles.remove(module);
+                                // And we remove its files too if any were mentioned
+                                Collection<String> remove = filesToStrings(module, files);
+                                expandedModulesOrFiles.removeAll(remove);
+                            } else {
+                                if (expandedModulesOrFiles.contains(module)) {
+                                    // The module itself was mentioned on the command line
+                                    if (changedFiles.size() < files.size()) {
+                                        // There were fewer changed files than the total number
+                                        // So we remove the module
+                                        expandedModulesOrFiles.remove(module);
+                                        // And we remove its files too if any were mentioned
+                                        Collection<String> remove = filesToStrings(module, files);
+                                        expandedModulesOrFiles.removeAll(remove);
+                                        // And then we add only those files that were changed
+                                        expandedModulesOrFiles.addAll(changedFiles);
+                                    }
+                                } else {
+                                    // Separate source files were mentioned on the command line
+                                    // So we remove the unchanged files
+                                    Collection<String> unchanged = filesToStrings(module, files);
+                                    unchanged.removeAll(changedFiles);
+                                    expandedModulesOrFiles.removeAll(unchanged);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (expandedModulesOrFiles.isEmpty()) {
+                String msg = CeylonCompileMessages.msg("error.no.need");
+                throw new NonFatalToolMessage(msg);
             }
         }
         
@@ -714,6 +794,99 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             System.out.println(arguments);
             System.out.flush();
         }
+    }
+
+    private Collection<String> normalizeFileNames(Collection<String> modulesOrFiles) {
+        HashSet<String> result = new HashSet<String>();
+        for (String mof : modulesOrFiles) {
+            if (mof.contains("/") || mof.contains("\\")) {
+                // It's a file
+                String path = FileUtil.relativeFile(sources, mof);
+                File norm = FileUtil.applyPath(allDirs(), path);
+                if (norm != null) {
+                    result.add(norm.getPath());
+                } else {
+                    result.add(mof);
+                }
+            } else {
+                // It's a module
+                result.add(mof);
+            }
+        }
+        return result;
+    }
+
+    private Properties getMetaInfHashes(File carFile) {
+        try {
+            return JarUtils.getMetaInfProperties(carFile, "META-INF/hashes.txt");
+        } catch (IOException e) {
+            return null;
+        }
+    }
+    
+    private Properties getFileHashes(String moduleName, List<File> files) {
+        Properties hashes = new Properties();
+        for (File f : files) {
+            String name = FileUtil.relativeFile(allDirs(), f.getPath());
+            name = handleResourceRoot(moduleName, name);
+            hashes.put(name, ShaSigner.sha1(f, null));
+        }
+        return hashes;
+    }
+
+    private String handleResourceRoot(String moduleName, String relFileName) {
+        String rrp = resourceRoot.isEmpty() ? "" : ModuleUtil.moduleToPath(moduleName).getPath() + "/" + resourceRoot + "/";
+        if (!rrp.isEmpty() && relFileName.startsWith(rrp)) {
+            relFileName = relFileName.substring(rrp.length());
+        }
+        return relFileName;
+    }
+    
+    private Collection<String> determineChangedFiles(String moduleName, Properties oldHashes, Properties newHashes, File carFile) {
+        HashMap<String,String> diff = new HashMap<String,String>();
+        // First we add all the new files and hashes to our diff
+        for (String name : newHashes.stringPropertyNames()) {
+            diff.put(name, newHashes.getProperty(name));
+        }
+        // Then we remove those that can be found in the old hashes
+        for (String name : oldHashes.stringPropertyNames()) {
+            String hash = oldHashes.getProperty(name);
+            if (hash.equals(diff.get(name))) {
+                diff.remove(name);
+            }
+        }
+        // And finally we create a list of applied paths, but for the
+        // ones that were not among the old hashes (meaning they are
+        // either new or they are source files that didn't result in
+        // any code being generated) we  first check the file time stamp
+        // and don't add them if they are older than the CAR file
+        List<String> result = new ArrayList<String>(diff.size());
+        for (String name : diff.keySet()) {
+            File full = FileUtil.applyPath(allDirs(), name);
+            if (full == null) {
+                // This really shouldn't happen
+                return null;
+            }
+            try {
+                String hash = oldHashes.getProperty(name);
+                if (hash != null
+                        || isModuleArtifactOutOfDate(carFile, moduleName, Type.JVM)) {
+                    result.add(full.getPath());
+                }
+            } catch (IOException e) {
+                // Ignore
+            }
+        }
+        return result;
+    }
+    
+    private Collection<String> filesToStrings(String moduleName, Collection<File> files) {
+        List<String> result = new ArrayList<String>(files.size());
+        for (File f : files) {
+            String norm = handleResourceRoot(moduleName, f.getPath());
+            result.add(norm);
+        }
+        return result;
     }
 
     private static com.redhat.ceylon.langtools.tools.javac.main.Option getJavacOpt(String optionName) {

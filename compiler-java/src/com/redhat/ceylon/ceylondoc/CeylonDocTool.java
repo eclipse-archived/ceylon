@@ -37,6 +37,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -424,7 +425,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
         // create the actual list of modules to process
         List<File> srcs = FileUtil.applyCwd(cwd, sourceFolders);
-        List<String> expandedModules = ModuleWildcardsHelper.expandWildcards(srcs , moduleSpecs, null);
+        Collection<String> expandedModules = ModuleWildcardsHelper.expandWildcards(srcs , moduleSpecs, null);
         final List<ModuleSpec> modules = ModuleSpec.parseEachList(expandedModules);
         
         final Callable<PhasedUnits> getPhasedUnits = new Callable<PhasedUnits>() {

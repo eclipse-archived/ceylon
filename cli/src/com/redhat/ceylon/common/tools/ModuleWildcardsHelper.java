@@ -2,6 +2,7 @@ package com.redhat.ceylon.common.tools;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -82,7 +83,7 @@ public abstract class ModuleWildcardsHelper {
      * @param forBackend The Backend for which we work or null
      * @return An expanded list of module names
      */
-    public static List<String> expandWildcards(File dir, List<String> modules, Backend forBackend) {
+    public static List<String> expandWildcards(File dir, Collection<String> modules, Backend forBackend) {
         List<File> dirs = new ArrayList<File>();
         dirs.add(dir);
         return expandWildcards(dirs, modules, forBackend);
@@ -102,7 +103,7 @@ public abstract class ModuleWildcardsHelper {
      * @param forBackend The Backend for which we work or null
      * @return An expanded list of module names
      */
-    public static List<String> expandWildcards(Iterable<File> dirs, List<String> names, Backend forBackend) {
+    public static List<String> expandWildcards(Iterable<File> dirs, Collection<String> names, Backend forBackend) {
         List<String> result = new ArrayList<String>(names.size());
         for (String name : names) {
             expandWildcard(result, dirs, name, forBackend);

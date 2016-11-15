@@ -239,6 +239,11 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     }
 
     @Override
+    protected List<File> getResourceDirs() {
+        return resources;
+    }
+
+    @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         super.initialize(mainTool);
         includeDependencies = processCompileFlags(includeDependencies, DefaultToolOptions.getCompilerIncludeDependencies());

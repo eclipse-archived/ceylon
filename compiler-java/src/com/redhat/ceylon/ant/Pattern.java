@@ -2,6 +2,7 @@ package com.redhat.ceylon.ant;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -123,7 +124,7 @@ public class Pattern extends DataType {
                     throw new RuntimeException("Unknown backend for pattern: " + backend);
                 }
             }
-            List<String> mods = ModuleWildcardsHelper.expandWildcards(
+            Collection<String> mods = ModuleWildcardsHelper.expandWildcards(
                     getSrc(), Collections.singletonList(match), be);
             for (String mod : mods) {
                 result.add(new Module(mod));

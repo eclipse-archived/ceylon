@@ -129,13 +129,13 @@ public class SourceArgumentsResolver {
         return allModuleFiles;
     }
 
-    public void expandAndParse(List<String> modulesOrFiles, Backend forBackend) throws IOException {
+    public void expandAndParse(Collection<String> modulesOrFiles, Backend forBackend) throws IOException {
         Iterable<File> srcs = FileUtil.applyCwd(cwd, sourceDirs);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs, modulesOrFiles, forBackend);
         parse(expandedModulesOrFiles);
     }
     
-    public void parse(List<String> modulesOrFiles) throws IOException {
+    public void parse(Collection<String> modulesOrFiles) throws IOException {
         HashSet<String> srcMods = new HashSet<String>();
         HashSet<String> resMods = new HashSet<String>();
         HashSet<String> singleFileMods = new HashSet<String>();

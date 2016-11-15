@@ -148,7 +148,7 @@ public class FileUtil {
     public static File applyCwd(File cwd, File file) {
         if (cwd != null && !cwd.getPath().equals(".") && file != null && !file.isAbsolute()) {
             File absCwd = absoluteFile(cwd);
-            file = new File(absCwd, file.getPath());
+            file = absoluteFile(new File(absCwd, file.getPath()));
         }
         return file;
     }

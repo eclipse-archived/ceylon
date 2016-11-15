@@ -36,6 +36,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_PROGRESS = "compiler.progress";
     public final static String COMPILER_MODULES = "compiler.module";
     public final static String COMPILER_INCLUDE_DEPENDENCIES = "compiler.includedependencies";
+    public final static String COMPILER_INCREMENTAL = "compiler.incremental";
     // JVM-only, needing backward compatibility (only for pre-1.3.0 options)
     public final static String COMPILER_NOOSGI = "compiler.jvm.noosgi";
     public final static String COMPILER_OSGIPROVIDEDBUNDLES = "compiler.jvm.osgiprovidedbundles";
@@ -241,6 +242,10 @@ public class DefaultToolOptions {
         }
     }
     
+    public static boolean getCompilerProgress() {
+        return getCompilerProgress(CeylonConfig.get());
+    }
+
     public static boolean getCompilerProgress(CeylonConfig config) {
         return config.getBoolOption(COMPILER_PROGRESS, false);
     }
@@ -306,16 +311,20 @@ public class DefaultToolOptions {
                 config.getBoolOption(oldkey(COMPILER_PACK200), false));
     }
     
-    public static boolean getCompilerProgress() {
-        return getCompilerProgress(CeylonConfig.get());
-    }
-
     public static String getCompilerIncludeDependencies() {
         return getCompilerIncludeDependencies(CeylonConfig.get());
     }
 
     public static String getCompilerIncludeDependencies(CeylonConfig config) {
         return config.getOption(COMPILER_INCLUDE_DEPENDENCIES, Constants.DEFAULT_COMPILER_COMPILATION_FLAGS);
+    }
+    
+    public static boolean getCompilerIncremental() {
+        return getCompilerIncremental(CeylonConfig.get());
+    }
+
+    public static boolean getCompilerIncremental(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_INCREMENTAL, false);
     }
     
     public static String getCompilerJdkProvider() {

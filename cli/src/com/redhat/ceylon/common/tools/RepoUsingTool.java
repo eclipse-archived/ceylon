@@ -624,33 +624,39 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
 
     protected boolean shouldRecompile(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, boolean checkTime) throws IOException {
-        ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
-        ac.setIgnoreDependencies(true);
-        ac.setThrowErrorIfMissing(false);
-        File artifile = repoMgr.getArtifact(ac);
+        File artifile = getModuleArtifact(repoMgr, name, version, type);
         if (artifile == null) {
             return true;
         }
         if (checkTime) {
-            long oldestArtifact;
-            if (type == ModuleQuery.Type.JVM) {
-                oldestArtifact = JarUtils.oldestFileTime(artifile);
-            } else {
-                oldestArtifact = artifile.lastModified();
-            }
-            long newestSource = getNewestLastmodified(name);
-            if (newestSource > oldestArtifact) {
-                return true;
-            }
+            return isModuleArtifactOutOfDate(artifile, name, type);
         }
         return false;
     }
 
+    protected File getModuleArtifact(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) {
+        ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
+        ac.setIgnoreDependencies(true);
+        ac.setThrowErrorIfMissing(false);
+        return repoMgr.getArtifact(ac);
+    }
+
+    protected boolean isModuleArtifactOutOfDate(File artifile, String name, ModuleQuery.Type type) throws IOException {
+        long oldestArtifact;
+        if (type == ModuleQuery.Type.JVM) {
+            oldestArtifact = JarUtils.oldestFileTime(artifile);
+        } else {
+            oldestArtifact = artifile.lastModified();
+        }
+        long newestSource = getNewestLastmodified(name);
+        return (newestSource > oldestArtifact);
+    }
+
     private long getNewestLastmodified(String name) throws IOException {
         final long[] newest = new long[] { -1L };
-        List<File> srcDirs = getSourceDirs();
-        for (File srcDir : srcDirs) {
-            File moduleDir = ModuleUtil.moduleToPath(srcDir, name);
+        List<File> dirs = allDirs();
+        for (File dir : dirs) {
+            File moduleDir = ModuleUtil.moduleToPath(dir, name);
             if (moduleDir.isDirectory() && moduleDir.canRead()) {
                 Files.walkFileTree(moduleDir.toPath(), new SimpleFileVisitor<Path>() {
                     @Override
@@ -693,6 +699,21 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
      */
     protected List<File> getSourceDirs() {
         return DefaultToolOptions.getCompilerSourceDirs();
+    }
+    
+    /**
+     * Override in subclasses that accept source dirs
+     * @return
+     */
+    protected List<File> getResourceDirs() {
+        return DefaultToolOptions.getCompilerResourceDirs();
+    }
+
+    protected List<File> allDirs() {
+        List<File> all = new ArrayList<File>(getSourceDirs().size() + getResourceDirs().size());
+        all.addAll(getSourceDirs());
+        all.addAll(getResourceDirs());
+        return applyCwd(all);
     }
 
     protected boolean isSourceModule(String name, String version, List<File> srcDirs){
