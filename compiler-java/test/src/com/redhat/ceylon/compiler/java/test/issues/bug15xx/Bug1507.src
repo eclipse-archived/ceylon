@@ -255,18 +255,18 @@ final class bug1507test6_ {
         final boolean found;
         boolean found$59 = false;
         boolean doforelse$60 = true;
-        final long $ceylontmp$first$63 = 1;
-        final long $ceylontmp$last$64 = 2;
+        final int $ceylontmp$first$63 = 1;
+        final int $ceylontmp$last$64 = 2;
         final boolean $ceylontmp$increasing$65 = .ceylon.language.Integer.offset($ceylontmp$last$64, $ceylontmp$first$63) >= 0;
-        final long $ceylontmp$incr$66 = $ceylontmp$increasing$65 ? 1L : -1L;
-        long i$69 = $ceylontmp$first$63;
-        long $ceylontmp$element$68 = $ceylontmp$first$63;
+        final int $ceylontmp$incr$66 = $ceylontmp$increasing$65 ? 1 : -1;
+        int i$69 = $ceylontmp$first$63;
+        int $ceylontmp$element$68 = $ceylontmp$first$63;
         boolean $ceylontmp$f$67 = false;
         loop_6: do {
             if ($ceylontmp$f$67) $ceylontmp$element$68 += $ceylontmp$incr$66;
             $ceylontmp$f$67 = true;
             i$69 = $ceylontmp$element$68;
-            final long i = i$69;
+            final int i = i$69;
             $ceylontmp$continue$62: do {
                 if (i == 0L) {
                     found$59 = true;
@@ -277,7 +277,7 @@ final class bug1507test6_ {
                     .ceylon.language.process_.get_().write("");
                 }
             }             while (false);
-        }         while ($ceylontmp$increasing$65 ? i$69 - $ceylontmp$last$64 != 0L : i$69 - $ceylontmp$last$64 != 0L);
+        }         while ($ceylontmp$increasing$65 ? i$69 - $ceylontmp$last$64 != 0 : i$69 - $ceylontmp$last$64 != 0);
         if (doforelse$60) {
             found$59 = false;
             final boolean found$72 = found$59;

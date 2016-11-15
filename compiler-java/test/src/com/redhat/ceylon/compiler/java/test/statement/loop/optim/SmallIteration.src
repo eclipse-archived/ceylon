@@ -35,27 +35,83 @@ class SmallIteration implements .com.redhat.ceylon.compiler.java.runtime.model.R
             final int i = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)elem$13).longValue());
             sum += i;
         }
+        final char start$16 = 'a';
+        final int length$17 = 26;
+        loop_4: for (int i$18 = 0; i$18 < length$17; i$18++) {
+            final char c = (char).ceylon.language.Character.neighbour(start$16, i$18);
+            sum += .ceylon.language.Character.getInteger(c);
+        }
     }
     
     public final void span() {
-        final long start = 0L;
-        final long end = 10L;
-        final long $ceylontmp$first$17 = start;
-        final long $ceylontmp$last$18 = end;
-        final boolean $ceylontmp$increasing$19 = .ceylon.language.Integer.offset($ceylontmp$last$18, $ceylontmp$first$17) >= 0;
-        final long $ceylontmp$incr$20 = $ceylontmp$increasing$19 ? 1L : -1L;
-        long i$23 = $ceylontmp$first$17;
-        long $ceylontmp$element$22 = $ceylontmp$first$17;
-        boolean $ceylontmp$f$21 = false;
-        loop_4: do {
-            if ($ceylontmp$f$21) $ceylontmp$element$22 += $ceylontmp$incr$20;
-            $ceylontmp$f$21 = true;
-            i$23 = $ceylontmp$element$22;
-            final long i = i$23;
-            $ceylontmp$continue$16: do {
+        final int start = 0;
+        final int end = 10;
+        final int $ceylontmp$first$21 = start;
+        final int $ceylontmp$last$22 = end;
+        final boolean $ceylontmp$increasing$23 = .ceylon.language.Integer.offset($ceylontmp$last$22, $ceylontmp$first$21) >= 0;
+        final int $ceylontmp$incr$24 = $ceylontmp$increasing$23 ? 1 : -1;
+        int i$27 = $ceylontmp$first$21;
+        int $ceylontmp$element$26 = $ceylontmp$first$21;
+        boolean $ceylontmp$f$25 = false;
+        loop_5: do {
+            if ($ceylontmp$f$25) $ceylontmp$element$26 += $ceylontmp$incr$24;
+            $ceylontmp$f$25 = true;
+            i$27 = $ceylontmp$element$26;
+            final int i = i$27;
+            $ceylontmp$continue$20: do {
                 .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
             }             while (false);
-        }         while ($ceylontmp$increasing$19 ? i$23 - $ceylontmp$last$18 != 0L : i$23 - $ceylontmp$last$18 != 0L);
+        }         while ($ceylontmp$increasing$23 ? i$27 - $ceylontmp$last$22 != 0 : i$27 - $ceylontmp$last$22 != 0);
+        long sum = 0L;
+        final int $ceylontmp$first$30 = -5;
+        final int $ceylontmp$last$31 = 5;
+        final boolean $ceylontmp$increasing$32 = .ceylon.language.Integer.offset($ceylontmp$last$31, $ceylontmp$first$30) >= 0;
+        final int $ceylontmp$incr$33 = $ceylontmp$increasing$32 ? 1 : -1;
+        int i$36 = $ceylontmp$first$30;
+        int $ceylontmp$element$35 = $ceylontmp$first$30;
+        boolean $ceylontmp$f$34 = false;
+        loop_6: do {
+            if ($ceylontmp$f$34) $ceylontmp$element$35 += $ceylontmp$incr$33;
+            $ceylontmp$f$34 = true;
+            i$36 = $ceylontmp$element$35;
+            final int i = i$36;
+            $ceylontmp$continue$29: do {
+                sum = sum + i;
+            }             while (false);
+        }         while ($ceylontmp$increasing$32 ? i$36 - $ceylontmp$last$31 != 0 : i$36 - $ceylontmp$last$31 != 0);
+        final char $ceylontmp$first$39 = 'a';
+        final char $ceylontmp$last$40 = 'z';
+        final boolean $ceylontmp$increasing$41 = .ceylon.language.Character.offset($ceylontmp$last$40, $ceylontmp$first$39) >= 0;
+        boolean $ceylontmp$46 = .ceylon.language.Character.offsetSign($ceylontmp$first$39, .ceylon.language.Character.getSuccessor($ceylontmp$first$39)) > 0L && .ceylon.language.Character.offsetSign(.ceylon.language.Character.getPredecessor($ceylontmp$last$40), $ceylontmp$last$40) > 0L;
+        final int $ceylontmp$incr$42 = $ceylontmp$increasing$41 ? 1 : -1;
+        char x$45 = $ceylontmp$first$39;
+        char $ceylontmp$element$44 = $ceylontmp$first$39;
+        boolean $ceylontmp$f$43 = false;
+        loop_7: do {
+            if ($ceylontmp$f$43) $ceylontmp$element$44 = (char).ceylon.language.Character.neighbour($ceylontmp$element$44, $ceylontmp$incr$42);
+            $ceylontmp$f$43 = true;
+            x$45 = $ceylontmp$element$44;
+            final char x = x$45;
+            $ceylontmp$continue$38: do {
+            }             while (false);
+        }         while ($ceylontmp$increasing$41 ? x$45 - $ceylontmp$last$40 != 0 : x$45 - $ceylontmp$last$40 != 0);
+        final int[] array = new int[10];
+        final int $ceylontmp$first$49 = 1;
+        final int $ceylontmp$last$50 = 10;
+        final boolean $ceylontmp$increasing$51 = .ceylon.language.Integer.offset($ceylontmp$last$50, $ceylontmp$first$49) >= 0;
+        final int $ceylontmp$incr$52 = $ceylontmp$increasing$51 ? 1 : -1;
+        int index$55 = $ceylontmp$first$49;
+        int $ceylontmp$element$54 = $ceylontmp$first$49;
+        boolean $ceylontmp$f$53 = false;
+        loop_8: do {
+            if ($ceylontmp$f$53) $ceylontmp$element$54 += $ceylontmp$incr$52;
+            $ceylontmp$f$53 = true;
+            index$55 = $ceylontmp$element$54;
+            final int index = index$55;
+            $ceylontmp$continue$48: do {
+                array[index - 1] = index;
+            }             while (false);
+        }         while ($ceylontmp$increasing$51 ? index$55 - $ceylontmp$last$50 != 0 : index$55 - $ceylontmp$last$50 != 0);
     }
     
     @.java.lang.Override

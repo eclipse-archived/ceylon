@@ -10,22 +10,22 @@ final class bug1878Init_ {
     }
     
     static void bug1878Init() {
-        final long $ceylontmp$first$2 = 1;
-        final long $ceylontmp$last$3 = 1;
+        final int $ceylontmp$first$2 = 1;
+        final int $ceylontmp$last$3 = 1;
         final boolean $ceylontmp$increasing$4 = .ceylon.language.Integer.offset($ceylontmp$last$3, $ceylontmp$first$2) >= 0;
-        final long $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1L : -1L;
-        long _$8 = $ceylontmp$first$2;
-        long $ceylontmp$element$7 = $ceylontmp$first$2;
+        final int $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1 : -1;
+        int _$8 = $ceylontmp$first$2;
+        int $ceylontmp$element$7 = $ceylontmp$first$2;
         boolean $ceylontmp$f$6 = false;
         loop_0: do {
             if ($ceylontmp$f$6) $ceylontmp$element$7 += $ceylontmp$incr$5;
             $ceylontmp$f$6 = true;
             _$8 = $ceylontmp$element$7;
-            final long _ = _$8;
+            final int _ = _$8;
             $ceylontmp$continue$1: do {
                 .com.redhat.ceylon.compiler.java.test.statement.loop.bug1878_.set_(false);
             }             while (false);
-        }         while ($ceylontmp$increasing$4 ? _$8 - $ceylontmp$last$3 != 0L : _$8 - $ceylontmp$last$3 != 0L);
+        }         while ($ceylontmp$increasing$4 ? _$8 - $ceylontmp$last$3 != 0 : _$8 - $ceylontmp$last$3 != 0);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -62,22 +62,22 @@ class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     private final void loopInit$priv$() {
-        final long $ceylontmp$first$11 = 1;
-        final long $ceylontmp$last$12 = 1;
+        final int $ceylontmp$first$11 = 1;
+        final int $ceylontmp$last$12 = 1;
         final boolean $ceylontmp$increasing$13 = .ceylon.language.Integer.offset($ceylontmp$last$12, $ceylontmp$first$11) >= 0;
-        final long $ceylontmp$incr$14 = $ceylontmp$increasing$13 ? 1L : -1L;
-        long _$17 = $ceylontmp$first$11;
-        long $ceylontmp$element$16 = $ceylontmp$first$11;
+        final int $ceylontmp$incr$14 = $ceylontmp$increasing$13 ? 1 : -1;
+        int _$17 = $ceylontmp$first$11;
+        int $ceylontmp$element$16 = $ceylontmp$first$11;
         boolean $ceylontmp$f$15 = false;
         loop_1: do {
             if ($ceylontmp$f$15) $ceylontmp$element$16 += $ceylontmp$incr$14;
             $ceylontmp$f$15 = true;
             _$17 = $ceylontmp$element$16;
-            final long _ = _$17;
+            final int _ = _$17;
             $ceylontmp$continue$10: do {
                 setFoo$priv$(false);
             }             while (false);
-        }         while ($ceylontmp$increasing$13 ? _$17 - $ceylontmp$last$12 != 0L : _$17 - $ceylontmp$last$12 != 0L);
+        }         while ($ceylontmp$increasing$13 ? _$17 - $ceylontmp$last$12 != 0 : _$17 - $ceylontmp$last$12 != 0);
     }
     
     @.java.lang.Override

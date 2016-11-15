@@ -12,18 +12,18 @@ public final class bug1438_ {
             foo = "if";
         } else {
             boolean doforelse$2 = true;
-            final long $ceylontmp$first$5 = 0;
-            final long $ceylontmp$last$6 = 10;
+            final int $ceylontmp$first$5 = 0;
+            final int $ceylontmp$last$6 = 10;
             final boolean $ceylontmp$increasing$7 = .ceylon.language.Integer.offset($ceylontmp$last$6, $ceylontmp$first$5) >= 0;
-            final long $ceylontmp$incr$8 = $ceylontmp$increasing$7 ? 1L : -1L;
-            long i$11 = $ceylontmp$first$5;
-            long $ceylontmp$element$10 = $ceylontmp$first$5;
+            final int $ceylontmp$incr$8 = $ceylontmp$increasing$7 ? 1 : -1;
+            int i$11 = $ceylontmp$first$5;
+            int $ceylontmp$element$10 = $ceylontmp$first$5;
             boolean $ceylontmp$f$9 = false;
             loop_0: do {
                 if ($ceylontmp$f$9) $ceylontmp$element$10 += $ceylontmp$incr$8;
                 $ceylontmp$f$9 = true;
                 i$11 = $ceylontmp$element$10;
-                final long i = i$11;
+                final int i = i$11;
                 $ceylontmp$continue$4: do {
                     if (.ceylon.language.system_.get_().getMilliseconds() % 2L == 0L) {
                         foo$0 = "break";
@@ -32,7 +32,7 @@ public final class bug1438_ {
                         break loop_0;
                     }
                 }                 while (false);
-            }             while ($ceylontmp$increasing$7 ? i$11 - $ceylontmp$last$6 != 0L : i$11 - $ceylontmp$last$6 != 0L);
+            }             while ($ceylontmp$increasing$7 ? i$11 - $ceylontmp$last$6 != 0 : i$11 - $ceylontmp$last$6 != 0);
             if (doforelse$2) {
                 foo$0 = "else";
                 final .java.lang.String foo$14 = foo$0;
@@ -57,18 +57,18 @@ public final class bug1438_2_ {
         .java.lang.String foo$15 = null;
         if (.ceylon.language.system_.get_().getMilliseconds() % 2L == 0L) {
             boolean doforelse$17 = true;
-            final long $ceylontmp$first$20 = 0;
-            final long $ceylontmp$last$21 = 10;
+            final int $ceylontmp$first$20 = 0;
+            final int $ceylontmp$last$21 = 10;
             final boolean $ceylontmp$increasing$22 = .ceylon.language.Integer.offset($ceylontmp$last$21, $ceylontmp$first$20) >= 0;
-            final long $ceylontmp$incr$23 = $ceylontmp$increasing$22 ? 1L : -1L;
-            long i$26 = $ceylontmp$first$20;
-            long $ceylontmp$element$25 = $ceylontmp$first$20;
+            final int $ceylontmp$incr$23 = $ceylontmp$increasing$22 ? 1 : -1;
+            int i$26 = $ceylontmp$first$20;
+            int $ceylontmp$element$25 = $ceylontmp$first$20;
             boolean $ceylontmp$f$24 = false;
             loop_1: do {
                 if ($ceylontmp$f$24) $ceylontmp$element$25 += $ceylontmp$incr$23;
                 $ceylontmp$f$24 = true;
                 i$26 = $ceylontmp$element$25;
-                final long i = i$26;
+                final int i = i$26;
                 $ceylontmp$continue$19: do {
                     if (.ceylon.language.system_.get_().getMilliseconds() % 2L == 0L) {
                         foo$15 = "break";
@@ -77,7 +77,7 @@ public final class bug1438_2_ {
                         break loop_1;
                     }
                 }                 while (false);
-            }             while ($ceylontmp$increasing$22 ? i$26 - $ceylontmp$last$21 != 0L : i$26 - $ceylontmp$last$21 != 0L);
+            }             while ($ceylontmp$increasing$22 ? i$26 - $ceylontmp$last$21 != 0 : i$26 - $ceylontmp$last$21 != 0);
             if (doforelse$17) {
                 foo$15 = "else";
                 final .java.lang.String foo$29 = foo$15;

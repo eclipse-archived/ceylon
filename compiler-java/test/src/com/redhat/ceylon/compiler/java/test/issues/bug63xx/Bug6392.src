@@ -6,21 +6,21 @@ final class bug6392_ {
     }
     
     static void bug6392() {
-        final long $ceylontmp$first$2 = 1;
-        final long $ceylontmp$last$3 = 0;
+        final int $ceylontmp$first$2 = 1;
+        final int $ceylontmp$last$3 = 0;
         final boolean $ceylontmp$increasing$4 = .ceylon.language.Integer.offset($ceylontmp$last$3, $ceylontmp$first$2) >= 0;
-        final long $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1L : -1L;
-        long i$8 = $ceylontmp$first$2;
-        long $ceylontmp$element$7 = $ceylontmp$first$2;
+        final int $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1 : -1;
+        int i$8 = $ceylontmp$first$2;
+        int $ceylontmp$element$7 = $ceylontmp$first$2;
         boolean $ceylontmp$f$6 = false;
         loop_0: do {
             if ($ceylontmp$f$6) $ceylontmp$element$7 += $ceylontmp$incr$5;
             $ceylontmp$f$6 = true;
             i$8 = $ceylontmp$element$7;
-            final long i = i$8;
+            final int i = i$8;
             $ceylontmp$continue$1: do {
             }             while (false);
-        }         while ($ceylontmp$increasing$4 ? i$8 - $ceylontmp$last$3 != 0L : i$8 - $ceylontmp$last$3 != 0L);
+        }         while ($ceylontmp$increasing$4 ? i$8 - $ceylontmp$last$3 != 0 : i$8 - $ceylontmp$last$3 != 0);
         {
             final .java.lang.String s = "";
         }

@@ -6,23 +6,23 @@ final class keywordInForLoop_ {
     }
     
     static void keywordInForLoop(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
-        final long $ceylontmp$first$2 = 1;
-        final long $ceylontmp$last$3 = 10;
+        final int $ceylontmp$first$2 = 1;
+        final int $ceylontmp$last$3 = 10;
         final boolean $ceylontmp$increasing$4 = .ceylon.language.Integer.offset($ceylontmp$last$3, $ceylontmp$first$2) >= 0;
-        final long $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1L : -1L;
-        long byte$8 = $ceylontmp$first$2;
-        long $ceylontmp$element$7 = $ceylontmp$first$2;
+        final int $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1 : -1;
+        int byte$8 = $ceylontmp$first$2;
+        int $ceylontmp$element$7 = $ceylontmp$first$2;
         boolean $ceylontmp$f$6 = false;
         loop_0: do {
             if ($ceylontmp$f$6) $ceylontmp$element$7 += $ceylontmp$incr$5;
             $ceylontmp$f$6 = true;
             byte$8 = $ceylontmp$element$7;
-            final long $byte = byte$8;
+            final int $byte = byte$8;
             $ceylontmp$continue$1: do {
                 if ($byte > 5L) {
                 }
             }             while (false);
-        }         while ($ceylontmp$increasing$4 ? byte$8 - $ceylontmp$last$3 != 0L : byte$8 - $ceylontmp$last$3 != 0L);
+        }         while ($ceylontmp$increasing$4 ? byte$8 - $ceylontmp$last$3 != 0 : byte$8 - $ceylontmp$last$3 != 0);
         boolean loopentered$10 = false;
         .java.lang.Object elem$11;
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> $byte$iterator$$12 = seq.iterator();

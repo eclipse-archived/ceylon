@@ -25,16 +25,16 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     
     private final void literals$priv$() {
         long sum = 0L;
-        final long start$1 = 0L;
-        final long length$2 = 10L;
-        loop_0: for (long i$3 = 0; i$3 < length$2; i$3++) {
-            final long i = i$3 + start$1;
+        final int start$1 = 0;
+        final int length$2 = 10;
+        loop_0: for (int i$3 = 0; i$3 < length$2; i$3++) {
+            final int i = i$3 + start$1;
             sum += i;
         }
-        final int start$5 = 97;
-        final long length$6 = 26L;
-        loop_1: for (long i$7 = 0; i$7 < length$6; i$7++) {
-            final int c = .ceylon.language.Character.neighbour(start$5, i$7);
+        final char start$5 = 'a';
+        final int length$6 = 26;
+        loop_1: for (int i$7 = 0; i$7 < length$6; i$7++) {
+            final char c = (char).ceylon.language.Character.neighbour(start$5, i$7);
             sum += .ceylon.language.Character.getInteger(c);
         }
     }
@@ -47,8 +47,8 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             final long i = i$11 + start$9;
             sum += i;
         }
-        final long start$13 = getStart$priv$() + 10L;
-        final long length$14 = getLength$priv$() + 10L;
+        final long start$13 = getStart$priv$() + 10;
+        final long length$14 = getLength$priv$() + 10;
         loop_3: for (long i$15 = 0; i$15 < length$14; i$15++) {
             final long i = i$15 + start$13;
             sum += i;
@@ -78,42 +78,42 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     private final void disabled$priv$() {
         long sum = 0L;
         .java.lang.Object elem$27;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$28 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$28 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), 10)).iterator();
         loop_6: while (!((elem$27 = i$iterator$$28.next()) instanceof .ceylon.language.Finished)) {
-            final long i = ((.ceylon.language.Integer)elem$27).longValue();
+            final int i = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)elem$27).longValue());
             sum += i;
         }
         .java.lang.Object elem$30;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$31 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), 10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$31 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.measure_.<.ceylon.language.Integer>measure(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), 10)).iterator();
         loop_7: while (!((elem$30 = i$iterator$$31.next()) instanceof .ceylon.language.Finished)) {
-            final long i = ((.ceylon.language.Integer)elem$30).longValue();
+            final int i = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)elem$30).longValue());
             sum += i;
         }
     }
     
     private final void flow$priv$() {
         long sum = 0L;
-        final long start$33 = 1L;
-        final long length$34 = 10L;
-        loop_8: for (long i$35 = 0; i$35 < length$34; i$35++) {
-            final long withElse = i$35 + start$33;
+        final int start$33 = 1;
+        final int length$34 = 10;
+        loop_8: for (int i$35 = 0; i$35 < length$34; i$35++) {
+            final int withElse = i$35 + start$33;
             sum += withElse;
         }
         {
             sum = 0L;
         }
-        final long start$37 = 1L;
-        final long length$38 = 10L;
-        loop_9: for (long i$39 = 0; i$39 < length$38; i$39++) {
-            final long breaks = i$39 + start$37;
+        final int start$37 = 1;
+        final int length$38 = 10;
+        loop_9: for (int i$39 = 0; i$39 < length$38; i$39++) {
+            final int breaks = i$39 + start$37;
             sum += breaks;
             break loop_9;
         }
         boolean doforelse$40 = true;
-        final long start$42 = 1L;
-        final long length$43 = 10L;
-        loop_10: for (long i$44 = 0; i$44 < length$43; i$44++) {
-            final long breaksWithElse = i$44 + start$42;
+        final int start$42 = 1;
+        final int length$43 = 10;
+        loop_10: for (int i$44 = 0; i$44 < length$43; i$44++) {
+            final int breaksWithElse = i$44 + start$42;
             sum += breaksWithElse;
             doforelse$40 = false;
             break loop_10;
@@ -122,10 +122,10 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             sum = 0L;
         }
         boolean doforelse$45 = true;
-        final long start$47 = 1L;
-        final long length$48 = 10L;
-        loop_11: for (long i$49 = 0; i$49 < length$48; i$49++) {
-            final long breaksWithElse = i$49 + start$47;
+        final int start$47 = 1;
+        final int length$48 = 10;
+        loop_11: for (int i$49 = 0; i$49 < length$48; i$49++) {
+            final int breaksWithElse = i$49 + start$47;
             sum += breaksWithElse;
             if (breaksWithElse == 5L) {
                 doforelse$45 = false;
@@ -135,18 +135,18 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
         if (doforelse$45) {
             sum = 0L;
         }
-        final long start$52 = 1L;
-        final long length$53 = 10L;
-        loop_12: for (long i$54 = 0; i$54 < length$53; i$54++) {
-            final long returns = i$54 + start$52;
+        final int start$52 = 1;
+        final int length$53 = 10;
+        loop_12: for (int i$54 = 0; i$54 < length$53; i$54++) {
+            final int returns = i$54 + start$52;
             sum += returns;
             break loop_12;
         }
         boolean doforelse$55 = true;
-        final long start$57 = 1L;
-        final long length$58 = 10L;
-        loop_13: for (long i$59 = 0; i$59 < length$58; i$59++) {
-            final long returnsWithElse = i$59 + start$57;
+        final int start$57 = 1;
+        final int length$58 = 10;
+        loop_13: for (int i$59 = 0; i$59 < length$58; i$59++) {
+            final int returnsWithElse = i$59 + start$57;
             sum += returnsWithElse;
             doforelse$55 = false;
             break loop_13;
@@ -155,10 +155,10 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             sum = 0L;
         }
         boolean doforelse$60 = true;
-        final long start$62 = 1L;
-        final long length$63 = 10L;
-        loop_14: for (long i$64 = 0; i$64 < length$63; i$64++) {
-            final long returnsWithElse = i$64 + start$62;
+        final int start$62 = 1;
+        final int length$63 = 10;
+        loop_14: for (int i$64 = 0; i$64 < length$63; i$64++) {
+            final int returnsWithElse = i$64 + start$62;
             sum += returnsWithElse;
             if (returnsWithElse == 5L) {
                 doforelse$60 = false;
@@ -168,18 +168,18 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
         if (doforelse$60) {
             sum = 0L;
         }
-        final long start$67 = 1L;
-        final long length$68 = 10L;
-        loop_15: for (long i$69 = 0; i$69 < length$68; i$69++) {
-            final long $throws = i$69 + start$67;
+        final int start$67 = 1;
+        final int length$68 = 10;
+        loop_15: for (int i$69 = 0; i$69 < length$68; i$69++) {
+            final int $throws = i$69 + start$67;
             sum += $throws;
             break loop_15;
         }
         boolean doforelse$70 = true;
-        final long start$72 = 1L;
-        final long length$73 = 10L;
-        loop_16: for (long i$74 = 0; i$74 < length$73; i$74++) {
-            final long throwsWithElse = i$74 + start$72;
+        final int start$72 = 1;
+        final int length$73 = 10;
+        loop_16: for (int i$74 = 0; i$74 < length$73; i$74++) {
+            final int throwsWithElse = i$74 + start$72;
             sum += throwsWithElse;
             doforelse$70 = false;
             break loop_16;
@@ -188,10 +188,10 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             sum = 0L;
         }
         boolean doforelse$75 = true;
-        final long start$77 = 1L;
-        final long length$78 = 10L;
-        loop_17: for (long i$79 = 0; i$79 < length$78; i$79++) {
-            final long throwsWithElse = i$79 + start$77;
+        final int start$77 = 1;
+        final int length$78 = 10;
+        loop_17: for (int i$79 = 0; i$79 < length$78; i$79++) {
+            final int throwsWithElse = i$79 + start$77;
             sum += throwsWithElse;
             if (throwsWithElse == 5L) {
                 doforelse$75 = false;
@@ -204,10 +204,10 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     private final void captured$priv$() {
-        final long start$82 = 0L;
-        final long length$83 = 10L;
-        loop_18: for (long i$84 = 0; i$84 < length$83; i$84++) {
-            final long i = i$84 + start$82;
+        final int start$82 = 0;
+        final int length$83 = 10;
+        loop_18: for (int i$84 = 0; i$84 < length$83; i$84++) {
+            final int i = i$84 + start$82;
             
             final class x_ implements .java.io.Serializable {
                 

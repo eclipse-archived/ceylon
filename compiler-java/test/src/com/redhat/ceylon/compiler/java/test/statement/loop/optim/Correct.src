@@ -62,10 +62,10 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         long sum = 0L;
         boolean loopentered$0 = false;
         .java.lang.Object elem$1;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$2 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$2 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(10)).iterator();
         loop_0: while (!((elem$1 = i$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             loopentered$0 = true;
-            final long i = ((.ceylon.language.Integer)elem$1).longValue();
+            final int i = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)elem$1).longValue());
             sum += i;
         }
         if (!loopentered$0) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
@@ -74,43 +74,43 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private final long rangeOpIteration$priv$() {
         long sum = 0L;
-        final long $ceylontmp$first$6 = 1L;
-        final long $ceylontmp$last$7 = 10L;
+        final int $ceylontmp$first$6 = 1;
+        final int $ceylontmp$last$7 = 10;
         final boolean $ceylontmp$increasing$8 = .ceylon.language.Integer.offset($ceylontmp$last$7, $ceylontmp$first$6) >= 0;
-        final long $ceylontmp$incr$9 = $ceylontmp$increasing$8 ? 1L : -1L;
-        long i$12 = $ceylontmp$first$6;
-        long $ceylontmp$element$11 = $ceylontmp$first$6;
+        final int $ceylontmp$incr$9 = $ceylontmp$increasing$8 ? 1 : -1;
+        int i$12 = $ceylontmp$first$6;
+        int $ceylontmp$element$11 = $ceylontmp$first$6;
         boolean $ceylontmp$f$10 = false;
         loop_1: do {
             if ($ceylontmp$f$10) $ceylontmp$element$11 += $ceylontmp$incr$9;
             $ceylontmp$f$10 = true;
             i$12 = $ceylontmp$element$11;
-            final long i = i$12;
+            final int i = i$12;
             $ceylontmp$continue$5: do {
                 sum += i;
             }             while (false);
-        }         while ($ceylontmp$increasing$8 ? i$12 - $ceylontmp$last$7 != 0L : i$12 - $ceylontmp$last$7 != 0L);
+        }         while ($ceylontmp$increasing$8 ? i$12 - $ceylontmp$last$7 != 0 : i$12 - $ceylontmp$last$7 != 0);
         return sum;
     }
     
     private final long rangeOpIterationReverse$priv$() {
         long sum = 0L;
-        final long $ceylontmp$first$16 = 10L;
-        final long $ceylontmp$last$17 = 1L;
+        final int $ceylontmp$first$16 = 10;
+        final int $ceylontmp$last$17 = 1;
         final boolean $ceylontmp$increasing$18 = .ceylon.language.Integer.offset($ceylontmp$last$17, $ceylontmp$first$16) >= 0;
-        final long $ceylontmp$incr$19 = $ceylontmp$increasing$18 ? 1L : -1L;
-        long i$22 = $ceylontmp$first$16;
-        long $ceylontmp$element$21 = $ceylontmp$first$16;
+        final int $ceylontmp$incr$19 = $ceylontmp$increasing$18 ? 1 : -1;
+        int i$22 = $ceylontmp$first$16;
+        int $ceylontmp$element$21 = $ceylontmp$first$16;
         boolean $ceylontmp$f$20 = false;
         loop_2: do {
             if ($ceylontmp$f$20) $ceylontmp$element$21 += $ceylontmp$incr$19;
             $ceylontmp$f$20 = true;
             i$22 = $ceylontmp$element$21;
-            final long i = i$22;
+            final int i = i$22;
             $ceylontmp$continue$15: do {
                 sum += i;
             }             while (false);
-        }         while ($ceylontmp$increasing$18 ? i$22 - $ceylontmp$last$17 != 0L : i$22 - $ceylontmp$last$17 != 0L);
+        }         while ($ceylontmp$increasing$18 ? i$22 - $ceylontmp$last$17 != 0 : i$22 - $ceylontmp$last$17 != 0);
         return sum;
     }
     
@@ -268,22 +268,22 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private final long javaArrayIterationStatic$priv$() {
         final int[] array = new int[10];
-        final long $ceylontmp$first$47 = 1L;
-        final long $ceylontmp$last$48 = 10L;
+        final int $ceylontmp$first$47 = 1;
+        final int $ceylontmp$last$48 = 10;
         final boolean $ceylontmp$increasing$49 = .ceylon.language.Integer.offset($ceylontmp$last$48, $ceylontmp$first$47) >= 0;
-        final long $ceylontmp$incr$50 = $ceylontmp$increasing$49 ? 1L : -1L;
-        long index$53 = $ceylontmp$first$47;
-        long $ceylontmp$element$52 = $ceylontmp$first$47;
+        final int $ceylontmp$incr$50 = $ceylontmp$increasing$49 ? 1 : -1;
+        int index$53 = $ceylontmp$first$47;
+        int $ceylontmp$element$52 = $ceylontmp$first$47;
         boolean $ceylontmp$f$51 = false;
         loop_8: do {
             if ($ceylontmp$f$51) $ceylontmp$element$52 += $ceylontmp$incr$50;
             $ceylontmp$f$51 = true;
             index$53 = $ceylontmp$element$52;
-            final long index = index$53;
+            final int index = index$53;
             $ceylontmp$continue$46: do {
-                array[(int)(index - 1)] = (int)index;
+                array[index - 1] = index;
             }             while (false);
-        }         while ($ceylontmp$increasing$49 ? index$53 - $ceylontmp$last$48 != 0L : index$53 - $ceylontmp$last$48 != 0L);
+        }         while ($ceylontmp$increasing$49 ? index$53 - $ceylontmp$last$48 != 0 : index$53 - $ceylontmp$last$48 != 0);
         long sum = 0L;
         final int[] array$55 = array;
         loop_9: for (int i$57 = 0; i$57 < array$55.length; i$57++) {
