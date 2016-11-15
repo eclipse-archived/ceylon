@@ -69,7 +69,7 @@ Float.$st$={
     return formatFloat(n,min,max,ds,ts);
   },
   parse:function(s) {
-    var x=parseFloat(s);
+    var x=$_parseFloat(s);
     return x===null?ParseException("illegal format for Float"):x;
   }
 };
