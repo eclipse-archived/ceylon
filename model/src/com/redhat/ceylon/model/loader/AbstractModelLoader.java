@@ -3683,8 +3683,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setEqualsParameters(method, methodMirror);
         else
             setParameters(method, classMirror, methodMirror, isCeylon, klass, isCoercedMethod);
-        if(!isCeylon && !method.isAbstraction())
-            adjustParameterTypesIfRequired(method);
 
         type.setRaw(isRaw(module, methodMirror.getReturnType()));
         markDeclaredVoid(method, methodMirror);
@@ -3703,115 +3701,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return method;
     }
 
-    private void adjustParameterTypesIfRequired(JavaMethod method) {
-        for (TypeParameter typeParameter : method.getTypeParameters()) {
-            // skip parameters with bounds
-            List<Type> bounds = typeParameter.getSatisfiedTypes();
-            if(bounds.size() > 1)
-                continue;
-            if(bounds.size() == 1
-                    && !bounds.get(0).isObject())
-                continue;
-            int useCount = countTypeParameterUsage(typeParameter, method.getType());
-            // if it's used as return value don't change it
-            if(useCount == 0){
-                for (Parameter parameter : method.getFirstParameterList().getParameters()) {
-                    FunctionOrValue model = parameter.getModel();
-                    if(parameter.isSequenced()){
-                        // don't do it for sequenced parameters, it causes tests to fail
-                        useCount = 3;
-                        break;
-                    }
-                    useCount += countTypeParameterUsage(typeParameter, model.getType());
-                    if(useCount > 1)
-                        break;
-                }
-                if(useCount == 1){
-                    // we can substitute it
-                    for (Parameter parameter : method.getFirstParameterList().getParameters()) {
-                        FunctionOrValue model = parameter.getModel();
-                        model.setType(substituteTypeParameter(typeParameter, model.getType()));
-                    }
-                }
-            }
-        }
-    }
-    
-    
-    private Type substituteTypeParameter(TypeParameter typeParameter, Type type) {
-        if(type.isUnknown() || type.isNothing())
-            return type;
-        if(type.isUnion()){
-            List<Type> caseTypes = type.getCaseTypes();
-            List<Type> substitutedCaseTypes = new ArrayList<Type>(caseTypes.size());
-            for (Type ct : caseTypes) {
-                substitutedCaseTypes.add(substituteTypeParameter(typeParameter, ct));
-            }
-            return ModelUtil.union(substitutedCaseTypes, typeFactory);
-        }else if(type.isIntersection()){
-            List<Type> satisfiedTypes = type.getSatisfiedTypes();
-            List<Type> substitutedSatisfiedTypes = new ArrayList<Type>(satisfiedTypes.size());
-            for (Type ct : satisfiedTypes) {
-                substitutedSatisfiedTypes.add(substituteTypeParameter(typeParameter, ct));
-            }
-            return ModelUtil.intersection(substitutedSatisfiedTypes, typeFactory);
-        }else{
-            Type qualifyingType = null;
-            if(type.getQualifyingType() != null)
-                qualifyingType = substituteTypeParameter(typeParameter, type.getQualifyingType());
-            TypeDeclaration declaration = (TypeDeclaration) type.getDeclaration();
-            if(declaration.equals(typeParameter))
-                declaration = typeFactory.getObjectDeclaration();
-            Map<TypeParameter, Type> typeArguments = type.getTypeArguments();
-            List<TypeParameter> typeParameters = declaration.getTypeParameters();
-            List<Type> substitutedTypeArguments = new ArrayList<>(typeParameters.size());
-            Map<TypeParameter, SiteVariance> varianceOverrides = type.getVarianceOverrides();
-            Map<TypeParameter, SiteVariance> substitutedVarianceOverrides = new HashMap<>();
-            for (TypeParameter tp : typeParameters) {
-                Type ta = typeArguments.get(tp);
-                if(ta == null)
-                    substitutedTypeArguments.add(null);
-                else{
-                    substitutedTypeArguments.add(substituteTypeParameter(typeParameter, ta));
-                    if(ta.isTypeParameter() && ta.getDeclaration().equals(typeParameter)){
-                        substitutedVarianceOverrides.put(tp, SiteVariance.OUT);
-                    }else if(varianceOverrides.containsKey(tp)){
-                        substitutedVarianceOverrides.put(tp, varianceOverrides.get(tp));
-                    }
-                }
-            }
-            Type substitutedType = declaration.appliedType(qualifyingType, substitutedTypeArguments);
-            substitutedType.setRaw(type.isRaw());
-            substitutedType.setUnderlyingType(type.getUnderlyingType());
-            substitutedType.setVarianceOverrides(substitutedVarianceOverrides);
-            return substitutedType;
-        }
-    }
-
-    private int countTypeParameterUsage(TypeParameter typeParameter, Type type) {
-        if(type.isUnknown() || type.isNothing())
-            return 0;
-        int c = 0;
-        if(type.isUnion()){
-            for (Type ct : type.getCaseTypes()) {
-                c += countTypeParameterUsage(typeParameter, ct);
-            }
-        }else if(type.isIntersection()){
-            for (Type st : type.getSatisfiedTypes()) {
-                c += countTypeParameterUsage(typeParameter, st);
-            }
-        }else{
-            if(type.getQualifyingType() != null)
-                c += countTypeParameterUsage(typeParameter, type.getQualifyingType());
-            if(type.getDeclaration().equals(typeParameter))
-                c += 1;
-            for (Type ta : type.getTypeArgumentList()) {
-                c += countTypeParameterUsage(typeParameter, ta);
-            }
-        }
-        return c;
-    }
-    
     private List<Type> getSignature(Declaration decl) {
         List<Type> result = null;
         if (decl instanceof Functional) {
