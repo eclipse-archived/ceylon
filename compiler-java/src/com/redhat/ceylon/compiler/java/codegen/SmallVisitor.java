@@ -207,13 +207,13 @@ public class SmallVisitor extends Visitor {
         Declaration preva = assigning;
         assigning = that.getVariable().getDeclarationModel();
         Term term = TreeUtil.unwrapExpressionUntilTerm(that.getSpecifierExpression().getExpression());
-        if (term instanceof Tree.SegmentOp) {
-            ((FunctionOrValue)assigning).setSmall(term instanceof Tree.SegmentOp);
+        if (term instanceof Tree.SegmentOp|| term instanceof Tree.RangeOp) {
+            ((FunctionOrValue)assigning).setSmall(true);
         }
         super.visit(that);
-        if (term instanceof Tree.SegmentOp) {
-            boolean small = ((Tree.SegmentOp)term).getLeftTerm().getSmall()
-                    && ((Tree.SegmentOp)term).getRightTerm().getSmall();
+        if (term instanceof Tree.SegmentOp || term instanceof Tree.RangeOp) {
+            boolean small = ((Tree.BinaryOperatorExpression)term).getLeftTerm().getSmall()
+                    && ((Tree.BinaryOperatorExpression)term).getRightTerm().getSmall();
             ((FunctionOrValue)assigning).setSmall(small);
             if (small) {
                 that.getVariable().getDeclarationModel().setType(SmallDeclarationVisitor.smallUnderlyingType(that.getVariable().getDeclarationModel().getType()));

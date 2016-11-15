@@ -2334,20 +2334,14 @@ public class StatementTransformer extends AbstractTransformer {
             return optimizationFailed(stmt, Optimization.SpanOpIteration, 
                     "Only applies to Iterables of the form 'lhs..rhs' or '(lhs..rhs).by(step)'");
         }
-        
-        com.redhat.ceylon.langtools.tools.javac.code.Type type;
-        Type integerType = typeFact().getIntegerType();
-        Type characterType = typeFact().getCharacterType();
-        if (isSpanOf(range, integerType)) {
-            type = syms().longType;
-        } else if (isSpanOf(range, characterType)) {
-            type = syms().intType;
-        } else {
-            return optimizationFailed(stmt, Optimization.SpanOpIteration, "The RangeOp doesn't produce a Range<Integer>/Range<Character>");
+        if (!isSpanOf(range, typeFact().getCharacterType())
+                && !isSpanOf(range, typeFact().getIntegerType())) {
+            return optimizationFailed(stmt, Optimization.SpanOpIteration, "The RangeOp doesn't produce a Range<Integer>/Range<Character>"); 
         }
+        
         return increment == null ?
-                new SpanOpIterationOptimization(stmt, range, increment, type) : 
-                new SpanOpWithStepIterationOptimization(stmt, range, increment, type);
+                new SpanOpIterationOptimization(stmt, range, increment) : 
+                new SpanOpWithStepIterationOptimization(stmt, range, increment);
     }
     
     /**
@@ -2411,10 +2405,14 @@ public class StatementTransformer extends AbstractTransformer {
                 }
             } else {// must be character
                 if (step == null) {
-                    return make().Apply(null,
+                    JCExpression expr = make().Apply(null,
                             naming.makeSelect(makeJavaType(elementType, JT_NO_PRIMITIVES), "neighbour"),
                             List.<JCExpression>of(
                                     indexableName.makeIdent(), indexName.makeIdent()));
+                    if (start.getSmall()) {
+                        expr = make().TypeCast(make().Type(syms().charType), expr);
+                    }
+                    return expr;
                 } else {
                     return make().Conditional(make().Binary(JCTree.Tag.EQ, stepName.makeIdent(), make().Literal(1L)),
                             make().Apply(null,
@@ -2445,11 +2443,13 @@ public class StatementTransformer extends AbstractTransformer {
             return result;
         }
         
+        @Override
         protected JCExpression makeStepExpr() {
             return expressionGen().transformExpression(step, BoxingStrategy.UNBOXED, 
                     elementType);
         }
         
+        @Override
         protected JCExpression makeIncrement(SyntheticName stepName) {
             if (stepName == null) {
                 return make().Unary(JCTree.Tag.POSTINC, indexName.makeIdent());
@@ -2919,7 +2919,6 @@ public class StatementTransformer extends AbstractTransformer {
         protected final Tree.Term first;
         protected final Tree.Term last;
         protected final Tree.Term step;// if null then increment is +/-1
-        protected final com.redhat.ceylon.langtools.tools.javac.code.Type type;
         protected final Type pt;
         /** the name of the statement label for continue jumps */
         protected final SyntheticName continueName = naming.temp("continue");
@@ -2941,22 +2940,24 @@ public class StatementTransformer extends AbstractTransformer {
         public SpanOpIterationOptimization(
                 Tree.ForStatement stmt,
                 Tree.RangeOp range,
-                Tree.Term step,
-                com.redhat.ceylon.langtools.tools.javac.code.Type type) {
+                Tree.Term step) {
             super(stmt);
             this.span = range;
             this.first = range.getLeftTerm();
             this.last = range.getRightTerm();
             this.step = step;
-            this.type = type;
-            if (isCharacterSpan()) {
+            if (isSpanOf(range, typeFact().getCharacterType())) {
                 this.pt = typeFact().getCharacterType();
-            } else if (isIntegerSpan()) {
+            } else if (isSpanOf(range, typeFact().getIntegerType())) {
                 this.pt = typeFact().getIntegerType();
             } else {
-                throw new BugException(range, "unhandled Range type: " + type.getTag()); 
+                throw new BugException(range, "unhandled Range type: " + range.getTypeModel()); 
             }
             varname = naming.alias(getVariable().getIdentifier().getText());
+        }
+        
+        protected boolean isSmall() {
+            return first.getSmall() && last.getSmall();
         }
         
         @Override
@@ -2966,19 +2967,19 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         protected final boolean isIntegerSpan() {
-            return type.getTag() == syms().longType.getTag();
+            return this.pt.isInteger();
         }
         
         protected final boolean isCharacterSpan() {
-            return type.getTag() == syms().intType.getTag();
+            return this.pt.isCharacter();
         }
         
         protected Tree.Variable getVariable() {
             return ((Tree.ValueIterator)stmt.getForClause().getForIterator()).getVariable();
         }
         
-        protected JCExpression makeType(boolean boxed) {
-            return makeJavaType(pt, boxed ? JT_NO_PRIMITIVES : 0);
+        protected JCExpression makeType(boolean boxed, boolean small) {
+            return makeJavaType(pt, boxed ? JT_NO_PRIMITIVES : small ? JT_SMALL : 0);
         }
         
         protected Type getType() {
@@ -3049,11 +3050,11 @@ public class StatementTransformer extends AbstractTransformer {
             // Note: Must invoke lhs, rhs and increment in the correct order!
             // long start = <lhs>
             at(first);
-            result.append(makeVar(FINAL, firstName, makeType(false), 
+            result.append(makeVar(FINAL, firstName, makeType(false, isSmall()), 
                     expressionGen().transformExpression(first, BoxingStrategy.UNBOXED, getType())));
             // long end = <rhs>
             at(last);
-            result.append(makeVar(FINAL, lastName, makeType(false), 
+            result.append(makeVar(FINAL, lastName, makeType(false, isSmall()), 
                     expressionGen().transformExpression(last, BoxingStrategy.UNBOXED, getType())));
             at(span);
             result.append(makeVar(FINAL, increasingName, make().Type(syms().booleanType),
@@ -3090,10 +3091,10 @@ public class StatementTransformer extends AbstractTransformer {
                 ));
             }
             at(span);
-            result.append(makeVar(FINAL, incrementName, make().Type(syms().longType), 
+            result.append(makeVar(FINAL, incrementName, make().Type(isSmall() ? syms().intType : syms().longType), 
                     makeIncrementExpr()));
-            result.append(makeVar(varname, makeType(false), firstName.makeIdent()));
-            result.append(makeVar(elementName, makeType(false), firstName.makeIdent()));
+            result.append(makeVar(varname, makeType(false, isSmall()), firstName.makeIdent()));
+            result.append(makeVar(elementName, makeType(false, isSmall()), firstName.makeIdent()));
             result.append(makeVar(fName, make().Type(syms().booleanType), make().Literal(false)));
         }
         
@@ -3107,7 +3108,7 @@ public class StatementTransformer extends AbstractTransformer {
         /** The initial value of the {@code boolean $increasing} variable */
         protected JCExpression makeIncreasingExpr() {
             JCBinary incrExpr = at(span).Binary(JCTree.Tag.GE, make().Apply(null,
-                    naming.makeSelect(makeType(true), "offset"),
+                    naming.makeSelect(makeType(true, false), "offset"),
                     List.<JCExpression>of(lastName.makeIdent(), firstName.makeIdent())),
                     make().Literal(0));
             return incrExpr;
@@ -3119,9 +3120,13 @@ public class StatementTransformer extends AbstractTransformer {
                 // long incr = start < end ? 1 : -1
                 return make().Literal(1);
             } else if (isIntegerSpan()) {
-                return make().Literal(1L);
+                if (isSmall()) {
+                    return make().Literal(Integer.valueOf(1));
+                } else {
+                    return make().Literal(Long.valueOf(1L));
+                }
             } else {
-                return makeErroneous(span, "unhandled Span type: " + type.getTag());
+                return makeErroneous(span, "unhandled Span type: " + pt);
             }
         }
         
@@ -3131,9 +3136,13 @@ public class StatementTransformer extends AbstractTransformer {
                 // long incr = start < end ? 1 : -1
                 return make().Literal(-1);
             } else if (isIntegerSpan()) {
-                return make().Literal(-1L);
+                if (isSmall()) {
+                    return make().Literal(Integer.valueOf(-1));
+                } else {
+                    return make().Literal(Long.valueOf(-1L));
+                }
             } else {
-                return makeErroneous(span, "unhandled Span type: " + type.getTag());
+                return makeErroneous(span, "unhandled Span type: " + pt);
             }
         }
         
@@ -3158,7 +3167,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
             return make().VarDef(make().Modifiers(FINAL), 
                     names().fromString(Naming.getVariableName(getVariable())), 
-                    makeType(elemBoxed),
+                    makeType(elemBoxed, isSmall()),
                     elemInit);
         }
         
@@ -3172,9 +3181,14 @@ public class StatementTransformer extends AbstractTransformer {
         protected JCExpression makeIncrementElement() {
             JCExpression stepExpr;
             if (isCharacterSpan()) {
-                stepExpr = at(span).Assign(elementName.makeIdent(), make().Apply(null,
-                        naming.makeSelect(makeType(true), "neighbour"),
-                        List.<JCExpression>of(elementName.makeIdent(), incrementName.makeIdent())));
+                stepExpr = make().Apply(null,
+                        naming.makeSelect(makeType(true, false), "neighbour"),
+                        List.<JCExpression>of(elementName.makeIdent(), incrementName.makeIdent()));
+                if (isSmall()) {
+                    stepExpr = make().TypeCast(make().Type(syms().charType), stepExpr);
+                }
+                stepExpr = at(span).Assign(elementName.makeIdent(), stepExpr);
+                
             } else {
                 stepExpr = at(span).Assignop(JCTree.Tag.PLUS_ASG, elementName.makeIdent(), incrementName.makeIdent());
             }
@@ -3198,9 +3212,13 @@ public class StatementTransformer extends AbstractTransformer {
             if (isCharacterSpan()) {
                 return make().Literal(0);
             } else if (isIntegerSpan()) {
-                return make().Literal(0L);
+                if (isSmall()) {
+                    return make().Literal(0);
+                } else {
+                    return make().Literal(0L);
+                }
             } else {
-                return makeErroneous(span, "unhandled Range type: " + type.getTag());
+                return makeErroneous(span, "unhandled Range type: " + pt);
             }
         }
     }
@@ -3220,9 +3238,8 @@ public class StatementTransformer extends AbstractTransformer {
         protected final SyntheticName stepName = naming.temp("step");
         
         public SpanOpWithStepIterationOptimization(ForStatement stmt,
-                RangeOp range, Term increment,
-                com.redhat.ceylon.langtools.tools.javac.code.Type type) {
-            super(stmt, range, increment, type);
+                RangeOp range, Term increment) {
+            super(stmt, range, increment);
         }
         
         @Override
@@ -3305,7 +3322,7 @@ public class StatementTransformer extends AbstractTransformer {
                     super.makeIncreasingExpr(), 
                     at(span).Binary(JCTree.Tag.GE, 
                             make().Apply(null,
-                                    naming.makeSelect(makeType(true), "offsetSign"),
+                                    naming.makeSelect(makeType(true, false), "offsetSign"),
                                     List.<JCExpression>of(lastName.makeIdent(), firstName.makeIdent())),
                         make().Literal(0)));
         }
@@ -3337,21 +3354,21 @@ public class StatementTransformer extends AbstractTransformer {
                     at(span).Conditional(increasingName.makeIdent(),
                         make().Binary(JCTree.Tag.AND, 
                             make().Binary(JCTree.Tag.LE, make().Apply(null,
-                                    naming.makeSelect(makeType(true), "offsetSign"),
+                                    naming.makeSelect(makeType(true, false), "offsetSign"),
                                     List.<JCExpression>of(varname.makeIdent(), lastName.makeIdent())), 
                                     makeZero()),
                             make().Binary(JCTree.Tag.GE, make().Apply(null,
-                                    naming.makeSelect(makeType(true), "offsetSign"),
+                                    naming.makeSelect(makeType(true, false), "offsetSign"),
                                     List.<JCExpression>of(varname.makeIdent(), firstName.makeIdent())), 
                                     makeZero())
                         ),
                         make().Binary(JCTree.Tag.AND, 
                                 make().Binary(JCTree.Tag.GE, make().Apply(null,
-                                        naming.makeSelect(makeType(true), "offsetSign"),
+                                        naming.makeSelect(makeType(true, false), "offsetSign"),
                                         List.<JCExpression>of(varname.makeIdent(), lastName.makeIdent())), 
                                         makeZero()),
                                 make().Binary(JCTree.Tag.LE, make().Apply(null,
-                                        naming.makeSelect(makeType(true), "offsetSign"),
+                                        naming.makeSelect(makeType(true, false), "offsetSign"),
                                         List.<JCExpression>of(varname.makeIdent(), firstName.makeIdent())), 
                                         makeZero())
                         )
@@ -3364,7 +3381,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected JCExpression makeIncrementElement() {
             JCExpression stepExpr  = unitStep(stepName, super.makeIncrementElement(), make().Assign(elementName.makeIdent(),
                     at(step).Apply(null,
-                            naming.makeSelect(makeType(true), "neighbour"),
+                            naming.makeSelect(makeType(true, false), "neighbour"),
                             List.<JCExpression>of(elementName.makeIdent(), incrementName.makeIdent()))));
             return stepExpr;
         }
