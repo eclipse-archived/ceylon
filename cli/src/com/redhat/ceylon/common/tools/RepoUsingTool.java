@@ -366,7 +366,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             ArtifactResult result = repoMgr.getArtifactResult(ac);
             if (result != null) {
                 if (forceCompilation || checkCompilation) {
-                    versions = Collections.singletonList(new ModuleVersionDetails(null, name, result.version()));
+                    String v = result.version() != null ? result.version() : "unversioned";
+                    versions = Collections.singletonList(new ModuleVersionDetails(null, name, v));
                 } else {
                     return (result.version() != null) ? result.version() : "";
                 }
@@ -489,10 +490,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                         || checkCompilation)) {
                 // If there are no versions at all or only in remote repositories we
                 // first check if there's local code we could compile before giving up
-                if (srcVersion != null && (version == null || version.equals(srcVersion.getVersion()))) {
+                if ((srcVersion != null || ModuleUtil.isDefaultModule(name))
+                        && (version == null || version.equals(srcVersion.getVersion()))) {
                     // There seems to be source code
                     // Let's see if we can compile it...
-                    String srcver = srcVersion.getVersion();
+                    String srcver = ModuleUtil.isDefaultModule(name) ? null : srcVersion.getVersion();
                     if (!checkCompilation || shouldRecompile(getOfflineRepositoryManager(), name, srcver, type, true)) {
                         if (!runCompiler(repoMgr, name, type, compileFlags)) {
                             throw new ToolUsageError(Messages.msg(bundle, "compilation.failed"));
@@ -539,7 +541,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     
     private boolean sameVersion(String name, String version1, String version2) {
         if (ModuleUtil.isDefaultModule(name)) {
-            return version1 == null && version2 == null;
+            return "unversioned".equals(version1) && "unversioned".equals(version2);
         } else {
             return version1 != null && version2 != null && version1.equals(version2);
         }
