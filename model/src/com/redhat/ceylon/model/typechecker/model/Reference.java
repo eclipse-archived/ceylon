@@ -259,7 +259,11 @@ public abstract class Reference {
         typedParam.setTypeArguments(getTypeArguments());
         return typedParam;
     }
-
+    
+    /**
+     * Register captured wildcards for the given parameter 
+     * reference.
+     */
     private void captureWildcards(TypedReference parameter) {
         Declaration declaration = getDeclaration();
         if (declaration instanceof Generic
@@ -278,41 +282,59 @@ public abstract class Reference {
         }
     }
     
+    /**
+     * We can apply wildcard capture to the given 
+     * type parameter of this declaration if:
+     * 
+     * - it occurs exactly once, invariantly, in 
+     *   the parameter list, and
+     * - it does not occur contravariantly nor 
+     *   invariantly in the return type.
+     * 
+     * @return true if we can perform wildcard capture
+     *         on the given type parameter
+     */
     private boolean canCaptureWildcard(TypeParameter tp) {
         Declaration dec = getDeclaration();
-        if (dec instanceof Function) {
+        if (dec instanceof Function) { //TODO: should we do it for classes too?
             Function func = (Function) dec;
             Type returnType = func.getType();
             if (returnType.occursContravariantly(tp)
              || returnType.occursInvariantly(tp)) {
                 return false;
             }
-            boolean found = false;
-            for (Parameter p: 
-                func.getFirstParameterList()
-                    .getParameters()) {
-                Type pt = 
-                        p.getModel()
-                         .getReference()
-                         .getFullType();
-                if (pt.occursContravariantly(tp)
-                 || pt.occursCovariantly(tp)) {
-                    return false;
-                }
-                if (pt.occursInvariantly(tp)) {
-                    if (found) {
-                        return false;
+            ParameterList paramList = 
+                    func.getFirstParameterList();
+            if (paramList!=null) {
+                boolean found = false;
+                for (Parameter p: 
+                        paramList.getParameters()) {
+                    FunctionOrValue model = p.getModel();
+                    if (model!=null) {
+                        Type paramType =
+                                model.getReference()
+                                    .getFullType();
+                        if (paramType!=null) {
+                            if (paramType.occursContravariantly(tp)
+                             || paramType.occursCovariantly(tp)) {
+                                return false;
+                            }
+                            if (paramType.occursInvariantly(tp)) {
+                                if (found) {
+                                    return false;
+                                }
+                                else {
+                                    found = true;
+                                }
+                            }
+                        }
                     }
-                    else {
-                        found = true;
-                    }
                 }
+                return found;
             }
-            return found;
         }
-        else {
-            return false;
-        }
+        
+        return false;
     }
     
     public abstract String asString();
