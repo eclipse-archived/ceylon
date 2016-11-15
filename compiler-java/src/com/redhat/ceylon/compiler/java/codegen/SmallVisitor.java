@@ -1,11 +1,14 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -197,6 +200,27 @@ public class SmallVisitor extends Visitor {
             markSmall(that);
         }
         super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.ValueIterator that) {
+        Declaration preva = assigning;
+        assigning = that.getVariable().getDeclarationModel();
+        Term term = TreeUtil.unwrapExpressionUntilTerm(that.getSpecifierExpression().getExpression());
+        if (term instanceof Tree.SegmentOp) {
+            ((FunctionOrValue)assigning).setSmall(term instanceof Tree.SegmentOp);
+        }
+        super.visit(that);
+        if (term instanceof Tree.SegmentOp) {
+            boolean small = ((Tree.SegmentOp)term).getLeftTerm().getSmall()
+                    && ((Tree.SegmentOp)term).getRightTerm().getSmall();
+            ((FunctionOrValue)assigning).setSmall(small);
+            if (small) {
+                that.getVariable().getDeclarationModel().setType(SmallDeclarationVisitor.smallUnderlyingType(that.getVariable().getDeclarationModel().getType()));
+            }
+        }
+        checkSmallAssignment(that.getSpecifierExpression().getExpression());
+        assigning = preva;
     }
     
     @Override

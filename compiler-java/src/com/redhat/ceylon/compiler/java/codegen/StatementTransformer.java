@@ -1845,10 +1845,12 @@ public class StatementTransformer extends AbstractTransformer {
             this.indexName = naming.alias(indexName);
         }
         
+        @Override
         protected final Tree.Term getIterable() {
             return baseIterable;
         }
         
+        @Override
         protected ListBuffer<JCStatement> transformForClause() {
             ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
             
@@ -2384,10 +2386,12 @@ public class StatementTransformer extends AbstractTransformer {
             return expressionGen().transformExpression(start, BoxingStrategy.UNBOXED, start.getTypeModel());
         }
 
+        @Override
         protected JCExpression makeIndexType() {
-            return make().Type(baseIterable.getSmall() ? syms().intType : syms().longType);
+            return make().Type(baseIterable.getSmall() || length.getSmall() ? syms().intType : syms().longType);
         }
         
+        @Override
         protected JCExpression makeIndexInit() {
             return make().Literal(0);
         }
@@ -2659,10 +2663,10 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression expr = elem_name.makeIdent();
                 if (expr != null) {
                     Type type;
-                    if (variable.getType().getTypeModel().getDeclaration().isAnonymous()) {
-                        type = variable.getType().getTypeModel();
+                    if (variable.getDeclarationModel().getType().getDeclaration().isAnonymous()) {
+                        type = variable.getDeclarationModel().getType();
                     } else {
-                        type = simplifyType(typeFact().denotableType(variable.getType().getTypeModel()));
+                        type = simplifyType(typeFact().denotableType(variable.getDeclarationModel().getType()));
                     }
                     expr = expressionGen().applyErasureAndBoxing(
                             expr, typeFact().getObjectType(), false, true,
@@ -4934,8 +4938,14 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         private JCExpression type() {
-            BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
-            return gen.makeJavaType(model(), (boxingStrategy == BoxingStrategy.BOXED) ? JT_NO_PRIMITIVES : 0);
+            int flags = 0;
+            if (CodegenUtil.getBoxingStrategy(var.getDeclarationModel())== BoxingStrategy.BOXED) {
+                flags |= JT_NO_PRIMITIVES;
+            }
+            if (var.getDeclarationModel().isSmall()) {
+                flags |= JT_SMALL;
+            }
+            return gen.makeJavaType(model(), flags);
         }
         
         private JCExpression expr() {
