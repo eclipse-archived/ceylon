@@ -11,7 +11,7 @@
 ^(MODULE_DESCRIPTOR:STATEMENT_OR_ARGUMENT
     ANNOTATION_LIST?
     IMPORT_PATH
-    QUOTED_LITERAL version
+    QUOTED_LITERAL? version
     IMPORT_MODULE_LIST)
 
 "A package descriptor."
@@ -29,7 +29,7 @@
     IDENTIFIER? namespace
     IMPORT_PATH?
     QUOTED_LITERAL?
-    QUOTED_LITERAL version)
+    QUOTED_LITERAL? version)
 
 "A list of packages imported by a compilation unit."
 ^(IMPORT_LIST 

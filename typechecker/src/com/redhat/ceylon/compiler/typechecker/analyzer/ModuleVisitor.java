@@ -100,8 +100,9 @@ public class ModuleVisitor extends Visitor {
         return quoted.substring(1, quoted.length()-1);
     }
 
-    private static String getVersionString(Tree.QuotedLiteral quoted) {
+    private static String getVersionString(Tree.QuotedLiteral quoted, Node that) {
         if (quoted==null) {
+            that.addError("missing version");
             return "0";
         }
         else {
@@ -160,7 +161,7 @@ public class ModuleVisitor extends Visitor {
                         that.getUnit());
         super.visit(that);
         if (phase==Phase.SRC_MODULE) {
-            String version = getVersionString(that.getVersion());
+            String version = getVersionString(that.getVersion(), that);
             Tree.ImportPath importPath = that.getImportPath();
             List<String> name = getNameAsList(importPath);
             if (pkg.getNameAsString().isEmpty()) {
@@ -325,7 +326,7 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
         if (phase==Phase.REMAINING) {
             Tree.ImportPath importPath = that.getImportPath();
-            String version = getVersionString(that.getVersion());
+            String version = getVersionString(that.getVersion(), that);
             Tree.Identifier ns = that.getNamespace();
             String namespace = ns!=null ? ns.getText() : null;
             List<String> name;
