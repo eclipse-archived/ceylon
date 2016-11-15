@@ -232,4 +232,9 @@ public class OptimizationTests extends CompilerTests {
     public void testLopOptimDestructureLoop() {
         compareWithJavaSource("loop/optim/DestructureLoop");
     }
+    
+    @Test
+    public void testSmallIteration() {
+        compareWithJavaSource("loop/optim/SmallIteration");
+    }
 }

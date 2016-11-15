@@ -1313,6 +1313,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }
     
+    static Number literalValue(Tree.PositiveOp op) throws ErroneousException {
+        if (op.getTerm() instanceof Tree.NaturalLiteral) {
+            String lit = op.getTerm().getText();
+            if (!lit.startsWith("#") && !lit.startsWith("$")) { 
+                return literalValue((Tree.NaturalLiteral)op.getTerm(), lit);
+            }
+        }
+        return null;
+    }
+    
     public JCExpression transform(Tree.StringLiteral string) {
         at(string);
         return ceylonLiteral(string.getText());
@@ -2089,6 +2099,23 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.PositiveOp op) {
+        if (op.getTerm() instanceof Tree.NaturalLiteral) {
+            try {
+                Number l = literalValue(op);
+                if (l != null) {
+                    if (op.getSmall()) {
+                        return make().Literal((Integer)l);
+                    } else {
+                        return make().Literal(l.longValue());
+                    }
+                }
+            } catch (ErroneousException e) {
+                // We should never get here since the error should have been 
+                // reported by the UnsupportedVisitor and the containing statement
+                // replaced with a throw.
+                return e.makeErroneous(this);
+            }
+        }
         return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
     }
 

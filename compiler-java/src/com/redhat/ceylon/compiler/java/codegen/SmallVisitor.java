@@ -51,8 +51,8 @@ public class SmallVisitor extends Visitor {
                 !term.getSmall() && 
                 (term instanceof Tree.CharLiteral ||
                  term instanceof Tree.NaturalLiteral ||
-                (term instanceof Tree.NegativeOp &&  
-                    ((Tree.NegativeOp)term).getTerm() instanceof Tree.NaturalLiteral))) {
+                ((term instanceof Tree.NegativeOp || term instanceof Tree.PositiveOp) &&  
+                    ((Tree.UnaryOperatorExpression)term).getTerm() instanceof Tree.NaturalLiteral))) {
             term.addUsageWarning(Warning.literalNotSmall, 
                     "literal value is not small but is assignable to small declaration '"+
                             assigning.getName(term.getUnit())+"'", 
@@ -377,6 +377,22 @@ public class SmallVisitor extends Visitor {
     
     @Override
     public void visit(Tree.NegativeOp that) {
+        if (that.getTerm() instanceof Tree.NaturalLiteral) {
+            try {
+                if (isAssigningSmall() &&
+                        ExpressionTransformer.literalValue(that) instanceof Integer) {
+                    markSmall(that);
+                }
+            } catch (ErroneousException e) {
+                // Ignore
+            }
+        } else {
+            super.visit(that);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.PositiveOp that) {
         if (that.getTerm() instanceof Tree.NaturalLiteral) {
             try {
                 if (isAssigningSmall() &&
