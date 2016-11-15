@@ -3133,7 +3133,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setCaseTypes(klass, classMirror);
         setAnnotations(klass, classMirror, isNativeHeaderMember);
         if(klass instanceof Interface)
-            klass.setSamName(isFunctionalInterface(classMirror));
+            klass.setSamName(isFunctionalInterfaceWithExceptions(classMirror));
         
         // local declarations come last, because they need all members to be completed first
         if(!klass.isAlias()){
@@ -4559,7 +4559,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private boolean isFunctionCercion(TypeMirror type) {
         if(type.getKind() == TypeKind.DECLARED){
             ClassMirror paramClass = type.getDeclaredClass();
-            return isFunctionalInterface(paramClass) != null;
+            return isFunctionalInterfaceWithExceptions(paramClass) != null;
         }
         return false;
     }
@@ -5535,6 +5535,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     protected boolean isFunctionalInterfaceType(TypeMirror typeMirror) {
         return false;
+    }
+
+    protected String isFunctionalInterfaceWithExceptions(ClassMirror klass){
+        if(klass.getQualifiedName().equals("java.util.Iterable"))
+            return null;
+        return isFunctionalInterface(klass);
     }
 
     protected String isFunctionalInterface(ClassMirror klass){
