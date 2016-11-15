@@ -70,7 +70,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -3580,7 +3579,11 @@ public class ExpressionVisitor extends Visitor {
                             Tree.Term arg = ex.getTerm();
                             if (arg instanceof 
                                     Tree.FunctionArgument) {
-                                pat = getCallableSupertype();
+                                Tree.FunctionArgument fun = 
+                                        (Tree.FunctionArgument) 
+                                            arg;
+                                pat = getCallableBottomType(
+                                        countParameters(fun));
                             }
                             else if (arg instanceof
                                     Tree.NaturalLiteral) {
@@ -3624,12 +3627,42 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private Type getCallableSupertype() {
-        return unit.getCallableDeclaration()
-                .appliedType(null,
-                        Arrays.asList(
-                                unit.getAnythingType(),
-                                unit.getNothingType()));
+    private int countParameters(Tree.FunctionArgument fun) {
+        List<Tree.ParameterList> parameterLists = 
+                fun.getParameterLists();
+        if (parameterLists.isEmpty()) {
+            return -1;
+        }
+        else {
+            return parameterLists.get(0)
+                    .getParameters()
+                    .size();
+        }
+    }
+
+    private Type getCallableBottomType(int size) {
+        Type paramListType;
+        Type nothingType = unit.getNothingType();
+        Type anythingType = unit.getAnythingType();
+        if (size<0) {
+            paramListType = anythingType;
+        }
+        else {
+            paramListType = unit.getEmptyType();
+            Class tuple = 
+                    unit.getTupleDeclaration();
+            for (int i=0; i<size; i++) {
+                paramListType = 
+                        appliedType(tuple,
+                                anythingType, 
+                                anythingType,
+                                paramListType);
+            }
+        }
+        Interface callable = 
+                unit.getCallableDeclaration();
+        return appliedType(callable, 
+                nothingType, paramListType);
     }
     
     private void checkSuperInvocation(
