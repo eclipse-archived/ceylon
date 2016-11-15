@@ -152,9 +152,11 @@ public class MetamodelHelper {
                 gen.out(gen.getClAlias(), "$init$AppliedClass$jsint()(");
             }
             //Tuple is a special case, otherwise gets gen'd as {t:'T'...
-            if (that.getUnit().getTupleDeclaration().equals(td)) {
+            if (that.getUnit().isTupleType(ltype)) {
                 gen.qualify(that, td);
                 gen.out(gen.getNames().name(td));
+            } else if (ltype.isNullValue()) {
+                gen.out(gen.getClAlias(), "$init$$_null()");
             } else {
                 TypeUtils.outputQualifiedTypename(null, gen.isImported(gen.getCurrentPackage(), td), ltype, gen, false);
             }

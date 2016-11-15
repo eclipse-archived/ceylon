@@ -1,6 +1,6 @@
 function type$meta(x,$$targs$$) {
   if (x===null){
-    return AppliedClass$jsint($_null(),{Type$AppliedClass:{t:Null},Arguments$AppliedClass:{t:Empty}});
+    return AppliedClass$jsint($init$$_null(),{Type$AppliedClass:{t:$init$$_null()},Arguments$AppliedClass:{t:Empty}});
   }
   if ($$targs$$.Type$type.t===Nothing) {
     return nothingType$meta$model();
