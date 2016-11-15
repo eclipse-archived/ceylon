@@ -13,7 +13,7 @@ final class bug1507_ {
                 i = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper(2L);
             } else {
                 boolean doforelse$2 = true;
-                final long $ceylontmp$first$5 = 0L;
+                final long $ceylontmp$first$5 = 0;
                 final long $ceylontmp$last$6 = new .java.util.Random().nextInt(10);
                 final boolean $ceylontmp$increasing$7 = .ceylon.language.Integer.offset($ceylontmp$last$6, $ceylontmp$first$5) >= 0;
                 final long $ceylontmp$incr$8 = $ceylontmp$increasing$7 ? 1L : -1L;
@@ -160,10 +160,10 @@ final class bug1507test3_ {
         final boolean found;
         boolean found$34 = false;
         boolean doforelse$35 = true;
-        final long start$37 = 1L;
-        final long length$38 = 2L;
-        loop_3: for (long i$39 = 0; i$39 < length$38; i$39++) {
-            final long i = i$39 + start$37;
+        final int start$37 = 1;
+        final int length$38 = 2;
+        loop_3: for (int i$39 = 0; i$39 < length$38; i$39++) {
+            final int i = i$39 + start$37;
             if (i == 0L) {
                 found$34 = true;
                 final boolean found$41 = found$34;
@@ -255,8 +255,8 @@ final class bug1507test6_ {
         final boolean found;
         boolean found$59 = false;
         boolean doforelse$60 = true;
-        final long $ceylontmp$first$63 = 1L;
-        final long $ceylontmp$last$64 = 2L;
+        final long $ceylontmp$first$63 = 1;
+        final long $ceylontmp$last$64 = 2;
         final boolean $ceylontmp$increasing$65 = .ceylon.language.Integer.offset($ceylontmp$last$64, $ceylontmp$first$63) >= 0;
         final long $ceylontmp$incr$66 = $ceylontmp$increasing$65 ? 1L : -1L;
         long i$69 = $ceylontmp$first$63;

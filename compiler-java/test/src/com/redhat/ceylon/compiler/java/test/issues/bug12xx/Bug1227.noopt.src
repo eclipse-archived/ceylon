@@ -51,10 +51,10 @@ final class bug1227_ifBreak_returnElse_opt_ {
         boolean doforelse$8 = true;
         boolean loopentered$9 = false;
         .java.lang.Object elem$10;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$11 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$11 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(10)).iterator();
         loop_1: while (!((elem$10 = index$iterator$$11.next()) instanceof .ceylon.language.Finished)) {
             loopentered$9 = true;
-            final long index = ((.ceylon.language.Integer)elem$10).longValue();
+            final int index = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)elem$10).longValue());
             if (someBoolean) {
                 from$7 = index;
                 final long from$13 = from$7;
@@ -112,10 +112,10 @@ final class bug1227_ifBreak_specifiedElse_opt_ {
         boolean doforelse$23 = true;
         boolean loopentered$24 = false;
         .java.lang.Object elem$25;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$26 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$26 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(10)).iterator();
         loop_3: while (!((elem$25 = index$iterator$$26.next()) instanceof .ceylon.language.Finished)) {
             loopentered$24 = true;
-            final long index = ((.ceylon.language.Integer)elem$25).longValue();
+            final int index = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)elem$25).longValue());
             if (someBoolean) {
                 from$22 = index;
                 final long from$28 = from$22;
@@ -202,10 +202,10 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_opt_ {
         boolean doforelse$40 = true;
         boolean loopentered$41 = false;
         .java.lang.Object elem$42;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$43 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$43 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(10)).iterator();
         loop_5: while (!((elem$42 = index$iterator$$43.next()) instanceof .ceylon.language.Finished)) {
             loopentered$41 = true;
-            final long index = ((.ceylon.language.Integer)elem$42).longValue();
+            final int index = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)elem$42).longValue());
             if (someBoolean) {
                 from$39 = index;
                 final long from$46 = from$39;
@@ -299,10 +299,10 @@ final class bug1227_ifReturn_specifiedElse_opt_ {
         long from$55 = 0L;
         boolean loopentered$56 = false;
         .java.lang.Object elem$57;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$58 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$58 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(10)).iterator();
         loop_7: while (!((elem$57 = index$iterator$$58.next()) instanceof .ceylon.language.Finished)) {
             loopentered$56 = true;
-            final long index = ((.ceylon.language.Integer)elem$57).longValue();
+            final int index = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)elem$57).longValue());
             if (someBoolean) {
                 from$55 = index;
                 final long from$60 = from$55;
@@ -367,10 +367,10 @@ final class bug1227_ifThrow_specifiedElse_opt_ {
         long from$69 = 0L;
         boolean loopentered$70 = false;
         .java.lang.Object elem$71;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$72 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$72 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(10)).iterator();
         loop_9: while (!((elem$71 = index$iterator$$72.next()) instanceof .ceylon.language.Finished)) {
             loopentered$70 = true;
-            final long index = ((.ceylon.language.Integer)elem$71).longValue();
+            final int index = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)elem$71).longValue());
             if (someBoolean) {
                 from$69 = index;
                 final long from$74 = from$69;

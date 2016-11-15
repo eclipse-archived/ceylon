@@ -8,10 +8,10 @@ class MethodForRange implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public final void m() {
         boolean loopentered$0 = false;
         .java.lang.Object elem$1;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$2 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$2 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(10)).iterator();
         loop_0: while (!((elem$1 = i$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             loopentered$0 = true;
-            final long i = ((.ceylon.language.Integer)elem$1).longValue();
+            final int i = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)elem$1).longValue());
             if (i > 5L) {
             }
         }

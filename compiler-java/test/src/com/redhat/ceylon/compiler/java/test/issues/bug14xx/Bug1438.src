@@ -12,8 +12,8 @@ public final class bug1438_ {
             foo = "if";
         } else {
             boolean doforelse$2 = true;
-            final long $ceylontmp$first$5 = 0L;
-            final long $ceylontmp$last$6 = 10L;
+            final long $ceylontmp$first$5 = 0;
+            final long $ceylontmp$last$6 = 10;
             final boolean $ceylontmp$increasing$7 = .ceylon.language.Integer.offset($ceylontmp$last$6, $ceylontmp$first$5) >= 0;
             final long $ceylontmp$incr$8 = $ceylontmp$increasing$7 ? 1L : -1L;
             long i$11 = $ceylontmp$first$5;
@@ -57,8 +57,8 @@ public final class bug1438_2_ {
         .java.lang.String foo$15 = null;
         if (.ceylon.language.system_.get_().getMilliseconds() % 2L == 0L) {
             boolean doforelse$17 = true;
-            final long $ceylontmp$first$20 = 0L;
-            final long $ceylontmp$last$21 = 10L;
+            final long $ceylontmp$first$20 = 0;
+            final long $ceylontmp$last$21 = 10;
             final boolean $ceylontmp$increasing$22 = .ceylon.language.Integer.offset($ceylontmp$last$21, $ceylontmp$first$20) >= 0;
             final long $ceylontmp$incr$23 = $ceylontmp$increasing$22 ? 1L : -1L;
             long i$26 = $ceylontmp$first$20;

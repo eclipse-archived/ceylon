@@ -14,7 +14,7 @@ final class forForIf_ {
                 public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                         {
-                            $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).iterator();
+                            $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(5)).iterator();
                         }
                         private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                         private .ceylon.language.Integer y;
@@ -37,7 +37,7 @@ final class forForIf_ {
                             if ($iterator$1 != null) return true;
                             if (!this.y()) return false;
                             final .ceylon.language.Integer y = this.y;
-                            $iterator$1 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(5L)).iterator();
+                            $iterator$1 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(5)).iterator();
                             return true;
                         }
                         private .ceylon.language.Integer x;

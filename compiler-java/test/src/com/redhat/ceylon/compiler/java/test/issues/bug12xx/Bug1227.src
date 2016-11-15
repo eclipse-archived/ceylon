@@ -60,8 +60,8 @@ final class bug1227_ifBreak_returnElse_opt_ {
         final long from;
         long from$12 = 0L;
         boolean doforelse$13 = true;
-        final long $ceylontmp$first$16 = 1L;
-        final long $ceylontmp$last$17 = 10L;
+        final long $ceylontmp$first$16 = 1;
+        final long $ceylontmp$last$17 = 10;
         final boolean $ceylontmp$increasing$18 = .ceylon.language.Integer.offset($ceylontmp$last$17, $ceylontmp$first$16) >= 0;
         final long $ceylontmp$incr$19 = $ceylontmp$increasing$18 ? 1L : -1L;
         long index$22 = $ceylontmp$first$16;
@@ -139,8 +139,8 @@ final class bug1227_ifBreak_specifiedElse_opt_ {
         final long from;
         long from$38 = 0L;
         boolean doforelse$39 = true;
-        final long $ceylontmp$first$42 = 1L;
-        final long $ceylontmp$last$43 = 10L;
+        final long $ceylontmp$first$42 = 1;
+        final long $ceylontmp$last$43 = 10;
         final boolean $ceylontmp$increasing$44 = .ceylon.language.Integer.offset($ceylontmp$last$43, $ceylontmp$first$42) >= 0;
         final long $ceylontmp$incr$45 = $ceylontmp$increasing$44 ? 1L : -1L;
         long index$48 = $ceylontmp$first$42;
@@ -247,8 +247,8 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_opt_ {
         final long from;
         long from$66 = 0L;
         boolean doforelse$67 = true;
-        final long $ceylontmp$first$70 = 1L;
-        final long $ceylontmp$last$71 = 10L;
+        final long $ceylontmp$first$70 = 1;
+        final long $ceylontmp$last$71 = 10;
         final boolean $ceylontmp$increasing$72 = .ceylon.language.Integer.offset($ceylontmp$last$71, $ceylontmp$first$70) >= 0;
         final long $ceylontmp$incr$73 = $ceylontmp$increasing$72 ? 1L : -1L;
         long index$76 = $ceylontmp$first$70;
@@ -362,8 +362,8 @@ final class bug1227_ifReturn_specifiedElse_opt_ {
         final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$93 = 0L;
-        final long $ceylontmp$first$96 = 1L;
-        final long $ceylontmp$last$97 = 10L;
+        final long $ceylontmp$first$96 = 1;
+        final long $ceylontmp$last$97 = 10;
         final boolean $ceylontmp$increasing$98 = .ceylon.language.Integer.offset($ceylontmp$last$97, $ceylontmp$first$96) >= 0;
         final long $ceylontmp$incr$99 = $ceylontmp$increasing$98 ? 1L : -1L;
         long index$102 = $ceylontmp$first$96;
@@ -448,8 +448,8 @@ final class bug1227_ifThrow_specifiedElse_opt_ {
         final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$118 = 0L;
-        final long $ceylontmp$first$121 = 1L;
-        final long $ceylontmp$last$122 = 10L;
+        final long $ceylontmp$first$121 = 1;
+        final long $ceylontmp$last$122 = 10;
         final boolean $ceylontmp$increasing$123 = .ceylon.language.Integer.offset($ceylontmp$last$122, $ceylontmp$first$121) >= 0;
         final long $ceylontmp$incr$124 = $ceylontmp$increasing$123 ? 1L : -1L;
         long index$127 = $ceylontmp$first$121;

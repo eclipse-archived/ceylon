@@ -21,8 +21,8 @@ public final class innerMethodInvocation_ {
             }
         }
         final fib_ fib = new fib_();
-        final long $ceylontmp$first$3 = 0L;
-        final long $ceylontmp$last$4 = 50L;
+        final long $ceylontmp$first$3 = 0;
+        final long $ceylontmp$last$4 = 50;
         final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$last$4, $ceylontmp$first$3) >= 0;
         final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
         long n$9 = $ceylontmp$first$3;

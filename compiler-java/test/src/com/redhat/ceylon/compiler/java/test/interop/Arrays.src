@@ -130,11 +130,11 @@ final class test_booleans_ {
             returning null;
         );
         final boolean[][] matrix = new boolean[10][];
-        final long start$16 = 0L;
-        final long length$17 = matrix.length;
-        loop_1: for (long i$18 = 0; i$18 < length$17; i$18++) {
-            final long x = i$18 + start$16;
-            matrix[(int)x] = new boolean[2];
+        final int start$16 = 0;
+        final int length$17 = matrix.length;
+        loop_1: for (int i$18 = 0; i$18 < length$17; i$18++) {
+            final int x = i$18 + start$16;
+            matrix[x] = new boolean[2];
         }
         final .ceylon.language.Array<boolean[]> boolArray = .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends boolean[]>.getArray(matrix);
         final .java.lang.Object o = items;

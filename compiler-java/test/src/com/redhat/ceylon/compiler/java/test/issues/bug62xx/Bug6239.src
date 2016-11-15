@@ -8,8 +8,8 @@ public final class bug6239_ {
     public static void bug6239() {
         final long x;
         long x$0 = 0L;
-        final long $ceylontmp$first$3 = 0L;
-        final long $ceylontmp$last$4 = 3L;
+        final long $ceylontmp$first$3 = 0;
+        final long $ceylontmp$last$4 = 3;
         final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$last$4, $ceylontmp$first$3) >= 0;
         final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
         long j$9 = $ceylontmp$first$3;
@@ -33,8 +33,8 @@ public final class bug6239_ {
         x = x$0;
         final long y;
         long y$12 = 0L;
-        final long $ceylontmp$first$15 = 0L;
-        final long $ceylontmp$last$16 = 3L;
+        final long $ceylontmp$first$15 = 0;
+        final long $ceylontmp$last$16 = 3;
         final boolean $ceylontmp$increasing$17 = .ceylon.language.Integer.offset($ceylontmp$last$16, $ceylontmp$first$15) >= 0;
         final long $ceylontmp$incr$18 = $ceylontmp$increasing$17 ? 1L : -1L;
         long j$21 = $ceylontmp$first$15;

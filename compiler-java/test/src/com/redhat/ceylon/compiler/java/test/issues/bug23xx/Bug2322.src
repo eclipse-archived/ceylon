@@ -11,7 +11,7 @@ public final class bug2322_ {
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L)).iterator();
+                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0), .ceylon.language.Integer.instance(10)).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer i;
@@ -42,7 +42,7 @@ public final class bug2322_ {
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L)).iterator();
+                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0), .ceylon.language.Integer.instance(10)).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer i;

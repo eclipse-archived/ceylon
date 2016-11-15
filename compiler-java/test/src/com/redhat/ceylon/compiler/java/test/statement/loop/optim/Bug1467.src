@@ -25,8 +25,8 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     private final void bufferTest$priv$() {
-        final long start$1 = 0L;
-        final long length$2 = getSize$priv$() - 1L;
+        final int start$1 = 0;
+        final long length$2 = getSize$priv$() - 1;
         loop_0: for (long i$3 = 0; i$3 < length$2; i$3++) {
             final long i = i$3 + start$1;
             getBuff$priv$()[(int)i] = (int)i;
@@ -36,8 +36,8 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.ceylon.language.SharedAnnotation$annotation$
     public final void buffer() {
         final long startTime = .ceylon.language.system_.get_().getNanoseconds();
-        final long $ceylontmp$first$6 = 1L;
-        final long $ceylontmp$last$7 = 100L;
+        final long $ceylontmp$first$6 = 1;
+        final long $ceylontmp$last$7 = 100;
         final boolean $ceylontmp$increasing$8 = .ceylon.language.Integer.offset($ceylontmp$last$7, $ceylontmp$first$6) >= 0;
         final long $ceylontmp$incr$9 = $ceylontmp$increasing$8 ? 1L : -1L;
         long i$12 = $ceylontmp$first$6;

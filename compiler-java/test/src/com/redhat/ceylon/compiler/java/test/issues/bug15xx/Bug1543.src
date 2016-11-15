@@ -7,10 +7,10 @@ final class bug1543_ {
     
     static void bug1543() {
         .ceylon.language.Sequence<? extends .ceylon.language.Integer> chain = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
-        final long start$1 = 0L;
-        final long length$2 = 100000L;
-        loop_0: for (long i$3 = 0; i$3 < length$2; i$3++) {
-            final long i = i$3 + start$1;
+        final int start$1 = 0;
+        final int length$2 = 100000;
+        loop_0: for (int i$3 = 0; i$3 < length$2; i$3++) {
+            final int i = i$3 + start$1;
             chain = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)chain.<.ceylon.language.Integer>withLeading(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(i));
         }
     }

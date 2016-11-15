@@ -6,8 +6,8 @@ final class bug1878A_ {
     }
     
     static boolean bug1878A() {
-        final long $ceylontmp$first$2 = 1L;
-        final long $ceylontmp$last$3 = 1L;
+        final long $ceylontmp$first$2 = 1;
+        final long $ceylontmp$last$3 = 1;
         final boolean $ceylontmp$increasing$4 = .ceylon.language.Integer.offset($ceylontmp$last$3, $ceylontmp$first$2) >= 0;
         final long $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1L : -1L;
         long _$8 = $ceylontmp$first$2;
