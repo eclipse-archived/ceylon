@@ -12,7 +12,7 @@ function get_model(mm) {
     var _p=path[i];
     if (i===0 && _p==='$')_p='ceylon.language';
     else if (i===path.length-1&&_p==='$set' && map.nm && map.$set)return map;
-    if (map===undefined)console.log("WRONG MODEL PATH " + path + " index " + i);
+    if (map===undefined)console.trace("WRONG MODEL PATH " + path + " index " + i);
     map = map[_p];
   }
   return map;
