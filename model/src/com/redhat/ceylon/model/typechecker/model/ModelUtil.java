@@ -302,8 +302,11 @@ public class ModelUtil {
             Type argType, 
             Type paramType, 
             Unit unit) {
-        if (paramType==null || argType==null) {
+        if (paramType==null) {
             return false;
+        }
+        if (argType==null) {
+            return true;
         }
         //Ignore optionality for resolving overloads, since
         //all Java parameters are treated as optional,

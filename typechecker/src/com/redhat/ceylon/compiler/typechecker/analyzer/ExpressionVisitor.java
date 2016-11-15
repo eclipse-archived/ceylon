@@ -3576,10 +3576,28 @@ public class ExpressionVisitor extends Visitor {
                                 (Tree.ListedArgument) pa;
                         Tree.Expression ex = 
                                 la.getExpression();
-                        if (ex!=null && 
-                                ex.getTerm() instanceof 
+                        if (ex!=null) {
+                            Tree.Term arg = ex.getTerm();
+                            if (arg instanceof 
                                     Tree.FunctionArgument) {
-                            pat = getCallableSupertype();
+                                pat = getCallableSupertype();
+                            }
+                            else if (arg instanceof
+                                    Tree.NaturalLiteral) {
+                                pat = unit.getIntegerType();
+                            }
+                            else if (arg instanceof
+                                    Tree.FloatLiteral) {
+                                pat = unit.getFloatType();
+                            }
+                            else if (arg instanceof
+                                    Tree.StringLiteral) {
+                                pat = unit.getStringType();
+                            }
+                            else if (arg instanceof
+                                    Tree.CharLiteral) {
+                                pat = unit.getCharacterType();
+                            }
                         }
                     }
                     signature.add(pat);
