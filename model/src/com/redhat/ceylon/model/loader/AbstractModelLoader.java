@@ -4128,8 +4128,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         } else if(// for class members we rely on abstract bit
                 (klass instanceof Interface
                         && !((LazyInterface)klass).isCeylon())) {
-                 decl.setFormal(methodMirror.isAbstract() && !methodMirror.isDefaultMethod());
-                 decl.setDefault(methodMirror.isDefaultMethod());
+            // In Java 8, you can have static and default methods in interfaces and for some reason they have their
+            // abstract bit set, but we don't want that in our model
+            decl.setFormal(methodMirror.isAbstract() && !methodMirror.isDefaultMethod() && !methodMirror.isStatic());
+            decl.setDefault(methodMirror.isDefaultMethod());
         } else {
             if (// for class members we rely on final/static bits
                 (klass instanceof Class
