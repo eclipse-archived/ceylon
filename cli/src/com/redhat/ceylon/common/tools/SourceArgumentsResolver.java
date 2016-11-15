@@ -8,8 +8,10 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +31,13 @@ public class SourceArgumentsResolver {
     
     private List<String> srcModules;
     private List<String> resModules;
+    private Collection<String> allModules;
     private List<File> srcFiles;
     private List<File> resFiles;
+    private Collection<File> allFiles;
     private Map<String,List<File>> srcModuleFiles;
     private Map<String,List<File>> resModuleFiles;
+    private Map<String,List<File>> allModuleFiles;
     
     public SourceArgumentsResolver(Iterable<File> sourceDirs, Iterable<File> resourceDirs, String... sourceSuffixes) {
         this.sourceDirs = sourceDirs;
@@ -71,6 +76,15 @@ public class SourceArgumentsResolver {
         return resModules;
     }
 
+    public Collection<String> getModules() {
+        if (allModules == null) {
+            allModules = new LinkedHashSet<String>(srcModules.size() + resModules.size());
+            allModules.addAll(srcModules);
+            allModules.addAll(resModules);
+        }
+        return allModules;
+    }
+
     public List<File> getSourceFiles() {
         return srcFiles;
     }
@@ -79,12 +93,40 @@ public class SourceArgumentsResolver {
         return resFiles;
     }
 
+    public Collection<File> getFiles() {
+        if (allFiles == null) {
+            allFiles = new ArrayList<File>(srcFiles.size() + resFiles.size());
+            allFiles.addAll(srcFiles);
+            allFiles.addAll(resFiles);
+        }
+        return allFiles;
+    }
+
     public Map<String,List<File>> getSourceFilesByModule() {
         return srcModuleFiles;
     }
 
     public Map<String,List<File>> getResourceFilesByModule() {
         return resModuleFiles;
+    }
+
+    public Map<String,List<File>> getFilesByModule() {
+        if (allModuleFiles == null) {
+            allModuleFiles = new HashMap<String,List<File>>();
+            allModuleFiles.putAll(srcModuleFiles);
+            for (Map.Entry<String,List<File>> entry : resModuleFiles.entrySet()) {
+                List<File> files = allModuleFiles.get(entry.getKey());
+                if (files == null) {
+                    allModuleFiles.put(entry.getKey(), entry.getValue());
+                } else {
+                    List<File> newFiles = new ArrayList<File>(files.size() + entry.getValue().size());
+                    newFiles.addAll(files);
+                    newFiles.addAll(entry.getValue());
+                    allModuleFiles.put(entry.getKey(), newFiles);
+                }
+            }
+        }
+        return allModuleFiles;
     }
 
     public void expandAndParse(List<String> modulesOrFiles, Backend forBackend) throws IOException {
@@ -99,8 +141,10 @@ public class SourceArgumentsResolver {
         HashSet<String> singleFileMods = new HashSet<String>();
         srcFiles = new LinkedList<File>();
         resFiles = new LinkedList<File>();
+        allFiles = null;
         srcModuleFiles = new HashMap<String,List<File>>();
         resModuleFiles = new HashMap<String,List<File>>();
+        allModuleFiles = null;
         Iterable<File> srcs = FileUtil.applyCwd(cwd, sourceDirs);
         Iterable<File> resrcs = FileUtil.applyCwd(cwd, resourceDirs);
         for (String moduleOrFile : modulesOrFiles) {
@@ -159,6 +203,7 @@ public class SourceArgumentsResolver {
         }
         srcModules = new ArrayList<String>(srcMods);
         resModules = new ArrayList<String>(resMods);
+        allModules = null;
     }
 
     private void addFile(List<File> files, Map<String, List<File>> moduleFiles, String module, File file) {
