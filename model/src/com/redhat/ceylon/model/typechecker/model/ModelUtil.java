@@ -3354,37 +3354,45 @@ public class ModelUtil {
     }
 
     public static boolean containsRawType(Type type) {
-        if(type == null || type.isNothing())
+        if (type == null || type.isNothing()) {
             return false;
-        if(type.isRaw())
+        }
+        if (type.isRaw()) {
             return true;
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration == null)
+        }
+        TypeDeclaration declaration = 
+                type.getDeclaration();
+        if (declaration == null) {
             return false;
-        if(declaration instanceof UnionType){
-            for(Type t : declaration.getCaseTypes()){
-                if(containsRawType(t)){
+        }
+        if (declaration instanceof UnionType) {
+            for (Type t: declaration.getCaseTypes()) {
+                if (containsRawType(t)){
                     return true;
                 }
             }
             return false;
         }
-        if(declaration instanceof IntersectionType){
-            for(Type t : declaration.getSatisfiedTypes()){
-                if(containsRawType(t)){
+        if (declaration instanceof IntersectionType){
+            for (Type t: declaration.getSatisfiedTypes()) {
+                if (containsRawType(t)) {
                     return true;
                 }
             }
             return false;
         }
-        Type qualifyingType = type.getQualifyingType();
-        if(qualifyingType != null && containsRawType(qualifyingType))
+        Type qualifyingType = 
+                type.getQualifyingType();
+        if (qualifyingType != null 
+                && containsRawType(qualifyingType)) {
             return true;
-        for(Type t : type.getTypeArgumentList()){
-            if(containsRawType(t)){
+        }
+        for (Type t: type.getTypeArgumentList()){
+            if (containsRawType(t)) {
                 return true;
             }
         }
         return false;
     }
+    
 }

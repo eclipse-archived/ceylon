@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,8 @@ public class TypedReference extends Reference {
     private TypedDeclaration declaration;
     private final boolean covariant;
     private final boolean contravariant;
+    private Map<TypeParameter, SiteVariance> capturedWildcards =
+            EMPTY_VARIANCE_MAP;
 
     TypedReference(boolean covariant, boolean contravariant) {
         this.covariant = covariant;
@@ -31,14 +35,25 @@ public class TypedReference extends Reference {
         this.declaration = declaration;
     }
     
+    Map<TypeParameter, SiteVariance> getCapturedWildcards() {
+        return capturedWildcards;
+    }
+    
+    void setCapturedWildcards(Map<TypeParameter, SiteVariance> capturedWildcards) {
+        this.capturedWildcards = capturedWildcards;
+    }
+    
     public Type getType() {
-        TypedDeclaration declaration = getDeclaration();
+        TypedDeclaration declaration = 
+                getDeclaration();
         if (declaration==null) {
             return null;
         }
         else {
             Type type = declaration.getType();
-            return type==null ? null : type.substitute(this);
+            return type==null ? null : 
+                type.applyCapturedWildcards(this)
+                    .substitute(this);
         }
     }
     
@@ -67,17 +82,20 @@ public class TypedReference extends Reference {
         name.append(dec.getName());
         if (dec instanceof Generic) {
             Generic g = (Generic) dec;
-            List<TypeParameter> tps = g.getTypeParameters();
-            if (!tps.isEmpty()) {
+            List<TypeParameter> typeParameters = 
+                    g.getTypeParameters();
+            if (!typeParameters.isEmpty()) {
                 name.append("<");
                 Map<TypeParameter, Type> args = 
                         getTypeArguments();
-                for (int i=0, l=tps.size(); i<l; i++) {
+                for (int i=0, l=typeParameters.size(); 
+                        i<l; i++) {
                     if (i!=0) {
                         name.append(",");
                     }
-                    TypeParameter tp = tps.get(i);
-                    Type arg = args.get(tp);
+                    TypeParameter typeParam = 
+                            typeParameters.get(i);
+                    Type arg = args.get(typeParam);
                     if (arg==null) {
                         name.append("unknown");
                     }

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
@@ -81,14 +82,20 @@ public class Type extends Reference {
         newType.underlyingType = underlyingType;
         newType.varianceOverrides = varianceOverrides;
         if (qualifyingType != null) {
-            newType.qualifyingType = qualifyingType.clone();
+            newType.qualifyingType = 
+                    qualifyingType.clone();
         }
         if (typeArguments.isEmpty()) {
-            newType.typeArguments = ModelUtil.EMPTY_TYPE_ARG_MAP;
+            newType.typeArguments = EMPTY_TYPE_ARG_MAP;
         } else {
-            newType.typeArguments = new HashMap<TypeParameter,Type>(typeArguments.size());
-            for (Map.Entry<TypeParameter, Type> entry : typeArguments.entrySet()) {
-                newType.typeArguments.put(entry.getKey(), entry.getValue().clone());
+            newType.typeArguments = 
+                    new HashMap<TypeParameter,Type>
+                        (typeArguments.size());
+            for (Map.Entry<TypeParameter, Type> entry: 
+                    typeArguments.entrySet()) {
+                newType.typeArguments.put(entry.getKey(), 
+                        entry.getValue()
+                            .clone());
             }
         }
 
@@ -99,7 +106,8 @@ public class Type extends Reference {
             if (resolvedAliases == this) {
                 newType.resolvedAliases = newType;
             } else {
-                newType.resolvedAliases = resolvedAliases.clone();
+                newType.resolvedAliases = 
+                        resolvedAliases.clone();
             }
         }
         return newType;
@@ -4191,6 +4199,12 @@ public class Type extends Reference {
         }
     }
     
+    public Type applyCapturedWildcards(TypedReference source) {
+        return applyVarianceOverrides(this,
+                    !source.isCovariant(),
+                    !source.isContravariant(),
+                    source.getCapturedWildcards());
+    }
     /**
      * Given a set of use site variance overrides, adjust 
      * the given type to account for these variances.

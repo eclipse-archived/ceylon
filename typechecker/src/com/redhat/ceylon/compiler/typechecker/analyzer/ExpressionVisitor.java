@@ -5068,7 +5068,7 @@ public class ExpressionVisitor extends Visitor {
         FunctionOrValue model = p.getModel();
         if (model!=null) {
             TypedReference paramRef = 
-                    pr.getTypedParameter(p);
+                    pr.getTypedParameterWithWildcardCaputure(p);
             a.setParameter(p);
             Type paramType;
             if (isGeneric(model)) {

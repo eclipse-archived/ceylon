@@ -33,8 +33,7 @@ public abstract class Reference {
     protected Type qualifyingType;
     
     //cache
-    private Map<TypeParameter, Type> 
-    typeArgumentsWithDefaults;
+    private Map<TypeParameter, Type> typeArgumentsWithDefaults;
     
     public Type getQualifyingType() {
         return qualifyingType;
@@ -81,17 +80,18 @@ public abstract class Reference {
 
     private static Map<TypeParameter, Type> 
     fillInDefaultTypeArguments(Declaration declaration,
-            Map<TypeParameter, Type> typeArguments) {
+            final Map<TypeParameter, Type> typeArguments) {
         Map<TypeParameter, Type> typeArgs = typeArguments;
         Generic g = (Generic) declaration;
         List<TypeParameter> typeParameters = 
                 g.getTypeParameters();
         for (int i=0, l=typeParameters.size(); 
                 i<l; i++) {
-            TypeParameter tp = typeParameters.get(i);
-            Type dta = tp.getDefaultTypeArgument();
+            TypeParameter typeParam = 
+                    typeParameters.get(i);
+            Type dta = typeParam.getDefaultTypeArgument();
             if (dta!=null &&
-                    !typeArguments.containsKey(tp)) {
+                    !typeArguments.containsKey(typeParam)) {
                 // only make a copy of typeArguments if required
                 if (typeArguments == typeArgs) {
                     // make a copy big enough to fit every type parameter
@@ -100,7 +100,7 @@ public abstract class Reference {
                                 (typeParameters.size());
                     typeArgs.putAll(typeArguments);
                 }
-                typeArgs.put(tp, 
+                typeArgs.put(typeParam, 
                         dta.substitute(typeArgs, 
                                 EMPTY_VARIANCE_MAP));
             }
@@ -231,21 +231,88 @@ public abstract class Reference {
     public boolean isFunctional() {
         return getDeclaration() instanceof Functional;
     }
+    
+    /**
+     * Get the type of a parameter, after substitution of
+     * type arguments and wildcard capture.
+     */
+    public TypedReference getTypedParameterWithWildcardCaputure(
+            Parameter p) {
+        TypedReference typedParameter = 
+                getTypedParameter(p);
+        captureWildcards(typedParameter);
+        return typedParameter;
+    }
 
     /**
      * Get the type of a parameter, after substitution of
      * type arguments.
      */
     public TypedReference getTypedParameter(Parameter p) {
-        TypedReference ptr = 
+        TypedReference typedParam = 
                 new TypedReference(false, true);
         FunctionOrValue model = p.getModel();
         if (model!=null) {
-            ptr.setDeclaration(model);
+            typedParam.setDeclaration(model);
         }
-        ptr.setQualifyingType(getQualifyingType());
-        ptr.setTypeArguments(getTypeArguments());
-        return ptr;
+        typedParam.setQualifyingType(getQualifyingType());
+        typedParam.setTypeArguments(getTypeArguments());
+        return typedParam;
+    }
+
+    private void captureWildcards(TypedReference parameter) {
+        Declaration declaration = getDeclaration();
+        if (declaration instanceof Generic
+                && declaration.isJava()) {
+            Generic g = (Generic) declaration;
+            if (!g.getTypeParameters().isEmpty()) {
+                Map<TypeParameter, SiteVariance> capturedWildcards =
+                        new HashMap<TypeParameter, SiteVariance>(1);
+                for (TypeParameter tp: g.getTypeParameters()) {
+                    if (canCaptureWildcard(tp)) {
+                        capturedWildcards.put(tp, SiteVariance.OUT);
+                    }
+                }
+                parameter.setCapturedWildcards(capturedWildcards);
+            }
+        }
+    }
+    
+    private boolean canCaptureWildcard(TypeParameter tp) {
+        Declaration dec = getDeclaration();
+        if (dec instanceof Function) {
+            Function func = (Function) dec;
+            Type returnType = func.getType();
+            if (returnType.occursContravariantly(tp)
+             || returnType.occursInvariantly(tp)) {
+                return false;
+            }
+            boolean found = false;
+            for (Parameter p: 
+                func.getFirstParameterList()
+                    .getParameters()) {
+                Type pt = 
+                        p.getModel()
+                         .getReference()
+                         .getFullType();
+                if (pt.occursContravariantly(tp)
+                 || pt.occursCovariantly(tp)) {
+                    return false;
+                }
+                if (pt.occursInvariantly(tp)) {
+                    if (found) {
+                        return false;
+                    }
+                    else {
+                        found = true;
+                    }
+                }
+            }
+            return found;
+        }
+        else {
+            return false;
+        }
     }
     
     public abstract String asString();
