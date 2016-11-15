@@ -66,6 +66,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     
     private RepositoryManager rm;
     private RepositoryManager rmoffline;
+    private ModuleVersionReader mvr;
     private Logger log;
     
     private Appendable out = System.out;
@@ -675,8 +676,15 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return true;
     }
     
+    protected ModuleVersionReader getModuleVersionReader() {
+        if (mvr == null) {
+            mvr = new ModuleVersionReader(getSourceDirs()).cwd(getCwd());
+        }
+        return mvr;
+    }
+    
     protected ModuleVersionDetails getModuleVersionDetailsFromSource(String moduleName) {
-        return SourceDependencyResolver.getModuleVersionDetailsFromSource(getCwd(), getSourceDirs(), moduleName);
+        return getModuleVersionReader().fromSource(moduleName);
     }
 
     /**
