@@ -110,6 +110,7 @@ public class LambdasJava {
     
     final public void synchronizedRun(final Runnable action) {}
 
+    public void takeIterableString(Iterable<String> it){}
 }
 
 interface InterfaceWithCoercedMembers {

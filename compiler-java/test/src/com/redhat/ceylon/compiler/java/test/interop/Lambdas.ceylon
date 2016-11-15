@@ -143,6 +143,10 @@ void lambdas() {
     j.stringFunction2((String s) => capturedString);
     String? capturedString2 = "";
     j.stringFunction2((String s) => capturedString2);
+    
+    // make sure Iterable is special-cased and not treated as a SAM
+    @type:"Anything(Iterable<String>?)"
+    value xf = j.takeIterableString;
 }
 
 @noanno
