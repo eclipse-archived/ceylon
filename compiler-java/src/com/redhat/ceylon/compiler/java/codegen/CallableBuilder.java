@@ -1148,7 +1148,13 @@ public class CallableBuilder {
         boolean variadic = false;
         if(methodOrValue instanceof Function){
             int index = 0;
-            for (Parameter param : ((Function)methodOrValue).getFirstParameterList().getParameters()) {
+            java.util.List<Parameter> parameters = 
+                    ((Function)methodOrValue)
+                        .getFirstParameterList()
+                        .getParameters();
+            for (int i=0; i<parameters.size(); i++) {
+                Parameter param = parameters.get(i);
+                Parameter targetParam = paramLists.getParameters().get(i); 
                 TypedReference typedParameter = functionalInterfaceMethod.getTypedParameter(param);
                 ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, param.getName());
                 Type paramType = typedParameter.getType();
@@ -1176,7 +1182,8 @@ public class CallableBuilder {
                     arg = gen.makeUnquotedIdent(param.getName());
                     Type argumentType = parameterTypes.get(index);
                     if(gen.isOptional(paramType)
-                            && argumentType.isSubtypeOf(gen.typeFact().getObjectType())){
+                            && argumentType.isSubtypeOf(gen.typeFact().getObjectType())
+                            && !targetParam.getModel().hasUncheckedNullType()){
                         arg = gen.utilInvocation().checkNull(arg);
                     }
                     if(CodegenUtil.isUnBoxed(param.getModel())){

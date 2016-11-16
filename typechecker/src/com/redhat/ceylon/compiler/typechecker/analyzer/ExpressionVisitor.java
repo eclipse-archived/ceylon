@@ -2763,17 +2763,12 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local, 
             Type type, Tree.Term term,
             Declaration declaration) {
-        if (type!=null 
-//                && !type.isNothing()
+        if (type!=null
                 && !type.isUnknown()
-                && !unit.isOptionalType(type)) {
+                && type.isSubtypeOf(unit.getObjectType())) {
             if (declaration 
                     instanceof TypedDeclaration
-                && !type.isInteger() 
-                && !type.isFloat()
-                && !type.isBoolean() 
-                && !type.isByte()
-                && !type.isCharacter()) {
+                && canHaveUncheckedNulls(type)) {
                 TypedDeclaration td =
                         (TypedDeclaration) 
                             declaration;
@@ -2787,6 +2782,14 @@ public class ExpressionVisitor extends Visitor {
                 warnUncheckedNulls(local, type, term);
             }
         }
+    }
+    
+    private static boolean canHaveUncheckedNulls(Type type) {
+        return !type.isInteger() 
+            && !type.isFloat()
+            && !type.isBoolean() 
+            && !type.isByte()
+            && !type.isCharacter();
     }
     
     private static void warnUncheckedNulls(
@@ -3539,6 +3542,13 @@ public class ExpressionVisitor extends Visitor {
         model.setType(type);
         model.setName(parameter.getName());
         model.setInferred(true);
+        if (declaration!=null && type!=null
+                && declaration.isJava()
+                && !type.isUnknown()
+                && type.isSubtypeOf(unit.getObjectType())
+                && canHaveUncheckedNulls(type)) {
+            model.setUncheckedNullType(true);
+        }
         parameter.setModel(model);
         model.setInitializerParameter(parameter);
         Function m = anon.getDeclarationModel();
