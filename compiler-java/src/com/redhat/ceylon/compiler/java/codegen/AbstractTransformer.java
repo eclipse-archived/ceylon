@@ -955,7 +955,7 @@ public abstract class AbstractTransformer implements Transformation {
      * - The third special case is when we implement a declaration via multiple super types, without having any refining
      * declarations in those supertypes, simply by instantiating a common super type with different type parameters
      */
-    private TypedReference getRefinedDeclaration(TypedReference typedReference, Type currentType) {
+    TypedReference getRefinedDeclaration(TypedReference typedReference, Type currentType) {
         TypedDeclaration decl = typedReference.getDeclaration();
         TypedDeclaration modelRefinedDecl = (TypedDeclaration)decl.getRefinedDeclaration();
         Type referenceQualifyingType = typedReference.getQualifyingType();

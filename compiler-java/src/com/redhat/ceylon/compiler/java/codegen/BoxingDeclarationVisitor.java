@@ -64,10 +64,60 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     protected abstract boolean isNull(Type type);
     protected abstract boolean isObject(Type type);
     protected abstract boolean isCallable(Type type);
+    
+    /**
+     * Depends on:
+     * - type arguments and their declarations
+     * - the chain of refined declarations
+     * - erasure of the selected refined declaration
+     * Does not depend on boxing/erased/untrusted
+     */
+    protected abstract TypedDeclaration getRefinedDeclarationForWideningRules(TypedDeclaration typedDeclaration);
+    
+    /**
+     * Depends on:
+     * - union/intersection declaration
+     * - class being erased to Object by a list of cases
+     * - type parameter bounds being erased to Object by a list of cases
+     * Does not depend on boxing/erased/untrusted
+     */
     protected abstract boolean hasErasure(Type type);
+    
+    /**
+     * Depends on:
+     * - union/intersection declaration
+     * - class being erased to Object by a list of cases
+     * Does not depend on boxing/erased/untrusted
+     */
     protected abstract boolean willEraseToObject(Type type);
+    
+    /**
+     * Depends on the type arguments being:
+     * - erased union/intersections based on their declarations
+     * - variance info
+     * - nothing types
+     * - qualified types
+     * Does not depend on boxing/erased/untrusted
+     */
     protected abstract boolean isRaw(Type type);
+    
+    /**
+     * Depends on:
+     * - type arguments and their declarations
+     * - the chain of refined declarations
+     * - erasure of the selected refined declaration
+     * Does not depend on boxing/untrusted
+     */
     protected abstract boolean isWideningTypedDeclaration(TypedDeclaration typedDeclaration);
+    
+    /**
+     * Depends on:
+     * - isRaw
+     * - class being erased to Object by a list of cases
+     * - the inheritance change with isRaw
+     * - inter-dependent type parameters
+     * Does not depend on boxing/erased/untrusted
+     */
     protected abstract boolean hasSubstitutedBounds(Type type);
 
     /**
@@ -146,20 +196,32 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             return;
 
         Type type = decl.getType();
+        boolean erased = false;
+        boolean untrusted = false;
         if(type != null){
             if(hasErasure(type) || hasSubstitutedBounds(type) || type.isTypeConstructor()){
-                decl.setTypeErased(true);
+                erased = true;
             }
             if(decl.isActual()
-                    && decl.getContainer() instanceof ClassOrInterface
-                    // make sure we did not lose type information due to non-widening
-                    && isWideningTypedDeclaration(decl)){
-                // widening means not trusting the type, otherwise we end up thinking that the type is
-                // something it's not and regular erasure rules don't apply there
-                decl.setUntrustedType(true);
-                decl.setTypeErased(true);
+                    && decl.getContainer() instanceof ClassOrInterface){
+                TypedDeclaration refinedDeclaration = getRefinedDeclarationForWideningRules(decl);
+                if(refinedDeclaration != null
+                        && refinedDeclaration != decl
+                        && decl.getUntrustedType() == null){
+                    // make sure the refined decl is set before we look at it
+                    setErasureState(refinedDeclaration);
+                }
+                // make sure we did not lose type information due to non-widening
+                if(isWideningTypedDeclaration(decl)){
+                    // widening means not trusting the type, otherwise we end up thinking that the type is
+                    // something it's not and regular erasure rules don't apply there
+                    untrusted = true;
+                    erased = true;
+                }
             }
         }
+        decl.setTypeErased(erased);
+        decl.setUntrustedType(untrusted);
     }
 
     private void rawTypedDeclaration(TypedDeclaration decl) {
@@ -507,5 +569,4 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             that.getVariable().getDeclarationModel().setUnboxed(true);
         }
     }
-
 }

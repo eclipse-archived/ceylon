@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
 public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
     private AbstractTransformer transformer;
@@ -72,5 +73,14 @@ public class CompilerBoxingDeclarationVisitor extends BoxingDeclarationVisitor {
     @Override
     protected boolean hasSubstitutedBounds(Type type) {
         return transformer.hasSubstitutedBounds(type);
+    }
+    
+    @Override
+    protected TypedDeclaration getRefinedDeclarationForWideningRules(TypedDeclaration typedDeclaration){
+        TypedReference typedReference = transformer.getTypedReference(typedDeclaration);
+        TypedReference refinedDeclaration = transformer.getRefinedDeclaration(typedReference, typedReference.getQualifyingType());
+        if(refinedDeclaration != null)
+            return refinedDeclaration.getDeclaration();
+        return null;
     }
 }
