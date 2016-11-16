@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -629,6 +630,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         if (artifile == null) {
             return true;
         }
+        // Check if it has META-INF/errors.txt
+        Properties errors = getMetaInfErrors(artifile);
+        if (errors != null && !errors.isEmpty()) {
+            return true;
+        }
         if (checkTime) {
             return isModuleArtifactOutOfDate(artifile, name, type);
         }
@@ -640,6 +646,22 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         ac.setIgnoreDependencies(true);
         ac.setThrowErrorIfMissing(false);
         return repoMgr.getArtifact(ac);
+    }
+
+    protected Properties getMetaInfErrors(File carFile) {
+        try {
+            return JarUtils.getMetaInfProperties(carFile, "META-INF/errors.txt");
+        } catch (IOException e) {
+            return null;
+        }
+    }
+    
+    protected Properties getMetaInfHashes(File carFile) {
+        try {
+            return JarUtils.getMetaInfProperties(carFile, "META-INF/hashes.txt");
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     protected boolean isModuleArtifactOutOfDate(File artifile, String name, ModuleQuery.Type type) throws IOException {

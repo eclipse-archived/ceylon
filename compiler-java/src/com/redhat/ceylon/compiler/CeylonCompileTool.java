@@ -39,7 +39,6 @@ import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.ceylon.ShaSigner;
-import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Constants;
@@ -740,6 +739,14 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                     // Find the module's CAR file
                     File carFile = getModuleArtifact(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM);
                     if (carFile != null) {
+                        // Check if it has META-INF/errors.txt
+                        Properties errors = getMetaInfErrors(carFile);
+                        if (errors != null && !errors.isEmpty()) {
+                            // If the module has errors we skip handling of
+                            // --incremental on it and go to the next one
+                            // TODO handle this incrementally
+                            continue;
+                        }
                         // Check if it has META-INF/hashes.txt
                         Properties oldHashes = getMetaInfHashes(carFile);
                         if (oldHashes != null) {
@@ -814,14 +821,6 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             }
         }
         return result;
-    }
-
-    private Properties getMetaInfHashes(File carFile) {
-        try {
-            return JarUtils.getMetaInfProperties(carFile, "META-INF/hashes.txt");
-        } catch (IOException e) {
-            return null;
-        }
     }
     
     private Properties getFileHashes(String moduleName, List<File> files) {
