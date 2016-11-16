@@ -620,6 +620,8 @@ public class ModelUtil {
             Type ret = null;
             for(int i=startAt; i<signature.size(); i++){
                 Type argType = signature.get(i);
+                if(argType == null)
+                    continue;
                 String underlyingType = 
                         argType.getUnderlyingType();
                 int score = 0;
@@ -646,6 +648,8 @@ public class ModelUtil {
             Type ret = null;
             for (int i=startAt; i<signature.size(); i++) {
                 Type argType = signature.get(i);
+                if(argType == null)
+                    continue;
                 String underlyingType = 
                         argType.getUnderlyingType();
                 int score = 0;
