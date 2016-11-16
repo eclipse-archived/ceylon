@@ -5558,7 +5558,7 @@ public class ClassTransformer extends AbstractTransformer {
                 addWriteReplace(klass, objectClassBuilder);
             }
         }
-        makeReadResolve(objectClassBuilder, klass, model);
+        makeReadResolve(def, objectClassBuilder, klass, model);
         
         // Make sure top types satisfy reified type
         addReifiedTypeInterface(objectClassBuilder, klass);
@@ -5678,10 +5678,11 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
     
-    private void makeReadResolve(ClassDefinitionBuilder objectClassBuilder,
+    private void makeReadResolve(Node def, ClassDefinitionBuilder objectClassBuilder,
             Class cls, 
             Value model) {
         if (Strategy.addReadResolve(cls)) {
+            at(def);
             MethodDefinitionBuilder readResolve = MethodDefinitionBuilder.systemMethod(this, "readResolve");
             readResolve.modifiers(PRIVATE);
             readResolve.resultType(new TransformedType(make().Type(syms().objectType)));
