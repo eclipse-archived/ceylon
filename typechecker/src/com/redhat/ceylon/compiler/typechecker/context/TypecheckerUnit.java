@@ -1,16 +1,18 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
+import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public class TypecheckerUnit extends Unit {
 
     private Package javaLangPackage;
-	private ModuleSourceMapper moduleSourceMapper;
+    private JdkProvider jdkProvider;
 
     public TypecheckerUnit(ModuleSourceMapper moduleSourceMapper) {
-        this.moduleSourceMapper = moduleSourceMapper;
+        this.jdkProvider = moduleSourceMapper!=null ?
+                moduleSourceMapper.getJdkProvider() : null;
     }
     
     public TypecheckerUnit(
@@ -41,9 +43,8 @@ public class TypecheckerUnit extends Unit {
     
 	@Override
 	public boolean isJdkPackage(String name) {
-	    return moduleSourceMapper!=null ? 
-	            moduleSourceMapper.getJdkProvider()
-                    .isJDKPackage(name) : 
+	    return jdkProvider!=null ? 
+	            jdkProvider.isJDKPackage(name) : 
                 super.isJdkPackage(name);
 	}
 }
