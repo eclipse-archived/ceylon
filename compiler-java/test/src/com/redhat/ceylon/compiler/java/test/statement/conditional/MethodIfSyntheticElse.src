@@ -76,7 +76,7 @@ class MethodIfSyntheticElse implements .com.redhat.ceylon.compiler.java.runtime.
         .ceylon.language.Sequential<? extends .ceylon.language.String> arg$26;
         if ((arg$26 = arg) instanceof .ceylon.language.Sequence) {
             final .ceylon.language.Sequence<? extends .ceylon.language.String> arg$27 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)arg$26;
-            return ((.ceylon.language.String)(.java.lang.Object)arg$27.getFirst()).toString();
+            return arg$27.getFirst().toString();
         }
         final .ceylon.language.Empty arg$28 = (.ceylon.language.Empty)(.ceylon.language.Sequential)arg;
         final .ceylon.language.Empty empt = arg$28;
@@ -91,7 +91,7 @@ class MethodIfSyntheticElse implements .com.redhat.ceylon.compiler.java.runtime.
             return "";
         }
         final .ceylon.language.Sequence<? extends .ceylon.language.String> arg$32 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)arg;
-        return ((.ceylon.language.String)(.java.lang.Object)arg$32.getFirst()).toString();
+        return arg$32.getFirst().toString();
     }
     
     @.java.lang.Override

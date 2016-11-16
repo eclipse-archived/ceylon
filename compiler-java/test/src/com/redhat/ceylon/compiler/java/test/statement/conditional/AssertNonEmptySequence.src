@@ -14,7 +14,7 @@ class AssertNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty x"));
         }
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> s = x$2;
-        return ((.ceylon.language.Integer)(.java.lang.Object)x$2.getFirst()).longValue();
+        return x$2.getFirst().longValue();
     }
     
     public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
@@ -25,7 +25,7 @@ class AssertNonEmptySequence implements .com.redhat.ceylon.compiler.java.runtime
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty s=x"));
         }
-        return ((.ceylon.language.Integer)(.java.lang.Object)s$5.getFirst()).longValue();
+        return s$5.getFirst().longValue();
     }
     
     @.java.lang.Override

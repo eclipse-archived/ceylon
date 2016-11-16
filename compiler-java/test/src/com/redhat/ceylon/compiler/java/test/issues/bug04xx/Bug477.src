@@ -52,7 +52,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public T getFirst() {
-        return (T)$ceylon$language$List$this$.getFirst();
+        return $ceylon$language$List$this$.getFirst();
     }
     
     @.java.lang.Override
@@ -92,7 +92,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public T getLast() {
-        return (T)$ceylon$language$List$this$.getLast();
+        return $ceylon$language$List$this$.getLast();
     }
     
     @.java.lang.Override
@@ -616,7 +616,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public T getFirst() {
-        return (T)$ceylon$language$List$this$.getFirst();
+        return $ceylon$language$List$this$.getFirst();
     }
     
     @.java.lang.Override
@@ -656,7 +656,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public T getLast() {
-        return (T)$ceylon$language$List$this$.getLast();
+        return $ceylon$language$List$this$.getLast();
     }
     
     @.java.lang.Override

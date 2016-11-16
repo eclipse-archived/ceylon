@@ -74,7 +74,7 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     
     @.java.lang.Override
     public .ceylon.language.Range indexes() {
-        return (.ceylon.language.Range<.ceylon.language.Integer>)(.ceylon.language.Range)$ceylon$language$Sequence$this$.indexes();
+        return $ceylon$language$Sequence$this$.indexes();
     }
     
     @.java.lang.Override
@@ -599,7 +599,7 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     
     @.java.lang.Override
     public final long getSize() {
-        return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable<Element>)(.ceylon.language.Enumerable)getLast()).offset((Element)(.java.lang.Object)getFirst())) + 1L;
+        return .ceylon.language.Integer.getMagnitude(((.ceylon.language.Enumerable<Element>)(.ceylon.language.Enumerable)getLast()).offset((Element)getFirst())) + 1L;
     }
     
     @.java.lang.Override

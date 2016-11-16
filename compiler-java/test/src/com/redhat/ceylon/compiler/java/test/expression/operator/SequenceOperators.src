@@ -57,7 +57,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     
     @.java.lang.Override
     public .ceylon.language.String getFirst() {
-        return (.ceylon.language.String)$ceylon$language$List$this$.getFirst();
+        return $ceylon$language$List$this$.getFirst();
     }
     
     @.java.lang.Override
@@ -97,7 +97,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     
     @.java.lang.Override
     public .ceylon.language.String getLast() {
-        return (.ceylon.language.String)$ceylon$language$List$this$.getLast();
+        return $ceylon$language$List$this$.getLast();
     }
     
     @.java.lang.Override
@@ -951,7 +951,7 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     
     @.java.lang.Override
     public .ceylon.language.String getFirst() {
-        return (.ceylon.language.String)$ceylon$language$List$this$.getFirst();
+        return $ceylon$language$List$this$.getFirst();
     }
     
     @.java.lang.Override
@@ -991,7 +991,7 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     
     @.java.lang.Override
     public .ceylon.language.String getLast() {
-        return (.ceylon.language.String)$ceylon$language$List$this$.getLast();
+        return $ceylon$language$List$this$.getLast();
     }
     
     @.java.lang.Override

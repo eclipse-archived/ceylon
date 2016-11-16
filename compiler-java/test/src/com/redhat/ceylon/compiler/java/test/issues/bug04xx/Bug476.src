@@ -129,7 +129,7 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     public T getFirst() {
-        return (T)$ceylon$language$List$this$.getFirst();
+        return $ceylon$language$List$this$.getFirst();
     }
     
     @.java.lang.Override
@@ -169,7 +169,7 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     public T getLast() {
-        return (T)$ceylon$language$List$this$.getLast();
+        return $ceylon$language$List$this$.getLast();
     }
     
     @.java.lang.Override
