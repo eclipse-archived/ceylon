@@ -516,8 +516,12 @@ public abstract class CompilerTests {
     protected void compareWithJavaSource(String java, String... ceylon) {
         compareWithJavaSource(defaultOptions, java, ceylon);
     }
-    
+
     protected void compareWithJavaSource(List<String> options, String java, String... ceylon) {
+        compareWithJavaSource(options, 0, java, ceylon);
+    }
+    
+    protected void compareWithJavaSource(List<String> options, final int index, String java, String... ceylon) {
         // make a compiler task
         // FIXME: runFileManager.setSourcePath(dir);
         ErrorCollector collector = new ErrorCollector();
@@ -527,6 +531,7 @@ public abstract class CompilerTests {
         class Listener implements TaskListener{
             JCCompilationUnit compilationUnit;
             private String compilerSrc;
+            int count = 0;
             @Override
             public void started(TaskEvent e) {
             }
@@ -534,7 +539,7 @@ public abstract class CompilerTests {
             @Override
             public void finished(TaskEvent e) {
                 if(e.getKind() == Kind.ENTER){
-                    if(compilationUnit == null) {
+                    if(compilationUnit == null && index == count++) {
                         compilationUnit = (JCCompilationUnit) e.getCompilationUnit();
                         // for some reason compilationUnit is full here in the listener, but empty as soon
                         // as the compile task is done. probably to clean up for the gc?
