@@ -19,14 +19,12 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.jar.JarFile;
@@ -39,7 +37,6 @@ import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
-import com.redhat.ceylon.compiler.java.test.RunSingleThreaded;
 import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 
@@ -162,5 +159,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     @Test
     public void testBug6660() {
         compareWithJavaSource("bug66xx/Bug6660");
+    }
+
+    @Test
+    public void testBug6704() {
+        compareWithJavaSource(defaultOptions, 1, "bug67xx/Bug6704B.src", "bug67xx/Bug6704.ceylon", "bug67xx/Bug6704B.ceylon");
+        compareWithJavaSource(defaultOptions, 0, "bug67xx/Bug6704B.src", "bug67xx/Bug6704B.ceylon", "bug67xx/Bug6704.ceylon");
     }
 }
