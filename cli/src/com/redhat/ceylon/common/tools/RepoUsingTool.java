@@ -44,6 +44,7 @@ import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.tool.ArgumentParser;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.NonFatalToolMessage;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
@@ -834,6 +835,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         if (compileFlags != null) {
             args.add("--include-dependencies=" + compileFlags);
         }
+        if (type == ModuleQuery.Type.JVM) {
+            args.add("--incremental");
+        }
         args.add(name);
         
         ToolFactory pluginFactory = new ToolFactory();
@@ -848,9 +852,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         } else {
             throw new IllegalArgumentException("Unknown compile flags passed");
         }
-        ToolModel<Tool> model = pluginLoader.loadToolModel(toolName);
-        Tool tool = pluginFactory.bindArguments(model, pluginLoader.<CeylonTool>instance("", null), args);
         try {
+            ToolModel<Tool> model = pluginLoader.loadToolModel(toolName);
+            Tool tool = pluginFactory.bindArguments(model, pluginLoader.<CeylonTool>instance("", null), args);
             msg("compiling", name).newline();
             tool.run();
             // Make sure we can find the newly created module
@@ -858,6 +862,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             if (repoMgr == rm) {
                 rm = null;
             }
+        } catch (NonFatalToolMessage m) {
         } catch (Exception e) {
             return false;
         }
