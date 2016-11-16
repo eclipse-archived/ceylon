@@ -360,6 +360,8 @@ public class CeylonTransformer extends AbstractTransformer {
     @SuppressWarnings("unchecked")
     public ListBuffer<JCTree> transformAfterTypeChecking(Tree.CompilationUnit t) {
         disableAnnotations = 0;
+        // make sure each unit has its own sequence of unique IDs
+        naming.resetUniqueIds();
         
         GetterSetterPairingVisitor gspv = new GetterSetterPairingVisitor();
         t.visit(gspv);

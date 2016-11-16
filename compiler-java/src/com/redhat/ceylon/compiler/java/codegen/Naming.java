@@ -1375,21 +1375,14 @@ public class Naming extends NamingBase implements LocalId {
     /*
      * Methods for making unique temporary and alias names
      */
+    private long id = 0;
     
-    static class UniqueId {
-        private long id = 0;
-        private long nextId() {
-            return id++;
-        }
+    void resetUniqueIds(){
+        id = 0;
     }
     
     private long nextUniqueId() {
-        UniqueId id = context.get(UniqueId.class);
-        if (id == null) {
-            id = new UniqueId();
-            context.put(UniqueId.class, id);
-        }
-        return id.nextId();
+        return id++;
     }
     
     String newTemp() {
