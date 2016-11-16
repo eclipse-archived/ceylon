@@ -56,7 +56,7 @@ class MethodIfNarrowedElse implements .com.redhat.ceylon.compiler.java.runtime.m
             final .ceylon.language.Empty x$20 = (.ceylon.language.Empty)(.ceylon.language.Sequential)x$18;
         } else {
             final .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo> x$19 = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo>)(.ceylon.language.Sequence)x$18;
-            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo y = x$19.getFirst();
+            final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo y = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)(.java.lang.Object)x$19.getFirst();
         }
     }
     

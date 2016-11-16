@@ -60,7 +60,7 @@ final class bug6401_ {
             
             @.java.lang.Override
             public .ceylon.language.String getFirst() {
-                return $ceylon$language$List$this$.getFirst();
+                return (.ceylon.language.String)$ceylon$language$List$this$.getFirst();
             }
             
             @.java.lang.Override
@@ -100,7 +100,7 @@ final class bug6401_ {
             
             @.java.lang.Override
             public .ceylon.language.String getLast() {
-                return $ceylon$language$List$this$.getLast();
+                return (.ceylon.language.String)$ceylon$language$List$this$.getLast();
             }
             
             @.java.lang.Override
@@ -120,7 +120,7 @@ final class bug6401_ {
             
             @.java.lang.Override
             public .ceylon.language.List measure(final .ceylon.language.Integer from, final long length) {
-                return $ceylon$language$List$this$.measure(from, length);
+                return (.ceylon.language.List<? extends .ceylon.language.String>)(.ceylon.language.List)$ceylon$language$List$this$.measure(from, length);
             }
             
             @.java.lang.Override
@@ -197,17 +197,17 @@ final class bug6401_ {
             
             @.java.lang.Override
             public .ceylon.language.List span(final .ceylon.language.Integer from, final .ceylon.language.Integer to) {
-                return $ceylon$language$List$this$.span(from, to);
+                return (.ceylon.language.List<? extends .ceylon.language.String>)(.ceylon.language.List)$ceylon$language$List$this$.span(from, to);
             }
             
             @.java.lang.Override
             public .ceylon.language.List spanFrom(final .ceylon.language.Integer from) {
-                return $ceylon$language$List$this$.spanFrom(from);
+                return (.ceylon.language.List<? extends .ceylon.language.String>)(.ceylon.language.List)$ceylon$language$List$this$.spanFrom(from);
             }
             
             @.java.lang.Override
             public .ceylon.language.List spanTo(final .ceylon.language.Integer to) {
-                return $ceylon$language$List$this$.spanTo(to);
+                return (.ceylon.language.List<? extends .ceylon.language.String>)(.ceylon.language.List)$ceylon$language$List$this$.spanTo(to);
             }
             
             @.java.lang.Override

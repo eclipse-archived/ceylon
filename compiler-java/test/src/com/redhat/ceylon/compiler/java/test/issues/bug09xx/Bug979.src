@@ -386,7 +386,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     
     @.java.lang.Override
     public final <Default>.ceylon.language.Iterable defaultNullElements(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Default, final Default defaultValue) {
-        return $ceylon$language$Set$this$.defaultNullElements($reified$Default, defaultValue);
+        return (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$ceylon$language$Set$this$.defaultNullElements($reified$Default, defaultValue);
     }
     
     @.java.lang.Override
