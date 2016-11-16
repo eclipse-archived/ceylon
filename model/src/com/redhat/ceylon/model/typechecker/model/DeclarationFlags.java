@@ -28,8 +28,9 @@ public class DeclarationFlags {
         public static final int UNBOXED           = 1 << DeclarationFlags.LAST + 3;
         public static final int TYPE_ERASED       = 1 << DeclarationFlags.LAST + 4;
         public static final int UNTRUSTED_TYPE    = 1 << DeclarationFlags.LAST + 5;
-        public static final int DYNAMICALLY_TYPED = 1 << DeclarationFlags.LAST + 6;
-        private static final int LAST             = DeclarationFlags.LAST + 6; // KEEP THIS IN SYNC WITH LAST SHIFT
+        public static final int UNTRUSTED_KNOWN   = 1 << DeclarationFlags.LAST + 6;
+        public static final int DYNAMICALLY_TYPED = 1 << DeclarationFlags.LAST + 7;
+        private static final int LAST             = DeclarationFlags.LAST + 7; // KEEP THIS IN SYNC WITH LAST SHIFT
     }
     
     public static class FunctionOrValueFlags extends TypedDeclarationFlags {

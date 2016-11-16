@@ -182,16 +182,24 @@ public abstract class TypedDeclaration
     }
 
     public Boolean getUntrustedType() { 
+        if ((flags&UNTRUSTED_KNOWN)==0) {
+            return null;
+        }
         return (flags&UNTRUSTED_TYPE)!=0; 
     }
 
     public void setUntrustedType(Boolean untrustedType) { 
-        if (untrustedType) {
-            flags|=UNTRUSTED_TYPE; 
-         }
-         else {
-             flags&=(~UNTRUSTED_TYPE);
-         }
+        if (untrustedType==null) {
+            flags&=(~UNTRUSTED_KNOWN);
+        }else{
+            flags|=UNTRUSTED_KNOWN;
+            if (untrustedType) {
+                flags|=UNTRUSTED_TYPE; 
+            }
+            else {
+                flags&=(~UNTRUSTED_TYPE);
+            }
+        }
     }
 
     public boolean hasUncheckedNullType() {

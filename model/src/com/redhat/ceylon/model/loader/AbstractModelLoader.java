@@ -4772,9 +4772,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private void markUntrustedType(TypedDeclaration decl, AnnotatedMirror typedMirror, TypeMirror type) {
-        if (BooleanUtil.isTrue(getAnnotationBooleanValue(typedMirror, CEYLON_TYPE_INFO_ANNOTATION, "untrusted"))) {
-            decl.setUntrustedType(true);
-        }
+        decl.setUntrustedType(BooleanUtil.isTrue(getAnnotationBooleanValue(typedMirror, CEYLON_TYPE_INFO_ANNOTATION, "untrusted")));
     }
     
     private void markDeclaredVoid(Function decl, MethodMirror methodMirror) {
