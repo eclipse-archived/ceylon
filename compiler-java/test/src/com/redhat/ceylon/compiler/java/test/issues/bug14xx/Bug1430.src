@@ -45,7 +45,7 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public .ceylon.language.Range indexes() {
-        return $ceylon$language$Sequence$this$.indexes();
+        return (.ceylon.language.Range<.ceylon.language.Integer>)(.ceylon.language.Range)$ceylon$language$Sequence$this$.indexes();
     }
     
     @.java.lang.Override

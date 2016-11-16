@@ -33,7 +33,7 @@ abstract class VariadicImplementations2 extends .com.redhat.ceylon.compiler.java
             returning (
                 let
                 {
-                    .ceylon.language.Boolean $ceylontmp$2 = vars$1.getFirst();
+                    .ceylon.language.Boolean $ceylontmp$2 = (.ceylon.language.Boolean)(.java.lang.Object)vars$1.getFirst();
                 }
                 returning $ceylontmp$2 != null ? $ceylontmp$2 : .ceylon.language.Boolean.instance(true);
             ).booleanValue();
