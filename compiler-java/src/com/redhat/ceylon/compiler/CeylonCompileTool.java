@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -804,7 +805,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
 
     private Collection<String> normalizeFileNames(Collection<String> modulesOrFiles) {
-        HashSet<String> result = new HashSet<String>();
+        Set<String> result = new LinkedHashSet<String>();
         for (String mof : modulesOrFiles) {
             if (mof.contains("/") || mof.contains("\\")) {
                 // It's a file
