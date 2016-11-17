@@ -22,7 +22,7 @@ shared native object language {
     shared String versionQualifier => "SNAPSHOT";
     
     "The Ceylon language release name."
-    shared String versionName => "Now We Try It My Way";
+    shared String versionName => "Smile Tolerantly";
     
     "The major version of the code generated for the 
      underlying runtime."

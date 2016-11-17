@@ -1,6 +1,6 @@
 # Ceylon
 
-This is the 1.3.2-SNAPSHOT _"Now We Try It My Way"_ release of the Ceylon 
+This is the 1.3.2-SNAPSHOT _"Smile Tolerantly"_ release of the Ceylon
 command line tools. This is a production version of the platform.
 
 Ceylon is a modern, modular, statically typed programming language 
@@ -68,7 +68,7 @@ examples):
 
 You should see something like:
 
-    ceylon version 1.3.2-SNAPSHOT 1cac978 (Now We Try It My Way)
+    ceylon version 1.3.2-SNAPSHOT 1cac978 (Smile Tolerantly)
 
 ## Tool usage
 

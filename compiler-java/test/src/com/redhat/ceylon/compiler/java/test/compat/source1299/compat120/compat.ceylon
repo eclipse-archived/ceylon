@@ -32,7 +32,7 @@ import ceylon.language.meta {
 "Run the module `compat`."
 shared void run(String expectedVersion) {
     print("Compiled with ``Versions.\iCEYLON_VERSION`` according to com.redhat.ceylon.common::Versions");
-    //assert("1.2.3 (Now We Try It My Way)" == Versions.\iCEYLON_VERSION);
+    //assert("1.2.3 (Smile Tolerantly)" == Versions.\iCEYLON_VERSION);
     print("Running on ``language.version`` (``language.versionName``) according to language.version");
     assert(expectedVersion == language.version);
     
