@@ -596,22 +596,22 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     private final static ModuleDependencyInfo language = new ModuleDependencyInfo(null, "ceylon.language", Versions.CEYLON_VERSION_NUMBER, false, false);
-    public final static ModuleDetails com_acme_helloworld = new ModuleDetails("com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
-    public final static ModuleDetails hello = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0)), false, null);
-    public final static ModuleDetails hello_js = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 9, 0)), false, null);
-    public final static ModuleDetails hello_js_jvm = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0), art(".js", 9, 0)), false, null);
-    public final static ModuleDetails hello_120_js = new ModuleDetails("hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.0"), deps(language), types(art(".js", 8, 0)), false, null);
-    public final static ModuleDetails hello2 = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0), art(".js", 8, 0)), false, null);
-    public final static ModuleDetails hello2_jvm = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0)), false, null);
-    public final static ModuleDetails hello2_js = new ModuleDetails("hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".js", 8, 0)), false, null);
-    public final static ModuleDetails moduletest = new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0)), false, null);
-    public final static ModuleDetails moduletest_js_jvm = new ModuleDetails("moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0), art(".js")), false, null);
-    public final static ModuleDetails moduletest_js = new ModuleDetails("moduletest", null, null, set(), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".js")), false, null);
-    public final static ModuleDetails old_jar = new ModuleDetails("old-jar", null, null, set(), set("1.2.CR1"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
-    public final static ModuleDetails older_jar = new ModuleDetails("older-jar", null, null, set(), set("12-b3"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
-    public final static ModuleDetails org_jboss_acme = new ModuleDetails("org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), types(), false, null);
-    public final static ModuleDetails test_jar = new ModuleDetails("test-jar", null, null, set(), set("0.1"), deps(), types(art(".jar", null, null)), false, null);
-    public final static ModuleDetails jsonly = new ModuleDetails("jsonly", null, null, set(), set("1.0.0"), deps(new ModuleDependencyInfo(null, "ceylon.language", "1.0.0", false, false)), types(art(".js", 7, 0)), false, null);
+    public final static ModuleDetails com_acme_helloworld = new ModuleDetails("ceylon", "com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
+    public final static ModuleDetails hello = new ModuleDetails("ceylon", "hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0)), false, null);
+    public final static ModuleDetails hello_js = new ModuleDetails("ceylon", "hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 9, 0)), false, null);
+    public final static ModuleDetails hello_js_jvm = new ModuleDetails("ceylon", "hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0), art(".js", 9, 0)), false, null);
+    public final static ModuleDetails hello_120_js = new ModuleDetails("ceylon", "hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.0"), deps(language), types(art(".js", 8, 0)), false, null);
+    public final static ModuleDetails hello2 = new ModuleDetails("ceylon", "hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0), art(".js", 8, 0)), false, null);
+    public final static ModuleDetails hello2_jvm = new ModuleDetails("ceylon", "hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0)), false, null);
+    public final static ModuleDetails hello2_js = new ModuleDetails("ceylon", "hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".js", 8, 0)), false, null);
+    public final static ModuleDetails moduletest = new ModuleDetails("ceylon", "moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0)), false, null);
+    public final static ModuleDetails moduletest_js_jvm = new ModuleDetails("ceylon", "moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0), art(".js")), false, null);
+    public final static ModuleDetails moduletest_js = new ModuleDetails("ceylon", "moduletest", null, null, set(), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".js")), false, null);
+    public final static ModuleDetails old_jar = new ModuleDetails("ceylon", "old-jar", null, null, set(), set("1.2.CR1"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
+    public final static ModuleDetails older_jar = new ModuleDetails("ceylon", "older-jar", null, null, set(), set("12-b3"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
+    public final static ModuleDetails org_jboss_acme = new ModuleDetails("ceylon", "org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), types(), false, null);
+    public final static ModuleDetails test_jar = new ModuleDetails("ceylon", "test-jar", null, null, set(), set("0.1"), deps(), types(art(".jar", null, null)), false, null);
+    public final static ModuleDetails jsonly = new ModuleDetails("ceylon", "jsonly", null, null, set(), set("1.0.0"), deps(new ModuleDependencyInfo(null, "ceylon.language", "1.0.0", false, false)), types(art(".js", 7, 0)), false, null);
 
     @Test
     public void testCompleteEmpty() throws Exception {
@@ -1112,6 +1112,14 @@ public class SmokeTestCase extends AbstractTest {
                 jdkModule("java.rmi", "JDK module java.rmi"),
                 jdkModule("java.security.acl", "JDK module java.security.acl"),
                 jdkModule("java.tls", "JDK module java.tls"),
+                jdkModule("javafx.base", "JDK module javafx.base"),
+                jdkModule("javafx.controls", "JDK module javafx.controls"),
+                jdkModule("javafx.deploy", "JDK module javafx.deploy"),
+                jdkModule("javafx.fxml", "JDK module javafx.fxml"),
+                jdkModule("javafx.graphics", "JDK module javafx.graphics"),
+                jdkModule("javafx.media", "JDK module javafx.media"),
+                jdkModule("javafx.swing", "JDK module javafx.swing"),
+                jdkModule("javafx.web", "JDK module javafx.web"),
                 jdkModule("javax.annotation", "JDK module javax.annotation"),
                 jdkModule("javax.jaxws", "JDK module javax.jaxws"),
                 jdkModule("javax.naming", "JDK module javax.naming"),
@@ -1178,6 +1186,14 @@ public class SmokeTestCase extends AbstractTest {
                 jdkModule("java.rmi", "JDK module java.rmi"),
                 jdkModule("java.security.acl", "JDK module java.security.acl"),
                 jdkModule("java.tls", "JDK module java.tls"),
+                jdkModule("javafx.base", "JDK module javafx.base"),
+                jdkModule("javafx.controls", "JDK module javafx.controls"),
+                jdkModule("javafx.deploy", "JDK module javafx.deploy"),
+                jdkModule("javafx.fxml", "JDK module javafx.fxml"),
+                jdkModule("javafx.graphics", "JDK module javafx.graphics"),
+                jdkModule("javafx.media", "JDK module javafx.media"),
+                jdkModule("javafx.swing", "JDK module javafx.swing"),
+                jdkModule("javafx.web", "JDK module javafx.web"),
                 jdkModule("javax.annotation", "JDK module javax.annotation"),
                 jdkModule("javax.jaxws", "JDK module javax.jaxws"),
                 jdkModule("javax.naming", "JDK module javax.naming"),
@@ -1219,6 +1235,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testSearchJDKModulesFilteredByName() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 jdkModule("java.base", "JDK module java.base"),
+                jdkModule("javafx.base", "JDK module javafx.base"),
                 jdkModule("oracle.jdk.base", "JDK module oracle.jdk.base"),
                 jdkModule("oracle.jdk.tools.base", "JDK module oracle.jdk.tools.base"),
         };
@@ -1247,11 +1264,11 @@ public class SmokeTestCase extends AbstractTest {
                 jdkModule("java.rmi", "JDK module java.rmi"),
                 jdkModule("java.security.acl", "JDK module java.security.acl"),
                 jdkModule("java.tls", "JDK module java.tls"),
-                jdkModule("javax.annotation", "JDK module javax.annotation"),
-                jdkModule("javax.jaxws", "JDK module javax.jaxws"),
-                jdkModule("javax.naming", "JDK module javax.naming"),
-                jdkModule("javax.script", "JDK module javax.script"),
-                jdkModule("javax.transaction", "JDK module javax.transaction"),
+                jdkModule("javafx.base", "JDK module javafx.base"),
+                jdkModule("javafx.controls", "JDK module javafx.controls"),
+                jdkModule("javafx.deploy", "JDK module javafx.deploy"),
+                jdkModule("javafx.fxml", "JDK module javafx.fxml"),
+                jdkModule("javafx.graphics", "JDK module javafx.graphics"),
         };
         ModuleSearchResult results = testSearchResults("", Type.JVM, expected, 0l, 20l, repoManager);
         Assert.assertEquals(20, results.getCount());
@@ -1260,6 +1277,14 @@ public class SmokeTestCase extends AbstractTest {
 
         // second page
         expected = new ModuleDetails[]{
+                jdkModule("javafx.media", "JDK module javafx.media"),
+                jdkModule("javafx.swing", "JDK module javafx.swing"),
+                jdkModule("javafx.web", "JDK module javafx.web"),
+                jdkModule("javax.annotation", "JDK module javax.annotation"),
+                jdkModule("javax.jaxws", "JDK module javax.jaxws"),
+                jdkModule("javax.naming", "JDK module javax.naming"),
+                jdkModule("javax.script", "JDK module javax.script"),
+                jdkModule("javax.transaction", "JDK module javax.transaction"),
                 jdkModule("javax.xml", "JDK module javax.xml"),
                 jdkModule("javax.xmldsig", "JDK module javax.xmldsig"),
                 jdkModule("oracle.jdk.auth", "JDK module oracle.jdk.auth"),
@@ -1272,14 +1297,6 @@ public class SmokeTestCase extends AbstractTest {
                 jdkModule("oracle.jdk.httpserver", "JDK module oracle.jdk.httpserver"),
                 jdkModule("oracle.jdk.instrument", "JDK module oracle.jdk.instrument"),
                 jdkModule("oracle.jdk.jaxp", "JDK module oracle.jdk.jaxp"),
-                jdkModule("oracle.jdk.jaxws", "JDK module oracle.jdk.jaxws"),
-                jdkModule("oracle.jdk.jdbc.rowset", "JDK module oracle.jdk.jdbc.rowset"),
-                jdkModule("oracle.jdk.jndi", "JDK module oracle.jdk.jndi"),
-                jdkModule("oracle.jdk.logging", "JDK module oracle.jdk.logging"),
-                jdkModule("oracle.jdk.management", "JDK module oracle.jdk.management"),
-                jdkModule("oracle.jdk.management.iiop", "JDK module oracle.jdk.management.iiop"),
-                jdkModule("oracle.jdk.rmi", "JDK module oracle.jdk.rmi"),
-                jdkModule("oracle.jdk.scripting", "JDK module oracle.jdk.scripting"),
         };
 
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 20l, repoManager, results.getNextPagingInfo());
@@ -1289,6 +1306,14 @@ public class SmokeTestCase extends AbstractTest {
 
         // third page
         expected = new ModuleDetails[]{
+                jdkModule("oracle.jdk.jaxws", "JDK module oracle.jdk.jaxws"),
+                jdkModule("oracle.jdk.jdbc.rowset", "JDK module oracle.jdk.jdbc.rowset"),
+                jdkModule("oracle.jdk.jndi", "JDK module oracle.jdk.jndi"),
+                jdkModule("oracle.jdk.logging", "JDK module oracle.jdk.logging"),
+                jdkModule("oracle.jdk.management", "JDK module oracle.jdk.management"),
+                jdkModule("oracle.jdk.management.iiop", "JDK module oracle.jdk.management.iiop"),
+                jdkModule("oracle.jdk.rmi", "JDK module oracle.jdk.rmi"),
+                jdkModule("oracle.jdk.scripting", "JDK module oracle.jdk.scripting"),
                 jdkModule("oracle.jdk.sctp", "JDK module oracle.jdk.sctp"),
                 jdkModule("oracle.jdk.security.acl", "JDK module oracle.jdk.security.acl"),
                 jdkModule("oracle.jdk.smartcardio", "JDK module oracle.jdk.smartcardio"),
@@ -1299,7 +1324,7 @@ public class SmokeTestCase extends AbstractTest {
                 jdkModule("oracle.sun.charsets", "JDK module oracle.sun.charsets"),
         };
         results = testSearchResults("", Type.JVM, expected, results.getStart() + results.getCount(), 20l, repoManager, results.getNextPagingInfo());
-        Assert.assertEquals(8, results.getCount());
+        Assert.assertEquals(16, results.getCount());
         Assert.assertEquals(false, results.getHasMoreResults());
         Assert.assertEquals(40, results.getStart());
     }
@@ -1362,6 +1387,6 @@ public class SmokeTestCase extends AbstractTest {
     
     private ModuleDetails jdkModule(String name, String desc) {
         String v = javaVersion();
-        return new ModuleDetails(name, desc, null, set(), set(v), deps(), types(art(".jar", null, null)), false, null);
+        return new ModuleDetails("jdk", name, desc, null, set(), set(v), deps(), types(art(".jar", null, null)), false, null);
     }
 }

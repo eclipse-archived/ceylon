@@ -18,7 +18,9 @@ public class ModuleSearchResult {
         }
 
         // This should only be used by the tests!
-        public ModuleDetails(String name,
+        public ModuleDetails(
+                String namespace,
+                String name,
                 String doc,
                 String license,
                 SortedSet<String> authors,
@@ -29,7 +31,7 @@ public class ModuleSearchResult {
                 String origin) {
             this.name = name;
             for (String v : versions) {
-                ModuleVersionDetails mvd = new ModuleVersionDetails(null, name, v);
+                ModuleVersionDetails mvd = new ModuleVersionDetails(namespace, name, v);
                 mvd.setDoc(doc);
                 mvd.setLicense(license);
                 mvd.getAuthors().addAll(authors);
