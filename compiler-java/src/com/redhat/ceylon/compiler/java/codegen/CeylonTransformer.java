@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
@@ -44,6 +43,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.javax.lang.model.element.Modifier;
 import com.redhat.ceylon.javax.lang.model.element.NestingKind;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
@@ -181,6 +181,9 @@ public class CeylonTransformer extends AbstractTransformer {
 
             private JCTree makeClassDef(Tree.Declaration decl, long flags, String name, WantedDeclaration wantedDeclaration,
                     ListBuffer<JCTree> toplevelDeclarations, Stack<Tree.Declaration> ancestors) {
+                if (TreeUtil.hasAnnotation(decl.getAnnotationList(), "static", null)) {
+                    flags |= Flags.STATIC;
+                }
                 ListBuffer<JCTree.JCTypeParameter> typarams = new ListBuffer<JCTree.JCTypeParameter>();
                 if(decl instanceof Tree.ClassOrInterface){
                     Tree.ClassOrInterface classDecl = (ClassOrInterface) decl;
