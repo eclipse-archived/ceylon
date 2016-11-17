@@ -147,6 +147,10 @@ void lambdas() {
     // make sure Iterable is special-cased and not treated as a SAM
     @type:"Anything(Iterable<String>?)"
     value xf = j.takeIterableString;
+
+    // make sure Annotation is special-cased and not treated as a SAM
+    @type:"Anything(Annotation?)"
+    value xf2 = j.takeAnnotation;
 }
 
 @noanno

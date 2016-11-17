@@ -1407,6 +1407,27 @@ final class lambdas_ {
                 }
             };
         );
+        final .ceylon.language.Callable<? extends .java.lang.Object> xf2 = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.interop.LambdasJava $instance$ = j;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Annotation.$TypeDescriptor$)), "Anything(Annotation?)", (short)-1){
+                
+                @.java.lang.Override
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.annotation.Annotation $ceylontmp$arg0 = (.java.lang.annotation.Annotation)$param$0;
+                    return (
+                        let
+                        {
+                            $instance$.takeAnnotation($ceylontmp$arg0);
+                        }
+                        returning null;
+                    );
+                }
+            };
+        );
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.CompileTimeError

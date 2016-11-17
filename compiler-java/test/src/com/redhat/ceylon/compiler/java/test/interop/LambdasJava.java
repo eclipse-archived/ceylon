@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
+import java.lang.annotation.Annotation;
 import java.util.function.*;
 
 @FunctionalInterface
@@ -111,6 +112,8 @@ public class LambdasJava {
     final public void synchronizedRun(final Runnable action) {}
 
     public void takeIterableString(Iterable<String> it){}
+
+    public void takeAnnotation(Annotation at){}
 }
 
 interface InterfaceWithCoercedMembers {
