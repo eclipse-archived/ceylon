@@ -642,7 +642,7 @@ public class JsCompiler {
 
     /** Writes the beginning of the wrapper function for a JS module. */
     public static void beginWrapper(Writer writer) throws IOException {
-        writer.write("(function(define) { define(function($preq$, ex$, module) {\n");
+        writer.write("(function(define) { define(function(require, ex$, module) {\n");
     }
 
     /** Writes the require wrapper handling for our wrapper */
