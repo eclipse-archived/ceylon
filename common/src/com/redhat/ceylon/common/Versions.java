@@ -46,9 +46,9 @@ public class Versions {
      */
     public static final int CEYLON_VERSION_RELEASE = 1;
     
-    public static final String CEYLON_VERSION_QUALIFIER = "SNAPSHOT";
-    // private static final String _CEYLON_VERSION_QUALIFIER = ""; // If previous constant is an empty string use this line
-    private static final String _CEYLON_VERSION_QUALIFIER = "-" + CEYLON_VERSION_QUALIFIER; // Otherwise use this one
+    public static final String CEYLON_VERSION_QUALIFIER = "";
+    private static final String _CEYLON_VERSION_QUALIFIER = ""; // If previous constant is an empty string use this line
+    // private static final String _CEYLON_VERSION_QUALIFIER = "-" + CEYLON_VERSION_QUALIFIER; // Otherwise use this one
     
     // SHA1 of current HEAD at moment of compilation
     public static final String CURRENT_COMMIT_ID = "@commit@";
