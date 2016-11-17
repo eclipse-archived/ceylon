@@ -308,9 +308,9 @@ public class ModelUtil {
         if (argType==null) {
             return true;
         }
-        //Ignore optionality for resolving overloads, since
-        //all Java parameters are treated as optional,
-        //except primitive-typed parameters
+        //Ignore optionality for resolving overloads, 
+        //since all Java parameters are treated as 
+        //optional, except primitive-typed parameters
         Type nvt = unit.getNullType();
         if (nvt.isSubtypeOf(argType) && 
                 !nvt.isSubtypeOf(paramType)) {
@@ -323,8 +323,11 @@ public class ModelUtil {
             return true;
         }
         if (isTypeUnknown(defArgType) || 
-                isTypeUnknown(defParamType)) {
+            isTypeUnknown(defParamType)) {
             return false;
+        }
+        if (defParamType.isCallable()) {
+            return defArgType.isSubtypeOf(defParamType);
         }
         TypeDeclaration erasedArgType = 
                 erase(defArgType, unit);
@@ -337,7 +340,7 @@ public class ModelUtil {
                         defArgType)) {
             // final attempt: find the erasure of the arg type supertype
             Type defSupertype = defArgType.getSupertype(defParamType.getDeclaration());
-            if(defSupertype != null){
+            if (defSupertype!=null) {
                 TypeDeclaration erasedSupertype = erase(defSupertype, unit);
                 return erasedSupertype.inherits(erasedParamType);
             }
@@ -366,7 +369,7 @@ public class ModelUtil {
         return sut==null || put==null || !sut.equals(put);
     }
     
-    static boolean betterMatch(Declaration d, Declaration r, 
+    static boolean isBetterMatch(Declaration d, Declaration r, 
             List<Type> signature, boolean variadic) {
         //always prefer a non-coerced member 
         //over a coerced one
@@ -417,14 +420,20 @@ public class ModelUtil {
                 }
                 //prefer the longer signature in the case that
                 //one of them doesn't have enough params
-                if ((!dhsp && size>dplSize) && (rhsp||dplSize<rplSize)) {
+                if ((!dhsp && size>dplSize) 
+                        && (rhsp||dplSize<rplSize)) {
                     return false;
                 }
-                if ((!rhsp && size>rplSize) && (dhsp||rplSize<dplSize)) {
+                if ((!rhsp && size>rplSize) 
+                        && (dhsp||rplSize<dplSize)) {
                     return true;
                 }
+                
                 //otherwise prefer a signature without varargs 
-                //over one with a varargs parameter
+                //over one with an unnecessary varargs parameter
+                //TODO: I would prefer to move this test to the
+                //      *end* of this method, but that broke
+                //      some tests for refinement of overloads
                 if (!dhsp && rhsp) {
                     return true;
                 }
@@ -471,12 +480,12 @@ public class ModelUtil {
                                 supportsCoercion(ptd) &&
                                 // do we have different scores?
                                 hasWorseScore(
-                                        getCoercionScore(
-                                                argumentType, 
-                                                paramType), 
-                                        getCoercionScore(
-                                                argumentType, 
-                                                otherType))) {
+                                    getCoercionScore(
+                                        argumentType, 
+                                        paramType), 
+                                    getCoercionScore(
+                                        argumentType, 
+                                        otherType))) {
                             return false;
                         }
                         if (!ptd.inherits(otd) &&
@@ -492,6 +501,7 @@ public class ModelUtil {
                             return false;
                         }
                     }
+                    
                     // check sequenced parameters last
                     if (dhsp && rhsp) {
                         Type dplt = 
@@ -509,7 +519,7 @@ public class ModelUtil {
                         Type otherType = 
                                 unit.getDefiniteType(rplt);
                         if (isTypeUnknown(otherType) || 
-                                isTypeUnknown(paramType)) {
+                            isTypeUnknown(paramType)) {
                             return false;
                         }
                         paramType = 
@@ -517,7 +527,7 @@ public class ModelUtil {
                         otherType = 
                                 unit.getIteratedType(otherType);
                         if (isTypeUnknown(otherType) || 
-                                isTypeUnknown(paramType)) {
+                            isTypeUnknown(paramType)) {
                             return false;
                         }
                         TypeDeclaration ptd = 
@@ -533,13 +543,13 @@ public class ModelUtil {
                                             dplSize);
                             // do we have different scores?
                             int pscore = 
-                                    getCoercionScore(
-                                            widerArgumentType, 
-                                            paramType);
+                                getCoercionScore(
+                                    widerArgumentType, 
+                                    paramType);
                             int oscore = 
-                                    getCoercionScore(
-                                            widerArgumentType, 
-                                            otherType);
+                                getCoercionScore(
+                                    widerArgumentType, 
+                                    otherType);
                             if (hasWorseScore(pscore, oscore)) {
                                 return false;
                             }
@@ -550,7 +560,10 @@ public class ModelUtil {
                                         otherType)) {
                             return false;
                         }
+                        
+                        //TODO: check argumentType, as above
                     }
+                    
                     return true;
                 }
             }
@@ -2203,10 +2216,10 @@ public class ModelUtil {
         for (Iterator<Declaration> i = results.iterator(); 
                 i.hasNext();) {
             Declaration o = i.next();
-            if (betterMatch(d, o, signature, variadic)) {
+            if (isBetterMatch(d, o, signature, variadic)) {
                 i.remove();
             }
-            else if (betterMatch(o, d, signature, variadic)) { //TODO: note asymmetry here resulting in nondeterminate behavior!
+            else if (isBetterMatch(o, d, signature, variadic)) { //TODO: note asymmetry here resulting in nondeterminate behavior!
                 add = false;
             }
         }
