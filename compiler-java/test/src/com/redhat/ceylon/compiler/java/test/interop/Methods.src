@@ -438,15 +438,27 @@ final class tupleSpreading_ {
             let
             {
                 .ceylon.language.Sequential tuple$19 = (.ceylon.language.Sequential)tuple;
-                java.takeAll(((.ceylon.language.Boolean)tuple$19.get(.ceylon.language.Integer.instance(0L))).booleanValue(), ((.ceylon.language.Byte)tuple$19.get(.ceylon.language.Integer.instance(1L))).byteValue(), .com.redhat.ceylon.compiler.java.Util.toShort(((.ceylon.language.Integer)tuple$19.get(.ceylon.language.Integer.instance(2L))).longValue()), .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)tuple$19.get(.ceylon.language.Integer.instance(3L))).longValue()), ((.ceylon.language.Integer)tuple$19.get(.ceylon.language.Integer.instance(4L))).longValue(), (float)((.ceylon.language.Float)tuple$19.get(.ceylon.language.Integer.instance(5L))).doubleValue(), ((.ceylon.language.Float)tuple$19.get(.ceylon.language.Integer.instance(6L))).doubleValue(), (char)((.ceylon.language.Character)tuple$19.get(.ceylon.language.Integer.instance(7L))).intValue(), ((.ceylon.language.String)tuple$19.get(.ceylon.language.Integer.instance(8L))).toString(), tuple$19.get(.ceylon.language.Integer.instance(9L)));
+                java.takeAll(((.ceylon.language.Boolean)tuple$19.get(.ceylon.language.Integer.instance(0L))).booleanValue(), ((.ceylon.language.Byte)tuple$19.get(.ceylon.language.Integer.instance(1L))).byteValue(), .com.redhat.ceylon.compiler.java.Util.toShort(((.ceylon.language.Integer)tuple$19.get(.ceylon.language.Integer.instance(2L))).longValue()), .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)tuple$19.get(.ceylon.language.Integer.instance(3L))).longValue()), ((.ceylon.language.Integer)tuple$19.get(.ceylon.language.Integer.instance(4L))).longValue(), (float)((.ceylon.language.Float)tuple$19.get(.ceylon.language.Integer.instance(5L))).doubleValue(), ((.ceylon.language.Float)tuple$19.get(.ceylon.language.Integer.instance(6L))).doubleValue(), (char)((.ceylon.language.Character)tuple$19.get(.ceylon.language.Integer.instance(7L))).intValue(), (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$21 = (.ceylon.language.String)tuple$19.get(.ceylon.language.Integer.instance(8L));
+                    }
+                    returning $ceylontmp$21 != null ? $ceylontmp$21.toString() : null;
+                ), tuple$19.get(.ceylon.language.Integer.instance(9L)));
             }
             returning null;
         );
         (
             let
             {
-                .ceylon.language.Sequential tuple$21 = (.ceylon.language.Sequential)tuple.getRest();
-                java.takeAll(true, ((.ceylon.language.Byte)tuple$21.get(.ceylon.language.Integer.instance(0L))).byteValue(), .com.redhat.ceylon.compiler.java.Util.toShort(((.ceylon.language.Integer)tuple$21.get(.ceylon.language.Integer.instance(1L))).longValue()), .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)tuple$21.get(.ceylon.language.Integer.instance(2L))).longValue()), ((.ceylon.language.Integer)tuple$21.get(.ceylon.language.Integer.instance(3L))).longValue(), (float)((.ceylon.language.Float)tuple$21.get(.ceylon.language.Integer.instance(4L))).doubleValue(), ((.ceylon.language.Float)tuple$21.get(.ceylon.language.Integer.instance(5L))).doubleValue(), (char)((.ceylon.language.Character)tuple$21.get(.ceylon.language.Integer.instance(6L))).intValue(), ((.ceylon.language.String)tuple$21.get(.ceylon.language.Integer.instance(7L))).toString(), tuple$21.get(.ceylon.language.Integer.instance(8L)));
+                .ceylon.language.Sequential tuple$22 = (.ceylon.language.Sequential)tuple.getRest();
+                java.takeAll(true, ((.ceylon.language.Byte)tuple$22.get(.ceylon.language.Integer.instance(0L))).byteValue(), .com.redhat.ceylon.compiler.java.Util.toShort(((.ceylon.language.Integer)tuple$22.get(.ceylon.language.Integer.instance(1L))).longValue()), .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)tuple$22.get(.ceylon.language.Integer.instance(2L))).longValue()), ((.ceylon.language.Integer)tuple$22.get(.ceylon.language.Integer.instance(3L))).longValue(), (float)((.ceylon.language.Float)tuple$22.get(.ceylon.language.Integer.instance(4L))).doubleValue(), ((.ceylon.language.Float)tuple$22.get(.ceylon.language.Integer.instance(5L))).doubleValue(), (char)((.ceylon.language.Character)tuple$22.get(.ceylon.language.Integer.instance(6L))).intValue(), (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$24 = (.ceylon.language.String)tuple$22.get(.ceylon.language.Integer.instance(7L));
+                    }
+                    returning $ceylontmp$24 != null ? $ceylontmp$24.toString() : null;
+                ), tuple$22.get(.ceylon.language.Integer.instance(8L)));
             }
             returning null;
         );
@@ -459,8 +471,8 @@ final class tupleSpreading_ {
         (
             let
             {
-                .ceylon.language.Sequential tuple$23 = (.ceylon.language.Sequential)tuple2;
-                java.takeAllVariadic(((.ceylon.language.Boolean)tuple$23.get(.ceylon.language.Integer.instance(0L))).booleanValue(), ((.ceylon.language.Byte)tuple$23.get(.ceylon.language.Integer.instance(1L))).byteValue(), .com.redhat.ceylon.compiler.java.Util.toCharArray((.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)tuple$23.spanFrom(.ceylon.language.Integer.instance(2L))));
+                .ceylon.language.Sequential tuple$25 = (.ceylon.language.Sequential)tuple2;
+                java.takeAllVariadic(((.ceylon.language.Boolean)tuple$25.get(.ceylon.language.Integer.instance(0L))).booleanValue(), ((.ceylon.language.Byte)tuple$25.get(.ceylon.language.Integer.instance(1L))).byteValue(), .com.redhat.ceylon.compiler.java.Util.toCharArray((.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)tuple$25.spanFrom(.ceylon.language.Integer.instance(2L))));
             }
             returning null;
         );
@@ -478,68 +490,6 @@ final class comprehensions_ {
     static void comprehensions() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
-            
-            public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
-                    {
-                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer i;
-                    private boolean i$exhausted$;
-                    
-                    private final boolean i() {
-                        final .java.lang.Object $ceylontmp$item$25 = $iterator$0.next();
-                        i$exhausted$ = $ceylontmp$item$25 == .ceylon.language.finished_.get_();
-                        if (i$exhausted$) {
-                            return false;
-                        } else {
-                            i = (.ceylon.language.Integer)$ceylontmp$item$25;
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.i()) {
-                            final .ceylon.language.Integer i = this.i;
-                            return .ceylon.language.Float.instance(2.0);
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
-            }
-        }.sequence()));
-        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
-            
-            public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
-                    {
-                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer i;
-                    private boolean i$exhausted$;
-                    
-                    private final boolean i() {
-                        final .java.lang.Object $ceylontmp$item$26 = $iterator$0.next();
-                        i$exhausted$ = $ceylontmp$item$26 == .ceylon.language.finished_.get_();
-                        if (i$exhausted$) {
-                            return false;
-                        } else {
-                            i = (.ceylon.language.Integer)$ceylontmp$item$26;
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.i()) {
-                            final .ceylon.language.Integer i = this.i;
-                            return .ceylon.language.Float.instance(2.0);
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
-            }
-        }.sequence(), 1.0));
-        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
@@ -570,7 +520,7 @@ final class comprehensions_ {
                 };
             }
         }.sequence()));
-        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
@@ -601,6 +551,68 @@ final class comprehensions_ {
                 };
             }
         }.sequence(), 1.0));
+        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
+                    {
+                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmp$item$29 = $iterator$0.next();
+                        i$exhausted$ = $ceylontmp$item$29 == .ceylon.language.finished_.get_();
+                        if (i$exhausted$) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmp$item$29;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return .ceylon.language.Float.instance(2.0);
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence()));
+        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
+                    {
+                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer i;
+                    private boolean i$exhausted$;
+                    
+                    private final boolean i() {
+                        final .java.lang.Object $ceylontmp$item$30 = $iterator$0.next();
+                        i$exhausted$ = $ceylontmp$item$30 == .ceylon.language.finished_.get_();
+                        if (i$exhausted$) {
+                            return false;
+                        } else {
+                            i = (.ceylon.language.Integer)$ceylontmp$item$30;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.i()) {
+                            final .ceylon.language.Integer i = this.i;
+                            return .ceylon.language.Float.instance(2.0);
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence(), 1.0));
     }
 }
 final class moreOverloads_ {
@@ -615,7 +627,7 @@ final class moreOverloads_ {
         .java.nio.file.Files.copy(.java.nio.file.Paths.get(new .java.net.URI("", "", "")), .java.nio.file.Paths.get(new .java.net.URI("")), (
             let
             {
-                .ceylon.language.Sequential<? extends .java.nio.file.CopyOption> $ceylontmp$29$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.nio.file.StandardCopyOption, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.nio.file.StandardCopyOption.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.nio.file.StandardCopyOption.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                .ceylon.language.Sequential<? extends .java.nio.file.CopyOption> $ceylontmp$31$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.nio.file.StandardCopyOption, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.nio.file.StandardCopyOption.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.nio.file.StandardCopyOption.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
                     
                     @.java.lang.Override
                     protected final .java.lang.Object $evaluate$(int $index$) {
@@ -633,7 +645,7 @@ final class moreOverloads_ {
                     }
                 }.sequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.java.nio.file.CopyOption>toArray($ceylontmp$29$0, new .java.nio.file.CopyOption[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$29$0.getSize()) + 1], .java.nio.file.StandardCopyOption.ATOMIC_MOVE);
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.nio.file.CopyOption>toArray($ceylontmp$31$0, new .java.nio.file.CopyOption[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$31$0.getSize()) + 1], .java.nio.file.StandardCopyOption.ATOMIC_MOVE);
         ));
     }
 }
