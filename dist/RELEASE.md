@@ -30,14 +30,24 @@ How to do a release of Ceylon.
 1. Create a release branch
   - $ git checkout -b version-**1.2.1**
   - $ git push --set-upstream origin version-**1.2.1**
-2. Tag every project
+2. Reversion the new branch
+  -  $ ./dist/reversion **1.2.1**-SNAPSHOT **1.2.1**
+  -  $ ./dist/reversion **1.2.1**.osgi-4 **1.2.1**.osgi-5
+  - Commit and push
+3. Reversion master
+  -  $ ./dist/reversion **1.2.1**-SNAPSHOT **1.2.2**-SNAPSHOT
+  -  $ ./dist/reversion **1.2.1**.osgi-4 **1.2.2**.osgi-4
+  - [Choose a new release name](https://en.wikipedia.org/wiki/List_of_spacecraft_in_the_Culture_series)
+  -  $ ./dist/reversion "The Old Release Name" "The New Release Name"
+  - Commit and push
+4. Tag every project
   -  $ git tag **1.2.1**
   -  $ git push --tags
-3. Do the release zip
+5. Do the release zip
   -  $ mkdir /tmp/ceylon
   -  $ docker pull ceylon/ceylon-build
   -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build **1.2.1**
-4. Copy the zip to downloads.ceylon-lang.org:
+6. Copy the zip to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-**1.2.1**.zip **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
 # Build the Debian file
