@@ -36,8 +36,8 @@ public class JsOutput {
     protected String clalias = "";
     protected final Module module;
     protected boolean modelDone;
-    private final Set<File> s = new HashSet<File>();
-    final Map<String,String> requires = new HashMap<String,String>();
+    private final Set<File> s = new HashSet<>();
+    final Map<String,String> requires = new HashMap<>();
     public final MetamodelVisitor mmg;
     private static final String encoding = "UTF-8";
     private JsWriter jsw;
@@ -88,7 +88,7 @@ public class JsOutput {
 
     /** Write the function to retrieve or define the model JSON map. */
     protected void writeModelRetriever() throws IOException {
-        out("require('", JsCompiler.scriptPath(module), "-model').$CCMM$");
+        out("$preq$('", JsCompiler.scriptPath(module), "-model').$CCMM$");
     }
 
     public void encodeModel(final JsIdentifierNames names) throws IOException {
@@ -155,7 +155,7 @@ public class JsOutput {
                 dashIdx = singleFunctionName.indexOf('-', dashIdx);
             }
             out("var ", modAlias, "=", getLanguageModuleAlias(), "npm$req('",
-                    singleFunctionName, "','", path, "',require);\n");
+                    singleFunctionName, "','", path, "',$preq$);\n");
             if (modAlias != null && !modAlias.isEmpty()) {
                 out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
             }
@@ -166,7 +166,7 @@ public class JsOutput {
         final String path = JsCompiler.scriptPath(mod);
         final String modAlias = names.moduleAlias(mod);
         if (requires.put(path, modAlias) == null) {
-            out("var ", modAlias, "=require('", path, "');\n");
+            out("var ", modAlias, "=$preq$('", path, "');\n");
             if (modAlias != null && !modAlias.isEmpty()) {
                 out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
             }
