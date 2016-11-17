@@ -5536,7 +5536,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected String isFunctionalInterfaceWithExceptions(ClassMirror klass){
-        if(klass.getQualifiedName().equals("java.util.Iterable"))
+        if(klass.getQualifiedName().equals("java.util.Iterable")
+                || klass.getQualifiedName().equals("java.lang.annotation.Annotation"))
             return null;
         return isFunctionalInterface(klass);
     }
