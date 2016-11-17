@@ -414,7 +414,8 @@ public class AetherResolverImpl implements AetherResolver {
                 return JavaScopes.COMPILE.equals(dep.getScope())
                             || JavaScopes.RUNTIME.equals(dep.getScope())
                             || JavaScopes.PROVIDED.equals(dep.getScope())
-                            || JavaScopes.TEST.equals(dep.getScope())
+                            // TEST is useless ATM and is nothing but trouble
+//                            || JavaScopes.TEST.equals(dep.getScope())
                             ;
             }
         });
