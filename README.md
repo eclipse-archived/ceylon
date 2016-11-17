@@ -2,7 +2,7 @@
 
 # Ceylon
 
-This is the 1.3.1-SNAPSHOT _"Now We Try It My Way"_ release of the Ceylon 
+This is the 1.3.1 _"Now We Try It My Way"_ release of the Ceylon 
 command line tools. This is a production version of the platform.
 
 Ceylon is a modern, modular, statically typed programming language 
