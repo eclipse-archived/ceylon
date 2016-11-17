@@ -320,16 +320,16 @@ public class AetherTestCase extends AbstractAetherTest {
         Assert.assertNotNull(result.getVersions().get("1.1"));
         Assert.assertNotNull(result.getVersions().get("1.1.1"));
         for(ModuleVersionDetails res : result.getVersions().values()){
-        	Assert.assertEquals("Spark\nA Sinatra inspired java web framework\nhttp://www.sparkjava.com", res.getDoc());
-        	Assert.assertEquals("The Apache Software License, Version 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0.txt", res.getLicense());
-        	NavigableSet<ModuleDependencyInfo> deps = res.getDependencies();
+            Assert.assertEquals("Spark\nA Sinatra inspired java web framework\nhttp://www.sparkjava.com", res.getDoc());
+            Assert.assertEquals("The Apache Software License, Version 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0.txt", res.getLicense());
+            NavigableSet<ModuleDependencyInfo> deps = res.getDependencies();
             List<ModuleDependencyInfo> compileDeps = new ArrayList<>(deps.size());
             for (ModuleDependencyInfo dep : res.getDependencies()) {
                 if(dep.getModuleScope() == ModuleScope.COMPILE
                         || dep.getModuleScope() == ModuleScope.PROVIDED)
                     compileDeps.add(dep);
             }
-        	Assert.assertEquals(4, compileDeps.size());
+            Assert.assertEquals(4, compileDeps.size());
         }
         lookup = new ModuleVersionQuery("com.sparkjava:spark-core", null, Type.JAR);
         result = manager.completeVersions(lookup);

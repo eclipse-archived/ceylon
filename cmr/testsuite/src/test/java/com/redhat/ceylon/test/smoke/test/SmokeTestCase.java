@@ -795,9 +795,9 @@ public class SmokeTestCase extends AbstractTest {
         };
 
         testSearchResults("hello", Type.CAR, Retrieval.ALL, expected, null, null, 
-        		getRepositoryManager(), null,
-        		Versions.V1_2_1_JVM_BINARY_MAJOR_VERSION, Versions.V1_2_1_JVM_BINARY_MINOR_VERSION,
-        		Versions.V1_2_1_JS_BINARY_MAJOR_VERSION, Versions.V1_2_1_JS_BINARY_MINOR_VERSION);
+                getRepositoryManager(), null,
+                Versions.V1_2_1_JVM_BINARY_MAJOR_VERSION, Versions.V1_2_1_JVM_BINARY_MINOR_VERSION,
+                Versions.V1_2_1_JS_BINARY_MAJOR_VERSION, Versions.V1_2_1_JS_BINARY_MINOR_VERSION);
     }
 
     @Test
@@ -807,22 +807,22 @@ public class SmokeTestCase extends AbstractTest {
         };
 
         testSearchResults("hello", Type.JS, Retrieval.ALL, expected, null, null, 
-        		getRepositoryManager(), null,
-        		Versions.V1_2_1_JVM_BINARY_MAJOR_VERSION, Versions.V1_2_1_JVM_BINARY_MINOR_VERSION,
-        		Versions.V1_2_1_JS_BINARY_MAJOR_VERSION, Versions.V1_2_1_JS_BINARY_MINOR_VERSION);
+                getRepositoryManager(), null,
+                Versions.V1_2_1_JVM_BINARY_MAJOR_VERSION, Versions.V1_2_1_JVM_BINARY_MINOR_VERSION,
+                Versions.V1_2_1_JS_BINARY_MAJOR_VERSION, Versions.V1_2_1_JS_BINARY_MINOR_VERSION);
     }
 
     @Test
     public void testSearchModulesJsOlderBinary() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
-        		hello_120_js,
+                hello_120_js,
                 hello2_js
         };
 
         testSearchResults("hello", Type.JS, Retrieval.ALL, expected, null, null, 
-        		getRepositoryManager(), null,
-        		Versions.V1_2_BINARY_MAJOR_VERSION, Versions.V1_2_BINARY_MINOR_VERSION,
-        		Versions.V1_2_BINARY_MAJOR_VERSION, Versions.V1_2_BINARY_MINOR_VERSION);
+                getRepositoryManager(), null,
+                Versions.V1_2_BINARY_MAJOR_VERSION, Versions.V1_2_BINARY_MINOR_VERSION,
+                Versions.V1_2_BINARY_MAJOR_VERSION, Versions.V1_2_BINARY_MINOR_VERSION);
     }
 
     @Test
@@ -1331,49 +1331,49 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void testListVersionBinaryCompat() throws Exception {
-    	String path = getRepositoryRoot().getAbsolutePath();
+        String path = getRepositoryRoot().getAbsolutePath();
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 new ModuleVersionDetails("ceylon", "hello", "1.0.0", "A test", "Apache Software License", 
-                		set("The Ceylon Team"), 
-                		deps(), 
-                		types(new ModuleVersionArtifact(".car", 3, 0)), false, path),
+                        set("The Ceylon Team"), 
+                        deps(), 
+                        types(new ModuleVersionArtifact(".car", 3, 0)), false, path),
                 new ModuleVersionDetails("ceylon", "hello", "1.2.0", "A test", "Apache Software License", 
-                		set("The Ceylon Team"), 
-                		deps(language), 
-                		types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
+                        set("The Ceylon Team"), 
+                        deps(language), 
+                        types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
                 new ModuleVersionDetails("ceylon", "hello", "1.2.1", "A test", "Apache Software License", 
-                		set("The Ceylon Team"), 
-                		deps(language), 
-                		types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
+                        set("The Ceylon Team"), 
+                        deps(language), 
+                        types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
         };
         testListVersions("hello", null, expected, getRepositoryManager());
 
         ModuleVersionDetails[] expectedBoth = new ModuleVersionDetails[]{
                 new ModuleVersionDetails("ceylon", "hello", "1.2.0", "A test", "Apache Software License", 
-                		set("The Ceylon Team"), 
-                		deps(language), 
-                		types(new ModuleVersionArtifact(".car", 8, 0),
-                				new ModuleVersionArtifact(".js", 8, 0)), false, path),
+                        set("The Ceylon Team"), 
+                        deps(language), 
+                        types(new ModuleVersionArtifact(".car", 8, 0),
+                                new ModuleVersionArtifact(".js", 8, 0)), false, path),
                 new ModuleVersionDetails("ceylon", "hello", "1.2.1", "A test", "Apache Software License", 
-                		set("The Ceylon Team"), 
-                		deps(language), 
-                		types(new ModuleVersionArtifact(".car", 8, 0),
-                				new ModuleVersionArtifact(".js", 9, 0)), false, path),
+                        set("The Ceylon Team"), 
+                        deps(language), 
+                        types(new ModuleVersionArtifact(".car", 8, 0),
+                                new ModuleVersionArtifact(".js", 9, 0)), false, path),
         };
         testListVersions("hello", null, expectedBoth, getRepositoryManager(), 
-        		8, 0, null, null, null,
-        		ModuleQuery.Type.CEYLON_CODE, ModuleQuery.Retrieval.ALL);
+                8, 0, null, null, null,
+                ModuleQuery.Type.CEYLON_CODE, ModuleQuery.Retrieval.ALL);
 
         ModuleVersionDetails[] expectedSingle = new ModuleVersionDetails[]{
                 new ModuleVersionDetails("ceylon", "hello", "1.2.1", "A test", "Apache Software License", 
-                		set("The Ceylon Team"), 
-                		deps(language), 
-                		types(new ModuleVersionArtifact(".car", 8, 0),
-                				new ModuleVersionArtifact(".js", 9, 0)), false, path),
+                        set("The Ceylon Team"), 
+                        deps(language), 
+                        types(new ModuleVersionArtifact(".car", 8, 0),
+                                new ModuleVersionArtifact(".js", 9, 0)), false, path),
         };
         testListVersions("hello", null, expectedSingle, getRepositoryManager(), 
-        		8, 0, 9, 0, null,
-        		ModuleQuery.Type.CEYLON_CODE, ModuleQuery.Retrieval.ALL);
+                8, 0, 9, 0, null,
+                ModuleQuery.Type.CEYLON_CODE, ModuleQuery.Retrieval.ALL);
     }
     
     private String javaVersion() {
