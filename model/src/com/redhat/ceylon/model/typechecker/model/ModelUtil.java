@@ -239,7 +239,7 @@ public class ModelUtil {
                         return false;
                     }
                     Type sdt = signature.get(i);
-                    if (!matches(sdt, pdt, unit)) {
+                    if (!matches(sdt, pdt, dec, unit)) {
                         return false;
                     }
                 }
@@ -267,13 +267,13 @@ public class ModelUtil {
                             Type sdt = signature.get(i);
                             Type isdt = 
                                     unit.getIteratedType(sdt);
-                            if (!matches(isdt, ipdt, unit)) {
+                            if (!matches(isdt, ipdt, dec, unit)) {
                                 return false;
                             }
                         }
                         else {
                             Type sdt = signature.get(i);
-                            if (!matches(sdt, ipdt, unit)) {
+                            if (!matches(sdt, ipdt, dec, unit)) {
                                 return false;
                             }
                         }
@@ -300,7 +300,8 @@ public class ModelUtil {
     
     public static boolean matches(
             Type argType, 
-            Type paramType, 
+            Type paramType,
+            Declaration dec,
             Unit unit) {
         if (paramType==null) {
             return false;
@@ -326,8 +327,14 @@ public class ModelUtil {
             isTypeUnknown(defParamType)) {
             return false;
         }
-        if (defParamType.isCallable()) {
-            return defArgType.isSubtypeOf(defParamType);
+        if (defParamType.isCallable() 
+                && dec instanceof Generic) {
+            Generic g = (Generic) dec;
+            //TODO: replace the type parameters with
+            //      wildcards instead!!!
+            if (!defParamType.involvesTypeParameters(g)) {
+                return defArgType.isSubtypeOf(defParamType);
+            }
         }
         TypeDeclaration erasedArgType = 
                 erase(defArgType, unit);
@@ -356,7 +363,7 @@ public class ModelUtil {
                     unit.getJavaArrayElementType(defArgType);
             Type paramElementType = 
                     unit.getJavaArrayElementType(defParamType);
-            return matches(argElementType, paramElementType, unit);
+            return matches(argElementType, paramElementType, dec, unit);
         }
         return true;
     }
