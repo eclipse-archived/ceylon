@@ -343,7 +343,7 @@ public class AetherResolverImpl implements AetherResolver {
             try {
                 ret = resolveArtifactWithDependencies(repoSystem, session, repos, artifact);
             } catch (DependencyResolutionException e) {
-                if(pomResultArtifact == null)
+                if(!isTimeout(e) && pomResultArtifact == null)
                     throw new AetherException(e);
                 // try a jar-less module
             }
@@ -360,7 +360,7 @@ public class AetherResolverImpl implements AetherResolver {
 			try {
 			    resultArtifact = resolveSingleArtifact(repoSystem, session, repos, artifact);
 			} catch (ArtifactResolutionException e) {
-			    if(pomResultArtifact == null)
+			    if(!isTimeout(e) && pomResultArtifact == null)
 			        throw new AetherException(e);
 			    else // go with a jar-less module
 			        resultArtifact = pomResultArtifact;
@@ -369,6 +369,13 @@ public class AetherResolverImpl implements AetherResolver {
         }
         
         return ret == null ? null : new DependencyNodeDependencyDescriptor(this, ret);
+    }
+
+    private boolean isTimeout(Throwable e) {
+        while(e.getCause() != null)
+            e = e.getCause();
+        // we can't use its real type since we don't import it
+        return e.getClass().getSimpleName().endsWith(".ConnectTimeoutException");
     }
 
     private DependencyNode resolveArtifactWithDependencies(RepositorySystem repoSystem, 
