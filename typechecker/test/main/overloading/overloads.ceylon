@@ -1,3 +1,7 @@
+import ceylon.language.meta.model {
+    Class
+}
+
 interface Runnable {}
 
 object service {
@@ -88,3 +92,13 @@ class Clas() satisfies Iface {
 class My() {
     @error shared void equals() {}
 }
+
+class Sender() {}
+
+class Controller() {
+    shared void fun(String() fun) {}
+    @error shared void fun<U>(Class<U> c, Object* objs) {}
+    
+    fun(`Sender`);
+}
+
