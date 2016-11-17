@@ -109,9 +109,9 @@ public class IssuesTests_5500_5999 extends CompilerTests {
     @Test
     public void testBug5919() throws IOException {
         File mrepo = new File(System.getProperty("user.home"), ".m2/repository");
-        File annot = new File(mrepo, "com/android/support/support-annotations/23.0.1");
-        File jar = new File(annot, "support-annotations-23.0.1.jar");
-        File pom = new File(annot, "support-annotations-23.0.1.pom");
+        File annot = new File(mrepo, "com/android/support/support-annotations/23.3.0");
+        File jar = new File(annot, "support-annotations-23.3.0.jar");
+        File pom = new File(annot, "support-annotations-23.3.0.pom");
         downloadAndroidAnnotations(pom);
         downloadAndroidAnnotations(jar);
         File overridesFile = new File(getPackagePath(), "bug59xx/bug5919/overrides.xml");
@@ -129,8 +129,8 @@ public class IssuesTests_5500_5999 extends CompilerTests {
     }
 
     private void downloadAndroidAnnotations(File file) throws IOException {
-        String repoUrl = "https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/android-6.0.1_r46/com/android/support/support-annotations/23.0.1/";
-        // support-annotations-23.0.1.pom?format=TEXT
+        String repoUrl = "https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/android-7.0.0_r21/com/android/support/support-annotations/23.3.0/";
+        // support-annotations-23.3.0.pom?format=TEXT
         if(!file.exists()){
             File folder = file.getParentFile();
             folder.mkdirs();
