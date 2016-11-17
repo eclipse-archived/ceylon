@@ -20,6 +20,7 @@ package ceylon.modules.jboss.repository;
 import java.io.File;
 import java.io.IOException;
 import java.util.jar.JarFile;
+import java.util.zip.ZipException;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import org.jboss.modules.ModuleIdentifier;
@@ -49,9 +50,15 @@ public class ResourceLoaderProvider {
         if (classesRoot != null) {
             return new SourceResourceLoader(moduleFile, classesRoot, "");
         } else {
-            JarFile jarFile = new JarFile(moduleFile);
-            String rootName = moduleFile.getName();
-            return ResourceLoaders.createJarResourceLoader(rootName, jarFile);
+            try {
+                JarFile jarFile = new JarFile(moduleFile);
+                String rootName = moduleFile.getName();
+                return ResourceLoaders.createJarResourceLoader(rootName, jarFile);
+            }catch(ZipException x){
+                ZipException x2 = new ZipException(x.getMessage()+": "+moduleFile);
+                x2.initCause(x);
+                throw x2;
+            }
         }
     }
 }
