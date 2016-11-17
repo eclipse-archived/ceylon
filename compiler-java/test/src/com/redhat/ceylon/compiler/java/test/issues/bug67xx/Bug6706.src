@@ -1,0 +1,59 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug67xx;
+
+final class bug6706_ {
+    
+    private bug6706_() {
+    }
+    
+    static void bug6706() {
+        final .java.util.List<.ceylon.language.String> list = (.java.util.List<.ceylon.language.String>)(.java.util.List).com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.stream.Stream.<.ceylon.language.String>of(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"), .ceylon.language.String.instance("goodbye"), (.ceylon.language.String)null)).filter(new .java.util.function.Predicate<.ceylon.language.String>(){
+            
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$5 = (.ceylon.language.String)$param$0;
+                    }
+                    returning $ceylontmp$5 != null ? $ceylontmp$5.toString() : null;
+                );
+                return .ceylon.language.Boolean.instance((
+                    let
+                    {
+                        boolean $ceylontmp$ifResult$0;
+                        .ceylon.language.String s$2;
+                        if ((s$2 = .ceylon.language.String.instance(s)) != null) {
+                            final .java.lang.String s$4 = s$2.toString();
+                            $ceylontmp$ifResult$0 = .ceylon.language.String.longerThan(s$4, 2L);
+                        } else {
+                            final .java.lang.Object s$3 = s$2;
+                            $ceylontmp$ifResult$0 = false;
+                        }
+                    }
+                    returning $ceylontmp$ifResult$0;
+                ));
+            }
+            
+            @.java.lang.Override
+            public boolean test(final .ceylon.language.String arg0) {
+                return $call$(arg0).booleanValue();
+            }
+        })).filter(new .java.util.function.Predicate<.ceylon.language.String>(){
+            
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$6 = (.ceylon.language.String)$param$0;
+                    }
+                    returning $ceylontmp$6 != null ? $ceylontmp$6.toString() : null;
+                );
+                return .ceylon.language.Boolean.instance(.ceylon.language.String.longerThan(.com.redhat.ceylon.compiler.java.Util.checkNull(s), 2L));
+            }
+            
+            @.java.lang.Override
+            public boolean test(final .ceylon.language.String arg0) {
+                return $call$(arg0).booleanValue();
+            }
+        })).<.java.util.List<.ceylon.language.String>, .java.lang.Object>collect((.java.util.stream.Collector).java.util.stream.Collectors.<.ceylon.language.String>toList());
+    }
+}

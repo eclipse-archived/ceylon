@@ -166,4 +166,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
         compareWithJavaSource(defaultOptions, 1, "bug67xx/Bug6704B.src", "bug67xx/Bug6704.ceylon", "bug67xx/Bug6704B.ceylon");
         compareWithJavaSource(defaultOptions, 0, "bug67xx/Bug6704B.src", "bug67xx/Bug6704B.ceylon", "bug67xx/Bug6704.ceylon");
     }
+
+    @Test
+    public void testBug6706() {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compareWithJavaSource(Arrays.asList("-target", "8", "-source", "8"), "bug67xx/Bug6706.src", "bug67xx/Bug6706.ceylon");
+    }
 }
