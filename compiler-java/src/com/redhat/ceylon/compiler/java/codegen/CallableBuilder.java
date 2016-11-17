@@ -774,6 +774,9 @@ public class CallableBuilder {
                 boxingStrategy = BoxingStrategy.UNBOXED;
             else
                 boxingStrategy = CodegenUtil.getBoxingStrategy(param.getModel());
+            // if we have unchecked nulls, pretend we have an optional so unboxing doesn't throw
+            if(param.getModel().hasUncheckedNullType())
+                paramType = gen.typeFact().getOptionalType(paramType);
             argExpr = gen.expressionGen().applyErasureAndBoxing(argExpr, 
                     paramType, // it came in as Object, but we need to pretend its type
                     // is the parameter type because that's how unboxing determines how it has to unbox

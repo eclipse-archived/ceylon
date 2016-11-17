@@ -650,7 +650,12 @@ public class ExpressionTransformer extends AbstractTransformer {
 
                     // simplify the type
                     // (without the underlying type, because the cast is always to a non-primitive)
+                    boolean wasOptional = isOptional(expectedType);
                     exprType = simplifyType(expectedType).withoutUnderlyingType();
+                    // if the expected type was optional, respect that otherwise it fubars boxing
+                    if(wasOptional){
+                        exprType = typeFact().getOptionalType(exprType);
+                    }
 
                     // if the expr is not raw, we need a cast
                     // if the expr is raw:
