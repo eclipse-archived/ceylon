@@ -337,3 +337,14 @@ function $cksprdstr$(min,t,v,loc,f,s) {
   return s;
 }
 ex$.$cksprdstr$=$cksprdstr$;
+//We provide sartWith and endsWith if String doesn't have them
+if (typeof String.prototype.startsWith != 'function') {
+  String.prototype.startsWith = function(s) {
+    return this.substr(0,s.length)===s;
+  }
+}
+if (typeof String.prototype.endsWith != 'function') {
+  String.prototype.startsWith = function(s) {
+    return this.substr(-s.length)===s;
+  }
+}
