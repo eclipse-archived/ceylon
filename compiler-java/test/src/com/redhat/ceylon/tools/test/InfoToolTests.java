@@ -71,7 +71,9 @@ public class InfoToolTests extends AbstractToolTests {
         tool.setOut(b);
         tool.run();
 
-        Assert.assertTrue(b.toString().contains(
+        Assert.assertTrue(b.toString()
+                .replace(System.lineSeparator(), "\n")
+                .contains(
                 "Name:        com.redhat.ceylon.tools.test.info\n"+
                 "Version:     1\n"+
                 "Available:   On local system\n"+
@@ -92,7 +94,9 @@ public class InfoToolTests extends AbstractToolTests {
         tool.setOut(b);
         tool.run();
         
-        Assert.assertTrue(b.toString().contains(
+        Assert.assertTrue(b.toString()
+                .replace(System.lineSeparator(), "\n")
+                .contains(
         "Name:        java.base\n"+
         "Version:     " + JDKUtils.jdk.version + "\n"+
         "Artifacts:   JVM (legacy)\n"+
@@ -113,7 +117,9 @@ public class InfoToolTests extends AbstractToolTests {
         tool.setOut(b);
         tool.run();
         
-        Assert.assertTrue(b.toString().contains(
+        Assert.assertTrue(b.toString()
+                .replace(System.lineSeparator(), "\n")
+                .contains(
         "Dependencies (up to depth ∞):\n"+
         "  org.eclipse.jetty.orbit:javax.servlet/3.0.0.v201112011016\n"+
         "  org.eclipse.jetty:jetty-http/9.0.2.v20130417\n"+
@@ -140,7 +146,9 @@ public class InfoToolTests extends AbstractToolTests {
         tool.setOut(b);
         tool.run();
         
-        Assert.assertTrue(b.toString().contains(
+        Assert.assertTrue(b.toString()
+                .replace(System.lineSeparator(), "\n")
+                .contains(
                 "maven:asm:asm-commons/2.0\n"+
                 "maven:asm:asm-commons/2.1\n"+
                 "maven:asm:asm-commons/2.2\n"+
@@ -164,7 +172,9 @@ public class InfoToolTests extends AbstractToolTests {
         tool.setOut(b);
         tool.run();
         
-        Assert.assertTrue(b.toString().contains(
+        Assert.assertTrue(b.toString()
+                .replace(System.lineSeparator(), "\n")
+                .contains(
                 "maven:asm:asm-commons/2.0\n"+
                 "maven:asm:asm-commons/2.1\n"+
                 "maven:asm:asm-commons/2.2\n"+
@@ -181,7 +191,9 @@ public class InfoToolTests extends AbstractToolTests {
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();
-        Assert.assertTrue(b.toString().contains("Dependencies version conflicts (up to depth ∞):\n"
+        Assert.assertTrue(b.toString()
+                .replace(System.lineSeparator(), "\n")
+                .contains("Dependencies version conflicts (up to depth ∞):\n"
                 +"  org.jboss.logging: 3.1.2.GA, 3.1.3.GA\n"));
     }
 

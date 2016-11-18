@@ -38,6 +38,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -921,7 +922,7 @@ public class InteropTests extends CompilerTests {
     @Test
     public void testIopAnnotatedJavaPackageRecompile() throws Exception {
         ArrayList<String> a = new ArrayList<String>();
-        a.add("../dist/dist/bin/ceylon");
+        a.add(script());
         a.add("compile");
         a.add("--verbose=code");
         a.add("--rep");

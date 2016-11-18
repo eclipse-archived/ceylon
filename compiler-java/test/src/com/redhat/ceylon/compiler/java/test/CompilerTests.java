@@ -1089,7 +1089,7 @@ public abstract class CompilerTests {
          * (which we could otherwise use to prevent System.exit)  
          */
         ArrayList<String> a = new ArrayList<String>();
-        a.add("../dist/dist/bin/ceylon");
+        a.add(script());
         a.add(runner);
         a.add("--rep");
         a.add(getOutPath());
@@ -1237,7 +1237,7 @@ public abstract class CompilerTests {
         File out = File.createTempFile("classpath-"+module, ".out", dir);
         File err = err1 != null ? err1 : File.createTempFile("classpath-"+module, ".err", dir);
         ArrayList<String> a = new ArrayList<String>();
-        a.add("../dist/dist/bin/ceylon");
+        a.add(script());
         a.add("classpath");
         a.add("--sysrep");
         a.add(getSysRepPath());
