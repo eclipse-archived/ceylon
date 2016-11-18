@@ -1,10 +1,12 @@
 import ceylon.collection{
     ArrayList,
-    HashMap
+    HashMap,
+    HashSet
 }
 import java.io{
     Serializable
 }
+
 
 class JavaSerializationBasic<T>(String s, T t) 
         given T satisfies Object {
@@ -60,6 +62,10 @@ shared Object javaSerialization() {
     result.add([JavaSerializationBasic<Integer>("S", 42), true, false, null]);
     result.add([ArrayList<String>{"hello", "World"}, true, false, null]);
     result.add([HashMap<String, String>{"hello" -> "World"}, true, false, null]);
+    result.add([JavaSerializationEe(
+        ArrayList<String>{"hello", "World"},
+        HashSet<String>{"a", "b"},
+        HashMap<String, String>{"hello" -> "World"}), true, false, null]);
     result.add([JavaSerializationExplicit(), true, false, null]);
     result.add([JavaSerializationValueCtors.foo, true, true, null]);
     result.add([JavaSerializationValueCtors.foo.Inner.bar, true, true, null]);
@@ -136,4 +142,19 @@ shared void javaSerializationCompare(Basic orig, Basic rt) {
         
     }
     assert(rtit.next() is Finished);
+}
+
+class JavaSerializationEe(list, set, map) {
+    shared variable List<String> list;
+    shared variable Set<String> set;
+    shared variable Map<String,String> map;
+    shared actual Boolean equals(Object other) {
+        if (is JavaSerializationEe other ) {
+            return this.list == other.list 
+                    && this.set == other.set 
+                    && this.map == other.map;
+        } else {
+            return false;
+        }
+    }
 }
