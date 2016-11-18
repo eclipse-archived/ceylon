@@ -205,6 +205,7 @@ class StaticAsDefaultConstructorArg {
 
 class Baz<T> {
     shared static class Inner() {
+        @type:"Baz<T>.Inner" Inner inn = Inner();
         Baz<T>.Inner inn0 = Inner();
         @error Baz<String>.Inner inn1 = Inner();
         @error Baz<String>.Inner inn2 = Baz<T>.Inner();
@@ -213,6 +214,7 @@ class Baz<T> {
     }
     
     static void m() {
+        @type:"Baz<T>.Inner" Inner inn = Inner();
         Baz<T>.Inner inn0 = Inner();
         @error Baz<String>.Inner inn1 = Inner();
         @error Baz<String>.Inner inn2 = Baz<T>.Inner();
@@ -222,6 +224,7 @@ class Baz<T> {
     shared new () {
     }
     
+    @type:"Baz<T>.Inner" Inner inn = Inner();
     Baz<T>.Inner inn0 = Inner();
     @error Baz<String>.Inner inn1 = Inner();
     @error Baz<String>.Inner inn2 = Baz<T>.Inner();
