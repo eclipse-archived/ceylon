@@ -44,7 +44,7 @@ How to do a release of Ceylon.
   - Commit and push
 4. Tag every project
   -  $ git tag **1.2.1**
-  -  $ git push --tags
+  -  $ git push origin **1.2.1**
 5. Do the release zip
   -  $ mkdir /tmp/ceylon
   -  $ docker pull ceylon/ceylon-build
