@@ -340,14 +340,11 @@ public class ModelUtil {
                     unit.getCallableTuple(defParamType);
             Type apts = 
                     unit.getCallableTuple(defArgType);
-            int plen = unit.getTupleMinimumLength(ppts);
-            int alen = unit.getTupleMinimumLength(apts);
+            int plen = unit.getTupleMaximumLength(ppts);
+            int alen = unit.getTupleMaximumLength(apts);
+//            boolean pvariadic = unit.isTupleLengthUnbounded(ppts);
+//            boolean avariadic = unit.isTupleLengthUnbounded(apts);
             if (alen<plen) {
-                return false;
-            }
-            boolean pvariadic = unit.isTupleLengthUnbounded(ppts);
-            boolean avariadic = unit.isTupleLengthUnbounded(apts);
-            if (pvariadic && !avariadic) {
                 return false;
             }
             //TODO: compare parameter types using matches()
