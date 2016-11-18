@@ -346,4 +346,8 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         // don't check on subtypes
         return a.equals(b);
     }
+
+    public void setAptRound(boolean b) {
+        getJarRepository().setAptRound(b);
+    }
 }

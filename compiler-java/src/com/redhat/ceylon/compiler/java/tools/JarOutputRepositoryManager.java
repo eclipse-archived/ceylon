@@ -75,6 +75,7 @@ public class JarOutputRepositoryManager {
     private Options options;
     private CeyloncFileManager ceyloncFileManager;
     private MultiTaskListener taskListener;
+    private boolean aptRound;
     
     JarOutputRepositoryManager(Log log, Options options, CeyloncFileManager ceyloncFileManager, MultiTaskListener taskListener){
         this.log = log;
@@ -91,7 +92,7 @@ public class JarOutputRepositoryManager {
     private ProgressiveJar getProgressiveJar(RepositoryManager repositoryManager, Module module) throws IOException {
         ProgressiveJar jarFile = openJars.get(module);
         if(jarFile == null){
-            jarFile = new ProgressiveJar(repositoryManager, module, log, options, ceyloncFileManager, taskListener);
+            jarFile = new ProgressiveJar(repositoryManager, module, log, options, ceyloncFileManager, taskListener, aptRound);
             openJars.put(module, jarFile);
         }
         return jarFile;
@@ -184,7 +185,8 @@ public class JarOutputRepositoryManager {
         private boolean validModule;
 
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, 
-        		Options options, CeyloncFileManager ceyloncFileManager, MultiTaskListener taskListener) throws IOException{
+        		Options options, CeyloncFileManager ceyloncFileManager, 
+        		MultiTaskListener taskListener, boolean aptRound) throws IOException{
             this.options = options;
             this.repoManager = repoManager;
             this.carContext = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
@@ -226,7 +228,7 @@ public class JarOutputRepositoryManager {
             
             this.originalJarFile = repoManager.getArtifact(carContext);
             this.outputJarTempFolder = FileUtil.makeTempDir("ceylon-compiler-");
-            this.validModule = module.isDefaultModule();
+            this.validModule = module.isDefaultModule() || aptRound;
         }
 
         private Map<String, Set<String>> getPreviousServices() throws IOException {
@@ -601,6 +603,15 @@ public class JarOutputRepositoryManager {
                 entryName = entryName.substring(resourceRootPath.length());
             }
             return entryName;
+        }
+    }
+
+    public void setAptRound(boolean b) {
+        // make sure we mark all future modules as valid
+        this.aptRound = b;
+        // and past ones too
+        for (ProgressiveJar jar : openJars.values()) {
+            jar.validModule = b;
         }
     }
 }
