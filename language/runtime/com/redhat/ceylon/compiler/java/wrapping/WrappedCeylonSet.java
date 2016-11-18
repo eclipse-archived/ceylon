@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.wrapping;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 
 import com.redhat.ceylon.compiler.java.Util;
@@ -7,8 +8,12 @@ import com.redhat.ceylon.compiler.java.Util;
 /**
  * A wrapper for a Ceylon List that satisfies {@code java.util.List} 
  */
-class WrappedCeylonSet<In,Out> extends AbstractSet<Out> {
+class WrappedCeylonSet<In,Out> 
+        extends AbstractSet<Out> 
+        implements Serializable {
 
+    private static final long serialVersionUID = 1800969777619067034L;
+    
     // Collection because a c.l.Map is a Collection<Entry>
     // and we need to compute a j.u.Set as the entrySet()
     // of  a j.u.Map
