@@ -2081,7 +2081,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             if (simpleTupleLengthUnbounded != null) {
                 return simpleTupleLengthUnbounded.booleanValue();
             }*/
-            if (args.isSubtypeOf(getEmptyType())) {
+            Type emptyType = getEmptyType();
+            if (args.isSubtypeOf(emptyType)) {
                 return false;
             }
             //TODO: this doesn't account for the case where
@@ -2102,7 +2103,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
                         if (rest==null) {
                             return false;
                         }
-                        else if (rest.isSubtypeOf(getEmptyType())) {
+                        else if (rest.isSubtypeOf(emptyType)) {
                             return false;
                         }
                         else {
@@ -2187,7 +2188,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             if (simpleTupleVariantAtLeastOne != null) {
                 return simpleTupleVariantAtLeastOne.booleanValue();
             }*/
-            if (getEmptyType().isSubtypeOf(args)) {
+            Type emptyType = getEmptyType();
+            if (emptyType.isSubtypeOf(args)) {
                 return false;
             }
             Class td = getTupleDeclaration();
@@ -2206,8 +2208,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
                         if (rest==null) {
                             return false;
                         }
-                        else if (getEmptyType()
-                                .isSubtypeOf(rest)) {
+                        else if (emptyType.isSubtypeOf(rest)) {
                             return false;
                         }
                         else if (isSequenceType(rest) && 
@@ -2298,7 +2299,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             if (simpleMinimumLength != -1) {
                 return simpleMinimumLength;
             }*/
-            if (getEmptyType().isSubtypeOf(args)) {
+            Type emptyType = getEmptyType();
+            if (emptyType.isSubtypeOf(args)) {
                 return 0;
             }
             Class td = getTupleDeclaration();
@@ -2320,8 +2322,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
                         if (rest==null) {
                             return size;
                         }
-                        else if (getEmptyType()
-                                .isSubtypeOf(rest)) {
+                        else if (emptyType.isSubtypeOf(rest)) {
                             return size;
                         }
                         else {
@@ -2341,6 +2342,56 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             }
         }
         return 0;
+    }
+    
+    public int getTupleMaximumLength(Type args) {
+        if (args!=null) {
+            /*int simpleMinimumLength = 
+                    getSimpleTupleMinimumLength(args);
+            if (simpleMinimumLength != -1) {
+                return simpleMinimumLength;
+            }*/
+            Type emptyType = getEmptyType();
+            if (args.isSubtypeOf(emptyType)) {
+                return 0;
+            }
+            Class td = getTupleDeclaration();
+            Type tuple = 
+                    nonemptyArgs(args)
+                        .getSupertype(td);
+            if (tuple == null) {
+                return Integer.MAX_VALUE;
+            }
+            else {
+                int size = 0;
+                while (true) {
+                    List<Type> tal = 
+                            tuple.getTypeArgumentList();
+                    size++;
+                    if (tal.size()>=3) {
+                        Type rest = tal.get(2);
+                        if (rest==null) {
+                            return size;
+                        }
+                        else if (rest.isSubtypeOf(emptyType)) {
+                            return size;
+                        }
+                        else {
+                            tuple = nonemptyArgs(rest)
+                                    .getSupertype(td);
+                            if (tuple==null) {
+                                return Integer.MAX_VALUE;
+                            }
+                            //else continue the loop!
+                        }
+                    }
+                    else {
+                        return size;
+                    }
+                }
+            }
+        }
+        return Integer.MAX_VALUE;
     }
     
     /*private int getSimpleTupleMinimumLength(Type args) {
