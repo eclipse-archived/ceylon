@@ -209,6 +209,7 @@ class Baz<T> {
         Baz<T>.Inner inn0 = Inner();
         @error Baz<String>.Inner inn1 = Inner();
         @error Baz<String>.Inner inn2 = Baz<T>.Inner();
+        @error Inner inn4 = Baz<String>.Inner();
         @error Baz<T>.Inner inn3 = outer.Inner();
         shared T get() => nothing;
     }
@@ -218,6 +219,7 @@ class Baz<T> {
         Baz<T>.Inner inn0 = Inner();
         @error Baz<String>.Inner inn1 = Inner();
         @error Baz<String>.Inner inn2 = Baz<T>.Inner();
+        @error Inner inn4 = Baz<String>.Inner();
         @error Baz<T>.Inner inn3 = this.Inner();
     }
     
@@ -228,6 +230,7 @@ class Baz<T> {
     Baz<T>.Inner inn0 = Inner();
     @error Baz<String>.Inner inn1 = Inner();
     @error Baz<String>.Inner inn2 = Baz<T>.Inner();
+    @error Inner inn4 = Baz<String>.Inner();
     @error Baz<T>.Inner inn3 = this.Inner();
 }
 
