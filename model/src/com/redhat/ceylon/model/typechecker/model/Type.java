@@ -871,12 +871,14 @@ public class Type extends Reference {
     /**
      * For Java's static inner types, we sometimes need to
      * ignore the qualifying type, since it doesn't affect
-     * the subtyping rules.
+     * the subtyping rules. This is not the case for Ceylon
+     * static inner types, since they capture the type
+     * parameters.
      */
     private Type trueQualifyingType() {
-        return getDeclaration()
-                    .isStatic() ? null : 
-                getQualifyingType();
+        TypeDeclaration dec = getDeclaration();
+        return dec.isStatic() && dec.isJava() ? 
+                null : getQualifyingType();
     }
     
     private boolean isExactlyTypeConstructor(Type type) {
