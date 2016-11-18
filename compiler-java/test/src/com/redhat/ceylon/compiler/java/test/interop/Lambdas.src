@@ -1703,7 +1703,7 @@ public final class bug6634_ {
         } catch (final .ceylon.language.AssertionError e) {
             .ceylon.language.print_.print(.ceylon.language.String.instance("good"));
         }
-        throw new .com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError("argument must be assignable to parameter \'arg0\' of \'map\' in \'LongStream\': \'Integer?(Integer?)\' is not assignable to \'Integer(Integer)\'");
+        throw new .com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError("argument must be assignable to parameter \'arg0\' of \'map\' in \'LongStream\': \'Integer?(Integer?)\' is not assignable to \'LongUnaryOperator?\'");
     }
     
     public static void main(.java.lang.String[] args) {
