@@ -101,16 +101,15 @@ public class MavenUtils {
                     String depOptional = getText(dep, "optional");
                     ModuleScope scope;
                     
-                    // keep compile, runtime, provided, test
+                    // keep compile, runtime, provided
                     if(depScope != null 
-                            && (depScope.equals("system")))
+                            && (depScope.equals("system")
+                                    || depScope.equals("test")))
                         continue;
                     if("provided".equals(depScope))
                         scope = ModuleScope.PROVIDED;
                     else if("runtime".equals(depScope))
                         scope = ModuleScope.RUNTIME;
-                    else if("test".equals(depScope))
-                        scope = ModuleScope.TEST;
                     else
                         scope = ModuleScope.COMPILE;
 

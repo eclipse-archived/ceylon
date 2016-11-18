@@ -54,6 +54,7 @@ import com.redhat.ceylon.langtools.classfile.RuntimeAnnotations_attribute;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -828,6 +829,9 @@ public class Main {
     			        version != null ? version : moduleInfo.getVersion(), 
     			        moduleType, file);
     			for(ModuleDependencyInfo dep : moduleInfo.getDependencies()){
+    			    // skip this nonsense scope
+    			    if(dep.getModuleScope() == ModuleScope.TEST)
+    			        continue;
     				module.addDependency(dep.getName(), dep.getVersion(), dep.isOptional(), dep.isExport());
     			}
     			if(moduleInfo.getFilter() != null)
