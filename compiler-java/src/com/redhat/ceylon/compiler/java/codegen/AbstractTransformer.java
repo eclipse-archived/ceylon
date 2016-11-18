@@ -1227,7 +1227,7 @@ public abstract class AbstractTransformer implements Transformation {
             Type typedSignatureArg = typedSignature.get(i);
             if(signatureArg != null
                     && typedSignatureArg != null
-                    && !ModelUtil.matches(signatureArg, typedSignatureArg, null, typeFact()))
+                    && !ModelUtil.matches(signatureArg, typedSignatureArg, typeFact()))
                 return false;
         }
         return true;

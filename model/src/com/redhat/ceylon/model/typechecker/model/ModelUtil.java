@@ -239,7 +239,7 @@ public class ModelUtil {
                         return false;
                     }
                     Type sdt = signature.get(i);
-                    if (!matches(sdt, pdt, dec, unit)) {
+                    if (!matches(sdt, pdt, unit)) {
                         return false;
                     }
                 }
@@ -267,13 +267,13 @@ public class ModelUtil {
                             Type sdt = signature.get(i);
                             Type isdt = 
                                     unit.getIteratedType(sdt);
-                            if (!matches(isdt, ipdt, dec, unit)) {
+                            if (!matches(isdt, ipdt, unit)) {
                                 return false;
                             }
                         }
                         else {
                             Type sdt = signature.get(i);
-                            if (!matches(sdt, ipdt, dec, unit)) {
+                            if (!matches(sdt, ipdt, unit)) {
                                 return false;
                             }
                         }
@@ -301,7 +301,6 @@ public class ModelUtil {
     public static boolean matches(
             Type argType, 
             Type paramType,
-            Declaration dec,
             Unit unit) {
         if (paramType==null) {
             return false;
@@ -327,15 +326,7 @@ public class ModelUtil {
             isTypeUnknown(defParamType)) {
             return false;
         }
-        if (defParamType.isCallable() 
-                && dec instanceof Generic) {
-            Generic g = (Generic) dec;
-            //TODO: replace the type parameters with
-            //      wildcards instead!!!
-            if (!defParamType.involvesTypeParameters(g)) {
-                return defArgType.isSubtypeOf(defParamType);
-            }
-        }
+
         TypeDeclaration erasedArgType = 
                 erase(defArgType, unit);
         TypeDeclaration erasedParamType = 
@@ -354,6 +345,7 @@ public class ModelUtil {
             
             return false;
         }
+        
         TypeDeclaration oa = 
                 unit.getJavaObjectArrayDeclaration();
         if (oa!=null 
@@ -363,8 +355,34 @@ public class ModelUtil {
                     unit.getJavaArrayElementType(defArgType);
             Type paramElementType = 
                     unit.getJavaArrayElementType(defParamType);
-            return matches(argElementType, paramElementType, dec, unit);
+            return matches(argElementType, paramElementType, unit);
         }
+        
+        if (defParamType.isCallable()) {
+            Type prt = 
+                    unit.getCallableReturnType(defParamType);
+            Type art = 
+                    unit.getCallableReturnType(defArgType);
+            if (!matches(art, prt, unit)) {
+                return false;
+            }
+            Type ppts = 
+                    unit.getCallableTuple(defParamType);
+            Type apts = 
+                    unit.getCallableTuple(defArgType);
+            int plen = unit.getTupleMinimumLength(ppts);
+            int alen = unit.getTupleMinimumLength(apts);
+            if (alen<plen) {
+                return false;
+            }
+            boolean pvariadic = unit.isTupleLengthUnbounded(ppts);
+            boolean avariadic = unit.isTupleLengthUnbounded(apts);
+            if (pvariadic && !avariadic) {
+                return false;
+            }
+            //TODO: compare parameter types using matches()
+        }
+        
         return true;
     }
 
