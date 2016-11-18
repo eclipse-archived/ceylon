@@ -355,7 +355,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
         compile("bug64xx/bug6442/run.ceylon");
-        runInJBossModulesSameVM("run", "com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6442/1", 
+        runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6442/1", 
                 Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6442::run",
                         "--overrides", getPackagePath()+"/bug64xx/bug6442/overrides.xml"));
     }
