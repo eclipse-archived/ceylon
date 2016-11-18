@@ -102,3 +102,23 @@ class Controller() {
     fun(`Sender`);
 }
 
+interface Predicate<T> {}
+
+class Stream<T>(T* elements){
+    shared Stream<T> filter(Predicate<T> pred) => this;
+    @error shared Stream<T> filter(Boolean fun(T t)) => this;
+}
+
+void testStream() {
+    Stream<String> result1 = Stream("").filter((String t) => true);
+    Stream<String> result2 = Stream("").filter((t) => true);
+    Stream<String> result3 = Stream("").filter(object satisfies Predicate<String> {});
+    Stream<String|Integer> result4 = Stream("", 1).filter((t) => true);
+    Stream<String|Integer> result5 = Stream("", 1).filter((String|Integer t) => true);
+    @error Stream("").filter((Integer t) => true);
+    @error Stream("").filter((t) => t);
+    @error Stream("").filter(object satisfies Predicate<Integer> {});
+    @error Stream("", 1).filter((Integer t) => true);
+}
+
+
