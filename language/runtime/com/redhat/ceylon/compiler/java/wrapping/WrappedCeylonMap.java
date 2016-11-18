@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.wrapping;
 
+import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Set;
 
@@ -8,8 +9,12 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 /**
  * A wrapper for a Ceylon List that satisfies {@code java.util.List}
  */
-class WrappedCeylonMap<CeylonKey,CeylonItem, JavaKey,JavaItem> extends AbstractMap<JavaKey,JavaItem> {
+class WrappedCeylonMap<CeylonKey,CeylonItem, JavaKey,JavaItem> 
+        extends AbstractMap<JavaKey,JavaItem> 
+        implements Serializable {
 
+    private static final long serialVersionUID = 8123632437919187363L;
+    
     private ceylon.language.Map<? extends CeylonKey,? extends CeylonItem> cMap;
     private WrappedCeylonSet<ceylon.language.Entry<CeylonKey, CeylonItem>, java.util.Map.Entry<JavaKey, JavaItem>> entrySet;
 

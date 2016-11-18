@@ -11,6 +11,7 @@ import ceylon.language.Integer;
 import ceylon.language.List;
 import ceylon.language.Null;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class Wrappings {
     static void checkNull(Object o, String msg) {
         if (o == null) {
@@ -18,6 +19,7 @@ public class Wrappings {
         }
     }
     static class Identity<From> implements Wrapping<From,From> {
+        private static final long serialVersionUID = -7765082682145106763L;
         private final boolean allowNull;
         Identity(boolean allowNull) {
             this.allowNull = allowNull;
@@ -37,8 +39,10 @@ public class Wrappings {
             return this;
         }
     };
+    
     /** The identity wrapping but throwing on null */
     public static final Identity DEFINITE_IDENTITY = new Identity(false);
+    
     /** The identity wrapping */
     public static final Identity MAYBE_IDENTITY = new Identity(true);
     
@@ -88,6 +92,7 @@ public class Wrappings {
     
     /** The wrapping {@code java.lang.Long} → {@code ceylon.language.Integer} */
     static class ToCeylonInteger implements Wrapping<Long, ceylon.language.Integer> {
+        private static final long serialVersionUID = -8545077172446381771L;
         private final FromCeylonInteger from;
         private final boolean allowNull;
         public ToCeylonInteger(boolean allowNull) {
@@ -111,6 +116,7 @@ public class Wrappings {
     }
     /** The wrapping {@code java.lang.Long} ← {@code ceylon.language.Integer} */
     static class FromCeylonInteger implements Wrapping<ceylon.language.Integer, Long> {
+        private static final long serialVersionUID = -8490990231904038975L;
         private final ToCeylonInteger to;
         private final boolean allowNull;
         public FromCeylonInteger(ToCeylonInteger to, boolean allowNull) {
@@ -139,6 +145,7 @@ public class Wrappings {
     
     /** The wrapping {@code java.lang.Double} → {@code ceylon.language.Float} */
     static class ToCeylonFloat implements Wrapping<Double, ceylon.language.Float> {
+        private static final long serialVersionUID = 6137133766421110316L;
         private final FromCeylonFloat from;
         private final boolean allowNull;
         public ToCeylonFloat(boolean allowNull) {
@@ -162,6 +169,7 @@ public class Wrappings {
     }
     /** The wrapping {@code java.lang.Double} ← {@code ceylon.language.Float} */
     static class FromCeylonFloat implements Wrapping<ceylon.language.Float, Double> {
+        private static final long serialVersionUID = 3749821019398032894L;
         private final ToCeylonFloat to;
         private final boolean allowNull;
         public FromCeylonFloat(ToCeylonFloat to, boolean allowNull) {
@@ -190,6 +198,7 @@ public class Wrappings {
     
     /** The wrapping {@code java.lang.Byte} → {@code ceylon.language.Byte} */
     static class ToCeylonByte implements Wrapping<java.lang.Byte, ceylon.language.Byte> {
+        private static final long serialVersionUID = 7612648551990554992L;
         private final FromCeylonByte from;
         private final boolean allowNull;
         public ToCeylonByte(boolean allowNull) {
@@ -213,6 +222,7 @@ public class Wrappings {
     }
     /** The wrapping {@code java.lang.Byte} ← {@code ceylon.language.Byte} */
     static class FromCeylonByte implements Wrapping<ceylon.language.Byte, java.lang.Byte> {
+        private static final long serialVersionUID = 1122563983602166370L;
         private final ToCeylonByte to;
         private final boolean allowNull;
         public FromCeylonByte(ToCeylonByte to, boolean allowNull) {
@@ -241,6 +251,7 @@ public class Wrappings {
     
     /** The wrapping {@code java.lang.Boolean} → {@code ceylon.language.Boolean} */
     static class ToCeylonBoolean implements Wrapping<java.lang.Boolean, ceylon.language.Boolean> {
+        private static final long serialVersionUID = -5753935452391992481L;
         private final FromCeylonBoolean from;
         private final boolean allowNull;
         public ToCeylonBoolean(boolean allowNull) {
@@ -264,6 +275,7 @@ public class Wrappings {
     }
     /** The wrapping {@code java.lang.Boolean} ← {@code ceylon.language.Boolean} */
     static class FromCeylonBoolean implements Wrapping<ceylon.language.Boolean, java.lang.Boolean> {
+        private static final long serialVersionUID = -5549339150429649814L;
         private final ToCeylonBoolean to;
         private final boolean allowNull;
         public FromCeylonBoolean(ToCeylonBoolean to, boolean allowNull) {
@@ -292,6 +304,7 @@ public class Wrappings {
     
     /** The wrapping {@code java.lang.Integer} → {@code ceylon.language.Character} */
     static class ToCeylonCharacter implements Wrapping<java.lang.Integer, ceylon.language.Character> {
+        private static final long serialVersionUID = -8772225234908795616L;
         private final FromCeylonCharacter from;
         private final boolean allowNull;
         public ToCeylonCharacter(boolean allowNull) {
@@ -315,6 +328,7 @@ public class Wrappings {
     }
     /** The wrapping {@code java.lang.Integer} ← {@code ceylon.language.Character} */
     static class FromCeylonCharacter implements Wrapping<ceylon.language.Character, java.lang.Integer> {
+        private static final long serialVersionUID = 3285319452086713548L;
         private final ToCeylonCharacter to;
         private final boolean allowNull;
         public FromCeylonCharacter(ToCeylonCharacter to, boolean allowNull) {
@@ -343,6 +357,7 @@ public class Wrappings {
     
     /** The wrapping {@code java.lang.String} → {@code ceylon.language.String} */
     static class ToCeylonString implements Wrapping<java.lang.String, ceylon.language.String> {
+        private static final long serialVersionUID = -454959661466022465L;
         private final FromCeylonString from;
         private final boolean allowNull;
         public ToCeylonString(boolean allowNull) {
@@ -366,6 +381,7 @@ public class Wrappings {
     }
     /** The wrapping {@code java.lang.String} ← {@code ceylon.language.String} */
     static class FromCeylonString implements Wrapping<ceylon.language.String, java.lang.String> {
+        private static final long serialVersionUID = -2239577658438069244L;
         private final ToCeylonString to;
         private final boolean allowNull;
         public FromCeylonString(ToCeylonString to, boolean allowNull) {
@@ -399,6 +415,7 @@ public class Wrappings {
             final Wrapping<JavaItem,CeylonItem> itemWrapping) {
         /** The wrapping {@code java.util.Map.Entry} → {@code ceylon.language.Entry} */
         class ToCeylonEntry implements Wrapping<java.util.Map.Entry<JavaKey, JavaItem>, ceylon.language.Entry<CeylonKey, CeylonItem>> {
+            private static final long serialVersionUID = -8985242707013915308L;
             private final FromCeylonEntry<CeylonKey, CeylonItem, JavaKey, JavaItem> from;
             
             public ToCeylonEntry() {
@@ -421,6 +438,7 @@ public class Wrappings {
     }
     /** The wrapping {@code java.util.Map.Entry} ← {@code ceylon.language.Entry} */
     static class FromCeylonEntry<CeylonKey,CeylonItem,JavaKey,JavaItem> implements Wrapping<ceylon.language.Entry<CeylonKey, CeylonItem>, java.util.Map.Entry<JavaKey, JavaItem>> {
+        private static final long serialVersionUID = 3225748480205040653L;
         private final Wrapping<java.util.Map.Entry<JavaKey, JavaItem>, Entry<CeylonKey, CeylonItem>> from;
         private final Wrapping<CeylonKey,JavaKey> keyWrapping;
         private final Wrapping<CeylonItem,JavaItem> itemWrapping;
@@ -444,6 +462,7 @@ public class Wrappings {
     
     static class ToCeylonList<Java,Ceylon> implements Wrapping<java.util.List<Java>, ceylon.language.List<Ceylon>> {
 
+        private static final long serialVersionUID = 8713948240008574093L;
         private final FromCeylonList<Ceylon,Java> from;
         private TypeDescriptor $reified$Element;
         private Wrapping<Java, Ceylon> elementWrapping;
@@ -480,6 +499,7 @@ public class Wrappings {
     
     static class FromCeylonList<Ceylon,Java> implements Wrapping<ceylon.language.List<Ceylon>, java.util.List<Java>> {
 
+        private static final long serialVersionUID = -6243360806548129492L;
         private final ToCeylonList<Java,Ceylon> to;
         private final Wrapping<Ceylon,Java> elementWrapping;
         private final boolean allowNull;
@@ -530,6 +550,7 @@ public class Wrappings {
     
     static class ToCeylonSet<Java,Ceylon> implements Wrapping<java.util.Set<Java>, ceylon.language.Set<Ceylon>> {
 
+        private static final long serialVersionUID = -2127631972330618405L;
         private final FromCeylonSet<Ceylon,Java> from;
         private final TypeDescriptor $reified$Element;
         private final Wrapping<Java, Ceylon> elementWrapping;
@@ -568,6 +589,7 @@ public class Wrappings {
     
     static class FromCeylonSet<Ceylon,Java> implements Wrapping<ceylon.language.Set<Ceylon>, java.util.Set<Java>> {
 
+        private static final long serialVersionUID = -5269048676830359439L;
         private final ToCeylonSet<Java,Ceylon> to;
         private final Wrapping<Ceylon,Java> elementWrapping;
         private final boolean allowNull;
@@ -617,6 +639,7 @@ public class Wrappings {
     
     static class ToCeylonMap<JavaKey,JavaItem,CeylonKey,CeylonItem> implements Wrapping<java.util.Map<JavaKey,JavaItem>, ceylon.language.Map<CeylonKey,CeylonItem>> {
 
+        private static final long serialVersionUID = -1840889262296370101L;
         private final FromCeylonMap<CeylonKey,CeylonItem,JavaKey,JavaItem> from;
         private final TypeDescriptor $reified$Key;
         private final TypeDescriptor $reified$Item;
@@ -658,6 +681,7 @@ public class Wrappings {
     
     static class FromCeylonMap<CeylonKey,CeylonItem,JavaKey,JavaItem> implements Wrapping<ceylon.language.Map<CeylonKey,CeylonItem>, java.util.Map<JavaKey,JavaItem>> {
 
+        private static final long serialVersionUID = -4156672676280526053L;
         private final TypeDescriptor $reified$Key;
         private final TypeDescriptor $reified$Item;
         private final ToCeylonMap<JavaKey,JavaItem,CeylonKey,CeylonItem> to;
