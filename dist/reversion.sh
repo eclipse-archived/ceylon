@@ -11,12 +11,12 @@ function unregex {
    sed -e 's/[]\/()$*.^|[]/\\&/g' <<< "$1"
 }
 
-script=$(readlink -f "$0")
-dir="$(dirname $(dirname "$script"))"
+# script=$(readlink -f "$0")
+# dir="$(dirname $(dirname "$script"))"
 
 old=$(unregex "$1")
 new=$(unregex "$2")
 
 echo "Replacing $1 with $2 in $dir ..."
-find "$dir" -type f -exec sed -i "s/$old/$new/g" {} +
+find . -type f -exec sed -i "s/$old/$new/g" {} +
 
