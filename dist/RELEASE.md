@@ -82,17 +82,17 @@ NB: To be able to sign packages the user running the docker command for generati
 2. Create a new branch:
   - $ git checkout -b **1.2.1**
 3. Edit the `dist-pkg/ceylon.spec` file
-4. Commit and push the new branch
-5. Build it
+4. Make sure the [repo build file](https://github.com/ceylon/ceylon-rpm-repo/blob/master/repo/build.sh) is up to date
+5. Commit, push the new branch and merge it into master
+6. Build it
   - $ docker pull ceylon/ceylon-package-rpm
   - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-rpm **1.2.1**
-6. Copy the rpm to downloads.ceylon-lang.org:
+7. Copy the rpm to downloads.ceylon-lang.org:
   - $ scp /tmp/ceylon/ceylon-**1.2.1-1.2.1-0**.noarch.rpm **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
-7. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
-  - Make sure the [repo build file](https://github.com/ceylon/ceylon-rpm-repo/blob/master/repo/build.sh) is up to date
+8. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
   - $ docker pull ceylon/ceylon-repo-rpm
   - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm **1.2.1**
-8. Copy the packages to downloads.ceylon-lang.org:
+9. Copy the packages to downloads.ceylon-lang.org:
   - $ rsync -rv --dry-run /tmp/ceylon/{\*.noarch.rpm,repodata} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
 
 NB: To be able to sign packages the user running the docker command for generating the repo must have the "Ceylon RPM Archive Signing Key" (E024C8B2) imported into their local key ring.
