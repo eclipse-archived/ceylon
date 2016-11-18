@@ -726,6 +726,7 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
                 if(compiler.getCompiledModules().size() == 1){
                     CeyloncFileManager fm = (CeyloncFileManager) context.get(JavaFileManager.class);
                     fm.setModule(compiler.getCompiledModules().iterator().next());
+                    fm.setAptRound(true);
                 }else{
                     log.error("Running APT processors while compiling more than one module is not supported yet");
                 }
