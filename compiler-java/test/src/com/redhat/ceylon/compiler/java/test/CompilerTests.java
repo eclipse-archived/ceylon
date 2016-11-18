@@ -1169,7 +1169,7 @@ public abstract class CompilerTests {
             a.add("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9090");
         }
         a.add("-cp");
-        a.add(mainApiClasspath(rep, module, extraModules, debug));
+        a.add(mainApiClasspath(rep, module, extraModules, false));
         a.add("com.redhat.ceylon.compiler.java.runtime.Main");
         a.add(module.toString());
         a.add(mainJavaClassName);
