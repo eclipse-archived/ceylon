@@ -624,6 +624,20 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testIopJavaSerializationEeMode() throws Throwable{
+        // Same as above with with --ee
+        Assume.assumeTrue(allowSdkTests());
+        List<String> opts = new ArrayList<>(defaultOptions);
+        opts.add("-ee");
+        compile(opts,
+                "sdk/JavaSerialization.ceylon", "sdk/javaSerializationRoundTrip_.java");
+        runInJBossModules("run",
+                "com.redhat.ceylon.compiler.java.test.interop.sdk",
+                Arrays.asList(//"com.redhat.ceylon.compiler.java.test.interop",
+                        "--run", "com.redhat.ceylon.compiler.java.test.interop.sdk.javaSerializationRoundTrip"));
+    }
+    
+    @Test
     public void testIopSerializableAssignable() throws Throwable{
         compile("SerializableAssignable.ceylon");
     }
