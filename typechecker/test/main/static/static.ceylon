@@ -202,3 +202,33 @@ class StaticAsDefaultConstructorArg {
     static Integer defaultVal = 100;
     shared new (Integer val = defaultVal) {}
 }
+
+class Baz<T> {
+    shared static class Inner() {
+        Baz<T>.Inner inn0 = Inner();
+        @error Baz<String>.Inner inn1 = Inner();
+        @error Baz<String>.Inner inn2 = Baz<T>.Inner();
+        @error Baz<T>.Inner inn3 = outer.Inner();
+        shared T get() => nothing;
+    }
+    
+    static void m() {
+        Baz<T>.Inner inn0 = Inner();
+        @error Baz<String>.Inner inn1 = Inner();
+        @error Baz<String>.Inner inn2 = Baz<T>.Inner();
+        @error Baz<T>.Inner inn3 = this.Inner();
+    }
+    
+    shared new () {
+    }
+    
+    Baz<T>.Inner inn0 = Inner();
+    @error Baz<String>.Inner inn1 = Inner();
+    @error Baz<String>.Inner inn2 = Baz<T>.Inner();
+    @error Baz<T>.Inner inn3 = this.Inner();
+}
+
+void testBaz<T>() {    
+    value inner = Baz<T>.Inner();
+    @error Baz<String>.Inner inn0 = inner;
+}
