@@ -327,6 +327,32 @@ public class ModelUtil {
             return false;
         }
 
+        if (defParamType.isCallable()
+                && unit.isCallableType(defArgType)) {
+            Type prt = 
+                    unit.getCallableReturnType(defParamType);
+            Type art = 
+                    unit.getCallableReturnType(defArgType);
+            if (!matches(art, prt, unit)) {
+                return false;
+            }
+            Type ppts = 
+                    unit.getCallableTuple(defParamType);
+            Type apts = 
+                    unit.getCallableTuple(defArgType);
+            int plen = unit.getTupleMinimumLength(ppts);
+            int alen = unit.getTupleMinimumLength(apts);
+            if (alen<plen) {
+                return false;
+            }
+            boolean pvariadic = unit.isTupleLengthUnbounded(ppts);
+            boolean avariadic = unit.isTupleLengthUnbounded(apts);
+            if (pvariadic && !avariadic) {
+                return false;
+            }
+            //TODO: compare parameter types using matches()
+        }
+        
         TypeDeclaration erasedArgType = 
                 erase(defArgType, unit);
         TypeDeclaration erasedParamType = 
@@ -356,31 +382,6 @@ public class ModelUtil {
             Type paramElementType = 
                     unit.getJavaArrayElementType(defParamType);
             return matches(argElementType, paramElementType, unit);
-        }
-        
-        if (defParamType.isCallable()) {
-            Type prt = 
-                    unit.getCallableReturnType(defParamType);
-            Type art = 
-                    unit.getCallableReturnType(defArgType);
-            if (!matches(art, prt, unit)) {
-                return false;
-            }
-            Type ppts = 
-                    unit.getCallableTuple(defParamType);
-            Type apts = 
-                    unit.getCallableTuple(defArgType);
-            int plen = unit.getTupleMinimumLength(ppts);
-            int alen = unit.getTupleMinimumLength(apts);
-            if (alen<plen) {
-                return false;
-            }
-            boolean pvariadic = unit.isTupleLengthUnbounded(ppts);
-            boolean avariadic = unit.isTupleLengthUnbounded(apts);
-            if (pvariadic && !avariadic) {
-                return false;
-            }
-            //TODO: compare parameter types using matches()
         }
         
         return true;
