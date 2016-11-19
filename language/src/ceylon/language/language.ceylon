@@ -19,7 +19,7 @@ shared native object language {
     
     "The Ceylon language version qualifier."
     since("1.3.0")
-    shared String versionQualifier => "SNAPSHOT";
+    shared String versionQualifier => "";
     
     "The Ceylon language release name."
     shared String versionName => "Now We Try It My Way";
@@ -40,14 +40,14 @@ shared native("jvm") object language {
     
     shared native("jvm") Integer majorVersionBinary => 8;
     
-    shared native("jvm") Integer minorVersionBinary => 0;
+    shared native("jvm") Integer minorVersionBinary => 1;
     
 }
 
 shared native("js") object language {
     
-    shared native("js") Integer majorVersionBinary => 8;
+    shared native("js") Integer majorVersionBinary => 9;
     
-    shared native("js") Integer minorVersionBinary => 0;
+    shared native("js") Integer minorVersionBinary => 1;
     
 }
