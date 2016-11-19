@@ -4531,7 +4531,7 @@ public class StatementTransformer extends AbstractTransformer {
                 }
             }
 
-            Type nullType = caseList.getUnit().getNullValueDeclaration().getType();
+            Type nullType = caseList.getUnit().getNullValueType();
             for (Tree.CaseClause clause: caseList.getCaseClauses()) {
                 Tree.CaseItem item = clause.getCaseItem();
                 if (item instanceof Tree.IsCase) {

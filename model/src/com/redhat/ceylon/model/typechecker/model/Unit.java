@@ -1242,6 +1242,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return null;
     }
     
+    public Type getNullValueType() {
+        return getNullValueDeclaration().getType();
+    }
+    
     @Override
     public Type getThrowableType() {
         Module theLanguageModule = getLanguageModule();
@@ -1657,24 +1661,28 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         //must have non-empty intersection with Null
         //and non-empty intersection with Value
         return !intersectionType(getNullType(), 
-                        pt, this)
-                    .isNothing() &&
-                !intersectionType(getObjectType(), 
-                        pt, this)
-                    .isNothing();
+                    pt, this)
+                .isNothing() 
+            && !intersectionType(getObjectType(), 
+                    pt, this)
+                .isNothing();
     }
     
     public boolean isPossiblyEmptyType(Type pt) {
         //must be a subtype of Sequential<Anything>
-        return isSequentialType(getDefiniteType(pt)) &&
+        return isSequentialType(getDefiniteType(pt))
         //must have non-empty intersection with Empty
         //and non-empty intersection with Sequence<Nothing>
-               !intersectionType(getEmptyType(), 
-                           pt, this)
-                        .isNothing() &&
-               !intersectionType(getSequentialType(getNothingType()), 
-                           pt, this)
-                        .isNothing();
+            && !intersectionType(getEmptyType(), 
+                    pt, this)
+                .isNothing()
+            && !intersectionType(getSequentialBottomType(), 
+                    pt, this)
+                .isNothing();
+    }
+
+    public Type getSequentialBottomType() {
+        return getSequentialType(getNothingType());
     }
     
     public boolean isCallableType(Type pt) {

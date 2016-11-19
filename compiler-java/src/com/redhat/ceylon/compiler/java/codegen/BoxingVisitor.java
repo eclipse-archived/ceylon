@@ -609,7 +609,7 @@ public abstract class BoxingVisitor extends Visitor {
                 && CodegenUtil.isUnBoxed(elseExpr)
                 && !willEraseToObject(that.getUnit().denotableType(that.getTypeModel())))
             CodegenUtil.markUnBoxed(that);
-        if (that.getTypeModel().isExactly(that.getUnit().getNullValueDeclaration().getType())) {
+        if (that.getTypeModel().isExactly(that.getUnit().getNullValueType())) {
             CodegenUtil.markTypeErased(that);
         }
         // An If expression can never be raw, type erased or untrusted because
@@ -649,7 +649,7 @@ public abstract class BoxingVisitor extends Visitor {
         if(unboxed 
                 && !willEraseToObject(that.getUnit().denotableType(that.getTypeModel())))
             CodegenUtil.markUnBoxed(that);
-        if (that.getTypeModel().isExactly(that.getUnit().getNullValueDeclaration().getType())) {
+        if (that.getTypeModel().isExactly(that.getUnit().getNullValueType())) {
             CodegenUtil.markTypeErased(that);
         }
     }

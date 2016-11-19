@@ -8569,16 +8569,13 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private static boolean isDefinitelyNothing(
+    private boolean isDefinitelyNothing(
             Tree.Switched switched, 
             Type caseType, Type narrowedType) {
-        Type nullType = 
-                switched.getUnit()
-                    .getNullValueDeclaration()
-                    .getType();
         return narrowedType.isNothing() 
                 && !(switchHasUncheckedNulls(switched) 
-                    && nullType.isSubtypeOf(caseType));
+                    && unit.getNullValueType()
+                           .isSubtypeOf(caseType));
     }
     
     @Override
@@ -8824,8 +8821,7 @@ public class ExpressionVisitor extends Visitor {
 
     private boolean handlesNull(Tree.IsCondition ic, Type type) {
         return ic.getNot() ?
-                unit.getNullValueDeclaration()
-                    .getType()
+                unit.getNullValueType()
                     .isSubtypeOf(type) :
                 type.isSubtypeOf(
                     unit.getObjectType());
