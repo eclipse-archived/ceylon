@@ -284,16 +284,18 @@ public class SpecificationVisitor extends Visitor {
                 else if (!metamodel &&
                         !isNativeHeader(declaration) &&
                         (!isLate() || !isForwardReferenceable())) {
-                    if (isVariable()) {
-                        that.addError("not definitely initialized: " + 
-                                name() + 
-                                " has not been assigned by every conditional branch");                    
-                    }
-                    else {
-                        that.addError("not definitely specified: " + 
-                                name() + 
-                                " has not been assigned by every conditional branch");
-                    }
+                    String message = 
+                            "not definitely "
+                            + (isVariable() ? 
+                                    "initialized" : 
+                                    "specified")
+                            + ": " + name() 
+                            + " has not been assigned "
+                            + (declaration instanceof Value ? 
+                                    "a value" : 
+                                    "a definition")
+                            + " by every conditional branch";
+                    that.addError(message);
                 }
             }
             else if (parameter!=null) {
