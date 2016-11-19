@@ -1087,18 +1087,27 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkEmpty(Type t, Tree.Term term, Node that) {
-        if (!isTypeUnknown(t)) {
-            if (!unit.isSequentialType(unit.getDefiniteType(t))) {
+    private void checkEmpty(Type type, Tree.Term term, Node that) {
+        if (!isTypeUnknown(type)) {
+            if (!unit.isSequentialType(unit.getDefiniteType(type))) {
                 that.addError("expression must be a possibly-empty sequential type: '" + 
-                        t.asString(unit) + 
+                        type.asString(unit) + 
                         "' is not a subtype of 'Anything[]?'");
             }
-            else if (!unit.isPossiblyEmptyType(t)) {
+            else if (!unit.isPossiblyEmptyType(type)) {
+                String explanation = "";
+                if (type.isSubtypeOf(unit.getSequenceType(unit.getAnythingType()))) {
+                    explanation = " cannot be empty";
+                }
+                else if (type.isSubtypeOf(unit.getEmptyType())) {
+                    explanation = " is always empty";
+                }
+                else if (type.isSubtypeOf(unit.getNullType())) {
+                    explanation = " is always null";
+                }
                 that.addUsageWarning(Warning.redundantNarrowing,
                         "expression type is not a possibly-empty sequential type: '" + 
-                        t.asString(unit) + 
-                        "' cannot be empty");
+                        type.asString(unit) + "' " + explanation);
             }
         }
     }
@@ -1107,10 +1116,16 @@ public class ExpressionVisitor extends Visitor {
         if (!isTypeUnknown(type) && 
                 !unit.isOptionalType(type) && 
                 !hasUncheckedNulls(term)) {
+            String explanation = "";
+            if (type.isSubtypeOf(unit.getObjectType())) {
+                explanation = " cannot be null";
+            }
+            else if (type.isSubtypeOf(unit.getNullType())) {
+                explanation = " is always null";
+            }
             that.addUsageWarning(Warning.redundantNarrowing,
                     "expression type is not optional: '" +
-                    type.asString(unit) + 
-                    "' cannot be null");
+                    type.asString(unit) + "'" + explanation);
         }
     }
 
