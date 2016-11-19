@@ -178,10 +178,3 @@ Alex Szczuczko (aszczucz _AHT_ redhat _DOWT_ com).
 
  - [ceylon-web-ide-backend](https://github.com/ceylon/ceylon-web-ide-backend)
 
-# After
-
-1. Find every occurence of the previous version `1.2.0` and turn it into `1.2.1`, take special care with `Versions.java`
-2. Find every occurence of the previous code name `Analytical Engine` and turn it into the new one
-3. If required, bump all the `@Ceylon(major = X)` annotations in `ceylon.language` and the compiler tests' `.src` files
-  - Note that most likely you'll need a new Herd as well (good luck)
-
