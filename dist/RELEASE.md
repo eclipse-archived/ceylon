@@ -116,8 +116,8 @@ NB: To be able to sign packages the user running the docker command for generati
 
 # Update the brew formula for ceylon
 
-1. Fork it on https://github.com/mxcl/homebrew
-2. Update the file `Library/Formula/ceylon.rb`
+1. Fork it on https://github.com/Homebrew/homebrew-core
+2. Update the file [`Library/Formula/ceylon.rb`](https://github.com/Homebrew/homebrew-core/blob/master/Formula/ceylon.rb)
 3. Make a pull-request
 
 # Update the SDKMAN candidate
