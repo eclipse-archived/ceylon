@@ -40,14 +40,14 @@ shared native("jvm") object language {
     
     shared native("jvm") Integer majorVersionBinary => 8;
     
-    shared native("jvm") Integer minorVersionBinary => 0;
+    shared native("jvm") Integer minorVersionBinary => 1;
     
 }
 
 shared native("js") object language {
     
-    shared native("js") Integer majorVersionBinary => 8;
+    shared native("js") Integer majorVersionBinary => 9;
     
-    shared native("js") Integer minorVersionBinary => 0;
+    shared native("js") Integer minorVersionBinary => 1;
     
 }
