@@ -25,7 +25,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @NativeAnnotation$annotation$(backends={})
 public final class Float
     implements Number<Float>, Exponentiable<Float,Float>, 
-               ReifiedType, java.io.Serializable {
+               ReifiedType, 
+               java.io.Serializable, 
+               java.lang.Comparable<Float> {
 
     private static final long serialVersionUID = 8699090544995758140L;
 
@@ -556,6 +558,11 @@ public final class Float
             ((x == y) ? equal_.get_() : larger_.get_());
     }
     
+    @Override @Ignore
+    public int compareTo(Float other) {
+        return Double.compare(value, other.value);
+    }
+
     @Ignore
     public static Comparison compare(double value, double otherValue) {
         double x = value;

@@ -23,7 +23,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 public final class Character
         implements Comparable<Character>, 
                    Enumerable<Character>, 
-                   ReifiedType, java.io.Serializable {
+                   ReifiedType, 
+                   java.io.Serializable,
+                   java.lang.Comparable<Character> {
 
     private static final long serialVersionUID = -4232871157069047777L;
 
@@ -202,6 +204,11 @@ public final class Character
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
 	}
+	
+    @Override @Ignore
+    public int compareTo(Character other) {
+        return java.lang.Integer.compare(codePoint, other.codePoint);
+    }
 
     @Ignore
     public static Comparison compare(int codePoint, int otherCodePoint) {

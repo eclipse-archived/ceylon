@@ -30,7 +30,9 @@ public final class Integer
     implements Integral<Integer>,
                Binary<Integer>,
                Exponentiable<Integer,Integer>, 
-               ReifiedType, java.io.Serializable {
+               ReifiedType, 
+               java.io.Serializable, 
+               java.lang.Comparable<Integer> {
 
     private static final long serialVersionUID = 3611850372864102202L;
 
@@ -481,6 +483,11 @@ public final class Integer
         long y = other.value;
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
+    }
+
+    @Override @Ignore
+    public int compareTo(Integer other) {
+        return Long.compare(value, other.value);
     }
 
     @Ignore

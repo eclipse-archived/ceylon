@@ -48,8 +48,10 @@ import ceylon.language.impl.BaseIterator;
 @NativeAnnotation$annotation$(backends={})
 public final class String
     implements Comparable<String>, SearchableList<Character>,
-               Summable<String>, ReifiedType,
-               java.io.Serializable {
+               Summable<String>, 
+               ReifiedType,
+               java.io.Serializable, 
+               java.lang.Comparable<String> {
     
     private static final long serialVersionUID = 3920012367456670329L;
 
@@ -200,6 +202,11 @@ public final class String
     @Override
     public Comparison compare(@Name("other") String other) {
         return comparison(value.compareTo(other.value));
+    }
+    
+    @Override @Ignore
+    public int compareTo(String other) {
+        return value.compareTo(other.value);
     }
 
     @Ignore
