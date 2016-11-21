@@ -51,6 +51,9 @@ How to do a release of Ceylon.
   -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build **1.2.1**
 6. Copy the zip to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-**1.2.1**.zip **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+7. Do the SDK release
+  -  $ docker pull ceylon/ceylon-build-sdk
+  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build-sdk **1.2.1**
 
 # Build the Debian file
 
@@ -97,43 +100,9 @@ NB: To be able to sign packages the user running the docker command for generati
 
 NB: To be able to sign packages the user running the docker command for generating the repo must have the "Ceylon RPM Archive Signing Key" (E024C8B2) imported into their local key ring.
 
-# Publishing to the Herd
-
-1. First create an Upload on the server
-2. Publish the official distribution to it
-  - $ docker pull ceylon/ceylon-publish
-  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-publish **1.2.1** https://modules.ceylon-lang.org/uploads/**XXX**/repo/ **user** **password**
-3. Publish the SDK modules by running the following in the `ceylon-sdk` project:
-  - $ ant copy-herd -Dherd.repo=https://modules.ceylon-lang.org/uploads/**XXX**/repo/ -Dherd.user=**user** -Dherd.pass=**password**
-
-# Update the web site
-
- - See [this README](https://github.com/ceylon/ceylon-lang.org/blob/master/RELEASE.md)
-
-# Update GitHub Release Notes
-
- - Copy the blog entry created for the web site (see previous bullet point) to the release notes and add the release zip as well: https://github.com/ceylon/ceylon/tags
-
-# Update the brew formula for ceylon
-
-1. Fork it on https://github.com/Homebrew/homebrew-core
-2. Update the file [`Library/Formula/ceylon.rb`](https://github.com/Homebrew/homebrew-core/blob/master/Formula/ceylon.rb)
-3. Make a pull-request
-
-# Update the SDKMAN candidate
-
-This is done via simple `curl` commands, but requires a key and token that will not be posted here for security reasons.
-
-1. First, release the candidate with `curl -X POST -H "consumer_key: KKKKKKK" -H "consumer_token: TTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","version":"<release version>","url":"https://downloads.ceylon-lang.org/cli/ceylon-<release version>.zip"}' https://vendors.sdkman.io/release`. This should return something like `{"status":201,"id":"XXXXX","message":"released ceylon version: <release version>"}`
-2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://vendors.sdkman.io/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
-3. Finally, to broadcast an announcement of the new release: `curl -X POST -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate": "ceylon", "version": "<release version>", "hashtag": "ceylonlang"}' https://vendors.sdkman.io/announce/struct`
-
-# ArchLinux
-
-Update the [ArchLinux package](https://aur.archlinux.org/packages/ceylon/). This means asking
-Alex Szczuczko (aszczucz _AHT_ redhat _DOWT_ com).
-
 # Update Docker
+
+*This depends on the new release being available in both APT and YUM repositories!*
 
 ## ceylon-docker/ceylon
 
@@ -164,6 +133,42 @@ Alex Szczuczko (aszczucz _AHT_ redhat _DOWT_ com).
  - Edit the [Full Description](https://hub.docker.com/r/ceylon/source-runner/), adding a new image/tag line and moving the `latest` tag
  - Update the `README.md` to be the same as the full description
  - Commit all changes
+
+# Publishing to the Herd
+
+*This depends on the ceylon/ceylon Docker image!*
+
+1. First create an Upload on the server
+2. Publish the official distribution and SDK to it
+  - $ docker pull ceylon/ceylon-publish
+  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-publish **1.2.1** https://modules.ceylon-lang.org/uploads/**XXX**/repo/ **user** **password**
+
+# Update the web site
+
+ - See [this README](https://github.com/ceylon/ceylon-lang.org/blob/master/RELEASE.md)
+
+# Update GitHub Release Notes
+
+ - Copy the blog entry created for the web site (see previous bullet point) to the release notes and add the release zip as well: https://github.com/ceylon/ceylon/tags
+
+# Update the brew formula for ceylon
+
+1. Fork it on https://github.com/Homebrew/homebrew-core
+2. Update the file [`Library/Formula/ceylon.rb`](https://github.com/Homebrew/homebrew-core/blob/master/Formula/ceylon.rb)
+3. Make a pull-request
+
+# Update the SDKMAN candidate
+
+This is done via simple `curl` commands, but requires a key and token that will not be posted here for security reasons.
+
+1. First, release the candidate with `curl -X POST -H "consumer_key: KKKKKKK" -H "consumer_token: TTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","version":"<release version>","url":"https://downloads.ceylon-lang.org/cli/ceylon-<release version>.zip"}' https://vendors.sdkman.io/release`. This should return something like `{"status":201,"id":"XXXXX","message":"released ceylon version: <release version>"}`
+2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://vendors.sdkman.io/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
+3. Finally, to broadcast an announcement of the new release: `curl -X POST -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate": "ceylon", "version": "<release version>", "hashtag": "ceylonlang"}' https://vendors.sdkman.io/announce/struct`
+
+# ArchLinux
+
+Update the [ArchLinux package](https://aur.archlinux.org/packages/ceylon/). This means asking
+Alex Szczuczko (aszczucz _AHT_ redhat _DOWT_ com).
 
 # Update OpenShift
 
