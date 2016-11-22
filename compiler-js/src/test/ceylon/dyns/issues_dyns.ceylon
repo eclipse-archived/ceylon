@@ -273,6 +273,7 @@ shared void issues() {
     issue5959();
     issue6057();
     issue6604();
+    issue6740();
 }
 
 void issue5952() {
@@ -362,4 +363,25 @@ void issue6604() {
     check(obj.f()=="what", "#6604.6");
     check(obj.o.string=="soy un objeto", "#6604.7");
   }
+}
+
+dynamic Uno6740 {
+  shared formal Dos6740 dos;
+}
+dynamic Dos6740 {
+  shared formal Uno6740 uno;
+}
+
+"circular references when dressing native objects"
+void issue6740() {
+  Uno6740 uno;
+  dynamic {
+    uno = uno6740;
+  }
+  Object o1 = uno;
+  Object o2 = uno.dos;
+  Object o3 = uno.dos.uno;
+  check(o1 is Uno6740, "#6740.1");
+  check(o2 is Dos6740, "#6740.2");
+  check(o3 is Uno6740, "#6740.3");
 }
