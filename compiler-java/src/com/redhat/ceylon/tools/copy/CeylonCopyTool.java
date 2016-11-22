@@ -1,5 +1,8 @@
 package com.redhat.ceylon.tools.copy;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,9 +24,11 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.tools.war.CeylonWarMessages;
 
 @Summary("Copies modules from one Ceylon module repository to another")
 @Description("Copies a module or a set of modules from one repository " +
@@ -35,6 +40,7 @@ import com.redhat.ceylon.model.cmr.ArtifactResult;
 public class CeylonCopyTool extends OutputRepoUsingTool {
     
     private List<ModuleSpec> modules;
+    private List<String> excludeModules = new ArrayList<>();
     private boolean withDependencies;
     private boolean includeLanguage;
     
@@ -56,6 +62,30 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     
     public void setModuleSpecs(List<ModuleSpec> modules) {
         this.modules = modules;
+    }
+    
+    @OptionArgument(argumentName="moduleOrFile", shortName='x')
+    @Description("Excludes modules from being copied. Can be a module name or " +
+            "a file containing module names. Can be specified multiple times. " +
+            "A module name can end in `*` to signify that any module that has " + 
+            "a name starting with such a string will be excluded.")
+    public void setExcludeModule(List<String> exclusions) {
+        for (String each : exclusions) {
+            File xFile = new File(each);
+            if (xFile.exists() && xFile.isFile()) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(xFile))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        this.excludeModules.add(line);
+                    }
+                } catch (IOException e) {
+                    throw new ToolUsageError(CeylonWarMessages.msg("exclude.file.failure", each), 
+                            e);
+                }
+            } else {
+                this.excludeModules.add(each);
+            }
+        }
     }
 
     @Option(longName="with-dependencies", shortName='r')
@@ -266,7 +296,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 errorNewline();
             }
         });
-        copier.includeLanguage(includeLanguage).copyModules(acs);
+        copier.includeLanguage(includeLanguage).excludeModules(excludeModules).copyModules(acs);
     }
 
 }

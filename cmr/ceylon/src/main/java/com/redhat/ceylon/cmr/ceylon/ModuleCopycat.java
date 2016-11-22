@@ -43,6 +43,7 @@ public class ModuleCopycat {
     private Logger log;
     private JdkProvider jdkProvider;
     private boolean includeLanguage;
+    private Set<String> excludeModules;
     
     private Set<String> copiedModules;
     private int count;
@@ -101,7 +102,8 @@ public class ModuleCopycat {
         this.dstRepoman = dstRepoman;
         this.feedback = feedback;
         this.log = log;
-        this.copiedModules = new HashSet<>();
+        this.copiedModules = new HashSet<String>();
+        this.excludeModules = new HashSet<String>();
         // FIXME: probably needs to be an option
         this.jdkProvider = new JdkProvider();
     }
@@ -112,13 +114,25 @@ public class ModuleCopycat {
      * For this to work <code>isIgnoreDependencies()</code> must not be set to true
      * on the toplevel artifact context to copy.
      * @param includeLanguage
-     * @return
+     * @return this object for chaining
      */
     public ModuleCopycat includeLanguage(boolean includeLanguage) {
         this.includeLanguage = includeLanguage;
         return this;
     }
     
+    /**
+     * Defines a collection of module names to be excluded from copying.
+     * A module name can end in <code>*</code> to signify that any module
+     * that has a name starting with such a string will be excluded.
+     * @param excludeModules A collection of module names
+     * @return this object for chaining
+     */
+    public ModuleCopycat excludeModules(Collection<String> excludeModules) {
+        this.excludeModules = new HashSet<String>(excludeModules);
+        return this;
+    }
+
     /**
      * This method basically calls <code>copyModule</code> on each of the artifact
      * contexts in the list it gets passed.
@@ -143,6 +157,10 @@ public class ModuleCopycat {
      * in the "feedback" callback interface
      */
     public void copyModule(ArtifactContext context) throws Exception {
+        if (!includeLanguage) {
+            excludeModules.add("ceylon.language");
+        }
+        
         count = 0;
         maxCount = 1;
         copyModuleInternal(context);
@@ -150,7 +168,7 @@ public class ModuleCopycat {
     
     private void copyModuleInternal(ArtifactContext context) throws Exception {
         assert(context != null);
-        if (!jdkProvider.isJDKModule(context.getName())) {
+        if (!shouldExclude(context.getName())) {
             String module = ModuleUtil.makeModuleName(context.getName(), context.getVersion());
             // Skip all duplicates and artifacts from repositories that don't support copying
             if (!copiedModules.add(module) || !canBeCopied(context)) {
@@ -192,7 +210,7 @@ public class ModuleCopycat {
                     feedback.afterCopyModule(context, count, maxCount, copiedModule);
                 }
                 if (copyModule && !context.isIgnoreDependencies()) {
-                    maxCount += countNonJdkDeps(ver.getDependencies());
+                    maxCount += countNonExcludedDeps(ver.getDependencies());
                     for (ModuleDependencyInfo dep : ver.getDependencies()) {
                         if (skipDependency(dep)) {
                             continue;
@@ -214,8 +232,7 @@ public class ModuleCopycat {
     }
 
     private boolean skipDependency(ModuleDependencyInfo dep) {
-        return ("ceylon.language".equals(dep.getName()) && !includeLanguage)
-                || dep.getNamespace() != null;
+        return shouldExclude(dep.getName()) | dep.getNamespace() != null;
     }
     
     // Can the artifact be copied?
@@ -225,15 +242,29 @@ public class ModuleCopycat {
                 || DefaultRepository.NAMESPACE.equals(context.getNamespace());
     }
 
-    private int countNonJdkDeps(NavigableSet<ModuleDependencyInfo> dependencies) {
+    private int countNonExcludedDeps(NavigableSet<ModuleDependencyInfo> dependencies) {
         int cnt = 0;
         for (ModuleDependencyInfo dep : dependencies) {
-            if (!jdkProvider.isJDKModule(dep.getName())
+            if (!shouldExclude(dep.getName())
                     && !skipDependency(dep)) {
                 cnt++;
             }
         }
         return cnt;
+    }
+
+    private boolean shouldExclude(String moduleName) {
+        if (jdkProvider.isJDKModule(moduleName) ||
+                excludeModules.contains(moduleName)) {
+            return true;
+        }
+        for (String ex : excludeModules) {
+            if (ex.endsWith("*") &&
+                    moduleName.startsWith(ex.substring(0, ex.length() - 1))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, 
