@@ -1291,17 +1291,13 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
     }
-
-    private int transformClassParameterDeclFlags(Parameter param) {
-        return param.getModel().isVariable() ? 0 : FINAL;
-    }
     
     private void makeFieldForParameter(ClassDefinitionBuilder classBuilder,
             Parameter decl, Tree.Declaration annotated) {
         FunctionOrValue model = decl.getModel();
         AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.field(this, annotated, decl.getName(), decl.getModel(), false);
         adb.fieldAnnotations(makeAtIgnore().prependList(expressionGen().transformAnnotations(OutputElement.FIELD, annotated)));
-        adb.modifiers(transformClassParameterDeclFlags(decl) | PRIVATE);
+        adb.modifiers(modifierTransformation().transformClassParameterDeclFlagsField(decl, annotated));
         BoxingStrategy exprBoxed = CodegenUtil.isUnBoxed(model) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
         BoxingStrategy boxingStrategy = useJavaBox(model, model.getType())
                 && javaBoxExpression(model.getType(), model.getType())? BoxingStrategy.JAVA : exprBoxed;
@@ -1332,7 +1328,7 @@ public class ClassTransformer extends AbstractTransformer {
         pdb.type(new TransformedType(type, 
                 makeJavaTypeAnnotations(param.getModel()),
                 makeNullabilityAnnotations(param.getModel())));
-        pdb.modifiers(transformClassParameterDeclFlags(param));
+        pdb.modifiers(modifierTransformation().transformClassParameterDeclFlags(param));
         if (!(param.getModel().isShared() || param.getModel().isCaptured())) {
             // We load the model for shared parameters from the corresponding member
             pdb.modelAnnotations(param.getModel().getAnnotations());
@@ -3714,6 +3710,24 @@ public class ClassTransformer extends AbstractTransformer {
             return result;
         }
         
+        private boolean containsInteropAnnotation(Tree.AnnotationList annos, String annotationName) {
+            for (Tree.Annotation anno : annos.getAnnotations()) {
+                Declaration declaration = ((Tree.MemberOrTypeExpression)anno.getPrimary()).getDeclaration();
+                if (declaration != null && annotationName.equals(declaration.getQualifiedNameString())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        private boolean containsJavaLangTransient(Tree.AnnotationList annos) {
+            return containsInteropAnnotation(annos, "com.redhat.ceylon.compiler.java.language::transient");
+        }
+        
+        private boolean containsJavaLangVolatile(Tree.AnnotationList annos) {
+            return containsInteropAnnotation(annos, "com.redhat.ceylon.compiler.java.language::volatile");
+        }
+        
         public long field(Tree.AttributeDeclaration cdecl) {
             int result = 0;
 
@@ -3722,6 +3736,12 @@ public class ClassTransformer extends AbstractTransformer {
             if(!CodegenUtil.hasCompilerAnnotation(cdecl, "packageProtected"))
                 result |= PRIVATE;
             
+            if (containsJavaLangTransient(cdecl.getAnnotationList())) {
+                result |= Flags.TRANSIENT;
+            }
+            if (containsJavaLangVolatile(cdecl.getAnnotationList())) {
+                result |= Flags.VOLATILE;
+            }
             return result;
         }
 
@@ -3827,6 +3847,21 @@ public class ClassTransformer extends AbstractTransformer {
                 modifiers |= STATIC | PUBLIC;
             }
             return modifiers;
+        }
+        
+        public long transformClassParameterDeclFlags(Parameter param) {
+            return param.getModel().isVariable() ? 0 : FINAL;
+        }
+        
+        public long transformClassParameterDeclFlagsField(Parameter param, Tree.Declaration annotated) {
+            long result = transformClassParameterDeclFlags(param) | PRIVATE;
+            if (containsJavaLangTransient(annotated.getAnnotationList())) {
+                result |= Flags.TRANSIENT;
+            }
+            if (containsJavaLangVolatile(annotated.getAnnotationList())) {
+                result |= Flags.VOLATILE;
+            }
+            return result;
         }
     }
     
