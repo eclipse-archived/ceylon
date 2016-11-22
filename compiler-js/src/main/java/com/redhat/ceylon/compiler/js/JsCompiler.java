@@ -349,14 +349,6 @@ public class JsCompiler {
             } else if(srcFiles != null && !srcFiles.isEmpty()
                          // For the specific case of the Stitcher
                          && !typecheckerPhasedUnits.isEmpty() ){
-                PhasedUnit lastUnit;
-                if (phasedUnits.isEmpty()) {
-                    // For the specific case of the Stitcher
-                    lastUnit = typecheckerPhasedUnits.get(0);
-                } else {
-                    lastUnit = phasedUnits.get(0);
-                }
-                
                 for (PhasedUnit pu: phasedUnits) {
                     if ("module.ceylon".equals(pu.getUnitFile().getName())) {
                         final int t = compileUnit(pu);
@@ -370,6 +362,14 @@ public class JsCompiler {
                 for (File path : srcFiles) {
                     if (path.getPath().endsWith(ArtifactContext.JS)) {
                         //Just output the file
+                        File dir = path.getParentFile();
+                        PhasedUnit lastUnit = phasedUnits.isEmpty() ? typecheckerPhasedUnits.get(0) : phasedUnits.get(0);
+                        for (PhasedUnit pu : phasedUnits) {
+                            if (pu.getUnitFile().getPath().startsWith(dir.getPath())) {
+                                lastUnit = pu;
+                                break;
+                            }
+                        }
                         final JsOutput lastOut = getOutput(lastUnit);
                         VirtualFile vpath = findFile(path);
                         try (BufferedReader reader = new BufferedReader(new InputStreamReader(vpath.getInputStream(), opts.getEncoding()))) {
@@ -409,7 +409,6 @@ public class JsCompiler {
                                 } else if (t == 2) {
                                     break;
                                 }
-                                lastUnit = pu;
                             }
                         }
                     }
