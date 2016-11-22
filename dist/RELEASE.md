@@ -165,6 +165,11 @@ This is done via simple `curl` commands, but requires a key and token that will 
 2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://vendors.sdkman.io/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
 3. Finally, to broadcast an announcement of the new release: `curl -X POST -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate": "ceylon", "version": "<release version>", "hashtag": "ceylonlang"}' https://vendors.sdkman.io/announce/struct`
 
+You can now also use the `dist/sdkman.sh` script ot do the same:
+
+1. `sdkman candidate 1.2.1 KKKKK TTTTTT` will do the same as first two steps above: register a new version and set it as the default
+1. `sdkman announce 1.2.1 KKKKK TTTTTT` will do the same as the last step: announce the new version
+
 # ArchLinux
 
 Update the [ArchLinux package](https://aur.archlinux.org/packages/ceylon/). This means asking
