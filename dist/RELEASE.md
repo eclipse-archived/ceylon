@@ -172,12 +172,12 @@ Alex Szczuczko (aszczucz _AHT_ redhat _DOWT_ com).
 
 # Update OpenShift
 
- - [openshift-cartridge](https://github.com/ceylon/openshift-cartridge)
- - [ceylon.openshift](https://github.com/ceylon/ceylon.openshift)
+ - Update [openshift-cartridge](https://github.com/ceylon/openshift-cartridge) , which includes copying the entire distribution to `./usr`
+ - Update [ceylon.openshift](https://github.com/ceylon/ceylon.openshift) and upload it to the Herd
 
 # Update Ceylon Swarm
 
- - [ceylon.swarm](https://github.com/ceylon/ceylon.swarm)
+ - Update [ceylon.swarm](https://github.com/ceylon/ceylon.swarm) and upload it to the Herd
 
 # Update the Web IDE
 
