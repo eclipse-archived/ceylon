@@ -1,0 +1,86 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class Transient implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Transient() {
+        super();
+        this.u = null;
+        this.s = null;
+        this.t = null;
+    }
+    
+    Transient(final .java.lang.String s, final .java.lang.String u) {
+        this.s = s;
+        this.u = u;
+        this.t = getS();
+    }
+    private final transient .java.lang.String u;
+    
+    public final .java.lang.String getU() {
+        return this.u;
+    }
+    private final transient .java.lang.String s;
+    
+    public final .java.lang.String getS() {
+        return this.s;
+    }
+    private final transient .java.lang.String t;
+    
+    public final .java.lang.String getT() {
+        return this.t;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.Transient.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Transient.class);
+}
+final class transientObject_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private transientObject_() {
+        this.s = null;
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.interop.transientObject_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.transientObject_.class);
+    private transient .ceylon.language.String s;
+    
+    public final .ceylon.language.String getS() {
+        return this.s;
+    }
+    
+    public final void setS(final .ceylon.language.String s) {
+        this.s = s;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.interop.transientObject_ $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .com.redhat.ceylon.compiler.java.test.interop.transientObject_();
+            .com.redhat.ceylon.compiler.java.test.interop.transientObject_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.interop.transientObject_.$init$$object$ = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.interop.transientObject_ get_() {
+        if (.com.redhat.ceylon.compiler.java.test.interop.transientObject_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.interop.transientObject_.$object$;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'transientObject\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.transientObject_.$TypeDescriptor$;
+    }
+}

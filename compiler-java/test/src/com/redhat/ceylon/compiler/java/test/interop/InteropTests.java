@@ -960,4 +960,29 @@ public class InteropTests extends CompilerTests {
         compileAndRun("com.redhat.ceylon.compiler.java.test.interop.run6635", 
                 "Bug6635.ceylon");
     }
+    
+    @Test
+    public void testIopTransient() {
+        compareWithJavaSource("Transient");
+    }
+    
+    @Test
+    public void testIopVolatile() {
+        compareWithJavaSource("Volatile");
+    }
+    
+    @Test
+    public void testIopSynchronized() {
+        compareWithJavaSource("Synchronized");
+    }
+    
+    @Test
+    public void testIopNative() {
+        compareWithJavaSource("Native");
+    }
+    
+    @Test
+    public void testIopStrictfp() {
+        compareWithJavaSource("Strictfp");
+    }
 }

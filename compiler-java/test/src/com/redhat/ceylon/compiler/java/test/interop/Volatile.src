@@ -1,0 +1,50 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class Volatile implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Volatile() {
+        super();
+        this.u = null;
+        this.s = null;
+        this.t = null;
+    }
+    
+    Volatile(.java.lang.String s, .java.lang.String u) {
+        this.s = s;
+        this.u = u;
+        this.t = getS();
+    }
+    private volatile .java.lang.String u;
+    
+    public final .java.lang.String getU() {
+        return this.u;
+    }
+    
+    public final void setU(final .java.lang.String u) {
+        this.u = u;
+    }
+    private volatile .java.lang.String s;
+    
+    public final .java.lang.String getS() {
+        return this.s;
+    }
+    
+    public final void setS(final .java.lang.String s) {
+        this.s = s;
+    }
+    private volatile .java.lang.String t;
+    
+    public final .java.lang.String getT() {
+        return this.t;
+    }
+    
+    public final void setT(final .java.lang.String t) {
+        this.t = t;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.Volatile.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.Volatile.class);
+}
