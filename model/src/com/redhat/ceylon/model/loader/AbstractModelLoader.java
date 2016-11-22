@@ -260,7 +260,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected static final String JAVA_LANG_CHAR_ARRAY = "java.lang.CharArray";
     protected static final String JAVA_LANG_BOOLEAN_ARRAY = "java.lang.BooleanArray";
     protected static final String JAVA_LANG_OBJECT_ARRAY = "java.lang.ObjectArray";
-
+    
     // this one has the "_" postfix because that's what we translate it to
     private static final String CEYLON_BYTE_ARRAY = "com.redhat.ceylon.compiler.java.language.ByteArray";
     private static final String CEYLON_SHORT_ARRAY = "com.redhat.ceylon.compiler.java.language.ShortArray";
@@ -281,6 +281,37 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror JAVA_CHAR_ARRAY_TYPE = simpleJDKObjectType("java.lang.CharArray");
     private static final TypeMirror JAVA_BOOLEAN_ARRAY_TYPE = simpleJDKObjectType("java.lang.BooleanArray");
     private static final TypeMirror JAVA_IO_SERIALIZABLE_TYPE_TYPE = simpleJDKObjectType("java.io.Serializable");
+    
+    protected static final String JAVA_LANG_TRANSIENT_ANNOTATION = "java.lang.transient";
+    protected static final String JAVA_LANG_VOLATILE_ANNOTATION = "java.lang.volatile";
+    protected static final String JAVA_LANG_SYNCHRONIZED_ANNOTATION = "java.lang.synchronized";
+    protected static final String JAVA_LANG_NATIVE_ANNOTATION = "java.lang.native";
+    protected static final String JAVA_LANG_STRICTFP_ANNOTATION = "java.lang.strictfp";
+    
+    private static final String CEYLON_INTEROP_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.language.transient";
+    private static final String CEYLON_INTEROP_VOLATILE_ANNOTATION = "com.redhat.ceylon.compiler.java.language.volatile";
+    private static final String CEYLON_INTEROP_SYNCHRONIZED_ANNOTATION = "com.redhat.ceylon.compiler.java.language.synchronized";
+    private static final String CEYLON_INTEROP_NATIVE_ANNOTATION = "com.redhat.ceylon.compiler.java.language.native";
+    private static final String CEYLON_INTEROP_STRICTFP_ANNOTATION = "com.redhat.ceylon.compiler.java.language.strictfp";
+    
+    private static final Set<String> CEYLON_INTEROP_DECLARATIONS = new HashSet<String>();
+    static {
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_BYTE_ARRAY);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_SHORT_ARRAY);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INT_ARRAY);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_LONG_ARRAY);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_BOOLEAN_ARRAY);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_FLOAT_ARRAY);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_DOUBLE_ARRAY);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_CHAR_ARRAY);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_OBJECT_ARRAY);
+        
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_NATIVE_ANNOTATION);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_TRANSIENT_ANNOTATION);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_VOLATILE_ANNOTATION);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_SYNCHRONIZED_ANNOTATION);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_STRICTFP_ANNOTATION);
+    }
     
     private static TypeMirror simpleJDKObjectType(String name) {
         return new SimpleReflType(name, SimpleReflType.Module.JDK, TypeKind.DECLARED);
@@ -427,6 +458,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             || JAVA_LANG_DOUBLE_ARRAY.equals(name)
                             || JAVA_LANG_CHAR_ARRAY.equals(name)) {
                         // turn them into their real class location (get rid of the "java.lang" prefix)
+                        name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
+                        module = getLanguageModule();
+                    }
+                    if (JAVA_LANG_TRANSIENT_ANNOTATION.equals(name)
+                            || JAVA_LANG_VOLATILE_ANNOTATION.equals(name)
+                            || JAVA_LANG_SYNCHRONIZED_ANNOTATION.equals(name)
+                            || JAVA_LANG_NATIVE_ANNOTATION.equals(name)
+                            || JAVA_LANG_STRICTFP_ANNOTATION.equals(name)) {
                         name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
                         module = getLanguageModule();
                     }
@@ -726,19 +765,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     public String getPackageNameForQualifiedClassName(String pkg, String qualifiedName){
         // Java array classes we pretend come from java.lang
-        if(qualifiedName.startsWith(CEYLON_OBJECT_ARRAY)
-                || qualifiedName.startsWith(CEYLON_BOOLEAN_ARRAY)
-                || qualifiedName.startsWith(CEYLON_BYTE_ARRAY)
-                || qualifiedName.startsWith(CEYLON_SHORT_ARRAY)
-                || qualifiedName.startsWith(CEYLON_INT_ARRAY)
-                || qualifiedName.startsWith(CEYLON_LONG_ARRAY)
-                || qualifiedName.startsWith(CEYLON_FLOAT_ARRAY)
-                || qualifiedName.startsWith(CEYLON_DOUBLE_ARRAY)
-                || qualifiedName.startsWith(CEYLON_CHAR_ARRAY))
-            return "java.lang";
-        else
-            return unquotePackageName(pkg);
-        
+        for (String name : CEYLON_INTEROP_DECLARATIONS) {
+            if(qualifiedName.startsWith(name)) {
+                return "java.lang";
+            }
+        }
+        return unquotePackageName(pkg);
     }
     
     protected String getPackageNameForQualifiedClassName(ClassMirror classMirror) {
@@ -6338,6 +6370,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_FLOAT_ARRAY, DeclarationType.TYPE);
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_DOUBLE_ARRAY, DeclarationType.TYPE);
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_CHAR_ARRAY, DeclarationType.TYPE);
+    }
+    
+    protected void loadJavaBaseAnnotations() {
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_NATIVE_ANNOTATION, DeclarationType.VALUE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_TRANSIENT_ANNOTATION, DeclarationType.VALUE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_VOLATILE_ANNOTATION, DeclarationType.VALUE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_SYNCHRONIZED_ANNOTATION, DeclarationType.VALUE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_NATIVE_ANNOTATION, DeclarationType.VALUE);
+    }
+    
+    protected void loadJavaBaseExtras() {
+        loadJavaBaseArrays();
+        loadJavaBaseAnnotations();
     }
     
     /**

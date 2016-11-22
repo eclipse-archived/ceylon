@@ -117,7 +117,7 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
             }
             if(module.getNameAsString().equals(JAVA_BASE_MODULE_NAME)
                     && packageName.equals("java.lang"))
-                loadJavaBaseArrays();
+                loadJavaBaseExtras();
         }
         return true;
     }
