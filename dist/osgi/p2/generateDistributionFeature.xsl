@@ -3,6 +3,7 @@
 	<xsl:param name="featureId"/>
 	<xsl:param name="featureVersion"/>
     <xsl:param name="includedBundles"/>
+    <xsl:param name="ceylonVersion"/>
 	<xsl:template match="/">
 <feature
       id="{$featureId}"

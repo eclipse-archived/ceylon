@@ -282,7 +282,8 @@
         </bindex>
         <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="ceylon.distribution.runtime"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
+            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.osgi.version}"/>
+            <property name="feature.version.ceylon" value="${module.com.redhat.ceylon.dist.osgi.version}"/>
             <property name="includedBundles" value="${osgiRuntimeBundles}"/>
             <property name="xslFile" value="${karaf}/generateKarafRuntimeDistributionFeature.xsl"/>
             <property name="feature.dir" value="${build.dist}"/>
@@ -297,6 +298,7 @@
         <xslt style="${xslFile}" in="${build.dist}/index.xml" out="${featureFile}">
             <param name="featureId" expression="${feature.id}"/>
             <param name="featureVersion" expression="${feature.version}"/>
+            <param name="ceylonVersion" expression="${feature.version.ceylon}"/>
             <param name="includedBundles" expression="${includedBundles}"/>
         </xslt>            
     </target>
