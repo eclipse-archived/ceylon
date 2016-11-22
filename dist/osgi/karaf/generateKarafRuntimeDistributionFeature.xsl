@@ -2,8 +2,9 @@
 	<xsl:param name="featureId"/>
 	<xsl:param name="featureVersion"/>
     <xsl:param name="includedBundles"/>
+    <xsl:param name="ceylonVersion"/>
 	<xsl:template match="/">
-	    <xsl:variable name="urlPrefix">https://downloads.ceylon-lang.org/osgi/distribution/<xsl:value-of select="$featureVersion"/></xsl:variable>
+	    <xsl:variable name="urlPrefix">https://downloads.ceylon-lang.org/osgi/distribution/<xsl:value-of select="$ceylonVersion"/></xsl:variable>
 		<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0" name="ceylon.distribution">
 			<feature name="{$featureId}" version="{$featureVersion}" description="Ceylon language - Distribution runtime bundles. http://www.ceylon-lang.org">
 			      <xsl:for-each select="/*[local-name()='repository']/*[local-name()='resource']">
