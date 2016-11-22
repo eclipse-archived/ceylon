@@ -1,6 +1,6 @@
 //Dress up a native JS object as the specified type
 //(which should be a Ceylon dynamic interface)
-function dre$$(object, type, loc) {
+function dre$$(object, type, loc, stack) {
   //If it's already dressed up as the type, leave it alone
   if (is$(object, type))return object;
   //If it's already of another type, throw
@@ -52,6 +52,11 @@ function dre$$(object, type, loc) {
     }
   }
   var t_all=sats;
+  if (stack===undefined) {
+    stack=[object];
+  } else if (stack.indexOf(object)<0) {
+    stack.push(object);
+  }
   for (var sat in sats) {
     var expected = sats[sat].dynmem$;
     if (expected) {
@@ -90,7 +95,9 @@ function dre$$(object, type, loc) {
               if (ndnc$(val,'f',false)===false)return object;
             } else if ((dynmemberType=memberTypeIsDynamicInterface$(proptype.$t))!==undefined) {
               //If the member type is a dynamic interface, dress up the value
-              dre$$(val,dynmemberType,loc);
+              if (stack.indexOf(val)<0) {
+                dre$$(val,dynmemberType,loc,stack);
+              }
             } else {
               var _t=proptype.$t;
               if (typeof(_t)==='string') {
@@ -164,7 +171,9 @@ function dre$$(object, type, loc) {
               object[expected[i]]=ndnc$(val,'f',loc);
             } else if ((dynmemberType=memberTypeIsDynamicInterface$(proptype.$t))!==undefined) {
               //If the member type is a dynamic interface, dress up the value
-              dre$$(val,dynmemberType,loc);
+              if (stack.indexOf(val)<0) {
+                dre$$(val,dynmemberType,loc,stack);
+              }
             } else {
               var _t=proptype.$t;
               if (typeof(_t)==='string') {
