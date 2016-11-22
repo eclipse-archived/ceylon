@@ -183,3 +183,9 @@ Alex Szczuczko (aszczucz _AHT_ redhat _DOWT_ com).
 
  - [ceylon-web-ide-backend](https://github.com/ceylon/ceylon-web-ide-backend)
 
+# Update Maven support
+
+ - [ceylon-maven-repo](https://github.com/ceylon/ceylon-maven-repo)
+ - [ceylon-maven-plugin](https://github.com/ceylon/ceylon-maven-plugin)
+ - Contact Julien Viet (julien _AHT_ julienviet _DOWT_ com) when done
+ 
