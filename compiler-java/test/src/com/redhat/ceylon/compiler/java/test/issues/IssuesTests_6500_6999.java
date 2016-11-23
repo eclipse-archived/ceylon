@@ -173,4 +173,9 @@ public class IssuesTests_6500_6999 extends CompilerTests {
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
         compareWithJavaSource(Arrays.asList("-target", "8", "-source", "8"), "bug67xx/Bug6706.src", "bug67xx/Bug6706.ceylon");
     }
+    
+    @Test
+    public void testBug6746() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6746", "bug67xx/Bug6746.ceylon");
+    }
 }
