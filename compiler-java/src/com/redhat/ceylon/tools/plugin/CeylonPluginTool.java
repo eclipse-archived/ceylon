@@ -1,7 +1,9 @@
 package com.redhat.ceylon.tools.plugin;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +12,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
@@ -25,6 +28,7 @@ import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.ModelException;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
@@ -225,7 +229,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
                     File[] modfiles = child.listFiles();
                     for (File f : modfiles) {
                         if (isScript(f) || isPlugin(f)) {
-                            scripts.add(scriptName(f) + " (from " + location + " module '" + child.getName() + "')");
+                            scripts.add(scriptName(f) + " (from " + location + " module '" + getModuleNameVersion(f) + "')");
                         }
                     }
                 } else if (isScript(child) || isPlugin(child)) {
@@ -233,6 +237,20 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
                 }
             }
         }
+    }
+
+    private String getModuleNameVersion(File f) {
+        String mod = f.getParentFile().getName();
+        if (isPlugin(f)) {
+            Properties pluginProperties = new Properties();
+            try (InputStream is = new FileInputStream(f)) {
+                pluginProperties.load(is);
+                mod = pluginProperties.getProperty("module", mod);
+            } catch (IOException e) {
+                // Ignore
+            }
+        }
+        return mod;
     }
 
     private boolean isScript(File f) {
