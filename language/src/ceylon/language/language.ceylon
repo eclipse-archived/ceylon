@@ -15,7 +15,7 @@ shared native object language {
     shared Integer minorVersion => 3;
     
     "The Ceylon language release version."
-    shared Integer releaseVersion => 1;
+    shared Integer releaseVersion => 2;
     
     "The Ceylon language version qualifier."
     since("1.3.0")
