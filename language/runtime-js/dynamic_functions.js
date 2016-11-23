@@ -88,7 +88,7 @@ function dre$$(object, type, loc, stack) {
             }
           } else if (proptype && proptype.$t && !is$(val,proptype.$t)) {
             if (proptype.$t.t===$_Array) {
-              if (natc$(val,proptype.$t.a.Element$Array,false)===false)return object;
+              if (natc$(val,proptype.$t.a.Element$Array,false,stack)===false)return object;
             } else if (proptype.$t.t===Integer) {
               if (ndnc$(val,'i',false)===false)return object;
             } else if (proptype.$t.t===Float) {
@@ -164,7 +164,7 @@ function dre$$(object, type, loc, stack) {
             }
           } else if (proptype && proptype.$t && !is$(val,proptype.$t)) {
             if (proptype.$t.t===$_Array) {
-              object[expected[i]]=natc$(val,proptype.$t.a.Element$Array,loc);
+              object[expected[i]]=natc$(val,proptype.$t.a.Element$Array,loc,stack);
             } else if (proptype.$t.t===Integer) {
               object[expected[i]]=ndnc$(val,'i',loc);
             } else if (proptype.$t.t===Float) {
@@ -243,12 +243,12 @@ function ndtc$(o,t,loc) {
 }
 ex$.ndtc$=ndtc$;
 //Box native array, checking elements' type
-function natc$(a,t,loc) {
+function natc$(a,t,loc,stack) {
   if (a===empty())return $arr$([],t);
   if (Array.isArray(a)) {
     for (var i=0;i<a.length;i++) {
       if (!is$(a[i],t) && (a[i] && a[i].$$)===undefined) {
-        a[i]=dre$$(a[i],t,loc);
+        a[i]=dre$$(a[i],t,loc,stack);
       }
     }
     return $arr$(a,t);
