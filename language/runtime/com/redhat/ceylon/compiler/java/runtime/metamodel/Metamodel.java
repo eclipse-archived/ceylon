@@ -2058,16 +2058,21 @@ public class Metamodel {
      */
     public static java.lang.Class<?> getJavaClass(TypeDescriptor $reifiedT) {
         if ($reifiedT instanceof TypeDescriptor.Intersection) {
-            return (java.lang.Class<?>)getJavaClass(((TypeDescriptor.Intersection)$reifiedT).toSimpleType(getModuleManager()));
+            return (java.lang.Class<?>)
+                    getJavaClass(((TypeDescriptor.Intersection)$reifiedT)
+                            .toSimpleType(getModuleManager()));
         }
         else if ($reifiedT instanceof TypeDescriptor.Union) {
-            return (java.lang.Class<?>)getJavaClass(((TypeDescriptor.Intersection)$reifiedT).toSimpleType(getModuleManager()));
+            return (java.lang.Class<?>)
+                    getJavaClass(((TypeDescriptor.Union)$reifiedT)
+                            .toSimpleType(getModuleManager()));
         }
         if ($reifiedT instanceof TypeDescriptor.Class) {
             TypeDescriptor.Class klass = 
                     (TypeDescriptor.Class) $reifiedT;
             // this is already erased
-            return (java.lang.Class<?>) klass.getArrayElementClass();
+            return (java.lang.Class<?>) 
+                    klass.getArrayElementClass();
         } 
         else if ($reifiedT instanceof TypeDescriptor.Member) {
             TypeDescriptor.Member member = 
@@ -2076,7 +2081,8 @@ public class Metamodel {
             if (m instanceof TypeDescriptor.Class) {
                 TypeDescriptor.Member.Class klass = 
                         (TypeDescriptor.Class) m;
-                return (java.lang.Class<?>) klass.getKlass();
+                return (java.lang.Class<?>) 
+                        klass.getKlass();
             }
         }
         return null;
