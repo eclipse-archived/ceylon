@@ -371,6 +371,9 @@ dynamic Uno6740 {
 dynamic Dos6740 {
   shared formal Uno6740 uno;
 }
+dynamic Tres6740 {
+  shared formal Array<Dos6740> hijos;
+}
 
 "circular references when dressing native objects"
 void issue6740() {
@@ -384,4 +387,10 @@ void issue6740() {
   check(o1 is Uno6740, "#6740.1");
   check(o2 is Dos6740, "#6740.2");
   check(o3 is Uno6740, "#6740.3");
+  Tres6740 tres;
+  dynamic {
+    tres = tres6740;
+    check(tres6740 is Tres6740, "#6740.4");
+  }
+  check(tres.hijos[499] is Dos6740, "#6740.5");
 }
