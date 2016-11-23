@@ -926,8 +926,14 @@ public class Util {
             T[] ret, T... initialElements) {
         if (sequence == null)
             return initialElements;
-        int i=initialElements.length;
-        System.arraycopy(initialElements, 0, ret, 0, i);
+        int i;
+        if (initialElements == null) {
+            i = 1;
+            ret[0] = null;
+        } else {
+            i = initialElements.length;
+            System.arraycopy(initialElements, 0, ret, 0, i);
+        }
         Iterator<? extends T> iterator = sequence.iterator();
         Object o;
         while ((o = iterator.next()) != finished_.get_()) {
