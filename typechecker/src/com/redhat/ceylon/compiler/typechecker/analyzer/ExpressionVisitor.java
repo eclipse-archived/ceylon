@@ -2810,6 +2810,7 @@ public class ExpressionVisitor extends Visitor {
     private static void warnUncheckedNulls(
             Tree.LocalModifier local, 
             Type type, Tree.Term term) {
+        Node node = term==null ? local : term; //often the LocalModifier doesn't have location info
         Unit unit = local.getUnit();
         if (term instanceof Tree.InvocationExpression) {
             Tree.InvocationExpression ie = 
@@ -2821,7 +2822,7 @@ public class ExpressionVisitor extends Visitor {
                         (Tree.StaticMemberOrTypeExpression) p;
                 Declaration dec = bme.getDeclaration();
                 if (dec!=null) {
-                    local.addUsageWarning(Warning.inferredNotNull, 
+                    node.addUsageWarning(Warning.inferredNotNull, 
                             "not null type inferred from invocation of function with unchecked nulls: '" 
                             + dec.getName(unit) 
                             + "' is not known to be null-safe (explicitly specify the type '" 
@@ -2837,7 +2838,7 @@ public class ExpressionVisitor extends Visitor {
                         term;
             Declaration dec = bme.getDeclaration();
             if (dec!=null) {
-                local.addUsageWarning(Warning.inferredNotNull, 
+                node.addUsageWarning(Warning.inferredNotNull, 
                         "not null type inferred from reference to value with unchecked nulls: '" 
                         + dec.getName(unit) 
                         + "' is not known to be null-safe (explicitly specify the type '" 
@@ -2846,7 +2847,7 @@ public class ExpressionVisitor extends Visitor {
                 return;
             }
         }
-        local.addUsageWarning(Warning.inferredNotNull, 
+        node.addUsageWarning(Warning.inferredNotNull, 
                 "not null type inferred from reference to function or value with unchecked nulls (explicitly specify the type '" 
                 + type.asSourceCodeString(unit) 
                 + "')");
