@@ -99,7 +99,6 @@ public class CompilerOptions extends Options {
         setSourcePath(DefaultToolOptions.getCompilerSourceDirs(config));
         setResourcePath(DefaultToolOptions.getCompilerResourceDirs(config));
         setResourceRootName(DefaultToolOptions.getCompilerResourceRootName(config));
-        setModules(DefaultToolOptions.getCompilerModules(config, null));
     }
 
     /**
