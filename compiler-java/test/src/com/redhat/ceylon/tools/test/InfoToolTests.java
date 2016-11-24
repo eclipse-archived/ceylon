@@ -134,7 +134,7 @@ public class InfoToolTests extends AbstractToolTests {
     public void testAetherModuleVersions() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
-        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("asm:asm-commons"));
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("maven:asm:asm-commons"));
         
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
@@ -158,7 +158,7 @@ public class InfoToolTests extends AbstractToolTests {
     public void testAetherModuleVersionSearch() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
-        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("asm:asm-commons/2"));
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("maven:asm:asm-commons/2"));
 
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
