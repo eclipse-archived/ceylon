@@ -10,10 +10,12 @@ import java.util.TreeSet;
 public class ModuleSearchResult {
     
     public static class ModuleDetails implements Comparable<ModuleDetails> {
-        private String name;
+        private final String namespace;
+        private final String name;
         private NavigableSet<ModuleVersionDetails> versions = new TreeSet<ModuleVersionDetails>();
 
-        public ModuleDetails(String name) {
+        public ModuleDetails(String namespace, String name) {
+            this.namespace = namespace;
             this.name = name;
         }
 
@@ -29,6 +31,7 @@ public class ModuleSearchResult {
                 SortedSet<ModuleVersionArtifact> artifacts,
                 boolean remote,
                 String origin) {
+            this.namespace = namespace;
             this.name = name;
             for (String v : versions) {
                 ModuleVersionDetails mvd = new ModuleVersionDetails(namespace, name, v);
@@ -41,6 +44,10 @@ public class ModuleSearchResult {
                 mvd.setOrigin(origin);
                 this.versions.add(mvd);
             }
+        }
+
+        public String getNamespace() {
+            return namespace;
         }
 
         public String getName() {
@@ -138,7 +145,7 @@ public class ModuleSearchResult {
             details = results.get(moduleName);
         } else {
             // new module
-            details = new ModuleDetails(moduleName);
+            details = new ModuleDetails(otherDetails.namespace, moduleName);
             results.put(moduleName, details);
         }
         details.getVersions().addAll(otherDetails.getVersions());
@@ -151,7 +158,7 @@ public class ModuleSearchResult {
             details = results.get(moduleName);
         } else {
             // new module
-            details = new ModuleDetails(moduleName);
+            details = new ModuleDetails(mvd.getNamespace(), moduleName);
             results.put(moduleName, details);
         }
         details.getVersions().add(mvd);

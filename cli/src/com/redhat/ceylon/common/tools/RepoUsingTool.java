@@ -274,10 +274,10 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return rmoffline;
     }
     
-    protected ModuleVersionQuery getModuleVersionQuery(String name, String version, ModuleQuery.Type type, 
+    protected ModuleVersionQuery getModuleVersionQuery(String namespace, String name, String version, ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
-        ModuleVersionQuery query = new ModuleVersionQuery(null, name, version, type);
+        ModuleVersionQuery query = new ModuleVersionQuery(namespace, name, version, type);
         if (jvmBinaryMajor != null) {
             query.setJvmBinaryMajor(jvmBinaryMajor);
         }
@@ -293,19 +293,19 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return query;
     }
 
-    protected Collection<ModuleVersionDetails> getModuleVersions(String name, String version, boolean exactVersionMatch,
+    protected Collection<ModuleVersionDetails> getModuleVersions(String namespace, String name, String version, boolean exactVersionMatch,
             ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
-        return getModuleVersions(getRepositoryManager(), name, version, exactVersionMatch, type, 
+        return getModuleVersions(getRepositoryManager(), namespace, name, version, exactVersionMatch, type, 
         		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
     }
 
-    protected Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, 
+    protected Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String namespace, String name, String version, 
             boolean exactVersionMatch, ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
-        ModuleVersionQuery query = getModuleVersionQuery(name, version, type, 
+        ModuleVersionQuery query = getModuleVersionQuery(namespace, name, version, type, 
         		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
         query.setExactVersionMatch(exactVersionMatch);
         ModuleVersionResult result = repoMgr.completeVersions(query);
@@ -428,11 +428,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         // find versions unless we have one in sources waiting to be compiled
         if (versions == null) {
             // First see which versions we have available locally
-            versions = getModuleVersions(getOfflineRepositoryManager(), name, version, false, type, 
+            versions = getModuleVersions(getOfflineRepositoryManager(), null, name, version, false, type, 
             		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
             if (versions.isEmpty() && !offline) {
                 // No local versions and we're not offline, so let's try again online
-                versions = getModuleVersions(repoMgr, name, version, false, type, 
+                versions = getModuleVersions(repoMgr, null, name, version, false, type, 
                         jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
             }
             if (version != null && !versions.isEmpty()) {
@@ -474,11 +474,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 if (versions.isEmpty()) {
                     // Maybe the user specified the wrong version?
                     // Let's see if we can find any locally and suggest them
-                    versions = getModuleVersions(getOfflineRepositoryManager(), name, null, false, type,
+                    versions = getModuleVersions(getOfflineRepositoryManager(), null, name, null, false, type,
                     		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                     if (versions.isEmpty() && !offline) {
                         // No local versions and we're not offline, so let's try again online
-                        versions = getModuleVersions(repoMgr, name, null, false, type,
+                        versions = getModuleVersions(repoMgr, null, name, null, false, type,
                                 jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                     }
                     suggested = true;
@@ -587,7 +587,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 }
             }
             if(rep != null && rep.isSearchable()){
-                ModuleVersionQuery query = getModuleVersionQuery(name, null, type, 
+                ModuleVersionQuery query = getModuleVersionQuery(null, name, null, type, 
                 		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 ModuleVersionResult result = new ModuleVersionResult(query.getName());
                 rep.completeVersions(query, result);

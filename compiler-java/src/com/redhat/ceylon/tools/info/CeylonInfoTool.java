@@ -283,7 +283,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         for (ModuleSpec module : modules) {
             String name = module.getName();
             if (!module.isVersioned() && (name.startsWith("*") || name.endsWith("*"))) {
-                Collection<ModuleDetails> modules = getModules(getRepositoryManager(), name, queryType, 
+                Collection<ModuleDetails> modules = getModules(getRepositoryManager(), module.getNamespace(), name, queryType, 
                 		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 if (modules.isEmpty()) {
                     String err;
@@ -298,8 +298,9 @@ public class CeylonInfoTool extends RepoUsingTool {
                 }
                 outputModules(module, modules);
             } else {
-                Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(), module.getName(), 
-                		module.getVersion(), false, queryType, 
+                Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(),
+                        module.getNamespace(), module.getName(),
+                		module.getVersion(), false, queryType,
                 		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 if (versions.isEmpty()) {
                     // try from source
@@ -312,7 +313,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                                 (jvmBinaryMajor != null || jvmBinaryMinor != null || jsBinaryMajor != null || jsBinaryMinor != null)) {
                             // If we were called with a specific version and we didn't find a "compatible"
                             // artifact then lets see if we can find an "incompatible" one
-                            versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), false,
+                            versions = getModuleVersions(getRepositoryManager(), module.getNamespace(), module.getName(), module.getVersion(), false,
                             		queryType, null, null, null, null);
                         }
                         if (versions.isEmpty()) {
@@ -332,7 +333,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         }
     }
 
-    private Collection<ModuleDetails> getModules(RepositoryManager repoMgr, String name, ModuleQuery.Type type, 
+    private Collection<ModuleDetails> getModules(RepositoryManager repoMgr, String namespace, String name, ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
         String queryString = name;
@@ -343,7 +344,7 @@ public class CeylonInfoTool extends RepoUsingTool {
             queryString = queryString.substring(0, queryString.length() - 1);
         }
         
-        ModuleVersionQuery query = getModuleVersionQuery(queryString, null, type, 
+        ModuleVersionQuery query = getModuleVersionQuery(namespace, queryString, null, type, 
         		jvmBinaryMajor, jvmBinaryMinor,
         		jsBinaryMajor, jsBinaryMinor);
         
@@ -357,10 +358,10 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     @Override
-    protected ModuleVersionQuery getModuleVersionQuery(String name, String version, ModuleQuery.Type type, 
+    protected ModuleVersionQuery getModuleVersionQuery(String namespace, String name, String version, ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
-        ModuleVersionQuery query = super.getModuleVersionQuery(name, version, type, jvmBinaryMajor, jvmBinaryMinor,
+        ModuleVersionQuery query = super.getModuleVersionQuery(namespace, name, version, type, jvmBinaryMajor, jvmBinaryMinor,
         		jsBinaryMajor, jsBinaryMinor);
         if (findMember != null) {
             query.setMemberName(findMember);
@@ -401,9 +402,9 @@ public class CeylonInfoTool extends RepoUsingTool {
             append(prefix).append(module.getName()).newline();
         }
         if (showVersions) {
-            outputVersions(module.getName(), module.getVersions(), prefix + prefix);
+            outputVersions(module.getNamespace(), module.getName(), module.getVersions(), prefix + prefix);
         } else if (showNames) {
-            outputNames(module.getName(), module.getLastVersion(), prefix + prefix);
+            outputNames(module.getNamespace(), module.getName(), module.getLastVersion(), prefix + prefix);
         }
     }
 
@@ -418,15 +419,18 @@ public class CeylonInfoTool extends RepoUsingTool {
                 msg("version.query", module.getName()).newline();
             }
         }
-        outputVersions(module.getName(), versions, prefix);
+        outputVersions(module.getNamespace(), module.getName(), versions, prefix);
     }
 
-    private void outputVersions(String moduleName, Collection<ModuleVersionDetails> versions, String prefix) throws IOException {
+    private void outputVersions(String namespace, String moduleName, Collection<ModuleVersionDetails> versions, String prefix) throws IOException {
         String namePrefix = (formatting == Formatting.fancy) ? prefix + "    " : "";
         for (ModuleVersionDetails version : versions) {
             if (formatting == Formatting.fancy || (!showDependencies && !showNames)) {
                 append(prefix);
                 if (formatting == Formatting.simple) {
+                    if (namespace != null) {
+                        append(namespace).append(":");
+                    }
                     append(moduleName).append("/");
                 }
                 append(version.getVersion());
@@ -451,16 +455,22 @@ public class CeylonInfoTool extends RepoUsingTool {
                         if (formatting == Formatting.fancy) {
                             append(prefix).append("    ").append(dep);
                         } else {
+                            if (namespace != null) {
+                                append(namespace).append(":");
+                            }
                             append(moduleName).append("/").append(version.getVersion()).append(" ").append(dep.getModuleName());
                         }
                         newline();
                     }
                 } else {
+                    if (namespace != null) {
+                        append(namespace).append(":");
+                    }
                     append(moduleName).append("/").append(version.getVersion()).newline();
                 }
             }
             if (showNames) {
-                outputNames(moduleName, version, namePrefix);
+                outputNames(namespace, moduleName, version, namePrefix);
             }
         }
     }
@@ -488,11 +498,14 @@ public class CeylonInfoTool extends RepoUsingTool {
         return hasBinaries;
     }
 
-    private void outputNames(String moduleName, ModuleVersionDetails version, String prefix) throws IOException {
+    private void outputNames(String namespace, String moduleName, ModuleVersionDetails version, String prefix) throws IOException {
         for (String member : version.getMembers()) {
             if (formatting == Formatting.fancy) {
                 append(prefix).append(member).newline();
             } else {
+                if (namespace != null) {
+                    append(namespace).append(":");
+                }
                 append(moduleName);
                 if (showVersions) {
                     append("/").append(version.getVersion());
@@ -503,6 +516,13 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     private void outputDetails(ModuleSpec module, ModuleVersionDetails version) throws IOException {
+        msg("module.namespace");
+        if (module.getNamespace() != null) {
+            append(module.getNamespace());
+        } else {
+            append("ceylon");
+        }
+        newline();
         msg("module.name").append(module.getName()).newline();
         msg("module.version").append(version.getVersion()).newline();
         outputArtifacts(version.getArtifactTypes());
@@ -743,7 +763,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         newline();
         
         if (recurse && !"ceylon.language".equals(dep.getName())) {
-            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), true, queryType, 
+            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getNamespace(), dep.getName(), dep.getVersion(), true, queryType, 
             		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
             if (!versions.isEmpty()) {
                 recurseDependencies(versions.iterator().next(), names, depth + 1);
