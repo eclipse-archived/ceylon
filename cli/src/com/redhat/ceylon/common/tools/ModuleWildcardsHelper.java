@@ -63,7 +63,7 @@ public abstract class ModuleWildcardsHelper {
             List<String> names = new ArrayList<String>();
             expandWildcard(names, dirs, spec.getName(), forBackend);
             for (String name : names) {
-                result.add(new ModuleSpec(name, spec.getVersion()));
+                result.add(new ModuleSpec(spec.getNamespace(), name, spec.getVersion()));
             }
         }
         return result;

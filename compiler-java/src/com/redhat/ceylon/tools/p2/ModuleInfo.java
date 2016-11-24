@@ -58,7 +58,7 @@ class ModuleInfo {
             }
 
             public Dependency(String name, String version, boolean optional) {
-                super(name, version);
+                super(null, name, version);
                 this.optional = optional;
             }
             
@@ -105,7 +105,7 @@ class ModuleInfo {
                             break;
                         }
                     }
-                    ret.add(new ModuleSpec(name, version));
+                    ret.add(new ModuleSpec(null, name, version));
                 }
             }
             return ret;

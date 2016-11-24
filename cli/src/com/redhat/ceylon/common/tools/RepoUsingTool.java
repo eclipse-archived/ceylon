@@ -788,7 +788,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     || name.endsWith(".js")){
                 // we have a default module
                 if(!modules.containsKey("default"))
-                    modules.put("default", new ModuleSpec("default", null));
+                    modules.put("default", ModuleSpec.DEFAULT_MODULE);
             }
         }
     }
@@ -802,7 +802,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             ModuleDescriptorReader mdr = new ModuleDescriptorReader(name, sourceRoot);
             String version = mdr.getModuleVersion();
             if (version != null) {
-                modules.put(name, new ModuleSpec(name, version));
+                modules.put(name, new ModuleSpec(null, name, version));
             }
         }catch(ModuleDescriptorReader.NoSuchModuleException x){
             // skip this source folder and look in the next one

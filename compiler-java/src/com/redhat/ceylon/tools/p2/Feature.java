@@ -58,7 +58,7 @@ class Feature {
         NodeList nodes = root.getElementsByTagName("plugin");
         for(int i=0;i<nodes.getLength();i++){
             Element plugin = (Element) nodes.item(i);
-            dependencies.add(new ModuleSpec(plugin.getAttribute("id"), plugin.getAttribute("version")));
+            dependencies.add(new ModuleSpec(null, plugin.getAttribute("id"), plugin.getAttribute("version")));
         }
     }
 

@@ -68,7 +68,7 @@ public class CompilerModuleLoader extends BaseModuleLoaderImpl {
         }
 
         private ModuleSpec toModuleSpec(ArtifactResult result) {
-            return new ModuleSpec(result.name(), result.version());
+            return new ModuleSpec(result.namespace(), result.name(), result.version());
         }
 
         @Override
@@ -88,7 +88,7 @@ public class CompilerModuleLoader extends BaseModuleLoaderImpl {
         }
         
         private ModuleSpec toModuleSpec(ArtifactContext artifactContext) {
-            return new ModuleSpec(artifactContext.getName(), artifactContext.getVersion());
+            return new ModuleSpec(artifactContext.getNamespace(), artifactContext.getName(), artifactContext.getVersion());
         }
 
         public void fillOverrides(final Overrides overrides){

@@ -117,7 +117,7 @@ public class CompatTests extends CompilerTests {
     @Test
     public void runCompiled120CarIn121MainApi() throws Throwable {
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("compiled120", "1.0.0"), "compiled120.runOnLatest_", 
+                new ModuleSpec(null, "compiled120", "1.0.0"), "compiled120.runOnLatest_", 
                 Arrays.asList(Versions.CEYLON_VERSION_NUMBER), false);
     }
     
@@ -140,7 +140,7 @@ public class CompatTests extends CompilerTests {
         		Arrays.asList("--flat-classpath", "--rep", "modules", "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"),
         		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("depends120", "1.0.0"), "depends120.run_", Arrays.asList(Versions.CEYLON_VERSION_NUMBER), false);
+                new ModuleSpec(null, "depends120", "1.0.0"), "depends120.run_", Arrays.asList(Versions.CEYLON_VERSION_NUMBER), false);
     }
     
     @Test
@@ -276,7 +276,7 @@ public class CompatTests extends CompilerTests {
         File err = File.createTempFile("compattest", "out");
         try {
             mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                    new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
+                    new ModuleSpec(null, "compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
             assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
         } finally {
             err.delete();
@@ -326,7 +326,7 @@ public class CompatTests extends CompilerTests {
         File err = File.createTempFile("compattest", "out");
         try {
             mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                    new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
+                    new ModuleSpec(null, "compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
             assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
         } finally {
             err.delete();
@@ -337,7 +337,7 @@ public class CompatTests extends CompilerTests {
     public void classpathCompiled1299With121Downgrade() throws Throwable {
         // TODO pass --dist-downgrade to ceylon classpath and check it works
         mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), true, false);
+                new ModuleSpec(null, "compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), true, false);
     }
     
     @Test
@@ -345,7 +345,7 @@ public class CompatTests extends CompilerTests {
         File err = File.createTempFile("compattest", "out");
         try {
             mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                    new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
+                    new ModuleSpec(null, "compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
             assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
         } finally {
             err.delete();
@@ -402,7 +402,7 @@ public class CompatTests extends CompilerTests {
     @Test
     public void runCompiled121Depends120In121MainApi() throws Throwable {
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("compiled121depends120", "1.0.0"), "compiled121depends120.runOnLatest_", 
+                new ModuleSpec(null, "compiled121depends120", "1.0.0"), "compiled121depends120.runOnLatest_", 
                 Arrays.asList(Versions.CEYLON_VERSION_NUMBER), false);
     }
     

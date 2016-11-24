@@ -681,7 +681,7 @@ public class InteropTests extends CompilerTests {
                 new ModuleWithArtifact("com.ceylon.java9", "123", "test/java9/modules", "jar"));
 
         assertEquals(0, runInJava9(new String[]{destDir, "test/java9/modules", "../dist/dist/repo"}, 
-        		new ModuleSpec("com.redhat.ceylon.compiler.java.test.interop.java9.user", "1"), 
+        		new ModuleSpec(null, "com.redhat.ceylon.compiler.java.test.interop.java9.user", "1"), 
         		Collections.<String>emptyList()));
     }
     

@@ -1,4 +1,4 @@
-package com.redhat.ceylon.cmr.api;
+package com.redhat.ceylon.common;
 
 import java.util.Comparator;
 
@@ -9,9 +9,9 @@ import java.util.Comparator;
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class MavenVersionComparator implements Comparator<String>{
+public class CeylonVersionComparator implements Comparator<String>{
 
-	public static final MavenVersionComparator INSTANCE = new MavenVersionComparator();
+	public static final CeylonVersionComparator INSTANCE = new CeylonVersionComparator();
 
     @Override
 	public int compare(String a, String b) {
@@ -218,7 +218,7 @@ public class MavenVersionComparator implements Comparator<String>{
      * Returns versionA and versionB ordered
      */
     public static String[] orderVersions(String versionA, String versionB) {
-        if(MavenVersionComparator.compareVersions(versionA, versionB) > 0){
+        if(CeylonVersionComparator.compareVersions(versionA, versionB) > 0){
             String permute = versionA;
             versionA = versionB;
             versionB = permute;

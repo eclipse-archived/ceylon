@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.redhat.ceylon.common.MiscUtil;
+
 public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     private String namespace;
     private String module;
@@ -140,6 +142,7 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     @Override
     public int hashCode() {
         int hash = 17;
+        hash = 37 * hash + (namespace != null ? namespace.hashCode() : 0);
         hash = 37 * hash + (module != null ? module.hashCode() : 0);
         hash = 37 * hash + (version != null ? version.hashCode() : 0);
         return hash;
@@ -160,9 +163,9 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
 
     @Override
     public int compareTo(ModuleVersionDetails o) {
-        int result = compare(namespace, o.namespace);
+        int result = MiscUtil.compare(namespace, o.namespace);
         if (result == 0) {
-            result = compare(module, o.module);
+            result = MiscUtil.compare(module, o.module);
             if (result == 0) {
                 result = VersionComparator.compareVersions(version, o.version);
             }
@@ -170,19 +173,6 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
         return result;
     }
 
-    private int compare(String str1, String str2) {
-        if (str1 == null && str2 == null) {
-            return 0;
-        }
-        if (str1 == null) {
-            return -1;
-        }
-        if (str2 == null) {
-            return 1;
-        }
-        return str1.compareTo(str2);
-    }
-    
     @Override
     public String toString() {
         return "ModuleVersionDetails[ "

@@ -922,7 +922,7 @@ public class LanguageCompiler extends JavaCompiler {
             // we are running deps, so we need compile/provided/runtime, but not test
             if(dep.moduleScope() == ModuleScope.TEST)
                 continue;
-            ModuleSpec depSpec = new ModuleSpec(dep.name(), dep.version());
+            ModuleSpec depSpec = new ModuleSpec(dep.namespace(), dep.name(), dep.version());
             addDependenciesToAptPath(repositoryManager, depSpec, visited, progressListener);
         }
     }

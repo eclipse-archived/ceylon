@@ -9,13 +9,13 @@ import java.util.Objects;
 import java.util.Map.Entry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.MavenVersionComparator;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.DependencySelector;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.cmr.impl.FlatRepository;
+import com.redhat.ceylon.common.CeylonVersionComparator;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ModuleScope;
@@ -108,7 +108,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                 String loadedVersion = loadedModule.version;
                 // we loaded the module already, but did we load it with the same version?
                 if(!Objects.equals(version, loadedVersion)){
-                    if(MavenVersionComparator.compareVersions(version, loadedModule.version) > 0){
+                    if(CeylonVersionComparator.compareVersions(version, loadedModule.version) > 0){
                         // we want a newer version, keep going
                         if(verbose)
                             log("Replacing "+loadedModule+" with newer version "+version);

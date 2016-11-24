@@ -42,12 +42,14 @@ public class ModuleSpec implements Comparable<ModuleSpec> {
     }
     
     /** The default module */
-    public static final ModuleSpec DEFAULT_MODULE = new ModuleSpec("default", "");
+    public static final ModuleSpec DEFAULT_MODULE = new ModuleSpec(null, "default", "");
     
+    private final String namespace; 
     private final String name; 
     private final String version;
     
-    public ModuleSpec(String name, String version) {
+    public ModuleSpec(String namespace, String name, String version) {
+        this.namespace = namespace != null ? namespace.trim() : null;
         this.name = name.trim();
         if (name.isEmpty()) {
             throw new IllegalArgumentException(CommonMessages.msg("modspec.name.missing"));
@@ -55,6 +57,11 @@ public class ModuleSpec implements Comparable<ModuleSpec> {
         this.version = version.trim();
     }
     
+    /** The module namespace */
+    public String getNamespace() {
+        return namespace;
+    }
+
     /** The module name */
     public String getName() {
         return name;
@@ -72,17 +79,14 @@ public class ModuleSpec implements Comparable<ModuleSpec> {
 
     /** The formatted module spec */
     public String toString() {
-        if (version == null
-                || version.isEmpty()) {
-            return name;
-        }
-        return name + "/" + version;
+        return ModuleUtil.makeModuleName(namespace, name, version);
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((namespace == null) ? 0 : namespace.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((version == null) ? 0 : version.hashCode());
         return result;
@@ -97,6 +101,11 @@ public class ModuleSpec implements Comparable<ModuleSpec> {
         if (getClass() != obj.getClass())
             return false;
         ModuleSpec other = (ModuleSpec) obj;
+        if (namespace == null) {
+            if (other.namespace != null)
+                return false;
+        } else if (!namespace.equals(other.namespace))
+            return false;
         if (name == null) {
             if (other.name != null)
                 return false;
@@ -116,15 +125,14 @@ public class ModuleSpec implements Comparable<ModuleSpec> {
      */
     @Override
     public int compareTo(ModuleSpec o) {
-        int cmp = this.name.compareTo(o.name);
-        if (cmp == 0) {
-            if (this.version != null) {
-                cmp = this.version.compareTo(o.version);
-            } else {
-                cmp = o.version == null ? 0 : -1;
+        int result = MiscUtil.compare(namespace, o.namespace);
+        if (result == 0) {
+            result = MiscUtil.compare(name, o.name);
+            if (result == 0) {
+                result = CeylonVersionComparator.compareVersions(version, o.version);
             }
         }
-        return cmp;
+        return result;
     }
 
     /**
@@ -175,9 +183,12 @@ public class ModuleSpec implements Comparable<ModuleSpec> {
      */
     public static ModuleSpec parse(String moduleSpec, Option... options) {
         int sep = moduleSpec.indexOf("/");
-        
         String name = sep != -1 ? moduleSpec.substring(0, sep) : moduleSpec;
         name = name.trim();
+        
+        String namespace = ModuleUtil.getNamespaceFromUri(name);
+        name = ModuleUtil.getModuleNameFromUri(name);
+        
         String version = sep != -1 && sep < moduleSpec.length() - 1 ? moduleSpec.substring(sep+1) : "";
         version = version.trim();
         if (name.equals(DEFAULT_MODULE.name)) {
@@ -200,7 +211,7 @@ public class ModuleSpec implements Comparable<ModuleSpec> {
             throw new IllegalArgumentException(CommonMessages.msg(
                     "modspec.version.prohibited", moduleSpec));
         }
-        ModuleSpec spec = new ModuleSpec(name, version);
+        ModuleSpec spec = new ModuleSpec(namespace, name, version);
         return spec;
     }
     

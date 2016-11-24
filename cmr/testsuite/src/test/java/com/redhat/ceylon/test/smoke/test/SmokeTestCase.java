@@ -38,7 +38,6 @@ import org.junit.Test;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.DebianVersionComparator;
-import com.redhat.ceylon.cmr.api.MavenVersionComparator;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Retrieval;
@@ -59,6 +58,7 @@ import com.redhat.ceylon.cmr.impl.RemoteContentStore;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.CeylonVersionComparator;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
@@ -1023,69 +1023,69 @@ public class SmokeTestCase extends AbstractTest {
 
     @Test
     public void mavenVersionComparisonTests() {
-        assertEquals(0, MavenVersionComparator.compareVersions("", ""));
+        assertEquals(0, CeylonVersionComparator.compareVersions("", ""));
 
-        assertEquals(-1, MavenVersionComparator.compareVersions("", "c"));
-        assertEquals(1, MavenVersionComparator.compareVersions("c", ""));
-        assertEquals(0, MavenVersionComparator.compareVersions("c", "c"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("", "c"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("c", ""));
+        assertEquals(0, CeylonVersionComparator.compareVersions("c", "c"));
 
-        assertEquals(-1, MavenVersionComparator.compareVersions("c", "d"));
-        assertEquals(1, MavenVersionComparator.compareVersions("d", "c"));
-        assertEquals(1, MavenVersionComparator.compareVersions("c", "-"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("-", "c"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("c", "d"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("d", "c"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("c", "-"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("-", "c"));
 
-        assertEquals(-1, MavenVersionComparator.compareVersions("c", "cc"));
-        assertEquals(1, MavenVersionComparator.compareVersions("cc", "c"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("c", "cc"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("cc", "c"));
 
-        assertEquals(0, MavenVersionComparator.compareVersions("c1", "c1"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("c1", "c2"));
-        assertEquals(0, MavenVersionComparator.compareVersions("c001", "c1"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("c1", "c1"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("c1", "c2"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("c001", "c1"));
 
-        assertEquals(0, MavenVersionComparator.compareVersions("1.0.2", "1.0.2"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2", "1.0.2.4"));
-        assertEquals(1, MavenVersionComparator.compareVersions("1.0.2", "1.0.2a"));
-        assertEquals(1, MavenVersionComparator.compareVersions("1.0.2", "1.0.2alpha"));
-        assertEquals(0, MavenVersionComparator.compareVersions("1.0.2a", "1.0.2alpha"));
-        assertEquals(1, MavenVersionComparator.compareVersions("1.0.2", "1.0.2b"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2a", "1.0.2b"));
-        assertEquals(0, MavenVersionComparator.compareVersions("1.0.2b", "1.0.2beta"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2b", "1.0.2m"));
-        assertEquals(0, MavenVersionComparator.compareVersions("1.0.2milestone", "1.0.2m"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2m", "1.0.2rc"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2rc", "1.0.2snapshot"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2snapshot", "1.0.2"));
-        assertEquals(0, MavenVersionComparator.compareVersions("1.0.2", "1.0.2ga"));
-        assertEquals(0, MavenVersionComparator.compareVersions("1.0.2", "1.0.2final"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2", "1.0.2sp"));
-        assertEquals(1, MavenVersionComparator.compareVersions("1.0.2", "1.0.2RC"));
-        assertEquals(0, MavenVersionComparator.compareVersions("1.0.2cr", "1.0.2RC"));
-        assertEquals(1, MavenVersionComparator.compareVersions("1.0.2", "1.0.2-RC"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("1.0.2", "1.0.2"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0.2", "1.0.2.4"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("1.0.2", "1.0.2a"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("1.0.2", "1.0.2alpha"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("1.0.2a", "1.0.2alpha"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("1.0.2", "1.0.2b"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0.2a", "1.0.2b"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("1.0.2b", "1.0.2beta"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0.2b", "1.0.2m"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("1.0.2milestone", "1.0.2m"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0.2m", "1.0.2rc"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0.2rc", "1.0.2snapshot"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0.2snapshot", "1.0.2"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("1.0.2", "1.0.2ga"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("1.0.2", "1.0.2final"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0.2", "1.0.2sp"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("1.0.2", "1.0.2RC"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("1.0.2cr", "1.0.2RC"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("1.0.2", "1.0.2-RC"));
 
-        assertEquals(-1, MavenVersionComparator.compareVersions("0.3", "2.2.4"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("0.3", "2.2.4"));
 
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2", "1.2"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2", "2"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0.2", "2.2.4"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0.2", "1.2"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0.2", "2"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0.2", "2.2.4"));
 
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0", "1.0.2"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.0", "1.0-2"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0", "1.0.2"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.0", "1.0-2"));
 
-        assertEquals(-1, MavenVersionComparator.compareVersions("0.3", "0.3.1"));
-        assertEquals(1, MavenVersionComparator.compareVersions("0.3.1", "0.3"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("0.3.1", "0.3.2"));
-        assertEquals(1, MavenVersionComparator.compareVersions("0.3.2", "0.3.1"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("0.3", "0.3.1"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("0.3.1", "0.3"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("0.3.1", "0.3.2"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("0.3.2", "0.3.1"));
 
-        assertEquals(1, MavenVersionComparator.compareVersions("18.0", "r06"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("18.0", "r06"));
 
-        assertEquals(-1, MavenVersionComparator.compareVersions("1-2", "1.2"));
-        assertEquals(1, MavenVersionComparator.compareVersions("1.2", "1-2"));
-        assertEquals(1, MavenVersionComparator.compareVersions("1-asd", "1.asd"));
-        assertEquals(-1, MavenVersionComparator.compareVersions("1.asd", "1-asd"));
-        assertEquals(0, MavenVersionComparator.compareVersions("1-asd", "1-asd"));
-        assertEquals(0, MavenVersionComparator.compareVersions("1-", "1."));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1-2", "1.2"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("1.2", "1-2"));
+        assertEquals(1, CeylonVersionComparator.compareVersions("1-asd", "1.asd"));
+        assertEquals(-1, CeylonVersionComparator.compareVersions("1.asd", "1-asd"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("1-asd", "1-asd"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("1-", "1."));
 
-        assertEquals(0, MavenVersionComparator.compareVersions("", ""));
-        assertEquals(0, MavenVersionComparator.compareVersions("..", "--"));
+        assertEquals(0, CeylonVersionComparator.compareVersions("", ""));
+        assertEquals(0, CeylonVersionComparator.compareVersions("..", "--"));
     }
 
     private RepositoryManager getJDKRepositoryManager() {

@@ -45,7 +45,7 @@ public abstract class ModuleUtil {
 
     public static String makeModuleName(String namespace, String moduleName, String version) {
         String ns = namespace != null ? namespace + ":" : "";
-        if (isDefaultModule(moduleName) || version == null) {
+        if (isDefaultModule(moduleName) || version == null || version.isEmpty()) {
             return ns + moduleName;
         } else {
             return ns + moduleName + "/" + version;

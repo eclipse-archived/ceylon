@@ -414,7 +414,7 @@ public class Main {
                 String version = fullName.substring(p + 1);
                 if (!name.isEmpty() && !version.isEmpty()) {
                     name = name.replace('/', '.');
-                    return new ModuleSpec(name, version);
+                    return new ModuleSpec(null, name, version);
                 }
             }
             return null;
@@ -431,7 +431,7 @@ public class Main {
             if(!jarName.endsWith(suffix))
                 return null;
             String modName = jarName.substring(0, jarName.length()-suffix.length());
-            return new ModuleSpec(modName, version);
+            return new ModuleSpec(null, modName, version);
         }
 
         public Module loadModule(String name, String version) throws ModuleNotFoundException{

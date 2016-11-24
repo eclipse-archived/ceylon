@@ -215,7 +215,7 @@ public class ModuleCopycat {
                         if (skipDependency(dep)) {
                             continue;
                         }
-                        ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());
+                        ModuleSpec depModule = new ModuleSpec(dep.getNamespace(), dep.getName(), dep.getVersion());
                         ArtifactContext copyContext = depContext.copy();
                         copyContext.setNamespace(dep.getNamespace());
                         copyContext.setName(depModule.getName());
