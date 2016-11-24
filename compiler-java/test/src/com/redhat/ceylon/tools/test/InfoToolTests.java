@@ -141,15 +141,15 @@ public class InfoToolTests extends AbstractToolTests {
         tool.run();
         
         Assert.assertTrue(b.toString().contains(
-                "asm:asm-commons/2.0\n"+
-                "asm:asm-commons/2.1\n"+
-                "asm:asm-commons/2.2\n"+
-                "asm:asm-commons/2.2.1\n"+
-                "asm:asm-commons/3.0\n"+
-                "asm:asm-commons/3.1\n"+
-                "asm:asm-commons/3.2\n"+
-                "asm:asm-commons/3.3\n"+
-                "asm:asm-commons/3.3.1"
+                "maven:asm:asm-commons/2.0\n"+
+                "maven:asm:asm-commons/2.1\n"+
+                "maven:asm:asm-commons/2.2\n"+
+                "maven:asm:asm-commons/2.2.1\n"+
+                "maven:asm:asm-commons/3.0\n"+
+                "maven:asm:asm-commons/3.1\n"+
+                "maven:asm:asm-commons/3.2\n"+
+                "maven:asm:asm-commons/3.3\n"+
+                "maven:asm:asm-commons/3.3.1"
                 ));
 
     }
@@ -165,10 +165,10 @@ public class InfoToolTests extends AbstractToolTests {
         tool.run();
         
         Assert.assertTrue(b.toString().contains(
-                "asm:asm-commons/2.0\n"+
-                "asm:asm-commons/2.1\n"+
-                "asm:asm-commons/2.2\n"+
-                "asm:asm-commons/2.2.1"
+                "maven:asm:asm-commons/2.0\n"+
+                "maven:asm:asm-commons/2.1\n"+
+                "maven:asm:asm-commons/2.2\n"+
+                "maven:asm:asm-commons/2.2.1"
                 ));
     }
 
