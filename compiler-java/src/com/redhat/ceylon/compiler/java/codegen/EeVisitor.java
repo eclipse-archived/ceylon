@@ -2,18 +2,23 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -27,7 +32,13 @@ public class EeVisitor extends Visitor {
     private final Set<String> imports;
     private final Set<String> annotations;
     
-    private Set<Declaration> eeModeDecls = new HashSet<Declaration>();
+    private static final int EE = 1<<0; 
+    private static final int TRANSIENT = 1<<1;
+    private static final int VOLATILE = 1<<2;
+    private static final int SYNCHRONIZED = 1<<3;
+    private static final int STRICTFP = 1<<4;
+    
+    private Map<Declaration,Integer> eeModeDecls = new HashMap<Declaration,Integer>();
     private Set<Package> eeModePackages = new HashSet<Package>();
     private Set<Module> eeModeModules = new HashSet<Module>();
 
@@ -75,10 +86,49 @@ public class EeVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Declaration that) {
+        super.visit(that);
+        Declaration a = that.getDeclarationModel();
+        if (that.getAnnotationList() != null && that.getAnnotationList().getAnnotations() != null) {
+            for (Tree.Annotation an : that.getAnnotationList().getAnnotations()) {
+                Declaration ad = ((Tree.BaseMemberOrTypeExpression)an.getPrimary()).getDeclaration();
+                if (ad != null) {
+                    String qualifiedName = ad.getQualifiedNameString();
+                    if ("java.lang::transient".equals(qualifiedName)) {
+                        setModifier(a, TRANSIENT);
+                    }
+                    if ("java.lang::volatile".equals(qualifiedName)) {
+                        setModifier(a, VOLATILE);
+                    }
+                    if ("java.lang::synchronized".equals(qualifiedName)) {
+                        setModifier(a, SYNCHRONIZED);
+                    }
+                    if ("java.lang::strictfp".equals(qualifiedName)) {
+                        setModifier(a, STRICTFP);
+                    }
+                    // note: native is handledby the typechecker
+                }
+            }
+        }
+    }
+
+    private void setModifier(Declaration decl, int flag) {
+        Integer mods = eeModeDecls.get(decl);
+        int m;
+        if (mods == null) {
+            m = 0;
+        } else {
+            m = mods;
+        }
+        m |= flag;
+        eeModeDecls.put(decl, m);
+    }
+    
+    @Override
     public void visit(Tree.ClassDefinition that) {
         super.visit(that);
         if (containsEeAnnotation(that.getAnnotationList().getAnnotations())) {
-            eeModeDecls.add(that.getDeclarationModel());
+            setModifier(that.getDeclarationModel(), EE);
         }
     }
     
@@ -86,7 +136,7 @@ public class EeVisitor extends Visitor {
     public void visit(Tree.Constructor that) {
         super.visit(that);
         if (containsEeAnnotation(that.getAnnotationList().getAnnotations())) {
-            eeModeDecls.add(Decl.getConstructedClass(that.getDeclarationModel()));
+            setModifier(Decl.getConstructedClass(that.getDeclarationModel()), EE);
         }
     }
     
@@ -96,9 +146,9 @@ public class EeVisitor extends Visitor {
         if (containsEeAnnotation(that.getAnnotationList().getAnnotations())) {
             TypedDeclaration attribute = that.getDeclarationModel();
             if (attribute.isMember()) {
-                eeModeDecls.add(Decl.getClassOrInterfaceContainer(attribute));
+                setModifier(Decl.getClassOrInterfaceContainer(attribute), EE);
             } else if (attribute.isToplevel()) {
-                eeModeDecls.add(attribute);
+                setModifier(attribute, EE);
             }
         }
     }
@@ -109,9 +159,9 @@ public class EeVisitor extends Visitor {
         if (containsEeAnnotation(that.getAnnotationList().getAnnotations())) {
             Function method = that.getDeclarationModel();
             if (method.isMember()) {
-                eeModeDecls.add(Decl.getClassOrInterfaceContainer(method));
+                setModifier(Decl.getClassOrInterfaceContainer(method), EE);
             } else if (method.isToplevel()) {
-                eeModeDecls.add(method);
+                setModifier(method, EE);
             }
         }
     }
@@ -170,14 +220,37 @@ public class EeVisitor extends Visitor {
     
     public boolean isEeMode(Declaration d) {
         d = Decl.getToplevelDeclarationContainer(d);
-        return eeOption
+        if (eeOption
                 || eeModeModules.contains(Decl.getModule(d))
-                || eeModePackages.contains(Decl.getPackage(d))
-                || eeModeDecls.contains(d);
+                || eeModePackages.contains(Decl.getPackage(d))) {
+            return true;
+        }
+        Integer mods = eeModeDecls.get(d);
+        return mods != null && (mods & EE) != 0;
     }
     
     @Override
     public String toString() {
         return getClass().getName()  + "( imports: " + imports +", annotations: " + annotations + ")";
+    }
+
+    public boolean isJavaTransient(Declaration d) {
+        Integer mods = eeModeDecls.get(d);
+        return mods != null && (mods & TRANSIENT) != 0;
+    }
+    
+    public boolean isJavaVolatile(Declaration d) {
+        Integer mods = eeModeDecls.get(d);
+        return mods != null && (mods & VOLATILE) != 0;
+    }
+    
+    public boolean isJavaSynchronized(Declaration d) {
+        Integer mods = eeModeDecls.get(d);
+        return mods != null && (mods & SYNCHRONIZED) != 0;
+    }
+    
+    public boolean isJavaStrictfp(Declaration d) {
+        Integer mods = eeModeDecls.get(d);
+        return mods != null && (mods & STRICTFP) != 0;
     }
 }

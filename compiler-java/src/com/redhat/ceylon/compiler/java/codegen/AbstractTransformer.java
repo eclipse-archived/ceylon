@@ -6256,5 +6256,25 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return false;
     }
+    
+    public boolean isJavaTransient(Declaration d) {
+        return getEeVisitor().isJavaTransient(d);
+    }
+    
+    public boolean isJavaVolatile(Declaration d) {
+        return getEeVisitor().isJavaVolatile(d);
+    }
+    
+    public boolean isJavaSynchronized(Declaration d) {
+        return getEeVisitor().isJavaSynchronized(d);
+    }
+    
+    public boolean isJavaNative(Declaration d) {
+        return d != null && d.isJavaNative();
+    }
+    
+    public boolean isJavaStrictfp(Declaration d) {
+        return getEeVisitor().isJavaStrictfp(d);
+    }
 
 }

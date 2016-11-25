@@ -3720,14 +3720,6 @@ public class ClassTransformer extends AbstractTransformer {
             return false;
         }
         
-        private boolean containsJavaLangTransient(Tree.AnnotationList annos) {
-            return containsInteropAnnotation(annos, "com.redhat.ceylon.compiler.java.language::transient");
-        }
-        
-        private boolean containsJavaLangVolatile(Tree.AnnotationList annos) {
-            return containsInteropAnnotation(annos, "com.redhat.ceylon.compiler.java.language::volatile");
-        }
-        
         public long field(Tree.AttributeDeclaration cdecl) {
             int result = 0;
 
@@ -3736,12 +3728,13 @@ public class ClassTransformer extends AbstractTransformer {
             if(!CodegenUtil.hasCompilerAnnotation(cdecl, "packageProtected"))
                 result |= PRIVATE;
             
-            if (containsJavaLangTransient(cdecl.getAnnotationList())) {
+            if (isJavaTransient(cdecl.getDeclarationModel())) {
                 result |= Flags.TRANSIENT;
             }
-            if (containsJavaLangVolatile(cdecl.getAnnotationList())) {
+            if (isJavaVolatile(cdecl.getDeclarationModel())) {
                 result |= Flags.VOLATILE;
             }
+            
             return result;
         }
 
@@ -3855,10 +3848,10 @@ public class ClassTransformer extends AbstractTransformer {
         
         public long transformClassParameterDeclFlagsField(Parameter param, Tree.Declaration annotated) {
             long result = transformClassParameterDeclFlags(param) | PRIVATE;
-            if (containsJavaLangTransient(annotated.getAnnotationList())) {
+            if (isJavaTransient(annotated.getDeclarationModel())) {
                 result |= Flags.TRANSIENT;
             }
-            if (containsJavaLangVolatile(annotated.getAnnotationList())) {
+            if (isJavaVolatile(annotated.getDeclarationModel())) {
                 result |= Flags.VOLATILE;
             }
             return result;
