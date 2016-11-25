@@ -2712,7 +2712,7 @@ public class ExpressionVisitor extends Visitor {
                     if (unit.isJavaIterableType(ext) || 
                         unit.isJavaObjectArrayType(ext)) {
                         handleUncheckedNulls(local,
-                                elementType, null, dec);
+                                elementType, ex, dec);
                     }
                     local.setTypeModel(elementType);
                     dec.setType(elementType);
