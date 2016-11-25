@@ -69,6 +69,10 @@ public class Overrides {
         public OverrideException(String message) {
             super(message);
         }
+
+        public OverrideException(Exception e) {
+            super(e);
+        }
     }
     
     public static class OverrideNotFoundException extends OverrideException {
@@ -328,7 +332,7 @@ public class Overrides {
         catch (FileNotFoundException e) {
             throw new OverrideNotFoundException("No such overrides file: " + resource);
         } catch (Exception e) {
-            throw new OverrideException(e.getMessage());
+            throw new OverrideException(e);
         }
     }
     
