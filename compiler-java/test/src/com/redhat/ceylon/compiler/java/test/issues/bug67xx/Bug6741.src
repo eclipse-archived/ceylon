@@ -1,0 +1,68 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug67xx;
+
+final class bug6741_ {
+    
+    private bug6741_() {
+    }
+    
+    static void bug6741() {
+        final .java.util.ArrayList<.ceylon.language.String> expect = new .java.util.ArrayList<.ceylon.language.String>();
+        expect.add(.ceylon.language.String.instance("hello"));
+        expect.add(.ceylon.language.String.instance("hello"));
+        final .ceylon.language.String[] words = .com.redhat.ceylon.compiler.java.Util.fillArray(new .ceylon.language.String[2], .ceylon.language.String.instance("hello"));
+        .java.util.List<.ceylon.language.String> list = .java.util.Arrays.<.ceylon.language.String>asList((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$0$0 = com.redhat.ceylon.compiler.java.language.ObjectArray.getIterable(words).sequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$0$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$0$0.getSize())]);
+        ));
+        .ceylon.language.print_.print(list);
+        if (expect.equals(.com.redhat.ceylon.compiler.java.Util.checkNull(list))) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expect==list"));
+        }
+        list = .java.util.Arrays.<.ceylon.language.String>asList((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$2$0 = com.redhat.ceylon.compiler.java.language.ObjectArray.getIterable(words).sequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$2$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$2$0.getSize()) + 1], .ceylon.language.String.instance("bob"));
+        ));
+        expect.add(0, .ceylon.language.String.instance("bob"));
+        .ceylon.language.print_.print(list);
+        if (expect.equals(.com.redhat.ceylon.compiler.java.Util.checkNull(list))) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expect==list"));
+        }
+        final .java.util.ArrayList<.ceylon.language.Integer> expect2 = new .java.util.ArrayList<.ceylon.language.Integer>();
+        expect2.add(.ceylon.language.Integer.instance(42L));
+        expect2.add(.ceylon.language.Integer.instance(42L));
+        final int[] numbers = .com.redhat.ceylon.compiler.java.Util.fillArray(new int[2], 42);
+        .java.util.List<.ceylon.language.Integer> list2 = .java.util.Arrays.<.ceylon.language.Integer>asList((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$4$0 = com.redhat.ceylon.compiler.java.language.IntArray.getIterable(numbers).sequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>toArray($ceylontmp$4$0, new .ceylon.language.Integer[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$4$0.getSize())]);
+        ));
+        .ceylon.language.print_.print(list2);
+        if (expect2.equals(.com.redhat.ceylon.compiler.java.Util.checkNull(list2))) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expect2==list2"));
+        }
+        expect2.add(0, .ceylon.language.Integer.instance(11L));
+        list2 = .java.util.Arrays.<.ceylon.language.Integer>asList((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$6$0 = com.redhat.ceylon.compiler.java.language.IntArray.getIterable(numbers).sequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>toArray($ceylontmp$6$0, new .ceylon.language.Integer[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$6$0.getSize()) + 1], .ceylon.language.Integer.instance(11L));
+        ));
+        .ceylon.language.print_.print(list2);
+        if (expect2.equals(.com.redhat.ceylon.compiler.java.Util.checkNull(list2))) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expect2==list2"));
+        }
+    }
+}
