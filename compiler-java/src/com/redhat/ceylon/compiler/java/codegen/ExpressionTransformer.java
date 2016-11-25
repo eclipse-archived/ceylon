@@ -3613,6 +3613,29 @@ public class ExpressionTransformer extends AbstractTransformer {
             }else{
                 // convert to a Sequential if required
                 Type argType = invocation.getArgumentType(ii);
+                if (typeFact().isJavaArrayType(argType)) {
+                    String methodName;
+                    if (typeFact().getJavaIntArrayDeclaration().equals(argType.getDeclaration())) {
+                        methodName = "com.redhat.ceylon.compiler.java.language.IntArray.getIterable";
+                    } else if (typeFact().getJavaShortArrayDeclaration().equals(argType.getDeclaration())) {
+                        methodName = "com.redhat.ceylon.compiler.java.language.ShortArray.getIterable";
+                    } else if (typeFact().getJavaLongArrayDeclaration().equals(argType.getDeclaration())) {
+                        methodName = "com.redhat.ceylon.compiler.java.language.LongArray.getIterable";
+                    } else if (typeFact().getJavaByteArrayDeclaration().equals(argType.getDeclaration())) {
+                        methodName = "com.redhat.ceylon.compiler.java.language.ByteArray.getIterable";
+                    } else if (typeFact().getJavaBooleanArrayDeclaration().equals(argType.getDeclaration())) {
+                        methodName = "com.redhat.ceylon.compiler.java.language.BooleanArray.getIterable";
+                    } else if (typeFact().getJavaCharArrayDeclaration().equals(argType.getDeclaration())) {
+                        methodName = "com.redhat.ceylon.compiler.java.language.CharArray.getIterable";
+                    } else if (typeFact().getJavaFloatArrayDeclaration().equals(argType.getDeclaration())) {
+                        methodName = "com.redhat.ceylon.compiler.java.language.FloatArray.getIterable";
+                    } else if (typeFact().getJavaDoubleArrayDeclaration().equals(argType.getDeclaration())) {
+                        methodName = "com.redhat.ceylon.compiler.java.language.DoubleArray.getIterable";
+                    } else {
+                        methodName = "com.redhat.ceylon.compiler.java.language.ObjectArray.getIterable";
+                    }
+                    argExpr = make().Apply(null, naming.makeQuotedQualIdentFromString(methodName), List.<JCExpression>of(argExpr));
+                }
                 if(!typeFact().isSequentialType(argType))
                     argExpr = iterableToSequential(argExpr);
                 x = x.prepend(argExpr);
