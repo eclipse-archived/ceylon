@@ -314,6 +314,23 @@ public class AnnotationVisitor extends Visitor {
         checkServiceAnnotations(c, 
                 that.getAnnotationList());
     }
+    
+    @Override
+    public void visit(Tree.TypedDeclaration that) {
+        super.visit(that);
+        if (that.getAnnotationList() != null
+                && that.getAnnotationList().getAnnotations() != null) { 
+            for (Tree.Annotation a : that.getAnnotationList().getAnnotations()) {
+                Tree.Primary p = a.getPrimary();
+                if (p instanceof Tree.BaseMemberOrTypeExpression) {
+                    Declaration d = ((Tree.BaseMemberOrTypeExpression)p).getDeclaration();
+                    if (d != null && "java.lang::native".equals(d.getQualifiedNameString())) {
+                        ((FunctionOrValue)that.getDeclarationModel()).setJavaNative(true);
+                    }
+                }
+            }
+        }
+    }
 
     @Override 
     public void visit(Tree.AnyInterface that) {

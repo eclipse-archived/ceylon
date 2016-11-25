@@ -1300,7 +1300,8 @@ public class SpecificationVisitor extends Visitor {
             else {
                 super.visit(that);
                 if (declaration.isToplevel() && 
-                        !isNativeHeader(declaration)) {
+                        !isNativeHeader(declaration) &&
+                        !declaration.isJavaNative()) {
                     that.addError("toplevel function must be specified: " +
                             name() + 
                             " may not be forward declared");
@@ -1314,6 +1315,7 @@ public class SpecificationVisitor extends Visitor {
                 else if (declaration.isClassMember() && 
                         !isNativeHeader(declaration) &&
                         !declaration.isFormal() && 
+                        !declaration.isJavaNative() &&
                         that.getDeclarationModel()
                             .getInitializerParameter()==null &&
                         declarationSection) {
@@ -1323,7 +1325,8 @@ public class SpecificationVisitor extends Visitor {
                 }
                 else if (declaration.isInterfaceMember() && 
                         !isNativeHeader(declaration) &&
-                        !declaration.isFormal()) {
+                        !declaration.isFormal() &&
+                        !declaration.isJavaNative()) {
                     that.addError("interface method must be formal or specified: " +
                             name(), 
                             1400);
@@ -1410,7 +1413,8 @@ public class SpecificationVisitor extends Visitor {
                 super.visit(that);
                 if (declaration.isToplevel() 
                         && !isNativeHeader(declaration) 
-                        && !isLate()) {
+                        && !isLate()
+                        && !declaration.isJavaNative()) {
                     if (isVariable()) {
                         that.addError("toplevel variable value must be initialized: " +
                                 name());
@@ -1435,6 +1439,7 @@ public class SpecificationVisitor extends Visitor {
                 else if (declaration.isClassOrInterfaceMember() && 
                         !isNativeHeader(declaration) &&
                         !declaration.isFormal() &&
+                        !declaration.isJavaNative() &&
                         that.getDeclarationModel()
                             .getInitializerParameter()==null &&
                         !that.getDeclarationModel().isLate() &&
@@ -1666,7 +1671,8 @@ public class SpecificationVisitor extends Visitor {
     private boolean isSharedDeclarationUninitialized() {
         return (declaration.isShared() || 
                 declaration.getOtherInstanceAccess()) && 
-                !declaration.isFormal() && 
+                !declaration.isFormal() &&
+                !declaration.isJavaNative() && 
                 !isNativeHeader(declaration) &&
                 !isLate() &&
                 !definitely;

@@ -146,4 +146,18 @@ public abstract class FunctionOrValue extends TypedDeclaration {
         return (flags&SMALL)!=0;
     }
 
+    public void setJavaNative(boolean b) {
+        if (b) {
+            flags|=JAVA_NATIVE;
+        }
+        else {
+            flags&=(~JAVA_NATIVE);
+        }
+    }
+    
+    @Override
+    public boolean isJavaNative() {
+        return (flags&JAVA_NATIVE)!=0;
+    }
+
 }

@@ -29,7 +29,7 @@ public abstract class Declaration
     
 	private String name;
 	/** See {@link DeclarationFlags} */
-	protected int flags;
+	protected long flags;
 	private String qualifier;
     private Scope visibleScope;
     private Declaration refinedDeclaration = this;
@@ -853,5 +853,9 @@ public abstract class Declaration
         else {
             flags&=(~COERCION_POINT);
         }
+    }
+
+    public boolean isJavaNative() {
+        return false;
     }
 }

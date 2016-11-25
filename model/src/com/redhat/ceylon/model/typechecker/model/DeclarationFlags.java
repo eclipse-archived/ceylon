@@ -7,76 +7,77 @@ package com.redhat.ceylon.model.typechecker.model;
  */
 public class DeclarationFlags {
     
-    public static final int SHARED         = 1 << 0;
-    public static final int FORMAL         = 1 << 1;
-    public static final int ACTUAL         = 1 << 2;
-    public static final int DEFAULT        = 1 << 3;
-    public static final int ANNOTATION     = 1 << 4;
-    public static final int DEPRECATED     = 1 << 5;
-    public static final int DYNAMIC        = 1 << 6;
+    public static final long SHARED         = 1L << 0;
+    public static final long FORMAL         = 1L << 1;
+    public static final long ACTUAL         = 1L << 2;
+    public static final long DEFAULT        = 1L << 3;
+    public static final long ANNOTATION     = 1L << 4;
+    public static final long DEPRECATED     = 1L << 5;
+    public static final long DYNAMIC        = 1L << 6;
                                            
-    public static final int PROTECTED      = 1 << 7;
-    public static final int PACKAGE        = 1 << 8;
-    public static final int STATIC         = 1 << 9;
-    public static final int DROPPED        = 1 << 10;
-    public static final int COERCION_POINT = 1 << 11;
+    public static final long PROTECTED      = 1L << 7;
+    public static final long PACKAGE        = 1L << 8;
+    public static final long STATIC         = 1L << 9;
+    public static final long DROPPED        = 1L << 10;
+    public static final long COERCION_POINT = 1L << 11;
     private static final int LAST          = 11; // KEEP THIS IN SYNC WITH LAST SHIFT
 
     public static class TypedDeclarationFlags extends DeclarationFlags {
-        public static final int UNCHECKED_NULL    = 1 << DeclarationFlags.LAST + 1;
-        public static final int UNBOXED_KNOWN     = 1 << DeclarationFlags.LAST + 2;
-        public static final int UNBOXED           = 1 << DeclarationFlags.LAST + 3;
-        public static final int TYPE_ERASED       = 1 << DeclarationFlags.LAST + 4;
-        public static final int UNTRUSTED_TYPE    = 1 << DeclarationFlags.LAST + 5;
-        public static final int UNTRUSTED_KNOWN   = 1 << DeclarationFlags.LAST + 6;
-        public static final int DYNAMICALLY_TYPED = 1 << DeclarationFlags.LAST + 7;
+        public static final long UNCHECKED_NULL    = 1L << DeclarationFlags.LAST + 1;
+        public static final long UNBOXED_KNOWN     = 1L << DeclarationFlags.LAST + 2;
+        public static final long UNBOXED           = 1L << DeclarationFlags.LAST + 3;
+        public static final long TYPE_ERASED       = 1L << DeclarationFlags.LAST + 4;
+        public static final long UNTRUSTED_TYPE    = 1L << DeclarationFlags.LAST + 5;
+        public static final long UNTRUSTED_KNOWN   = 1L << DeclarationFlags.LAST + 6;
+        public static final long DYNAMICALLY_TYPED = 1L << DeclarationFlags.LAST + 7;
         private static final int LAST             = DeclarationFlags.LAST + 7; // KEEP THIS IN SYNC WITH LAST SHIFT
     }
     
     public static class FunctionOrValueFlags extends TypedDeclarationFlags {
-        public static final int CAPTURED            = 1 << TypedDeclarationFlags.LAST + 1;
-        public static final int SHORTCUT_REFINEMENT = 1 << TypedDeclarationFlags.LAST + 2;
-        public static final int OVERLOADED          = 1 << TypedDeclarationFlags.LAST + 3;
-        public static final int ABSTRACTION         = 1 << TypedDeclarationFlags.LAST + 4;
-        public static final int IMPLEMENTED         = 1 << TypedDeclarationFlags.LAST + 5;
-        public static final int SMALL               = 1 << TypedDeclarationFlags.LAST + 6;
-        private static final int LAST               = TypedDeclarationFlags.LAST + 6; // KEEP THIS IN SYNC WITH LAST SHIFT
+        public static final long CAPTURED            = 1L << TypedDeclarationFlags.LAST + 1;
+        public static final long SHORTCUT_REFINEMENT = 1L << TypedDeclarationFlags.LAST + 2;
+        public static final long OVERLOADED          = 1L << TypedDeclarationFlags.LAST + 3;
+        public static final long ABSTRACTION         = 1L << TypedDeclarationFlags.LAST + 4;
+        public static final long IMPLEMENTED         = 1L << TypedDeclarationFlags.LAST + 5;
+        public static final long SMALL               = 1L << TypedDeclarationFlags.LAST + 6;
+        public static final long JAVA_NATIVE         = 1L << TypedDeclarationFlags.LAST + 7;
+        private static final int LAST               = TypedDeclarationFlags.LAST + 7; // KEEP THIS IN SYNC WITH LAST SHIFT
     }
 
     public static class FunctionFlags extends FunctionOrValueFlags {
-        public static final int VOID     = 1 << FunctionOrValueFlags.LAST + 1;
-        public static final int DEFERRED = 1 << FunctionOrValueFlags.LAST + 2;
-        public static final int NO_NAME  = 1 << FunctionOrValueFlags.LAST + 3;
-        public static final int VARIADIC = 1 << FunctionOrValueFlags.LAST + 4;
+        public static final long VOID     = 1L << FunctionOrValueFlags.LAST + 1;
+        public static final long DEFERRED = 1L << FunctionOrValueFlags.LAST + 2;
+        public static final long NO_NAME  = 1L << FunctionOrValueFlags.LAST + 3;
+        public static final long VARIADIC = 1L << FunctionOrValueFlags.LAST + 4;
     }
 
     public static class ValueFlags extends FunctionOrValueFlags {
-        public static final int VARIABLE              = 1 << FunctionOrValueFlags.LAST + 1;
-        public static final int TRANSIENT             = 1 << FunctionOrValueFlags.LAST + 2;
-        public static final int LATE                  = 1 << FunctionOrValueFlags.LAST + 3;
-        public static final int ENUM_VALUE            = 1 << FunctionOrValueFlags.LAST + 4;
-        public static final int SPECIFIED_IN_FOR_ELSE = 1 << FunctionOrValueFlags.LAST + 5;
-        public static final int INFERRED              = 1 << FunctionOrValueFlags.LAST + 6;
-        public static final int SELF_CAPTURED         = 1 << FunctionOrValueFlags.LAST + 7;
+        public static final long VARIABLE              = 1L << FunctionOrValueFlags.LAST + 1;
+        public static final long TRANSIENT             = 1L << FunctionOrValueFlags.LAST + 2;
+        public static final long LATE                  = 1L << FunctionOrValueFlags.LAST + 3;
+        public static final long ENUM_VALUE            = 1L << FunctionOrValueFlags.LAST + 4;
+        public static final long SPECIFIED_IN_FOR_ELSE = 1L << FunctionOrValueFlags.LAST + 5;
+        public static final long INFERRED              = 1L << FunctionOrValueFlags.LAST + 6;
+        public static final long SELF_CAPTURED         = 1L << FunctionOrValueFlags.LAST + 7;
     }
     
     public static class ConstructorFlags extends DeclarationFlags {
-        public static final int ABSTRACT    = 1 << DeclarationFlags.LAST + 1;
-        public static final int OVERLOADED  = 1 << DeclarationFlags.LAST + 2;
-        public static final int ABSTRACTION = 1 << DeclarationFlags.LAST + 3;
+        public static final long ABSTRACT    = 1L << DeclarationFlags.LAST + 1;
+        public static final long OVERLOADED  = 1L << DeclarationFlags.LAST + 2;
+        public static final long ABSTRACTION = 1L << DeclarationFlags.LAST + 3;
     }
     
     public static class ClassFlags extends DeclarationFlags {
-        public static final int CONSTRUCTORS      = 1 << DeclarationFlags.LAST + 1;
-        public static final int ENUMERATED        = 1 << DeclarationFlags.LAST + 2;
-        public static final int ABSTRACT          = 1 << DeclarationFlags.LAST + 3;
-        public static final int FINAL             = 1 << DeclarationFlags.LAST + 4;
-        public static final int SERIALIZABLE      = 1 << DeclarationFlags.LAST + 5;
-        public static final int ANONYMOUS         = 1 << DeclarationFlags.LAST + 6;
-        public static final int JAVA_ENUM         = 1 << DeclarationFlags.LAST + 7;
-        public static final int VALUE_CONSTRUCTOR = 1 << DeclarationFlags.LAST + 8;
-        public static final int OVERLOADED        = 1 << DeclarationFlags.LAST + 9;
-        public static final int ABSTRACTION       = 1 << DeclarationFlags.LAST + 10;
-        public static final int NO_NAME           = 1 << DeclarationFlags.LAST + 11;
+        public static final long CONSTRUCTORS      = 1L << DeclarationFlags.LAST + 1;
+        public static final long ENUMERATED        = 1L << DeclarationFlags.LAST + 2;
+        public static final long ABSTRACT          = 1L << DeclarationFlags.LAST + 3;
+        public static final long FINAL             = 1L << DeclarationFlags.LAST + 4;
+        public static final long SERIALIZABLE      = 1L << DeclarationFlags.LAST + 5;
+        public static final long ANONYMOUS         = 1L << DeclarationFlags.LAST + 6;
+        public static final long JAVA_ENUM         = 1L << DeclarationFlags.LAST + 7;
+        public static final long VALUE_CONSTRUCTOR = 1L << DeclarationFlags.LAST + 8;
+        public static final long OVERLOADED        = 1L << DeclarationFlags.LAST + 9;
+        public static final long ABSTRACTION       = 1L << DeclarationFlags.LAST + 10;
+        public static final long NO_NAME           = 1L << DeclarationFlags.LAST + 11;
     }
 }
