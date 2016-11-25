@@ -62,8 +62,8 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                 Overrides overrides = repositoryManager.getOverrides();
                 if(overrides != null){
                     for (ArtifactContext context : overrides.getAddedArtifacts()) {
-                        loadModule(ModuleUtil.getNamespaceFromUri(context.getName()), 
-                                ModuleUtil.getModuleNameFromUri(context.getName()),
+                        loadModule(context.getNamespace(), 
+                                context.getName(),
                                 context.getVersion(), false, false, null);
                     }
                 }
@@ -94,6 +94,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                     artifactContext = replacement;
                     name = replacement.getName();
                     version = replacement.getVersion();
+                    namespace = replacement.getNamespace();
                 }
                 if(overrides.isVersionOverridden(artifactContext)){
                     version = overrides.getVersionOverride(artifactContext);
