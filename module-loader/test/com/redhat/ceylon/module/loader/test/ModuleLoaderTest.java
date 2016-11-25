@@ -7,7 +7,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.CmrRepository;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherRepository;
@@ -20,6 +22,8 @@ public class ModuleLoaderTest {
     private final static Logger log = new StderrLogger();
     private final static String settings = "test/"+ModuleLoaderTest.class.getPackage().getName().replace('.', '/')+
             "/settings.xml";
+    private final static String overrides = "test/"+ModuleLoaderTest.class.getPackage().getName().replace('.', '/')+
+            "/overrides.xml";
     
     @Test
     public void testModuleLoader() throws ModuleNotFoundException {
@@ -82,5 +86,60 @@ public class ModuleLoaderTest {
         
         // Should be there
         Assert.assertEquals("2.6.5", moduleLoader.getModuleVersion("com.fasterxml.jackson.dataformat:jackson-dataformat-xml"));
+    }
+
+    @Test
+    public void testNoDots() throws ModuleNotFoundException {
+        CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        Map<String, String> extraModules = new HashMap<>();
+        extraModules.put("maven:aopalliance:aopalliance", "1.0");
+        TestableModuleLoader moduleLoader = new TestableModuleLoader(manager, null, extraModules, true);
+        // org.antlr:stringtemplate:3.2.1
+        // com.google.inject:guice:4.0
+       
+        moduleLoader.loadModule("maven:antlr:antlr", "2.7.7", ModuleScope.RUNTIME);
+        
+        // Check that we got them
+        Assert.assertEquals("2.7.7", moduleLoader.getModuleVersion("maven:antlr:antlr"));
+        Assert.assertEquals("1.0", moduleLoader.getModuleVersion("maven:aopalliance:aopalliance"));
+        
+    }
+
+    @Test
+    public void testNoDotsFromMaven() throws ModuleNotFoundException {
+        CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        Map<String, String> extraModules = new HashMap<>();
+        extraModules.put("org.antlr:stringtemplate", "3.2.1");
+        TestableModuleLoader moduleLoader = new TestableModuleLoader(manager, null, extraModules, true);
+       
+        moduleLoader.loadModule("com.google.inject:guice", "4.0", ModuleScope.RUNTIME);
+        
+        // Check that we got them
+        Assert.assertEquals("2.7.7", moduleLoader.getModuleVersion("maven:antlr:antlr"));
+        Assert.assertEquals("1.0", moduleLoader.getModuleVersion("maven:aopalliance:aopalliance"));
+        
+    }
+
+    @Test
+    public void testNoDotsFromMavenWithOverrides() throws ModuleNotFoundException {
+        CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
+        Overrides ov = RepositoryManagerBuilder.parseOverrides(overrides);
+        
+        Assert.assertTrue(ov.getAddedArtifacts().isEmpty());
+        
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log, ov);
+        Map<String, String> extraModules = new HashMap<>();
+        extraModules.put("org.antlr:stringtemplate", "3.2.1");
+        // this one has an override that adds aopalliance:aopalliance/1.0
+        extraModules.put("org.postgresql:postgresql", "9.4.1208");
+        TestableModuleLoader moduleLoader = new TestableModuleLoader(manager, null, extraModules, true);
+       
+        moduleLoader.loadModule("com.google.inject:guice", "4.0", ModuleScope.RUNTIME);
+        
+        // Check that we got them
+        Assert.assertEquals("2.7.7", moduleLoader.getModuleVersion("maven:antlr:antlr"));
+        Assert.assertEquals("1.0", moduleLoader.getModuleVersion("maven:aopalliance:aopalliance"));
     }
 }
