@@ -121,14 +121,14 @@ public class ClassDefinitionBuilder
         return klass(gen, javaClassName, ceylonClassName, isLocal);
     }
     
-    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, String ceylonClassName, boolean shared) {
+    public static ClassDefinitionBuilder methodWrapper(AbstractTransformer gen, String ceylonClassName, boolean shared, boolean javaStrictfp) {
         final ClassDefinitionBuilder builder = new ClassDefinitionBuilder(gen, Naming.quoteClassName(ceylonClassName), null, false);
         builder.setContainingClassBuilder(gen.current());
         gen.replace(builder);
         builder.initBuilder.modifiers(PRIVATE);
         return builder
             .annotations(gen.makeAtMethod())
-            .modifiers(FINAL | (shared ? PUBLIC : 0));
+            .modifiers(FINAL | (shared ? PUBLIC : 0) | (javaStrictfp ? Flags.STRICTFP : 0));
     }
 
     private ClassDefinitionBuilder(AbstractTransformer gen,  
@@ -334,10 +334,10 @@ public class ClassDefinitionBuilder
             this.modifiers = modifiers & ~STATIC;
         }
         else {
-            this.modifiers = modifiers;            
+            this.modifiers = modifiers;
         }
         if (this.concreteInterfaceMemberDefs != null) {
-            this.concreteInterfaceMemberDefs.modifiers((modifiers & (PUBLIC | STATIC)) | FINAL);
+            this.concreteInterfaceMemberDefs.modifiers((modifiers & (PUBLIC | STATIC | Flags.STRICTFP)) | FINAL);
         }
         return this;
     }

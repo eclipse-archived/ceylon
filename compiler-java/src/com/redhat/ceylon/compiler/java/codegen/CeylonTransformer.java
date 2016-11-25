@@ -470,7 +470,16 @@ public class CeylonTransformer extends AbstractTransformer {
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .wrapped(this, attrClassName, null, attrName, declarationModel, declarationModel.isToplevel())
             .is(Flags.PUBLIC, declarationModel.isShared());
-        
+        if (isJavaStrictfp(declarationModel)) {
+            builder.is(Flags.STRICTFP, true);
+        }
+        if (isJavaSynchronized(declarationModel)) {
+            builder.is(Flags.SYNCHRONIZED, true);
+        }
+        if (isJavaNative(declarationModel)) {
+            builder.is(Flags.NATIVE, true);
+            builder.isJavaNative(true);
+        }
         JCExpression initialValue = null;
         HasErrorException expressionError = null;
         BoxingStrategy boxingStrategy = null;

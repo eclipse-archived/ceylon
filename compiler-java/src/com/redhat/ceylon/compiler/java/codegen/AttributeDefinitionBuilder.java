@@ -104,7 +104,8 @@ public class AttributeDefinitionBuilder {
     private boolean deferredInitError;
     private final InitTest initTest;
     private final boolean useJavaBox;
-    private BoxingStrategy initialValueBoxing; 
+    private BoxingStrategy initialValueBoxing;
+    private boolean isNative; 
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, Node node, TypedDeclaration attrType, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect, 
@@ -315,8 +316,11 @@ public class AttributeDefinitionBuilder {
         if (javaClassName != null) {
             classBuilder.getInitBuilder().modifiers(Flags.PRIVATE);
             classBuilder
-                    .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE)))
+                    .modifiers(Flags.FINAL | (modifiers & (Flags.PUBLIC | Flags.PRIVATE | Flags.STRICTFP)))
                     .defs(defs.toList());
+            if (owner.isJavaStrictfp(attrTypedDecl)) {
+                //classBuilder.modifiers(Flags.STRICTFP);
+            }
             if(getterClass == null){
                 classBuilder.annotations(owner.makeAtAttribute(setterClass))
                     .annotations(owner.makeAtName(attrName))
@@ -422,7 +426,7 @@ public class AttributeDefinitionBuilder {
         if (javaClassName != null) {
             mods |= Flags.PUBLIC;
         }
-        return mods & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);
+        return mods & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC | Flags.SYNCHRONIZED | Flags.NATIVE | Flags.STRICTFP);
     }
     private JCExpression makeFieldAccess(long mods, String fieldName) {
         // javac won't let us access a static final field from within a static block
@@ -886,6 +890,15 @@ public class AttributeDefinitionBuilder {
     public AttributeDefinitionBuilder isFormal(boolean isFormal) {
         getterBuilder.isAbstract(isFormal);
         setterBuilder.isAbstract(isFormal);
+        return this;
+    }
+    
+    public AttributeDefinitionBuilder isJavaNative(boolean isNative) {
+        if (isNative) {
+            skipField();
+            getterBuilder.noBody();
+            setterBuilder.noBody();
+        }
         return this;
     }
 

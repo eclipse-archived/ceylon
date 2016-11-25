@@ -3439,7 +3439,8 @@ public class ClassTransformer extends AbstractTransformer {
         JCThrow err = null;
         if (!lazy && 
                 (concrete || 
-                        (!Decl.isFormal(decl) 
+                        (!Decl.isFormal(decl)
+                                && !decl.getDeclarationModel().isJavaNative()
                                 && createField))) {
             TypedReference typedRef = getTypedReference(model);
             TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
@@ -3620,7 +3621,7 @@ public class ClassTransformer extends AbstractTransformer {
     /**
      * Encapsulates the modifiers we use for various things.
      */
-    static class ModifierTransformation {
+    class ModifierTransformation {
         protected long declarationSharedFlags(Declaration decl){
             return Decl.isShared(decl) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
         }
@@ -3669,6 +3670,9 @@ public class ClassTransformer extends AbstractTransformer {
             result |= (cdecl instanceof Class) && (cdecl.isAlias() || cdecl.isFinal())  ? FINAL : 0;
             result |= cdecl.isStatic() ? STATIC : 0;
 
+            if (isJavaStrictfp(cdecl)) {
+                result |= Flags.STRICTFP;
+            }
             return result;
         }
         
@@ -3706,7 +3710,12 @@ public class ClassTransformer extends AbstractTransformer {
                 result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
                 result |= def.isStatic() ? STATIC : 0;
             }
-
+            if (isJavaSynchronized(def)) {
+                result |= Flags.SYNCHRONIZED;
+            }
+            if (isJavaStrictfp(def)) {
+                result |= Flags.STRICTFP;
+            }
             return result;
         }
         
@@ -3769,6 +3778,15 @@ public class ClassTransformer extends AbstractTransformer {
             result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || forCompanion ? FINAL : 0;
             result |= tdecl.isStatic() ? STATIC : 0;
 
+            if (isJavaSynchronized(tdecl)) {
+                result |= Flags.SYNCHRONIZED;
+            }
+            if (isJavaNative(tdecl)) {
+                result |= Flags.NATIVE;
+            }
+            if (isJavaStrictfp(tdecl)) {
+                result |= Flags.STRICTFP;
+            }
             return result;
         }
 
@@ -3778,12 +3796,15 @@ public class ClassTransformer extends AbstractTransformer {
             result |= FINAL;
             result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
             result |= cdecl.isStatic() ? STATIC : 0;
-
+            
+            if (isJavaStrictfp(cdecl)) {
+                result |= Flags.STRICTFP;
+            }
             return result;
         }
 
         public long defaultParameterMethodOverload(Function method, DaoBody daoBody) {
-            long mods = method(method);
+            long mods = method(method) & ~Flags.NATIVE;
             if (daoBody instanceof DaoAbstract == false) {
                 mods &= ~ABSTRACT;
             }
@@ -3839,6 +3860,9 @@ public class ClassTransformer extends AbstractTransformer {
                 modifiers &= ~PRIVATE;
                 modifiers |= STATIC | PUBLIC;
             }
+            if (isJavaStrictfp(container)) {
+                modifiers |= Flags.STRICTFP;
+            }
             return modifiers;
         }
         
@@ -3865,7 +3889,7 @@ public class ClassTransformer extends AbstractTransformer {
      * <li>The implict no-args constructor is generated as public, not protected</li>
      * </ul>
      */
-    private static class EeModifierTransformation extends ModifierTransformation {
+    private class EeModifierTransformation extends ModifierTransformation {
         @Override
         public long jpaConstructor(Class model) {
             return model.isShared() ? PUBLIC : super.jpaConstructor(model);
@@ -3986,7 +4010,8 @@ public class ClassTransformer extends AbstractTransformer {
             builder.notActual();
         return builder
             .modifiers(modifierTransformation().getterSetter(decl.getDeclarationModel(), forCompanion))
-            .isFormal((Decl.isFormal(decl) || Decl.withinInterface(decl)) && !forCompanion);
+            .isFormal((Decl.isFormal(decl) || Decl.withinInterface(decl)) && !forCompanion)
+            .isJavaNative(decl.getDeclarationModel().isJavaNative());
     }
     
     private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy) {
@@ -4033,7 +4058,7 @@ public class ClassTransformer extends AbstractTransformer {
         naming.clearSubstitutions(model);
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
-        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def), isJavaStrictfp(model));
         // Make sure it's Java Serializable (except toplevels which we never instantiate)
         if(!model.isToplevel())
             builder.introduce(make().QualIdent(syms().serializableType.tsym));
@@ -4197,8 +4222,9 @@ public class ClassTransformer extends AbstractTransformer {
                     .methods(companionDefs);
             
             // Transform the declaration to the target interface
-            // but only if it's shared
-            if (Decl.isShared(model)) {
+            // but only if it's shared and not java native
+            if (Decl.isShared(model)
+                    && !model.isJavaNative()) {
                 result = transformMethod(def, 
                         true,
                         true,
@@ -4303,7 +4329,7 @@ public class ClassTransformer extends AbstractTransformer {
                         || Decl.withinInterface(methodModel) && daoTransformation instanceof DaoCompanion == false) {
                     
                     if (daoTransformation != null && (daoTransformation instanceof DaoCompanion == false || body != null)) {
-                        DaoBody daoTrans = (body == null) ? daoAbstract : new DaoThis(node, parameterList);
+                        DaoBody daoTrans = (body == null && !methodModel.isJavaNative()) ? daoAbstract : new DaoThis(node, parameterList);
                         
                         MethodDefinitionBuilder overloadedMethod = new DefaultedArgumentMethod(daoTrans, MethodDefinitionBuilder.method(this, methodModel), methodModel)
                             .makeOverload(
@@ -4327,7 +4353,7 @@ public class ClassTransformer extends AbstractTransformer {
         // Determine if we need to generate a "canonical" method
         boolean createCanonical = hasOverloads
                 && Decl.withinClassOrInterface(methodModel)
-                && body != null;
+                && (body != null || methodModel.isJavaNative());
         
         if (createCanonical) {
             // Creates the private "canonical" method containing the actual body
@@ -4336,11 +4362,12 @@ public class ClassTransformer extends AbstractTransformer {
                     parameterList.getModel(),
                     null,
                     Strategy.getEffectiveTypeParameters(methodModel));
+            
             lb.append(canonicalMethod);
         }
         
         if (transformMethod) {
-            methodBuilder.modifiers(modifierTransformation().method(methodModel));
+            methodBuilder.modifiers(modifierTransformation().method(methodModel) | (methodModel.isJavaNative() && !createCanonical ? Flags.NATIVE : 0));
             if (actual) {
                 methodBuilder.isOverride(methodModel.isActual());
             }
@@ -5152,6 +5179,10 @@ public class ClassTransformer extends AbstractTransformer {
             long mods = super.getModifiers();
             if (useBody) {
                 mods = mods & ~PUBLIC & ~FINAL | PRIVATE;
+            }
+            mods = mods & ~Flags.SYNCHRONIZED;
+            if (getModel().isJavaNative()) {
+                mods |= Flags.NATIVE;
             }
             return mods;
         }
