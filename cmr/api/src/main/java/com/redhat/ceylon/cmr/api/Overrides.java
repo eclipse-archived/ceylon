@@ -413,14 +413,14 @@ public class Overrides {
             addOverrides(ao, artifact, DependencyOverride.Type.REMOVE, interpolation);
             addOverrides(ao, artifact, DependencyOverride.Type.REPLACE, interpolation);
             // filter
-            NodeList filterNode = artifact.getElementsByTagName("filter");
-            if (filterNode != null && filterNode.getLength() > 0) {
-                Node node = filterNode.item(0);
+            List<Element> filterNode = getChildren(artifact, "filter");
+            if (filterNode != null && !filterNode.isEmpty()) {
+                Node node = filterNode.get(0);
                 ao.setFilter(interpolate(PathFilterParser.convertNodeToString(node), interpolation));
             }
-            NodeList classifierNode = artifact.getElementsByTagName("classifier");
-            if (classifierNode != null && classifierNode.getLength() > 0) {
-                Node node = classifierNode.item(0);
+            List<Element> classifierNode = getChildren(artifact, "classifier");
+            if (classifierNode != null && !classifierNode.isEmpty()) {
+                Node node = classifierNode.get(0);
                 ao.setClassifier(interpolate(node.getTextContent(), interpolation));
             }
             List<Element> shareArtifacts = getChildren(artifact, "share");
@@ -637,13 +637,16 @@ public class Overrides {
         return doc;
     }
 
-    protected static List<Element> getChildren(Element element, String tagName) {
-        NodeList nodes = element.getElementsByTagName(tagName);
-        List<Element> elements = new ArrayList<>(nodes.getLength());
-        for (int i = 0; i < nodes.getLength(); i++) {
-            elements.add((Element) nodes.item(i));
+    private static List<Element> getChildren(Element element, String tagName) {
+        NodeList nodes = element.getChildNodes();
+        List<Element> ret = new ArrayList<>(nodes.getLength());
+        for(int i=0;i<nodes.getLength();i++){
+            Node item = nodes.item(i);
+            if(item.getNodeType() == Node.ELEMENT_NODE
+                    && ((Element)item).getTagName().equals(tagName))
+                ret.add((Element) item);
         }
-        return elements;
+        return ret;
     }
 
     public static ArtifactContext createMavenArtifactContext(String groupId, String artifactId, String version, 
