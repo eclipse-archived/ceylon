@@ -614,7 +614,9 @@ shared package org.hibernate.query;</programlisting>
             for a runnable module specifies an <emphasis>entry point</emphasis>, a 
             toplevel method or class with no parameters.</para-->
             
-            <synopsis>ModuleDescriptor: Annotations "module" FullPackageName StringLiteral ModuleBody</synopsis>
+            <synopsis>ModuleDescriptor: Annotations "module" ModuleName Version ModuleBody</synopsis>
+            <synopsis>ModuleName: FullPackageName</synopsis>
+            <synopsis>Version: StringLiteral</synopsis>
             
             <para>The literal string after the module name specifies the version of the
             module.</para>
@@ -622,10 +624,12 @@ shared package org.hibernate.query;</programlisting>
             <para>A module may import other modules.</para>
             
             <synopsis>ModuleBody: "{" ModuleImport* "}"</synopsis>
-            <synopsis>ModuleImport: Annotations "import" RepositoryType? (FullPackageName|StringLiteral) StringLiteral ";"</synopsis>
-            <synopsis>RepositoryType: LIdentifier ":"</synopsis>
+            <synopsis>ModuleImport: Annotations "import" Repository? Module Artifact? Version ";"</synopsis>
+            <synopsis>Repository: LIdentifier ":"</synopsis>
+            <synopsis>Module: ModuleName | StringLiteral</synopsis>
+            <synopsis>Artifact: ":" StringLiteral</synopsis>
             
-            <para>The optional repository type identifier selects an external module 
+            <para>The optional repository type identifier selects a foreign module 
             repository system, for example, <literal>maven</literal>, or <literal>npm</literal>, 
             in which the module resides. This specification does not define the semantics 
             of this identifier.</para>
@@ -633,9 +637,13 @@ shared package org.hibernate.query;</programlisting>
             <para>The name of the imported module may be specified using the usual syntax
             for a module name, or as a literal string.</para>
             
-            <comment><para>Note: quoted module names enable interoperation with Maven
-            and other module repository systems whose module identifiers do not comply 
-            with the format specified for Ceylon module names.</para></comment>
+            <comment><para>Note: quoted module names enable interoperation with foreign
+            module repository systems whose module identifiers do not comply with the 
+            format specified for Ceylon module names.</para></comment>
+            
+            <para>The optional artifact identifier is for use with a foreign module 
+            repository system such as Maven. This specification does not define the 
+            semantics of this identifier.</para>
             
             <comment><para>Note: in Ceylon 1.0 it is illegal to explicitly import the
             module <literal>ceylon.language</literal>. The language module is always
