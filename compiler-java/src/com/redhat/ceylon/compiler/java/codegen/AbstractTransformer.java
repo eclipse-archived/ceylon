@@ -62,7 +62,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.langtools.tools.javac.code.BoundKind;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
@@ -3100,14 +3099,7 @@ public abstract class AbstractTransformer implements Transformation {
     private String getImportVersionFromDescriptor(ModuleDescriptor moduleDescriptor, ModuleImport moduleImport, Module importedModule) {
         if (loader.getJdkProvider().isJDKModule(importedModule.getNameAsString())) {
             for(Tree.ImportModule imported : moduleDescriptor.getImportModuleList().getImportModules()){
-                String name=null;
-                if (imported.getImportPath() != null) {
-                    name = TreeUtil.formatPath(imported.getImportPath().getIdentifiers());
-                } else if (imported.getQuotedLiteral() != null) {
-                    name = imported.getQuotedLiteral().getText();
-                    name = name.substring(1, name.length()-1);
-                }
-                
+                String name = imported.getName();
                 if (name != null 
                         && imported.getVersion() != null
                         && name.equals(moduleImport.getModule().getNameAsString())) {

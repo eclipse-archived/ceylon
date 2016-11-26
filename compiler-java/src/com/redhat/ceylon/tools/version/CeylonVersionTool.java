@@ -22,6 +22,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.TokenRewriteStream;
 
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
@@ -33,7 +34,6 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
@@ -256,7 +256,7 @@ public class CeylonVersionTool extends CeylonBaseTool {
         Tree.CompilationUnit cu = parser.compilationUnit();
         List<Tree.ImportModule> moduleImports = findUpdatedImport(cu, updatedModuleVersions);
         for (Tree.ImportModule moduleImport : moduleImports) {
-            String importedModuleName = getModuleName(moduleImport);
+            String importedModuleName = moduleImport.getName();
             String newVersion = updatedModuleVersions.get(importedModuleName);
             if(newVersion == null)
                 newVersion = this.newVersion;
@@ -296,7 +296,7 @@ public class CeylonVersionTool extends CeylonBaseTool {
         version = version.substring(1, version.length()-1);
         out.append(CeylonVersionMessages.msg("output.dependency", 
                 module.getNameAsString(), module.getVersion(),
-                getModuleName(moduleImport), version))
+                moduleImport.getName(), version))
             .append(System.lineSeparator());
         
     }
@@ -346,7 +346,7 @@ public class CeylonVersionTool extends CeylonBaseTool {
     private List<Tree.ImportModule> findImport(Tree.CompilationUnit cu) {
         List<Tree.ImportModule> dependsOnTarget = new LinkedList<Tree.ImportModule>();
         for (Tree.ImportModule importModule : cu.getModuleDescriptors().get(0).getImportModuleList().getImportModules()) {
-            String name = getModuleName(importModule);
+            String name = importModule.getName();
             if (match(name)) {
                 dependsOnTarget.add(importModule);
             }
@@ -357,30 +357,12 @@ public class CeylonVersionTool extends CeylonBaseTool {
     private List<Tree.ImportModule> findUpdatedImport(Tree.CompilationUnit cu, Map<String,String> updatedModules) {
         List<Tree.ImportModule> dependsOnTarget = new LinkedList<Tree.ImportModule>();
         for (Tree.ImportModule importModule : cu.getModuleDescriptors().get(0).getImportModuleList().getImportModules()) {
-            String name = getModuleName(importModule);
+            String name = importModule.getName();
             if (updatedModules.containsKey(name)) {
                 dependsOnTarget.add(importModule);
             }
         }
         return dependsOnTarget;
-    }
-
-    private String getModuleName(Tree.ImportModule importModule) {
-        String name;
-        if (importModule.getQuotedLiteral() != null) {
-            name = importModule.getQuotedLiteral().getText();
-            name = name.substring(1, name.length()-1);
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (Tree.Identifier namePart : importModule.getImportPath().getIdentifiers()) {
-                sb.append(namePart.getText()).append('.');
-            }
-            if (sb.length() > 0) {
-                sb.setLength(sb.length()-1);
-            }
-            name = sb.toString();
-        }
-        return name;
     }
 
     /**

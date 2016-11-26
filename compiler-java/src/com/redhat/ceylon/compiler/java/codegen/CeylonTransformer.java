@@ -683,16 +683,8 @@ public class CeylonTransformer extends AbstractTransformer {
                 continue;
             }
             String quotedName;
-            if (imported.getImportPath() != null) {
-                StringBuilder sb = new StringBuilder();
-                for (Tree.Identifier part : imported.getImportPath().getIdentifiers()) {
-                    sb.append(part.getText()).append('$');
-                }
-                quotedName = sb.substring(0, sb.length()-1);
-            } else if (imported.getQuotedLiteral() != null) {
-                quotedName = imported.getQuotedLiteral().getText();
-                quotedName = quotedName.substring(1, quotedName.length()-1);
-                quotedName = quotedName.replace('.', '$');
+            if (imported.getName() != null) {
+                quotedName = imported.getName().replace('.', '$'); //TODO: is this really supposed to just leave : and - untouched?!
             } else {
                 throw new BugException(imported, "unhandled module import");
             }

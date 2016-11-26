@@ -1,24 +1,19 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
+import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
-import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -183,27 +178,12 @@ public class EeVisitor extends Visitor {
     @Override
     public void visit(Tree.ImportModule that) {
         super.visit(that);
-        if (that.getQuotedLiteral() != null) {
-            String name = that.getQuotedLiteral().getText();
+        if (that.getName() != null) {
+            String name = that.getName();
             if (that.getNamespace() != null) {
                 name = that.getNamespace().getText() +":" + name + "";
             }
             if (imports.contains(name)) {
-                eeModeModules.add(that.getUnit().getPackage().getModule());
-            }
-        }
-        
-        if (that.getImportPath() != null) {
-            StringBuffer sb = new StringBuffer();
-            boolean sebsequent = false;
-            for (Tree.Identifier x : that.getImportPath().getIdentifiers()) {
-                if (sebsequent) {
-                    sb.append(".");
-                }
-                sebsequent = true;
-                sb.append(x.getText());
-            }
-            if (imports.contains(sb.toString())) {
                 eeModeModules.add(that.getUnit().getPackage().getModule());
             }
         }
