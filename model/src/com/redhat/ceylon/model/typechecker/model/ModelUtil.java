@@ -1853,23 +1853,22 @@ public class ModelUtil {
         return false;
     }
     
-    public static String formatPath(List<String> path, 
-            char separator) {
+    public static String formatPath(List<String> path) {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<path.size(); i++) {
             String pathPart = path.get(i);
             if (!pathPart.isEmpty()) {
                 sb.append(pathPart);
-                if (i<path.size()-1) sb.append(separator);
+                if (i<path.size()-1) sb.append('.');
             }
+            else if (sb.length()>1) {
+                sb.replace(sb.length()-1, sb.length(), ":");
+            }
+            
         }
         return sb.toString();
     }
 
-    public static String formatPath(List<String> path) {
-        return formatPath(path, '.');
-    }
-    
     /**
      * Form the union of the given types, eliminating 
      * duplicates. 

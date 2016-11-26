@@ -1,10 +1,12 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.common.ModuleUtil.isMavenModule;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.formatPath;
 import static com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static java.util.Arrays.asList;
@@ -19,11 +21,9 @@ import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -172,7 +172,9 @@ public class ModuleVisitor extends Visitor {
             }
             else {
                 String initialName = name.get(0);
-                Backends unitBackends = unit.getUnit().getSupportedBackends();
+                Backends unitBackends = 
+                        unit.getUnit()
+                            .getSupportedBackends();
                 if (initialName.equals(DEFAULT_MODULE_NAME)) {
                     importPath.addError("reserved module name: 'default'");
                 }
@@ -235,23 +237,11 @@ public class ModuleVisitor extends Visitor {
             if (iml!=null) {
                 for (Tree.ImportModule im: 
                         iml.getImportModules()) {
-                    Tree.ImportPath ip = im.getImportPath();
-                    if (ip!=null) {
-                        String mp = 
-                                formatPath(ip.getIdentifiers());
-                        if (!set.add(mp)) {
-                            ip.addError("duplicate module import: '" + 
-                                        mp + "'");
-                        }
-                    }
-                    Tree.QuotedLiteral ql = 
-                            im.getQuotedLiteral();
-                    if(ql!=null){
-                        String mp = 
-                                getNameString(ql, false);
-                        if (!set.add(mp)) {
-                            ql.addError("duplicate module import: '" + 
-                                        mp + "'");
+                    String path = im.getName();
+                    if (path!=null) {
+                        if (!set.add(path)) {
+                            im.addError("duplicate module import: '" + 
+                                    path + "'");
                         }
                     }
                 }
@@ -325,27 +315,46 @@ public class ModuleVisitor extends Visitor {
     public void visit(Tree.ImportModule that) {
         super.visit(that);
         if (phase==Phase.REMAINING) {
-            Tree.ImportPath importPath = that.getImportPath();
-            String version = getVersionString(that.getVersion(), that);
+            String version = 
+                    getVersionString(that.getVersion(), that);
             Tree.Identifier ns = that.getNamespace();
             String namespace = ns!=null ? ns.getText() : null;
             List<String> name;
             Node node;
+
+            Tree.ImportPath importPath = 
+                    that.getImportPath();
+            Tree.QuotedLiteral quotedLiteral = 
+                    that.getQuotedLiteral();
             if (importPath!=null) {
             	name = getNameAsList(importPath);
             	node = importPath;
             }
-            else if (that.getQuotedLiteral()!=null) {
+            else if (quotedLiteral!=null) {
                 String nameString = 
-                        getNameString(that.getQuotedLiteral());
+                        getNameString(quotedLiteral);
                 name = asList(nameString.split("\\."));
-                node = that.getQuotedLiteral();
+                node = quotedLiteral;
             }
             else {
             	name = Collections.emptyList();
             	node = null;
             }
-            boolean hasMavenName = ModuleUtil.isMavenModule(ModelUtil.formatPath(name));
+            
+            if (node!=null) {
+                Tree.QuotedLiteral artifact = 
+                        that.getArtifact();
+                if (artifact!=null) {
+                    String nameString = getNameString(artifact);
+                    name.add("");
+                    name.addAll(asList(nameString.split("\\.")));
+                }
+            }
+            
+            String path = formatPath(name);
+            that.setName(path);
+            boolean hasMavenName = 
+                    isMavenModule(path);
             boolean forCeylon 
                      = (importPath != null && namespace == null)
                     || (importPath == null && namespace == null && !hasMavenName)

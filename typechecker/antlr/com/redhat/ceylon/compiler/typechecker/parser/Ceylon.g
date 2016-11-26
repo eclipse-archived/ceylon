@@ -135,9 +135,6 @@ moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
       packagePath
       { $moduleDescriptor.setImportPath($packagePath.importPath); }
       (
-        CHAR_LITERAL
-        { $moduleDescriptor.setVersion(new QuotedLiteral($CHAR_LITERAL)); }
-      |
         STRING_LITERAL
         { $moduleDescriptor.setVersion(new QuotedLiteral($STRING_LITERAL)); }
       )?
@@ -179,28 +176,28 @@ packageDescriptor returns [PackageDescriptor packageDescriptor]
 importModule returns [ImportModule importModule]
     : IMPORT
       { $importModule = new ImportModule($IMPORT); }
-      (
+      ((LIDENTIFIER SEGMENT_OP) =>
         ins=importNamespace
         { $importModule.setNamespace($ins.identifier); }
         SEGMENT_OP
       )?
-      ( 
-        c1=CHAR_LITERAL
-        { $importModule.setQuotedLiteral(new QuotedLiteral($c1)); }
-      |
-        s1=STRING_LITERAL
-        { $importModule.setQuotedLiteral(new QuotedLiteral($s1)); }
-      |
-        packagePath
-        { $importModule.setImportPath($packagePath.importPath); }
+      (
+        ( 
+          s1=STRING_LITERAL
+          { $importModule.setQuotedLiteral(new QuotedLiteral($s1)); }
+        |
+          p1=packagePath
+          { $importModule.setImportPath($p1.importPath); }
+        )
+        (
+          SEGMENT_OP
+          s2=STRING_LITERAL
+          { $importModule.setArtifact(new QuotedLiteral($s2)); }
+        )?
       )
       (
-        c2=CHAR_LITERAL
-        { $importModule.setVersion(new QuotedLiteral($c2)); 
-          expecting=SEMICOLON; }
-      |
-        s2=STRING_LITERAL
-        { $importModule.setVersion(new QuotedLiteral($s2)); 
+        s3=STRING_LITERAL
+        { $importModule.setVersion(new QuotedLiteral($s3)); 
           expecting=SEMICOLON; }
       )?
       SEMICOLON

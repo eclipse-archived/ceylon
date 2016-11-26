@@ -56,7 +56,7 @@ subnode : n=NODE_NAME '?'? f=FIELD_NAME
           { println("        }"); }
         ;
 
-field : 'abstract'? (TYPE_NAME|'boolean') FIELD_NAME ';'
+field : 'abstract'? (TYPE_NAME|'boolean'|'string') FIELD_NAME ';'
       ;
 
 NODE_NAME : ('A'..'Z'|'_')+;

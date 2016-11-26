@@ -29,7 +29,9 @@
     IDENTIFIER? namespace
     IMPORT_PATH?
     QUOTED_LITERAL?
-    QUOTED_LITERAL? version)
+    QUOTED_LITERAL? artifact
+    QUOTED_LITERAL? version
+    string name;)
 
 "A list of packages imported by a compilation unit."
 ^(IMPORT_LIST 
