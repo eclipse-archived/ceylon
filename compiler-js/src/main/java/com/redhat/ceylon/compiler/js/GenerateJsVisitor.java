@@ -313,7 +313,7 @@ public class GenerateJsVisitor extends Visitor {
                 boolean first=true;
                 for (final Tree.ImportModule im : md.getImportModuleList().getImportModules()) {
                     final StringBuilder path=new StringBuilder("'");
-                    if (im.getName()==null) {
+                    if (im.getName()!=null) {
                         path.append(im.getName());
                     }
                     else {
