@@ -348,7 +348,8 @@ public class LiteralVisitor extends Visitor {
             case '\\':
             	ch = escape; break;
             default:
-            	node.addError("illegal escape sequence: \\" + escape);
+            	node.addError("illegal escape sequence: '\\" + escape + 
+            	        "' is not a recognized escape sequence");
             	return null;
         }
         return Character.toString(ch);
