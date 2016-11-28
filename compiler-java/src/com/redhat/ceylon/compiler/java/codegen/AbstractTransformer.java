@@ -6125,10 +6125,6 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Throw(exception);
     }
     
-    JCThrow makeThrowAssertionException(AssertionBuilder message) {
-        return makeThrowAssertionException(message.buildMessage());
-    }
-    
     JCExpression makeStaticQualifier(Declaration d) {
         if (!d.isStatic()) {
             //throw new BugException("Non-static declaration can't have a static qualifier");

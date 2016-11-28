@@ -220,6 +220,7 @@ public class StatementTransformer extends AbstractTransformer {
     class AssertionBuilder {
         
         private JCExpression expr;
+        private String docText;
         
         private JCExpression cat(JCExpression str1, JCExpression str2) {
             if (str2 == null) {
@@ -247,11 +248,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         public AssertionBuilder prependAssertionDoc(String docText) {
-            JCExpression p = make().Literal("Assertion failed");
-            if (docText != null) {
-                p = cat(p, ": " + docText);
-            }
-            this.expr = cat(p, expr);
+            this.docText = docText;
             return this;
         }
         
@@ -283,12 +280,22 @@ public class StatementTransformer extends AbstractTransformer {
             return appendCondition("untested", getSourceCode(condition));
         }
         
-        public JCExpression buildMessage() {
+        public JCExpression buildPart() {
             return expr;
         }
         
-        JCThrow makeThrowAssertionException(AssertionBuilder message) {
-            return StatementTransformer.this.makeThrowAssertionException(message.buildMessage());
+        public JCExpression buildMessage() {
+            JCExpression result = expr;
+            JCExpression p = make().Literal("Assertion failed");
+            if (docText != null) {
+                p = cat(p, ": " + docText);
+            }
+            result = cat(p, result);
+            return result;
+        }
+        
+        JCThrow buildThrow() {
+            return StatementTransformer.this.makeThrowAssertionException(buildMessage());
         }
     }
     
@@ -914,8 +921,8 @@ public class StatementTransformer extends AbstractTransformer {
             result.appendList(varDecls);
             current().defs((List)fieldDecls.toList());
             result.appendList(stmts);
-            JCThrow throw_ = makeThrowAssertionException(new AssertionBuilder(
-                    messageSb.makeIdent()).prependAssertionDoc(ass));
+            JCThrow throw_ = new AssertionBuilder(
+                    messageSb.makeIdent()).prependAssertionDoc(ass).buildThrow();
             if (isMulti()) {
                 result.append(make().If(
                         make().Binary(JCTree.Tag.NE, messageSb.makeIdent(), makeNull()), 
@@ -943,7 +950,7 @@ public class StatementTransformer extends AbstractTransformer {
                 }
             }
             return List.<JCStatement>of( 
-                    make().Exec(make().Assign(messageSb.makeIdent(), msg.buildMessage())));
+                    make().Exec(make().Assign(messageSb.makeIdent(), msg.buildPart())));
         }
         
         @Override
@@ -961,7 +968,10 @@ public class StatementTransformer extends AbstractTransformer {
 
         private JCStatement makeThrowAssertionFailure(Tree.Condition condition) {
             at(condition);
-            return makeThrowAssertionException(new AssertionBuilder(null).appendViolatedCondition(condition).prependAssertionDoc(ass));
+            return new AssertionBuilder(null)
+                    .appendViolatedCondition(condition)
+                    .prependAssertionDoc(ass)
+                    .buildThrow();
         }
         
         @Override
@@ -1879,10 +1889,10 @@ public class StatementTransformer extends AbstractTransformer {
                 result.add(
                 make().If(
                         stepCheck(stepName),
-                        makeThrowAssertionException(
-                                new AssertionBuilder(null)
-                                    .appendViolatedCondition("step > 0")
-                                    .prependAssertionDoc("step size must be greater than zero")),
+                        new AssertionBuilder(null)
+                            .appendViolatedCondition("step > 0")
+                            .prependAssertionDoc("step size must be greater than zero")
+                            .buildThrow(),
                         null));
                 
             }
@@ -3250,10 +3260,10 @@ public class StatementTransformer extends AbstractTransformer {
             // if ($step <= 0) throw Exception("step size must be greater than zero");
             result.append(at(step).If(
                     make().Binary(JCTree.Tag.LE, stepName.makeIdent(), make().Literal(0)),
-                    makeThrowAssertionException(
-                            new AssertionBuilder(null)
-                                .appendViolatedCondition("step > 0")
-                                .prependAssertionDoc("step size must be greater than zero")),
+                    new AssertionBuilder(null)
+                        .appendViolatedCondition("step > 0")
+                        .prependAssertionDoc("step size must be greater than zero")
+                        .buildThrow(),
                     null));
                     
             super.prelude(result);
