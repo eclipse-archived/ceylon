@@ -50,6 +50,7 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
+import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.AssertionBuilder;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.codegen.recovery.LocalizedError;
@@ -6122,6 +6123,10 @@ public abstract class AbstractTransformer implements Transformation {
                 List.<JCExpression>of(messageExpr),
                 null);
         return make().Throw(exception);
+    }
+    
+    JCThrow makeThrowAssertionException(AssertionBuilder message) {
+        return makeThrowAssertionException(message.buildMessage());
     }
     
     JCExpression makeStaticQualifier(Declaration d) {
