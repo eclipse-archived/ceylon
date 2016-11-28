@@ -723,6 +723,10 @@ public class StatementTests extends CompilerTests {
         compareWithJavaSource("conditional/AssertFalse");
     }
     @Test
+    public void testAssertNotIsException() {
+        compareWithJavaSource("conditional/AssertNotIsException");
+    }
+    @Test
     public void testBug1346() {
         compareWithJavaSource("conditional/Bug1346");
     }

@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+final class assertNotIsException_ {
+    
+    private assertNotIsException_() {
+    }
+    
+    static void assertNotIsException() {
+        try {
+            final double $float$2;
+            .java.lang.Object $float$1 = null;
+            if (!(($float$1 = .ceylon.language.Float.parse("brown")) instanceof .ceylon.language.ParseException)) {
+                $float$2 = ((.ceylon.language.Float)$float$1).doubleValue();
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is ParseException float = Float.parse(\"brown\")"), (.ceylon.language.ParseException)$float$1);
+            }
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            final .ceylon.language.ParseException c$6;
+            .java.lang.Object c$5 = null;
+            if ((c$5 = e.getCause()) instanceof .ceylon.language.ParseException) {
+                c$6 = (.ceylon.language.ParseException)c$5;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ParseException c=e.cause"));
+            }
+            if ("".equals(.com.redhat.ceylon.compiler.java.Util.throwableMessage(c$6))) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"\"==c.message"));
+            }
+        }
+    }
+}
