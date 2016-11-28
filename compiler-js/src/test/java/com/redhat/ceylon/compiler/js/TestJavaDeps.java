@@ -3,6 +3,8 @@ package com.redhat.ceylon.compiler.js;
 import java.io.File;
 import java.io.IOException;
 
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.js.util.Options;
@@ -13,14 +15,18 @@ public class TestJavaDeps {
 
     @Test
     public void testJavaDependencies() throws IOException {
-        final TypeCheckerBuilder builder = new TypeCheckerBuilder();
-        builder.addSrcDirectory(new File("src/test/resources/javadeps"));
+        final RepositoryManager repoman = CeylonUtils.repoManager()
+                .systemRepo("../dist/dist/repo")
+                .outRepo("test-modules")
+                .buildManager();
+        final TypeCheckerBuilder builder = new TypeCheckerBuilder()
+            .setRepositoryManager(repoman)
+            .addSrcDirectory(new File("src/test/resources/javadeps"));
         final TypeChecker tc = builder.getTypeChecker();
         tc.process();
         final Options opts = new Options()
                 .addSrcDir("src/test/resources/javadeps")
                 .outRepo("./build")
-                .indent(false)
                 .comment(false)
                 .generateSourceArchive(false)
                 .encoding("UTF-8");

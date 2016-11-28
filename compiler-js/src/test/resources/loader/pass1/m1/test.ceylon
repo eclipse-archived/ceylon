@@ -15,8 +15,8 @@ shared abstract class TestNestedInterface1() {
 }
 
 shared class TestNestedObject1() {
-    object char extends Singleton<Character>('c') {}
-    shared Singleton<Character> character() => char;
+    object char { shared Singleton<Character> c=Singleton('c'); }
+    shared Singleton<Character> character() => char.c;
 }
 
 shared interface NestedIface1 {

@@ -49,7 +49,7 @@ public class ModelUtils {
             tmap = (Map<String, Object>)parm.get(MetamodelGenerator.KEY_TYPE);
             Assert.assertNotNull(tmap);
         } else {
-            tmap = new HashMap<String, Object>();
+            tmap = new HashMap<>();
             tmap.put(MetamodelGenerator.KEY_NAME, parm.get(MetamodelGenerator.KEY_TYPE));
         }
         if (sequenced) {
@@ -60,7 +60,10 @@ public class ModelUtils {
             Assert.assertEquals("ceylon.language::Sequential", String.format("%s::%s", packageName(tmap),
                     tmap.get(MetamodelGenerator.KEY_NAME)));
             List<Map<String, Object>> pts = (List<Map<String, Object>>)tmap.get(MetamodelGenerator.KEY_TYPE_PARAMS);
-            checkTypeParameters(0, pts, type);
+            if (pts != null) {
+                //TODO should check type arguments, not parameters
+                checkTypeParameters(0, pts, type);
+            }
         } else {
             Assert.assertNull("Param " + name + " of method " + method.get(MetamodelGenerator.KEY_NAME) + " should not be sequenced",
                     parm.get("seq"));
@@ -78,7 +81,7 @@ public class ModelUtils {
         if (map.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
             tmap = (Map<String, Object>)map.get(MetamodelGenerator.KEY_TYPE);
         } else if (map.get(MetamodelGenerator.KEY_TYPE) instanceof String) {
-            tmap = new HashMap<String, Object>();
+            tmap = new HashMap<>();
             tmap.put(MetamodelGenerator.KEY_NAME, map.get(MetamodelGenerator.KEY_TYPE));
         } else {
             tmap = map;
@@ -121,12 +124,15 @@ public class ModelUtils {
         }
         if (typeParams != null) {
             List<Map<String, Object>> tparms = (List<Map<String, Object>>)tmap.get(MetamodelGenerator.KEY_TYPE_PARAMS);
-            Assert.assertFalse("Type parameters shouldn't be empty", tparms.isEmpty());
-            checkTypeParameters(0, tparms, typeParams);
+            if (tparms != null) {
+                //TODO should check type arguments when tparms is null
+                Assert.assertFalse("Type parameters shouldn't be empty", tparms.isEmpty());
+                checkTypeParameters(0, tparms, typeParams);
+            }
         }
     }
 
-    public static void checkTypeParameters(int pos, List<Map<String, Object>> map, String name) {
+    public static void checkTypeParameters(int pos, final List<Map<String, Object>> map, String name) {
         int comma = name.indexOf(',');
         if (comma > 0) {
             while (comma > 0 && !pointyBracketsEven(name.substring(0, comma))) {

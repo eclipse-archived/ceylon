@@ -9,18 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.redhat.ceylon.common.tool.*;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.tool.OptionArgumentException;
-import com.redhat.ceylon.common.tool.ServiceToolLoader;
-import com.redhat.ceylon.common.tool.Tool;
-import com.redhat.ceylon.common.tool.ToolFactory;
-import com.redhat.ceylon.common.tool.ToolLoader;
-import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tools.CeylonTool;
 
 public class CompileJsToolTest {
@@ -39,7 +34,7 @@ public class CompileJsToolTest {
         return pluginLoader.instance("", null);
     }
     private List<String> args(String... args) {
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         result.add("--rep=build/runtime");
         result.add("--out=build/test-modules");
         result.addAll(Arrays.asList(args));
@@ -53,7 +48,7 @@ public class CompileJsToolTest {
         pluginFactory.bindArguments(tool, getMainTool(), args());
     }
 
-    @Test(expected=OptionArgumentException.ToolInitializationException.class)
+    @Test(expected=ToolUsageError.class)
     public void testDefaultSourceInvalidResource1() throws Exception {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
@@ -66,7 +61,7 @@ public class CompileJsToolTest {
         jsc.run();
     }
 
-    @Test(expected=OptionArgumentException.ToolInitializationException.class)
+    @Test(expected=ToolUsageError.class)
     public void testDefaultSourceInvalidResource2() throws Exception {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
@@ -79,7 +74,7 @@ public class CompileJsToolTest {
         jsc.run();
     }
 
-    @Test(expected=OptionArgumentException.ToolInitializationException.class)
+    @Test(expected=ToolUsageError.class)
     public void testDefaultInvalidSourceValidResource1() throws Exception {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
@@ -92,7 +87,7 @@ public class CompileJsToolTest {
         jsc.run();
     }
 
-    @Test(expected=OptionArgumentException.ToolInitializationException.class)
+    @Test(expected=ToolUsageError.class)
     public void testDefaultInvalidSourceValidResource2() throws Exception {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
@@ -171,7 +166,7 @@ public class CompileJsToolTest {
                 "m1res.txt", "m1/m1res.txt", "m1/ROOT/m1root.txt", "ROOT/m1root.txt", "m1/ALTROOT/altrootm1.txt");
     }
 
-    @Test(expected=OptionArgumentException.ToolInitializationException.class)
+    @Test(expected=ToolUsageError.class)
     public void testModuleSourceInvalidResource() throws Exception {
         FileUtil.delete(new File("build/test-modules"));
         ToolModel<CeylonCompileJsTool> tool = pluginLoader.loadToolModel("compile-js");
@@ -401,10 +396,9 @@ public class CompileJsToolTest {
         String[] args1 = {
                 script(),
                 "compile-js",
-                "--src",
-                "../dist/dist/samples/" + sampleDir + "/source",
-                "--out",
-                "build/test-cars",
+                "--sysrep=../dist/dist/repo",
+                "--src=../dist/dist/samples/" + sampleDir + "/source",
+                "--out=build/test-cars",
                 sampleModule
         };
         launchCeylon(args1);
@@ -414,10 +408,9 @@ public class CompileJsToolTest {
                 script(),
                 "run-js",
                 "--no-default-repositories",
-                "--rep",
-                "build/test-cars",
-                "--rep",
-                "+USER",
+                "--sysrep=../dist/dist/repo",
+                "--rep=build/test-cars",
+                "--rep=+USER",
                 modVer
         };
         launchCeylon(args3);
@@ -439,10 +432,10 @@ public class CompileJsToolTest {
     }
         
     public void launchCeylon(String[] args) throws IOException, InterruptedException {
-        ProcessBuilder pb = new ProcessBuilder(args);
-        pb.redirectInput(Redirect.INHERIT);
-        pb.redirectOutput(Redirect.INHERIT);
-        pb.redirectError(Redirect.INHERIT);
+        ProcessBuilder pb = new ProcessBuilder(args)
+            .redirectInput(Redirect.INHERIT)
+            .redirectOutput(Redirect.INHERIT)
+            .redirectError(Redirect.INHERIT);
         Process p = pb.start();
         p.waitFor();
         if (p.exitValue() > 0) {

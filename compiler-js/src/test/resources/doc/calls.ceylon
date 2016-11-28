@@ -18,6 +18,7 @@ String magnify1(Integer|String x) {
     return x.uppercased;
   }
 }
+
 String magnify2(Integer|String x) {
   switch(x)
   case (is Integer) {

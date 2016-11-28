@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,9 +26,13 @@ public class TestModelMethodsAndAttributes {
 
     public static void initTypechecker() {
         if (model == null) {
-            TypeCheckerBuilder builder = new TypeCheckerBuilder();
-            builder.addSrcDirectory(new File("src/test/resources/modeltests"));
-            tc = builder.getTypeChecker();
+            final RepositoryManager repoman = CeylonUtils.repoManager()
+                    .systemRepo("../dist/dist/repo")
+                    .outRepo("test-modules")
+                    .buildManager();
+            tc = new TypeCheckerBuilder()
+                .addSrcDirectory(new File("src/test/resources/modeltests"))
+                .setRepositoryManager(repoman).getTypeChecker();
             tc.process();
         }
     }
