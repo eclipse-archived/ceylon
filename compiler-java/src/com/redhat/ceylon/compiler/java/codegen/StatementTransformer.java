@@ -28,6 +28,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -219,19 +220,9 @@ public class StatementTransformer extends AbstractTransformer {
      */
     class AssertionBuilder {
         
-        private JCExpression expr;
         private String docText;
-        
-        private JCExpression cat(JCExpression str1, JCExpression str2) {
-            if (str2 == null) {
-                return str1;
-            }
-            return make().Binary(JCTree.Tag.PLUS, str1, str2);
-        }
-        
-        private JCExpression cat(JCExpression strExpr, String literal) {
-            return cat(strExpr, make().Literal(literal));
-        }
+        private ListBuffer<JCExpression> fragments = new ListBuffer<JCExpression>();
+        private Node node;
         
         private JCExpression newline() {
             return make().Apply(null, 
@@ -239,28 +230,28 @@ public class StatementTransformer extends AbstractTransformer {
                     List.<JCExpression>nil());
         }
         
-        public AssertionBuilder(JCExpression expr) {
-            this.expr = expr;
+        public AssertionBuilder(Node node) {
+            this.node = node;
         }
         
-        public AssertionBuilder prependAssertionDoc(Tree.Assertion ass) {
-            return prependAssertionDoc(getDocAnnotationText(ass));
+        public AssertionBuilder append(JCExpression expr) {
+            fragments.add(expr);
+            return this;
         }
         
-        public AssertionBuilder prependAssertionDoc(String docText) {
+        public AssertionBuilder assertionDoc(Tree.Assertion ass) {
+            return assertionDoc(getDocAnnotationText(ass));
+        }
+        
+        public AssertionBuilder assertionDoc(String docText) {
             this.docText = docText;
             return this;
         }
         
         private AssertionBuilder appendCondition(String state, String sourceCode) {
-            JCExpression m = cat(newline(), make().Literal("\t" + state+ " "));
-            if (expr != null) {
-                expr = cat(expr, m);
-            } else {
-                expr = m;
-            }
-            expr = cat(expr, make().Literal(sourceCode));
-            
+            fragments.add(newline());
+            fragments.add(make().Literal("\t" + state+ " "));
+            fragments.add(make().Literal(sourceCode));
             return this;
         }
         
@@ -281,16 +272,26 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         public JCExpression buildPart() {
-            return expr;
+            return buildPart(fragments);
+        }
+        private JCExpression buildPart(ListBuffer<JCExpression> fragments) {
+            JCExpression result = null;
+            Iterator<JCExpression> iter = fragments.iterator();
+            if (iter.hasNext()) {
+                result = iter.next();
+            }
+            while (iter.hasNext()) {
+                result = at(node).Binary(JCTree.Tag.PLUS, result, iter.next());
+            }
+            return result;
         }
         
         public JCExpression buildMessage() {
-            JCExpression result = expr;
-            JCExpression p = make().Literal("Assertion failed");
+            JCExpression result = make().Literal("Assertion failed");
             if (docText != null) {
-                p = cat(p, ": " + docText);
+                result = at(node).Binary(JCTree.Tag.PLUS, result, make().Literal(": " + docText));
             }
-            result = cat(p, result);
+            result = at(node).Binary(JCTree.Tag.PLUS, result, buildPart(fragments));
             return result;
         }
         
@@ -921,8 +922,10 @@ public class StatementTransformer extends AbstractTransformer {
             result.appendList(varDecls);
             current().defs((List)fieldDecls.toList());
             result.appendList(stmts);
-            JCThrow throw_ = new AssertionBuilder(
-                    messageSb.makeIdent()).prependAssertionDoc(ass).buildThrow();
+            JCThrow throw_ = new AssertionBuilder(this.ass)
+                    .append(messageSb.makeIdent())
+                    .assertionDoc(ass)
+                    .buildThrow();
             if (isMulti()) {
                 result.append(make().If(
                         make().Binary(JCTree.Tag.NE, messageSb.makeIdent(), makeNull()), 
@@ -935,7 +938,7 @@ public class StatementTransformer extends AbstractTransformer {
             if (!isMulti()) {
                 return null;
             }
-            AssertionBuilder msg = new AssertionBuilder(null);
+            AssertionBuilder msg = new AssertionBuilder(this.ass);
             boolean seen = false;
             for (Tree.Condition condition : this.conditions) {
                 if (cond.getCondition() == condition) {
@@ -968,9 +971,9 @@ public class StatementTransformer extends AbstractTransformer {
 
         private JCStatement makeThrowAssertionFailure(Tree.Condition condition) {
             at(condition);
-            return new AssertionBuilder(null)
+            return new AssertionBuilder(condition)
                     .appendViolatedCondition(condition)
-                    .prependAssertionDoc(ass)
+                    .assertionDoc(ass)
                     .buildThrow();
         }
         
@@ -1889,9 +1892,9 @@ public class StatementTransformer extends AbstractTransformer {
                 result.add(
                 make().If(
                         stepCheck(stepName),
-                        new AssertionBuilder(null)
+                        new AssertionBuilder(step)
                             .appendViolatedCondition("step > 0")
-                            .prependAssertionDoc("step size must be greater than zero")
+                            .assertionDoc("step size must be greater than zero")
                             .buildThrow(),
                         null));
                 
@@ -3260,9 +3263,9 @@ public class StatementTransformer extends AbstractTransformer {
             // if ($step <= 0) throw Exception("step size must be greater than zero");
             result.append(at(step).If(
                     make().Binary(JCTree.Tag.LE, stepName.makeIdent(), make().Literal(0)),
-                    new AssertionBuilder(null)
+                    new AssertionBuilder(step)
                         .appendViolatedCondition("step > 0")
-                        .prependAssertionDoc("step size must be greater than zero")
+                        .assertionDoc("step size must be greater than zero")
                         .buildThrow(),
                     null));
                     
