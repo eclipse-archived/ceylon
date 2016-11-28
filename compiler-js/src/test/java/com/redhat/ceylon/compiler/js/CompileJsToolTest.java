@@ -8,8 +8,10 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import com.redhat.ceylon.common.tool.*;
+import com.redhat.ceylon.compiler.js.loader.JsModuleSourceMapper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -431,8 +433,11 @@ public class CompileJsToolTest {
         testLaunchDistCeylon("with-module", "com.example.withmodule", Versions.CEYLON_VERSION_NUMBER);
     }
 
+    /** Check that the version returned by language.runtime is the correct one, and check
+     * that the version of the language module import in the model is also the right one. */
     @Test
     public void testLanguageModuleVersion() throws IOException, InterruptedException {
+        //Compile a simple program that checks language.version against a runtime argument
         String[] args1 = {
                 script(),
                 "compile-js",
@@ -442,6 +447,7 @@ public class CompileJsToolTest {
                 "checklanguagemoduleversion"
         };
         launchCeylon(args1);
+        //Run it, passing the official version number
         String[] args3 = {
                 script(),
                 "run-js",
@@ -453,6 +459,12 @@ public class CompileJsToolTest {
                 Versions.CEYLON_VERSION_NUMBER
         };
         launchCeylon(args3);
+        //And then load its model to check the imported language module version
+        File modelFile = new File("build/test-cars/checklanguagemoduleversion/1.0/checklanguagemoduleversion-1.0-model.js");
+        Map<String,Object> model = JsModuleSourceMapper.loadJsonModel(modelFile);
+        @SuppressWarnings("unchecked")
+        List<String> deps = (List<String>)model.get("$mod-deps");
+        Assert.assertTrue(deps.contains("ceylon.language/" + Versions.CEYLON_VERSION_NUMBER));
     }
 
     public static void launchCeylon(String[] args) throws IOException, InterruptedException {
