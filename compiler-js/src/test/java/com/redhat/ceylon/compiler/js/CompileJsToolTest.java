@@ -384,7 +384,7 @@ public class CompileJsToolTest {
         Assert.assertEquals(0, warnings[0]);
     }
 
-    private String script() {
+    public static String script() {
         if (OSUtil.isWindows()) {
             return "../dist/dist/bin/ceylon.bat";
         } else {
@@ -392,7 +392,7 @@ public class CompileJsToolTest {
         }
     }
     
-    private void testLaunchDistCeylon(String sampleDir, String sampleModule, String sampleVersion) throws IOException, InterruptedException {
+    public static void testLaunchDistCeylon(String sampleDir, String sampleModule, String sampleVersion) throws IOException, InterruptedException {
         String[] args1 = {
                 script(),
                 "compile-js",
@@ -430,8 +430,32 @@ public class CompileJsToolTest {
     public void testDistSampleWithModule() throws IOException, InterruptedException {
         testLaunchDistCeylon("with-module", "com.example.withmodule", Versions.CEYLON_VERSION_NUMBER);
     }
-        
-    public void launchCeylon(String[] args) throws IOException, InterruptedException {
+
+    @Test
+    public void testLanguageModuleVersion() throws IOException, InterruptedException {
+        String[] args1 = {
+                script(),
+                "compile-js",
+                "--sysrep=../dist/dist/repo",
+                "--src=src/test/resources/",
+                "--out=build/test-cars",
+                "checklanguagemoduleversion"
+        };
+        launchCeylon(args1);
+        String[] args3 = {
+                script(),
+                "run-js",
+                "--no-default-repositories",
+                "--sysrep=../dist/dist/repo",
+                "--rep=build/test-cars",
+                "--rep=+USER",
+                "checklanguagemoduleversion/1.0",
+                Versions.CEYLON_VERSION_NUMBER
+        };
+        launchCeylon(args3);
+    }
+
+    public static void launchCeylon(String[] args) throws IOException, InterruptedException {
         ProcessBuilder pb = new ProcessBuilder(args)
             .redirectInput(Redirect.INHERIT)
             .redirectOutput(Redirect.INHERIT)
