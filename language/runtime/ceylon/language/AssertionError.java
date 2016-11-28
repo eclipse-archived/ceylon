@@ -2,6 +2,7 @@ package ceylon.language;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -28,11 +29,29 @@ public class AssertionError extends java.lang.Error implements ReifiedType {
     @Ignore
     private final java.lang.String message;
     
+    @Ignore
     public AssertionError(
             @TypeInfo("ceylon.language::String")
             @Name("message")
             java.lang.String message) {
         super(message);
+        this.message = message;
+    }
+    
+    @Ignore
+    public static java.lang.Throwable $init$cause() {
+        return null;
+    }
+    
+    public AssertionError(
+            @TypeInfo("ceylon.language::String")
+            @Name("message")
+            java.lang.String message,
+            @TypeInfo("ceylon.language::Throwable?")
+            @Name("cause")
+            @Defaulted
+            java.lang.Throwable cause) {
+        super(message, cause);
         this.message = message;
     }
         

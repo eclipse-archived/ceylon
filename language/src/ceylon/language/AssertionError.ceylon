@@ -13,8 +13,8 @@
      if (!x>0) {
          throw AssertionError(\"x must be positive\");
      }"
-shared native class AssertionError(message)
-        extends Throwable(message) {
+shared native class AssertionError(message, Throwable? cause=null)
+        extends Throwable(message, cause) {
     "A message describing the assertion that failed. In the
      case of an `assert` statement, it is the text specified
      by the `doc` annotation.
