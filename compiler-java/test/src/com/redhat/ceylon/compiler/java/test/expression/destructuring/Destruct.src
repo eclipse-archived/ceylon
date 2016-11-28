@@ -837,14 +837,14 @@ final class destructureAssert_ {
             } else {
                 rest2$142 = null;
                 name2$141 = null;
-                $ceylontmp$assert$133 = .java.lang.System.lineSeparator() + "\tunviolated " + "exists [x2, i2] = maybePair" + (.java.lang.System.lineSeparator() + "\tviolated ") + "nonempty [name2, *rest2] = names";
+                $ceylontmp$assert$133 = .java.lang.System.lineSeparator() + "\tunviolated " + "exists [x2, i2] = maybePair" + .java.lang.System.lineSeparator() + "\tviolated " + "nonempty [name2, *rest2] = names";
             }
         } else {
             i2$137 = 0L;
             x2$136 = 0.0;
             rest2$142 = null;
             name2$141 = null;
-            $ceylontmp$assert$133 = .java.lang.System.lineSeparator() + "\tviolated " + "exists [x2, i2] = maybePair" + (.java.lang.System.lineSeparator() + "\tuntested ") + "nonempty [name2, *rest2] = names";
+            $ceylontmp$assert$133 = .java.lang.System.lineSeparator() + "\tviolated " + "exists [x2, i2] = maybePair" + .java.lang.System.lineSeparator() + "\tuntested " + "nonempty [name2, *rest2] = names";
         }
         if ($ceylontmp$assert$133 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$133);
         final double c2 = x2$136;

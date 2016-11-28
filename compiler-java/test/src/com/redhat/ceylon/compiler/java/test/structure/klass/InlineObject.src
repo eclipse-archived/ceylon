@@ -215,10 +215,10 @@ final class inlineObject_ {
         if (paramDecl.getAnonymous()) {
             if (paramDecl.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.klass").getFunction("inlineObject"))) {
             } else {
-                $ceylontmp$assert$5 = .java.lang.System.lineSeparator() + "\tunviolated " + "paramDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "paramDecl.container == `function inlineObject`";
+                $ceylontmp$assert$5 = .java.lang.System.lineSeparator() + "\tunviolated " + "paramDecl.anonymous" + .java.lang.System.lineSeparator() + "\tviolated " + "paramDecl.container == `function inlineObject`";
             }
         } else {
-            $ceylontmp$assert$5 = .java.lang.System.lineSeparator() + "\tviolated " + "paramDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "paramDecl.container == `function inlineObject`";
+            $ceylontmp$assert$5 = .java.lang.System.lineSeparator() + "\tviolated " + "paramDecl.anonymous" + .java.lang.System.lineSeparator() + "\tuntested " + "paramDecl.container == `function inlineObject`";
         }
         if ($ceylontmp$assert$5 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$5);
         final .ceylon.language.meta.declaration.ClassDeclaration localDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Basic.$TypeDescriptor$, local).getDeclaration();
@@ -226,10 +226,10 @@ final class inlineObject_ {
         if (localDecl.getAnonymous()) {
             if (localDecl.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.klass").getFunction("inlineObject"))) {
             } else {
-                $ceylontmp$assert$6 = .java.lang.System.lineSeparator() + "\tunviolated " + "localDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "localDecl.container == `function inlineObject`";
+                $ceylontmp$assert$6 = .java.lang.System.lineSeparator() + "\tunviolated " + "localDecl.anonymous" + .java.lang.System.lineSeparator() + "\tviolated " + "localDecl.container == `function inlineObject`";
             }
         } else {
-            $ceylontmp$assert$6 = .java.lang.System.lineSeparator() + "\tviolated " + "localDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "localDecl.container == `function inlineObject`";
+            $ceylontmp$assert$6 = .java.lang.System.lineSeparator() + "\tviolated " + "localDecl.anonymous" + .java.lang.System.lineSeparator() + "\tuntested " + "localDecl.container == `function inlineObject`";
         }
         if ($ceylontmp$assert$6 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$6);
         final .ceylon.language.meta.declaration.ClassDeclaration inlineObjectTopLevelDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObjectTopLevel_.get_()).getDeclaration();
@@ -237,10 +237,10 @@ final class inlineObject_ {
         if (inlineObjectTopLevelDecl.getAnonymous()) {
             if (inlineObjectTopLevelDecl.getContainer().equals(.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().getDefault(), "default", "unversioned").findPackage("com.redhat.ceylon.compiler.java.test.structure.klass"))) {
             } else {
-                $ceylontmp$assert$7 = .java.lang.System.lineSeparator() + "\tunviolated " + "inlineObjectTopLevelDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inlineObjectTopLevelDecl.container == `package`";
+                $ceylontmp$assert$7 = .java.lang.System.lineSeparator() + "\tunviolated " + "inlineObjectTopLevelDecl.anonymous" + .java.lang.System.lineSeparator() + "\tviolated " + "inlineObjectTopLevelDecl.container == `package`";
             }
         } else {
-            $ceylontmp$assert$7 = .java.lang.System.lineSeparator() + "\tviolated " + "inlineObjectTopLevelDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "inlineObjectTopLevelDecl.container == `package`";
+            $ceylontmp$assert$7 = .java.lang.System.lineSeparator() + "\tviolated " + "inlineObjectTopLevelDecl.anonymous" + .java.lang.System.lineSeparator() + "\tuntested " + "inlineObjectTopLevelDecl.container == `package`";
         }
         if ($ceylontmp$assert$7 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$7);
         final .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.String> inClass = new .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
@@ -249,10 +249,10 @@ final class inlineObject_ {
         if (inClassParamDecl.getAnonymous()) {
             if (inClassParamDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class))) {
             } else {
-                $ceylontmp$assert$8 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inClassParamDecl.container == `class InlineObjectInDefaultClassParam`";
+                $ceylontmp$assert$8 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassParamDecl.anonymous" + .java.lang.System.lineSeparator() + "\tviolated " + "inClassParamDecl.container == `class InlineObjectInDefaultClassParam`";
             }
         } else {
-            $ceylontmp$assert$8 = .java.lang.System.lineSeparator() + "\tviolated " + "inClassParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "inClassParamDecl.container == `class InlineObjectInDefaultClassParam`";
+            $ceylontmp$assert$8 = .java.lang.System.lineSeparator() + "\tviolated " + "inClassParamDecl.anonymous" + .java.lang.System.lineSeparator() + "\tuntested " + "inClassParamDecl.container == `class InlineObjectInDefaultClassParam`";
         }
         if ($ceylontmp$assert$8 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$8);
         final .ceylon.language.meta.declaration.ClassDeclaration inClassAttributeDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, inClass.getAttribute()).getDeclaration();
@@ -260,10 +260,10 @@ final class inlineObject_ {
         if (inClassAttributeDecl.getAnonymous()) {
             if (inClassAttributeDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class))) {
             } else {
-                $ceylontmp$assert$9 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassAttributeDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inClassAttributeDecl.container == `class InlineObjectInDefaultClassParam`";
+                $ceylontmp$assert$9 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassAttributeDecl.anonymous" + .java.lang.System.lineSeparator() + "\tviolated " + "inClassAttributeDecl.container == `class InlineObjectInDefaultClassParam`";
             }
         } else {
-            $ceylontmp$assert$9 = .java.lang.System.lineSeparator() + "\tviolated " + "inClassAttributeDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "inClassAttributeDecl.container == `class InlineObjectInDefaultClassParam`";
+            $ceylontmp$assert$9 = .java.lang.System.lineSeparator() + "\tviolated " + "inClassAttributeDecl.anonymous" + .java.lang.System.lineSeparator() + "\tuntested " + "inClassAttributeDecl.container == `class InlineObjectInDefaultClassParam`";
         }
         if ($ceylontmp$assert$9 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$9);
         final .ceylon.language.meta.declaration.ClassDeclaration inClassMethodDefaultParamDecl = .ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, inClass.method()).getDeclaration();
@@ -271,10 +271,10 @@ final class inlineObject_ {
         if (inClassMethodDefaultParamDecl.getAnonymous()) {
             if (inClassMethodDefaultParamDecl.getContainer().equals(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.class)).<.ceylon.language.meta.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, "method"))) {
             } else {
-                $ceylontmp$assert$10 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassMethodDefaultParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inClassMethodDefaultParamDecl.container == `function InlineObjectInDefaultClassParam.method`";
+                $ceylontmp$assert$10 = .java.lang.System.lineSeparator() + "\tunviolated " + "inClassMethodDefaultParamDecl.anonymous" + .java.lang.System.lineSeparator() + "\tviolated " + "inClassMethodDefaultParamDecl.container == `function InlineObjectInDefaultClassParam.method`";
             }
         } else {
-            $ceylontmp$assert$10 = .java.lang.System.lineSeparator() + "\tviolated " + "inClassMethodDefaultParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "inClassMethodDefaultParamDecl.container == `function InlineObjectInDefaultClassParam.method`";
+            $ceylontmp$assert$10 = .java.lang.System.lineSeparator() + "\tviolated " + "inClassMethodDefaultParamDecl.anonymous" + .java.lang.System.lineSeparator() + "\tuntested " + "inClassMethodDefaultParamDecl.container == `function InlineObjectInDefaultClassParam.method`";
         }
         if ($ceylontmp$assert$10 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$10);
         final .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam inSuperClass = new .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam();
@@ -283,10 +283,10 @@ final class inlineObject_ {
         if (inSuperClassParamDecl.getAnonymous()) {
             if (inSuperClassParamDecl.getContainer().equals((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class))) {
             } else {
-                $ceylontmp$assert$11 = .java.lang.System.lineSeparator() + "\tunviolated " + "inSuperClassParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tviolated ") + "inSuperClassParamDecl.container == `class InlineObjectInSuperClassParam`";
+                $ceylontmp$assert$11 = .java.lang.System.lineSeparator() + "\tunviolated " + "inSuperClassParamDecl.anonymous" + .java.lang.System.lineSeparator() + "\tviolated " + "inSuperClassParamDecl.container == `class InlineObjectInSuperClassParam`";
             }
         } else {
-            $ceylontmp$assert$11 = .java.lang.System.lineSeparator() + "\tviolated " + "inSuperClassParamDecl.anonymous" + (.java.lang.System.lineSeparator() + "\tuntested ") + "inSuperClassParamDecl.container == `class InlineObjectInSuperClassParam`";
+            $ceylontmp$assert$11 = .java.lang.System.lineSeparator() + "\tviolated " + "inSuperClassParamDecl.anonymous" + .java.lang.System.lineSeparator() + "\tuntested " + "inSuperClassParamDecl.container == `class InlineObjectInSuperClassParam`";
         }
         if ($ceylontmp$assert$11 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$11);
         final .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.Integer> inClass2 = new .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);

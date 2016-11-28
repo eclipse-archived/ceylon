@@ -38,18 +38,18 @@ final class bug1419_ {
                     string3$6 = string3$5;
                 } else {
                     string3$6 = null;
-                    $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "exists string1" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "exists string2" + (.java.lang.System.lineSeparator() + "\tviolated ") + "exists string3";
+                    $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "exists string1" + .java.lang.System.lineSeparator() + "\tunviolated " + "exists string2" + .java.lang.System.lineSeparator() + "\tviolated " + "exists string3";
                 }
             } else {
                 string2$4 = null;
                 string3$6 = null;
-                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "exists string1" + (.java.lang.System.lineSeparator() + "\tviolated ") + "exists string2" + (.java.lang.System.lineSeparator() + "\tuntested ") + "exists string3";
+                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "exists string1" + .java.lang.System.lineSeparator() + "\tviolated " + "exists string2" + .java.lang.System.lineSeparator() + "\tuntested " + "exists string3";
             }
         } else {
             string1$2 = null;
             string2$4 = null;
             string3$6 = null;
-            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "exists string1" + (.java.lang.System.lineSeparator() + "\tuntested ") + "exists string2" + (.java.lang.System.lineSeparator() + "\tuntested ") + "exists string3";
+            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "exists string1" + .java.lang.System.lineSeparator() + "\tuntested " + "exists string2" + .java.lang.System.lineSeparator() + "\tuntested " + "exists string3";
         }
         if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
         final .ceylon.language.meta.model.Value a1 = (.ceylon.language.meta.model.Value)string1$2.$call$((.java.lang.Object)t);
