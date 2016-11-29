@@ -52,6 +52,7 @@ import com.redhat.ceylon.tools.version.VersionToolTests;
     SrcToolTests.class,
     TemplateTests.class,
     VersionToolTests.class,
+    WarToolTests.class,
 })
 public class CompilerToolsTests {
 
