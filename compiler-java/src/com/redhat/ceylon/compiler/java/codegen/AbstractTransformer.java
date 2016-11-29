@@ -50,7 +50,6 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
-import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.AssertionBuilder;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.codegen.recovery.LocalizedError;
@@ -6118,9 +6117,14 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     JCThrow makeThrowAssertionException(JCExpression messageExpr) {
+        return makeThrowAssertionException(messageExpr, null);
+    }
+    
+    JCThrow makeThrowAssertionException(JCExpression messageExpr, JCExpression causeExpr) {
+        List<JCExpression> args = causeExpr == null ? List.<JCExpression>of(messageExpr) : List.<JCExpression>of(messageExpr, causeExpr);
         JCExpression exception = make().NewClass(null, null,
                 makeIdent(syms().ceylonAssertionErrorType),
-                List.<JCExpression>of(messageExpr),
+                args,
                 null);
         return make().Throw(exception);
     }

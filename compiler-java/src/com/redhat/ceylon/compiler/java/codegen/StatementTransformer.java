@@ -28,7 +28,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,7 +35,6 @@ import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
-import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.AssertionBuilder;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -80,10 +78,8 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCUnary;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.Tag;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
-import com.redhat.ceylon.langtools.tools.javac.util.DiagnosticSource;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
-import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
@@ -212,92 +208,6 @@ public class StatementTransformer extends AbstractTransformer {
             currentBlock = oldBlock;
         }
         return result;
-    }
-    
-    /**
-     * Helper for constructing {@code throw AssertionException()} statements
-     * @author tom
-     */
-    class AssertionBuilder {
-        
-        private String docText;
-        private ListBuffer<JCExpression> fragments = new ListBuffer<JCExpression>();
-        private Node node;
-        
-        private JCExpression newline() {
-            return make().Apply(null, 
-                    makeQualIdent(makeIdent(syms().systemType), "lineSeparator"), 
-                    List.<JCExpression>nil());
-        }
-        
-        public AssertionBuilder(Node node) {
-            this.node = node;
-        }
-        
-        public AssertionBuilder append(JCExpression expr) {
-            fragments.add(expr);
-            return this;
-        }
-        
-        public AssertionBuilder assertionDoc(Tree.Assertion ass) {
-            return assertionDoc(getDocAnnotationText(ass));
-        }
-        
-        public AssertionBuilder assertionDoc(String docText) {
-            this.docText = docText;
-            return this;
-        }
-        
-        private AssertionBuilder appendCondition(String state, String sourceCode) {
-            fragments.add(newline());
-            fragments.add(make().Literal("\t" + state+ " "));
-            fragments.add(make().Literal(sourceCode));
-            return this;
-        }
-        
-        public AssertionBuilder appendViolatedCondition(String sourceCode) {
-            return appendCondition("violated", sourceCode);
-        }
-        
-        public AssertionBuilder appendViolatedCondition(Tree.Condition condition) {
-            return appendViolatedCondition(getSourceCode(condition));
-        }
-        
-        public AssertionBuilder appendUnviolatedCondition(Tree.Condition condition) {
-            return appendCondition("unviolated", getSourceCode(condition));
-        }
-        
-        public AssertionBuilder appendUntestedCondition(Tree.Condition condition) {
-            return appendCondition("untested", getSourceCode(condition));
-        }
-        
-        public JCExpression buildPart() {
-            return buildPart(fragments);
-        }
-        private JCExpression buildPart(ListBuffer<JCExpression> fragments) {
-            JCExpression result = null;
-            Iterator<JCExpression> iter = fragments.iterator();
-            if (iter.hasNext()) {
-                result = iter.next();
-            }
-            while (iter.hasNext()) {
-                result = at(node).Binary(JCTree.Tag.PLUS, result, iter.next());
-            }
-            return result;
-        }
-        
-        public JCExpression buildMessage() {
-            JCExpression result = make().Literal("Assertion failed");
-            if (docText != null) {
-                result = at(node).Binary(JCTree.Tag.PLUS, result, make().Literal(": " + docText));
-            }
-            result = at(node).Binary(JCTree.Tag.PLUS, result, buildPart(fragments));
-            return result;
-        }
-        
-        JCThrow buildThrow() {
-            return StatementTransformer.this.makeThrowAssertionException(buildMessage());
-        }
     }
     
     abstract class CondList {
@@ -832,7 +742,7 @@ public class StatementTransformer extends AbstractTransformer {
         private final Tree.Assertion ass;
         private final ListBuffer<JCStatement> varDecls = new ListBuffer<JCStatement>();
         private final ListBuffer<JCStatement> fieldDecls = new ListBuffer<JCStatement>();
-        private final SyntheticName messageSb = naming.temp("assert");
+        
         private List<JCStatement> unassignedResultVars = List.nil();
         
         public AssertCondList(Tree.Assertion ass) {
@@ -845,6 +755,20 @@ public class StatementTransformer extends AbstractTransformer {
             return this.conditions.size() > 1;
         }
         
+        /** 
+         * Is the condition one of the form {@code !is X} 
+         * for {@code X} a subtype of {@code {Throwable}
+         */
+        protected boolean isAssertNotIsThrowable(Tree.Condition c) {
+            if (c instanceof Tree.IsCondition
+                    && ((Tree.IsCondition)c).getNot()
+                    && ((Tree.IsCondition)c).getType().getTypeModel().isSubtypeOf(typeFact().getThrowableType())) {
+                return true;
+            }
+            return false;
+        }
+        
+        @Override
         protected List<Substitution> getSubstitutions(VarTrans vartrans) {
             List<Substitution> subs = super.getSubstitutions(vartrans);
             if (subs == null) {
@@ -878,10 +802,6 @@ public class StatementTransformer extends AbstractTransformer {
         protected List<JCStatement> transformCommon(Cond cond, 
                 java.util.List<Tree.Condition> rest, 
                 JCExpression test, List<JCStatement> stmts, List<JCStatement> elseStmts) {
-            
-            if (isMulti()) {
-                elseStmts = elseStmts.prependList(unassignedResultVars);
-            }
             stmts = List.<JCStatement>of(make().If(
                     test, 
                     make().Block(0, stmts), 
@@ -894,6 +814,7 @@ public class StatementTransformer extends AbstractTransformer {
             return stmts;
         }
 
+        @Override
         protected List<JCStatement> transformCommonResultDecl(VarTrans vartrans,
                 List<JCStatement> stmts) {
             if (vartrans.hasResultDecl()) {
@@ -911,26 +832,15 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public List<JCStatement> getResult() {
             if (definitelyNotSatisfied(conditions)) {
-                return List.<JCTree.JCStatement>of(makeThrowAssertionFailure(conditions.get(0)));
+                return List.<JCTree.JCStatement>of(makeThrowAssertionFailure(conditions.get(0), this.getConditionTransformer(conditions.get(0)).getVarTrans().getVariableName()));
             }
             List<JCStatement> stmts = transformList(conditions);
             at(this.ass);
             ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
-            if (isMulti()) {
-                result.append(makeVar(messageSb, make().Type(syms().stringType), makeNull()));
-            }
             result.appendList(varDecls);
             current().defs((List)fieldDecls.toList());
             result.appendList(stmts);
-            JCThrow throw_ = new AssertionBuilder(this.ass)
-                    .append(messageSb.makeIdent())
-                    .assertionDoc(ass)
-                    .buildThrow();
-            if (isMulti()) {
-                result.append(make().If(
-                        make().Binary(JCTree.Tag.NE, messageSb.makeIdent(), makeNull()), 
-                        throw_, null));
-            }
+
             return result.toList();
         }
 
@@ -938,11 +848,14 @@ public class StatementTransformer extends AbstractTransformer {
             if (!isMulti()) {
                 return null;
             }
-            AssertionBuilder msg = new AssertionBuilder(this.ass);
+            AssertionBuilder msg = new AssertionBuilder(StatementTransformer.this, this.ass);
             boolean seen = false;
             for (Tree.Condition condition : this.conditions) {
                 if (cond.getCondition() == condition) {
                     msg.appendViolatedCondition(condition);
+                    if (isAssertNotIsThrowable(condition)) {
+                        msg.wrapException(cond.getVarTrans().getTestVariableName());
+                    }
                     seen = true;
                     continue;
                 }
@@ -953,7 +866,7 @@ public class StatementTransformer extends AbstractTransformer {
                 }
             }
             return List.<JCStatement>of( 
-                    make().Exec(make().Assign(messageSb.makeIdent(), msg.buildPart())));
+                    msg.buildThrow());
         }
         
         @Override
@@ -964,17 +877,22 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected List<JCStatement> transformInnermostElse(Cond cond, java.util.List<Tree.Condition> rest) {
             if (!isMulti()) {
-                return List.<JCStatement>of(makeThrowAssertionFailure(cond.getCondition()));
+                return List.<JCStatement>of(makeThrowAssertionFailure(cond.getCondition(),
+                        isAssertNotIsThrowable(cond.getCondition()) ? 
+                        cond.getVarTrans().getTestVariableName() : null));
             }
             return transformCommonElse(cond, rest);
         }
 
-        private JCStatement makeThrowAssertionFailure(Tree.Condition condition) {
+        private JCStatement makeThrowAssertionFailure(Tree.Condition condition, CName cName) {
             at(condition);
-            return new AssertionBuilder(condition)
+            AssertionBuilder builder = new AssertionBuilder(StatementTransformer.this, condition)
                     .appendViolatedCondition(condition)
-                    .assertionDoc(ass)
-                    .buildThrow();
+                    .assertionDoc(ass);
+            if (cName != null) {
+                builder.wrapException(cName);
+            }
+            return builder.buildThrow();
         }
         
         @Override
@@ -1481,69 +1399,9 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
     }
-    
-    private String getDocAnnotationText(Tree.Assertion ass) {
-        String docText = null;
-        Tree.Annotation doc = getAnnotation(ass.getAnnotationList(), "doc");
-        if (doc != null) {
-            Tree.Expression expression = null;
-            if (doc.getPositionalArgumentList() != null) {
-                Tree.PositionalArgument arg = doc.getPositionalArgumentList().getPositionalArguments().get(0);
-                if(arg instanceof Tree.ListedArgument)
-                    expression = ((Tree.ListedArgument) arg).getExpression();
-                else
-                    throw new BugException(arg, "argument to doc annotation cannot be a spread argument or comprehension: " + arg);
-            } else if (doc.getNamedArgumentList() != null) {
-                Tree.SpecifiedArgument arg = (Tree.SpecifiedArgument)doc.getNamedArgumentList().getNamedArguments().get(0);
-                expression = arg.getSpecifierExpression().getExpression();
-            } else {
-                // Impossible on a well-formed tree
-                return null;
-            }
-            Tree.Literal literal = (Tree.Literal)expression.getTerm();
-            docText = literal.getText();
-        } else if (ass.getAnnotationList() != null
-                && ass.getAnnotationList().getAnonymousAnnotation() != null) {
-            docText = ass.getAnnotationList().getAnonymousAnnotation().getStringLiteral().getText();
-        }
-        return docText;
-    }
 
-    private Tree.Annotation getAnnotation(Tree.AnnotationList al, String name) {
-        if (al!=null) {
-            for (Tree.Annotation a: al.getAnnotations()) {
-                Tree.BaseMemberExpression p = (Tree.BaseMemberExpression) a.getPrimary();
-                if (p!=null) {
-                    if ( p.getIdentifier().getText().equals(name) ) {
-                        return a;
-                    }
-                }
-            }
-        }
-        return null;
-    }
     
-    /**
-     * Gets the source code corresponding to the given node
-     */
-    private String getSourceCode(Node node) {
-        StringBuilder sb = new StringBuilder();
-        DiagnosticSource source = new DiagnosticSource(gen().getFileObject(), Log.instance(gen().getContext()));
-        int startLine = node.getToken().getLine();
-        int endLine = node.getEndToken().getLine();
-        for (int lineNumber = startLine; lineNumber <= endLine; lineNumber++) {
-            int startPos = gen().getMap().getPosition(lineNumber, 1);
-            String line = source.getLine(startPos);
-            if (lineNumber == endLine) {
-                line = line.substring(0,  node.getEndToken().getCharPositionInLine() + node.getEndToken().getText().length());
-            }
-            if (lineNumber == startLine) {
-                line = line.substring(node.getToken().getCharPositionInLine());
-            }
-            sb.append(line).append("\n");
-        }
-        return sb.substring(0, sb.length() - 1);
-    }
+
 
     private Type actualType(Tree.TypedDeclaration decl) {
         return decl.getType().getTypeModel();
@@ -1892,7 +1750,7 @@ public class StatementTransformer extends AbstractTransformer {
                 result.add(
                 make().If(
                         stepCheck(stepName),
-                        new AssertionBuilder(step)
+                        new AssertionBuilder(StatementTransformer.this, step)
                             .appendViolatedCondition("step > 0")
                             .assertionDoc("step size must be greater than zero")
                             .buildThrow(),
@@ -3263,7 +3121,7 @@ public class StatementTransformer extends AbstractTransformer {
             // if ($step <= 0) throw Exception("step size must be greater than zero");
             result.append(at(step).If(
                     make().Binary(JCTree.Tag.LE, stepName.makeIdent(), make().Literal(0)),
-                    new AssertionBuilder(step)
+                    new AssertionBuilder(StatementTransformer.this, step)
                         .appendViolatedCondition("step > 0")
                         .assertionDoc("step size must be greater than zero")
                         .buildThrow(),
