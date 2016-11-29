@@ -11,22 +11,22 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
     AssertVariableScopes(final .java.lang.Object x, final .java.lang.Object y) {
         this.x = x;
         this.y = y;
-        final .java.lang.String x$38;
-        .java.lang.Object x$37 = null;
-        if ((x$37 = getX$priv$()) instanceof .ceylon.language.String) {
-            x$38 = ((.ceylon.language.String)x$37).toString();
+        final .java.lang.String x$25;
+        .java.lang.Object x$24 = null;
+        if ((x$24 = getX$priv$()) instanceof .ceylon.language.String) {
+            x$25 = ((.ceylon.language.String)x$24).toString();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
         }
-        .ceylon.language.String.terminal(x$38, 1L);
-        final .java.lang.String y$41;
-        .java.lang.Object y$40 = null;
-        if ((y$40 = getY$priv$()) instanceof .ceylon.language.String) {
-            y$41 = ((.ceylon.language.String)y$40).toString();
+        .ceylon.language.String.terminal(x$25, 1L);
+        final .java.lang.String y$27;
+        .java.lang.Object y$26 = null;
+        if ((y$26 = getY$priv$()) instanceof .ceylon.language.String) {
+            y$27 = ((.ceylon.language.String)y$26).toString();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
         }
-        .ceylon.language.String.terminal(y$41, 1L);
+        .ceylon.language.String.terminal(y$27, 1L);
     }
     private final .java.lang.Object x;
     
@@ -47,22 +47,22 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             
             void m_local() {
-                final .java.lang.String x$2;
-                .java.lang.Object x$1 = null;
-                if ((x$1 = .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertVariableScopes.this.getX$priv$()) instanceof .ceylon.language.String) {
-                    x$2 = ((.ceylon.language.String)x$1).toString();
+                final .java.lang.String x$1;
+                .java.lang.Object x$0 = null;
+                if ((x$0 = .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertVariableScopes.this.getX$priv$()) instanceof .ceylon.language.String) {
+                    x$1 = ((.ceylon.language.String)x$0).toString();
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
                 }
-                .ceylon.language.String.terminal(x$2, 1L);
-                final .java.lang.String y$5;
-                .java.lang.Object y$4 = null;
-                if ((y$4 = .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertVariableScopes.this.getY$priv$()) instanceof .ceylon.language.String) {
-                    y$5 = ((.ceylon.language.String)y$4).toString();
+                .ceylon.language.String.terminal(x$1, 1L);
+                final .java.lang.String y$3;
+                .java.lang.Object y$2 = null;
+                if ((y$2 = .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertVariableScopes.this.getY$priv$()) instanceof .ceylon.language.String) {
+                    y$3 = ((.ceylon.language.String)y$2).toString();
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
                 }
-                .ceylon.language.String.terminal(y$5, 1L);
+                .ceylon.language.String.terminal(y$3, 1L);
             }
         }
         final m_local_ m_local = new m_local_();
@@ -73,41 +73,41 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             
             void masking_local(final .java.lang.Object x, final .java.lang.Object y) {
-                final .java.lang.String x$8;
-                .java.lang.Object x$7 = null;
-                if ((x$7 = x) instanceof .ceylon.language.String) {
-                    x$8 = ((.ceylon.language.String)x$7).toString();
+                final .java.lang.String x$5;
+                .java.lang.Object x$4 = null;
+                if ((x$4 = x) instanceof .ceylon.language.String) {
+                    x$5 = ((.ceylon.language.String)x$4).toString();
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
                 }
-                .ceylon.language.String.terminal(x$8, 1L);
-                final .java.lang.String y$11;
-                .java.lang.Object y$10 = null;
-                if ((y$10 = y) instanceof .ceylon.language.String) {
-                    y$11 = ((.ceylon.language.String)y$10).toString();
+                .ceylon.language.String.terminal(x$5, 1L);
+                final .java.lang.String y$7;
+                .java.lang.Object y$6 = null;
+                if ((y$6 = y) instanceof .ceylon.language.String) {
+                    y$7 = ((.ceylon.language.String)y$6).toString();
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
                 }
-                .ceylon.language.String.terminal(y$11, 1L);
+                .ceylon.language.String.terminal(y$7, 1L);
             }
         }
         final masking_local_ masking_local = new masking_local_();
-        final .java.lang.String x$14;
-        .java.lang.Object x$13 = null;
-        if ((x$13 = getX$priv$()) instanceof .ceylon.language.String) {
-            x$14 = ((.ceylon.language.String)x$13).toString();
+        final .java.lang.String x$9;
+        .java.lang.Object x$8 = null;
+        if ((x$8 = getX$priv$()) instanceof .ceylon.language.String) {
+            x$9 = ((.ceylon.language.String)x$8).toString();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
         }
-        .ceylon.language.String.terminal(x$14, 1L);
-        final .java.lang.String y$17;
-        .java.lang.Object y$16 = null;
-        if ((y$16 = getY$priv$()) instanceof .ceylon.language.String) {
-            y$17 = ((.ceylon.language.String)y$16).toString();
+        .ceylon.language.String.terminal(x$9, 1L);
+        final .java.lang.String y$11;
+        .java.lang.Object y$10 = null;
+        if ((y$10 = getY$priv$()) instanceof .ceylon.language.String) {
+            y$11 = ((.ceylon.language.String)y$10).toString();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
         }
-        .ceylon.language.String.terminal(y$17, 1L);
+        .ceylon.language.String.terminal(y$11, 1L);
     }
     
     private final void masking$priv$(final .java.lang.Object x, final .java.lang.Object y) {
@@ -118,22 +118,22 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             
             void m_local() {
-                final .java.lang.String x$20;
-                .java.lang.Object x$19 = null;
-                if ((x$19 = x) instanceof .ceylon.language.String) {
-                    x$20 = ((.ceylon.language.String)x$19).toString();
+                final .java.lang.String x$13;
+                .java.lang.Object x$12 = null;
+                if ((x$12 = x) instanceof .ceylon.language.String) {
+                    x$13 = ((.ceylon.language.String)x$12).toString();
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
                 }
-                .ceylon.language.String.terminal(x$20, 1L);
-                final .java.lang.String y$23;
-                .java.lang.Object y$22 = null;
-                if ((y$22 = y) instanceof .ceylon.language.String) {
-                    y$23 = ((.ceylon.language.String)y$22).toString();
+                .ceylon.language.String.terminal(x$13, 1L);
+                final .java.lang.String y$15;
+                .java.lang.Object y$14 = null;
+                if ((y$14 = y) instanceof .ceylon.language.String) {
+                    y$15 = ((.ceylon.language.String)y$14).toString();
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
                 }
-                .ceylon.language.String.terminal(y$23, 1L);
+                .ceylon.language.String.terminal(y$15, 1L);
             }
         }
         final m_local_ m_local = new m_local_();
@@ -144,41 +144,41 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
             }
             
             void masking_local(final .java.lang.Object x, final .java.lang.Object y) {
-                final .java.lang.String x$26;
-                .java.lang.Object x$25 = null;
-                if ((x$25 = x) instanceof .ceylon.language.String) {
-                    x$26 = ((.ceylon.language.String)x$25).toString();
+                final .java.lang.String x$17;
+                .java.lang.Object x$16 = null;
+                if ((x$16 = x) instanceof .ceylon.language.String) {
+                    x$17 = ((.ceylon.language.String)x$16).toString();
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
                 }
-                .ceylon.language.String.terminal(x$26, 1L);
-                final .java.lang.String y$29;
-                .java.lang.Object y$28 = null;
-                if ((y$28 = y) instanceof .ceylon.language.String) {
-                    y$29 = ((.ceylon.language.String)y$28).toString();
+                .ceylon.language.String.terminal(x$17, 1L);
+                final .java.lang.String y$19;
+                .java.lang.Object y$18 = null;
+                if ((y$18 = y) instanceof .ceylon.language.String) {
+                    y$19 = ((.ceylon.language.String)y$18).toString();
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
                 }
-                .ceylon.language.String.terminal(y$29, 1L);
+                .ceylon.language.String.terminal(y$19, 1L);
             }
         }
         final masking_local_ masking_local = new masking_local_();
-        final .java.lang.String x$32;
-        .java.lang.Object x$31 = null;
-        if ((x$31 = x) instanceof .ceylon.language.String) {
-            x$32 = ((.ceylon.language.String)x$31).toString();
+        final .java.lang.String x$21;
+        .java.lang.Object x$20 = null;
+        if ((x$20 = x) instanceof .ceylon.language.String) {
+            x$21 = ((.ceylon.language.String)x$20).toString();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x"));
         }
-        .ceylon.language.String.terminal(x$32, 1L);
-        final .java.lang.String y$35;
-        .java.lang.Object y$34 = null;
-        if ((y$34 = y) instanceof .ceylon.language.String) {
-            y$35 = ((.ceylon.language.String)y$34).toString();
+        .ceylon.language.String.terminal(x$21, 1L);
+        final .java.lang.String y$23;
+        .java.lang.Object y$22 = null;
+        if ((y$22 = y) instanceof .ceylon.language.String) {
+            y$23 = ((.ceylon.language.String)y$22).toString();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String y"));
         }
-        .ceylon.language.String.terminal(y$35, 1L);
+        .ceylon.language.String.terminal(y$23, 1L);
     }
     
     @.java.lang.Override

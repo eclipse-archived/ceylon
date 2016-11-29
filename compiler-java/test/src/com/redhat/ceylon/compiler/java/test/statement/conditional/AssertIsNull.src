@@ -14,25 +14,25 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     private final long m1$priv$(final .ceylon.language.Integer x) {
-        final long x$2;
-        .java.lang.Object x$1 = null;
-        if ((x$1 = x) != null) {
-            x$2 = ((.ceylon.language.Integer)x$1).longValue();
+        final long x$1;
+        .java.lang.Object x$0 = null;
+        if ((x$0 = x) != null) {
+            x$1 = ((.ceylon.language.Integer)x$0).longValue();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x"));
         }
-        return x$2;
+        return x$1;
     }
     
     private final long m2$priv$(final .ceylon.language.Integer x) {
-        final long y$5;
-        .java.lang.Object y$4 = null;
-        if ((y$4 = x) != null) {
-            y$5 = ((.ceylon.language.Integer)y$4).longValue();
+        final long y$3;
+        .java.lang.Object y$2 = null;
+        if ((y$2 = x) != null) {
+            y$3 = ((.ceylon.language.Integer)y$2).longValue();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y=x"));
         }
-        return y$5;
+        return y$3;
     }
     
     private final long m3$priv$(final .ceylon.language.Integer x) {
@@ -44,14 +44,14 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     private final long m4$priv$(final .ceylon.language.Integer x) {
-        final .java.lang.Object y$10;
-        .java.lang.Object y$9 = null;
-        if ((y$9 = x) == null) {
-            y$10 = y$9;
+        final .java.lang.Object y$6;
+        .java.lang.Object y$5 = null;
+        if ((y$5 = x) == null) {
+            y$6 = y$5;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null y=x"));
         }
-        return nowt$priv$(y$10);
+        return nowt$priv$(y$6);
     }
     
     @.java.lang.Override

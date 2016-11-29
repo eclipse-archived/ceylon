@@ -16,16 +16,16 @@ class AssertIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     public final void mvar(final .java.lang.Object y) {
-        final .java.lang.Object x$4;
-        .java.lang.Object x$3 = null;
-        if ((x$3 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && x$3 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
-            x$4 = x$3;
+        final .java.lang.Object x$2;
+        .java.lang.Object x$1 = null;
+        if ((x$1 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && x$1 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
+            x$2 = x$1;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo&BarInterface x=y"));
         }
-        ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$4).common();
-        ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$4).foo();
-        ((.com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface)x$4).bar();
+        ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$2).common();
+        ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$2).foo();
+        ((.com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface)x$2).bar();
     }
     
     @.java.lang.Override

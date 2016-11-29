@@ -6,16 +6,14 @@ class AssertConditionListBoolBool implements .com.redhat.ceylon.compiler.java.ru
     }
     
     private final boolean m$priv$(final long x) {
-        .java.lang.String $ceylontmp$assert$0 = null;
         if (x > 0L) {
             if (x < 10L) {
             } else {
-                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "x > 0" + .java.lang.System.lineSeparator() + "\tviolated " + "x < 10";
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "x > 0" + .java.lang.System.lineSeparator() + "\tviolated " + "x < 10"));
             }
         } else {
-            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "x > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "x < 10";
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "x > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "x < 10"));
         }
-        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
         return x == 1L;
     }
     

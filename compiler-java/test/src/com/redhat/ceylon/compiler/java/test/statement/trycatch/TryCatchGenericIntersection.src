@@ -268,10 +268,10 @@ final class tryCatchGenericIntersection_ {
         } catch (final .ceylon.language.AssertionError e) {
             throw e;
         } catch (final .java.lang.Exception e) {
-            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub e$11;
-            .java.lang.Object e$10 = null;
-            if ((e$10 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub) {
-                e$11 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub)e$10;
+            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub e$8;
+            .java.lang.Object e$7 = null;
+            if ((e$7 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub) {
+                e$8 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub)e$7;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionSub e"));
             }
@@ -282,10 +282,10 @@ final class tryCatchGenericIntersection_ {
         } catch (final .ceylon.language.AssertionError e) {
             throw e;
         } catch (final .java.lang.Exception e) {
-            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection e$15;
-            .java.lang.Object e$14 = null;
-            if ((e$14 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection) {
-                e$15 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection)e$14;
+            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection e$10;
+            .java.lang.Object e$9 = null;
+            if ((e$9 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection) {
+                e$10 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection)e$9;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionIntersection e"));
             }
@@ -297,10 +297,10 @@ final class tryCatchGenericIntersection_ {
         } catch (final .ceylon.language.AssertionError e) {
             throw e;
         } catch (final .java.lang.Exception e) {
-            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer> e$19;
-            .java.lang.Object e$18 = null;
-            if ((e$18 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .com.redhat.ceylon.compiler.java.Util.isReified(e$18, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Integer.$TypeDescriptor$))) {
-                e$19 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$18;
+            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer> e$12;
+            .java.lang.Object e$11 = null;
+            if ((e$11 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .com.redhat.ceylon.compiler.java.Util.isReified(e$11, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+                e$12 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$11;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionGeneric<Integer> e"));
             }
@@ -320,10 +320,10 @@ final class tryCatchGenericIntersection_ {
         } catch (final .ceylon.language.AssertionError e) {
             throw e;
         } catch (final .java.lang.Exception e) {
-            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$24;
-            .java.lang.Object e$23 = null;
-            if ((e$23 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .com.redhat.ceylon.compiler.java.Util.isReified(e$23, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
-                e$24 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$23;
+            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$14;
+            .java.lang.Object e$13 = null;
+            if ((e$13 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .com.redhat.ceylon.compiler.java.Util.isReified(e$13, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
+                e$14 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$13;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionGeneric<Boolean> e"));
             }
@@ -336,10 +336,10 @@ final class tryCatchGenericIntersection_ {
         } catch (final .ceylon.language.AssertionError e) {
             throw e;
         } catch (final .java.lang.Exception e) {
-            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$28;
-            .java.lang.Object e$27 = null;
-            if ((e$27 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .com.redhat.ceylon.compiler.java.Util.isReified(e$27, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
-                e$28 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$27;
+            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$16;
+            .java.lang.Object e$15 = null;
+            if ((e$15 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .com.redhat.ceylon.compiler.java.Util.isReified(e$15, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
+                e$16 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$15;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionGeneric<Boolean> e"));
             }
@@ -353,10 +353,10 @@ final class tryCatchGenericIntersection_ {
         } catch (final .ceylon.language.AssertionError e) {
             throw e;
         } catch (final .java.lang.Exception e) {
-            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$32;
-            .java.lang.Object e$31 = null;
-            if ((e$31 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .com.redhat.ceylon.compiler.java.Util.isReified(e$31, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
-                e$32 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$31;
+            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$18;
+            .java.lang.Object e$17 = null;
+            if ((e$17 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .com.redhat.ceylon.compiler.java.Util.isReified(e$17, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
+                e$18 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$17;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionGeneric<Boolean> e"));
             }
@@ -377,10 +377,10 @@ final class tryCatchGenericIntersection_ {
         } catch (final .ceylon.language.AssertionError e) {
             throw e;
         } catch (final .java.lang.Exception e) {
-            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$37;
-            .java.lang.Object e$36 = null;
-            if ((e$36 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .com.redhat.ceylon.compiler.java.Util.isReified(e$36, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
-                e$37 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$36;
+            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$20;
+            .java.lang.Object e$19 = null;
+            if ((e$19 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .com.redhat.ceylon.compiler.java.Util.isReified(e$19, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
+                e$20 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$19;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionGeneric<Boolean> e"));
             }
@@ -391,10 +391,10 @@ final class tryCatchGenericIntersection_ {
         } catch (final .ceylon.language.AssertionError e) {
             throw e;
         } catch (final .java.lang.Exception e) {
-            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub e$41;
-            .java.lang.Object e$40 = null;
-            if ((e$40 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub) {
-                e$41 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub)e$40;
+            final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub e$22;
+            .java.lang.Object e$21 = null;
+            if ((e$21 = e) instanceof .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub) {
+                e$22 = (.com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionSub)e$21;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionSub e"));
             }

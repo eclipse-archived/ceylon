@@ -15,9 +15,9 @@ public final class bug2124_ {
         if (!(
             let
             {
-                .java.lang.Object $ceylontmp$1 = x;
+                .java.lang.Object $ceylontmp$0 = x;
             }
-            returning $ceylontmp$1 instanceof .ceylon.language.Tuple;
+            returning $ceylontmp$0 instanceof .ceylon.language.Tuple;
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!x is Tuple<Anything,Anything,Sequential<Anything>>"));
@@ -26,9 +26,9 @@ public final class bug2124_ {
         if ((
             let
             {
-                .java.lang.Object $ceylontmp$3 = y;
+                .java.lang.Object $ceylontmp$1 = y;
             }
-            returning $ceylontmp$3 instanceof .java.lang.Exception;
+            returning $ceylontmp$1 instanceof .java.lang.Exception;
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "y is Exception"));

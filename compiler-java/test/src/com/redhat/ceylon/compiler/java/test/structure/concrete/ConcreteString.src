@@ -80,9 +80,9 @@ class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.
         return (int)(
             let
             {
-                long $ceylontmp$hash$4 = 2L;
+                long $ceylontmp$hash$1 = 2L;
             }
-            returning $ceylontmp$hash$4 ^ $ceylontmp$hash$4 >>> 32;
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
         );
     }
     
@@ -158,9 +158,9 @@ final class ConcreteString2$impl implements .java.io.Serializable {
         return (int)(
             let
             {
-                long $ceylontmp$hash$11 = 3L;
+                long $ceylontmp$hash$5 = 3L;
             }
-            returning $ceylontmp$hash$11 ^ $ceylontmp$hash$11 >>> 32;
+            returning $ceylontmp$hash$5 ^ $ceylontmp$hash$5 >>> 32;
         );
     }
 }
@@ -205,9 +205,9 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
         return (int)(
             let
             {
-                long $ceylontmp$hash$13 = $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.hashCode();
+                long $ceylontmp$hash$7 = $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.hashCode();
             }
-            returning $ceylontmp$hash$13 ^ $ceylontmp$hash$13 >>> 32;
+            returning $ceylontmp$hash$7 ^ $ceylontmp$hash$7 >>> 32;
         );
     }
     

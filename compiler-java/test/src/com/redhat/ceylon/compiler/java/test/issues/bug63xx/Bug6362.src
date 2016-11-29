@@ -69,15 +69,15 @@ public final class bug6362_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "c.getValueConstructors().size == 1"));
         }
-        final .ceylon.language.meta.model.ValueConstructor<? extends C> cc1$3;
-        .java.lang.Object cc1$2 = null;
-        if ((cc1$2 = ((.ceylon.language.List<? extends .ceylon.language.meta.model.ValueModel>)c.getValueConstructors()).getFromFirst(0L)) instanceof .ceylon.language.meta.model.ValueConstructor && .com.redhat.ceylon.compiler.java.Util.isReified(cc1$2, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.meta.model.ValueConstructor.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.bug6362_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class))))) {
-            cc1$3 = (.ceylon.language.meta.model.ValueConstructor<? extends C>)(.ceylon.language.meta.model.ValueConstructor)cc1$2;
+        final .ceylon.language.meta.model.ValueConstructor<? extends C> cc1$1;
+        .java.lang.Object cc1$0 = null;
+        if ((cc1$0 = ((.ceylon.language.List<? extends .ceylon.language.meta.model.ValueModel>)c.getValueConstructors()).getFromFirst(0L)) instanceof .ceylon.language.meta.model.ValueConstructor && .com.redhat.ceylon.compiler.java.Util.isReified(cc1$0, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.meta.model.ValueConstructor.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.bug6362_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class))))) {
+            cc1$1 = (.ceylon.language.meta.model.ValueConstructor<? extends C>)(.ceylon.language.meta.model.ValueConstructor)cc1$0;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ValueConstructor<C> cc1 = c.getValueConstructors()[0]"));
         }
         try {
-            .ceylon.language.print_.print(((.ceylon.language.meta.model.Gettable)cc1$3).get());
+            .ceylon.language.print_.print(((.ceylon.language.meta.model.Gettable)cc1$1).get());
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
         } catch (final .ceylon.language.meta.model.StorageException x) {
         }
@@ -85,10 +85,10 @@ public final class bug6362_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "c.getCallableConstructors<>().size == 1"));
         }
-        final .ceylon.language.meta.model.CallableConstructor cc2$8;
-        .java.lang.Object cc2$7 = null;
-        if ((cc2$7 = ((.ceylon.language.List<? extends .ceylon.language.meta.model.FunctionModel>)c.<.ceylon.language.Sequential<? extends .java.lang.Object>>getCallableConstructors(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)).getFromFirst(0L)) instanceof .ceylon.language.meta.model.CallableConstructor && .com.redhat.ceylon.compiler.java.Util.isReified(cc2$7, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.meta.model.CallableConstructor.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.bug6362_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType))) {
-            cc2$8 = (.ceylon.language.meta.model.CallableConstructor)cc2$7;
+        final .ceylon.language.meta.model.CallableConstructor cc2$3;
+        .java.lang.Object cc2$2 = null;
+        if ((cc2$2 = ((.ceylon.language.List<? extends .ceylon.language.meta.model.FunctionModel>)c.<.ceylon.language.Sequential<? extends .java.lang.Object>>getCallableConstructors(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)).getFromFirst(0L)) instanceof .ceylon.language.meta.model.CallableConstructor && .com.redhat.ceylon.compiler.java.Util.isReified(cc2$2, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.meta.model.CallableConstructor.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.bug6362_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType))) {
+            cc2$3 = (.ceylon.language.meta.model.CallableConstructor)cc2$2;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is CallableConstructor<C, Nothing> cc2 = c.getCallableConstructors<>()[0]"));
         }

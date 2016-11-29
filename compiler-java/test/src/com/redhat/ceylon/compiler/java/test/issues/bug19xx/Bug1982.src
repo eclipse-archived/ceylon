@@ -43,10 +43,10 @@ final class bug1982_ {
                 final long bar2 = (
                     let
                     {
-                        long $ceylontmp$op$2 = f.f();
-                        var2 = $ceylontmp$op$2;
+                        long $ceylontmp$op$1 = f.f();
+                        var2 = $ceylontmp$op$1;
                     }
-                    returning $ceylontmp$op$2;
+                    returning $ceylontmp$op$1;
                 );
             }
             returning var2;

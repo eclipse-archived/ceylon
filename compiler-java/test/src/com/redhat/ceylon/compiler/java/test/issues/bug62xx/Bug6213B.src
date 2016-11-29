@@ -74,10 +74,10 @@ class LLVMFunction6213B implements .com.redhat.ceylon.compiler.java.runtime.mode
         }
         
         private .java.lang.Object store$canonical$(final T val, final .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B off) {
-            .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B off$2;
-            if ((off$2 = off) != null) {
-                final .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B off$3 = off$2;
-                ((.com.redhat.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<T>)(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B)$this.offset(off$3)).store((T)val);
+            .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B off$1;
+            if ((off$1 = off) != null) {
+                final .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B off$2 = off$1;
+                ((.com.redhat.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<T>)(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B)$this.offset(off$2)).store((T)val);
             }
             return null;
         }
@@ -91,9 +91,9 @@ class LLVMFunction6213B implements .com.redhat.ceylon.compiler.java.runtime.mode
         return (
             let
             {
-                .ceylon.language.String $ceylontmp$regNameIn$5 = register$regNameIn();
+                .ceylon.language.String $ceylontmp$regNameIn$4 = register$regNameIn();
             }
-            returning register$canonical$($ceylontmp$regNameIn$5);
+            returning register$canonical$($ceylontmp$regNameIn$4);
         );
     }
     
@@ -129,9 +129,9 @@ class LLVMFunction6213B implements .com.redhat.ceylon.compiler.java.runtime.mode
                         return (
                             let
                             {
-                                .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B $ceylontmp$off$4 = store$off(val);
+                                .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B $ceylontmp$off$3 = store$off(val);
                             }
-                            returning store$canonical$(val, $ceylontmp$off$4);
+                            returning store$canonical$(val, $ceylontmp$off$3);
                         );
                     }
                     

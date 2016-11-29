@@ -28,22 +28,22 @@ final class assertSameElements_ {
             if (true) {
                 if (.com.redhat.ceylon.compiler.java.Util.checkNull(jit).hasNext()) {
                     final T je = .com.redhat.ceylon.compiler.java.Util.checkNull(jit).next();
-                    final T ce$6;
-                    .java.lang.Object ce$5 = null;
-                    if (!((ce$5 = cit.next()) instanceof .ceylon.language.Finished)) {
-                        ce$6 = (T)ce$5;
+                    final T ce$4;
+                    .java.lang.Object ce$3 = null;
+                    if (!((ce$3 = cit.next()) instanceof .ceylon.language.Finished)) {
+                        ce$4 = (T)ce$3;
                     } else {
                         throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Finished ce=cit.next()"));
                     }
-                    if (.com.redhat.ceylon.compiler.java.Util.checkNull(je).equals(ce$6)) {
+                    if (.com.redhat.ceylon.compiler.java.Util.checkNull(je).equals(ce$4)) {
                     } else {
                         throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "je == ce"));
                     }
                 } else {
-                    final .ceylon.language.Finished ce$3;
-                    .java.lang.Object ce$2 = null;
-                    if ((ce$2 = cit.next()) instanceof .ceylon.language.Finished) {
-                        ce$3 = (.ceylon.language.Finished)ce$2;
+                    final .ceylon.language.Finished ce$2;
+                    .java.lang.Object ce$1 = null;
+                    if ((ce$1 = cit.next()) instanceof .ceylon.language.Finished) {
+                        ce$2 = (.ceylon.language.Finished)ce$1;
                     } else {
                         throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Finished ce=cit.next()"));
                     }

@@ -25,9 +25,9 @@ final class bug6741_ {
         list = .java.util.Arrays.<.ceylon.language.String>asList((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$2$0 = com.redhat.ceylon.compiler.java.language.ObjectArray.getIterable(words).sequence();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$1$0 = com.redhat.ceylon.compiler.java.language.ObjectArray.getIterable(words).sequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$2$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$2$0.getSize()) + 1], .ceylon.language.String.instance("bob"));
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$1$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$1$0.getSize()) + 1], .ceylon.language.String.instance("bob"));
         ));
         expect.add(0, .ceylon.language.String.instance("bob"));
         .ceylon.language.print_.print(list);
@@ -42,9 +42,9 @@ final class bug6741_ {
         .java.util.List<.ceylon.language.Integer> list2 = .java.util.Arrays.<.ceylon.language.Integer>asList((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$4$0 = com.redhat.ceylon.compiler.java.language.IntArray.getIterable(numbers).sequence();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$2$0 = com.redhat.ceylon.compiler.java.language.IntArray.getIterable(numbers).sequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>toArray($ceylontmp$4$0, new .ceylon.language.Integer[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$4$0.getSize())]);
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>toArray($ceylontmp$2$0, new .ceylon.language.Integer[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$2$0.getSize())]);
         ));
         .ceylon.language.print_.print(list2);
         if (expect2.equals(.com.redhat.ceylon.compiler.java.Util.checkNull(list2))) {
@@ -55,9 +55,9 @@ final class bug6741_ {
         list2 = .java.util.Arrays.<.ceylon.language.Integer>asList((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$6$0 = com.redhat.ceylon.compiler.java.language.IntArray.getIterable(numbers).sequence();
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$3$0 = com.redhat.ceylon.compiler.java.language.IntArray.getIterable(numbers).sequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>toArray($ceylontmp$6$0, new .ceylon.language.Integer[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$6$0.getSize()) + 1], .ceylon.language.Integer.instance(11L));
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>toArray($ceylontmp$3$0, new .ceylon.language.Integer[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$3$0.getSize()) + 1], .ceylon.language.Integer.instance(11L));
         ));
         .ceylon.language.print_.print(list2);
         if (expect2.equals(.com.redhat.ceylon.compiler.java.Util.checkNull(list2))) {

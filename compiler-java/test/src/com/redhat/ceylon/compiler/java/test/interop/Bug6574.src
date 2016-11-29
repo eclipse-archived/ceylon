@@ -132,9 +132,9 @@ public final class bug6574_ {
         if (al.$callvariadic$(x).equals(.java.util.Arrays.<.ceylon.language.String>asList((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$7$0 = x;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$1$0 = x;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$7$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$7$0.getSize())]);
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$1$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$1$0.getSize())]);
         )))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(*x) == Arrays.asList<String>(*x)"));
@@ -142,9 +142,9 @@ public final class bug6574_ {
         if (al.$callvariadic$(.com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{.ceylon.language.String.instance("a")}, x))).equals(.java.util.Arrays.<.ceylon.language.String>asList((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$9$0 = x;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$2$0 = x;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$9$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$9$0.getSize()) + 1], .ceylon.language.String.instance("a"));
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$2$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$2$0.getSize()) + 1], .ceylon.language.String.instance("a"));
         )))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", *x) == Arrays.asList<String>(\"a\", *x)"));
@@ -154,9 +154,9 @@ public final class bug6574_ {
                 .ceylon.language.String.instance("b")}, x))).equals(.java.util.Arrays.<.ceylon.language.String>asList((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$11$0 = x;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$3$0 = x;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$11$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$11$0.getSize()) + 2], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$3$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$3$0.getSize()) + 2], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
         )))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", *x) == Arrays.asList<String>(\"a\", \"b\", *x)"));
@@ -167,9 +167,9 @@ public final class bug6574_ {
                 .ceylon.language.String.instance("c")}, x))).equals(.java.util.Arrays.<.ceylon.language.String>asList((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$13$0 = x;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$4$0 = x;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$13$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$13$0.getSize()) + 3], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"));
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$4$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$4$0.getSize()) + 3], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"));
         )))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", \"c\", *x) == Arrays.asList<String>(\"a\", \"b\", \"c\", *x)"));
@@ -181,9 +181,9 @@ public final class bug6574_ {
                 .ceylon.language.String.instance("d")}, x))).equals(.java.util.Arrays.<.ceylon.language.String>asList((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$15$0 = x;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$5$0 = x;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$15$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$15$0.getSize()) + 4], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"), .ceylon.language.String.instance("d"));
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$5$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$5$0.getSize()) + 4], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"), .ceylon.language.String.instance("d"));
         )))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", \"c\", \"d\", *x) == Arrays.asList<String>(\"a\", \"b\", \"c\", \"d\", *x)"));
@@ -196,9 +196,9 @@ public final class bug6574_ {
                 .ceylon.language.String.instance("e")}, x))).equals(.java.util.Arrays.<.ceylon.language.String>asList((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$17$0 = x;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$6$0 = x;
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$17$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$17$0.getSize()) + 5], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"), .ceylon.language.String.instance("d"), .ceylon.language.String.instance("e"));
+            returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$6$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$6$0.getSize()) + 5], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"), .ceylon.language.String.instance("d"), .ceylon.language.String.instance("e"));
         )))) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", \"c\", \"d\", \"e\", *x) == Arrays.asList<String>(\"a\", \"b\", \"c\", \"d\", \"e\", *x)"));

@@ -13,41 +13,41 @@ public final class bug2053_ {
             }
             returning .com.redhat.ceylon.compiler.java.Util.<Element>toArray($ceylontmp$0$0, (Element[])new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$0$0.getSize())]);
         ));
-        final .ceylon.language.Iterable items$3;
-        .java.lang.Object items$2 = null;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(items$2 = items, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Number.class), .ceylon.language.Null.$TypeDescriptor$))) {
-            items$3 = (.ceylon.language.Iterable)items$2;
+        final .ceylon.language.Iterable items$2;
+        .java.lang.Object items$1 = null;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(items$1 = items, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Number.class), .ceylon.language.Null.$TypeDescriptor$))) {
+            items$2 = (.ceylon.language.Iterable)items$1;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Number*} items"));
         }
         x.<.java.lang.Number>bound((
             let
             {
-                .ceylon.language.Sequential $ceylontmp$4$0 = items$3.sequence();
+                .ceylon.language.Sequential $ceylontmp$3$0 = items$2.sequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Number>toArray($ceylontmp$4$0, new .java.lang.Number[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$4$0.getSize())]);
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Number>toArray($ceylontmp$3$0, new .java.lang.Number[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$3$0.getSize())]);
         ));
-        final .ceylon.language.Iterable items$7;
-        .java.lang.Object items$6 = null;
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(items$6 = items$3, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Long.class), .ceylon.language.Null.$TypeDescriptor$))) {
-            items$7 = (.ceylon.language.Iterable)items$6;
+        final .ceylon.language.Iterable items$5;
+        .java.lang.Object items$4 = null;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(items$4 = items$2, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Long.class), .ceylon.language.Null.$TypeDescriptor$))) {
+            items$5 = (.ceylon.language.Iterable)items$4;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Long*} items"));
         }
         x.<.java.lang.Long>indirectBound((
             let
             {
-                .ceylon.language.Sequential $ceylontmp$8$0 = items$7.sequence();
+                .ceylon.language.Sequential $ceylontmp$6$0 = items$5.sequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Long>toArray($ceylontmp$8$0, new .java.lang.Long[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$8$0.getSize())]);
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Long>toArray($ceylontmp$6$0, new .java.lang.Long[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$6$0.getSize())]);
         ));
         final .ceylon.language.Iterable items3 = (.ceylon.language.Iterable)(.java.lang.Object).ceylon.language.nothing_.get_();
         ((.com.redhat.ceylon.compiler.java.test.interop.Right)(.java.lang.Object).com.redhat.ceylon.compiler.java.Util.checkNull(x.<.com.redhat.ceylon.compiler.java.test.interop.Top>bound2((
             let
             {
-                .ceylon.language.Sequential $ceylontmp$9$0 = items3.sequence();
+                .ceylon.language.Sequential $ceylontmp$7$0 = items3.sequence();
             }
-            returning .com.redhat.ceylon.compiler.java.Util.<.com.redhat.ceylon.compiler.java.test.interop.Left>toArray($ceylontmp$9$0, new .com.redhat.ceylon.compiler.java.test.interop.Left[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$9$0.getSize())]);
+            returning .com.redhat.ceylon.compiler.java.Util.<.com.redhat.ceylon.compiler.java.test.interop.Left>toArray($ceylontmp$7$0, new .com.redhat.ceylon.compiler.java.test.interop.Left[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$7$0.getSize())]);
         )))).right();
     }
 }

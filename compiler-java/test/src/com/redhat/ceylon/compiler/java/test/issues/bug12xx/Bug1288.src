@@ -28,30 +28,30 @@ class Bug1288<Element> implements .com.redhat.ceylon.compiler.java.runtime.model
     final long inc) {
         if (x instanceof .ceylon.language.Integer) {
             final long result = ((.ceylon.language.Integer)x).longValue() + inc;
-            final .java.lang.Object result$4;
-            .java.lang.Object result$3 = null;
-            if (.com.redhat.ceylon.compiler.java.Util.isReified(result$3 = .ceylon.language.Integer.instance(result), $reified$Element)) {
-                result$4 = result$3;
+            final .java.lang.Object result$3;
+            .java.lang.Object result$2 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(result$2 = .ceylon.language.Integer.instance(result), $reified$Element)) {
+                result$3 = result$2;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
             }
-            return (Element)result$4;
+            return (Element)result$3;
         }
-        final Element x$5 = (Element)x;
-        .java.lang.Object x$7;
-        if ((x$7 = x$5) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo && .com.redhat.ceylon.compiler.java.Util.isReified(x$7, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo.class, .ceylon.language.Integer.$TypeDescriptor$))) {
-            final .java.lang.Object x$8 = x$7;
-            final long result = ((.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo)x$8).foo(.ceylon.language.Boolean.instance(true)).longValue();
-            final .java.lang.Object result$11;
-            .java.lang.Object result$10 = null;
-            if (.com.redhat.ceylon.compiler.java.Util.isReified(result$10 = .ceylon.language.Integer.instance(result), $reified$Element)) {
-                result$11 = result$10;
+        final Element x$4 = (Element)x;
+        .java.lang.Object x$6;
+        if ((x$6 = x$4) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo && .com.redhat.ceylon.compiler.java.Util.isReified(x$6, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+            final .java.lang.Object x$7 = x$6;
+            final long result = ((.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo<.ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo)x$7).foo(.ceylon.language.Boolean.instance(true)).longValue();
+            final .java.lang.Object result$9;
+            .java.lang.Object result$8 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(result$8 = .ceylon.language.Integer.instance(result), $reified$Element)) {
+                result$9 = result$8;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result"));
             }
-            return (Element)result$11;
+            return (Element)result$9;
         }
-        final Element x$12 = (Element)x$5;
+        final Element x$10 = (Element)x$4;
         return (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     

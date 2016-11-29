@@ -74,73 +74,73 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private final long rangeOpIteration$priv$() {
         long sum = 0L;
-        final int $ceylontmp$first$6 = 1;
-        final int $ceylontmp$last$7 = 10;
-        final boolean $ceylontmp$increasing$8 = .ceylon.language.Integer.offset($ceylontmp$last$7, $ceylontmp$first$6) >= 0;
-        final int $ceylontmp$incr$9 = $ceylontmp$increasing$8 ? 1 : -1;
-        int i$12 = $ceylontmp$first$6;
-        int $ceylontmp$element$11 = $ceylontmp$first$6;
-        boolean $ceylontmp$f$10 = false;
+        final int $ceylontmp$first$5 = 1;
+        final int $ceylontmp$last$6 = 10;
+        final boolean $ceylontmp$increasing$7 = .ceylon.language.Integer.offset($ceylontmp$last$6, $ceylontmp$first$5) >= 0;
+        final int $ceylontmp$incr$8 = $ceylontmp$increasing$7 ? 1 : -1;
+        int i$11 = $ceylontmp$first$5;
+        int $ceylontmp$element$10 = $ceylontmp$first$5;
+        boolean $ceylontmp$f$9 = false;
         loop_1: do {
-            if ($ceylontmp$f$10) $ceylontmp$element$11 += $ceylontmp$incr$9;
-            $ceylontmp$f$10 = true;
-            i$12 = $ceylontmp$element$11;
-            final int i = i$12;
-            $ceylontmp$continue$5: do {
+            if ($ceylontmp$f$9) $ceylontmp$element$10 += $ceylontmp$incr$8;
+            $ceylontmp$f$9 = true;
+            i$11 = $ceylontmp$element$10;
+            final int i = i$11;
+            $ceylontmp$continue$4: do {
                 sum += i;
             }             while (false);
-        }         while ($ceylontmp$increasing$8 ? i$12 - $ceylontmp$last$7 != 0 : i$12 - $ceylontmp$last$7 != 0);
+        }         while ($ceylontmp$increasing$7 ? i$11 - $ceylontmp$last$6 != 0 : i$11 - $ceylontmp$last$6 != 0);
         return sum;
     }
     
     private final long rangeOpIterationReverse$priv$() {
         long sum = 0L;
-        final int $ceylontmp$first$16 = 10;
-        final int $ceylontmp$last$17 = 1;
-        final boolean $ceylontmp$increasing$18 = .ceylon.language.Integer.offset($ceylontmp$last$17, $ceylontmp$first$16) >= 0;
-        final int $ceylontmp$incr$19 = $ceylontmp$increasing$18 ? 1 : -1;
-        int i$22 = $ceylontmp$first$16;
-        int $ceylontmp$element$21 = $ceylontmp$first$16;
-        boolean $ceylontmp$f$20 = false;
+        final int $ceylontmp$first$14 = 10;
+        final int $ceylontmp$last$15 = 1;
+        final boolean $ceylontmp$increasing$16 = .ceylon.language.Integer.offset($ceylontmp$last$15, $ceylontmp$first$14) >= 0;
+        final int $ceylontmp$incr$17 = $ceylontmp$increasing$16 ? 1 : -1;
+        int i$20 = $ceylontmp$first$14;
+        int $ceylontmp$element$19 = $ceylontmp$first$14;
+        boolean $ceylontmp$f$18 = false;
         loop_2: do {
-            if ($ceylontmp$f$20) $ceylontmp$element$21 += $ceylontmp$incr$19;
-            $ceylontmp$f$20 = true;
-            i$22 = $ceylontmp$element$21;
-            final int i = i$22;
-            $ceylontmp$continue$15: do {
+            if ($ceylontmp$f$18) $ceylontmp$element$19 += $ceylontmp$incr$17;
+            $ceylontmp$f$18 = true;
+            i$20 = $ceylontmp$element$19;
+            final int i = i$20;
+            $ceylontmp$continue$13: do {
                 sum += i;
             }             while (false);
-        }         while ($ceylontmp$increasing$18 ? i$22 - $ceylontmp$last$17 != 0 : i$22 - $ceylontmp$last$17 != 0);
+        }         while ($ceylontmp$increasing$16 ? i$20 - $ceylontmp$last$15 != 0 : i$20 - $ceylontmp$last$15 != 0);
         return sum;
     }
     
     private final long rangeIteration$priv$() {
         long sum = 0L;
         final .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
-        boolean loopentered$24 = false;
-        .java.lang.Object elem$25;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$26 = range.iterator();
-        loop_3: while (!((elem$25 = i$iterator$$26.next()) instanceof .ceylon.language.Finished)) {
-            loopentered$24 = true;
-            final long i = ((.ceylon.language.Integer)elem$25).longValue();
+        boolean loopentered$21 = false;
+        .java.lang.Object elem$22;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$23 = range.iterator();
+        loop_3: while (!((elem$22 = i$iterator$$23.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$21 = true;
+            final long i = ((.ceylon.language.Integer)elem$22).longValue();
             sum += i;
         }
-        if (!loopentered$24) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        if (!loopentered$21) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
         return sum;
     }
     
     private final long rangeIterationReverse$priv$() {
         long sum = 0L;
         final .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
-        boolean loopentered$28 = false;
-        .java.lang.Object elem$29;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$30 = range.iterator();
-        loop_4: while (!((elem$29 = i$iterator$$30.next()) instanceof .ceylon.language.Finished)) {
-            loopentered$28 = true;
-            final long i = ((.ceylon.language.Integer)elem$29).longValue();
+        boolean loopentered$24 = false;
+        .java.lang.Object elem$25;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$26 = range.iterator();
+        loop_4: while (!((elem$25 = i$iterator$$26.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$24 = true;
+            final long i = ((.ceylon.language.Integer)elem$25).longValue();
             sum += i;
         }
-        if (!loopentered$28) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        if (!loopentered$24) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
         return sum;
     }
     
@@ -227,40 +227,40 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final long rangeIteration2$priv$() {
         long sum = 0L;
         final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range = .ceylon.language.span_.<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>span(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(1L), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(10L));
-        boolean loopentered$32 = false;
-        .java.lang.Object elem$33;
-        .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> i$iterator$$34 = range.iterator();
-        loop_5: while (!((elem$33 = i$iterator$$34.next()) instanceof .ceylon.language.Finished)) {
-            loopentered$32 = true;
-            final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal i = (.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal)elem$33;
+        boolean loopentered$27 = false;
+        .java.lang.Object elem$28;
+        .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> i$iterator$$29 = range.iterator();
+        loop_5: while (!((elem$28 = i$iterator$$29.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$27 = true;
+            final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal i = (.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal)elem$28;
             sum += i.getI();
         }
-        if (!loopentered$32) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        if (!loopentered$27) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
         return sum;
     }
     
     private final long rangeIterationReverse2$priv$() {
         long sum = 0L;
         final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range = .ceylon.language.span_.<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>span(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(10L), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(1L));
-        boolean loopentered$36 = false;
-        .java.lang.Object elem$37;
-        .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> i$iterator$$38 = range.iterator();
-        loop_6: while (!((elem$37 = i$iterator$$38.next()) instanceof .ceylon.language.Finished)) {
-            loopentered$36 = true;
-            final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal i = (.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal)elem$37;
+        boolean loopentered$30 = false;
+        .java.lang.Object elem$31;
+        .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> i$iterator$$32 = range.iterator();
+        loop_6: while (!((elem$31 = i$iterator$$32.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$30 = true;
+            final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal i = (.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal)elem$31;
             sum += i.getI();
         }
-        if (!loopentered$36) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        if (!loopentered$30) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
         return sum;
     }
     
     private final long arrayIterationStatic$priv$() {
         final .ceylon.language.Array<.ceylon.language.Integer> array = new .ceylon.language.Array<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L)));
         long sum = 0L;
-        final .java.lang.Object array$41 = array.toArray();
-        final int length$42 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$41);
-        loop_7: for (int i$43 = 0; i$43 < length$42; i$43++) {
-            final long i = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$41, i$43);
+        final .java.lang.Object array$34 = array.toArray();
+        final int length$35 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$34);
+        loop_7: for (int i$36 = 0; i$36 < length$35; i$36++) {
+            final long i = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$34, i$36);
             sum += i;
         }
         return sum;
@@ -268,26 +268,26 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private final long javaArrayIterationStatic$priv$() {
         final int[] array = new int[10];
-        final int $ceylontmp$first$47 = 1;
-        final int $ceylontmp$last$48 = 10;
-        final boolean $ceylontmp$increasing$49 = .ceylon.language.Integer.offset($ceylontmp$last$48, $ceylontmp$first$47) >= 0;
-        final int $ceylontmp$incr$50 = $ceylontmp$increasing$49 ? 1 : -1;
-        int index$53 = $ceylontmp$first$47;
-        int $ceylontmp$element$52 = $ceylontmp$first$47;
-        boolean $ceylontmp$f$51 = false;
+        final int $ceylontmp$first$39 = 1;
+        final int $ceylontmp$last$40 = 10;
+        final boolean $ceylontmp$increasing$41 = .ceylon.language.Integer.offset($ceylontmp$last$40, $ceylontmp$first$39) >= 0;
+        final int $ceylontmp$incr$42 = $ceylontmp$increasing$41 ? 1 : -1;
+        int index$45 = $ceylontmp$first$39;
+        int $ceylontmp$element$44 = $ceylontmp$first$39;
+        boolean $ceylontmp$f$43 = false;
         loop_8: do {
-            if ($ceylontmp$f$51) $ceylontmp$element$52 += $ceylontmp$incr$50;
-            $ceylontmp$f$51 = true;
-            index$53 = $ceylontmp$element$52;
-            final int index = index$53;
-            $ceylontmp$continue$46: do {
+            if ($ceylontmp$f$43) $ceylontmp$element$44 += $ceylontmp$incr$42;
+            $ceylontmp$f$43 = true;
+            index$45 = $ceylontmp$element$44;
+            final int index = index$45;
+            $ceylontmp$continue$38: do {
                 array[index - 1] = index;
             }             while (false);
-        }         while ($ceylontmp$increasing$49 ? index$53 - $ceylontmp$last$48 != 0 : index$53 - $ceylontmp$last$48 != 0);
+        }         while ($ceylontmp$increasing$41 ? index$45 - $ceylontmp$last$40 != 0 : index$45 - $ceylontmp$last$40 != 0);
         long sum = 0L;
-        final int[] array$55 = array;
-        loop_9: for (int i$57 = 0; i$57 < array$55.length; i$57++) {
-            final long i = array$55[i$57];
+        final int[] array$47 = array;
+        loop_9: for (int i$49 = 0; i$49 < array$47.length; i$49++) {
+            final long i = array$47[i$49];
             sum += i;
         }
         return sum;
@@ -307,15 +307,15 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 .ceylon.language.Integer.instance(9L),
                 .ceylon.language.Integer.instance(10L)});
         long sum = 0L;
-        boolean loopentered$59 = false;
-        .java.lang.Object elem$60;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$61 = array.iterator();
-        loop_10: while (!((elem$60 = i$iterator$$61.next()) instanceof .ceylon.language.Finished)) {
-            loopentered$59 = true;
-            final long i = ((.ceylon.language.Integer)elem$60).longValue();
+        boolean loopentered$50 = false;
+        .java.lang.Object elem$51;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$52 = array.iterator();
+        loop_10: while (!((elem$51 = i$iterator$$52.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$50 = true;
+            final long i = ((.ceylon.language.Integer)elem$51).longValue();
             sum += i;
         }
-        if (!loopentered$59) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        if (!loopentered$50) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
         return sum;
     }
     
@@ -324,21 +324,21 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Integer*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable) {
         long sum = 0L;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$65 = iterable;
-        final boolean isArray$66 = iterable$65 instanceof .ceylon.language.Array;
-        final boolean isTuple$67 = iterable$65 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$65).$getArray$() != null;
-        .java.lang.Object elem$64 = null;
-        int i$68 = 0;
-        final int length$69;
-        if (isArray$66 || isTuple$67) {
-            length$69 = (int)iterable$65.getSize();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$55 = iterable;
+        final boolean isArray$56 = iterable$55 instanceof .ceylon.language.Array;
+        final boolean isTuple$57 = iterable$55 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$55).$getArray$() != null;
+        .java.lang.Object elem$54 = null;
+        int i$58 = 0;
+        final int length$59;
+        if (isArray$56 || isTuple$57) {
+            length$59 = (int)iterable$55.getSize();
         } else {
-            length$69 = 0;
+            length$59 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$70 = isTuple$67 || isArray$66 ? null : iterable$65.iterator();
-        loop_11: while (isTuple$67 || isArray$66 ? i$68 < length$69 : !((elem$64 = i$iterator$$70.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$67) elem$64 = iterable$65.getFromFirst(i$68++);
-            final long i = isArray$66 ? .com.redhat.ceylon.compiler.java.Util.getIntegerArray(((.ceylon.language.Array)iterable$65).toArray(), i$68++) : ((.ceylon.language.Integer)elem$64).longValue();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$60 = isTuple$57 || isArray$56 ? null : iterable$55.iterator();
+        loop_11: while (isTuple$57 || isArray$56 ? i$58 < length$59 : !((elem$54 = i$iterator$$60.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$57) elem$54 = iterable$55.getFromFirst(i$58++);
+            final long i = isArray$56 ? .com.redhat.ceylon.compiler.java.Util.getIntegerArray(((.ceylon.language.Array)iterable$55).toArray(), i$58++) : ((.ceylon.language.Integer)elem$54).longValue();
             sum += i;
         }
         return sum;

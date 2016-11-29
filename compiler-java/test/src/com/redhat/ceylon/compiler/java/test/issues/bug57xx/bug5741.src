@@ -4,9 +4,9 @@ class Bug5741 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     Bug5741() {
         final .java.lang.Object s = .ceylon.language.empty_.get_();
-        .java.lang.Object s$1 = null;
-        if ((s$1 = s) instanceof .ceylon.language.Iterable) {
-            s$2 = (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)s$1;
+        .java.lang.Object s$0 = null;
+        if ((s$0 = s) instanceof .ceylon.language.Iterable) {
+            s$1 = (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)s$0;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Anything*} s"));
         }
@@ -22,10 +22,10 @@ class Bug5741 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             }
         };
     }
-    final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> s$2;
+    final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> s$1;
     
     public final .java.lang.Object getT() {
-        return s$2;
+        return s$1;
     }
     
     @.java.lang.Override

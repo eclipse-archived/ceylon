@@ -9,17 +9,17 @@ class Bug1740 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Bug1740(final boolean $boolean) {
         final .java.lang.Object obj = null;
         if ($boolean) {
-            final .java.lang.Object bar$3;
-            .java.lang.Object bar$2 = null;
-            if ((bar$2 = obj) != null) {
-                bar$3 = bar$2;
+            final .java.lang.Object bar$2;
+            .java.lang.Object bar$1 = null;
+            if ((bar$1 = obj) != null) {
+                bar$2 = bar$1;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists bar = obj"));
             }
             final .ceylon.language.Callable<? extends .ceylon.language.Boolean> baz = (
                 let
                 {
-                    final .java.lang.Object $instance$ = bar$3;
+                    final .java.lang.Object $instance$ = bar$2;
                 }
                 returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
                     

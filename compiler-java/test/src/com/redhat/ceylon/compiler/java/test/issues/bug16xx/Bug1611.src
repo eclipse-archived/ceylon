@@ -17,10 +17,10 @@ final class bug1611_ {
         if (((.ceylon.language.Boolean)(
             let
             {
-                .ceylon.language.meta.model.Applicable arg$2$callable$ = f;
-                .ceylon.language.Iterable arg$2$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+                .ceylon.language.meta.model.Applicable arg$1$callable$ = f;
+                .ceylon.language.Iterable arg$1$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
             }
-            returning arg$2$callable$.namedApply(arg$2$0);
+            returning arg$1$callable$.namedApply(arg$1$0);
         )).booleanValue()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "f.namedApply{}"));
@@ -28,20 +28,20 @@ final class bug1611_ {
         if (((.ceylon.language.Boolean)(
             let
             {
-                .ceylon.language.meta.model.Applicable arg$4$callable$ = f;
-                .ceylon.language.Iterable arg$4$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+                .ceylon.language.meta.model.Applicable arg$3$callable$ = f;
+                .ceylon.language.Iterable arg$3$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
             }
-            returning arg$4$callable$.namedApply(arg$4$0);
+            returning arg$3$callable$.namedApply(arg$3$0);
         )).booleanValue()) {
         }
         loop_0: while (true) {
             if (((.ceylon.language.Boolean)(
                 let
                 {
-                    .ceylon.language.meta.model.Applicable arg$5$callable$ = f;
-                    .ceylon.language.Iterable arg$5$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+                    .ceylon.language.meta.model.Applicable arg$4$callable$ = f;
+                    .ceylon.language.Iterable arg$4$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
                 }
-                returning arg$5$callable$.namedApply(arg$5$0);
+                returning arg$4$callable$.namedApply(arg$4$0);
             )).booleanValue()) {
             } else {
                 break loop_0;

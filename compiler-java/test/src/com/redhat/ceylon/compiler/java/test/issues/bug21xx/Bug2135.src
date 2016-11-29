@@ -36,7 +36,7 @@ public final class bug2135_ {
         (
             let
             {
-                .ceylon.language.Iterable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
+                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
                     
                     @.java.lang.Override
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -73,12 +73,12 @@ public final class bug2135_ {
                                         
                                         private final boolean fd() {
                                             while (this.$iterator$1()) {
-                                                final .java.lang.Object $ceylontmp$item$2 = $iterator$1.next();
-                                                fd$exhausted$ = $ceylontmp$item$2 == .ceylon.language.finished_.get_();
+                                                final .java.lang.Object $ceylontmp$item$1 = $iterator$1.next();
+                                                fd$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
                                                 if (fd$exhausted$) {
                                                     $iterator$1 = null;
                                                 } else {
-                                                    fd = (.ceylon.language.Integer)$ceylontmp$item$2;
+                                                    fd = (.ceylon.language.Integer)$ceylontmp$item$1;
                                                     return true;
                                                 }
                                             }
@@ -114,8 +114,8 @@ public final class bug2135_ {
                         }
                     }
                 };
-                .java.lang.String arg$1$1 = .ceylon.language.printAll_.printAll$separator(arg$1$0);
-                .ceylon.language.printAll_.printAll(arg$1$0, arg$1$1);
+                .java.lang.String arg$0$1 = .ceylon.language.printAll_.printAll$separator(arg$0$0);
+                .ceylon.language.printAll_.printAll(arg$0$0, arg$0$1);
             }
             returning null;
         );
@@ -153,12 +153,12 @@ public final class bug2135_ {
                     
                     private final boolean elem() {
                         while (this.$iterator$1()) {
-                            final .java.lang.Object $ceylontmp$item$3 = $iterator$1.next();
-                            elem$exhausted$ = $ceylontmp$item$3 == .ceylon.language.finished_.get_();
+                            final .java.lang.Object $ceylontmp$item$2 = $iterator$1.next();
+                            elem$exhausted$ = $ceylontmp$item$2 == .ceylon.language.finished_.get_();
                             if (elem$exhausted$) {
                                 $iterator$1 = null;
                             } else {
-                                elem = $ceylontmp$item$3;
+                                elem = $ceylontmp$item$2;
                                 return true;
                             }
                         }
@@ -221,12 +221,12 @@ public final class bug2135_ {
                     
                     private final boolean elem() {
                         while (this.$iterator$1()) {
-                            final .java.lang.Object $ceylontmp$item$5 = $iterator$1.next();
-                            elem$exhausted$ = $ceylontmp$item$5 == .ceylon.language.finished_.get_();
+                            final .java.lang.Object $ceylontmp$item$3 = $iterator$1.next();
+                            elem$exhausted$ = $ceylontmp$item$3 == .ceylon.language.finished_.get_();
                             if (elem$exhausted$) {
                                 $iterator$1 = null;
                             } else {
-                                elem = $ceylontmp$item$5;
+                                elem = $ceylontmp$item$3;
                                 return true;
                             }
                         }
@@ -277,12 +277,12 @@ public final class bug2135_ {
                     
                     private final boolean elem() {
                         while (this.$iterator$1()) {
-                            final .java.lang.Object $ceylontmp$item$7 = $iterator$1.next();
-                            elem$exhausted$ = $ceylontmp$item$7 == .ceylon.language.finished_.get_();
+                            final .java.lang.Object $ceylontmp$item$4 = $iterator$1.next();
+                            elem$exhausted$ = $ceylontmp$item$4 == .ceylon.language.finished_.get_();
                             if (elem$exhausted$) {
                                 $iterator$1 = null;
                             } else {
-                                elem = $ceylontmp$item$7;
+                                elem = $ceylontmp$item$4;
                                 return true;
                             }
                         }
@@ -315,12 +315,12 @@ public final class bug2135_ {
                     private boolean elem$exhausted$;
                     
                     private final boolean elem() {
-                        final .java.lang.Object $ceylontmp$item$9 = $iterator$0.next();
-                        elem$exhausted$ = $ceylontmp$item$9 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmp$item$5 = $iterator$0.next();
+                        elem$exhausted$ = $ceylontmp$item$5 == .ceylon.language.finished_.get_();
                         if (elem$exhausted$) {
                             return false;
                         } else {
-                            elem = $ceylontmp$item$9;
+                            elem = $ceylontmp$item$5;
                             return true;
                         }
                     }
@@ -351,12 +351,12 @@ public final class bug2135_ {
                     
                     private final boolean elem2() {
                         while (this.$iterator$2()) {
-                            final .java.lang.Object $ceylontmp$item$10 = $iterator$2.next();
-                            elem2$exhausted$ = $ceylontmp$item$10 == .ceylon.language.finished_.get_();
+                            final .java.lang.Object $ceylontmp$item$6 = $iterator$2.next();
+                            elem2$exhausted$ = $ceylontmp$item$6 == .ceylon.language.finished_.get_();
                             if (elem2$exhausted$) {
                                 $iterator$2 = null;
                             } else {
-                                elem2 = $ceylontmp$item$10;
+                                elem2 = $ceylontmp$item$6;
                                 return true;
                             }
                         }
@@ -390,12 +390,12 @@ public final class bug2135_ {
                     private boolean elem$exhausted$;
                     
                     private final boolean elem() {
-                        final .java.lang.Object $ceylontmp$item$12 = $iterator$0.next();
-                        elem$exhausted$ = $ceylontmp$item$12 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmp$item$7 = $iterator$0.next();
+                        elem$exhausted$ = $ceylontmp$item$7 == .ceylon.language.finished_.get_();
                         if (elem$exhausted$) {
                             return false;
                         } else {
-                            elem = $ceylontmp$item$12;
+                            elem = $ceylontmp$item$7;
                             return true;
                         }
                     }
@@ -437,12 +437,12 @@ public final class bug2135_ {
                     private boolean elem$exhausted$;
                     
                     private final boolean elem() {
-                        final .java.lang.Object $ceylontmp$item$14 = $iterator$0.next();
-                        elem$exhausted$ = $ceylontmp$item$14 == .ceylon.language.finished_.get_();
+                        final .java.lang.Object $ceylontmp$item$8 = $iterator$0.next();
+                        elem$exhausted$ = $ceylontmp$item$8 == .ceylon.language.finished_.get_();
                         if (elem$exhausted$) {
                             return false;
                         } else {
-                            elem = $ceylontmp$item$14;
+                            elem = $ceylontmp$item$8;
                             return true;
                         }
                     }

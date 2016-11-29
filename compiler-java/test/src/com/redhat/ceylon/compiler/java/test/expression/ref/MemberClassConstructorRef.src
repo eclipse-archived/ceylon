@@ -398,9 +398,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$9 = Defaulted$s1();
+                .java.lang.String $ceylontmp$s1$0 = Defaulted$s1();
             }
-            returning new Defaulted($ceylontmp$s1$9);
+            returning new Defaulted($ceylontmp$s1$0);
         );
     }
     
@@ -453,9 +453,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$10 = Defaulted$unary$s1();
+                .java.lang.String $ceylontmp$s1$1 = Defaulted$unary$s1();
             }
-            returning new Defaulted($name$, $ceylontmp$s1$10);
+            returning new Defaulted($name$, $ceylontmp$s1$1);
         );
     }
     
@@ -489,10 +489,10 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$11 = Defaulted$binary$s1();
-                .java.lang.String $ceylontmp$s2$12 = Defaulted$binary$s2($ceylontmp$s1$11);
+                .java.lang.String $ceylontmp$s1$2 = Defaulted$binary$s1();
+                .java.lang.String $ceylontmp$s2$3 = Defaulted$binary$s2($ceylontmp$s1$2);
             }
-            returning new Defaulted($name$, $ceylontmp$s1$11, $ceylontmp$s2$12);
+            returning new Defaulted($name$, $ceylontmp$s1$2, $ceylontmp$s2$3);
         );
     }
     
@@ -507,9 +507,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$13 = Defaulted$binary$s2(s1$param$);
+                .java.lang.String $ceylontmp$s2$4 = Defaulted$binary$s2(s1$param$);
             }
-            returning new Defaulted($name$, s1$param$, $ceylontmp$s2$13);
+            returning new Defaulted($name$, s1$param$, $ceylontmp$s2$4);
         );
     }
     
@@ -543,11 +543,11 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$14 = Defaulted$ternary$s1();
-                .java.lang.String $ceylontmp$s2$15 = Defaulted$ternary$s2($ceylontmp$s1$14);
-                .java.lang.String $ceylontmp$s3$16 = Defaulted$ternary$s3($ceylontmp$s1$14, $ceylontmp$s2$15);
+                .java.lang.String $ceylontmp$s1$5 = Defaulted$ternary$s1();
+                .java.lang.String $ceylontmp$s2$6 = Defaulted$ternary$s2($ceylontmp$s1$5);
+                .java.lang.String $ceylontmp$s3$7 = Defaulted$ternary$s3($ceylontmp$s1$5, $ceylontmp$s2$6);
             }
-            returning new Defaulted($name$, $ceylontmp$s1$14, $ceylontmp$s2$15, $ceylontmp$s3$16);
+            returning new Defaulted($name$, $ceylontmp$s1$5, $ceylontmp$s2$6, $ceylontmp$s3$7);
         );
     }
     
@@ -562,10 +562,10 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$17 = Defaulted$ternary$s2(s1$param$);
-                .java.lang.String $ceylontmp$s3$18 = Defaulted$ternary$s3(s1$param$, $ceylontmp$s2$17);
+                .java.lang.String $ceylontmp$s2$8 = Defaulted$ternary$s2(s1$param$);
+                .java.lang.String $ceylontmp$s3$9 = Defaulted$ternary$s3(s1$param$, $ceylontmp$s2$8);
             }
-            returning new Defaulted($name$, s1$param$, $ceylontmp$s2$17, $ceylontmp$s3$18);
+            returning new Defaulted($name$, s1$param$, $ceylontmp$s2$8, $ceylontmp$s3$9);
         );
     }
     
@@ -580,9 +580,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s3$19 = Defaulted$ternary$s3(s1$param$, s2$param$);
+                .java.lang.String $ceylontmp$s3$10 = Defaulted$ternary$s3(s1$param$, s2$param$);
             }
-            returning new Defaulted($name$, s1$param$, s2$param$, $ceylontmp$s3$19);
+            returning new Defaulted($name$, s1$param$, s2$param$, $ceylontmp$s3$10);
         );
     }
     
@@ -616,12 +616,12 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$20 = Defaulted$nary$s1();
-                .java.lang.String $ceylontmp$s2$21 = Defaulted$nary$s2($ceylontmp$s1$20);
-                .java.lang.String $ceylontmp$s3$22 = Defaulted$nary$s3($ceylontmp$s1$20, $ceylontmp$s2$21);
-                .java.lang.String $ceylontmp$s4$23 = Defaulted$nary$s4($ceylontmp$s1$20, $ceylontmp$s2$21, $ceylontmp$s3$22);
+                .java.lang.String $ceylontmp$s1$11 = Defaulted$nary$s1();
+                .java.lang.String $ceylontmp$s2$12 = Defaulted$nary$s2($ceylontmp$s1$11);
+                .java.lang.String $ceylontmp$s3$13 = Defaulted$nary$s3($ceylontmp$s1$11, $ceylontmp$s2$12);
+                .java.lang.String $ceylontmp$s4$14 = Defaulted$nary$s4($ceylontmp$s1$11, $ceylontmp$s2$12, $ceylontmp$s3$13);
             }
-            returning new Defaulted($name$, $ceylontmp$s1$20, $ceylontmp$s2$21, $ceylontmp$s3$22, $ceylontmp$s4$23);
+            returning new Defaulted($name$, $ceylontmp$s1$11, $ceylontmp$s2$12, $ceylontmp$s3$13, $ceylontmp$s4$14);
         );
     }
     
@@ -636,11 +636,11 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$24 = Defaulted$nary$s2(s1$param$);
-                .java.lang.String $ceylontmp$s3$25 = Defaulted$nary$s3(s1$param$, $ceylontmp$s2$24);
-                .java.lang.String $ceylontmp$s4$26 = Defaulted$nary$s4(s1$param$, $ceylontmp$s2$24, $ceylontmp$s3$25);
+                .java.lang.String $ceylontmp$s2$15 = Defaulted$nary$s2(s1$param$);
+                .java.lang.String $ceylontmp$s3$16 = Defaulted$nary$s3(s1$param$, $ceylontmp$s2$15);
+                .java.lang.String $ceylontmp$s4$17 = Defaulted$nary$s4(s1$param$, $ceylontmp$s2$15, $ceylontmp$s3$16);
             }
-            returning new Defaulted($name$, s1$param$, $ceylontmp$s2$24, $ceylontmp$s3$25, $ceylontmp$s4$26);
+            returning new Defaulted($name$, s1$param$, $ceylontmp$s2$15, $ceylontmp$s3$16, $ceylontmp$s4$17);
         );
     }
     
@@ -655,10 +655,10 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s3$27 = Defaulted$nary$s3(s1$param$, s2$param$);
-                .java.lang.String $ceylontmp$s4$28 = Defaulted$nary$s4(s1$param$, s2$param$, $ceylontmp$s3$27);
+                .java.lang.String $ceylontmp$s3$18 = Defaulted$nary$s3(s1$param$, s2$param$);
+                .java.lang.String $ceylontmp$s4$19 = Defaulted$nary$s4(s1$param$, s2$param$, $ceylontmp$s3$18);
             }
-            returning new Defaulted($name$, s1$param$, s2$param$, $ceylontmp$s3$27, $ceylontmp$s4$28);
+            returning new Defaulted($name$, s1$param$, s2$param$, $ceylontmp$s3$18, $ceylontmp$s4$19);
         );
     }
     
@@ -673,9 +673,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .java.lang.String $ceylontmp$s4$29 = Defaulted$nary$s4(s1$param$, s2$param$, s3$param$);
+                .java.lang.String $ceylontmp$s4$20 = Defaulted$nary$s4(s1$param$, s2$param$, s3$param$);
             }
-            returning new Defaulted($name$, s1$param$, s2$param$, s3$param$, $ceylontmp$s4$29);
+            returning new Defaulted($name$, s1$param$, s2$param$, s3$param$, $ceylontmp$s4$20);
         );
     }
     
@@ -1120,9 +1120,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s1$43 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s1$21 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Sequenced($ceylontmp$s1$43);
+            returning new Sequenced($ceylontmp$s1$21);
         );
     }
     
@@ -1170,9 +1170,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s1$44 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s1$22 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Sequenced($name$, $ceylontmp$s1$44);
+            returning new Sequenced($name$, $ceylontmp$s1$22);
         );
     }
     
@@ -1201,9 +1201,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s2$45 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s2$23 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Sequenced($name$, s1$param$, $ceylontmp$s2$45);
+            returning new Sequenced($name$, s1$param$, $ceylontmp$s2$23);
         );
     }
     
@@ -1232,9 +1232,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s3$46 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s3$24 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Sequenced($name$, s1$param$, s2$param$, $ceylontmp$s3$46);
+            returning new Sequenced($name$, s1$param$, s2$param$, $ceylontmp$s3$24);
         );
     }
     
@@ -1263,9 +1263,9 @@ class MemberClassConstructorRef implements .com.redhat.ceylon.compiler.java.runt
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s4$47 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s4$25 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new Sequenced($name$, s1$param$, s2$param$, s3$param$, $ceylontmp$s4$47);
+            returning new Sequenced($name$, s1$param$, s2$param$, s3$param$, $ceylontmp$s4$25);
         );
     }
     

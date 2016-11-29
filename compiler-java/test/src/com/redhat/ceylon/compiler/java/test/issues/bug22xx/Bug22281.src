@@ -116,8 +116,8 @@ final class bug2228Test_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$args$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                <T>bug2228Test($reified$T, $ceylontmp$args$10);
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$args$9 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                <T>bug2228Test($reified$T, $ceylontmp$args$9);
             }
             returning null;
         );
@@ -150,10 +150,10 @@ final class bug2228Test_ {
             if (isTuple$3) elem$1 = iterable$2.getFromFirst(i$4++);
             final .java.lang.Object arg = elem$1;
             .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append(" value ").append(arg.toString()).toString()));
-            final T arg$9;
-            .java.lang.Object arg$8 = null;
-            if (.com.redhat.ceylon.compiler.java.Util.isReified(arg$8 = arg, $reified$T)) {
-                arg$9 = (T)arg$8;
+            final T arg$8;
+            .java.lang.Object arg$7 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(arg$7 = arg, $reified$T)) {
+                arg$8 = (T)arg$7;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is T arg"));
             }
