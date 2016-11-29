@@ -155,7 +155,7 @@ public class NamingBase {
      * Removes any leading $ from the given string.
      */
     public static String stripLeadingDollar(String str){
-        return (str.charAt(0) == '$') ? str.substring(1) : str;
+        return (!str.isEmpty() && str.charAt(0) == '$') ? str.substring(1) : str;
     }
 
     public static String capitalize(String str){

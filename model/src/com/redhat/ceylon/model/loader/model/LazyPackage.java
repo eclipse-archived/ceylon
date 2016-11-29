@@ -140,6 +140,7 @@ public class LazyPackage extends Package {
                 
                 if (d == null
                         && tryAlternates
+                        && !name.isEmpty()
                         && Character.isLowerCase(name.codePointAt(0))
                         && Character.isUpperCase(Character.toUpperCase(name.codePointAt(0)))) {
                     // Might be trying to get an annotation constructor for a Java annotation type
@@ -161,6 +162,7 @@ public class LazyPackage extends Package {
                 }
                 if (d == null
                         && tryAlternates
+                        && !name.isEmpty()
                         && Character.isUpperCase(name.codePointAt(0))
                         && Character.isLowerCase(Character.toLowerCase(name.codePointAt(0)))) {
                     // Might be trying to get a lowercase type with an upper-case pretend name
