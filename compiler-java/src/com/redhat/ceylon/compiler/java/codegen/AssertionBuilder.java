@@ -27,6 +27,7 @@ class AssertionBuilder {
     private Node node;
     private AbstractTransformer gen;
     private CName wrapedException;
+    private JCExpression violatedIs;
     
 
     public AssertionBuilder(AbstractTransformer gen, Node node) {
@@ -175,10 +176,18 @@ class AssertionBuilder {
             result = gen.at(node).Binary(JCTree.Tag.PLUS, result, gen.make().Literal(": " + docText));
         }
         result = gen.at(node).Binary(JCTree.Tag.PLUS, result, buildPart());
+        if (violatedIs != null) {
+            result = gen.at(node).Binary(JCTree.Tag.PLUS, result, violatedIs);
+        }
         return result;
     }
     
     JCThrow buildThrow() {
         return gen.makeThrowAssertionException(buildMessage(), wrapedException != null ? gen.make().TypeCast(gen.make().Type(gen.syms().throwableType), wrapedException.makeIdent()) : null);
     }
+
+    public void violatedIs(CName violatedIs) {
+        this.violatedIs = gen.utilInvocation().assertIsFailed(violatedIs.makeIdent());
+    }
+    
 }

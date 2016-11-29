@@ -285,4 +285,9 @@ class RuntimeUtil {
     public JCExpression classErasure(JCExpression javaClass) {
         return makeUtilInvocation(null, "classErasure", List.of(javaClass));
     }
+
+    public JCExpression assertIsFailed(JCExpression operand) {
+        return makeUtilInvocation(null, "assertIsFailed", List.of(
+                operand));
+    }
 }

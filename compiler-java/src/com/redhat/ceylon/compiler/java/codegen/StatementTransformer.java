@@ -832,7 +832,7 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public List<JCStatement> getResult() {
             if (definitelyNotSatisfied(conditions)) {
-                return List.<JCTree.JCStatement>of(makeThrowAssertionFailure(conditions.get(0), this.getConditionTransformer(conditions.get(0)).getVarTrans().getVariableName()));
+                return List.<JCTree.JCStatement>of(makeThrowAssertionFailure(this.getConditionTransformer(conditions.get(0))));
             }
             List<JCStatement> stmts = transformList(conditions);
             at(this.ass);
@@ -856,6 +856,9 @@ public class StatementTransformer extends AbstractTransformer {
                     if (isAssertNotIsThrowable(condition)) {
                         msg.wrapException(cond.getVarTrans().getTestVariableName());
                     }
+                    if (condition instanceof Tree.IsCondition) {
+                        msg.violatedIs(cond.getVarTrans().getVariableName());
+                    }
                     seen = true;
                     continue;
                 }
@@ -877,20 +880,22 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected List<JCStatement> transformInnermostElse(Cond cond, java.util.List<Tree.Condition> rest) {
             if (!isMulti()) {
-                return List.<JCStatement>of(makeThrowAssertionFailure(cond.getCondition(),
-                        isAssertNotIsThrowable(cond.getCondition()) ? 
-                        cond.getVarTrans().getTestVariableName() : null));
+                return List.<JCStatement>of(makeThrowAssertionFailure(cond));
             }
             return transformCommonElse(cond, rest);
         }
 
-        private JCStatement makeThrowAssertionFailure(Tree.Condition condition, CName cName) {
+        private JCStatement makeThrowAssertionFailure(Cond cond) {
+            Tree.Condition condition = cond.getCondition();
             at(condition);
             AssertionBuilder builder = new AssertionBuilder(StatementTransformer.this, condition)
                     .appendViolatedCondition(condition)
                     .assertionDoc(ass);
-            if (cName != null) {
-                builder.wrapException(cName);
+            if (isAssertNotIsThrowable(condition)) {
+                builder.wrapException(cond.getVarTrans().getVariableName());
+            }
+            if (condition instanceof Tree.IsCondition) {
+                builder.violatedIs(cond.getVarTrans().getVariableName());
             }
             return builder.buildThrow();
         }
