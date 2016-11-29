@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ClassOrInterfaceDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 import ceylon.language.ArraySequence;
@@ -35,6 +36,7 @@ import ceylon.language.Tuple;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.sequence_;
+import ceylon.language.meta.type_;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
 import ceylon.language.meta.model.ClassOrInterface;
 
@@ -2255,5 +2257,9 @@ public class Util {
       return (java.lang.Class<? extends T>)
               TypeDescriptor.klass(klass)
                   .getArrayElementClass();
+    }
+    
+    public static String assertIsFailed(Object operand) {
+        return System.lineSeparator()+"\texpression has type "+type_.type(Nothing.NothingType, operand);
     }
 }
