@@ -725,6 +725,7 @@ public class StatementTests extends CompilerTests {
     @Test
     public void testAssertNotIsException() {
         compareWithJavaSource("conditional/AssertNotIsException");
+        run("com.redhat.ceylon.compiler.java.test.statement.conditional.assertNotIsException");
     }
     @Test
     public void testBug1346() {
