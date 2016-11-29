@@ -1,17 +1,18 @@
 package com.redhat.ceylon.tools.classpath;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.SortedSet;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 @Summary("Prints a classpath suitable for passing to Java tools to run a given Ceylon module")
@@ -55,30 +56,34 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
                     null, null, // JS binary but don't care since JVM
                     null);
             if(version == null)
-                return;
+                continue;
             loadModule(null, moduleName, version);
             if(!force)
                 errorOnConflictingModule(moduleName, version);
         }
+        loader.resolve();
         
-        boolean once = true;
-        for(ArtifactResult entry : this.loadedModules.values()){
-            // since we even add missing modules there to avoid seeing them twice, let's skip them now
-            if(entry == null)
-                continue;
-            File file = entry.artifact();
-            if(file == null)
-                continue;
-            // on duplicate, let's only keep the last version
-            SortedSet<String> versions = loadedModuleVersions.get(entry.name());
-            if(!versions.isEmpty() && entry.version() != null && !entry.version().equals(versions.last()))
-                continue;
-            if(once)
-                once = false;
-            else
-                append(File.pathSeparator);
-            append(file.getAbsolutePath());
-        }
+        loader.visitModules(new ModuleGraph.Visitor() {
+            boolean once = true;
+            @Override
+            public void visit(Module module) {
+                if(module.artifact != null){
+                    File file = module.artifact.artifact();
+                    try{
+                        if(file != null){
+                            if(once)
+                                once = false;
+                            else
+                                append(File.pathSeparator);
+                            append(file.getAbsolutePath());
+                        }
+                    }catch(IOException x){
+                        // lame
+                        throw new RuntimeException(x);
+                    }
+                }
+            }
+        });
         flush();
     }
 }

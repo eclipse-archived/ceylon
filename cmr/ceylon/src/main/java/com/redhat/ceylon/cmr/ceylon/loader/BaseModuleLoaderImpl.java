@@ -6,6 +6,10 @@ import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -17,6 +21,7 @@ import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.cmr.impl.FlatRepository;
 import com.redhat.ceylon.common.CeylonVersionComparator;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.JdkProvider;
@@ -38,6 +43,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         protected final ModuleGraph moduleGraph = new ModuleGraph();
         
         protected ClassLoader moduleClassLoader;
+        protected SortedMap<String, SortedSet<String>> duplicateModules = new TreeMap<>();
         
         protected ModuleLoaderContext(String module, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
             this.module = module;
@@ -52,38 +58,43 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                 loadModule(ModuleUtil.getNamespaceFromUri(module), 
                         ModuleUtil.getModuleNameFromUri(module), 
                         modver, false, false, null);
-                if(extraModules != null){
-                    for(Entry<String,String> entry : extraModules.entrySet()){
-                        loadModule(ModuleUtil.getNamespaceFromUri(entry.getKey()), 
-                                ModuleUtil.getModuleNameFromUri(entry.getKey()),
-                                entry.getValue(), false, false, null);
-                    }
-                }
-                Overrides overrides = repositoryManager.getOverrides();
-                if(overrides != null){
-                    for (ArtifactContext context : overrides.getAddedArtifacts()) {
-                        loadModule(context.getNamespace(), 
-                                context.getName(),
-                                context.getVersion(), false, false, null);
-                    }
-                }
-                moduleGraph.pruneExclusions(this);
-                if(verbose){
-                    moduleGraph.dump(false);
-                    System.err.println("Total: "+getModuleCount());
-                }
+                finishLoadingModules();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         
+        protected void finishLoadingModules() throws IOException, ModuleNotFoundException {
+            if(extraModules != null){
+                for(Entry<String,String> entry : extraModules.entrySet()){
+                    loadModule(ModuleUtil.getNamespaceFromUri(entry.getKey()), 
+                            ModuleUtil.getModuleNameFromUri(entry.getKey()),
+                            entry.getValue(), false, false, null);
+                }
+            }
+            Overrides overrides = repositoryManager.getOverrides();
+            if(overrides != null){
+                for (ArtifactContext context : overrides.getAddedArtifacts()) {
+                    loadModule(context.getNamespace(), 
+                            context.getName(),
+                            context.getVersion(), false, false, null);
+                }
+            }
+            moduleGraph.pruneExclusions(this);
+            if(verbose){
+                moduleGraph.dump(false);
+                System.err.println("Total: "+getModuleCount());
+            }
+        }
+
         public int getModuleCount() {
             return moduleGraph.getCount();
         }
 
         protected void loadModule(String namespace, String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) 
         		throws IOException, ModuleNotFoundException  {
-        	
+        	if(isExcluded(name, version))
+        	    return;
             ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
             Overrides overrides = repositoryManager.getOverrides();
             if(overrides != null){
@@ -109,6 +120,16 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                 String loadedVersion = loadedModule.version;
                 // we loaded the module already, but did we load it with the same version?
                 if(!Objects.equals(version, loadedVersion)){
+                    // remember the dupes
+                    SortedSet<String> versions = duplicateModules.get(name);
+                    if(versions == null){
+                        versions = new TreeSet<>();
+                        duplicateModules.put(name, versions);
+                    }
+                    versions.add(version);
+                    // since we only come here on duplicates, there's a chance the loaded version wasn't saved
+                    versions.add(loadedVersion);
+                    // now select
                     if(CeylonVersionComparator.compareVersions(version, loadedModule.version) > 0){
                         // we want a newer version, keep going
                         if(verbose)
@@ -153,7 +174,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             if(loadedModule != null)
                 loadedModule.replace(mod);
             mod.artifact = result;
-            if(result != null){
+            if(result != null && selectDependencies(name, version)){
                 // everything we know should be in the current class loader
                 // plus everything from flat repositories
                 if(inCurrentClassLoader || result.repository() instanceof FlatRepository){
@@ -167,7 +188,20 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                         continue;
                     loadModule(dep.namespace(), dep.name(), dep.version(), dep.optional(), inCurrentClassLoader, mod);
                 }
+                if(name.equals(com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME)){
+                    // make sure we pull the language module for the default module which has no dependency
+                    loadModule(namespace, com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME,
+                            Versions.CEYLON_VERSION_NUMBER, false, inCurrentClassLoader, mod);
+                }
             }
+        }
+
+        protected boolean selectDependencies(String name, String version) {
+            return true;
+        }
+
+        protected boolean isExcluded(String name, String version) {
+            return false;
         }
 
         protected void resolvingSuccess(ArtifactResult result) {

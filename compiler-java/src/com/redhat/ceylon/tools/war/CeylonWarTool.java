@@ -13,13 +13,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -72,7 +75,7 @@ public class CeylonWarTool extends ModuleLoadingTool {
 
     static final String WAR_MODULE = "com.redhat.ceylon.war";
     
-    private String moduleNameOptVersion;
+    private List<ModuleSpec> modules;
     private final List<EntrySpec> entrySpecs = new ArrayList<>();
     private final List<String> excludedModules = new ArrayList<>();
     private final List<String> providedModules = new ArrayList<>();
@@ -87,9 +90,13 @@ public class CeylonWarTool extends ModuleLoadingTool {
         this.staticMetamodel = staticMetamodel;
     }
 
-    @Argument(argumentName="module-with-version", multiplicity = "1")
-    public void setModule(String module) {
-        this.moduleNameOptVersion = module;
+    @Argument(argumentName="module", multiplicity="+")
+    public void setModules(List<String> modules) {
+        setModuleSpecs(ModuleSpec.parseEachList(modules));
+    }
+    
+    public void setModuleSpecs(List<ModuleSpec> modules) {
+        this.modules = modules;
     }
 
     @OptionArgument(shortName='o', argumentName="dir")
@@ -170,20 +177,39 @@ public class CeylonWarTool extends ModuleLoadingTool {
     
     @Override
     public void run() throws Exception {
-        final String moduleName = ModuleUtil.moduleName(this.moduleNameOptVersion);
-        final String moduleVersion = moduleVersion(this.moduleNameOptVersion);
+        String moduleName = null;
+        String moduleVersion = null;
         final Properties properties = new Properties();
         
-        if (!loadModule(null, moduleName, moduleVersion)) {
-            throw new ToolUsageError(CeylonWarMessages.msg("abort.missing.modules"));
+        for (ModuleSpec module : modules) {
+            String name = module.getName();
+            String version = checkModuleVersionsOrShowSuggestions(
+                    name,
+                    module.isVersioned() ? module.getVersion() : null,
+                    ModuleQuery.Type.JVM,
+                    Versions.JVM_BINARY_MAJOR_VERSION,
+                    Versions.JVM_BINARY_MINOR_VERSION,
+                    null, null, // JS binary but don't care since JVM
+                    null);
+            if(version == null)
+                continue;
+            if(!loadModule(null, name, version))
+                throw new ToolUsageError(CeylonWarMessages.msg("abort.missing.modules"));
+            // save the first module
+            if(moduleName == null){
+                moduleName = name;
+                moduleVersion = version;
+            }
         }
+
         // only require the war module if not using a static metamodel
         if (!staticMetamodel
                 && !loadModule(null, WAR_MODULE, Versions.CEYLON_VERSION_NUMBER)) {
             throw new ToolUsageError(CeylonWarMessages.msg("abort.missing.modules"));
         }
+        loader.resolve();
 
-        List<ArtifactResult> staticMetamodelEntries = new ArrayList<>(this.loadedModules.size());
+        List<ArtifactResult> staticMetamodelEntries = new ArrayList<>();
         addLibEntries(staticMetamodelEntries);
         
         properties.setProperty("moduleName", moduleName);
@@ -217,7 +243,7 @@ public class CeylonWarTool extends ModuleLoadingTool {
         newline();
     }
 
-    protected File getJarFile() {
+    public File getJarFile() {
         return applyCwd(this.out == null ? new File(this.name) : new File(this.out, this.name));
     }
 
@@ -295,40 +321,47 @@ public class CeylonWarTool extends ModuleLoadingTool {
         return webXmlAdded;
     }
     
-    protected void addLibEntries(List<ArtifactResult> staticMetamodelEntries) throws MalformedURLException { 
+    protected void addLibEntries(final List<ArtifactResult> staticMetamodelEntries) throws MalformedURLException { 
         final List<String> libs = new ArrayList<>();
 
-        for (Map.Entry<String, ArtifactResult> entry : this.loadedModules.entrySet()) {
-            ArtifactResult module = entry.getValue();
-            if (module == null) {
-                // it's an optional, missing module (likely java.*) 
-                continue;
-            }
-            staticMetamodelEntries.add(module);
-            
-            // write the metamodel, but not the jar, for provided modules
-            if(isProvided(module.name(), module.version()))
-                continue;
-            
-            final File artifact = module.artifact();
-            final String moduleName = entry.getKey();
+        loader.visitModules(new ModuleGraph.Visitor() {
+            @Override
+            public void visit(Module module) {
+                if(module.artifact != null){
+                    File artifact = module.artifact.artifact();
+                    try{
+                        if(artifact != null){
+                            staticMetamodelEntries.add(module.artifact);
+                            
+                            // write the metamodel, but not the jar, for provided modules
+                            if(isProvided(module.name, module.version))
+                                return;
+                            
+                            final String moduleName = module.name;
 
-            // use "-" for the version separator
-            // use ".jar" so they'll get loaded by the container classloader
-            String version = ModuleUtil.moduleVersion(moduleName);
-            String versionSuffix = version != null && !version.isEmpty()
-                    ? "-" + version
-                    : "";
-            final String name = ModuleUtil.moduleName(moduleName).replace(":", ".")
-                                    + versionSuffix + ".jar";
-            if (name.contains("/") || name.contains("\\") || name.length() == 0) {
-                throw new ToolUsageError(CeylonWarMessages.msg("module.name.illegal", name));
-            }
+                            // use "-" for the version separator
+                            // use ".jar" so they'll get loaded by the container classloader
+                            String version = module.version;
+                            String versionSuffix = version != null && !version.isEmpty()
+                                    ? "-" + version
+                                    : "";
+                            final String name = ModuleUtil.moduleName(moduleName).replace(":", ".")
+                                                    + versionSuffix + ".jar";
+                            if (name.contains("/") || name.contains("\\") || name.length() == 0) {
+                                throw new ToolUsageError(CeylonWarMessages.msg("module.name.illegal", name));
+                            }
 
-            addSpec(new URLEntrySpec(artifact.toURI().toURL(),
-                            "WEB-INF/lib/" + name));
-            libs.add(name);
-        }
+                            addSpec(new URLEntrySpec(artifact.toURI().toURL(),
+                                            "WEB-INF/lib/" + name));
+                            libs.add(name);
+                        }
+                    }catch(IOException x){
+                        // lame
+                        throw new RuntimeException(x);
+                    }
+                }
+            }
+        });
 
         // store the list of added libs so the WarInitializer knows what to copy out
         // to a repo if one has to be created

@@ -8,9 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.Versions;
@@ -121,6 +122,7 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
             if(!force)
                 errorOnConflictingModule(moduleName, version);
         }
+        loader.resolve();
 
         
         if(!out.exists()){
@@ -128,28 +130,32 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
                 throw new ToolUsageError(Messages.msg(bundle, "jigsaw.folder.error", out));
             }
         }
-        List<ArtifactResult> staticMetamodelEntries = new ArrayList<>(this.loadedModules.size());
-        for(ArtifactResult entry : this.loadedModules.values()){
-            // since we even add missing modules there to avoid seeing them twice, let's skip them now
-            if(entry == null)
-                continue;
-            File file = entry.artifact();
-            if(file == null)
-                continue;
-            // on duplicate, let's only keep the last version
-            SortedSet<String> versions = loadedModuleVersions.get(entry.name());
-            if(!versions.isEmpty() && entry.version() != null && !entry.version().equals(versions.last()))
-                continue;
-            append(file.getAbsolutePath());
-            newline();
-            staticMetamodelEntries.add(entry);
-            
-            String name = file.getName();
-            if(name.endsWith(".car"))
-                name = name.substring(0, name.length()-4) + ".jar";
-            Files.copy(file.toPath(), new File(out, name).toPath(), StandardCopyOption.REPLACE_EXISTING);
-        }
-        if(staticMetamodel){
+        final List<ArtifactResult> staticMetamodelEntries = new ArrayList<>();
+        loader.visitModules(new ModuleGraph.Visitor() {
+            @Override
+            public void visit(Module module) {
+                if(module.artifact != null){
+                    File file = module.artifact.artifact();
+                    try{
+                        if(file != null){
+                            append(file.getAbsolutePath());
+                            newline();
+                            staticMetamodelEntries.add(module.artifact);
+                            
+                            String name = file.getName();
+                            if(name.endsWith(".car"))
+                                name = name.substring(0, name.length()-4) + ".jar";
+                            Files.copy(file.toPath(), new File(out, name).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        }
+                    }catch(IOException x){
+                        // lame
+                        throw new RuntimeException(x);
+                    }
+                }
+            }
+        });
+
+                if(staticMetamodel){
             JvmBackendUtil.writeStaticMetamodel(out, staticMetamodelEntries, jdkProvider);
         }
         flush();

@@ -11,7 +11,6 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.jar.Attributes;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
@@ -20,6 +19,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
@@ -33,7 +33,6 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
-import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 @Summary("Generate a Ceylon executable jar for a given module")
@@ -127,6 +126,7 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
             if(!force)
                 errorOnConflictingModule(moduleName, version);
         }
+        loader.resolve();
         String versionSuffix = firstModuleVersion != null && !firstModuleVersion.isEmpty()
                 ? "-"+firstModuleVersion
                 : "";
@@ -137,7 +137,7 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
         if(outputJar.exists()){
             FileUtil.delete(outputJar);
         }
-        Set<String> added = new HashSet<>();
+        final Set<String> added = new HashSet<>();
 
         Manifest manifest = new Manifest();
         Attributes mainAttributes = manifest.getMainAttributes();
@@ -149,45 +149,48 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
         added.add("META-INF/MANIFEST.MF");
 
         try(ZipOutputStream zipFile = new JarOutputStream(new FileOutputStream(outputJar), manifest)){
-            List<ArtifactResult> staticMetamodelEntries = new ArrayList<>(this.loadedModules.size());
-            for(ArtifactResult entry : this.loadedModules.values()){
-                // since we even add missing modules there to avoid seeing them twice, let's skip them now
-                if(entry == null)
-                    continue;
-                File file = entry.artifact();
-                if(file == null)
-                    continue;
-                // on duplicate, let's only keep the last version
-                SortedSet<String> versions = loadedModuleVersions.get(entry.name());
-                if(!versions.isEmpty() && entry.version() != null && !entry.version().equals(versions.last()))
-                    continue;
-                if(isVerbose()){
-                    append(file.getAbsolutePath());
-                    newline();
-                }
-                staticMetamodelEntries.add(entry);
+            final List<ArtifactResult> staticMetamodelEntries = new ArrayList<>();
+            loader.visitModules(new ModuleGraph.Visitor() {
+                @Override
+                public void visit(ModuleGraph.Module module) {
+                    if(module.artifact != null){
+                        File file = module.artifact.artifact();
+                        try{
+                            if(file != null){
+                                if(isVerbose()){
+                                    append(file.getAbsolutePath());
+                                    newline();
+                                }
+                                staticMetamodelEntries.add(module.artifact);
 
-                try(ZipFile src = new ZipFile(file)){
-                    Enumeration<? extends ZipEntry> entries = src.entries();
-                    while(entries.hasMoreElements()){
-                        ZipEntry srcEntry = entries.nextElement();
-                        // skip manifests
-                        if(skipEntry(srcEntry.getName()))
-                            continue;
-                        if(!added.add(srcEntry.getName())){
-                            // multiple folders is fine
-                            if(!srcEntry.isDirectory()){
-                                this.append("Warning: duplicate entry "+srcEntry.getName()+" (from "+file+") already added: skipping\n");
+                                try(ZipFile src = new ZipFile(file)){
+                                    Enumeration<? extends ZipEntry> entries = src.entries();
+                                    while(entries.hasMoreElements()){
+                                        ZipEntry srcEntry = entries.nextElement();
+                                        // skip manifests
+                                        if(skipEntry(srcEntry.getName()))
+                                            continue;
+                                        if(!added.add(srcEntry.getName())){
+                                            // multiple folders is fine
+                                            if(!srcEntry.isDirectory()){
+                                                append("Warning: duplicate entry "+srcEntry.getName()+" (from "+file+") already added: skipping\n");
+                                            }
+                                            continue;
+                                        }
+                                        srcEntry.setCompressedSize(-1);
+                                        zipFile.putNextEntry(srcEntry);
+                                        if(!srcEntry.isDirectory())
+                                            IOUtils.copyStream(src.getInputStream(srcEntry), zipFile, true, false);
+                                    }
+                                }
                             }
-                            continue;
+                        }catch(IOException x){
+                            // lame
+                            throw new RuntimeException(x);
                         }
-                        srcEntry.setCompressedSize(-1);
-                        zipFile.putNextEntry(srcEntry);
-                        if(!srcEntry.isDirectory())
-                            IOUtils.copyStream(src.getInputStream(srcEntry), zipFile, true, false);
                     }
                 }
-            }
+            });
             JvmBackendUtil.writeStaticMetamodel(zipFile, added, staticMetamodelEntries, jdkProvider,
                     Collections.<String>emptySet());
             zipFile.flush();

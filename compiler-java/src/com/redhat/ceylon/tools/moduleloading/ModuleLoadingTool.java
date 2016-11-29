@@ -1,15 +1,11 @@
 package com.redhat.ceylon.tools.moduleloading;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.VersionComparator;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -24,18 +20,15 @@ import com.redhat.ceylon.common.tools.RepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
-import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.JdkProvider;
-import com.redhat.ceylon.model.typechecker.model.Module;
 
 public abstract class ModuleLoadingTool extends RepoUsingTool {
 
-    protected Map<String, ArtifactResult> loadedModules = new HashMap<>();
-    protected Map<String, SortedSet<String>> loadedModuleVersions = new HashMap<>();
     protected boolean upgradeDist = DefaultToolOptions.getLinkWithCurrentDistribution();
     // start out with the JDK one and change in initialise()
     protected JdkProvider jdkProvider = new JdkProvider();
     protected String jdkProviderModule;
+    protected ToolModuleLoader loader;
 
 	public ModuleLoadingTool() {
 		super(ModuleLoadingMessages.RESOURCE_BUNDLE);
@@ -80,7 +73,6 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 		if (moduleVersion != null) {
 			return internalLoadModule(namespace, moduleName, moduleVersion);
 		}
-		
 		return false;
 	}
 
@@ -97,55 +89,15 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 	}
 
 	private boolean internalLoadModule(String namespace, String name, String version) throws IOException {
-        String key = name + "/" + version;
-        if(loadedModules.containsKey(key))
+	    try {
+            loader.loadModule(name, version);
             return true;
-        if(shouldExclude(name, version)) {
-            // let's not check the version and assume it's provided
-            // treat it as a missing optional for the purpose of classpath
-            loadedModules.put(key, null);
-            return true;
-        }
-        boolean provided = isProvided(name, version);
-        // remember which version we loaded
-        SortedSet<String> loadedVersions = loadedModuleVersions.get(name);
-        if(loadedVersions == null){
-            loadedVersions = new TreeSet<>(VersionComparator.INSTANCE);
-            loadedModuleVersions.put(name, loadedVersions);
-        }
-        loadedVersions.add(version);
-        
-        // Resolve even provided modules but not their dependencies since they're meaningless
-        // because they can change on the container
-        RepositoryManager repositoryManager = getRepositoryManager();
-        ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
-        ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
-        if(result == null || result.artifact() == null || !result.artifact().exists()){
-            String err = getModuleNotFoundErrorMessage(repositoryManager, name, version);
+        } catch (ModuleNotFoundException e) {
+            String err = getModuleNotFoundErrorMessage(getRepositoryManager(), name, version);
             errorAppend(err);
             errorNewline();
             return false;
         }
-        // save even missing optional modules as nulls to not re-resolve them
-        loadedModules.put(key, result);
-        if(result != null && !provided){
-            for(ArtifactResult dep : result.dependencies()){
-                // Skip those
-                if(dep.moduleScope() == ModuleScope.TEST)
-                    continue;
-                if(skipDependency(dep))
-                    continue;
-                if(!dep.optional()){
-                    internalLoadModule(dep.namespace(), dep.name(), dep.version());
-                }
-            }
-            if(name.equals(Module.DEFAULT_MODULE_NAME)){
-                // make sure we pull the language module for the default module which has no dependency
-                internalLoadModule(namespace, Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER);
-            }
-        }
-        
-        return true;
     }
 	
 	/**
@@ -157,11 +109,9 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 
     protected void errorOnConflictingModule(String module, String version) throws IOException{
 	    boolean duplicate = false;
-	    for(Map.Entry<String, SortedSet<String>> entry : loadedModuleVersions.entrySet()){
-	        if(entry.getValue().size() > 1){
-	            duplicate = true;
-	            printDuplicateModuleErrorMessage(entry.getKey(), entry.getValue());
-	        }
+	    for(Map.Entry<String, SortedSet<String>> entry : loader.getDuplicateModules().entrySet()){
+	        duplicate = true;
+	        printDuplicateModuleErrorMessage(entry.getKey(), entry.getValue());
 	    }
 	    if(duplicate)
 	        throw new ToolUsageError(Messages.msg(bundle, "module.conflict.error", module, version));
@@ -183,12 +133,13 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
     	super.initialize(mainTool);
+    	loader = new ToolModuleLoader(this, getRepositoryManager());
     	if(jdkProviderModule != null){
     		ModuleSpec moduleSpec = ModuleSpec.parse(jdkProviderModule);
 			if(!internalLoadModule(null, moduleSpec.getName(), moduleSpec.getVersion())){
 		        throw new ToolUsageError(Messages.msg(bundle, "jdk.provider.not.found", jdkProviderModule));
 			}
-			ArtifactResult result = loadedModules.get(moduleSpec.getName()+"/"+moduleSpec.getVersion());
+			ArtifactResult result = loader.getModuleArtifact(moduleSpec.getName());
 			jdkProvider = new JdkProvider(moduleSpec.getName(), moduleSpec.getVersion(), null, result.artifact());
     	}
     	// else keep the JDK one

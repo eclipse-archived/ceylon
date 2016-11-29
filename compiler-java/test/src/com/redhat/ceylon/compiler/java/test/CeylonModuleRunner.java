@@ -179,6 +179,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         cpTool.setOffline(true);
         StringBuilder sb = new StringBuilder();
         cpTool.setOut(sb);
+        cpTool.initialize(null);
         cpTool.run();
 
         String classpath = sb.toString();
