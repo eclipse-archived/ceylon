@@ -728,6 +728,12 @@ public class StatementTests extends CompilerTests {
         run("com.redhat.ceylon.compiler.java.test.statement.conditional.assertNotIsException");
     }
     @Test
+    public void testAssertMessageDetail() {
+        compareWithJavaSource("conditional/AssertMessageDetail");
+        //compile("conditional/AssertMessageDetail.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.statement.conditional.assertMessageDetail");
+    }
+    @Test
     public void testBug1346() {
         compareWithJavaSource("conditional/Bug1346");
     }
