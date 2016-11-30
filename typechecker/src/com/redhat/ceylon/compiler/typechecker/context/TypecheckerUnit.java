@@ -27,7 +27,7 @@ public class TypecheckerUnit extends Unit {
     }
 
     public void setJavaLangPackage(Package javaLangPackage) {
-    	this.javaLangPackage = javaLangPackage;
+        this.javaLangPackage = javaLangPackage;
     }
     
     /** 
@@ -41,10 +41,10 @@ public class TypecheckerUnit extends Unit {
             super.getJavaLangPackage();
     }
     
-	@Override
-	public boolean isJdkPackage(String name) {
-	    return jdkProvider!=null ? 
-	            jdkProvider.isJDKPackage(name) : 
+    @Override
+    public boolean isJdkPackage(String name) {
+        return jdkProvider!=null ? 
+                jdkProvider.isJDKPackage(name) : 
                 super.isJdkPackage(name);
-	}
+    }
 }

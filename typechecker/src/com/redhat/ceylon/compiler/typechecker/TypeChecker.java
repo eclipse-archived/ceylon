@@ -62,8 +62,8 @@ public class TypeChecker {
         phasedUnits.parseUnits(srcDirectories);
         long time = System.nanoTime()-start;
         if(statistics)
-        	System.out.println("Parsed in " + 
-        	        time/1000000 + " ms");
+            System.out.println("Parsed in " + 
+                    time/1000000 + " ms");
     }
 
     public PhasedUnits getPhasedUnits() {
@@ -140,8 +140,8 @@ public class TypeChecker {
         executePhases(phasedUnits, forceSilence);
         long time = System.nanoTime()-start;
         if(statistics)
-        	System.out.println("Type checked in " + 
-        	        time/1000000 + " ms");
+            System.out.println("Type checked in " + 
+                    time/1000000 + " ms");
     }
 
     private void executePhases(PhasedUnits phasedUnits, 
@@ -183,7 +183,7 @@ public class TypeChecker {
                 pu.runAssertions(assertionVisitor);
             }
             if (verbose||statistics) {
-            	statsVisitor.print();
+                statsVisitor.print();
             }
             assertionVisitor.print(verbose);
         }
@@ -214,14 +214,14 @@ public class TypeChecker {
     }
     
     public int getErrors(){
-    	return assertionVisitor.getErrors();
+        return assertionVisitor.getErrors();
     }
 
     public int getWarnings(){
-    	return assertionVisitor.getWarnings();
+        return assertionVisitor.getWarnings();
     }
     
     public List<Message> getMessages(){
-    	return assertionVisitor.getFoundErrors();
+        return assertionVisitor.getFoundErrors();
     }
 }

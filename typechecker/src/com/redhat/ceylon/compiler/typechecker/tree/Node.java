@@ -60,19 +60,19 @@ public abstract class Node {
      * The text of the corresponding ANTLR node.
      */
     public String getText() {
-    	if (text!=null) {
-    		return text;
-    	}
-    	else if (token==null) {
-    		return "";
-    	}
-    	else if (endToken==null) {
-    		return token.getText();
-    	}
-    	else {
-    		return token.getText() + 
-    		        endToken.getText();
-    	}
+        if (text!=null) {
+            return text;
+        }
+        else if (token==null) {
+            return "";
+        }
+        else if (endToken==null) {
+            return token.getText();
+        }
+        else {
+            return token.getText() + 
+                    endToken.getText();
+        }
     }
     
     public void setText(String text) {
@@ -84,7 +84,7 @@ public abstract class Node {
      * since the two trees are isomorphic.
      */
     public Token getToken() {
-    	return getFirstChildToken();
+        return getFirstChildToken();
     }
     
     public Token getMainToken() {
@@ -96,32 +96,32 @@ public abstract class Node {
     }
     
     public String getLocation() {
-    	Token token = getToken();
-    	Token endToken = getEndToken();
-		if (token==null) {
-    		return "unknown location";
-    	}
-    	else if (endToken==null) {
-    		return toLocation(token);
-    	}
-    	else {
-    		return toLocation(token) + "-" + 
-    				toEndLocation(endToken);
-    	}
+        Token token = getToken();
+        Token endToken = getEndToken();
+        if (token==null) {
+            return "unknown location";
+        }
+        else if (endToken==null) {
+            return toLocation(token);
+        }
+        else {
+            return toLocation(token) + "-" + 
+                    toEndLocation(endToken);
+        }
     }
     
     /**
      * The index of the first character belonging to this node.
      */
     public Integer getStartIndex() {
-    	Token token = getToken();
-    	if (token==null) {
-    		return null;
-    	}
-    	else {
-    		CommonToken ct = (CommonToken) token;
+        Token token = getToken();
+        if (token==null) {
+            return null;
+        }
+        else {
+            CommonToken ct = (CommonToken) token;
             return ct.getStartIndex();
-    	}
+        }
     }
     
     /**
@@ -131,17 +131,17 @@ public abstract class Node {
      * @see #getEndIndex()
      */
     public Integer getStopIndex() {
-    	Token token = getEndToken();
-    	if (token==null) {
-    		token = getToken();
-    	}
-    	if (token==null) {
-    		return null;
-    	}
-    	else {
-    		CommonToken ct = (CommonToken) token;
+        Token token = getEndToken();
+        if (token==null) {
+            token = getToken();
+        }
+        if (token==null) {
+            return null;
+        }
+        else {
+            CommonToken ct = (CommonToken) token;
             return ct.getStopIndex();
-    	}
+        }
     }
     
     /**
@@ -176,16 +176,16 @@ public abstract class Node {
         }
     }
 
-	private static String toLocation(Token token) {
-		return token.getLine() + ":" + 
-				token.getCharPositionInLine();
-	}
+    private static String toLocation(Token token) {
+        return token.getLine() + ":" + 
+                token.getCharPositionInLine();
+    }
     
-	private static String toEndLocation(Token token) {
-		return token.getLine() + ":" + 
-				(token.getCharPositionInLine()
-				+ token.getText().length()-1);
-	}
+    private static String toEndLocation(Token token) {
+        return token.getLine() + ":" + 
+                (token.getCharPositionInLine()
+                + token.getText().length()-1);
+    }
     
     private static boolean isMissingToken(Token t) {
         return t instanceof MissingToken;
@@ -206,26 +206,26 @@ public abstract class Node {
                 firstChildToken.getTokenIndex()<token.getTokenIndex())) {
             token = firstChildToken;
         }
-		return token;
+        return token;
     }
 
     private Token getLastChildToken() {
-		Token token=this.endToken==null || 
-		        //the tokens ANTLR inserts to represent missing tokens
-		        //don't come with useful offset information
-		        isMissingToken(endToken) ?
-				this.token : this.endToken;
+        Token token=this.endToken==null || 
+                //the tokens ANTLR inserts to represent missing tokens
+                //don't come with useful offset information
+                isMissingToken(endToken) ?
+                this.token : this.endToken;
         if (lastChildToken!=null && 
                 (token==null || 
                 lastChildToken.getTokenIndex()>token.getTokenIndex())) {
             token = lastChildToken;
         }
-		return token;
+        return token;
     }
     
     public Token getEndToken() {
-    	return getLastChildToken();
-	}
+        return getLastChildToken();
+    }
     
     public void setToken(Token token) {
         this.token = token;
@@ -237,7 +237,7 @@ public abstract class Node {
         if (endToken==null || !isMissingToken(endToken)) {
             this.endToken = endToken;
         }
-	}
+    }
     
     /**
      * The compilation errors belonging to this node.
@@ -336,32 +336,32 @@ public abstract class Node {
     }
 
     public String getMessage(Exception e, Visitor visitor) {
-		return "the '" + visitor.getClass().getSimpleName() +
-		        "' caused an exception visiting a '" + 
-		        getNodeType() + "' node: '\"" + e + "\"'" + 
-		        getLocationInfo(e);
-	}
+        return "the '" + visitor.getClass().getSimpleName() +
+                "' caused an exception visiting a '" + 
+                getNodeType() + "' node: '\"" + e + "\"'" + 
+                getLocationInfo(e);
+    }
 
-	private String getLocationInfo(Exception e) {
-		return e.getStackTrace().length==0 ? "" : 
-		    " at '" + e.getStackTrace()[0].toString() + "'";
-	}
-	
-	public void connect(Node child) {
-		if (child!=null) {
-			Token childFirstChildToken = child.getFirstChildToken();
+    private String getLocationInfo(Exception e) {
+        return e.getStackTrace().length==0 ? "" : 
+            " at '" + e.getStackTrace()[0].toString() + "'";
+    }
+    
+    public void connect(Node child) {
+        if (child!=null) {
+            Token childFirstChildToken = child.getFirstChildToken();
             if (childFirstChildToken!=null &&
                     (firstChildToken==null || 
-			        childFirstChildToken.getTokenIndex()<firstChildToken.getTokenIndex())) {
-			    firstChildToken = childFirstChildToken;
-			}
+                    childFirstChildToken.getTokenIndex()<firstChildToken.getTokenIndex())) {
+                firstChildToken = childFirstChildToken;
+            }
             Token childLastChildToken = child.getLastChildToken();
             if (childLastChildToken!=null &&
                     (lastChildToken==null || 
                     childLastChildToken.getTokenIndex()>lastChildToken.getTokenIndex())) {
                 lastChildToken = childLastChildToken;
             }
-		}
-	}
+        }
+    }
 
 }

@@ -97,14 +97,14 @@ public class AnnotationVisitor extends Visitor {
     private void checkAnnotationParameter(Functional a, 
             Tree.Parameter pn) {
         Parameter p = pn.getParameterModel();
-    	if (!(p.getModel() instanceof Value)) {
-    		pn.addError("annotations may not have callable parameters");
-    	}
-    	else {
-    		Type pt = p.getType();
-    		if (pt!=null && 
-    		        isIllegalAnnotationParameterType(pt)) {
-    			Node errorNode;
+        if (!(p.getModel() instanceof Value)) {
+            pn.addError("annotations may not have callable parameters");
+        }
+        else {
+            Type pt = p.getType();
+            if (pt!=null && 
+                    isIllegalAnnotationParameterType(pt)) {
+                Node errorNode;
                 if (pn instanceof Tree.ValueParameterDeclaration) {
                     Tree.ValueParameterDeclaration vpd = 
                             (Tree.ValueParameterDeclaration) pn;
@@ -115,36 +115,36 @@ public class AnnotationVisitor extends Visitor {
                 else {
                     errorNode = pn;
                 }
-    			errorNode.addError("illegal annotation parameter type: '" + 
-    					pt.asString() + "'");
-    		}
-    		Tree.SpecifierOrInitializerExpression se = null;
-    		if (pn instanceof Tree.InitializerParameter) {
-    		    Tree.InitializerParameter ip = 
-    		            (Tree.InitializerParameter) pn;
+                errorNode.addError("illegal annotation parameter type: '" + 
+                        pt.asString() + "'");
+            }
+            Tree.SpecifierOrInitializerExpression se = null;
+            if (pn instanceof Tree.InitializerParameter) {
+                Tree.InitializerParameter ip = 
+                        (Tree.InitializerParameter) pn;
                 se = ip.getSpecifierExpression();
-    		}
-    		else if (pn instanceof Tree.ParameterDeclaration) {
-    		    Tree.ParameterDeclaration pd = 
-    		            (Tree.ParameterDeclaration) pn;
+            }
+            else if (pn instanceof Tree.ParameterDeclaration) {
+                Tree.ParameterDeclaration pd = 
+                        (Tree.ParameterDeclaration) pn;
                 Tree.TypedDeclaration td = 
                         pd.getTypedDeclaration();
-    			if (td instanceof Tree.MethodDeclaration) {
-    			    Tree.MethodDeclaration md = 
-    			            (Tree.MethodDeclaration) td;
+                if (td instanceof Tree.MethodDeclaration) {
+                    Tree.MethodDeclaration md = 
+                            (Tree.MethodDeclaration) td;
                     se = md.getSpecifierExpression();
-    			}
-    			else if (td instanceof Tree.AttributeDeclaration) {
-    			    Tree.AttributeDeclaration ad = 
-    			            (Tree.AttributeDeclaration) td;
+                }
+                else if (td instanceof Tree.AttributeDeclaration) {
+                    Tree.AttributeDeclaration ad = 
+                            (Tree.AttributeDeclaration) td;
                     se = ad.getSpecifierOrInitializerExpression();
-    			}
-    		}
-    		if (se!=null) {
-    			checkAnnotationArgument(a, 
-    			        se.getExpression());
-    		}
-    	}
+                }
+            }
+            if (se!=null) {
+                checkAnnotationArgument(a, 
+                        se.getExpression());
+            }
+        }
     }
     
     /** 

@@ -85,11 +85,11 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     void exitLoopScope() {
-    	definitelyBreaksOrContinues = true;
+        definitelyBreaksOrContinues = true;
     }
     
     void endLoopScope(boolean bc) {
-    	definitelyBreaksOrContinues = bc;
+        definitelyBreaksOrContinues = bc;
     }
     
     void exitLoop() {
@@ -117,7 +117,7 @@ public class ControlFlowVisitor extends Visitor {
     }
     
     void unpauseLoopScope(boolean bc) {
-    	definitelyBreaksOrContinues = bc;
+        definitelyBreaksOrContinues = bc;
     }
         
     @Override
@@ -141,7 +141,7 @@ public class ControlFlowVisitor extends Visitor {
             endReturnScope(c);
         }
         else {
-        	super.visit(that);
+            super.visit(that);
         }
     }
 
@@ -182,17 +182,17 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.MethodArgument that) {
         if (that.getSpecifierExpression()==null) {
-        	boolean c = beginReturnScope(true);
-        	boolean d = beginDefiniteReturnScope();
-        	super.visit(that);
-        	if (!that.getDeclarationModel().isDeclaredVoid()) {
-        		checkDefiniteReturn(that, name(that.getIdentifier()));
-        	}
-        	endDefiniteReturnScope(d);
-        	endReturnScope(c);
+            boolean c = beginReturnScope(true);
+            boolean d = beginDefiniteReturnScope();
+            super.visit(that);
+            if (!that.getDeclarationModel().isDeclaredVoid()) {
+                checkDefiniteReturn(that, name(that.getIdentifier()));
+            }
+            endDefiniteReturnScope(d);
+            endReturnScope(c);
         }
         else {
-        	super.visit(that);
+            super.visit(that);
         }
     }
     
@@ -201,19 +201,19 @@ public class ControlFlowVisitor extends Visitor {
         if (that.getExpression()==null) {
             Boolean efl = pauseLoop();
             boolean bc = pauseLoopScope();
-        	boolean c = beginReturnScope(true);
-        	boolean d = beginDefiniteReturnScope();
-        	super.visit(that);
-        	if (!(that.getDeclarationModel().isDeclaredVoid())) {
-        		checkDefiniteReturn(that, null);
-        	}
-        	endDefiniteReturnScope(d);
-        	endReturnScope(c);
+            boolean c = beginReturnScope(true);
+            boolean d = beginDefiniteReturnScope();
+            super.visit(that);
+            if (!(that.getDeclarationModel().isDeclaredVoid())) {
+                checkDefiniteReturn(that, null);
+            }
+            endDefiniteReturnScope(d);
+            endReturnScope(c);
             unpauseLoop(efl);
             unpauseLoopScope(bc);
         }
         else {
-        	super.visit(that);
+            super.visit(that);
         }
     }
     
@@ -221,12 +221,12 @@ public class ControlFlowVisitor extends Visitor {
     public void visit(Tree.AttributeDeclaration that) {
         if (!that.getDeclarationModel().isParameter() &&
             that.getSpecifierOrInitializerExpression()!=null &&
-        		!(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
+                !(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
             checkExecutableStatementAllowed(that.getSpecifierOrInitializerExpression());
             super.visit(that);
         }
         else {
-        	super.visit(that);
+            super.visit(that);
         }
     }
     
@@ -344,16 +344,16 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ExecutableStatement that) {
-    	boolean executable = true;
-    	//shortcut refinement statements with => aren't really "executable"
-    	if (that instanceof Tree.SpecifierStatement) {
-    		Tree.SpecifierStatement s = (Tree.SpecifierStatement) that;
-    		executable = !(s.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) ||
-    					!s.getRefinement();
-    	}
-		if (executable) {
-    		checkExecutableStatementAllowed(that);
-    	}
+        boolean executable = true;
+        //shortcut refinement statements with => aren't really "executable"
+        if (that instanceof Tree.SpecifierStatement) {
+            Tree.SpecifierStatement s = (Tree.SpecifierStatement) that;
+            executable = !(s.getSpecifierExpression() instanceof Tree.LazySpecifierExpression) ||
+                        !s.getRefinement();
+        }
+        if (executable) {
+            checkExecutableStatementAllowed(that);
+        }
         super.visit(that);
     }
 
@@ -430,10 +430,10 @@ public class ControlFlowVisitor extends Visitor {
         endLoop(b);
         endLoopScope(bc);
         if (isAlwaysSatisfied(that.getWhileClause().getConditionList())) {
-        	if (definitelyDoesNotBreakFromWhile 
-        			|| definitelyReturnsFromWhile) { //superfluous?
-        		definitelyReturns = true;
-        	}
+            if (definitelyDoesNotBreakFromWhile 
+                    || definitelyReturnsFromWhile) { //superfluous?
+                definitelyReturns = true;
+            }
         }
     }
     
@@ -453,7 +453,7 @@ public class ControlFlowVisitor extends Visitor {
         }
         boolean definitelyDoesNotBreakFromFor = !possiblyBreaks;
         boolean definitelyReturnsFromFor = definitelyReturns && 
-        		atLeastOneIteration && definitelyDoesNotBreakFromFor;
+                atLeastOneIteration && definitelyDoesNotBreakFromFor;
         that.setExits(possiblyBreaks);
         endLoop(b);
         endLoopScope(bc);
@@ -465,7 +465,7 @@ public class ControlFlowVisitor extends Visitor {
         if (elseClause!=null) {
             elseClause.visit(this);
             definitelyReturnsFromElse = definitelyReturns && 
-            		definitelyDoesNotBreakFromFor;
+                    definitelyDoesNotBreakFromFor;
         }
         else {
             definitelyReturnsFromElse = false;
@@ -473,8 +473,8 @@ public class ControlFlowVisitor extends Visitor {
         endLoopScope(bc);
         
         definitelyReturns = d || 
-        		definitelyReturnsFromFor || 
-        		definitelyReturnsFromElse;
+                definitelyReturnsFromFor || 
+                definitelyReturnsFromElse;
     }
 
     @Override
@@ -548,7 +548,7 @@ public class ControlFlowVisitor extends Visitor {
             cc.visit(this);
             definitelyReturnsFromEveryCase = definitelyReturnsFromEveryCase && definitelyReturns;
             definitelyBreaksOrContinuesFromEveryCase = definitelyBreaksOrContinuesFromEveryCase 
-            		&& definitelyBreaksOrContinues;
+                    && definitelyBreaksOrContinues;
             endDefiniteReturnScope(d);
             endLoopScope(bc);
         }
@@ -559,7 +559,7 @@ public class ControlFlowVisitor extends Visitor {
             elseClause.visit(this);
             definitelyReturnsFromEveryCase = definitelyReturnsFromEveryCase && definitelyReturns;
             definitelyBreaksOrContinuesFromEveryCase = definitelyBreaksOrContinuesFromEveryCase 
-            		&& definitelyBreaksOrContinues;
+                    && definitelyBreaksOrContinues;
             endDefiniteReturnScope(d);
             endLoopScope(bc);
         }
@@ -590,7 +590,7 @@ public class ControlFlowVisitor extends Visitor {
             cc.visit(this);
             definitelyReturnsFromEveryCatch = definitelyReturnsFromEveryCatch && definitelyReturns;
             definitelyBreaksOrContinuesFromEveryCatch = definitelyBreaksOrContinuesFromEveryCatch 
-            		&& definitelyBreaksOrContinues;
+                    && definitelyBreaksOrContinues;
             endDefiniteReturnScope(d);
             endLoopScope(bc);
         }
@@ -611,7 +611,7 @@ public class ControlFlowVisitor extends Visitor {
         definitelyReturns = d || (definitelyReturnsFromTry && definitelyReturnsFromEveryCatch) 
                 || definitelyReturnsFromFinally;
         definitelyBreaksOrContinues = bc || (definitelyBreaksOrContinuesFromTry && definitelyBreaksOrContinuesFromEveryCatch
-        		|| definitelyBreaksOrContinuesFromFinally);
+                || definitelyBreaksOrContinuesFromFinally);
     }
     
     @Override

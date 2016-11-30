@@ -53,18 +53,18 @@ public class TypeCheckerBuilder {
     }
 
     /**
-	 * Let's you add a directory or a file.
-	 * Directories are better as the type checker can extract the context like module name, package etc
-	 */
+     * Let's you add a directory or a file.
+     * Directories are better as the type checker can extract the context like module name, package etc
+     */
     public TypeCheckerBuilder addSrcDirectory(File srcDirectory) {
         return addSrcDirectory( vfs.getFromFile( srcDirectory ) );
     }
 
-	/**
-	 * Let's you add a directory or a file.
-	 * Directories are better as the type checker can extract the context like module name, package etc
-	 */
-	public TypeCheckerBuilder addSrcDirectory(VirtualFile srcDirectory) {
+    /**
+     * Let's you add a directory or a file.
+     * Directories are better as the type checker can extract the context like module name, package etc
+     */
+    public TypeCheckerBuilder addSrcDirectory(VirtualFile srcDirectory) {
         srcDirectories.add( srcDirectory);
         return this;
     }
@@ -137,8 +137,8 @@ public class TypeCheckerBuilder {
     }
 
     public TypeCheckerBuilder moduleManagerFactory(ModuleManagerFactory moduleManagerFactory){
-    	this.moduleManagerFactory = moduleManagerFactory;
-    	return this;
+        this.moduleManagerFactory = moduleManagerFactory;
+        return this;
     }
 
     public VFS getVFS(){

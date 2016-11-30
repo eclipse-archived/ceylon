@@ -58,11 +58,11 @@ public class TypeArgumentVisitor extends Visitor {
         
     @Override public void visit(Tree.TypedDeclaration that) {
         TypedDeclaration dec = that.getDeclarationModel();
-		if (!(that instanceof Tree.Variable)) {
+        if (!(that instanceof Tree.Variable)) {
             check(that.getType(), dec.isVariable(), dec);
         }
         if (dec.isParameter()) {
-        	flip();
+            flip();
             boolean topLevel = 
                     parameterizedDeclaration==null; //i.e. toplevel parameter in a parameter declaration
             if (topLevel) {
@@ -70,18 +70,18 @@ public class TypeArgumentVisitor extends Visitor {
                 //      parameter dec occurs in any parameter
                 //      list other than the first parameter
                 //      list of the function
-            	FunctionOrValue fov = (FunctionOrValue) dec;
+                FunctionOrValue fov = (FunctionOrValue) dec;
                 parameterizedDeclaration = 
-            	        fov.getInitializerParameter()
-            	            .getDeclaration();
+                        fov.getInitializerParameter()
+                            .getDeclaration();
             }
-			check(that.getType(), false, 
-			        parameterizedDeclaration);
-			super.visit(that);
-			if (topLevel) {
-				parameterizedDeclaration = null;
-			}
-        	flip();
+            check(that.getType(), false, 
+                    parameterizedDeclaration);
+            super.visit(that);
+            if (topLevel) {
+                parameterizedDeclaration = null;
+            }
+            flip();
         }
         else {
             super.visit(that);            

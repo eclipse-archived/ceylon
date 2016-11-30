@@ -370,11 +370,11 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
     }
 
     private void processLiterals() {
-		if (!literalsProcessed) {
-			rootNode.visit(new LiteralVisitor().setExceptionHandler(this));
-			literalsProcessed = true;
-		}
-	}
+        if (!literalsProcessed) {
+            rootNode.visit(new LiteralVisitor().setExceptionHandler(this));
+            literalsProcessed = true;
+        }
+    }
 
     public void scanTypeDeclarations() {
         scanTypeDeclarations(null);

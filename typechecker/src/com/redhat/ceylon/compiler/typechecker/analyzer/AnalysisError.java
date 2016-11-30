@@ -11,9 +11,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.ErrorCode;
  */
 public class AnalysisError extends AnalysisMessage {
 
-	public AnalysisError(Node treeNode, String message) {
-		super(treeNode, message);
-	}
+    public AnalysisError(Node treeNode, String message) {
+        super(treeNode, message);
+    }
     
     public AnalysisError(Node treeNode, String message, Backend backend) {
         super(treeNode, message, backend);

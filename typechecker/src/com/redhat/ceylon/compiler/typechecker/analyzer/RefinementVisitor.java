@@ -968,7 +968,7 @@ public class RefinementVisitor extends Visitor {
     }
 
     /*private boolean refinesOverloaded(Declaration dec, 
-    		Declaration refined, Type st) {
+            Declaration refined, Type st) {
         Functional fun1 = (Functional) dec;
         Functional fun2 = (Functional) refined;
         if (fun1.getParameterLists().size()!=1 ||
@@ -976,9 +976,9 @@ public class RefinementVisitor extends Visitor {
             return false;
         }
         List<Parameter> pl1 = fun1.getParameterLists()
-        		.get(0).getParameters();
+                .get(0).getParameters();
         List<Parameter> pl2 = fun2.getParameterLists()
-        		.get(0).getParameters();
+                .get(0).getParameters();
         if (pl1.size()!=pl2.size()) {
             return false;
         }
@@ -986,16 +986,16 @@ public class RefinementVisitor extends Visitor {
             Parameter p1 = pl1.get(i);
             Parameter p2 = pl2.get(i);
             if (p1==null || p2==null ||
-            		p1.getType()==null || 
-            		p2.getType()==null) {
-            	return false;
+                    p1.getType()==null || 
+                    p2.getType()==null) {
+                return false;
             }
             else {
-            	Type p2st = p2.getType()
-            			.substitute(st.getTypeArguments());
-				if (!matches(p1.getType(), p2st, dec.getUnit())) {
+                Type p2st = p2.getType()
+                        .substitute(st.getTypeArguments());
+                if (!matches(p1.getType(), p2st, dec.getUnit())) {
                     return false;
-            	}
+                }
             }
         }
         return true;
@@ -1005,7 +1005,7 @@ public class RefinementVisitor extends Visitor {
             Tree.Declaration that, Declaration refining, 
             ClassOrInterface ci, Declaration refined) {
         
-    	List<Type> typeArgs;
+        List<Type> typeArgs;
         if (refined instanceof Generic && 
             refining instanceof Generic) {
             List<TypeParameter> refinedTypeParams = 
@@ -1021,7 +1021,7 @@ public class RefinementVisitor extends Visitor {
                     refiningTypeParams);
         }
         else {
-        	typeArgs = NO_TYPE_ARGS;
+            typeArgs = NO_TYPE_ARGS;
         }
         
         Type cit = ci.getType();
@@ -1033,20 +1033,20 @@ public class RefinementVisitor extends Visitor {
                         typeArgs);
         Declaration refinedMemberDec = 
                 refinedMember.getDeclaration();
-		Declaration refiningMemberDec = 
-		        refiningMember.getDeclaration();
-		Node typeNode = getTypeErrorNode(that);
-		if (refinedMemberIsDynamicallyTyped(
-		        refinedMemberDec, refiningMemberDec)) {
-        	checkRefiningMemberDynamicallyTyped(refined, 
-        	        refiningMemberDec, typeNode);
+        Declaration refiningMemberDec = 
+                refiningMember.getDeclaration();
+        Node typeNode = getTypeErrorNode(that);
+        if (refinedMemberIsDynamicallyTyped(
+                refinedMemberDec, refiningMemberDec)) {
+            checkRefiningMemberDynamicallyTyped(refined, 
+                    refiningMemberDec, typeNode);
         }
-		else if (refiningMemberIsDynamicallyTyped(
-		        refinedMemberDec, refiningMemberDec)) {
-        	checkRefinedMemberDynamicallyTyped(refined, 
-        	        refinedMemberDec, typeNode);
+        else if (refiningMemberIsDynamicallyTyped(
+                refinedMemberDec, refiningMemberDec)) {
+            checkRefinedMemberDynamicallyTyped(refined, 
+                    refinedMemberDec, typeNode);
         }
-		else if (refinedMemberIsVariable(refinedMemberDec)) {
+        else if (refinedMemberIsVariable(refinedMemberDec)) {
             checkRefinedMemberTypeExactly(refiningMember, 
                     refinedMember, typeNode, refined, refining);
         }
@@ -1064,142 +1064,142 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-	private void checkRefiningMemberParameters(
-	        Tree.Declaration that,
+    private void checkRefiningMemberParameters(
+            Tree.Declaration that,
             Declaration refining, Declaration refined,
             Reference refinedMember, 
             Reference refiningMember,
             boolean forNative) {
-		Functional refiningFun = (Functional) refining;
+        Functional refiningFun = (Functional) refining;
         Functional refinedFun = (Functional) refined;
         List<ParameterList> refiningParamLists = 
-		        refiningFun.getParameterLists();
+                refiningFun.getParameterLists();
         List<ParameterList> refinedParamLists = 
-		        refinedFun.getParameterLists();
-		if (refinedParamLists.size()!=refiningParamLists.size()) {
-		    String subject = 
-		            forNative ? 
-    		            "native header" :
-    		            "refined member";
-		    String current = 
-		            forNative ? 
-    		            "native implementation" : 
-    		            "refining member";
-		    StringBuilder message = new StringBuilder();
-			message.append(current)
-			        .append(" must have the same number of parameter lists as ")
-			        .append(subject)
-			        .append(": ")
-			        .append(message(refining));
-			if (!forNative) {
-			    message.append(" refines ")
-			            .append(message(refined));
-			}
+                refinedFun.getParameterLists();
+        if (refinedParamLists.size()!=refiningParamLists.size()) {
+            String subject = 
+                    forNative ? 
+                        "native header" :
+                        "refined member";
+            String current = 
+                    forNative ? 
+                        "native implementation" : 
+                        "refining member";
+            StringBuilder message = new StringBuilder();
+            message.append(current)
+                    .append(" must have the same number of parameter lists as ")
+                    .append(subject)
+                    .append(": ")
+                    .append(message(refining));
+            if (!forNative) {
+                message.append(" refines ")
+                        .append(message(refined));
+            }
             that.addError(message.toString());
-		}
-		for (int i=0; 
-		        i<refinedParamLists.size() && 
-		        i<refiningParamLists.size(); 
-		        i++) {
-			checkParameterTypes(that, 
-			        getParameterList(that, i), 
-					refiningMember, refinedMember, 
-					refiningParamLists.get(i), 
-					refinedParamLists.get(i),
-					forNative);
-		}
+        }
+        for (int i=0; 
+                i<refinedParamLists.size() && 
+                i<refiningParamLists.size(); 
+                i++) {
+            checkParameterTypes(that, 
+                    getParameterList(that, i), 
+                    refiningMember, refinedMember, 
+                    refiningParamLists.get(i), 
+                    refinedParamLists.get(i),
+                    forNative);
+        }
     }
 
-	private boolean refinedMemberIsVariable(
-	        Declaration refinedMemberDec) {
-	    if (refinedMemberDec instanceof TypedDeclaration) {
-	        TypedDeclaration typedDec = 
-	                (TypedDeclaration) 
-	                    refinedMemberDec;
-	        return typedDec.isVariable();
-	    }
-	    else {
-	        return false;
-	    }
+    private boolean refinedMemberIsVariable(
+            Declaration refinedMemberDec) {
+        if (refinedMemberDec instanceof TypedDeclaration) {
+            TypedDeclaration typedDec = 
+                    (TypedDeclaration) 
+                        refinedMemberDec;
+            return typedDec.isVariable();
+        }
+        else {
+            return false;
+        }
     }
 
-	private void checkRefinedMemberDynamicallyTyped(
-	        Declaration refined,
+    private void checkRefinedMemberDynamicallyTyped(
+            Declaration refined,
             Declaration refinedMemberDec, 
             Node typeNode) {
-	    TypedDeclaration td = 
-	            (TypedDeclaration) 
-	                refinedMemberDec;
+        TypedDeclaration td = 
+                (TypedDeclaration) 
+                    refinedMemberDec;
         if (!td.isDynamicallyTyped()) {
-	    	typeNode.addError(
-	    	        "member which refines statically typed refined member must also be statically typed: " + 
-	    			message(refined));
-	    }
+            typeNode.addError(
+                    "member which refines statically typed refined member must also be statically typed: " + 
+                    message(refined));
+        }
     }
 
-	private void checkRefiningMemberDynamicallyTyped(
-	        Declaration refined,
+    private void checkRefiningMemberDynamicallyTyped(
+            Declaration refined,
             Declaration refiningMemberDec, 
             Node typeNode) {
-	    TypedDeclaration td = 
-	            (TypedDeclaration) 
-	                refiningMemberDec;
+        TypedDeclaration td = 
+                (TypedDeclaration) 
+                    refiningMemberDec;
         if (!td.isDynamicallyTyped()) {
-	    	typeNode.addError(
-	    	        "member which refines dynamically typed refined member must also be dynamically typed: " + 
-	    	                message(refined));
-	    }
+            typeNode.addError(
+                    "member which refines dynamically typed refined member must also be dynamically typed: " + 
+                            message(refined));
+        }
     }
 
-	private boolean refiningMemberIsDynamicallyTyped(
+    private boolean refiningMemberIsDynamicallyTyped(
             Declaration refinedMemberDec, Declaration refiningMemberDec) {
-	    return refinedMemberDec instanceof TypedDeclaration && 
-			   refiningMemberDec instanceof TypedDeclaration && 
-        		((TypedDeclaration) refiningMemberDec)
-        		    .isDynamicallyTyped();
+        return refinedMemberDec instanceof TypedDeclaration && 
+               refiningMemberDec instanceof TypedDeclaration && 
+                ((TypedDeclaration) refiningMemberDec)
+                    .isDynamicallyTyped();
     }
 
-	private boolean refinedMemberIsDynamicallyTyped(
+    private boolean refinedMemberIsDynamicallyTyped(
             Declaration refinedMemberDec, 
             Declaration refiningMemberDec) {
-	    return refinedMemberDec instanceof TypedDeclaration && 
-			   refiningMemberDec instanceof TypedDeclaration && 
-        		((TypedDeclaration) refinedMemberDec)
-        		    .isDynamicallyTyped();
+        return refinedMemberDec instanceof TypedDeclaration && 
+               refiningMemberDec instanceof TypedDeclaration && 
+                ((TypedDeclaration) refinedMemberDec)
+                    .isDynamicallyTyped();
     }
 
-	private void checkRefiningMemberTypeParameters(
-	        Tree.Declaration that,
-	        Declaration dec, Declaration refined, 
+    private void checkRefiningMemberTypeParameters(
+            Tree.Declaration that,
+            Declaration dec, Declaration refined, 
             List<TypeParameter> refinedTypeParams,
             List<TypeParameter> refiningTypeParams) {
-	    int refiningSize = refiningTypeParams.size();
-	    int refinedSize = refinedTypeParams.size();
-	    if (refiningSize!=refinedSize) {
-	        StringBuilder message = new StringBuilder();
-	        message.append("refining member does not have the same number of type parameters as refined member: ") 
-	                .append(message(dec))
+        int refiningSize = refiningTypeParams.size();
+        int refinedSize = refinedTypeParams.size();
+        if (refiningSize!=refinedSize) {
+            StringBuilder message = new StringBuilder();
+            message.append("refining member does not have the same number of type parameters as refined member: ") 
+                    .append(message(dec))
                     .append(" refines ")
                     .append(message(refined));
             that.addError(message.toString());
-	    }
+        }
     }
 
-	private List<Type> checkRefiningMemberUpperBounds(
-	        Tree.Declaration that,
+    private List<Type> checkRefiningMemberUpperBounds(
+            Tree.Declaration that,
             ClassOrInterface ci, Declaration refined,
             List<TypeParameter> refinedTypeParams, 
             List<TypeParameter> refiningTypeParams) {
         int refiningSize = refiningTypeParams.size();
         int refinedSize = refinedTypeParams.size();
-	    int max = refiningSize <= refinedSize ? 
-	            refiningSize : refinedSize;
-	    if (max==0) {
-	    	return NO_TYPE_ARGS;
-	    }
-	    //we substitute the type parameters of the refined
-	    //declaration into the bounds of the refining 
-	    //declaration
+        int max = refiningSize <= refinedSize ? 
+                refiningSize : refinedSize;
+        if (max==0) {
+            return NO_TYPE_ARGS;
+        }
+        //we substitute the type parameters of the refined
+        //declaration into the bounds of the refining 
+        //declaration
         Map<TypeParameter, Type> substitution =
                 new HashMap<TypeParameter, Type>();
         for (int i=0; i<max; i++) {
@@ -1223,21 +1223,21 @@ public class RefinementVisitor extends Visitor {
                 supertype.getTypeArguments();
         Map<TypeParameter, SiteVariance> variances = 
                 supertype.getVarianceOverrides();
-		List<Type> typeArgs = 
-		        new ArrayList<Type>(max); 
-		for (int i=0; i<max; i++) {
-	        TypeParameter refinedTypeParam = 
-	                refinedTypeParams.get(i);
-	        TypeParameter refiningTypeParam = 
-	                refiningTypeParams.get(i);
-	        
-	        refiningTypeParam.setReified(
-	                refinedTypeParam.isReified());
-	        
-	        Type refinedProducedType = 
-	                refinedTypeParam.getType();
-	        List<Type> refinedBounds = 
-	                refinedTypeParam.getSatisfiedTypes();
+        List<Type> typeArgs = 
+                new ArrayList<Type>(max); 
+        for (int i=0; i<max; i++) {
+            TypeParameter refinedTypeParam = 
+                    refinedTypeParams.get(i);
+            TypeParameter refiningTypeParam = 
+                    refiningTypeParams.get(i);
+            
+            refiningTypeParam.setReified(
+                    refinedTypeParam.isReified());
+            
+            Type refinedProducedType = 
+                    refinedTypeParam.getType();
+            List<Type> refinedBounds = 
+                    refinedTypeParam.getSatisfiedTypes();
             List<Type> refiningBounds = 
                     refiningTypeParam.getSatisfiedTypes();
             Unit unit = that.getUnit();
@@ -1245,41 +1245,41 @@ public class RefinementVisitor extends Visitor {
                 Type refiningBound = 
                         bound.substitute(substitution, 
                                 noVariances);
-	            //for every type constraint of the refining member, there must
-	            //be at least one type constraint of the refined member which
-	            //is assignable to it, guaranteeing that the intersection of
-	            //the refined member bounds is assignable to the intersection
-	            //of the refining member bounds
-	            //TODO: would it be better to just form the intersections and
-	            //      test assignability directly (the error messages might
-	            //      not be as helpful, but it might be less restrictive)
-	            boolean ok = false;
-	            for (Type refinedBound: refinedBounds) {
-	                refinedBound = 
-	                        refinedBound.substitute(
-	                                args, variances);
-	                if (refinedBound.isSubtypeOf(refiningBound)) {
-	                    ok = true;
-	                }
-	            }
-	            if (!ok) {
-	                that.addError(
-	                        "refining member type parameter '" + 
-	                        refiningTypeParam.getName() +
-	                        "' has upper bound which refined member type parameter '" + 
-	                        refinedTypeParam.getName() + 
-	                        "' of " + message(refined) + 
-	                        " does not satisfy: '" + 
-	                        bound.asString(unit) + 
-	                        "' ('" +
+                //for every type constraint of the refining member, there must
+                //be at least one type constraint of the refined member which
+                //is assignable to it, guaranteeing that the intersection of
+                //the refined member bounds is assignable to the intersection
+                //of the refining member bounds
+                //TODO: would it be better to just form the intersections and
+                //      test assignability directly (the error messages might
+                //      not be as helpful, but it might be less restrictive)
+                boolean ok = false;
+                for (Type refinedBound: refinedBounds) {
+                    refinedBound = 
+                            refinedBound.substitute(
+                                    args, variances);
+                    if (refinedBound.isSubtypeOf(refiningBound)) {
+                        ok = true;
+                    }
+                }
+                if (!ok) {
+                    that.addError(
+                            "refining member type parameter '" + 
+                            refiningTypeParam.getName() +
+                            "' has upper bound which refined member type parameter '" + 
+                            refinedTypeParam.getName() + 
+                            "' of " + message(refined) + 
+                            " does not satisfy: '" + 
+                            bound.asString(unit) + 
+                            "' ('" +
                             refiningTypeParam.getName() +
                             "' should be upper bounded by '" +
                             intersectionOfSupertypes(refinedTypeParam)
                                 .substitute(args, variances)
                                 .asString(unit) + 
                             "')");
-	            }
-	        }
+                }
+            }
             for (Type bound: refinedBounds) {
                 Type refinedBound =
                         bound.substitute(args, variances);
@@ -1311,17 +1311,17 @@ public class RefinementVisitor extends Visitor {
                             "')");
                 }
             }
-	        typeArgs.add(refinedProducedType);
-	    }
-	    return typeArgs;
+            typeArgs.add(refinedProducedType);
+        }
+        return typeArgs;
     }
 
     private void checkRefinedMemberTypeAssignable(
             Reference refiningMember, 
-    		Reference refinedMember,
-    		Node that, 
-    		Declaration refined, 
-    		Declaration refining) {
+            Reference refinedMember,
+            Node that, 
+            Declaration refined, 
+            Declaration refining) {
         Unit unit = that.getUnit();
         Type refiningType = refiningMember.getType();
         Type refinedType = refinedMember.getType();
@@ -1350,16 +1350,16 @@ public class RefinementVisitor extends Visitor {
                 checkAssignableToOneOf(refiningType, 
                         refinedType, optionalRefinedType, 
                         that, 
-                		"type of member must be assignable to type of refined member " + 
-        				message(refined), 
-        				9000);
+                        "type of member must be assignable to type of refined member " + 
+                        message(refined), 
+                        9000);
             }
             else {
                 checkAssignable(refiningType, refinedType, 
                         that,
-                		"type of member must be assignable to type of refined member " + 
-        		        message(refined), 
-        		        9000);
+                        "type of member must be assignable to type of refined member " + 
+                        message(refined), 
+                        9000);
                 checkSmallRefinement(that, 
                         refiningMember.getDeclaration(), 
                         refinedMember.getDeclaration());
@@ -1369,10 +1369,10 @@ public class RefinementVisitor extends Visitor {
 
     private void checkRefinedMemberTypeExactly(
             Reference refiningMember, 
-    		Reference refinedMember, 
-    		Node that, 
-    		Declaration refined,
-    		Declaration refining) {
+            Reference refinedMember, 
+            Node that, 
+            Declaration refined,
+            Declaration refining) {
         Unit unit = that.getUnit();
         Type refiningType = refiningMember.getType();
         Type refinedType = refinedMember.getType();
@@ -1402,16 +1402,16 @@ public class RefinementVisitor extends Visitor {
                         unit.getOptionalType(refinedType);
                 checkIsExactlyOneOf(refiningType, 
                         refinedMember.getType(), 
-                		optionalRefinedType, that, 
-                		"type of member must be exactly the same as type of variable refined member: " + 
-        	            message(refined));
+                        optionalRefinedType, that, 
+                        "type of member must be exactly the same as type of variable refined member: " + 
+                        message(refined));
             }
             else {
                 checkIsExactly(refiningType, 
                         refinedType, that,
-                		"type of member must be exactly the same as type of variable refined member: " + 
-        	            message(refined), 
-        	            9000);
+                        "type of member must be exactly the same as type of variable refined member: " + 
+                        message(refined), 
+                        9000);
             }
         }
     }
@@ -1598,9 +1598,9 @@ public class RefinementVisitor extends Visitor {
             ParameterList refinedParams, 
             boolean forNative) {
         List<Parameter> paramsList = params.getParameters();
-		List<Parameter> refinedParamsList = 
-		        refinedParams.getParameters();
-		if (paramsList.size()!=refinedParamsList.size()) {
+        List<Parameter> refinedParamsList = 
+                refinedParams.getParameters();
+        if (paramsList.size()!=refinedParamsList.size()) {
            handleWrongParameterListLength(that, 
                    member, refinedMember, forNative);
         }
@@ -1615,42 +1615,42 @@ public class RefinementVisitor extends Visitor {
                             + message(refinedMember.getDeclaration()));
                 }
                 Type refinedParameterType = 
-                		refinedMember.getTypedParameter(rparam)
-                		        .getFullType();
+                        refinedMember.getTypedParameter(rparam)
+                                .getFullType();
                 Type parameterType = 
-                		member.getTypedParameter(param)
-                		        .getFullType();
+                        member.getTypedParameter(param)
+                                .getFullType();
                 Tree.Parameter parameter = 
                         pl.getParameters().get(i);
                 Node typeNode = parameter;
                 if (parameter instanceof Tree.ParameterDeclaration) {
-                	Tree.ParameterDeclaration pd = 
-                	        (Tree.ParameterDeclaration) 
-                	            parameter;
+                    Tree.ParameterDeclaration pd = 
+                            (Tree.ParameterDeclaration) 
+                                parameter;
                     Tree.Type type = 
                             pd.getTypedDeclaration()
                                 .getType();
-                	if (type!=null) {
-                		typeNode = type;
-                	}
+                    if (type!=null) {
+                        typeNode = type;
+                    }
                 }
                 if (parameter!=null) {
-            		if (rparam.getModel().isDynamicallyTyped()) {
-                    	checkRefiningParameterDynamicallyTyped(
-                    	        member, refinedMember, 
-                    	        param, typeNode);
+                    if (rparam.getModel().isDynamicallyTyped()) {
+                        checkRefiningParameterDynamicallyTyped(
+                                member, refinedMember, 
+                                param, typeNode);
                     }
-            		else if (param.getModel() != null && 
-            		         param.getModel().isDynamicallyTyped()) {
-                    	checkRefinedParameterDynamicallyTyped(
-                    	        member, refinedMember, 
-                    	        rparam, param, typeNode);
+                    else if (param.getModel() != null && 
+                             param.getModel().isDynamicallyTyped()) {
+                        checkRefinedParameterDynamicallyTyped(
+                                member, refinedMember, 
+                                rparam, param, typeNode);
                     }
-            		else if (refinedParameterType==null || 
-            		         parameterType==null) {
-            			handleUnknownParameterType(member, 
-            			        refinedMember, param,
-            			        typeNode, forNative);
+                    else if (refinedParameterType==null || 
+                             parameterType==null) {
+                        handleUnknownParameterType(member, 
+                                refinedMember, param,
+                                typeNode, forNative);
                     }
                     else {
                         checkRefiningParameterType(member, 
@@ -1684,34 +1684,34 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void handleWrongParameterListLength(
-	        Tree.Declaration that,
+            Tree.Declaration that,
             Reference member, 
             Reference refinedMember,
             boolean forNative) {
         StringBuilder message = new StringBuilder();
-	    String subject = 
-	            forNative ? 
-    	            "native header" : 
-    	            "refined member";
-	    message.append("member does not have the same number of parameters as ") 
-	            .append(subject)
-	            .append(": '") 
-	            .append(member.getDeclaration().getName())
-	            .append("'");
-	    if (!forNative) {
-	        message.append(" declared by '") 
-	                .append(containerName(member)) 
-	                .append("' refining '") 
-	                .append(refinedMember.getDeclaration().getName())
-	                .append("' declared by '") 
-	                .append(containerName(refinedMember))
-	                .append("'");
-	    }
-	    that.addError(message.toString(), 9100);
+        String subject = 
+                forNative ? 
+                    "native header" : 
+                    "refined member";
+        message.append("member does not have the same number of parameters as ") 
+                .append(subject)
+                .append(": '") 
+                .append(member.getDeclaration().getName())
+                .append("'");
+        if (!forNative) {
+            message.append(" declared by '") 
+                    .append(containerName(member)) 
+                    .append("' refining '") 
+                    .append(refinedMember.getDeclaration().getName())
+                    .append("' declared by '") 
+                    .append(containerName(refinedMember))
+                    .append("'");
+        }
+        that.addError(message.toString(), 9100);
     }
 
-	private static void checkRefiningParameterType(
-	        Reference member,
+    private static void checkRefiningParameterType(
+            Reference member,
             Reference refinedMember, 
             ParameterList refinedParams,
             Parameter rparam, 
@@ -1720,22 +1720,22 @@ public class RefinementVisitor extends Visitor {
             Type parameterType,
             Node typeNode, 
             boolean forNative) {
-	    //TODO: consider type parameter substitution!!!
-	    StringBuilder message = new StringBuilder();
-	    String subject = 
-	            forNative ? 
-    	            "native header" : 
-    	            "refined member";
-	    message.append("type of parameter '")
-	            .append(param.getName())
-	            .append("' of '")
-	            .append(member.getDeclaration().getName())
-	            .append("'");
-	    if (!forNative) {
-	        message.append(" declared by '")
-	                .append(containerName(member)) 
-	                .append("'");
-	    }
+        //TODO: consider type parameter substitution!!!
+        StringBuilder message = new StringBuilder();
+        String subject = 
+                forNative ? 
+                    "native header" : 
+                    "refined member";
+        message.append("type of parameter '")
+                .append(param.getName())
+                .append("' of '")
+                .append(member.getDeclaration().getName())
+                .append("'");
+        if (!forNative) {
+            message.append(" declared by '")
+                    .append(containerName(member)) 
+                    .append("'");
+        }
         message.append(" is different to type of corresponding parameter '")
                 .append(rparam.getName())
                 .append("' of ") 
@@ -1749,75 +1749,75 @@ public class RefinementVisitor extends Visitor {
                     .append("'");
         }
         checkIsExactlyForInterop(typeNode.getUnit(), 
-	            refinedParams.isNamedParametersSupported(), 
-	            parameterType, refinedParameterType, 
-	            typeNode, message.toString());
+                refinedParams.isNamedParametersSupported(), 
+                parameterType, refinedParameterType, 
+                typeNode, message.toString());
     }
 
-	private void handleUnknownParameterType(
-	        Reference member,
+    private void handleUnknownParameterType(
+            Reference member,
             Reference refinedMember, 
             Parameter param, 
             Node typeNode, 
             boolean forNative) {
-	    StringBuilder message = new StringBuilder();
-	    String subject = 
-	            forNative ? 
-    	            "native header" : 
-    	            "refined member";
-	    message.append("could not determine if parameter type is the same as the corresponding parameter of ") 
-	            .append(subject).append(": '")
-	            .append(param.getName())
-	            .append("' of '") 
-	            .append(member.getDeclaration().getName());
-	    if (!forNative) {
-	            message.append("' declared by '") 
-	                    .append(containerName(member))
-	                    .append("' refining '") 
-	                    .append(refinedMember.getDeclaration().getName())
-	                    .append("' declared by '") 
-	                    .append(containerName(refinedMember))
-	                    .append("'");
-	    }
+        StringBuilder message = new StringBuilder();
+        String subject = 
+                forNative ? 
+                    "native header" : 
+                    "refined member";
+        message.append("could not determine if parameter type is the same as the corresponding parameter of ") 
+                .append(subject).append(": '")
+                .append(param.getName())
+                .append("' of '") 
+                .append(member.getDeclaration().getName());
+        if (!forNative) {
+                message.append("' declared by '") 
+                        .append(containerName(member))
+                        .append("' refining '") 
+                        .append(refinedMember.getDeclaration().getName())
+                        .append("' declared by '") 
+                        .append(containerName(refinedMember))
+                        .append("'");
+        }
         typeNode.addError(message.toString());
     }
 
-	private void checkRefinedParameterDynamicallyTyped(
+    private void checkRefinedParameterDynamicallyTyped(
             Reference member, 
             Reference refinedMember,
             Parameter rparam, Parameter param, 
             Node typeNode) {
-	    if (!rparam.getModel().isDynamicallyTyped()) {
-	    	typeNode.addError(
-	    	        "parameter which refines statically typed parameter must also be statically typed: '" + 
-	    			param.getName() + "' of '" + 
-	    	        member.getDeclaration().getName() + 
-	                "' declared by '" + 
-	    	        containerName(member) +
-	                "' refining '" + 
-	    	        refinedMember.getDeclaration().getName() +
-	                "' declared by '" + 
-	    	        containerName(refinedMember) + 
-	    	        "'");
-	    }
+        if (!rparam.getModel().isDynamicallyTyped()) {
+            typeNode.addError(
+                    "parameter which refines statically typed parameter must also be statically typed: '" + 
+                    param.getName() + "' of '" + 
+                    member.getDeclaration().getName() + 
+                    "' declared by '" + 
+                    containerName(member) +
+                    "' refining '" + 
+                    refinedMember.getDeclaration().getName() +
+                    "' declared by '" + 
+                    containerName(refinedMember) + 
+                    "'");
+        }
     }
 
-	private void checkRefiningParameterDynamicallyTyped(
+    private void checkRefiningParameterDynamicallyTyped(
             Reference member, Reference refinedMember,
             Parameter param, Node typeNode) {
-	    if (!param.getModel().isDynamicallyTyped()) {
-	    	typeNode.addError(
-	    	        "parameter which refines dynamically typed parameter must also be dynamically typed: '" + 
-	    			param.getName() + "' of '" + 
-	    	        member.getDeclaration().getName() + 
-	                "' declared by '" + 
-	    	        containerName(member) +
-	                "' refining '" + 
-	    	        refinedMember.getDeclaration().getName() +
-	                "' declared by '" + 
-	    	        containerName(refinedMember) + 
-	    	        "'");
-	    }
+        if (!param.getModel().isDynamicallyTyped()) {
+            typeNode.addError(
+                    "parameter which refines dynamically typed parameter must also be dynamically typed: '" + 
+                    param.getName() + "' of '" + 
+                    member.getDeclaration().getName() + 
+                    "' declared by '" + 
+                    containerName(member) +
+                    "' refining '" + 
+                    refinedMember.getDeclaration().getName() +
+                    "' declared by '" + 
+                    containerName(refinedMember) + 
+                    "'");
+        }
     }
 
     private static Tree.ParameterList getParameterList(

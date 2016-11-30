@@ -10,9 +10,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
  */
 public class UnsupportedError extends AnalysisError {
     
-	public UnsupportedError(Node treeNode, String message) {
-		super(treeNode, message);
-	}
+    public UnsupportedError(Node treeNode, String message) {
+        super(treeNode, message);
+    }
     
     public UnsupportedError(Node treeNode, String message, Backend backend) {
         super(treeNode, message, backend);

@@ -96,7 +96,7 @@ public class PrintVisitor extends Visitor {
                 int i=0;
                 for (Type pt: types) {
                     if (pt!=null) {
-                    	print(pt.asString());
+                        print(pt.asString());
                     }
                     if (++i!=types.size()) {
                         print(", ");
@@ -173,28 +173,28 @@ public class PrintVisitor extends Visitor {
             }
         }
         if (node instanceof Tree.Return) {
-        	Declaration d = ((Tree.Return) node).getDeclaration();
-			if (d!=null) {
-				print(" : " + d);
-			}
+            Declaration d = ((Tree.Return) node).getDeclaration();
+            if (d!=null) {
+                print(" : " + d);
+            }
         }
         if (node instanceof Tree.PositionalArgument) {
-        	Parameter p = ((Tree.PositionalArgument) node).getParameter();
-			if (p!=null) {
-				print(" : " + p);
-			}
+            Parameter p = ((Tree.PositionalArgument) node).getParameter();
+            if (p!=null) {
+                print(" : " + p);
+            }
         }
         if (node instanceof Tree.NamedArgument) {
-        	Parameter p = ((Tree.NamedArgument) node).getParameter();
-			if (p!=null) {
-				print(" : " + p);
-			}
+            Parameter p = ((Tree.NamedArgument) node).getParameter();
+            if (p!=null) {
+                print(" : " + p);
+            }
         }
         if (node instanceof Tree.SequencedArgument) {
-        	Parameter p = ((Tree.SequencedArgument) node).getParameter();
-			if (p!=null) {
-				print(" : " + p);
-			}
+            Parameter p = ((Tree.SequencedArgument) node).getParameter();
+            if (p!=null) {
+                print(" : " + p);
+            }
         }
         if (!node.getErrors().isEmpty()) {
             String icon = " [!]";

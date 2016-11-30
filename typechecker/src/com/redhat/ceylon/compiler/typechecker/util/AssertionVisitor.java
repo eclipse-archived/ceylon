@@ -22,9 +22,9 @@ import com.redhat.ceylon.model.typechecker.model.Unit;
 public class AssertionVisitor extends Visitor {
     
     private boolean expectingError = false;
-	private String errorMessage;
-	private boolean expectingWarning = false;
-	private String warningType;
+    private String errorMessage;
+    private boolean expectingWarning = false;
+    private String warningType;
     private List<Message> foundErrors = new ArrayList<Message>();
     private int errors = 0;
     private int warnings = 0;
@@ -49,28 +49,28 @@ public class AssertionVisitor extends Visitor {
             if (c.getIdentifier().getText().equals("type")) {
                 Tree.StringLiteral sl = c.getStringLiteral();
                 if (sl==null) {
-                	out(that, "missing asserted type");
+                    out(that, "missing asserted type");
                 }
                 else {
-                	String expectedType = sl.getText();
-                	if (typedNode==null || type==null || 
-                			type.getDeclaration()==null) {
-                		out(that, "type not known");
-                	}
-                	else {
-                	    String actualType = type.asString(false);
-                	    String abbreviatedActualType = type.asString();
-                	    if (!actualType.equals(expectedType) &&
-                	            !abbreviatedActualType.equals(expectedType)) {
-                	        String desc = "'" + abbreviatedActualType + "'";
-                	        if (!actualType.equals(abbreviatedActualType)) {
-                	            desc += " ('"+ actualType + "')";
-                	        }
-                	        out(that, "type " + desc +
-                	                " not of expected type '" + 
-                	                expectedType + "'");
-                	    }
-                	}
+                    String expectedType = sl.getText();
+                    if (typedNode==null || type==null || 
+                            type.getDeclaration()==null) {
+                        out(that, "type not known");
+                    }
+                    else {
+                        String actualType = type.asString(false);
+                        String abbreviatedActualType = type.asString();
+                        if (!actualType.equals(expectedType) &&
+                                !abbreviatedActualType.equals(expectedType)) {
+                            String desc = "'" + abbreviatedActualType + "'";
+                            if (!actualType.equals(abbreviatedActualType)) {
+                                desc += " ('"+ actualType + "')";
+                            }
+                            out(that, "type " + desc +
+                                    " not of expected type '" + 
+                                    expectedType + "'");
+                        }
+                    }
                 }
             }
         }
@@ -137,20 +137,20 @@ public class AssertionVisitor extends Visitor {
     
     @Override
     public void visit(Tree.CompilationUnit that) {
-    	expectingError = false;
-    	expectingWarning = false;
+        expectingError = false;
+        expectingWarning = false;
         errorMessage = null;
         warningType = null;
         foundErrors = new ArrayList<Message>();
-    	initExpectingError(that.getCompilerAnnotations());
+        initExpectingError(that.getCompilerAnnotations());
         foundErrors.addAll(that.getErrors());
         checkErrors(that);
         foundErrors = new ArrayList<Message>();
-    	expectingError = false;
-    	expectingWarning = false;
-    	errorMessage = null;
-    	warningType = null;
-    	super.visitAny(that);
+        expectingError = false;
+        expectingWarning = false;
+        errorMessage = null;
+        warningType = null;
+        super.visitAny(that);
     }
     
 //    @Override
@@ -244,18 +244,18 @@ public class AssertionVisitor extends Visitor {
         out(System.out, "warning", err);
     }
 
-	private String file(Node that) {
-		Unit unit = that.getUnit();
-		if (unit==null) {
-		    return null;
-		}
-		else {
-		    String relativePath = unit.getRelativePath();
-		    return !relativePath.isEmpty() ?
-		            relativePath : 
-		            unit.getFilename();
-		}
-	}
+    private String file(Node that) {
+        Unit unit = that.getUnit();
+        if (unit==null) {
+            return null;
+        }
+        else {
+            String relativePath = unit.getRelativePath();
+            return !relativePath.isEmpty() ?
+                    relativePath : 
+                    unit.getFilename();
+        }
+    }
 
     private void checkErrors(Node that) {
         try {
@@ -268,7 +268,7 @@ public class AssertionVisitor extends Visitor {
                 }
             }
             if (expectingError) {
-            	boolean found = false;
+                boolean found = false;
                 for (Message err: foundErrors) {
                     if (!includeError(err, 2)) {
                         continue;
@@ -276,23 +276,23 @@ public class AssertionVisitor extends Visitor {
                     if (err instanceof AnalysisError ||
                         err instanceof LexError ||
                         err instanceof ParseError) {
-                    	if (errorMessage==null ||
-                    			err.getMessage()
-                    			    .contains(errorMessage)) {
-                    		return;
-                    	}
-                    	else {
-                    		found = true;
-                    	}
+                        if (errorMessage==null ||
+                                err.getMessage()
+                                    .contains(errorMessage)) {
+                            return;
+                        }
+                        else {
+                            found = true;
+                        }
                     }
                 }
                 if (found) {
-            		out(that, "error message should contain \"" + 
-            				errorMessage);
+                    out(that, "error message should contain \"" + 
+                            errorMessage);
                 }
                 else {
-                	out(that, "no errors");
-                	return;
+                    out(that, "no errors");
+                    return;
                 }
             }
             if (expectingWarning) {
@@ -354,8 +354,8 @@ public class AssertionVisitor extends Visitor {
             if (c.getIdentifier().getText().equals("error")) {
                 expectingError = true;
                 Tree.StringLiteral sl = c.getStringLiteral();
-				if (sl!=null) {
-                	errorMessage = sl.getText();
+                if (sl!=null) {
+                    errorMessage = sl.getText();
                 }
             }
             if (c.getIdentifier().getText().equals("warn")) {
@@ -388,21 +388,21 @@ public class AssertionVisitor extends Visitor {
     }
     
     public void print(boolean verbose) {
-    	if(!verbose && errors == 0 && warnings == 0)
-    		return;
+        if(!verbose && errors == 0 && warnings == 0)
+            return;
         System.out.println(errors + " errors, " + warnings + " warnings");
     }
 
-	public List<Message> getFoundErrors() {
-		return foundErrors;
-	}
+    public List<Message> getFoundErrors() {
+        return foundErrors;
+    }
 
-	public int getErrors() {
-		return errors;
-	}
+    public int getErrors() {
+        return errors;
+    }
 
-	public int getWarnings() {
-		return warnings;
-	}
+    public int getWarnings() {
+        return warnings;
+    }
     
 }

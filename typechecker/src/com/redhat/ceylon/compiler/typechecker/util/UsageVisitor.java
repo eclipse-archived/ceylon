@@ -29,13 +29,13 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * @author kulikov
  */
 public class UsageVisitor extends Visitor {
-	
+    
     private final ReferenceCounter rc;
     
-	public UsageVisitor(ReferenceCounter rc) {
-		this.rc = rc;
-	}
-	
+    public UsageVisitor(ReferenceCounter rc) {
+        this.rc = rc;
+    }
+    
     @Override public void visit(Tree.CompilationUnit that) {
         super.visit(that);
     }
@@ -50,33 +50,33 @@ public class UsageVisitor extends Visitor {
                 kind(declaration) + 
                 " '" + declaration.getName() + 
                 "' has no local references");
-    	}
+        }
     }
 
-	private boolean referenced(Tree.ImportMemberOrType that) {
-		Declaration d = that.getDeclarationModel();
+    private boolean referenced(Tree.ImportMemberOrType that) {
+        Declaration d = that.getDeclarationModel();
         boolean referenced=true;
         if (d!=null) {
-        	referenced = rc.isReferenced(d);
-        	if (isAbstraction(d)) {
-        		for (Declaration od: d.getOverloads()) {
-        			referenced=referenced||rc.isReferenced(od);
-        		}
-        	}
-        	Tree.ImportMemberOrTypeList imtl = 
-        	        that.getImportMemberOrTypeList();
-        	if (imtl!=null) {
-        		for (Tree.ImportMemberOrType m: 
-        		        imtl.getImportMemberOrTypes()) {
-					referenced=referenced||referenced(m);
-        		}
-        		if (imtl.getImportWildcard()!=null) {
-        		    referenced = true;
-        		}
-        	}
+            referenced = rc.isReferenced(d);
+            if (isAbstraction(d)) {
+                for (Declaration od: d.getOverloads()) {
+                    referenced=referenced||rc.isReferenced(od);
+                }
+            }
+            Tree.ImportMemberOrTypeList imtl = 
+                    that.getImportMemberOrTypeList();
+            if (imtl!=null) {
+                for (Tree.ImportMemberOrType m: 
+                        imtl.getImportMemberOrTypes()) {
+                    referenced=referenced||referenced(m);
+                }
+                if (imtl.getImportWildcard()!=null) {
+                    referenced = true;
+                }
+            }
         }
-		return referenced;
-	}
+        return referenced;
+    }
 
     @Override
     public void visit(Tree.Declaration that) {
@@ -85,14 +85,14 @@ public class UsageVisitor extends Visitor {
         Backends bs = declaration.getNativeBackends();
         if (declaration!=null && 
                 declaration.getName()!=null &&
-        		!declaration.isShared() && 
-        		!declaration.isToplevel() && 
-        		!rc.isReferenced(declaration) &&
-        		!declaration.isParameter() &&
-        		!(that instanceof Tree.Variable) &&
-        		!(declaration instanceof TypeParameter &&
-        		    ((TypeParameter) declaration).getDeclaration() 
-        		            instanceof TypeParameter)) {
+                !declaration.isShared() && 
+                !declaration.isToplevel() && 
+                !rc.isReferenced(declaration) &&
+                !declaration.isParameter() &&
+                !(that instanceof Tree.Variable) &&
+                !(declaration instanceof TypeParameter &&
+                    ((TypeParameter) declaration).getDeclaration() 
+                            instanceof TypeParameter)) {
             if (bs.none() 
                     || isForBackend(bs, 
                             that.getUnit()

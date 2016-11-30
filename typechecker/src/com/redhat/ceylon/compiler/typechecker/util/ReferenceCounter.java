@@ -18,37 +18,37 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * @author kulikov
  */
 public class ReferenceCounter extends Visitor {
-	
-	private Set<Declaration> referencedDeclarations = new HashSet<Declaration>();
-	
-	void referenced(Declaration d) {
-		referencedDeclarations.add(d);
-		//TODO: check that the value is actually assigned!
-		if (d instanceof Value) {
-			Setter setter = ((Value) d).getSetter();
-			if (setter!=null) {
-				referencedDeclarations.add(setter);
-			}
-		}
-	}
-	
-	boolean isReferenced(Declaration d) {
-		for (Declaration rd: referencedDeclarations) {
-		    Scope container = rd.getContainer();
+    
+    private Set<Declaration> referencedDeclarations = new HashSet<Declaration>();
+    
+    void referenced(Declaration d) {
+        referencedDeclarations.add(d);
+        //TODO: check that the value is actually assigned!
+        if (d instanceof Value) {
+            Setter setter = ((Value) d).getSetter();
+            if (setter!=null) {
+                referencedDeclarations.add(setter);
+            }
+        }
+    }
+    
+    boolean isReferenced(Declaration d) {
+        for (Declaration rd: referencedDeclarations) {
+            Scope container = rd.getContainer();
             if (container!=null &&
                     container.equals(d.getContainer()) &&
-		            rd.getName().equals(d.getName())) {
-		        return true;
-		    }
-		}
-		return false;
-	}
-	
+                    rd.getName().equals(d.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     @Override
     public void visit(Tree.MemberOrTypeExpression that) {
         super.visit(that);
         Declaration d = that.getDeclaration();
-		if (d!=null) referenced(d);
+        if (d!=null) referenced(d);
     }
     
     @Override
@@ -56,9 +56,9 @@ public class ReferenceCounter extends Visitor {
         super.visit(that);
         TypeDeclaration t = that.getDeclarationModel();
         if (t!=null && 
-        		!(t instanceof UnionType) && 
-        		!(t instanceof IntersectionType)) {
-        	referenced(t);
+                !(t instanceof UnionType) && 
+                !(t instanceof IntersectionType)) {
+            referenced(t);
         }
     }
     

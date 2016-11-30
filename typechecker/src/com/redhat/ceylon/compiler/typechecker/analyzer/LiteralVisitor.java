@@ -153,12 +153,12 @@ public class LiteralVisitor extends Visitor {
         that.setText(result.toString());
     }
     
-	private int getIndentPosition(Literal that) {
-		Token token = that.getToken();
-		return token==null ? 
-		        0 : token.getCharPositionInLine() +
-		                getQuoteLength(token);
-	}
+    private int getIndentPosition(Literal that) {
+        Token token = that.getToken();
+        return token==null ? 
+                0 : token.getCharPositionInLine() +
+                        getQuoteLength(token);
+    }
 
     private int getQuoteLength(Token token) {
         int type = token.getType();
@@ -346,11 +346,11 @@ public class LiteralVisitor extends Visitor {
             case '\'':
             case '`':
             case '\\':
-            	ch = escape; break;
+                ch = escape; break;
             default:
-            	node.addError("illegal escape sequence: '\\" + escape + 
-            	        "' is not a recognized escape sequence");
-            	return null;
+                node.addError("illegal escape sequence: '\\" + escape + 
+                        "' is not a recognized escape sequence");
+                return null;
         }
         return Character.toString(ch);
     }

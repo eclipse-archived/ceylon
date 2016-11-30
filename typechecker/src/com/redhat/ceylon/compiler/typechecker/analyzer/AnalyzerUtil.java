@@ -187,7 +187,7 @@ public class AnalyzerUtil {
                         name, signature, ellipsis);
         
         if (result instanceof TypeDeclaration) {
-        	return (TypeDeclaration) result;
+            return (TypeDeclaration) result;
         }
         else if (result instanceof TypedDeclaration) {
             return anonymousType(name, 
@@ -229,7 +229,7 @@ public class AnalyzerUtil {
                             (TypedDeclaration) result);
                 }
             }
-        	return null;
+            return null;
         }
     }
     
@@ -416,8 +416,8 @@ public class AnalyzerUtil {
      */
     static List<Type> getTypeArguments(
             Tree.TypeArguments tas,
-    		Type qualifyingType, 
-    		List<TypeParameter> typeParameters) {
+            Type qualifyingType, 
+            List<TypeParameter> typeParameters) {
         if (tas instanceof Tree.TypeArgumentList) {
             
             //accumulate substitutions in case we need
@@ -556,8 +556,8 @@ public class AnalyzerUtil {
                         (Tree.AttributeDeclaration) s;
                 Tree.SpecifierOrInitializerExpression sie = 
                         ad.getSpecifierOrInitializerExpression();
-        		return !(sie==null ||
-        		        sie instanceof Tree.LazySpecifierExpression);
+                return !(sie==null ||
+                        sie instanceof Tree.LazySpecifierExpression);
             }
             else if (s instanceof Tree.ObjectDefinition) {
                 Tree.ObjectDefinition o = 
@@ -567,7 +567,7 @@ public class AnalyzerUtil {
                             o.getExtendedType()
                                 .getType()
                                 .getTypeModel();
-        			if (et!=null 
+                    if (et!=null 
                             && !et.isObject()
                             && !et.isBasic()) {
                         return true;
@@ -758,14 +758,14 @@ public class AnalyzerUtil {
     static void checkAssignable(Type type, 
             Type supertype, Node node, String message) {
         if (isTypeUnknown(type)) {
-        	addTypeUnknownError(node, type, message);
+            addTypeUnknownError(node, type, message);
         }
         else if (isTypeUnknown(supertype)) {
             addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addError(message + 
-        	        notAssignableMessage(type, supertype, node));
+            node.addError(message + 
+                    notAssignableMessage(type, supertype, node));
         }
     }
 
@@ -778,13 +778,13 @@ public class AnalyzerUtil {
             addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-        	node.addUnsupportedError(message + 
-        	        notAssignableMessage(type, supertype, node));
+            node.addUnsupportedError(message + 
+                    notAssignableMessage(type, supertype, node));
         }
     }
 
     static void checkAssignableToOneOf(Type type, 
-    		Type supertype1, Type supertype2, 
+            Type supertype1, Type supertype2, 
             Node node, String message, int code) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
@@ -929,7 +929,7 @@ public class AnalyzerUtil {
     }
 
     static void checkIsExactlyOneOf(Type type, 
-    		Type supertype1, Type supertype2, 
+            Type supertype1, Type supertype2, 
             Node node, String message) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
@@ -1090,8 +1090,8 @@ public class AnalyzerUtil {
 
     private static boolean isIndirectInvocation(
             Tree.Primary primary, boolean unwrap) {
-    	Tree.Term term = unwrap ? 
-    	        unwrapExpressionUntilTerm(primary) : primary;
+        Tree.Term term = unwrap ? 
+                unwrapExpressionUntilTerm(primary) : primary;
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) term;
@@ -1245,7 +1245,7 @@ public class AnalyzerUtil {
             checkIsExactlyOneOf(parameterType, 
                     refinedParameterType, 
                     refinedDefiniteType, 
-            		node, message);
+                    node, message);
         }
     }
 
@@ -1411,7 +1411,7 @@ public class AnalyzerUtil {
 
     static boolean inSameModule(TypeDeclaration etd, Unit unit) {
         return etd.getUnit().getPackage().getModule()
-        		.equals(unit.getPackage().getModule());
+                .equals(unit.getPackage().getModule());
     }
 
     static void checkCasesDisjoint(Type type, Type other,

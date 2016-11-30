@@ -63,7 +63,7 @@ public class TypeHierarchyVisitor extends Visitor {
             public Set<Declaration> actualsNonFormals = new HashSet<Declaration>();
             public Set<Declaration> defaults = new HashSet<Declaration>();
             public Set<Declaration> nonFormalsNonDefaults = new HashSet<Declaration>();
-			public Set<Declaration> shared = new HashSet<Declaration>();
+            public Set<Declaration> shared = new HashSet<Declaration>();
         }
 
         @Override
@@ -234,17 +234,17 @@ public class TypeHierarchyVisitor extends Visitor {
                         if (!isMemberNameOnAncestor) {
                             TypeDeclaration otherType = 
                                     getTypeDeclarationFor(aggregateMembers);
-                        	if (!mixedInBySupertype(currentType.declaration, 
-                        	        otherType, classOrInterface)) {
-                        		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: '");
+                            if (!mixedInBySupertype(currentType.declaration, 
+                                    otherType, classOrInterface)) {
+                                StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: '");
                                 sb.append(name)
                                   .append("' is defined by supertypes '")
-                        		  .append(currentType.declaration.getName())
-                        		  .append("' and '")
-                        		  .append(otherType.getName())
-                        		  .append("'");
-                        		that.addError(sb.toString());
-                        	}
+                                  .append(currentType.declaration.getName())
+                                  .append("' and '")
+                                  .append(otherType.getName())
+                                  .append("'");
+                                that.addError(sb.toString());
+                            }
                         }
                     }
                 }
@@ -284,17 +284,17 @@ public class TypeHierarchyVisitor extends Visitor {
                         if (!isMemberRefined && isMemberNameOnAncestor) {
                             TypeDeclaration otherType = 
                                     getTypeDeclarationFor(aggregateMembers);
-                        	if (!mixedInBySupertype(currentType.declaration, 
-                        	        otherType, classOrInterface)) {
-                        		StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: '");
+                            if (!mixedInBySupertype(currentType.declaration, 
+                                    otherType, classOrInterface)) {
+                                StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: '");
                                 sb.append(name)
                                   .append("' is defined by supertypes '")
-                        		  .append(currentType.declaration.getName())
-                        		  .append("' and '")
-                        		  .append(otherType.getName())
-                        		  .append("'");
-                        		that.addError(sb.toString());
-                        	}
+                                  .append(currentType.declaration.getName())
+                                  .append("' and '")
+                                  .append(otherType.getName())
+                                  .append("'");
+                                that.addError(sb.toString());
+                            }
                         }
                     }
                 }
@@ -448,7 +448,7 @@ public class TypeHierarchyVisitor extends Visitor {
             /*if (!members.concretesOnInterfaces.isEmpty() && members.actualsNonFormals.isEmpty()) {
                 Declaration declaringType = (Declaration) members.concretesOnInterfaces.iterator().next().getContainer();
                 that.addWarning("interface member " + members.name + 
-                		" of " + declaringType.getName() +
+                        " of " + declaringType.getName() +
                         " not implemented in class hierarchy (concrete interface members not yet supported)");
             }*/
         }
@@ -660,7 +660,7 @@ public class TypeHierarchyVisitor extends Visitor {
                     members.formals.add(member);
                 }
                 /*if (!member.isFormal() && member.isInterfaceMember()) {
-                	members.concretesOnInterfaces.add(member);
+                    members.concretesOnInterfaces.add(member);
                 }*/
                 if (member.isDefault()) {
                     members.defaults.add(member);

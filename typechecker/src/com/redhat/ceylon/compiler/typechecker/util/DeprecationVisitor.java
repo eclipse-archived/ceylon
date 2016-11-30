@@ -15,16 +15,16 @@ public class DeprecationVisitor extends Visitor {
     public void visit(Tree.MemberOrTypeExpression that) {
         super.visit(that);
         Declaration d = that.getDeclaration();
-		if (d!=null && d.isDeprecated()) {
-		    that.addUsageWarning(Warning.deprecation,
+        if (d!=null && d.isDeprecated()) {
+            that.addUsageWarning(Warning.deprecation,
                     "declaration is deprecated: '" + 
                     d.getName() + 
                     "' is annotated 'deprecated' in " +
                     module(d));
         }
-		if (d instanceof Class && 
-		        that.getDirectlyInvoked()) {
-		    Class c = (Class) d;
+        if (d instanceof Class && 
+                that.getDirectlyInvoked()) {
+            Class c = (Class) d;
             Constructor dc = c.getDefaultConstructor();
             if (dc!=null && dc.isDeprecated()) {
                 that.addUsageWarning(Warning.deprecation,
@@ -33,14 +33,14 @@ public class DeprecationVisitor extends Visitor {
                         "' is annotated 'deprecated' in " +
                         module(d));
             }
-		}
+        }
     }
     @Override
     public void visit(Tree.SimpleType that) {
-    	super.visit(that);
+        super.visit(that);
         TypeDeclaration d = that.getDeclarationModel();
-		if (d!=null && d.isDeprecated()) {
-		    that.addUsageWarning(Warning.deprecation, 
+        if (d!=null && d.isDeprecated()) {
+            that.addUsageWarning(Warning.deprecation, 
                     "type is deprecated: '" + 
                     d.getName() + 
                     "' is annotated 'deprecated' in " +
@@ -51,8 +51,8 @@ public class DeprecationVisitor extends Visitor {
     public void visit(Tree.ImportMemberOrType that) {
         super.visit(that);
         Declaration d = that.getDeclarationModel();
-		if (d!=null && d.isDeprecated()) {
-		    that.addUsageWarning(Warning.deprecation,
+        if (d!=null && d.isDeprecated()) {
+            that.addUsageWarning(Warning.deprecation,
                     "imported declaration is deprecated: '" + 
                     d.getName() + 
                     "' is annotated 'deprecated' in " +

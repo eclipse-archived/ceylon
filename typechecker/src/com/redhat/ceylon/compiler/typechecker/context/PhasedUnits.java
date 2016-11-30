@@ -149,8 +149,8 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     }
 
     protected String getEncoding() {
-		return encoding != null ? encoding : System.getProperty("file.encoding");
-	}
+        return encoding != null ? encoding : System.getProperty("file.encoding");
+    }
 
     private void parseFileOrDirectory(VirtualFile file, VirtualFile srcDir) throws Exception {
         if (checkModuleFiltersByName(file, srcDir)) {

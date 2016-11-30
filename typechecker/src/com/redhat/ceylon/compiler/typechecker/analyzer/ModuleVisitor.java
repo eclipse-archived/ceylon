@@ -213,12 +213,12 @@ public class ModuleVisitor extends Visitor {
                     }
                     String nameString = 
                             formatPath(importPath.getIdentifiers());
-                	if ( !pkg.getNameAsString().equals(nameString) ) {
+                    if ( !pkg.getNameAsString().equals(nameString) ) {
                         importPath
                             .addError("module name does not match descriptor location: '" + 
-                            		nameString + "' should be '" + 
+                                    nameString + "' should be '" + 
                                     pkg.getNameAsString() + "'", 
-                            		8000);
+                                    8000);
                     }
                     if (!completeOnlyAST) {
                         moduleManagerUtil.addLinkBetweenModuleAndNode(
@@ -288,10 +288,10 @@ public class ModuleVisitor extends Visitor {
                 }
                 String nameString = 
                         formatPath(importPath.getIdentifiers());
-				if ( !pkg.getNameAsString().equals(nameString) ) {
+                if ( !pkg.getNameAsString().equals(nameString) ) {
                     importPath
                         .addError("package name does not match descriptor location: '" + 
-                        		nameString + "' should be '" + 
+                                nameString + "' should be '" + 
                                 pkg.getNameAsString() + "'", 
                                 8000);
                 }
@@ -327,8 +327,8 @@ public class ModuleVisitor extends Visitor {
             Tree.QuotedLiteral quotedLiteral = 
                     that.getQuotedLiteral();
             if (importPath!=null) {
-            	name = getNameAsList(importPath);
-            	node = importPath;
+                name = getNameAsList(importPath);
+                node = importPath;
             }
             else if (quotedLiteral!=null) {
                 String nameString = 
@@ -337,8 +337,8 @@ public class ModuleVisitor extends Visitor {
                 node = quotedLiteral;
             }
             else {
-            	name = Collections.emptyList();
-            	node = null;
+                name = Collections.emptyList();
+                node = null;
             }
             
             if (node!=null) {
@@ -363,9 +363,9 @@ public class ModuleVisitor extends Visitor {
                 that.addError("missing module name");
             }
             else if (name.get(0).equals(DEFAULT_MODULE_NAME)) {
-            	if (forCeylon) {
-            		node.addError("reserved module name: 'default'");
-            	}
+                if (forCeylon) {
+                    node.addError("reserved module name: 'default'");
+                }
             }
             else if (name.size()==1 && 
                      name.get(0).equals("ceylon")) {
@@ -406,7 +406,7 @@ public class ModuleVisitor extends Visitor {
                         moduleManager.getOrCreateModule(
                                 name, version);
                 if (importPath!=null) {
-                	importPath.setModel(importedModule);
+                    importPath.setModel(importedModule);
                 }
                 if (!completeOnlyAST && mainModule != null) {
                     if (importedModule.getVersion() == null) {

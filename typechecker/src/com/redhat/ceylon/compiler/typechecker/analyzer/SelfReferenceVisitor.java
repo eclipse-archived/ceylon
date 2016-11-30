@@ -102,41 +102,41 @@ public class SelfReferenceVisitor extends Visitor {
                         member.getContainer();
                 if (container.equals(typeDeclaration)) {
                     that.addError("value constructor '" +
-                    		member.getName() +
-                    		"' may not be used in initializer of class '" +
+                            member.getName() +
+                            "' may not be used in initializer of class '" +
                             typeDeclaration.getName() + 
                             "': '" + member.getName() +
                             "' is a value constructor of '" +
                             container.getName() + "'");
                 }
                 else {
-                	that.addError("value constructor '" +
-                			member.getName() +
-                			"' may not be used in initializer of superclass '" +
-                			typeDeclaration.getName() + 
-                			"': '" + member.getName() + 
-                			"' is a value constructor of '" +
-                			container.getName() + "', which inherits '" +
+                    that.addError("value constructor '" +
+                            member.getName() +
+                            "' may not be used in initializer of superclass '" +
+                            typeDeclaration.getName() + 
+                            "': '" + member.getName() + 
+                            "' is a value constructor of '" +
+                            container.getName() + "', which inherits '" +
                             typeDeclaration.getName() + "'");
                 }
             }
             else if (isInheritingAnonymousClass(member)) {
-            	if (member.equals(typeDeclaration)) {
-            		that.addError("anonymous class '" +
-                    		member.getName() +
-                    		"' may not be used in its own initializer: '" +
-            				member.getName() +
-            				"' is an anonymous class");
-            	}
-            	else {
+                if (member.equals(typeDeclaration)) {
                     that.addError("anonymous class '" +
-                    		member.getName() +
-                    		"' may not be used in initializer of superclass '" +
+                            member.getName() +
+                            "' may not be used in its own initializer: '" +
+                            member.getName() +
+                            "' is an anonymous class");
+                }
+                else {
+                    that.addError("anonymous class '" +
+                            member.getName() +
+                            "' may not be used in initializer of superclass '" +
                             typeDeclaration.getName() + 
                             "': '" + member.getName() +
                             "' is an anonymous class that inherits '" +
                             typeDeclaration.getName() + "'");
-            	}
+                }
             }
         }
     }
@@ -196,14 +196,14 @@ public class SelfReferenceVisitor extends Visitor {
         if (member instanceof Value) {
             Value value = (Value) member;
             if (inInitializer() && !inCaseTypesList) {
-            	TypeDeclaration vtd = 
-            			value.getTypeDeclaration();
-            	return vtd!=null &&
-            			vtd.isObjectClass() && 
-            			vtd.inherits(typeDeclaration);
+                TypeDeclaration vtd = 
+                        value.getTypeDeclaration();
+                return vtd!=null &&
+                        vtd.isObjectClass() && 
+                        vtd.inherits(typeDeclaration);
             }
             else { 
-            	return false;
+                return false;
             }
         }
         else {
@@ -465,40 +465,40 @@ public class SelfReferenceVisitor extends Visitor {
         }
         if (typeDeclaration.isObjectClass() && 
                 mayNotLeakAnonymousClass() && 
-        		t instanceof Tree.BaseMemberExpression) {
-        	Tree.BaseMemberExpression bme = 
-        	        (Tree.BaseMemberExpression) t;
+                t instanceof Tree.BaseMemberExpression) {
+            Tree.BaseMemberExpression bme = 
+                    (Tree.BaseMemberExpression) t;
             Declaration declaration = bme.getDeclaration();
-        	if (declaration instanceof TypedDeclaration) {
-        		TypedDeclaration td = 
-        		        (TypedDeclaration) declaration;
+            if (declaration instanceof TypedDeclaration) {
+                TypedDeclaration td = 
+                        (TypedDeclaration) declaration;
                 if (td.getTypeDeclaration()==typeDeclaration) {
                     that.addError("anonymous class leaks self reference in initializer: '" + 
                             typeDeclaration.getName() + "'");
-        		}
-        	}
+                }
+            }
         }
         if (typeDeclaration.isObjectClass() && 
                 mayNotLeakAnonymousClass() && 
                 t instanceof Tree.QualifiedMemberExpression) {
-        	Tree.QualifiedMemberExpression qme = 
-        	        (Tree.QualifiedMemberExpression) t;
-        	if (qme.getPrimary() instanceof Tree.Outer) {
-        		Declaration declaration = qme.getDeclaration();
-        		if (declaration instanceof TypedDeclaration) {
-        			TypedDeclaration td = 
-        			        (TypedDeclaration) declaration;
+            Tree.QualifiedMemberExpression qme = 
+                    (Tree.QualifiedMemberExpression) t;
+            if (qme.getPrimary() instanceof Tree.Outer) {
+                Declaration declaration = qme.getDeclaration();
+                if (declaration instanceof TypedDeclaration) {
+                    TypedDeclaration td = 
+                            (TypedDeclaration) declaration;
                     if (td.getTypeDeclaration()==typeDeclaration) {
-        				that.addError("anonymous class leaks self reference in initializer: '" + 
-        						typeDeclaration.getName() + "'");
-        			}
-        		}
-        	}
+                        that.addError("anonymous class leaks self reference in initializer: '" + 
+                                typeDeclaration.getName() + "'");
+                    }
+                }
+            }
         }
     }
     
     boolean mayNotLeakAnonymousClass() {
-    	return !declarationSection && inBody();
+        return !declarationSection && inBody();
     }
     
     @Override
@@ -555,50 +555,50 @@ public class SelfReferenceVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SpecifierStatement that) {
-    	if ( inBody() ) {
-    		Tree.Term lt = that.getBaseMemberExpression();
-			Tree.SpecifierExpression se = that.getSpecifierExpression();
-    		if (lt instanceof Tree.MemberOrTypeExpression && se!=null) {
-    			Tree.Expression e = se.getExpression();
-    			if (e!=null) {
-    				if (e.getTerm() instanceof Tree.This) {
-    					Tree.MemberOrTypeExpression mte = 
-    					        (Tree.MemberOrTypeExpression) lt;
+        if ( inBody() ) {
+            Tree.Term lt = that.getBaseMemberExpression();
+            Tree.SpecifierExpression se = that.getSpecifierExpression();
+            if (lt instanceof Tree.MemberOrTypeExpression && se!=null) {
+                Tree.Expression e = se.getExpression();
+                if (e!=null) {
+                    if (e.getTerm() instanceof Tree.This) {
+                        Tree.MemberOrTypeExpression mte = 
+                                (Tree.MemberOrTypeExpression) lt;
                         Declaration d = mte.getDeclaration();
-    					if (d instanceof FunctionOrValue) {
-    						FunctionOrValue fov = 
-    						        (FunctionOrValue) d;
+                        if (d instanceof FunctionOrValue) {
+                            FunctionOrValue fov = 
+                                    (FunctionOrValue) d;
                             if (fov.isLate()) {
-    							lt.visit(this);
-    							return; //NOTE: EARLY EXIT!!
-    						}
-    					}
-    				}
-    			}
-    		}
-    	}
-    	super.visit(that);
+                                lt.visit(this);
+                                return; //NOTE: EARLY EXIT!!
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        super.visit(that);
     }
 
     @Override
     public void visit(Tree.AssignmentOp that) {
         super.visit(that);
         if ( inBody() ) {
-        	Tree.Term lt = that.getLeftTerm();
-			Tree.Term rt = that.getRightTerm();
+            Tree.Term lt = that.getLeftTerm();
+            Tree.Term rt = that.getRightTerm();
             if (lt instanceof Tree.MemberOrTypeExpression &&
-					rt instanceof Tree.This) {
-        		MemberOrTypeExpression mte = 
-        		        (Tree.MemberOrTypeExpression) lt;
+                    rt instanceof Tree.This) {
+                MemberOrTypeExpression mte = 
+                        (Tree.MemberOrTypeExpression) lt;
                 Declaration d = mte.getDeclaration();
-        		if (d instanceof FunctionOrValue) {
-        			FunctionOrValue fov = 
-        			        (FunctionOrValue) d;
+                if (d instanceof FunctionOrValue) {
+                    FunctionOrValue fov = 
+                            (FunctionOrValue) d;
                     if (fov.isLate()) {
-        				return; //NOTE: EARLY EXIT!!
-        			}
-        		}
-        	}
+                        return; //NOTE: EARLY EXIT!!
+                    }
+                }
+            }
             checkSelfReference(that, rt);    
         }
     }
@@ -622,31 +622,31 @@ public class SelfReferenceVisitor extends Visitor {
     
     @Override
     public void visit(Tree.IndexExpression that) {
-    	super.visit(that);
-    	if ( inBody() ) {
-    		checkSelfReference(that, that.getPrimary());
-    	}
-    	
+        super.visit(that);
+        if ( inBody() ) {
+            checkSelfReference(that, that.getPrimary());
+        }
+        
     }
 
     @Override
     public void visit(Tree.Element that) {
-    	super.visit(that);
-    	if ( inBody() ) {
-    		checkSelfReference(that, that.getExpression());
-    	}
-    	
+        super.visit(that);
+        if ( inBody() ) {
+            checkSelfReference(that, that.getExpression());
+        }
+        
     }
 
     @Override
     public void visit(Tree.ElementRange that) {
-    	super.visit(that);
-    	if ( inBody() ) {
-    		checkSelfReference(that, that.getLowerBound());
-    		checkSelfReference(that, that.getUpperBound());
-    		checkSelfReference(that, that.getLength());
-    	}
-    	
+        super.visit(that);
+        if ( inBody() ) {
+            checkSelfReference(that, that.getLowerBound());
+            checkSelfReference(that, that.getUpperBound());
+            checkSelfReference(that, that.getLength());
+        }
+        
     }
 
     @Override
@@ -687,7 +687,7 @@ public class SelfReferenceVisitor extends Visitor {
         if ( inBody() ) {
             Tree.Expression e = that.getExpression();
             if (e!=null) {
-            	checkSelfReference(that, e.getTerm());
+                checkSelfReference(that, e.getTerm());
             }
         }
     }

@@ -31,8 +31,8 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 public class ModuleSourceMapper {
-	
-	JdkProvider defaultJdkProvider = new JdkProvider();
+    
+    JdkProvider defaultJdkProvider = new JdkProvider();
 
     public static class ModuleDependencyAnalysisError extends AnalysisError {
         
@@ -392,17 +392,17 @@ public class ModuleSourceMapper {
         return context;
     }
 
-	public Module getJdkModule() {
-		return null;
-	}
+    public Module getJdkModule() {
+        return null;
+    }
 
-	public Module getJdkProviderModule() {
-	    return null;
-	}
+    public Module getJdkProviderModule() {
+        return null;
+    }
 
-	public JdkProvider getJdkProvider() {
-		return defaultJdkProvider;
-	}
+    public JdkProvider getJdkProvider() {
+        return defaultJdkProvider;
+    }
 
     public void preResolveDependenciesIfRequired(RepositoryManager repositoryManager) {
     }

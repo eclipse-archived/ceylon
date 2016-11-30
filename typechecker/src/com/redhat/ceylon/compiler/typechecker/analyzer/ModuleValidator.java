@@ -312,9 +312,9 @@ public class ModuleValidator {
                 moduleManagerUtil.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
             }
         }
-	}
+    }
 
-	protected Exception catchIfPossible(Exception e) {
+    protected Exception catchIfPossible(Exception e) {
         return e;
     }
 

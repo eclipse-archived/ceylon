@@ -8,7 +8,7 @@ import com.redhat.ceylon.common.Backend;
  * An error or warning relating to a node of the AST.
  */
 public class AnalysisMessage implements Message {
-	
+    
     private final Node treeNode;
     private final String message;
     private final int code;
@@ -67,8 +67,8 @@ public class AnalysisMessage implements Message {
     
     @Override
     public int getLine() {
-    	Token token = treeNode.getToken();
-		return token==null ? -1 : token.getLine();
+        Token token = treeNode.getToken();
+        return token==null ? -1 : token.getLine();
     }
     
     @Override

@@ -8,9 +8,9 @@ import com.redhat.ceylon.common.Backend;
  */
 public class UnexpectedError extends AnalysisMessage {
 
-	public UnexpectedError(Node treeNode, String message) {
-		super(treeNode, message);
-	}
+    public UnexpectedError(Node treeNode, String message) {
+        super(treeNode, message);
+    }
     
     public UnexpectedError(Node treeNode, String message, Backend backend) {
         super(treeNode, message, backend);

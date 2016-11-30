@@ -89,9 +89,9 @@ public class SupertypeVisitor extends Visitor {
         if (etn!=null) {
             Tree.StaticType et = etn.getType();
             if (et!=null) {
-            	Type t = et.getTypeModel();
-            	if (t!=null) {
-            	    TypeDeclaration td = t.getDeclaration();
+                Type t = et.getTypeModel();
+                if (t!=null) {
+                    TypeDeclaration td = t.getDeclaration();
                     if (!(td instanceof UnknownType) &&
                         !(td instanceof TypeAlias)) {
                         if (td == type) {
@@ -99,16 +99,16 @@ public class SupertypeVisitor extends Visitor {
                             errors = true;
                         }
                         else {
-                    		List<TypeDeclaration> list = 
-                    		        t.isRecursiveRawTypeDefinition(
-                    		                singleton(type));
-                    		if (!list.isEmpty()) {
-                	            brokenExtendedType(type, et, list);
-                    			errors = true;
-                    		}
+                            List<TypeDeclaration> list = 
+                                    t.isRecursiveRawTypeDefinition(
+                                            singleton(type));
+                            if (!list.isEmpty()) {
+                                brokenExtendedType(type, et, list);
+                                errors = true;
+                            }
                         }
                     }
-            	}
+                }
             }
         }
         
@@ -125,7 +125,7 @@ public class SupertypeVisitor extends Visitor {
                 //probably unnecessary - if it were 
                 //going to blow up, it would have 
                 //already blown up in addToIntersection()
-				canonicalIntersection(list, unit);
+                canonicalIntersection(list, unit);
             }
             catch (DecidabilityException re) {
                 brokenHierarchy(type, that, unit);
@@ -153,13 +153,13 @@ public class SupertypeVisitor extends Visitor {
             if (etn!=null) {
                 Tree.StaticType et = etn.getType();
                 if (et!=null) {
-                	Type t = et.getTypeModel();
-                	if (t!=null) {
-                		if (checkSupertypeVariance(t, type, et)) {
-                	        type.setExtendedType(unit.getBasicType());
+                    Type t = et.getTypeModel();
+                    if (t!=null) {
+                        if (checkSupertypeVariance(t, type, et)) {
+                            type.setExtendedType(unit.getBasicType());
                             type.clearProducedTypeCache();
-                		}
-                	}
+                        }
+                    }
                 }
             }
         }
