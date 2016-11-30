@@ -26,7 +26,7 @@ class AssertionBuilder {
     private ListBuffer<ConditionDescription> conditions = new ListBuffer<ConditionDescription>();
     private Node node;
     private AbstractTransformer gen;
-    private CName wrapedException;
+    private JCExpression wrapedException;
     private JCExpression violatedIs;
     
 
@@ -145,7 +145,7 @@ class AssertionBuilder {
         }
     }
     
-    public AssertionBuilder wrapException(CName wrapedException) {
+    public AssertionBuilder wrapException(JCExpression wrapedException) {
         this.wrapedException = wrapedException;
         return this;
     }
@@ -183,11 +183,11 @@ class AssertionBuilder {
     }
     
     JCThrow buildThrow() {
-        return gen.makeThrowAssertionException(buildMessage(), wrapedException != null ? gen.make().TypeCast(gen.make().Type(gen.syms().throwableType), wrapedException.makeIdent()) : null);
+        return gen.makeThrowAssertionException(buildMessage(), wrapedException != null ? gen.make().TypeCast(gen.make().Type(gen.syms().throwableType), wrapedException) : null);
     }
 
-    public void violatedIs(CName violatedIs) {
-        this.violatedIs = gen.utilInvocation().assertIsFailed(violatedIs.makeIdent());
+    public void violatedIs(JCExpression $reified$Type, JCExpression violatedIs) {
+        this.violatedIs = violatedIs != null ? gen.utilInvocation().assertIsFailed($reified$Type, violatedIs) : null;
     }
     
 }

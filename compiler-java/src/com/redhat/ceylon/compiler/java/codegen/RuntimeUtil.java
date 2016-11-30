@@ -286,8 +286,9 @@ class RuntimeUtil {
         return makeUtilInvocation(null, "classErasure", List.of(javaClass));
     }
 
-    public JCExpression assertIsFailed(JCExpression operand) {
+    public JCExpression assertIsFailed(JCExpression $reified$Type, JCExpression operand) {
         return makeUtilInvocation(null, "assertIsFailed", List.of(
+                $reified$Type,
                 operand));
     }
 }

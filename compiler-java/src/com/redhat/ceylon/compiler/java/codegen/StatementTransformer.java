@@ -854,10 +854,10 @@ public class StatementTransformer extends AbstractTransformer {
                 if (cond.getCondition() == condition) {
                     msg.appendViolatedCondition(condition);
                     if (isAssertNotIsThrowable(condition)) {
-                        msg.wrapException(cond.getVarTrans().getTestVariableName());
+                        msg.wrapException(((IsCond)cond).getExprVar());
                     }
                     if (condition instanceof Tree.IsCondition) {
-                        msg.violatedIs(cond.getVarTrans().getVariableName());
+                        msg.violatedIs(makeReifiedTypeArgument(((Tree.IsCondition)condition).getType().getTypeModel()), ((IsCond)cond).getExprVar());
                     }
                     seen = true;
                     continue;
@@ -892,10 +892,10 @@ public class StatementTransformer extends AbstractTransformer {
                     .appendViolatedCondition(condition)
                     .assertionDoc(ass);
             if (isAssertNotIsThrowable(condition)) {
-                builder.wrapException(cond.getVarTrans().getVariableName());
+                builder.wrapException(((IsCond)cond).getExprVar());
             }
             if (condition instanceof Tree.IsCondition) {
-                builder.violatedIs(cond.getVarTrans().getVariableName());
+                builder.violatedIs(makeReifiedTypeArgument(((Tree.IsCondition)condition).getType().getTypeModel()), ((IsCond)cond).getExprVar());
             }
             return builder.buildThrow();
         }
@@ -1221,11 +1221,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         public JCExpression makeTest() {
-            Type expressionType;
-            if(cond.getVariable().getSpecifierExpression() != null)
-                expressionType = cond.getVariable().getSpecifierExpression().getExpression().getTypeModel();
-            else
-                expressionType = cond.getVariable().getDeclarationModel().getOriginalDeclaration().getType();
+            Type expressionType = getExpressionType();
 
             // make sure we do not insert null checks if we're going to allow testing for null
             Type specifierType = negate ? 
@@ -1234,11 +1230,7 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression expr = expressionGen().transformExpression(var.getExpression(), BoxingStrategy.BOXED, specifierType);
             at(cond);
             // Assign the expression to test to the temporary variable
-            boolean useTempVar = !var.isErasedToObjectOptimization() && !var.isNothingOptimization();
-            if (elseVar != null) {
-                useTempVar = useTempVar || (!elseVar.isErasedToObjectOptimization() && !elseVar.isNothingOptimization());
-            }
-            if (useTempVar) {
+            if (useTempVar()) {
                 expr = make().Assign(var.getTestVariableName().makeIdent(), expr);
             }
             
@@ -1253,6 +1245,31 @@ public class StatementTransformer extends AbstractTransformer {
             return expr;
         }
 
+        private Type getExpressionType() {
+            Type expressionType;
+            if(cond.getVariable().getSpecifierExpression() != null)
+                expressionType = cond.getVariable().getSpecifierExpression().getExpression().getTypeModel();
+            else
+                expressionType = cond.getVariable().getDeclarationModel().getOriginalDeclaration().getType();
+            return expressionType;
+        }
+
+        private boolean useTempVar() {
+            boolean useTempVar = !var.isErasedToObjectOptimization() && !var.isNothingOptimization();
+            if (elseVar != null) {
+                useTempVar = useTempVar || (!elseVar.isErasedToObjectOptimization() && !elseVar.isNothingOptimization());
+            }
+            return useTempVar;
+        }
+
+        public JCExpression getExprVar() {
+            Type expressionType = getExpressionType();
+            if (expressionType.isNull()
+                    ||expressionType.isNullValue()) {
+                return makeNull();
+            }
+            return (useTempVar() ? getVarTrans().getTestVariableName(): getVarTrans().getVariableName()).makeIdent();
+        }
     }
     
     class ExistsCond extends SpecialFormCond<Tree.ExistsCondition, ExistsVarTrans> {

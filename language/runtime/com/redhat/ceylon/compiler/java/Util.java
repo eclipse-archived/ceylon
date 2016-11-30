@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import com.redhat.ceylon.common.NonNull;
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
@@ -36,6 +37,7 @@ import ceylon.language.Tuple;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.sequence_;
+import ceylon.language.meta.typeLiteral_;
 import ceylon.language.meta.type_;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
 import ceylon.language.meta.model.ClassOrInterface;
@@ -2259,7 +2261,7 @@ public class Util {
                   .getArrayElementClass();
     }
     
-    public static String assertIsFailed(Object operand) {
-        return System.lineSeparator()+"\texpression has type "+type_.type(Nothing.NothingType, operand);
+    public static String assertIsFailed(TypeDescriptor $reifiedType, @Nullable Object operand) {
+        return System.lineSeparator()+"\texpression has type "+type_.type(Nothing.NothingType, operand)+" rather than "+ typeLiteral_.typeLiteral($reifiedType);
     }
 }
