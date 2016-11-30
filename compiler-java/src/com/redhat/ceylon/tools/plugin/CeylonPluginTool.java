@@ -1,6 +1,7 @@
 package com.redhat.ceylon.tools.plugin;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,9 +11,11 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
@@ -28,7 +31,6 @@ import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
-import com.redhat.ceylon.common.tool.ModelException;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
@@ -204,7 +206,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
     }
 
     private void listScripts() throws IOException {
-        ArrayList<String> scripts = new ArrayList<String>();
+        Set<String> scripts = new TreeSet<String>();
         // Look in /etc/ceylon/bin/ and /etc/ceylon/bin/{moduleName}
         File systemDir = new File(FileUtil.getSystemConfigDir(), Constants.CEYLON_BIN_DIR);
         listScripts(systemDir, "system", scripts);
@@ -214,14 +216,13 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         // They are in ./.ceylon/bin/ and ./.ceylon/bin/{moduleName}
         File localDir = applyCwd(new File(Constants.CEYLON_CONFIG_DIR, Constants.CEYLON_BIN_DIR));
         listScripts(localDir, "local", scripts);
-        Collections.sort(scripts);
         for (String script : scripts) {
             append(script);
             newline();
         }
     }
 
-    private void listScripts(File dir, String location, List<String> scripts) throws IOException {
+    private void listScripts(File dir, String location, Collection<String> scripts) throws IOException {
         File[] children = dir.listFiles();
         if (children != null) {
             for (File child : children) {
@@ -239,15 +240,23 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         }
     }
 
+    // Retrieve plugin module name given it's installation folder
+    // If possible return the version as well
     private String getModuleNameVersion(File f) {
         String mod = f.getParentFile().getName();
-        if (isPlugin(f)) {
-            Properties pluginProperties = new Properties();
-            try (InputStream is = new FileInputStream(f)) {
-                pluginProperties.load(is);
-                mod = pluginProperties.getProperty("module", mod);
-            } catch (IOException e) {
-                // Ignore
+        if (mod.contains("-")) {
+            // Is new plugin folder name format that includes a version
+            mod = mod.replaceFirst("-", "/");
+        } else {
+            if (isPlugin(f)) {
+                // Fall-back for determining plugin versions
+                Properties pluginProperties = new Properties();
+                try (InputStream is = new FileInputStream(f)) {
+                    pluginProperties.load(is);
+                    mod = pluginProperties.getProperty("module", mod);
+                } catch (IOException e) {
+                    // Ignore
+                }
             }
         }
         return mod;
@@ -284,6 +293,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             if(version == null)
                 return false;
         }
+        module = new ModuleSpec(module.getNamespace(), module.getName(), version);
         
         File zipSource = null;
         List<File> existingScriptFolders = null;
@@ -308,10 +318,11 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         }
 
         File moduleScriptDir = getModuleScriptDir(module);
-        if(moduleScriptDir.exists()){
-            if(force)
-                FileUtil.delete(moduleScriptDir);
-            else{
+        ModuleSpec unversioned = new ModuleSpec(module.getNamespace(), module.getName(), "");
+        if (existScripts(unversioned)) {
+            if (force) {
+                uninstallScripts(unversioned, false);
+            } else {
                 errorMsg("error.module.already.installed", module.getName(), moduleScriptDir);
                 return false;
             }
@@ -330,18 +341,54 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         return true;
     }
 
-    private boolean uninstallScripts(ModuleSpec module, boolean errorIfMissing) throws IOException {
+    private boolean existScripts(ModuleSpec module) throws IOException {
         File moduleScriptDir = getModuleScriptDir(module);
-        if(moduleScriptDir.exists()){
+        if (moduleScriptDir.exists()) {
+            return true;
+        }
+        if (module.getVersion() == null || module.getVersion().isEmpty()) {
+            // Find any new-style plugin directories (that is: 'module.name-*')
+            final String modPrefix = module.getName() + "-";
+            File[] files = moduleScriptDir.getParentFile().listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.isDirectory() && f.getName().startsWith(modPrefix);
+                }
+            });
+            return files.length > 0;
+        }
+        return false;
+    }
+
+    private boolean uninstallScripts(ModuleSpec module, boolean errorIfMissing) throws IOException {
+        boolean deleted = false;
+        File moduleScriptDir = getModuleScriptDir(module);
+        if (moduleScriptDir.exists()) {
             FileUtil.delete(moduleScriptDir);
             msg("success.uninstalled", module.getName(), moduleScriptDir);
             newline();
-            return true;
-        }else{
-            if(errorIfMissing)
-                errorMsg("error.no.script.installed.for.module", module.getName(), moduleScriptDir);
-            return false;
+            deleted = true;
         }
+        if (module.getVersion() == null || module.getVersion().isEmpty()) {
+            // Delete any new-style plugin directories (that is: 'module.name-*')
+            final String modPrefix = module.getName() + "-";
+            File[] files = moduleScriptDir.getParentFile().listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File f) {
+                    return f.isDirectory() && f.getName().startsWith(modPrefix);
+                }
+            });
+            for (File f : files) {
+                FileUtil.delete(f);
+                msg("success.uninstalled", module.getName(), f);
+                newline();
+                deleted = true;
+            }
+        }
+        if (!deleted && errorIfMissing) {
+            errorMsg("error.no.script.installed.for.module", module.getName(), moduleScriptDir);
+        }
+        return deleted;
     }
 
     private File getModuleScriptDir(ModuleSpec module) {
@@ -357,7 +404,12 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             installDir = FileUtil.getDefaultUserDir();
         }
         File binDir = new File(installDir, Constants.CEYLON_BIN_DIR);
-        File moduleScriptDir = new File(binDir, module.getName());
+        File moduleScriptDir;
+        if (module.getVersion() != null && !module.getVersion().isEmpty()) {
+            moduleScriptDir = new File(binDir, module.getName() + "-" + module.getVersion());
+        } else {
+            moduleScriptDir = new File(binDir, module.getName());
+        }
         return moduleScriptDir;
     }
 
