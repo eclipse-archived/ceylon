@@ -12,7 +12,7 @@ final class assertionSpecial_ {
         if ((a1$0 = v1) instanceof .ceylon.language.Integer) {
             a1$1 = ((.ceylon.language.Integer)a1$0).longValue();
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer a1 = v1"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer a1 = v1") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Integer.$TypeDescriptor$, a1$0));
         }
         .ceylon.language.print_.print(.ceylon.language.Integer.instance(-a1$1));
         final .ceylon.language.String v2 = .ceylon.language.String.instance("X");
@@ -55,7 +55,7 @@ final class assertionSpecial_ {
         if ((v1$10 = v1) instanceof .ceylon.language.Integer) {
             v1$11 = ((.ceylon.language.Integer)v1$10).longValue();
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer v1"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer v1") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Integer.$TypeDescriptor$, v1$10));
         }
     }
 }

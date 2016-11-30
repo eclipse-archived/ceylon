@@ -15,7 +15,7 @@ class AssertConditionListIsBool implements .com.redhat.ceylon.compiler.java.runt
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is String x" + .java.lang.System.lineSeparator() + "\tviolated " + "x.uppercased==\"S\""));
             }
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x" + .java.lang.System.lineSeparator() + "\tuntested " + "x.uppercased==\"S\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x" + .java.lang.System.lineSeparator() + "\tuntested " + "x.uppercased==\"S\"") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.String.$TypeDescriptor$, x$0));
         }
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$1)));
     }
@@ -30,7 +30,7 @@ class AssertConditionListIsBool implements .com.redhat.ceylon.compiler.java.runt
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tviolated " + "z.uppercased==\"S\""));
             }
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tuntested " + "z.uppercased==\"S\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tuntested " + "z.uppercased==\"S\"") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.String.$TypeDescriptor$, z$2));
         }
         .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$3)));
     }

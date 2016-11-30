@@ -20,7 +20,7 @@ class Bug1629 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         if ((captured0$0 = o) instanceof .ceylon.language.String) {
             captured0$1 = ((.ceylon.language.String)captured0$0).toString();
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String captured0 = o"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String captured0 = o") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.String.$TypeDescriptor$, captured0$0));
         }
         .ceylon.language.Character captured1$2 = null;
         if ((captured1$2 = .ceylon.language.String.getFirst(captured0$1)) != null) {
@@ -50,7 +50,7 @@ class Bug1629 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is String captured10 = o" + .java.lang.System.lineSeparator() + "\tviolated " + "exists captured11 = \"a\".first" + .java.lang.System.lineSeparator() + "\tuntested " + "nonempty captured12 = s"));
             }
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String captured10 = o" + .java.lang.System.lineSeparator() + "\tuntested " + "exists captured11 = \"a\".first" + .java.lang.System.lineSeparator() + "\tuntested " + "nonempty captured12 = s"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String captured10 = o" + .java.lang.System.lineSeparator() + "\tuntested " + "exists captured11 = \"a\".first" + .java.lang.System.lineSeparator() + "\tuntested " + "nonempty captured12 = s") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.String.$TypeDescriptor$, captured10$6));
         }
         .java.lang.Object o$12 = null;
         if ((o$12 = o) instanceof .ceylon.language.String) {
@@ -68,7 +68,7 @@ class Bug1629 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is String o" + .java.lang.System.lineSeparator() + "\tviolated " + "exists x" + .java.lang.System.lineSeparator() + "\tuntested " + "nonempty s"));
             }
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String o" + .java.lang.System.lineSeparator() + "\tuntested " + "exists x" + .java.lang.System.lineSeparator() + "\tuntested " + "nonempty s"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String o" + .java.lang.System.lineSeparator() + "\tuntested " + "exists x" + .java.lang.System.lineSeparator() + "\tuntested " + "nonempty s") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.String.$TypeDescriptor$, o$12));
         }
     }
     final .java.lang.String captured0$1;

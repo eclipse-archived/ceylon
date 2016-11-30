@@ -155,7 +155,7 @@ final class bug2228Test_ {
             if (.com.redhat.ceylon.compiler.java.Util.isReified(arg$7 = arg, $reified$T)) {
                 arg$8 = (T)arg$7;
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is T arg"));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is T arg") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed($reified$T, arg$7));
             }
         }
     }

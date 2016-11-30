@@ -20,7 +20,7 @@ class Bug6180<Key> implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                         if (.com.redhat.ceylon.compiler.java.Util.isReified(arg$0 = arg, $reified$Key)) {
                             arg$1 = (Key)arg$0;
                         } else {
-                            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Key arg"));
+                            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Key arg") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed($reified$Key, arg$0));
                         }
                     }
                     

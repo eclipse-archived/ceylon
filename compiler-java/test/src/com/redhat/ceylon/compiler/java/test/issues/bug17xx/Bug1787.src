@@ -11,14 +11,14 @@ final class bug1787_ {
         if ((arg1$0 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance(""))) == null || arg1$0 instanceof .ceylon.language.String) {
             arg1$1 = (.ceylon.language.String)arg1$0;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String? arg1 = System.properties.get(\"\")"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String? arg1 = System.properties.get(\"\")") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), arg1$0));
         }
         final .java.lang.Object arg1b$3;
         .java.lang.Object arg1b$2 = null;
         if (!((arg1b$2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance("")))) == null || arg1b$2 instanceof .ceylon.language.String)) {
             arg1b$3 = arg1b$2;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is String? arg1b = System.properties.get(\"\")"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is String? arg1b = System.properties.get(\"\")") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), arg1b$2));
         }
         final .java.lang.Object arg2$5;
         .java.lang.Object arg2$4 = null;

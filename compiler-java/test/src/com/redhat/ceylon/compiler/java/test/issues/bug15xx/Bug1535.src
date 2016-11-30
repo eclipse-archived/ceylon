@@ -31,7 +31,7 @@ public final class bug1535_ {
             if ((result$25 = .ceylon.language.Float.instance(product)) instanceof .ceylon.language.Summable && .com.redhat.ceylon.compiler.java.Util.isReified(result$25, $reified$Value)) {
                 result$26 = result$25;
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product"));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed($reified$Value, result$25));
             }
             return (Value)result$26;
         } else {
@@ -60,7 +60,7 @@ public final class bug1535_ {
                 if ((result$18 = .ceylon.language.Integer.instance(product)) instanceof .ceylon.language.Summable && .com.redhat.ceylon.compiler.java.Util.isReified(result$18, $reified$Value)) {
                     result$19 = result$18;
                 } else {
-                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product"));
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed($reified$Value, result$18));
                 }
                 return (Value)result$19;
             } else {

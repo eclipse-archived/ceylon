@@ -8,7 +8,7 @@ class Bug5741 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         if ((s$0 = s) instanceof .ceylon.language.Iterable) {
             s$1 = (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)s$0;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Anything*} s"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Anything*} s") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), s$0));
         }
     }
     

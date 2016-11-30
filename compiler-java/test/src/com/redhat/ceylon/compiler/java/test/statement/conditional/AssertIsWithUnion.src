@@ -8,7 +8,7 @@ class AssertIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     public final void m(final .java.lang.Object x) {
         if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar.$TypeDescriptor$), x));
         }
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)x).common();
     }
@@ -19,7 +19,7 @@ class AssertIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         if ((x$1 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo || x$1 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar) {
             x$2 = x$1;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x=y"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x=y") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.statement.conditional.Bar.$TypeDescriptor$), x$1));
         }
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Common)x$2).common();
     }

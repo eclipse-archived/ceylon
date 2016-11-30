@@ -212,7 +212,7 @@ public final class first_ {
         final Value first = (Value)(.java.lang.Object).ceylon.language.nothing_.get_();
         if (.com.redhat.ceylon.compiler.java.Util.isReified(first, $reified$Absent) || .com.redhat.ceylon.compiler.java.Util.isReified(first, $reified$Value)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Absent|Value first"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Absent|Value first") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Absent, $reified$Value), first));
         }
     }
     
