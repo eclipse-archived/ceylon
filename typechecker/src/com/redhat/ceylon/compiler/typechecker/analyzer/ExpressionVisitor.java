@@ -5672,9 +5672,11 @@ public class ExpressionVisitor extends Visitor {
         Tree.Term lbt = that.getLowerBound().getTerm();
         Tree.Term ubt = that.getUpperBound().getTerm();
         Type lhst = 
-                lbt==null ? null : lbt.getTypeModel();
+                lbt==null ? null : 
+                    lbt.getTypeModel();
         Type rhst = 
-                ubt==null ? null : ubt.getTypeModel();
+                ubt==null ? null : 
+                    ubt.getTypeModel();
         Type t = that.getTerm().getTypeModel();
         if (!isTypeUnknown(t) &&
             !isTypeUnknown(lhst) && !isTypeUnknown(rhst)) {
@@ -5710,8 +5712,7 @@ public class ExpressionVisitor extends Visitor {
                     "right operand must be an integer");
         }
         if (ot!=null) {
-            Type ta = 
-                    ot.getTypeArgumentList().get(0);
+            Type ta = ot.getTypeArgumentList().get(0);
             that.setTypeModel(unit.getMeasureType(ta));
         }
     }
@@ -5739,10 +5740,11 @@ public class ExpressionVisitor extends Visitor {
                     that.getRightTerm(), 
                     "operand expression must be of type 'Identifiable'");
             if (intersectionType(lhst, rhst, unit).isNothing()) {
-                that.addError("values of disjoint types are never identical: '" +
-                        lhst.asString(unit) + 
-                        "' has empty intersection with '" +
-                        rhst.asString(unit) + "'");
+                that.addError("values of disjoint types are never identical: '" 
+                        + lhst.asString(unit) 
+                        + "' has empty intersection with '" 
+                        + rhst.asString(unit) 
+                        + "'");
             }
         }
         that.setTypeModel(unit.getBooleanType());
@@ -5772,9 +5774,11 @@ public class ExpressionVisitor extends Visitor {
                     !(lhst.isInteger() && rhst.isFloat()) &&
                     !(lhst.isFloat() && rhst.isInteger())) {
                     that.addUsageWarning(Warning.disjointEquals, 
-                            "tests equality for operands with disjoint types: '" +
-                            lhst.asString(unit) + "' and '" +
-                            rhst.asString(unit) + "' are disjoint");
+                            "tests equality for operands with disjoint types: '" 
+                            + lhst.asString(unit) 
+                            + "' and '" 
+                            + rhst.asString(unit) 
+                            + "' are disjoint");
                 }
             }
             if (lhst.isCallable()) {
@@ -5975,8 +5979,7 @@ public class ExpressionVisitor extends Visitor {
         Type lhst = leftType(that);
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            Type ot = 
-                    unit.getObjectType();
+            Type ot = unit.getObjectType();
             checkAssignable(lhst, 
                     unit.getSetType(ot), 
                     that.getLeftTerm(), 
@@ -6097,18 +6100,16 @@ public class ExpressionVisitor extends Visitor {
 	            		that.getRightTerm(), 
 	            		"operand expression must be a category");
                 Type et = unit.getIteratedType(rhst);
-	            if (et!=null) {
-                    if (intersectionType(lhst, et, unit).isNothing()) {
-                        Class sd = unit.getStringDeclaration();
-                        if (!lhst.getDeclaration().equals(sd) ||
-                            !rhst.getDeclaration().equals(sd)) {
-                            that.addUsageWarning(Warning.disjointContainment, 
-                                    "tests containment with disjoint element types: '" +
-                                    lhst.asString(unit) + "' and '" +
-                                    et.asString(unit) + "' are disjoint");
-                        }
-                    }
-	            }
+	            if (et!=null 
+	                    && intersectionType(lhst, et, unit).isNothing() 
+                        && !(lhst.isString() && rhst.isString())) {
+                  that.addUsageWarning(Warning.disjointContainment,
+                          "tests containment with disjoint element types: '"
+                          + lhst.asString(unit) 
+                          + "' and '"
+                          + et.asString(unit) 
+                          + "' are disjoint");
+               }
             }
             if (ct!=null) {
                 Type at = 
@@ -6163,9 +6164,11 @@ public class ExpressionVisitor extends Visitor {
                     Type pt = tt.getTypeModel();
                     if (!isTypeUnknown(pt)) {
                         if (!t.covers(pt)) {
-                            that.addError("specified type does not cover the cases of the operand expression: '" +
-                                    t.asString(unit) + "' does not cover '" + 
-                                    pt.asString(unit) + "'");
+                            that.addError(
+                                    "specified type does not cover the cases of the operand expression: '" 
+                                    + t.asString(unit) 
+                                    + "' does not cover '"
+                                    + pt.asString(unit) + "'");
                         }
                     }
                     //Just especially for the IDE!
@@ -6193,17 +6196,17 @@ public class ExpressionVisitor extends Visitor {
                         checkReified(rt, type, knownType, false);
                         if (knownType.isSubtypeOf(type)) {
                             that.addUsageWarning(Warning.redundantNarrowing,
-                                    "expression type is a subtype of the type: '" +
-                                    knownType.asString(unit) + 
-                                    "' is assignable to '" +
-                                    type.asString(unit) + "'");
+                                    "expression type is a subtype of the type: '" 
+                                    + knownType.asString(unit) 
+                                    + "' is assignable to '"
+                                    + type.asString(unit) + "'");
                         }
                         else {
                             if (intersectionType(type, knownType, unit)
                                     .isNothing()) {
-                                that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
-                                        knownType.asString(unit) + "' and '" + 
-                                        type.asString(unit) + "' is empty");
+                                that.addError("tests assignability to bottom type 'Nothing': intersection of '" 
+                                        + knownType.asString(unit) + "' and '"
+                                        + type.asString(unit) + "' is empty");
                             }
                         }
                     }
