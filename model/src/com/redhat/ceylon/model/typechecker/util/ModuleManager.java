@@ -1,13 +1,15 @@
 package com.redhat.ceylon.model.typechecker.util;
 
-import java.util.Arrays;
-import java.util.Collections;
+import static com.redhat.ceylon.common.ModuleUtil.toCeylonModuleName;
+import static com.redhat.ceylon.common.Versions.CEYLON_VERSION_NUMBER;
+import static com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+
 import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -23,14 +25,17 @@ public class ModuleManager {
 
     public static final String MODULE_FILE = "module.ceylon";
     public static final String PACKAGE_FILE = "package.ceylon";
+    
     protected Modules modules;
 
-    public ModuleManager() {
-    }
+    public ModuleManager() {}
     
     public Package createPackage(String pkgName, Module module) {
-        final Package pkg = new Package();
-        List<String> name = pkgName.isEmpty() ? Arrays.asList("") : splitModuleName(pkgName); 
+        Package pkg = new Package();
+        List<String> name = 
+                pkgName.isEmpty() ? 
+                        asList("") : 
+                        splitModuleName(pkgName); 
         pkg.setName(name);
         if (module != null) {
             module.getPackages().add(pkg);
@@ -41,13 +46,16 @@ public class ModuleManager {
 
     public void initCoreModules(Modules initialModules) {
         modules = initialModules;
-        if ( modules.getLanguageModule() == null ) {
+        if (modules.getLanguageModule() == null) {
             //build empty package
-            final Package emptyPackage = createPackage("", null);
+            Package emptyPackage = createPackage("", null);
 
-            //build default module (module in which packages belong to when not explicitly under a module
-            final List<String> defaultModuleName = Collections.singletonList(Module.DEFAULT_MODULE_NAME);
-            final Module defaultModule = createModule(defaultModuleName, "unversioned");
+            //build default module 
+            //(module in which packages belong to when not explicitly under a module)
+            List<String> defaultModuleName = 
+                    singletonList(DEFAULT_MODULE_NAME);
+            Module defaultModule = 
+                    createModule(defaultModuleName, "unversioned");
 //            defaultModule.setDefault(true);
             defaultModule.setAvailable(true);
             bindPackageToModule(emptyPackage, defaultModule);
@@ -56,8 +64,9 @@ public class ModuleManager {
 
             //create language module and add it as a dependency of defaultModule
             //since packages outside a module cannot declare dependencies
-            final List<String> languageName = Arrays.asList("ceylon", "language");
-            Module languageModule = createModule(languageName, Versions.CEYLON_VERSION_NUMBER);
+            List<String> languageName = asList("ceylon", "language");
+            Module languageModule = 
+                    createModule(languageName, CEYLON_VERSION_NUMBER);
             languageModule.setLanguageModule(languageModule);
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
@@ -90,15 +99,16 @@ public class ModuleManager {
      * Likewise a module with no version will match any version passed
      */
     public Module getOrCreateModule(List<String> moduleName, String version) {
-        if (moduleName.size() == 0) {
+        if (moduleName.isEmpty()) {
             return null;
         }
         Module module = null;
-        final Set<Module> moduleList = modules.getListOfModules();
+        Set<Module> moduleList = modules.getListOfModules();
         for (Module current : moduleList) {
             final List<String> names = current.getName();
             if (moduleName.equals(names)
-                    && compareVersions(current, version, current.getVersion())) {
+                    && compareVersions(current, version, 
+                            current.getVersion())) {
                 module = current;
                 break;
             }
@@ -112,40 +122,55 @@ public class ModuleManager {
     }
 
     protected boolean compareVersions(Module current, String version, String currentVersion) {
-        return currentVersion == null || version == null || currentVersion.equals(version);
+        return currentVersion == null 
+            || version == null 
+            || currentVersion.equals(version);
     }
 
 
     public ModuleImport findImport(Module owner, Module dependency) {
         for (ModuleImport modImprt : owner.getImports()) {
-            if (equalsForModules(modImprt.getModule(), dependency, true)) return modImprt;
+            if (equalsForModules(modImprt.getModule(), dependency, true)) {
+                return modImprt;
+            }
         }
         return null;
     }
 
     public boolean equalsForModules(Module left, Module right, boolean exactVersionMatch) {
-        if (left == right) return true;
+        if (left == right) {
+            return true;
+        }
         List<String> leftName = left.getName();
         List<String> rightName = right.getName();
-        if (leftName.size() != rightName.size()) return false;
-        for(int index = 0 ; index < leftName.size(); index++) {
-            if (!leftName.get(index).equals(rightName.get(index))) return false;
+        if (leftName.size() != rightName.size()) {
+            return false;
         }
-        if (exactVersionMatch && (left.getVersion() == null || !left.getVersion().equals(right.getVersion()))) return false;
-        return true;
+        for (int index = 0 ; index < leftName.size(); index++) {
+            if (!leftName.get(index).equals(rightName.get(index))) {
+                return false;
+            }
+        }
+        return !exactVersionMatch 
+                || left.getVersion() != null 
+                && left.getVersion().equals(right.getVersion());
     }
 
     public Module findModule(Module module, List<Module> listOfModules, boolean exactVersionMatch) {
-        for(Module current : listOfModules) {
-            if (equalsForModules(module, current, exactVersionMatch)) return current;
+        for (Module current : listOfModules) {
+            if (equalsForModules(module, current, exactVersionMatch)) {
+                return current;
+            }
         }
         return null;
     }
 
     public boolean similarForModules(Module left, Module right) {
-        if (left == right) return true;
-        String leftName = ModuleUtil.toCeylonModuleName(left.getNameAsString());
-        String rightName = ModuleUtil.toCeylonModuleName(right.getNameAsString());
+        if (left == right) {
+            return true;
+        }
+        String leftName = toCeylonModuleName(left.getNameAsString());
+        String rightName = toCeylonModuleName(right.getNameAsString());
         return leftName.equals(rightName);
     }
 
@@ -153,8 +178,10 @@ public class ModuleManager {
      * This treats Maven and Ceylon modules as similar: com:foo and com.foo will match
      */
     public Module findSimilarModule(Module module, List<Module> listOfModules) {
-        for(Module current : listOfModules) {
-            if (similarForModules(module, current)) return current;
+        for (Module current : listOfModules) {
+            if (similarForModules(module, current)) {
+                return current;
+            }
         }
         return null;
     }
@@ -168,11 +195,13 @@ public class ModuleManager {
      */
     @Deprecated
     private final Module findLoadedModule(String moduleName, String searchedVersion, Modules modules) {
-        if(moduleName.equals(Module.DEFAULT_MODULE_NAME))
+        if (moduleName.equals(DEFAULT_MODULE_NAME)) {
             return modules.getDefaultModule();
-        for(Module module : modules.getListOfModules()){
-            if(module.getNameAsString().equals(moduleName)
-                    && compareVersions(module, searchedVersion, module.getVersion())){
+        }
+        for (Module module : modules.getListOfModules()) {
+            if (module.getNameAsString().equals(moduleName)
+                    && compareVersions(module, searchedVersion, 
+                            module.getVersion())) {
                 return module;
             }
         }
@@ -180,11 +209,11 @@ public class ModuleManager {
     }
 
     public Iterable<String> getSearchedArtifactExtensions() {
-        return Arrays.asList("src");
+        return asList("src");
     }
 
     public static List<String> splitModuleName(String moduleName) {
-        return Arrays.asList(moduleName.split("[\\.]"));
+        return asList(moduleName.split("[\\.]"));
     }
 
     public void prepareForTypeChecking() {
@@ -207,18 +236,21 @@ public class ModuleManager {
         String namespace = artifact.namespace();
         String realName = artifact.name();
         String realVersion = artifact.version();
-        if (! realName.equals(module.getNameAsString()) ||
-            ! realVersion.equals(module.getVersion())) {
+        if (!realName.equals(module.getNameAsString()) ||
+            !realVersion.equals(module.getVersion())) {
             if (module != module.getLanguageModule()) {
-                Module realModule = getOrCreateModule(splitModuleName(realName), realVersion);
-                moduleImport.override(new ModuleImport(namespace, realModule, moduleImport.isOptional(), moduleImport.isExport()));
+                Module realModule = 
+                        getOrCreateModule(splitModuleName(realName), realVersion);
+                moduleImport.override(new ModuleImport(namespace, realModule, 
+                        moduleImport.isOptional(), 
+                        moduleImport.isExport()));
                 return realModule;
             }
         }
         return null;
     }
     
-    public Modules getModules(){
+    public Modules getModules() {
         return modules;
     }
 
