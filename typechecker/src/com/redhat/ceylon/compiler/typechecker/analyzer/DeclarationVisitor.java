@@ -2549,11 +2549,11 @@ public abstract class DeclarationVisitor extends Visitor {
             if (that.getTypeParameterList()!=null) {
                 p.setTypeConstructor(true);
             }
-        	if (p.isConstrained()) {
-        		that.addError("duplicate constraint list for type parameter: '" +
-        				name + "'");
-        	}
-        	p.setConstrained(true);
+            if (p.isConstrained()) {
+                that.addError("duplicate constraint list for type parameter: '" +
+                        name + "'");
+            }
+            p.setConstrained(true);
         }
         
         Scope o = enterScope(p);
@@ -3250,7 +3250,7 @@ public abstract class DeclarationVisitor extends Visitor {
         super.visit(that);
         Tree.StaticType type = that.getType();
         if (type!=null) {
-        	that.setTypeModel(type.getTypeModel());
+            that.setTypeModel(type.getTypeModel());
         }
     }
     
