@@ -66,8 +66,8 @@ public class WarToolTests extends AbstractToolTests {
                         "--rep", "../dist/dist/repo",
                         "--rep", getOutPath(),
                         "--out", getOutPath(),
-                        "ceylon.language/1.2.0",
-                        "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
+                        "ceylon.collection/1.2.0",
+                        "ceylon.collection/"+Versions.CEYLON_VERSION_NUMBER));
         tool.run();
         
         File out = tool.getJarFile();
@@ -77,6 +77,8 @@ public class WarToolTests extends AbstractToolTests {
             // single version
             Assert.assertNotNull(zf.getEntry("WEB-INF/lib/ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
             Assert.assertNull(zf.getEntry("WEB-INF/lib/ceylon.language-1.2.0.jar"));
+            Assert.assertNotNull(zf.getEntry("WEB-INF/lib/ceylon.collection-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
+            Assert.assertNull(zf.getEntry("WEB-INF/lib/ceylon.collection-1.2.0.jar"));
             // dependency
             Assert.assertNotNull(zf.getEntry("WEB-INF/lib/com.redhat.ceylon.model-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
             // extra jar
@@ -97,7 +99,8 @@ public class WarToolTests extends AbstractToolTests {
                         "--rep", getOutPath(),
                         "--out", getOutPath(),
                         "--static-metamodel",
-                        "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
+                        "ceylon.collection/1.2.0",
+                        "ceylon.buffer/1.3.1"));
         tool.run();
         
         File out = tool.getJarFile();
@@ -106,6 +109,7 @@ public class WarToolTests extends AbstractToolTests {
         try(ZipFile zf = new ZipFile(out)){
             // single version
             Assert.assertNotNull(zf.getEntry("WEB-INF/lib/ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
+            Assert.assertNotNull(zf.getEntry("WEB-INF/lib/ceylon.collection-1.3.1.jar"));
             // dependency
             Assert.assertNotNull(zf.getEntry("WEB-INF/lib/com.redhat.ceylon.model-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
             // no extra jar
@@ -116,6 +120,9 @@ public class WarToolTests extends AbstractToolTests {
             Assert.assertNull(zf.getEntry("WEB-INF/web.xml"));
             // metamodel
             Assert.assertNotNull(zf.getEntry("META-INF/ceylon/metamodel"));
+            
+            String metamodel = read(zf, zf.getEntry("META-INF/ceylon/metamodel"));
+            Assert.assertFalse(metamodel.contains("ceylon.language/1.3.1"));
         }
     }
 }

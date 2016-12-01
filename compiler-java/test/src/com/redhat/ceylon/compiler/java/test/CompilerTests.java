@@ -25,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringWriter;
@@ -45,7 +47,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.jar.JarFile;
 import java.util.regex.Matcher;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -1327,5 +1332,17 @@ public abstract class CompilerTests {
     
     public static boolean allowSdkTests() {
         return !"true".equalsIgnoreCase(System.getProperty("ceylon.tests.skip.sdk"));
+    }
+
+    protected String read(ZipFile car, ZipEntry entry) throws IOException {
+        try(InputStream is = car.getInputStream(entry);
+                Reader r = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(r)){
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while((line = br.readLine()) != null)
+                sb.append(line).append("\n");
+            return sb.toString();
+        }
     }
 }

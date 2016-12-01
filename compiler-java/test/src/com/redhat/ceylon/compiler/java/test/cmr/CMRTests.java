@@ -1562,18 +1562,6 @@ public class CMRTests extends CompilerTests {
         car.close();
     }
 
-    private String read(JarFile car, ZipEntry entry) throws IOException {
-        try(InputStream is = car.getInputStream(entry);
-                Reader r = new InputStreamReader(is);
-                BufferedReader br = new BufferedReader(r)){
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while((line = br.readLine()) != null)
-                sb.append(line).append("\n");
-            return sb.toString();
-        }
-    }
-    
     private void setupBinaryModulesForOverridesCeylonModuleTests() {
         Boolean result = null;
         for (String version : Arrays.asList("v1", "v2")) {
