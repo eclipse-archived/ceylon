@@ -1,5 +1,5 @@
 @noanno
-void assertMessageDetailGeneric<Element>() {
+void assertMessageDetailGeneric<Element>(Element zero) {
     // is conditions
     Anything one = 1;
     try {
@@ -45,8 +45,17 @@ void assertMessageDetailGeneric<Element>() {
     } catch (AssertionError e) {
         assert(e.message.contains("\texpression has type ceylon.language::String which is not a subtype of ceylon.language::Integer"));
     }
+    assert(is Object zero);
+    //assert("foo" =="bar");
+    assert(zero == 1);
+    assert(1 == zero);
+    Boolean b = 1 == zero;
+    assert(1 == 0);
+    assert(1 != 0);
+    assert(!(1 == 0));
+    assert(!(1 != 0));
 }
 @noanno
 void assertMessageDetail() {
-    assertMessageDetailGeneric<Integer>();
+    assertMessageDetailGeneric<Integer>(0);
 }

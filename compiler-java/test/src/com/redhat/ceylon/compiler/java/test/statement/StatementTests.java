@@ -729,8 +729,8 @@ public class StatementTests extends CompilerTests {
     }
     @Test
     public void testAssertMessageDetail() {
-        compareWithJavaSource("conditional/AssertMessageDetail");
-        //compile("conditional/AssertMessageDetail.ceylon");
+        //compareWithJavaSource("conditional/AssertMessageDetail");
+        compile("conditional/AssertMessageDetail.ceylon");
         run("com.redhat.ceylon.compiler.java.test.statement.conditional.assertMessageDetail");
     }
     @Test
