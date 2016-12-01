@@ -46,6 +46,15 @@ shared native final class Float
         satisfies Number<Float> & 
                   Exponentiable<Float,Float> {
     
+    "The sum of the given floating point values."
+    shared static Float sum({Float*} floats) {
+        variable value sum = 0.0;
+        for (float in floats) {
+            sum += float;
+        }
+        return sum;
+    }
+    
     "The [[Float]] value of the given 
      [[string representation|string]] of a decimal floating 
      point number, or `null` if the string does not 

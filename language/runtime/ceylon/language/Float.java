@@ -37,6 +37,19 @@ public final class Float
     public final static TypeDescriptor $TypeDescriptor$ = 
             TypeDescriptor.klass(Float.class);
 
+    public static double sum(
+            @TypeInfo("{ceylon.language::Float*}")
+            @Name("floats")
+            Iterable<? extends Float, ? extends java.lang.Object> floats) {
+        double sum = 0.0d;
+        Iterator<? extends Float> it = floats.iterator();
+        java.lang.Object o;
+        while ((o=it.next())!=finished_.get_()) {
+            sum += ((Float) o).value;
+        }
+        return sum;
+    }
+    
     @Ignore
     final double value;
     

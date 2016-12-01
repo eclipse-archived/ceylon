@@ -54,15 +54,28 @@
    beginning of the string to the given index."""
 by ("Gavin")
 tagged("Basic types", "Strings")
-shared native final class String(characters)
-        extends Object()
+shared native final class String
+        extends Object
         satisfies SearchableList<Character> &
                   Comparable<String> &
                   Summable<String> & 
                   Ranged<Integer,Character,String> {
     
+    "The concatenation of the given [[strings]]."
+    shared static String sum({String*} strings) {
+        value result = StringBuilder();
+        result.appendAll(strings);
+        return result.string;
+    }
+    
     "The characters that form this string."
     {Character*} characters;
+    
+    "A new string with the given [[characters]]."
+    shared native new ({Character*} characters) 
+            extends Object() {
+        this.characters = characters;
+    }
     
     "This string, with all characters in lowercase.
      

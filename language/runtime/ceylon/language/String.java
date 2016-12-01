@@ -59,6 +59,15 @@ public final class String
     public final static TypeDescriptor $TypeDescriptor$ = 
             TypeDescriptor.klass(String.class);
     
+    public static java.lang.String sum(
+            @TypeInfo("{ceylon.language::String*}")
+            @Name("strings")
+            Iterable<? extends String, ? extends java.lang.Object> strings) {
+        StringBuilder result = new StringBuilder();
+        result.appendAll(strings);
+        return result.toString();
+    }
+    
     @Ignore
     public final java.lang.String value;
     
