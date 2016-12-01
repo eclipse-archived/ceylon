@@ -1273,10 +1273,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                         </listitem>
                     </itemizedlist>
                     
-                    <para>If for any argument, there is no unassigned parameter, no parameter with
-                    the given name, or the parameter with the given name has already been assigned
-                    an argument, construction of the positional argument list fails, and the 
-                    invocation is not well-typed.</para>
+                    <para>If, for some argument, there is no unassigned parameter, no parameter 
+                    with the given name, or the parameter with the given name has already been 
+                    assigned an argument, construction of the positional argument list fails, and 
+                    the invocation is not well-typed.</para>
                 
                 </listitem>
                 <listitem>
