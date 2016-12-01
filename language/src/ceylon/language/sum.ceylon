@@ -14,10 +14,7 @@
  For the case of a stream of `Integer`s, `Float`s, or
  `String`s, prefer [[Integer.sum]], [[Float.sum]], or
  [[String.sum]]."
-see (`function product`, 
-     `function Integer.sum`,
-     `function Float.sum`,
-     `function String.sum`)
+see (`function product`)
 tagged("Streams", "Numbers")
 shared native Value sum<Value>({Value+} values) 
         given Value satisfies Summable<Value>;
