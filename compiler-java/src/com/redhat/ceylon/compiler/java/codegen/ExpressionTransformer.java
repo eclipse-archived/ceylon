@@ -2658,7 +2658,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Overridable binary operators
     
 
-    private BinOpTransformation transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
+    BinOpTransformation transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Interface compoundType) {
         return transformOverridableBinaryOperator(op, compoundType, 0);
     }
     

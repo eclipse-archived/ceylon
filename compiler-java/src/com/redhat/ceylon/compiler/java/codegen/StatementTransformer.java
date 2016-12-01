@@ -259,8 +259,9 @@ public class StatementTransformer extends AbstractTransformer {
                     }
                     if (booleanExpr instanceof Tree.IsOp) {
                         return new IsOpBooleanCond((Tree.BooleanCondition)cond, negated, (Tree.IsOp)booleanExpr);
-                    } else if (booleanExpr instanceof Tree.EqualityOp) {
-                        return new EqualityOpBooleanCond((Tree.BooleanCondition)cond, negated, (Tree.EqualityOp)booleanExpr);
+                    } else if (booleanExpr instanceof Tree.EqualityOp
+                            ||booleanExpr instanceof Tree.ComparisonOp) {
+                        return new EqualityOpBooleanCond((Tree.BooleanCondition)cond, negated, (Tree.BinaryOperatorExpression)booleanExpr);
                     }
                 }
                 return new BooleanCond((Tree.BooleanCondition)cond);
@@ -910,7 +911,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
             if (cond instanceof EqualityOpBooleanCond) {
                 EqualityOpBooleanCond eqOpCond = (EqualityOpBooleanCond)cond;
-                msg.violatedEquals(eqOpCond.getLeftName(),
+                msg.violatedBinOp(eqOpCond.getLeftName(),
                         eqOpCond.getRightName());
             }
         }
@@ -1539,14 +1540,14 @@ public class StatementTransformer extends AbstractTransformer {
     private class EqualityOpBooleanCond implements Cond {
         private final Tree.BooleanCondition cond;
         private final VarTrans var;
-        private final Tree.EqualityOp op;
+        private final Tree.BinaryOperatorExpression op;
         private final boolean negated;
         private final boolean negate;
         private final SyntheticName leftVarName;
         private final SyntheticName rightVarName;
         private final BinOpTransformation transformed;
         
-        private EqualityOpBooleanCond(Tree.BooleanCondition booleanCondition, boolean negated, final Tree.EqualityOp op) {
+        private EqualityOpBooleanCond(Tree.BooleanCondition booleanCondition, boolean negated, final Tree.BinaryOperatorExpression op) {
             super();
             this.cond = booleanCondition;
             this.op = op;
@@ -1558,6 +1559,8 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (op instanceof Tree.NotEqualOp) {
                 transformed = expressionGen().transformNotEqualNeedsNegating((Tree.NotEqualOp)op);
                 needsNegating = true;
+            } else if (op instanceof Tree.ComparisonOp) {
+                transformed = expressionGen().transformOverridableBinaryOperator((Tree.ComparisonOp)op, op.getUnit().getComparableDeclaration());
             } else {
                 throw BugException.unhandledNodeCase(op);
             }
@@ -2035,6 +2038,8 @@ public class StatementTransformer extends AbstractTransformer {
                         new AssertionBuilder(StatementTransformer.this, step)
                             .appendViolatedCondition("step > 0")
                             .assertionDoc("step size must be greater than zero")
+                            .violatedBinOp(expressionGen().boxType(stepName.makeIdent(), typeFact().getIntegerType()), 
+                                    expressionGen().boxType(make().Literal(0), typeFact().getIntegerType()))
                             .buildThrow(),
                         null));
                 
@@ -3406,6 +3411,8 @@ public class StatementTransformer extends AbstractTransformer {
                     new AssertionBuilder(StatementTransformer.this, step)
                         .appendViolatedCondition("step > 0")
                         .assertionDoc("step size must be greater than zero")
+                        .violatedBinOp(expressionGen().boxType(stepName.makeIdent(), typeFact().getIntegerType()), 
+                                expressionGen().boxType(make().Literal(0), typeFact().getIntegerType()))
                         .buildThrow(),
                     null));
                     

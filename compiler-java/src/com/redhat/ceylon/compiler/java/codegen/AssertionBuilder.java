@@ -195,12 +195,14 @@ class AssertionBuilder {
      * Add extra information to the exception message when an {@code is} 
      * condition or operation violates the assertion. 
      */
-    public void violatedIs(boolean negated, JCExpression $reified$Type, JCExpression violatedIs) {
+    public AssertionBuilder violatedIs(boolean negated, JCExpression $reified$Type, JCExpression violatedIs) {
         this.violatedIs = violatedIs != null ? gen.utilInvocation().assertIsFailed(negated, $reified$Type, violatedIs) : null;
+        return this;
     }
 
-    public void violatedEquals(JCExpression leftName, JCExpression rightName) {
+    public AssertionBuilder violatedBinOp(JCExpression leftName, JCExpression rightName) {
         this.violatedBinOp = gen.utilInvocation().assertBinOpFailed(leftName, rightName);
+        return this;
     }
     
 }
