@@ -64,9 +64,11 @@ public final class bugCl566_ {
             final .ceylon.language.meta.declaration.ValueDeclaration option = (.ceylon.language.meta.declaration.ValueDeclaration)elem$1;
             .ceylon.language.print_.print(option);
         }
-        if (((.ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>)(.ceylon.language.Sequential)((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.BugCl566.class)).<.ceylon.language.meta.declaration.ValueDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$)).getSize() == 1L) {
+        long lhs$7 = ((.ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>)(.ceylon.language.Sequential)((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.BugCl566.class)).<.ceylon.language.meta.declaration.ValueDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$)).getSize();
+        long rhs$8 = 1L;
+        if (lhs$7 == rhs$8) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`class BugCl566`.declaredMemberDeclarations<ValueDeclaration>().size == 1"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`class BugCl566`.declaredMemberDeclarations<ValueDeclaration>().size == 1") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$7), .ceylon.language.Integer.instance(rhs$8)));
         }
     }
     

@@ -135,9 +135,11 @@ final class bug5898_ {
                 };
             }
         }.$call$(c).$call$();
-        if (d.toString().equals("create")) {
+        .ceylon.language.String lhs$0 = .ceylon.language.String.instance(d.toString());
+        .ceylon.language.String rhs$1 = .ceylon.language.String.instance("create");
+        if (lhs$0.equals(rhs$1)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "d.string == \"create\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "d.string == \"create\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$0, rhs$1));
         }
         final .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.D d2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.D>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.D.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.$TypeDescriptor$), "Bug5898.D.create2(String)(Bug5898)", (short)-1){
             
@@ -156,9 +158,11 @@ final class bug5898_ {
                 };
             }
         }.$call$(c).$call$((.java.lang.Object).ceylon.language.String.instance("foo"));
-        if (d2.toString().equals("foo")) {
+        .ceylon.language.String lhs$2 = .ceylon.language.String.instance(d2.toString());
+        .ceylon.language.String rhs$3 = .ceylon.language.String.instance("foo");
+        if (lhs$2.equals(rhs$3)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "d2.string == \"foo\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "d2.string == \"foo\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
         }
     }
 }

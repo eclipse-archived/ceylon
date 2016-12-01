@@ -29,13 +29,17 @@ final class ConcreteString$impl implements .java.io.Serializable {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
         }
-        if (2L == $this.hashCode()) {
+        long lhs$0 = 2L;
+        long rhs$1 = $this.hashCode();
+        if (lhs$0 == rhs$1) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == hash"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == hash") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
         }
-        if ("foo".equals($this.toString())) {
+        .ceylon.language.String lhs$2 = .ceylon.language.String.instance("foo");
+        .ceylon.language.String rhs$3 = .ceylon.language.String.instance($this.toString());
+        if (lhs$2.equals(rhs$3)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
         }
     }
 }
@@ -80,9 +84,9 @@ class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.
         return (int)(
             let
             {
-                long $ceylontmp$hash$1 = 2L;
+                long $ceylontmp$hash$5 = 2L;
             }
-            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+            returning $ceylontmp$hash$5 ^ $ceylontmp$hash$5 >>> 32;
         );
     }
     
@@ -138,13 +142,17 @@ final class ConcreteString2$impl implements .java.io.Serializable {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
         }
-        if (3L == $this.hashCode()) {
+        long lhs$6 = 3L;
+        long rhs$7 = $this.hashCode();
+        if (lhs$6 == rhs$7) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "3 == hash"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "3 == hash") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$6), .ceylon.language.Integer.instance(rhs$7)));
         }
-        if ("bar".equals($this.toString())) {
+        .ceylon.language.String lhs$8 = .ceylon.language.String.instance("bar");
+        .ceylon.language.String rhs$9 = .ceylon.language.String.instance($this.toString());
+        if (lhs$8.equals(rhs$9)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"bar\" == string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"bar\" == string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$8, rhs$9));
         }
     }
     
@@ -158,9 +166,9 @@ final class ConcreteString2$impl implements .java.io.Serializable {
         return (int)(
             let
             {
-                long $ceylontmp$hash$5 = 3L;
+                long $ceylontmp$hash$13 = 3L;
             }
-            returning $ceylontmp$hash$5 ^ $ceylontmp$hash$5 >>> 32;
+            returning $ceylontmp$hash$13 ^ $ceylontmp$hash$13 >>> 32;
         );
     }
 }
@@ -205,9 +213,9 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
         return (int)(
             let
             {
-                long $ceylontmp$hash$7 = $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.hashCode();
+                long $ceylontmp$hash$15 = $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.hashCode();
             }
-            returning $ceylontmp$hash$7 ^ $ceylontmp$hash$7 >>> 32;
+            returning $ceylontmp$hash$15 ^ $ceylontmp$hash$15 >>> 32;
         );
     }
     

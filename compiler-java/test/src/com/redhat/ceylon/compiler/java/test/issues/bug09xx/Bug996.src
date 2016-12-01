@@ -11,9 +11,11 @@ final class bug996_ {
                 .ceylon.language.String.instance("2"),
                 new .ceylon.language.Singleton<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(51))});
         final .ceylon.language.Sequence t2 = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.tuple_spanFrom(t, .ceylon.language.Integer.instance(0L));
-        if (t.equals(t2)) {
+        .ceylon.language.Sequence lhs$0 = t;
+        .ceylon.language.Sequence rhs$1 = t2;
+        if (lhs$0.equals(rhs$1)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "t == t2"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "t == t2") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$0, rhs$1));
         }
     }
 }

@@ -10,9 +10,11 @@ class AssertConditionListIsBool implements .com.redhat.ceylon.compiler.java.runt
         .java.lang.Object x$0 = null;
         if ((x$0 = x) instanceof .ceylon.language.String) {
             x$1 = ((.ceylon.language.String)x$0).toString();
-            if (.ceylon.language.String.getUppercased(x$1).equals("S")) {
+            .ceylon.language.String lhs$2 = .ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$1));
+            .ceylon.language.String rhs$3 = .ceylon.language.String.instance("S");
+            if (lhs$2.equals(rhs$3)) {
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is String x" + .java.lang.System.lineSeparator() + "\tviolated " + "x.uppercased==\"S\""));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is String x" + .java.lang.System.lineSeparator() + "\tviolated " + "x.uppercased==\"S\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
             }
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x" + .java.lang.System.lineSeparator() + "\tuntested " + "x.uppercased==\"S\"") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.String.$TypeDescriptor$, x$0));
@@ -21,18 +23,20 @@ class AssertConditionListIsBool implements .com.redhat.ceylon.compiler.java.runt
     }
     
     private final void mvar$priv$(final .java.lang.Object x) {
-        final .java.lang.String z$3;
-        .java.lang.Object z$2 = null;
-        if ((z$2 = x) instanceof .ceylon.language.String) {
-            z$3 = ((.ceylon.language.String)z$2).toString();
-            if (.ceylon.language.String.getUppercased(z$3).equals("S")) {
+        final .java.lang.String z$5;
+        .java.lang.Object z$4 = null;
+        if ((z$4 = x) instanceof .ceylon.language.String) {
+            z$5 = ((.ceylon.language.String)z$4).toString();
+            .ceylon.language.String lhs$6 = .ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$5));
+            .ceylon.language.String rhs$7 = .ceylon.language.String.instance("S");
+            if (lhs$6.equals(rhs$7)) {
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tviolated " + "z.uppercased==\"S\""));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tviolated " + "z.uppercased==\"S\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$6, rhs$7));
             }
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tuntested " + "z.uppercased==\"S\"") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.String.$TypeDescriptor$, z$2));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tuntested " + "z.uppercased==\"S\"") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.String.$TypeDescriptor$, z$4));
         }
-        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$3)));
+        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$5)));
     }
     
     @.java.lang.Override

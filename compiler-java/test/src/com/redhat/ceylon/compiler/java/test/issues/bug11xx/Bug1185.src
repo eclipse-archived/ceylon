@@ -6,45 +6,65 @@ final class bug1185_ {
     }
     
     static void bug1185() {
-        if (-1L == -1L) {
+        long lhs$0 = -1L;
+        long rhs$1 = -1L;
+        if (lhs$0 == rhs$1) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-$1 == -1"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-$1 == -1") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
         }
-        if (-1L == -1L) {
+        long lhs$2 = -1L;
+        long rhs$3 = -1L;
+        if (lhs$2 == rhs$3) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-#1 == -1"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-#1 == -1") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$2), .ceylon.language.Integer.instance(rhs$3)));
         }
-        if (-9223372036854775808L == 9223372036854775807L + 1L) {
+        long lhs$4 = -9223372036854775808L;
+        long rhs$5 = 9223372036854775807L + 1L;
+        if (lhs$4 == rhs$5) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-9223372036854775808 == 9223372036854775807+1"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-9223372036854775808 == 9223372036854775807+1") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$4), .ceylon.language.Integer.instance(rhs$5)));
         }
-        if (-9223372036854775808L == -9223372036854775808L) {
+        long lhs$6 = -9223372036854775808L;
+        long rhs$7 = -9223372036854775808L;
+        if (lhs$6 == rhs$7) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-9223372036854775808 ==  #80_00_00_00_00_00_00_00"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-9223372036854775808 ==  #80_00_00_00_00_00_00_00") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$6), .ceylon.language.Integer.instance(rhs$7)));
         }
-        if (-9223372036854775808L == -9223372036854775808L) {
+        long lhs$8 = -9223372036854775808L;
+        long rhs$9 = -9223372036854775808L;
+        if (lhs$8 == rhs$9) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "#80_00_00_00_00_00_00_00 == $1000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "#80_00_00_00_00_00_00_00 == $1000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$8), .ceylon.language.Integer.instance(rhs$9)));
         }
-        if (-1L == -1L) {
+        long lhs$10 = -1L;
+        long rhs$11 = -1L;
+        if (lhs$10 == rhs$11) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-1 == #ff_ff_ff_ff_ff_ff_ff_ff"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-1 == #ff_ff_ff_ff_ff_ff_ff_ff") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$10), .ceylon.language.Integer.instance(rhs$11)));
         }
-        if (-1L == -1L) {
+        long lhs$12 = -1L;
+        long rhs$13 = -1L;
+        if (lhs$12 == rhs$13) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "#ff_ff_ff_ff_ff_ff_ff_ff == $1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "#ff_ff_ff_ff_ff_ff_ff_ff == $1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$12), .ceylon.language.Integer.instance(rhs$13)));
         }
-        if (--9223372036854775808L == -9223372036854775808L) {
+        long lhs$14 = --9223372036854775808L;
+        long rhs$15 = -9223372036854775808L;
+        if (lhs$14 == rhs$15) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-(-9223372036854775808) == -9223372036854775808"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-(-9223372036854775808) == -9223372036854775808") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$14), .ceylon.language.Integer.instance(rhs$15)));
         }
-        if (--1L == 1L) {
+        long lhs$16 = --1L;
+        long rhs$17 = 1L;
+        if (lhs$16 == rhs$17) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-#ff_ff_ff_ff_ff_ff_ff_ff == 1"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-#ff_ff_ff_ff_ff_ff_ff_ff == 1") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$16), .ceylon.language.Integer.instance(rhs$17)));
         }
-        if (--1L == 1L) {
+        long lhs$18 = --1L;
+        long rhs$19 = 1L;
+        if (lhs$18 == rhs$19) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-#ff_ff_ff_ff_ff_ff_ff_ff == 1"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "-#ff_ff_ff_ff_ff_ff_ff_ff == 1") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$18), .ceylon.language.Integer.instance(rhs$19)));
         }
     }
 }

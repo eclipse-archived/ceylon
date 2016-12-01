@@ -128,9 +128,11 @@ public final class bug5965_ {
                 return $instance$.getC$instance();
             }
         };
-        if (iFactory.$call$((.java.lang.Object)new .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5965().B$new$()).toString().equals("instance")) {
+        .ceylon.language.String lhs$0 = .ceylon.language.String.instance(iFactory.$call$((.java.lang.Object)new .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5965().B$new$()).toString());
+        .ceylon.language.String rhs$1 = .ceylon.language.String.instance("instance");
+        if (lhs$0.equals(rhs$1)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iFactory(Bug5965().B()).string == \"instance\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iFactory(Bug5965().B()).string == \"instance\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$0, rhs$1));
         }
     }
     

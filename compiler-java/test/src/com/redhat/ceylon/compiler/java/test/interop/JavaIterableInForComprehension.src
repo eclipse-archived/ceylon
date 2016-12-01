@@ -35,9 +35,11 @@ final class assertSameElements_ {
                     } else {
                         throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Finished ce=cit.next()") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.Finished.$TypeDescriptor$, ce$3));
                     }
-                    if (.com.redhat.ceylon.compiler.java.Util.checkNull(je).equals(ce$4)) {
+                    T lhs$5 = .com.redhat.ceylon.compiler.java.Util.checkNull(je);
+                    T rhs$6 = ce$4;
+                    if (lhs$5.equals(rhs$6)) {
                     } else {
-                        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "je == ce"));
+                        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "je == ce") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$5, rhs$6));
                     }
                 } else {
                     final .ceylon.language.Finished ce$2;
@@ -263,9 +265,10 @@ final class javaIterableInForComprehension_ {
                 };
             }
         });
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.Sequence<? extends .ceylon.language.Integer> lhs$13 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
-                .ceylon.language.Integer.instance(3L)})).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                .ceylon.language.Integer.instance(3L)});
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> rhs$14 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -305,11 +308,12 @@ final class javaIterableInForComprehension_ {
                     }
                 };
             }
-        }.sequence())) {
+        }.sequence();
+        if (lhs$13.equals(rhs$14)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "[1,3] == {for (x in ints) if(x%2==1) x}.sequence()"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "[1,3] == {for (x in ints) if(x%2==1) x}.sequence()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$13, rhs$14));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.Sequence<? extends .ceylon.language.Integer> lhs$17 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(3L),
@@ -318,7 +322,8 @@ final class javaIterableInForComprehension_ {
                 .ceylon.language.Integer.instance(6L),
                 .ceylon.language.Integer.instance(3L),
                 .ceylon.language.Integer.instance(6L),
-                .ceylon.language.Integer.instance(9L)})).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                .ceylon.language.Integer.instance(9L)});
+        .ceylon.language.Sequential<? extends .ceylon.language.Integer> rhs$18 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -374,9 +379,10 @@ final class javaIterableInForComprehension_ {
                     }
                 };
             }
-        }.sequence())) {
+        }.sequence();
+        if (lhs$17.equals(rhs$18)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "[1,2,3,2,4,6,3,6,9] == {for (x in ints) for (y in ints) x*y}.sequence()"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "[1,2,3,2,4,6,3,6,9] == {for (x in ints) for (y in ints) x*y}.sequence()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$17, rhs$18));
         }
     }
 }

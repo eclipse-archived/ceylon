@@ -186,37 +186,53 @@ public final class singletonCtorDelegation_ {
     
     @.ceylon.language.SharedAnnotation$annotation$
     public static void singletonCtorDelegation() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$origin().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$origin())) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation lhs$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$origin();
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation rhs$1 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$origin();
+        if (lhs$0.equals(rhs$1)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorDelegation.origin == SingletonCtorDelegation.origin"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorDelegation.origin == SingletonCtorDelegation.origin") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$0, rhs$1));
         }
-        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone())) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation lhs$2 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone();
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation rhs$3 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone();
+        if (lhs$2.equals(rhs$3)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorDelegation.oneone == SingletonCtorDelegation.oneone"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorDelegation.oneone == SingletonCtorDelegation.oneone") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
         }
-        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone().getX()) {
+        double lhs$4 = 1.0;
+        double rhs$5 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone().getX();
+        if (lhs$4 == rhs$5) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorDelegation.oneone.x"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorDelegation.oneone.x") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Float.instance(lhs$4), .ceylon.language.Float.instance(rhs$5)));
         }
-        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone().getY()) {
+        double lhs$6 = 1.0;
+        double rhs$7 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.getSingletonCtorDelegation$oneone().getY();
+        if (lhs$6 == rhs$7) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorDelegation.oneone.y"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorDelegation.oneone.y") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Float.instance(lhs$6), .ceylon.language.Float.instance(rhs$7)));
         }
-        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$origin().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$origin())) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation lhs$8 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$origin();
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation rhs$9 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$origin();
+        if (lhs$8.equals(rhs$9)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorAbstractDelegation.origin == SingletonCtorAbstractDelegation.origin"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorAbstractDelegation.origin == SingletonCtorAbstractDelegation.origin") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$8, rhs$9));
         }
-        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone().equals(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone())) {
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation lhs$10 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone();
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation rhs$11 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone();
+        if (lhs$10.equals(rhs$11)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorAbstractDelegation.oneone == SingletonCtorAbstractDelegation.oneone"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "SingletonCtorAbstractDelegation.oneone == SingletonCtorAbstractDelegation.oneone") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$10, rhs$11));
         }
-        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone().getX()) {
+        double lhs$12 = 1.0;
+        double rhs$13 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone().getX();
+        if (lhs$12 == rhs$13) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorAbstractDelegation.oneone.x"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorAbstractDelegation.oneone.x") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Float.instance(lhs$12), .ceylon.language.Float.instance(rhs$13)));
         }
-        if (1.0 == .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone().getY()) {
+        double lhs$14 = 1.0;
+        double rhs$15 = .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.getSingletonCtorAbstractDelegation$oneone().getY();
+        if (lhs$14 == rhs$15) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorAbstractDelegation.oneone.y"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1.0 == SingletonCtorAbstractDelegation.oneone.y") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Float.instance(lhs$14), .ceylon.language.Float.instance(rhs$15)));
         }
     }
     

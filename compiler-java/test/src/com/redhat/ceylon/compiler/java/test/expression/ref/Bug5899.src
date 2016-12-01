@@ -197,9 +197,11 @@ public final class bug5899_ {
                 }
             };
         );
-        if (newd.$call$((.java.lang.Object).ceylon.language.String.instance("foo")).toString().equals("foo")) {
+        .ceylon.language.String lhs$0 = .ceylon.language.String.instance(newd.$call$((.java.lang.Object).ceylon.language.String.instance("foo")).toString());
+        .ceylon.language.String rhs$1 = .ceylon.language.String.instance("foo");
+        if (lhs$0.equals(rhs$1)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "newd(\"foo\").string == \"foo\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "newd(\"foo\").string == \"foo\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$0, rhs$1));
         }
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5899.o_.E> newe = (
             let
@@ -216,9 +218,11 @@ public final class bug5899_ {
                 }
             };
         );
-        if (newe.$call$((.java.lang.Object).ceylon.language.String.instance("bar")).toString().equals("bar")) {
+        .ceylon.language.String lhs$2 = .ceylon.language.String.instance(newe.$call$((.java.lang.Object).ceylon.language.String.instance("bar")).toString());
+        .ceylon.language.String rhs$3 = .ceylon.language.String.instance("bar");
+        if (lhs$2.equals(rhs$3)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "newe(\"bar\").string == \"bar\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "newe(\"bar\").string == \"bar\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
         }
     }
     

@@ -231,14 +231,18 @@ final class bug1151_callsite_ {
     static void bug1151_callsite() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C c = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1151_C();
         final long ia3 = c.methodA().longValue();
-        if (1L == ia3) {
+        long lhs$7 = 1L;
+        long rhs$8 = ia3;
+        if (lhs$7 == rhs$8) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == ia3"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == ia3") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$7), .ceylon.language.Integer.instance(rhs$8)));
         }
         final long ib3 = c.methodB().longValue();
-        if (1L == ib3) {
+        long lhs$9 = 1L;
+        long rhs$10 = ib3;
+        if (lhs$9 == rhs$10) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == ib3"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == ib3") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$9), .ceylon.language.Integer.instance(rhs$10)));
         }
     }
 }

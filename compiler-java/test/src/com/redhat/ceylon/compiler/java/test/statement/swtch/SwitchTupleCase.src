@@ -78,17 +78,21 @@ final class switchTupleCase_ {
     
     static void switchTupleCase() {
         final .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchTupleCase stc = new .com.redhat.ceylon.compiler.java.test.statement.swtch.SwitchTupleCase();
-        if (stc.statement((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_()).equals("empty")) {
+        .ceylon.language.String lhs$5 = .ceylon.language.String.instance(stc.statement((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_()));
+        .ceylon.language.String rhs$6 = .ceylon.language.String.instance("empty");
+        if (lhs$5.equals(rhs$6)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.statement([]) == \"empty\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.statement([]) == \"empty\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$5, rhs$6));
         }
-        if (stc.statement((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.String lhs$7 = .ceylon.language.String.instance(stc.statement((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("a"),
-                .ceylon.language.String.instance("b")})).equals("ab")) {
+                .ceylon.language.String.instance("b")})));
+        .ceylon.language.String rhs$8 = .ceylon.language.String.instance("ab");
+        if (lhs$7.equals(rhs$8)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.statement([\"a\", \"b\"]) == \"ab\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.statement([\"a\", \"b\"]) == \"ab\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$7, rhs$8));
         }
-        if (stc.statement(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+        .ceylon.language.String lhs$9 = .ceylon.language.String.instance(stc.statement(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -105,27 +109,35 @@ final class switchTupleCase_ {
                 
                 }
             }
-        }.sequence()).equals("other")) {
+        }.sequence()));
+        .ceylon.language.String rhs$10 = .ceylon.language.String.instance("other");
+        if (lhs$9.equals(rhs$10)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.statement({\"a\", \"b\"}.sequence()) == \"other\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.statement({\"a\", \"b\"}.sequence()) == \"other\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$9, rhs$10));
         }
-        if (stc.statement((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.String lhs$11 = .ceylon.language.String.instance(stc.statement((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("c"),
-                .ceylon.language.String.instance("d")})).equals("other")) {
+                .ceylon.language.String.instance("d")})));
+        .ceylon.language.String rhs$12 = .ceylon.language.String.instance("other");
+        if (lhs$11.equals(rhs$12)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.statement([\"c\", \"d\"]) == \"other\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.statement([\"c\", \"d\"]) == \"other\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$11, rhs$12));
         }
-        if (stc.expression((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_()).equals("empty")) {
+        .ceylon.language.String lhs$13 = .ceylon.language.String.instance(stc.expression((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_()));
+        .ceylon.language.String rhs$14 = .ceylon.language.String.instance("empty");
+        if (lhs$13.equals(rhs$14)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.expression([]) == \"empty\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.expression([]) == \"empty\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$13, rhs$14));
         }
-        if (stc.expression((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.String lhs$15 = .ceylon.language.String.instance(stc.expression((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("a"),
-                .ceylon.language.String.instance("b")})).equals("ab")) {
+                .ceylon.language.String.instance("b")})));
+        .ceylon.language.String rhs$16 = .ceylon.language.String.instance("ab");
+        if (lhs$15.equals(rhs$16)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.expression([\"a\", \"b\"]) == \"ab\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.expression([\"a\", \"b\"]) == \"ab\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$15, rhs$16));
         }
-        if (stc.expression(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+        .ceylon.language.String lhs$17 = .ceylon.language.String.instance(stc.expression(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -142,15 +154,19 @@ final class switchTupleCase_ {
                 
                 }
             }
-        }.sequence()).equals("other")) {
+        }.sequence()));
+        .ceylon.language.String rhs$18 = .ceylon.language.String.instance("other");
+        if (lhs$17.equals(rhs$18)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.expression({\"a\", \"b\"}.sequence()) == \"other\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.expression({\"a\", \"b\"}.sequence()) == \"other\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$17, rhs$18));
         }
-        if (stc.expression((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.String lhs$19 = .ceylon.language.String.instance(stc.expression((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("c"),
-                .ceylon.language.String.instance("d")})).equals("other")) {
+                .ceylon.language.String.instance("d")})));
+        .ceylon.language.String rhs$20 = .ceylon.language.String.instance("other");
+        if (lhs$19.equals(rhs$20)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.expression([\"c\", \"d\"]) == \"other\""));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.expression([\"c\", \"d\"]) == \"other\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$19, rhs$20));
         }
     }
 }

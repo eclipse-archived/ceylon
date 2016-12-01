@@ -35,9 +35,11 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
                 return .ceylon.language.String.instance($instance$.getVal());
             }
         };
-        if (.ceylon.language.String.instance("val").equals(valRef.$call$((.java.lang.Object)this))) {
+        .ceylon.language.String lhs$0 = .ceylon.language.String.instance("val");
+        .ceylon.language.String rhs$1 = valRef.$call$((.java.lang.Object)this);
+        if (lhs$0.equals(rhs$1)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef(this)"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef(this)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$0, rhs$1));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.String> valRef2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.class, .ceylon.language.String.$TypeDescriptor$)), "String(ValueParameterRef<String>)", (short)-1){
             
@@ -47,9 +49,11 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
                 return .ceylon.language.String.instance($instance$.getVal());
             }
         };
-        if (.ceylon.language.String.instance("val").equals(valRef2.$call$((.java.lang.Object)other))) {
+        .ceylon.language.String lhs$2 = .ceylon.language.String.instance("val");
+        .ceylon.language.String rhs$3 = valRef2.$call$((.java.lang.Object)other);
+        if (lhs$2.equals(rhs$3)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef2(other)"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"val\" == valRef2(other)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
         }
         final .ceylon.language.Callable<? extends T> typeParamRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<T>($reified$T, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.class, $reified$T)), "T(ValueParameterRef<T>)", (short)-1){
             
@@ -59,9 +63,11 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
                 return $instance$.getTypeParam();
             }
         };
-        if (getTypeParam().equals(typeParamRef.$call$((.java.lang.Object)this))) {
+        T lhs$4 = getTypeParam();
+        T rhs$5 = typeParamRef.$call$((.java.lang.Object)this);
+        if (lhs$4.equals(rhs$5)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "typeParam == typeParamRef(this)"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "typeParam == typeParamRef(this)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$4, rhs$5));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.String> stringTypeParamRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.class, .ceylon.language.String.$TypeDescriptor$)), "String(ValueParameterRef<String>)", (short)-1){
             
@@ -71,9 +77,11 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
                 return $instance$.getTypeParam();
             }
         };
-        if (.ceylon.language.String.instance("foo").equals(stringTypeParamRef.$call$((.java.lang.Object)other))) {
+        .ceylon.language.String lhs$6 = .ceylon.language.String.instance("foo");
+        .ceylon.language.String rhs$7 = stringTypeParamRef.$call$((.java.lang.Object)other);
+        if (lhs$6.equals(rhs$7)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == stringTypeParamRef(other)"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == stringTypeParamRef(other)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$6, rhs$7));
         }
     }
     
@@ -139,13 +147,17 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
                 };
             }
         };
-        if (.ceylon.language.Integer.instance(2L).equals(integerPlus.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)))) {
+        .ceylon.language.Integer lhs$8 = .ceylon.language.Integer.instance(2L);
+        .ceylon.language.Integer rhs$9 = integerPlus.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
+        if (lhs$8.equals(rhs$9)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == integerPlus(1)(1)"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == integerPlus(1)(1)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$8, rhs$9));
         }
-        if (.ceylon.language.Integer.instance(1L).equals(integerPlus.$call$((.java.lang.Object).ceylon.language.Integer.instance(0L)).$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)))) {
+        .ceylon.language.Integer lhs$10 = .ceylon.language.Integer.instance(1L);
+        .ceylon.language.Integer rhs$11 = integerPlus.$call$((.java.lang.Object).ceylon.language.Integer.instance(0L)).$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
+        if (lhs$10.equals(rhs$11)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == integerPlus(0)(1)"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == integerPlus(0)(1)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$10, rhs$11));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> stringPlus = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)(String)", (short)-1){
             
@@ -162,9 +174,11 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
                 };
             }
         };
-        if (.ceylon.language.String.instance("foobar").equals(stringPlus.$call$((.java.lang.Object).ceylon.language.String.instance("foo")).$call$((.java.lang.Object).ceylon.language.String.instance("bar")))) {
+        .ceylon.language.String lhs$12 = .ceylon.language.String.instance("foobar");
+        .ceylon.language.String rhs$13 = stringPlus.$call$((.java.lang.Object).ceylon.language.String.instance("foo")).$call$((.java.lang.Object).ceylon.language.String.instance("bar"));
+        if (lhs$12.equals(rhs$13)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foobar\" == stringPlus(\"foo\")(\"bar\")"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foobar\" == stringPlus(\"foo\")(\"bar\")") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$12, rhs$13));
         }
         if (stringEqualsRef.$call$((.java.lang.Object).ceylon.language.String.instance("foobar")).$call$((.java.lang.Object)stringPlus.$call$((.java.lang.Object).ceylon.language.String.instance("foo")).$call$((.java.lang.Object).ceylon.language.String.instance("bar"))).booleanValue()) {
         } else {
@@ -206,9 +220,11 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
                 return .ceylon.language.String.instance($instance$.getBar());
             }
         };
-        if (.ceylon.language.String.instance("Inner(bar)").equals(innerRef.$call$((.java.lang.Object)Inner$new$("bar")))) {
+        .ceylon.language.String lhs$14 = .ceylon.language.String.instance("Inner(bar)");
+        .ceylon.language.String rhs$15 = innerRef.$call$((.java.lang.Object)Inner$new$("bar"));
+        if (lhs$14.equals(rhs$15)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"Inner(bar)\" == innerRef(Inner(\"bar\"))"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"Inner(bar)\" == innerRef(Inner(\"bar\"))") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$14, rhs$15));
         }
     }
     

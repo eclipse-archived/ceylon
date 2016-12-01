@@ -180,9 +180,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("nullary()".equals(nullaryRef.$call$((.java.lang.Object)this).$call$().toString())) {
+        .ceylon.language.String lhs$0 = .ceylon.language.String.instance("nullary()");
+        .ceylon.language.String rhs$1 = .ceylon.language.String.instance(nullaryRef.$call$((.java.lang.Object)this).$call$().toString());
+        if (lhs$0.equals(rhs$1)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullary()\" == nullaryRef(this)().string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullary()\" == nullaryRef(this)().string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$0, rhs$1));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Unary>> unaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Unary>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Unary.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.Unary(String)(MemberClassRef)", (short)-1){
             
@@ -199,9 +201,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("unary(u)".equals(unaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("u")).toString())) {
+        .ceylon.language.String lhs$2 = .ceylon.language.String.instance("unary(u)");
+        .ceylon.language.String rhs$3 = .ceylon.language.String.instance(unaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("u")).toString());
+        if (lhs$2.equals(rhs$3)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(u)\" == unaryRef(this)(\"u\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(u)\" == unaryRef(this)(\"u\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Binary>> binaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Binary>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Binary.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.Binary(String, String)(MemberClassRef)", (short)-1){
             
@@ -219,9 +223,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("binary(b1, b2)".equals(binaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("b1"), .ceylon.language.String.instance("b2")).toString())) {
+        .ceylon.language.String lhs$4 = .ceylon.language.String.instance("binary(b1, b2)");
+        .ceylon.language.String rhs$5 = .ceylon.language.String.instance(binaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("b1"), .ceylon.language.String.instance("b2")).toString());
+        if (lhs$4.equals(rhs$5)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binary(b1, b2)\" == binaryRef(this)(\"b1\", \"b2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binary(b1, b2)\" == binaryRef(this)(\"b1\", \"b2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$4, rhs$5));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Ternary>> ternaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Ternary>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Ternary.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.Ternary(String, String, String)(MemberClassRef)", (short)-1){
             
@@ -240,9 +246,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("ternary(t1, t2, t3)".equals(ternaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("t1"), .ceylon.language.String.instance("t2"), .ceylon.language.String.instance("t3")).toString())) {
+        .ceylon.language.String lhs$6 = .ceylon.language.String.instance("ternary(t1, t2, t3)");
+        .ceylon.language.String rhs$7 = .ceylon.language.String.instance(ternaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("t1"), .ceylon.language.String.instance("t2"), .ceylon.language.String.instance("t3")).toString());
+        if (lhs$6.equals(rhs$7)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternary(t1, t2, t3)\" == ternaryRef(this)(\"t1\", \"t2\", \"t3\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternary(t1, t2, t3)\" == ternaryRef(this)(\"t1\", \"t2\", \"t3\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$6, rhs$7));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Nary>> naryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Nary>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Nary.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.Nary(String, String, String, String)(MemberClassRef)", (short)-1){
             
@@ -262,9 +270,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("nary(n1, n2, n3, n4)".equals(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2"), .ceylon.language.String.instance("n3"), .ceylon.language.String.instance("n4")).toString())) {
+        .ceylon.language.String lhs$8 = .ceylon.language.String.instance("nary(n1, n2, n3, n4)");
+        .ceylon.language.String rhs$9 = .ceylon.language.String.instance(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2"), .ceylon.language.String.instance("n3"), .ceylon.language.String.instance("n4")).toString());
+        if (lhs$8.equals(rhs$9)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nary(n1, n2, n3, n4)\" == naryRef(this)(\"n1\", \"n2\", \"n3\", \"n4\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nary(n1, n2, n3, n4)\" == naryRef(this)(\"n1\", \"n2\", \"n3\", \"n4\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$8, rhs$9));
         }
     }
     
@@ -280,9 +290,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$0 = $default$UnaryDefaulted$s();
+                .java.lang.String $ceylontmp$s$10 = $default$UnaryDefaulted$s();
             }
-            returning new UnaryDefaulted($ceylontmp$s$0);
+            returning new UnaryDefaulted($ceylontmp$s$10);
         );
     }
     
@@ -320,10 +330,10 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$1 = $default$BinaryDefaulted$s1();
-                .java.lang.String $ceylontmp$s2$2 = $default$BinaryDefaulted$s2($ceylontmp$s1$1);
+                .java.lang.String $ceylontmp$s1$11 = $default$BinaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$12 = $default$BinaryDefaulted$s2($ceylontmp$s1$11);
             }
-            returning new BinaryDefaulted($ceylontmp$s1$1, $ceylontmp$s2$2);
+            returning new BinaryDefaulted($ceylontmp$s1$11, $ceylontmp$s2$12);
         );
     }
     
@@ -335,9 +345,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$3 = $default$BinaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s2$13 = $default$BinaryDefaulted$s2(s1);
             }
-            returning new BinaryDefaulted(s1, $ceylontmp$s2$3);
+            returning new BinaryDefaulted(s1, $ceylontmp$s2$13);
         );
     }
     
@@ -381,11 +391,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$4 = $default$TernaryDefaulted$s1();
-                .java.lang.String $ceylontmp$s2$5 = $default$TernaryDefaulted$s2($ceylontmp$s1$4);
-                .java.lang.String $ceylontmp$s3$6 = $default$TernaryDefaulted$s3($ceylontmp$s1$4, $ceylontmp$s2$5);
+                .java.lang.String $ceylontmp$s1$14 = $default$TernaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$15 = $default$TernaryDefaulted$s2($ceylontmp$s1$14);
+                .java.lang.String $ceylontmp$s3$16 = $default$TernaryDefaulted$s3($ceylontmp$s1$14, $ceylontmp$s2$15);
             }
-            returning new TernaryDefaulted($ceylontmp$s1$4, $ceylontmp$s2$5, $ceylontmp$s3$6);
+            returning new TernaryDefaulted($ceylontmp$s1$14, $ceylontmp$s2$15, $ceylontmp$s3$16);
         );
     }
     
@@ -397,10 +407,10 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$7 = $default$TernaryDefaulted$s2(s1);
-                .java.lang.String $ceylontmp$s3$8 = $default$TernaryDefaulted$s3(s1, $ceylontmp$s2$7);
+                .java.lang.String $ceylontmp$s2$17 = $default$TernaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s3$18 = $default$TernaryDefaulted$s3(s1, $ceylontmp$s2$17);
             }
-            returning new TernaryDefaulted(s1, $ceylontmp$s2$7, $ceylontmp$s3$8);
+            returning new TernaryDefaulted(s1, $ceylontmp$s2$17, $ceylontmp$s3$18);
         );
     }
     
@@ -412,9 +422,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s3$9 = $default$TernaryDefaulted$s3(s1, s2);
+                .java.lang.String $ceylontmp$s3$19 = $default$TernaryDefaulted$s3(s1, s2);
             }
-            returning new TernaryDefaulted(s1, s2, $ceylontmp$s3$9);
+            returning new TernaryDefaulted(s1, s2, $ceylontmp$s3$19);
         );
     }
     
@@ -464,12 +474,12 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s1$10 = $default$NaryDefaulted$s1();
-                .java.lang.String $ceylontmp$s2$11 = $default$NaryDefaulted$s2($ceylontmp$s1$10);
-                .java.lang.String $ceylontmp$s3$12 = $default$NaryDefaulted$s3($ceylontmp$s1$10, $ceylontmp$s2$11);
-                .java.lang.String $ceylontmp$s4$13 = $default$NaryDefaulted$s4($ceylontmp$s1$10, $ceylontmp$s2$11, $ceylontmp$s3$12);
+                .java.lang.String $ceylontmp$s1$20 = $default$NaryDefaulted$s1();
+                .java.lang.String $ceylontmp$s2$21 = $default$NaryDefaulted$s2($ceylontmp$s1$20);
+                .java.lang.String $ceylontmp$s3$22 = $default$NaryDefaulted$s3($ceylontmp$s1$20, $ceylontmp$s2$21);
+                .java.lang.String $ceylontmp$s4$23 = $default$NaryDefaulted$s4($ceylontmp$s1$20, $ceylontmp$s2$21, $ceylontmp$s3$22);
             }
-            returning new NaryDefaulted($ceylontmp$s1$10, $ceylontmp$s2$11, $ceylontmp$s3$12, $ceylontmp$s4$13);
+            returning new NaryDefaulted($ceylontmp$s1$20, $ceylontmp$s2$21, $ceylontmp$s3$22, $ceylontmp$s4$23);
         );
     }
     
@@ -481,11 +491,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s2$14 = $default$NaryDefaulted$s2(s1);
-                .java.lang.String $ceylontmp$s3$15 = $default$NaryDefaulted$s3(s1, $ceylontmp$s2$14);
-                .java.lang.String $ceylontmp$s4$16 = $default$NaryDefaulted$s4(s1, $ceylontmp$s2$14, $ceylontmp$s3$15);
+                .java.lang.String $ceylontmp$s2$24 = $default$NaryDefaulted$s2(s1);
+                .java.lang.String $ceylontmp$s3$25 = $default$NaryDefaulted$s3(s1, $ceylontmp$s2$24);
+                .java.lang.String $ceylontmp$s4$26 = $default$NaryDefaulted$s4(s1, $ceylontmp$s2$24, $ceylontmp$s3$25);
             }
-            returning new NaryDefaulted(s1, $ceylontmp$s2$14, $ceylontmp$s3$15, $ceylontmp$s4$16);
+            returning new NaryDefaulted(s1, $ceylontmp$s2$24, $ceylontmp$s3$25, $ceylontmp$s4$26);
         );
     }
     
@@ -497,10 +507,10 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s3$17 = $default$NaryDefaulted$s3(s1, s2);
-                .java.lang.String $ceylontmp$s4$18 = $default$NaryDefaulted$s4(s1, s2, $ceylontmp$s3$17);
+                .java.lang.String $ceylontmp$s3$27 = $default$NaryDefaulted$s3(s1, s2);
+                .java.lang.String $ceylontmp$s4$28 = $default$NaryDefaulted$s4(s1, s2, $ceylontmp$s3$27);
             }
-            returning new NaryDefaulted(s1, s2, $ceylontmp$s3$17, $ceylontmp$s4$18);
+            returning new NaryDefaulted(s1, s2, $ceylontmp$s3$27, $ceylontmp$s4$28);
         );
     }
     
@@ -512,9 +522,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .java.lang.String $ceylontmp$s4$19 = $default$NaryDefaulted$s4(s1, s2, s3);
+                .java.lang.String $ceylontmp$s4$29 = $default$NaryDefaulted$s4(s1, s2, s3);
             }
-            returning new NaryDefaulted(s1, s2, s3, $ceylontmp$s4$19);
+            returning new NaryDefaulted(s1, s2, s3, $ceylontmp$s4$29);
         );
     }
     
@@ -584,13 +594,17 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("unaryDefaulted(u)".equals(unaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("u")).toString())) {
+        .ceylon.language.String lhs$30 = .ceylon.language.String.instance("unaryDefaulted(u)");
+        .ceylon.language.String rhs$31 = .ceylon.language.String.instance(unaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("u")).toString());
+        if (lhs$30.equals(rhs$31)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unaryDefaulted(u)\" == unaryRef(this)(\"u\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unaryDefaulted(u)\" == unaryRef(this)(\"u\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$30, rhs$31));
         }
-        if ("unaryDefaulted(s)".equals(unaryRef.$call$((.java.lang.Object)this).$call$().toString())) {
+        .ceylon.language.String lhs$32 = .ceylon.language.String.instance("unaryDefaulted(s)");
+        .ceylon.language.String rhs$33 = .ceylon.language.String.instance(unaryRef.$call$((.java.lang.Object)this).$call$().toString());
+        if (lhs$32.equals(rhs$33)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unaryDefaulted(s)\" == unaryRef(this)().string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unaryDefaulted(s)\" == unaryRef(this)().string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$32, rhs$33));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinaryDefaulted>> binaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinaryDefaulted>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinaryDefaulted.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.BinaryDefaulted(String=, String=)(MemberClassRef)", (short)-1){
             
@@ -626,17 +640,23 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("binaryDefaulted(b1, b2)".equals(binaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("b1"), .ceylon.language.String.instance("b2")).toString())) {
+        .ceylon.language.String lhs$34 = .ceylon.language.String.instance("binaryDefaulted(b1, b2)");
+        .ceylon.language.String rhs$35 = .ceylon.language.String.instance(binaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("b1"), .ceylon.language.String.instance("b2")).toString());
+        if (lhs$34.equals(rhs$35)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binaryDefaulted(b1, b2)\" == binaryRef(this)(\"b1\", \"b2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binaryDefaulted(b1, b2)\" == binaryRef(this)(\"b1\", \"b2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$34, rhs$35));
         }
-        if ("binaryDefaulted(b1, s2)".equals(binaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("b1")).toString())) {
+        .ceylon.language.String lhs$36 = .ceylon.language.String.instance("binaryDefaulted(b1, s2)");
+        .ceylon.language.String rhs$37 = .ceylon.language.String.instance(binaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("b1")).toString());
+        if (lhs$36.equals(rhs$37)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binaryDefaulted(b1, s2)\" == binaryRef(this)(\"b1\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binaryDefaulted(b1, s2)\" == binaryRef(this)(\"b1\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$36, rhs$37));
         }
-        if ("binaryDefaulted(s1, s2)".equals(binaryRef.$call$((.java.lang.Object)this).$call$().toString())) {
+        .ceylon.language.String lhs$38 = .ceylon.language.String.instance("binaryDefaulted(s1, s2)");
+        .ceylon.language.String rhs$39 = .ceylon.language.String.instance(binaryRef.$call$((.java.lang.Object)this).$call$().toString());
+        if (lhs$38.equals(rhs$39)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binaryDefaulted(s1, s2)\" == binaryRef(this)().string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binaryDefaulted(s1, s2)\" == binaryRef(this)().string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$38, rhs$39));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryDefaulted>> ternaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryDefaulted>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryDefaulted.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.TernaryDefaulted(String=, String=, String=)(MemberClassRef)", (short)-1){
             
@@ -683,21 +703,29 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("ternaryDefaulted(t1, t2, t3)".equals(ternaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("t1"), .ceylon.language.String.instance("t2"), .ceylon.language.String.instance("t3")).toString())) {
+        .ceylon.language.String lhs$40 = .ceylon.language.String.instance("ternaryDefaulted(t1, t2, t3)");
+        .ceylon.language.String rhs$41 = .ceylon.language.String.instance(ternaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("t1"), .ceylon.language.String.instance("t2"), .ceylon.language.String.instance("t3")).toString());
+        if (lhs$40.equals(rhs$41)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryDefaulted(t1, t2, t3)\" == ternaryRef(this)(\"t1\", \"t2\", \"t3\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryDefaulted(t1, t2, t3)\" == ternaryRef(this)(\"t1\", \"t2\", \"t3\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$40, rhs$41));
         }
-        if ("ternaryDefaulted(t1, t2, s3)".equals(ternaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("t1"), .ceylon.language.String.instance("t2")).toString())) {
+        .ceylon.language.String lhs$42 = .ceylon.language.String.instance("ternaryDefaulted(t1, t2, s3)");
+        .ceylon.language.String rhs$43 = .ceylon.language.String.instance(ternaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("t1"), .ceylon.language.String.instance("t2")).toString());
+        if (lhs$42.equals(rhs$43)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryDefaulted(t1, t2, s3)\" == ternaryRef(this)(\"t1\", \"t2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryDefaulted(t1, t2, s3)\" == ternaryRef(this)(\"t1\", \"t2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$42, rhs$43));
         }
-        if ("ternaryDefaulted(t1, s2, s3)".equals(ternaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("t1")).toString())) {
+        .ceylon.language.String lhs$44 = .ceylon.language.String.instance("ternaryDefaulted(t1, s2, s3)");
+        .ceylon.language.String rhs$45 = .ceylon.language.String.instance(ternaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("t1")).toString());
+        if (lhs$44.equals(rhs$45)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryDefaulted(t1, s2, s3)\" == ternaryRef(this)(\"t1\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryDefaulted(t1, s2, s3)\" == ternaryRef(this)(\"t1\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$44, rhs$45));
         }
-        if ("ternaryDefaulted(s1, s2, s3)".equals(ternaryRef.$call$((.java.lang.Object)this).$call$().toString())) {
+        .ceylon.language.String lhs$46 = .ceylon.language.String.instance("ternaryDefaulted(s1, s2, s3)");
+        .ceylon.language.String rhs$47 = .ceylon.language.String.instance(ternaryRef.$call$((.java.lang.Object)this).$call$().toString());
+        if (lhs$46.equals(rhs$47)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryDefaulted(s1, s2, s3)\" == ternaryRef(this)().string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternaryDefaulted(s1, s2, s3)\" == ternaryRef(this)().string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$46, rhs$47));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryDefaulted>> naryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryDefaulted>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryDefaulted.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.NaryDefaulted(String=, String=, String=, String=)(MemberClassRef)", (short)-1){
             
@@ -757,25 +785,35 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("naryDefaulted(n1, n2, n3, n4)".equals(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2"), .ceylon.language.String.instance("n3"), .ceylon.language.String.instance("n4")).toString())) {
+        .ceylon.language.String lhs$48 = .ceylon.language.String.instance("naryDefaulted(n1, n2, n3, n4)");
+        .ceylon.language.String rhs$49 = .ceylon.language.String.instance(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2"), .ceylon.language.String.instance("n3"), .ceylon.language.String.instance("n4")).toString());
+        if (lhs$48.equals(rhs$49)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryDefaulted(n1, n2, n3, n4)\" == naryRef(this)(\"n1\", \"n2\", \"n3\", \"n4\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryDefaulted(n1, n2, n3, n4)\" == naryRef(this)(\"n1\", \"n2\", \"n3\", \"n4\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$48, rhs$49));
         }
-        if ("naryDefaulted(n1, n2, n3, s4)".equals(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2"), .ceylon.language.String.instance("n3")).toString())) {
+        .ceylon.language.String lhs$50 = .ceylon.language.String.instance("naryDefaulted(n1, n2, n3, s4)");
+        .ceylon.language.String rhs$51 = .ceylon.language.String.instance(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2"), .ceylon.language.String.instance("n3")).toString());
+        if (lhs$50.equals(rhs$51)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryDefaulted(n1, n2, n3, s4)\" == naryRef(this)(\"n1\", \"n2\", \"n3\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryDefaulted(n1, n2, n3, s4)\" == naryRef(this)(\"n1\", \"n2\", \"n3\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$50, rhs$51));
         }
-        if ("naryDefaulted(n1, n2, s3, s4)".equals(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2")).toString())) {
+        .ceylon.language.String lhs$52 = .ceylon.language.String.instance("naryDefaulted(n1, n2, s3, s4)");
+        .ceylon.language.String rhs$53 = .ceylon.language.String.instance(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2")).toString());
+        if (lhs$52.equals(rhs$53)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryDefaulted(n1, n2, s3, s4)\" == naryRef(this)(\"n1\", \"n2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryDefaulted(n1, n2, s3, s4)\" == naryRef(this)(\"n1\", \"n2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$52, rhs$53));
         }
-        if ("naryDefaulted(n1, s2, s3, s4)".equals(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1")).toString())) {
+        .ceylon.language.String lhs$54 = .ceylon.language.String.instance("naryDefaulted(n1, s2, s3, s4)");
+        .ceylon.language.String rhs$55 = .ceylon.language.String.instance(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1")).toString());
+        if (lhs$54.equals(rhs$55)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryDefaulted(n1, s2, s3, s4)\" == naryRef(this)(\"n1\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryDefaulted(n1, s2, s3, s4)\" == naryRef(this)(\"n1\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$54, rhs$55));
         }
-        if ("naryDefaulted(s1, s2, s3, s4)".equals(naryRef.$call$((.java.lang.Object)this).$call$().toString())) {
+        .ceylon.language.String lhs$56 = .ceylon.language.String.instance("naryDefaulted(s1, s2, s3, s4)");
+        .ceylon.language.String rhs$57 = .ceylon.language.String.instance(naryRef.$call$((.java.lang.Object)this).$call$().toString());
+        if (lhs$56.equals(rhs$57)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryDefaulted(s1, s2, s3, s4)\" == naryRef(this)().string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"naryDefaulted(s1, s2, s3, s4)\" == naryRef(this)().string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$56, rhs$57));
         }
     }
     
@@ -787,9 +825,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$20 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$58 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new NullarySequenced($ceylontmp$s$20);
+            returning new NullarySequenced($ceylontmp$s$58);
         );
     }
     
@@ -823,9 +861,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$21 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$59 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new UnarySequenced(s1, $ceylontmp$s$21);
+            returning new UnarySequenced(s1, $ceylontmp$s$59);
         );
     }
     
@@ -865,9 +903,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$22 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$60 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new BinarySequenced(s1, s2, $ceylontmp$s$22);
+            returning new BinarySequenced(s1, s2, $ceylontmp$s$60);
         );
     }
     
@@ -913,9 +951,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$23 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$61 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new TernarySequenced(s1, s2, s3, $ceylontmp$s$23);
+            returning new TernarySequenced(s1, s2, s3, $ceylontmp$s$61);
         );
     }
     
@@ -967,9 +1005,9 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$24 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$62 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning new NarySequenced(s1, s2, s3, s4, $ceylontmp$s$24);
+            returning new NarySequenced(s1, s2, s3, s4, $ceylontmp$s$62);
         );
     }
     
@@ -1098,19 +1136,25 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("nullarySequenced([])".equals(nullaryRef.$call$((.java.lang.Object)this).$callvariadic$((.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString())) {
+        .ceylon.language.String lhs$63 = .ceylon.language.String.instance("nullarySequenced([])");
+        .ceylon.language.String rhs$64 = .ceylon.language.String.instance(nullaryRef.$call$((.java.lang.Object)this).$callvariadic$((.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString());
+        if (lhs$63.equals(rhs$64)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([])\" == nullaryRef(this)().string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([])\" == nullaryRef(this)().string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$63, rhs$64));
         }
-        if ("nullarySequenced([r1])".equals(nullaryRef.$call$((.java.lang.Object)this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")}, .ceylon.language.empty_.get_())).toString())) {
+        .ceylon.language.String lhs$65 = .ceylon.language.String.instance("nullarySequenced([r1])");
+        .ceylon.language.String rhs$66 = .ceylon.language.String.instance(nullaryRef.$call$((.java.lang.Object)this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")}, .ceylon.language.empty_.get_())).toString());
+        if (lhs$65.equals(rhs$66)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1])\" == nullaryRef(this)(\"r1\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1])\" == nullaryRef(this)(\"r1\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$65, rhs$66));
         }
-        if ("nullarySequenced([r1, r2])".equals(nullaryRef.$call$((.java.lang.Object)this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.String lhs$67 = .ceylon.language.String.instance("nullarySequenced([r1, r2])");
+        .ceylon.language.String rhs$68 = .ceylon.language.String.instance(nullaryRef.$call$((.java.lang.Object)this).$callvariadic$((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("r1"),
-                .ceylon.language.String.instance("r2")}, .ceylon.language.empty_.get_())).toString())) {
+                .ceylon.language.String.instance("r2")}, .ceylon.language.empty_.get_())).toString());
+        if (lhs$67.equals(rhs$68)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1, r2])\" == nullaryRef(this)(\"r1\", \"r2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullarySequenced([r1, r2])\" == nullaryRef(this)(\"r1\", \"r2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$67, rhs$68));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnarySequenced>> unaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnarySequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnarySequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(true, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.UnarySequenced(String, String*)(MemberClassRef)", (short)-1){
             
@@ -1188,19 +1232,25 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("unarySequenced(s; [])".equals(unaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString())) {
+        .ceylon.language.String lhs$69 = .ceylon.language.String.instance("unarySequenced(s; [])");
+        .ceylon.language.String rhs$70 = .ceylon.language.String.instance(unaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString());
+        if (lhs$69.equals(rhs$70)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [])\" == unaryRef(this)(\"s\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [])\" == unaryRef(this)(\"s\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$69, rhs$70));
         }
-        if ("unarySequenced(s; [r1])".equals(unaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")}, .ceylon.language.empty_.get_())).toString())) {
+        .ceylon.language.String lhs$71 = .ceylon.language.String.instance("unarySequenced(s; [r1])");
+        .ceylon.language.String rhs$72 = .ceylon.language.String.instance(unaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")}, .ceylon.language.empty_.get_())).toString());
+        if (lhs$71.equals(rhs$72)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1])\" == unaryRef(this)(\"s\", \"r1\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1])\" == unaryRef(this)(\"s\", \"r1\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$71, rhs$72));
         }
-        if ("unarySequenced(s; [r1, r2])".equals(unaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.String lhs$73 = .ceylon.language.String.instance("unarySequenced(s; [r1, r2])");
+        .ceylon.language.String rhs$74 = .ceylon.language.String.instance(unaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("r1"),
-                .ceylon.language.String.instance("r2")}, .ceylon.language.empty_.get_())).toString())) {
+                .ceylon.language.String.instance("r2")}, .ceylon.language.empty_.get_())).toString());
+        if (lhs$73.equals(rhs$74)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1, r2])\" == unaryRef(this)(\"s\", \"r1\", \"r2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unarySequenced(s; [r1, r2])\" == unaryRef(this)(\"s\", \"r1\", \"r2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$73, rhs$74));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinarySequenced>> binaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinarySequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinarySequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(true, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.BinarySequenced(String, String, String*)(MemberClassRef)", (short)-1){
             
@@ -1268,19 +1318,25 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("binarySequenced(s1, s2; [])".equals(binaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString())) {
+        .ceylon.language.String lhs$75 = .ceylon.language.String.instance("binarySequenced(s1, s2; [])");
+        .ceylon.language.String rhs$76 = .ceylon.language.String.instance(binaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString());
+        if (lhs$75.equals(rhs$76)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [])\" == binaryRef(this)(\"s1\", \"s2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [])\" == binaryRef(this)(\"s1\", \"s2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$75, rhs$76));
         }
-        if ("binarySequenced(s1, s2; [r1])".equals(binaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")}, .ceylon.language.empty_.get_())).toString())) {
+        .ceylon.language.String lhs$77 = .ceylon.language.String.instance("binarySequenced(s1, s2; [r1])");
+        .ceylon.language.String rhs$78 = .ceylon.language.String.instance(binaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")}, .ceylon.language.empty_.get_())).toString());
+        if (lhs$77.equals(rhs$78)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$77, rhs$78));
         }
-        if ("binarySequenced(s1, s2; [r1, r2])".equals(binaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.String lhs$79 = .ceylon.language.String.instance("binarySequenced(s1, s2; [r1, r2])");
+        .ceylon.language.String rhs$80 = .ceylon.language.String.instance(binaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("r1"),
-                .ceylon.language.String.instance("r2")}, .ceylon.language.empty_.get_())).toString())) {
+                .ceylon.language.String.instance("r2")}, .ceylon.language.empty_.get_())).toString());
+        if (lhs$79.equals(rhs$80)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1, r2])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\", \"r2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binarySequenced(s1, s2; [r1, r2])\" == binaryRef(this)(\"s1\", \"s2\", \"r1\", \"r2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$79, rhs$80));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernarySequenced>> ternaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernarySequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernarySequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(true, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.TernarySequenced(String, String, String, String*)(MemberClassRef)", (short)-1){
             
@@ -1338,19 +1394,25 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("ternarySequenced(s1, s2, s3; [])".equals(ternaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString())) {
+        .ceylon.language.String lhs$81 = .ceylon.language.String.instance("ternarySequenced(s1, s2, s3; [])");
+        .ceylon.language.String rhs$82 = .ceylon.language.String.instance(ternaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString());
+        if (lhs$81.equals(rhs$82)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$81, rhs$82));
         }
-        if ("ternarySequenced(s1, s2, s3; [r1])".equals(ternaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")}, .ceylon.language.empty_.get_())).toString())) {
+        .ceylon.language.String lhs$83 = .ceylon.language.String.instance("ternarySequenced(s1, s2, s3; [r1])");
+        .ceylon.language.String rhs$84 = .ceylon.language.String.instance(ternaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")}, .ceylon.language.empty_.get_())).toString());
+        if (lhs$83.equals(rhs$84)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$83, rhs$84));
         }
-        if ("ternarySequenced(s1, s2, s3; [r1, r2])".equals(ternaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.String lhs$85 = .ceylon.language.String.instance("ternarySequenced(s1, s2, s3; [r1, r2])");
+        .ceylon.language.String rhs$86 = .ceylon.language.String.instance(ternaryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("r1"),
-                .ceylon.language.String.instance("r2")}, .ceylon.language.empty_.get_())).toString())) {
+                .ceylon.language.String.instance("r2")}, .ceylon.language.empty_.get_())).toString());
+        if (lhs$85.equals(rhs$86)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1, r2])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\", \"r2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternarySequenced(s1, s2, s3; [r1, r2])\" == ternaryRef(this)(\"s1\", \"s2\", \"s3\", \"r1\", \"r2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$85, rhs$86));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NarySequenced>> naryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NarySequenced>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NarySequenced.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(true, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.NarySequenced(String, String, String, String, String*)(MemberClassRef)", (short)-1){
             
@@ -1393,19 +1455,25 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("narySequenced(s1, s2, s3, s4; [])".equals(naryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString())) {
+        .ceylon.language.String lhs$87 = .ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; [])");
+        .ceylon.language.String rhs$88 = .ceylon.language.String.instance(naryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()).toString());
+        if (lhs$87.equals(rhs$88)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$87, rhs$88));
         }
-        if ("narySequenced(s1, s2, s3, s4; [r1])".equals(naryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")}, .ceylon.language.empty_.get_())).toString())) {
+        .ceylon.language.String lhs$89 = .ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; [r1])");
+        .ceylon.language.String rhs$90 = .ceylon.language.String.instance(naryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("r1")}, .ceylon.language.empty_.get_())).toString());
+        if (lhs$89.equals(rhs$90)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$89, rhs$90));
         }
-        if ("narySequenced(s1, s2, s3, s4; [r1, r2])".equals(naryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.String lhs$91 = .ceylon.language.String.instance("narySequenced(s1, s2, s3, s4; [r1, r2])");
+        .ceylon.language.String rhs$92 = .ceylon.language.String.instance(naryRef.$call$((.java.lang.Object)this).$callvariadic$((.java.lang.Object).ceylon.language.String.instance("s1"), .ceylon.language.String.instance("s2"), .ceylon.language.String.instance("s3"), .ceylon.language.String.instance("s4"), (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("r1"),
-                .ceylon.language.String.instance("r2")}, .ceylon.language.empty_.get_())).toString())) {
+                .ceylon.language.String.instance("r2")}, .ceylon.language.empty_.get_())).toString());
+        if (lhs$91.equals(rhs$92)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1, r2])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\", \"r2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"narySequenced(s1, s2, s3, s4; [r1, r2])\" == naryRef(this)(\"s1\", \"s2\", \"s3\", \"s4\", \"r1\", \"r2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$91, rhs$92));
         }
     }
     
@@ -1606,9 +1674,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("nullary()".equals(nullaryRef.$call$((.java.lang.Object)this).$call$().toString())) {
+        .ceylon.language.String lhs$93 = .ceylon.language.String.instance("nullary()");
+        .ceylon.language.String rhs$94 = .ceylon.language.String.instance(nullaryRef.$call$((.java.lang.Object)this).$call$().toString());
+        if (lhs$93.equals(rhs$94)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullary()\" == nullaryRef(this)().string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullary()\" == nullaryRef(this)().string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$93, rhs$94));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NullaryParameterized<X>>> nullaryXRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NullaryParameterized<X>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NullaryParameterized.class, $reified$X)), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.NullaryParameterized<X>()(MemberClassRef)", (short)-1){
             
@@ -1624,9 +1694,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("nullary()".equals(nullaryXRef.$call$((.java.lang.Object)this).$call$().toString())) {
+        .ceylon.language.String lhs$95 = .ceylon.language.String.instance("nullary()");
+        .ceylon.language.String rhs$96 = .ceylon.language.String.instance(nullaryXRef.$call$((.java.lang.Object)this).$call$().toString());
+        if (lhs$95.equals(rhs$96)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullary()\" == nullaryXRef(this)().string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nullary()\" == nullaryXRef(this)().string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$95, rhs$96));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnaryParameterized<.ceylon.language.String>>> unaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnaryParameterized<.ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnaryParameterized.class, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.UnaryParameterized<String>(String)(MemberClassRef)", (short)-1){
             
@@ -1643,9 +1715,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("unary(u)".equals(unaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("u")).toString())) {
+        .ceylon.language.String lhs$97 = .ceylon.language.String.instance("unary(u)");
+        .ceylon.language.String rhs$98 = .ceylon.language.String.instance(unaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("u")).toString());
+        if (lhs$97.equals(rhs$98)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(u)\" == unaryRef(this)(\"u\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(u)\" == unaryRef(this)(\"u\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$97, rhs$98));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnaryParameterized<X>>> unaryXRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnaryParameterized<X>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.UnaryParameterized.class, $reified$X)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$X)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.UnaryParameterized<X>(X)(MemberClassRef)", (short)-1){
             
@@ -1662,9 +1736,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("unary(foo)".equals(unaryXRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object)x).toString())) {
+        .ceylon.language.String lhs$99 = .ceylon.language.String.instance("unary(foo)");
+        .ceylon.language.String rhs$100 = .ceylon.language.String.instance(unaryXRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object)x).toString());
+        if (lhs$99.equals(rhs$100)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(foo)\" == unaryXRef(this)(x).string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"unary(foo)\" == unaryXRef(this)(x).string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$99, rhs$100));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinaryParameterized<.ceylon.language.String, .ceylon.language.String>>> binaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinaryParameterized<.ceylon.language.String, .ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.BinaryParameterized.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.BinaryParameterized<String,String>(String, String)(MemberClassRef)", (short)-1){
             
@@ -1682,9 +1758,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("binary(b1, b2)".equals(binaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("b1"), .ceylon.language.String.instance("b2")).toString())) {
+        .ceylon.language.String lhs$101 = .ceylon.language.String.instance("binary(b1, b2)");
+        .ceylon.language.String rhs$102 = .ceylon.language.String.instance(binaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("b1"), .ceylon.language.String.instance("b2")).toString());
+        if (lhs$101.equals(rhs$102)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binary(b1, b2)\" == binaryRef(this)(\"b1\", \"b2\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"binary(b1, b2)\" == binaryRef(this)(\"b1\", \"b2\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$101, rhs$102));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryParameterized<.ceylon.language.String, .ceylon.language.String, .ceylon.language.String>>> ternaryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryParameterized<.ceylon.language.String, .ceylon.language.String, .ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.TernaryParameterized.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.TernaryParameterized<String,String,String>(String, String, String)(MemberClassRef)", (short)-1){
             
@@ -1703,9 +1781,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("ternary(t1, t2, t3)".equals(ternaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("t1"), .ceylon.language.String.instance("t2"), .ceylon.language.String.instance("t3")).toString())) {
+        .ceylon.language.String lhs$103 = .ceylon.language.String.instance("ternary(t1, t2, t3)");
+        .ceylon.language.String rhs$104 = .ceylon.language.String.instance(ternaryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("t1"), .ceylon.language.String.instance("t2"), .ceylon.language.String.instance("t3")).toString());
+        if (lhs$103.equals(rhs$104)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternary(t1, t2, t3)\" == ternaryRef(this)(\"t1\", \"t2\", \"t3\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ternary(t1, t2, t3)\" == ternaryRef(this)(\"t1\", \"t2\", \"t3\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$103, rhs$104));
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryParameterized<.ceylon.language.String, .ceylon.language.String, .ceylon.language.String, .ceylon.language.String>>> naryRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryParameterized<.ceylon.language.String, .ceylon.language.String, .ceylon.language.String, .ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.NaryParameterized.class, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.$TypeDescriptor$), "MemberClassRef.NaryParameterized<String,String,String,String>(String, String, String, String)(MemberClassRef)", (short)-1){
             
@@ -1725,9 +1805,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("nary(n1, n2, n3, n4)".equals(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2"), .ceylon.language.String.instance("n3"), .ceylon.language.String.instance("n4")).toString())) {
+        .ceylon.language.String lhs$105 = .ceylon.language.String.instance("nary(n1, n2, n3, n4)");
+        .ceylon.language.String rhs$106 = .ceylon.language.String.instance(naryRef.$call$((.java.lang.Object)this).$call$((.java.lang.Object).ceylon.language.String.instance("n1"), .ceylon.language.String.instance("n2"), .ceylon.language.String.instance("n3"), .ceylon.language.String.instance("n4")).toString());
+        if (lhs$105.equals(rhs$106)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nary(n1, n2, n3, n4)\" == naryRef(this)(\"n1\", \"n2\", \"n3\", \"n4\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"nary(n1, n2, n3, n4)\" == naryRef(this)(\"n1\", \"n2\", \"n3\", \"n4\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$105, rhs$106));
         }
     }
     
@@ -1794,9 +1876,11 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 };
             }
         };
-        if ("Inner(foo).M(bar)".equals(innerMRef.$call$((.java.lang.Object)Inner$new$("foo")).$call$((.java.lang.Object).ceylon.language.String.instance("bar")).toString())) {
+        .ceylon.language.String lhs$107 = .ceylon.language.String.instance("Inner(foo).M(bar)");
+        .ceylon.language.String rhs$108 = .ceylon.language.String.instance(innerMRef.$call$((.java.lang.Object)Inner$new$("foo")).$call$((.java.lang.Object).ceylon.language.String.instance("bar")).toString());
+        if (lhs$107.equals(rhs$108)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"Inner(foo).M(bar)\" == innerMRef(Inner(\"foo\"))(\"bar\").string"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"Inner(foo).M(bar)\" == innerMRef(Inner(\"foo\"))(\"bar\").string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$107, rhs$108));
         }
     }
     
