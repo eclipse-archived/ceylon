@@ -46,6 +46,15 @@ shared native final class Integer
                   Binary<Integer> & 
                   Exponentiable<Integer,Integer> {
     
+    "The sum of the given integers."
+    shared static Integer sum({Integer*} integers) {
+        variable value sum = 0;
+        for (int in integers) {
+            sum += int;
+        }
+        return sum;
+    }
+    
     "The [[Integer]] value of the given 
      [[string representation|string]] of an integer value in 
      the base given by [[radix]], or `null` if the string 

@@ -682,4 +682,7 @@ shared void strings() {
     check("12345".indexesWhere((c) => true).size == 5);
     check(String("a".cycled.take(1M)).indexesWhere((c) => true).size == 1M);
     check("\{ELEPHANT}".indexesWhere((c) => true).size == 1); // non-BMP character
+    check(String.sum([])=="", "String.sum 1");
+    check(String.sum(["x"])=="x", "String.sum 2");
+    check(String.sum(["h","o","l","a"])=="hola", "String.sum 3");
 }

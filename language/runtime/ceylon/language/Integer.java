@@ -42,6 +42,19 @@ public final class Integer
     public final static TypeDescriptor $TypeDescriptor$ = 
             TypeDescriptor.klass(Integer.class);
 
+    public static long sum(
+            @TypeInfo("{ceylon.language::Integer*}")
+            @Name("integers")
+            Iterable<? extends Integer, ? extends java.lang.Object> integers) {
+        long sum = 0l;
+        Iterator<? extends Integer> it = integers.iterator();
+        java.lang.Object o;
+        while ((o=it.next())!=finished_.get_()) {
+            sum += ((Integer) o).value;
+        }
+        return sum;
+    }
+    
     @Ignore
     final long value;
 
