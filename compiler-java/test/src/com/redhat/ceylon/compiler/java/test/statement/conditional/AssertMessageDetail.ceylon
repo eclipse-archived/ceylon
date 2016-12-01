@@ -38,7 +38,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(one is String);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\texpression has type ceylon.language::Integer which is not a subtype of ceylon.language::String"));
     }
     try {
@@ -55,7 +54,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert("foo" == "bar");
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is foo"));
         assert(e.message.contains("\t\tright-hand expression is bar"));
     }
@@ -64,15 +62,15 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert("foo" == zero);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is foo"));
         assert(e.message.contains("\t\tright-hand expression is 0"));
+        assert(e.message.contains("\t\tleft-hand expression has type ceylon.language::String"));
+        assert(e.message.contains("\t\tright-hand expression has type ceylon.language::Integer"));
     }
     try {
         assert(zero == 1);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 0"));
         assert(e.message.contains("\t\tright-hand expression is 1"));
     }
@@ -80,7 +78,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(1 == zero);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 1"));
         assert(e.message.contains("\t\tright-hand expression is 0"));
     }
@@ -90,7 +87,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(1 != 1);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 1"));
         assert(e.message.contains("\t\tright-hand expression is 1"));
     }
@@ -98,7 +94,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(!(1 == 1));
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 1"));
         assert(e.message.contains("\t\tright-hand expression is 1"));
     }
@@ -106,7 +101,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(!(1 != 0));
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 1"));
         assert(e.message.contains("\t\tright-hand expression is 0"));
     }
@@ -117,7 +111,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(1 == smallInt);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 1"));
         assert(e.message.contains("\t\tright-hand expression is 0"));
     }
@@ -128,7 +121,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(exists x, is Integer y, x==y);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 0"));
         assert(e.message.contains("\t\tright-hand expression is 1"));
     }
@@ -138,7 +130,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(1<0);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 1"));
         assert(e.message.contains("\t\tright-hand expression is 0"));
     }
@@ -146,7 +137,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(1<=0);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 1"));
         assert(e.message.contains("\t\tright-hand expression is 0"));
     }
@@ -154,7 +144,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(0>1);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 0"));
         assert(e.message.contains("\t\tright-hand expression is 1"));
     }
@@ -162,7 +151,6 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(0>=1);
         throw;
     } catch (AssertionError e) {
-        print(e.message);
         assert(e.message.contains("\t\tleft-hand expression is 0"));
         assert(e.message.contains("\t\tright-hand expression is 1"));
     }
