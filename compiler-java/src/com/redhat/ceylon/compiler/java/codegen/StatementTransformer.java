@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RangeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
@@ -53,6 +54,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Switched;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
@@ -245,6 +247,17 @@ public class StatementTransformer extends AbstractTransformer {
                 NonemptyVarTrans elseVar = (elseVariable != null) ? new NonemptyVarTrans(elseVariable, var.getTestVariableName()) : null;
                 return new NonemptyCond(nonempty, var, elseVar);
             } else if (cond instanceof Tree.BooleanCondition) {
+                Tree.Term term = TreeUtil.unwrapExpressionUntilTerm(((Tree.BooleanCondition)cond).getExpression());
+                boolean negated;
+                if (term instanceof Tree.NotOp) {
+                    negated = true;
+                    term = TreeUtil.unwrapExpressionUntilTerm(((Tree.NotOp)term).getTerm());
+                } else {
+                    negated = false;
+                }
+                if (term instanceof Tree.IsOp) {
+                    return new IsOpBooleanCond((Tree.BooleanCondition)cond, negated, (Tree.IsOp)term);
+                }
                 return new BooleanCond((Tree.BooleanCondition)cond);
             }
             throw BugException.unhandledNodeCase(cond);
@@ -852,13 +865,7 @@ public class StatementTransformer extends AbstractTransformer {
             boolean seen = false;
             for (Tree.Condition condition : this.conditions) {
                 if (cond.getCondition() == condition) {
-                    msg.appendViolatedCondition(condition);
-                    if (isAssertNotIsThrowable(condition)) {
-                        msg.wrapException(((IsCond)cond).getExprVar());
-                    }
-                    if (condition instanceof Tree.IsCondition) {
-                        msg.violatedIs(makeReifiedTypeArgument(((Tree.IsCondition)condition).getType().getTypeModel()), ((IsCond)cond).getExprVar());
-                    }
+                    appendViolationMessages(msg, cond);
                     seen = true;
                     continue;
                 }
@@ -870,6 +877,32 @@ public class StatementTransformer extends AbstractTransformer {
             }
             return List.<JCStatement>of( 
                     msg.buildThrow());
+        }
+
+        protected void appendViolationMessages(AssertionBuilder msg, Cond cond) {
+            Tree.Condition condition = cond.getCondition();
+            msg.assertionDoc(ass);
+            msg.appendViolatedCondition(condition);
+            if (isAssertNotIsThrowable(condition)) {
+                // Wrap the exception for assert(!is Throwable)
+                msg.wrapException(((IsCond)cond).getExprVar());
+            }
+            if (condition instanceof Tree.IsCondition) {
+                // add extra detail for assert(is ...) and assert(!is ...)
+                IsCond isCond = (IsCond)cond;
+                msg.violatedIs(
+                        isCond.isNegated(), 
+                        makeReifiedTypeArgument(isCond.getGivenType()), 
+                        isCond.getExprVar());
+            }
+            if (cond instanceof IsOpBooleanCond) {
+                // add extra detail for assert(... is ...) and assert(! ... is ...)
+                IsOpBooleanCond isOpBooleanCond = (IsOpBooleanCond)cond;
+                msg.violatedIs(
+                        isOpBooleanCond.isNegated(),
+                        makeReifiedTypeArgument(isOpBooleanCond.getGivenType()), 
+                        isOpBooleanCond.getVarTrans().getVariableName().makeIdent());
+            }
         }
         
         @Override
@@ -888,15 +921,8 @@ public class StatementTransformer extends AbstractTransformer {
         private JCStatement makeThrowAssertionFailure(Cond cond) {
             Tree.Condition condition = cond.getCondition();
             at(condition);
-            AssertionBuilder builder = new AssertionBuilder(StatementTransformer.this, condition)
-                    .appendViolatedCondition(condition)
-                    .assertionDoc(ass);
-            if (isAssertNotIsThrowable(condition)) {
-                builder.wrapException(((IsCond)cond).getExprVar());
-            }
-            if (condition instanceof Tree.IsCondition) {
-                builder.violatedIs(makeReifiedTypeArgument(((Tree.IsCondition)condition).getType().getTypeModel()), ((IsCond)cond).getExprVar());
-            }
+            AssertionBuilder builder = new AssertionBuilder(StatementTransformer.this, condition);
+            appendViolationMessages(builder, cond);
             return builder.buildThrow();
         }
         
@@ -1211,6 +1237,11 @@ public class StatementTransformer extends AbstractTransformer {
             return elseVar;
         }
         
+        /** Is it a {@code !is ...} condition .*/
+        public boolean isNegated() {
+            return negate;
+        }
+        
     }
     
     class IsCond extends SpecialFormCond<Tree.IsCondition, IsVarTrans> {
@@ -1245,6 +1276,7 @@ public class StatementTransformer extends AbstractTransformer {
             return expr;
         }
 
+        /** The type  of the value expression in the {@code is} condition */
         private Type getExpressionType() {
             Type expressionType;
             if(cond.getVariable().getSpecifierExpression() != null)
@@ -1252,6 +1284,11 @@ public class StatementTransformer extends AbstractTransformer {
             else
                 expressionType = cond.getVariable().getDeclarationModel().getOriginalDeclaration().getType();
             return expressionType;
+        }
+        
+        /** The given type in the {@code is} condition */
+        public Type getGivenType() {
+            return cond.getType().getTypeModel();
         }
 
         private boolean useTempVar() {
@@ -1321,81 +1358,83 @@ public class StatementTransformer extends AbstractTransformer {
         }
     }
     
+    private class BooleanVarTrans implements VarTrans {
+        @Override
+        public Variable getVariable() {
+            return null;
+        }
+
+        @Override
+        public List<VarDefBuilder> getVarDefBuilders() {
+            return null;
+        }
+
+        @Override
+        public boolean isDestructure() {
+            return false;
+        }
+
+        @Override
+        public CName getVariableName() {
+            return null;
+        }
+
+        @Override
+        public CName getTestVariableName() {
+            return null;
+        }
+
+        @Override
+        public Expression getExpression() {
+            return null;
+        }
+
+        @Override
+        public boolean hasResultDecl() {
+            return false;
+        }
+
+        @Override
+        public boolean hasAliasedVariable() {
+            return false;
+        }
+
+        @Override
+        public JCExpression makeTypeExpr() {
+            return null;
+        }
+
+        @Override
+        public JCExpression makeResultExpr() {
+            return null;
+        }
+
+        @Override
+        public Type getType() {
+            return null;
+        }
+
+        @Override
+        public Type getResultType() {
+            return null;
+        }
+
+        @Override
+        public JCStatement makeTestVarDecl(int flags, boolean init) {
+            return null;
+        }
+    }
+    
     class BooleanCond implements Cond {
+        
+
         private final Tree.BooleanCondition cond;
         private final VarTrans var;
         
         private BooleanCond(Tree.BooleanCondition booleanCondition) {
             super();
             this.cond = booleanCondition;
-            this.var = new VarTrans() {
-
-                @Override
-                public Variable getVariable() {
-                    return null;
-                }
-
-                @Override
-                public List<VarDefBuilder> getVarDefBuilders() {
-                    return null;
-                }
-                
-                @Override
-                public final boolean isDestructure() {
-                    return false;
-                }
-                
-                @Override
-                public CName getVariableName() {
-                    return null;
-                }
-
-                @Override
-                public CName getTestVariableName() {
-                    return null;
-                }
-
-                @Override
-                public Expression getExpression() {
-                    return null;
-                }
-
-                @Override
-                public boolean hasResultDecl() {
-                    return false;
-                }
-
-                @Override
-                public boolean hasAliasedVariable() {
-                    return false;
-                }
-
-                @Override
-                public JCExpression makeTypeExpr() {
-                    return null;
-                }
-
-                @Override
-                public JCExpression makeResultExpr() {
-                    return null;
-                }
-
-                @Override
-                public Type getType() {
-                    return null;
-                }
-
-                @Override
-                public Type getResultType() {
-                    return null;
-                }
-
-                @Override
-                public JCStatement makeTestVarDecl(int flags, boolean init) {
-                    return null;
-                }
-                
-            };
+            this.var = new BooleanVarTrans();
         }
 
         @Override
@@ -1422,7 +1461,70 @@ public class StatementTransformer extends AbstractTransformer {
 
     }
 
-    
+    class IsOpBooleanCond implements Cond {
+        private final Tree.BooleanCondition cond;
+        private final VarTrans var;
+        private final Tree.IsOp op;
+        private final boolean negated;
+        private SyntheticName varName;
+        
+        private IsOpBooleanCond(Tree.BooleanCondition booleanCondition, boolean negated, final Tree.IsOp op) {
+            super();
+            this.cond = booleanCondition;
+            this.negated = negated;
+            this.op = op;
+            this.varName = naming.alias("is");
+            this.var = new BooleanVarTrans() {
+                @Override
+                public CName getVariableName() {
+                    return varName;
+                }
+                
+                @Override
+                public JCStatement makeTestVarDecl(int flags, boolean init) {
+                    return makeVar(varName, 
+                            makeJavaType(op.getTerm().getTypeModel(), JT_NO_PRIMITIVES), 
+                            expressionGen().transformExpression(op.getTerm()));
+                }
+                
+            };
+        }
+
+        @Override
+        public JCExpression makeTest() {
+            at(cond);
+            JCExpression test = expressionGen().makeOptimizedTypeTest(null, var.getVariableName(), op.getType().getTypeModel(), op.getTerm().getTypeModel());
+            if (negated) {
+                test = at(op).Unary(Tag.NOT, test);
+            }
+            return test;
+        }
+
+        @Override
+        public Tree.Condition getCondition() {
+            return cond;
+        }
+
+        @Override
+        public VarTrans getVarTrans() {
+            return var;
+        }
+
+        @Override
+        public VarTrans getElseVarTrans() {
+            return var;
+        }
+        
+        public Type getGivenType() {
+            return op.getType().getTypeModel();
+        }
+        
+        /** Is it a {@code ! ... is ...} condition .*/
+        public boolean isNegated() {
+            return negated;
+        }
+
+    }
 
 
     private Type actualType(Tree.TypedDeclaration decl) {
@@ -4836,7 +4938,7 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         private Type model() {
-            return var.getType().getTypeModel();
+            return var.getDeclarationModel().getType();//Type().getTypeModel();
         }
         
         private SyntheticName name() {

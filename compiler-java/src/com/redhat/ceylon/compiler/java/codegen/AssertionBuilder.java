@@ -145,6 +145,9 @@ class AssertionBuilder {
         }
     }
     
+    /**
+     * Add an exception that the AssertionError should wrap.
+     */
     public AssertionBuilder wrapException(JCExpression wrapedException) {
         this.wrapedException = wrapedException;
         return this;
@@ -182,12 +185,16 @@ class AssertionBuilder {
         return result;
     }
     
-    JCThrow buildThrow() {
+    public JCThrow buildThrow() {
         return gen.makeThrowAssertionException(buildMessage(), wrapedException != null ? gen.make().TypeCast(gen.make().Type(gen.syms().throwableType), wrapedException) : null);
     }
 
-    public void violatedIs(JCExpression $reified$Type, JCExpression violatedIs) {
-        this.violatedIs = violatedIs != null ? gen.utilInvocation().assertIsFailed($reified$Type, violatedIs) : null;
+    /** 
+     * Add extra information to the exception message when an {@code is} 
+     * condition or operation violates the assertion. 
+     */
+    public void violatedIs(boolean negated, JCExpression $reified$Type, JCExpression violatedIs) {
+        this.violatedIs = violatedIs != null ? gen.utilInvocation().assertIsFailed(negated, $reified$Type, violatedIs) : null;
     }
     
 }
