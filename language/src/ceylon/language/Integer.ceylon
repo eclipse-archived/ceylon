@@ -57,7 +57,7 @@ shared native final class Integer
     
     "The product of the given integers."
     shared static Integer product({Integer*} integers) {
-        variable value product = 0;
+        variable value product = 1;
         for (int in integers) {
             product *= int;
         }

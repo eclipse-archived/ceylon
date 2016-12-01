@@ -54,7 +54,7 @@ public final class Float
             @TypeInfo("{ceylon.language::Float*}")
             @Name("floats")
             Iterable<? extends Float, ? extends java.lang.Object> floats) {
-        double sum = 0.0d;
+        double sum = 1.0d;
         Iterator<? extends Float> it = floats.iterator();
         java.lang.Object o;
         while ((o=it.next())!=finished_.get_()) {

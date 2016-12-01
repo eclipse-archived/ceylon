@@ -59,7 +59,7 @@ public final class Integer
             @TypeInfo("{ceylon.language::Integer*}")
             @Name("integers")
             Iterable<? extends Integer, ? extends java.lang.Object> integers) {
-        long sum = 0l;
+        long sum = 1l;
         Iterator<? extends Integer> it = integers.iterator();
         java.lang.Object o;
         while ((o=it.next())!=finished_.get_()) {
