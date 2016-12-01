@@ -1160,5 +1160,11 @@ void checkFormatFloat() {
     check(min { nan, nan }.undefined, "min nan");
     check(max { nan, nan }.undefined, "max nan");
     checkNanComparisons(nan, 0.0);
-    
+
+    check(Integer.sum([])==0, "Integer.sum 1");
+    check(Integer.sum([1])==1, "Integer.sum 2");
+    check(Integer.sum([1,1,1,1])==4, "Integer.sum 3");
+    check(Float.sum([])==0.00, "Float.sum 1");
+    check(Float.sum([0.5])==0.5, "Float.sum 2");
+    check(Float.sum([0.1,0.1,0.1,0.1])==0.4, "Float sum 3");
 }
