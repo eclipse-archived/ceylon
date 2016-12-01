@@ -9,8 +9,15 @@
  identity|Summable]]).
  
      {Float*} values = ... ;
-     Float total = sum { 0.0, *values };"
-see (`function product`)
+     Float total = sum { 0.0, *values };
+ 
+ For the case of a stream of `Integer`s, `Float`s, or
+ `String`s, prefer [[Integer.sum]], [[Float.sum]], or
+ [[String.sum]]."
+see (`function product`, 
+     `function Integer.sum`,
+     `function Float.sum`,
+     `function String.sum`)
 tagged("Streams", "Numbers")
 shared native Value sum<Value>({Value+} values) 
         given Value satisfies Summable<Value>;
@@ -48,6 +55,15 @@ shared native("jvm") Value sum<Value>({Value+} values)
             sum += unboxed;
         }
         assert (is Value result = sum);
+        return result;
+    }
+    case (is String) {
+        value sum = StringBuilder();
+        sum.append(first);
+        while (is String val = it.next()) {
+            sum.append(val);
+        }
+        assert (is Value result = sum.string);
         return result;
     }
     case (is Finished) {
