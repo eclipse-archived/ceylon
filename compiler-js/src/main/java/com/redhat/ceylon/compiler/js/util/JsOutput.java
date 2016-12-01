@@ -18,7 +18,6 @@ import java.util.Set;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
-import com.redhat.ceylon.compiler.js.loader.JsonModule;
 import com.redhat.ceylon.compiler.js.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.js.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.js.loader.NpmAware;
@@ -144,8 +143,9 @@ public class JsOutput {
         final String modAlias = names.moduleAlias(mod);
         final String path = ((NpmAware)mod).getNpmPath();
         if (requires.put(path, modAlias) == null) {
-            //We use our own special "require" which will wrap single functions in a proper exports object
-            //If the module name has dashes, we transform that into camel casing.
+            //For NPM modules on Node.js we use our own special "require" which will
+            //wrap single functions in a proper exports object. If the module name
+            //has dashes, we transform that into camel casing.
             String singleFunctionName = mod.getNameAsString();
             int dashIdx = singleFunctionName.indexOf('-');
             while (dashIdx > 0) {
@@ -154,8 +154,8 @@ public class JsOutput {
                         singleFunctionName.substring(dashIdx+2);
                 dashIdx = singleFunctionName.indexOf('-', dashIdx);
             }
-            out("var ", modAlias, "=", getLanguageModuleAlias(), "npm$req('",
-                    singleFunctionName, "','", path, "',require);\n");
+            out("var ", modAlias, "=", "(typeof process !== 'undefined')?", getLanguageModuleAlias(), "npm$req('",
+                    singleFunctionName, "','", path, "',require):require('", JsCompiler.scriptPath(mod), "');\n");
             if (modAlias != null && !modAlias.isEmpty()) {
                 out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
             }
