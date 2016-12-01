@@ -4187,10 +4187,19 @@ forIterator returns [ForIterator iterator]
     ;
     
 containment returns [SpecifierExpression specifierExpression]
-    : IN_OP 
-      { $specifierExpression = new SpecifierExpression($IN_OP); }
-      (expression
-      { $specifierExpression.setExpression($expression.expression); })?
+    : (
+        IN_OP
+        { $specifierExpression = new SpecifierExpression($IN_OP); }
+      | 
+        { displayRecognitionError(getTokenNames(), 
+          new MismatchedTokenException(IN_OP, input)); }
+        SEGMENT_OP
+        { $specifierExpression = new SpecifierExpression($SEGMENT_OP); }
+      )
+      (
+        expression
+        { $specifierExpression.setExpression($expression.expression); }
+      )?
     ;
     
 whileLoop returns [WhileStatement statement]
