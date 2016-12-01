@@ -32,6 +32,8 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.common.NonNull;
+import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.BinOpTransformation;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -46,7 +48,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RangeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
@@ -247,16 +248,20 @@ public class StatementTransformer extends AbstractTransformer {
                 NonemptyVarTrans elseVar = (elseVariable != null) ? new NonemptyVarTrans(elseVariable, var.getTestVariableName()) : null;
                 return new NonemptyCond(nonempty, var, elseVar);
             } else if (cond instanceof Tree.BooleanCondition) {
-                Tree.Term term = TreeUtil.unwrapExpressionUntilTerm(((Tree.BooleanCondition)cond).getExpression());
-                boolean negated;
-                if (term instanceof Tree.NotOp) {
-                    negated = true;
-                    term = TreeUtil.unwrapExpressionUntilTerm(((Tree.NotOp)term).getTerm());
-                } else {
-                    negated = false;
-                }
-                if (term instanceof Tree.IsOp) {
-                    return new IsOpBooleanCond((Tree.BooleanCondition)cond, negated, (Tree.IsOp)term);
+                if (this instanceof AssertCondList) {
+                    Tree.Term booleanExpr = TreeUtil.unwrapExpressionUntilTerm(((Tree.BooleanCondition)cond).getExpression());
+                    boolean negated;
+                    if (booleanExpr instanceof Tree.NotOp) {
+                        negated = true;
+                        booleanExpr = TreeUtil.unwrapExpressionUntilTerm(((Tree.NotOp)booleanExpr).getTerm());
+                    } else {
+                        negated = false;
+                    }
+                    if (booleanExpr instanceof Tree.IsOp) {
+                        return new IsOpBooleanCond((Tree.BooleanCondition)cond, negated, (Tree.IsOp)booleanExpr);
+                    } else if (booleanExpr instanceof Tree.EqualityOp) {
+                        return new EqualityOpBooleanCond((Tree.BooleanCondition)cond, negated, (Tree.EqualityOp)booleanExpr);
+                    }
                 }
                 return new BooleanCond((Tree.BooleanCondition)cond);
             }
@@ -474,12 +479,12 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected List<JCStatement> transformCommon(Cond cond, 
                 java.util.List<Tree.Condition> rest, JCExpression test, List<JCStatement> stmts, List<JCStatement> elseStmts) {
-            JCStatement testVarDecl = cond.getVarTrans().makeTestVarDecl(0, false);
-            if (testVarDecl == null && cond.getElseVarTrans() != null) {
+            List<JCStatement> testVarDecl = cond.getVarTrans().makeTestVarDecl(0, false);
+            if (testVarDecl.isEmpty() && cond.getElseVarTrans() != null) {
                 testVarDecl = cond.getElseVarTrans().makeTestVarDecl(0, false);
             }
-            if (testVarDecl != null) {
-                varDecls.prepend(testVarDecl);
+            for (JCStatement x: testVarDecl) {
+                varDecls.prepend(x);
             }
             if (isDeferred()) {
                 elseStmts = unassignedResultVars.isEmpty() ? null : unassignedResultVars;
@@ -682,8 +687,8 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         protected List<JCStatement> transformCommon(Cond cond, 
                 java.util.List<Tree.Condition> rest, JCExpression test, List<JCStatement> stmts, List<JCStatement> elseStmts) {
-            if (cond.getVarTrans().makeTestVarDecl(0, false) != null) {
-                varDecls.append(cond.getVarTrans().makeTestVarDecl(0, false));
+            if (!cond.getVarTrans().makeTestVarDecl(0, false).isEmpty()) {
+                varDecls.appendList(cond.getVarTrans().makeTestVarDecl(0, false));
             }
             stmts = List.<JCStatement>of(make().If(
                     test, 
@@ -820,9 +825,9 @@ public class StatementTransformer extends AbstractTransformer {
                     make().Block(0, stmts), 
                     makeElseBlock(elseStmts)));
             
-            JCStatement testVarDecl = cond.getVarTrans().makeTestVarDecl(0, true);
-            if (testVarDecl != null) {
-                stmts = stmts.prepend(testVarDecl);
+            List<JCStatement> testVarDecl = cond.getVarTrans().makeTestVarDecl(0, true);
+            if (!testVarDecl.isEmpty()) {
+                stmts = stmts.prependList(testVarDecl);
             }
             return stmts;
         }
@@ -903,6 +908,11 @@ public class StatementTransformer extends AbstractTransformer {
                         makeReifiedTypeArgument(isOpBooleanCond.getGivenType()), 
                         isOpBooleanCond.getVarTrans().getVariableName().makeIdent());
             }
+            if (cond instanceof EqualityOpBooleanCond) {
+                EqualityOpBooleanCond eqOpCond = (EqualityOpBooleanCond)cond;
+                msg.violatedEquals(eqOpCond.getLeftName(),
+                        eqOpCond.getRightName());
+            }
         }
         
         @Override
@@ -951,7 +961,8 @@ public class StatementTransformer extends AbstractTransformer {
         public Type getType();
         public Type getResultType();
         
-        public JCStatement makeTestVarDecl(int flags, boolean init);
+        @NonNull
+        public List<JCStatement> makeTestVarDecl(int flags, boolean init);
     }
     
     abstract class BaseVarTransImpl implements VarTrans {
@@ -1048,9 +1059,9 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         @Override
-        public JCStatement makeTestVarDecl(int flags, boolean init) {
+        public List<JCStatement> makeTestVarDecl(int flags, boolean init) {
             // Temporary variable holding the result of the expression/variable to test
-            return make().VarDef(make().Modifiers(flags), testVarName.asName(), makeResultType(), init ? makeNull() : null);
+            return List.<JCStatement>of(make().VarDef(make().Modifiers(flags), testVarName.asName(), makeResultType(), init ? makeNull() : null));
         }
 
         protected JCExpression makeResultType() {
@@ -1114,10 +1125,10 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         @Override
-        public JCStatement makeTestVarDecl(int flags, boolean init) {
+        public List<JCStatement> makeTestVarDecl(int flags, boolean init) {
             // We can optimize "is Nothing x" (but not "is Nothing y = x")
             // because there can be no unboxing or typecasting of the result
-            return isErasedToObjectOptimization() || isNothingOptimization() ? null : super.makeTestVarDecl(flags, init);
+            return isErasedToObjectOptimization() || isNothingOptimization() ? List.<JCStatement>nil() : super.makeTestVarDecl(flags, init);
         }
         
         @Override
@@ -1420,8 +1431,8 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         @Override
-        public JCStatement makeTestVarDecl(int flags, boolean init) {
-            return null;
+        public List<JCStatement> makeTestVarDecl(int flags, boolean init) {
+            return List.nil();
         }
     }
     
@@ -1481,10 +1492,10 @@ public class StatementTransformer extends AbstractTransformer {
                 }
                 
                 @Override
-                public JCStatement makeTestVarDecl(int flags, boolean init) {
-                    return makeVar(varName, 
+                public List<JCStatement> makeTestVarDecl(int flags, boolean init) {
+                    return List.<JCStatement>of(makeVar(varName, 
                             makeJavaType(op.getTerm().getTypeModel(), JT_NO_PRIMITIVES), 
-                            expressionGen().transformExpression(op.getTerm()));
+                            expressionGen().transformExpression(op.getTerm())));
                 }
                 
             };
@@ -1523,7 +1534,154 @@ public class StatementTransformer extends AbstractTransformer {
         public boolean isNegated() {
             return negated;
         }
+    }
+    
+    private class EqualityOpBooleanCond implements Cond {
+        private final Tree.BooleanCondition cond;
+        private final VarTrans var;
+        private final Tree.EqualityOp op;
+        private final boolean negated;
+        private final boolean negate;
+        private final SyntheticName leftVarName;
+        private final SyntheticName rightVarName;
+        private final BinOpTransformation transformed;
+        
+        private EqualityOpBooleanCond(Tree.BooleanCondition booleanCondition, boolean negated, final Tree.EqualityOp op) {
+            super();
+            this.cond = booleanCondition;
+            this.op = op;
+            this.leftVarName = naming.alias("lhs");
+            this.rightVarName = naming.alias("rhs");
+            boolean needsNegating = false;
+            if (op instanceof Tree.EqualOp) {
+                transformed = expressionGen().transformOverridableBinaryOperator(op, op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
+            } else if (op instanceof Tree.NotEqualOp) {
+                transformed = expressionGen().transformNotEqualNeedsNegating((Tree.NotEqualOp)op);
+                needsNegating = true;
+            } else {
+                throw BugException.unhandledNodeCase(op);
+            }
+            this.negated = negated;
+            this.negate = negated ^ needsNegating;
+            transformed.setLeft(leftVarName.makeIdent());
+            transformed.setRight(rightVarName.makeIdent());
+            // TODO EE mode boxes, small
+            this.var = new BooleanVarTrans() {
+                @Override
+                public CName getVariableName() {
+                    return leftVarName;
+                }
+                
+                @Override
+                public List<JCStatement> makeTestVarDecl(int flags, boolean init) {
+                    return List.<JCStatement>of(
+                            makeVar(leftVarName, 
+                                makeJavaType(op.getLeftTerm().getTypeModel(), getLeftJtFlags()), 
+                                expressionGen().transformExpression(op.getLeftTerm(), getLeftBoxing(), transformed.getLeftType())),
+                            makeVar(rightVarName, 
+                                    makeJavaType(op.getRightTerm().getTypeModel(), getRightJtFlags()), 
+                                    expressionGen().transformExpression(op.getRightTerm(), getRightBoxing(), transformed.getRightType())));
+                }
+                
+            };
+        }
+        
+        public BoxingStrategy getLeftBoxing() {
+            BoxingStrategy leftBoxing;
+            if (transformed.getOptimisationStrategy().useJavaOperator()) {
+                leftBoxing = BoxingStrategy.UNBOXED;
+            } else if (transformed.getOptimisationStrategy().useValueTypeMethod()) {
+                leftBoxing = BoxingStrategy.UNBOXED;
+            } else {
+                leftBoxing = BoxingStrategy.BOXED;
+            }
+            return leftBoxing;
+        }
+        
+        public BoxingStrategy getRightBoxing() {
+            BoxingStrategy rightBoxing;
+            if (transformed.getOptimisationStrategy().useJavaOperator()) {
+                rightBoxing = BoxingStrategy.UNBOXED;
+            } else if (transformed.getOptimisationStrategy().useValueTypeMethod()) {
+                rightBoxing = BoxingStrategy.BOXED;
+            } else {
+                rightBoxing = BoxingStrategy.BOXED;
+            }
+            return rightBoxing;
+        }
+        
+        public int getLeftJtFlags() {
+            int leftFlags;
+            if (transformed.getOptimisationStrategy().useJavaOperator()) {
+                leftFlags = 0;
+            } else if (transformed.getOptimisationStrategy().useValueTypeMethod()) {
+                leftFlags = 0;
+            } else {
+                leftFlags = JT_NO_PRIMITIVES;
+            }
+            return leftFlags;
+        }
+        
+        public int getRightJtFlags() {
+            int rightFlags;
+            if (transformed.getOptimisationStrategy().useJavaOperator()) {
+                rightFlags = 0;
+            } else if (transformed.getOptimisationStrategy().useValueTypeMethod()) {
+                rightFlags = JT_NO_PRIMITIVES;
+            } else {
+                rightFlags = JT_NO_PRIMITIVES;
+            }
+            return rightFlags;
+        }
 
+        @Override
+        public JCExpression makeTest() {
+            JCExpression result = transformed.build();
+            if (negate) {
+                result = make().Unary(Tag.NOT, result);
+            }
+            return result;
+        }
+
+        @Override
+        public Tree.Condition getCondition() {
+            return cond;
+        }
+
+        @Override
+        public VarTrans getVarTrans() {
+            return var;
+        }
+
+        @Override
+        public VarTrans getElseVarTrans() {
+            return var;
+        }
+        
+        /** Is it a {@code ! ... == ...} or {@code ! ... != ...} condition .*/
+        public boolean isNegated() {
+            return negated;
+        }
+        
+        /** Is it a {@code ... != ...} or {@code ! ... != ...} condition .*/
+        public boolean isNotEqual() {
+            return op instanceof Tree.NotEqualOp;
+        }
+        
+        public JCExpression getLeftName() {
+            JCExpression result = leftVarName.makeIdent();
+            if (getLeftBoxing() == BoxingStrategy.UNBOXED) {
+                result = expressionGen().boxType(result, transformed.getLeftType());
+            }
+            return result;
+        }
+        public JCExpression getRightName() {
+            JCExpression result = rightVarName.makeIdent();
+            if (getRightBoxing() == BoxingStrategy.UNBOXED) {
+                result = expressionGen().boxType(result, transformed.getRightType());
+            }
+            return result;
+        }
     }
 
 

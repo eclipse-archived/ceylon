@@ -2,8 +2,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.Iterator;
 
-import com.redhat.ceylon.compiler.java.codegen.AssertionBuilder.ConditionDescription;
-import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
@@ -28,6 +26,7 @@ class AssertionBuilder {
     private AbstractTransformer gen;
     private JCExpression wrapedException;
     private JCExpression violatedIs;
+    private JCExpression violatedBinOp;
     
 
     public AssertionBuilder(AbstractTransformer gen, Node node) {
@@ -182,6 +181,9 @@ class AssertionBuilder {
         if (violatedIs != null) {
             result = gen.at(node).Binary(JCTree.Tag.PLUS, result, violatedIs);
         }
+        if (violatedBinOp != null) {
+            result = gen.at(node).Binary(JCTree.Tag.PLUS, result, violatedBinOp);
+        }
         return result;
     }
     
@@ -195,6 +197,10 @@ class AssertionBuilder {
      */
     public void violatedIs(boolean negated, JCExpression $reified$Type, JCExpression violatedIs) {
         this.violatedIs = violatedIs != null ? gen.utilInvocation().assertIsFailed(negated, $reified$Type, violatedIs) : null;
+    }
+
+    public void violatedEquals(JCExpression leftName, JCExpression rightName) {
+        this.violatedBinOp = gen.utilInvocation().assertBinOpFailed(leftName, rightName);
     }
     
 }

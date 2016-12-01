@@ -2189,6 +2189,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     // Binary operators
     
     public JCExpression transform(Tree.NotEqualOp op) {
+        JCExpression expr = transformNotEqualNeedsNegating(op).build();
+        return at(op).Unary(JCTree.Tag.NOT, expr);
+    }
+    
+    public BinOpTransformation transformNotEqualNeedsNegating(Tree.NotEqualOp op) {
         OperatorTranslation operator = Operators.OperatorTranslation.BINARY_EQUAL;
         //OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(op, op.getLeftTerm(), op.getRightTerm(), this);
         
@@ -2196,8 +2201,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // we don't care about the left erased type, since equals() is on Object
         //JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), null, EXPR_WIDEN_PRIM);
         // we don't care about the right erased type, since equals() is on Object
-        JCExpression expr = transformOverridableBinaryOperator(op, operator, op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel()).build();
-        return at(op).Unary(JCTree.Tag.NOT, expr);
+        return transformOverridableBinaryOperator(op, operator, op.getLeftTerm().getTypeModel(), op.getRightTerm().getTypeModel());
     }
 
     public JCExpression transform(Tree.EqualOp op) {
@@ -2692,7 +2696,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return transformOverridableBinaryOperator(op, leftType, rightType);
     }
 
-    private BinOpTransformation transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Type leftType, Type rightType) {
+    BinOpTransformation transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op, Type leftType, Type rightType) {
         OperatorTranslation operator = Operators.getOperator(op.getClass());
         return transformOverridableBinaryOperator(op, operator, leftType, rightType);
     }
@@ -7093,9 +7097,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     JCExpression test, List<JCStatement> stmts,
                     List<VarDefBuilder> vars) {
                 
-                JCStatement decl = vartrans.makeTestVarDecl(0, true);
-                if (decl != null) {
-                    varDecls.append(decl);
+                List<JCStatement> decl = vartrans.makeTestVarDecl(0, true);
+                if (!decl.isEmpty()) {
+                    varDecls.appendList(decl);
                 }
                 if (vars != null) {
                     for (VarDefBuilder v : vars) {

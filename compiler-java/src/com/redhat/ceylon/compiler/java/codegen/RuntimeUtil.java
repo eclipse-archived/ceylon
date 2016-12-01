@@ -292,4 +292,9 @@ class RuntimeUtil {
                 $reified$Type,
                 operand));
     }
+    
+    public JCExpression assertBinOpFailed(JCExpression lhs, JCExpression rhs) {
+        return makeUtilInvocation(null, "assertBinOpFailed", List.of(
+                lhs, rhs));
+    }
 }
