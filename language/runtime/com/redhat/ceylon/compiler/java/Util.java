@@ -40,7 +40,9 @@ import ceylon.language.sequence_;
 import ceylon.language.meta.typeLiteral_;
 import ceylon.language.meta.type_;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
+import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.model.Type;
 
 /**
  * Helper class for generated Ceylon code that needs to call implementation logic.
@@ -2261,7 +2263,17 @@ public class Util {
                   .getArrayElementClass();
     }
     
-    public static String assertIsFailed(TypeDescriptor $reifiedType, @Nullable Object operand) {
-        return System.lineSeparator()+"\texpression has type "+type_.type(Nothing.NothingType, operand)+" rather than "+ typeLiteral_.typeLiteral($reifiedType);
+    /**
+     * Returns part of the error message for an AssertionError
+     * thrown for a failed {@code is} assertion.
+     */
+    public static String assertIsFailed(boolean negated, TypeDescriptor $reifiedType, @Nullable Object operand) {
+        ClassModel<? extends Object, ? super Sequential<? extends Object>> expressionType = type_.type(Nothing.NothingType, operand);
+        Type<? extends Object> givenType = typeLiteral_.typeLiteral($reifiedType);
+        String message = System.lineSeparator()+"\texpression has type "+expressionType;
+        if (!expressionType.exactly(givenType)) {
+            message += " which is "+(negated ? "": "not")+" a subtype of "+ givenType;
+        }
+        return message;
     }
 }

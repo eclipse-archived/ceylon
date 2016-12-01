@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.NonNull;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
 import com.redhat.ceylon.compiler.java.language.ByteArray;
@@ -362,6 +363,7 @@ public class Metamodel {
         return producedType;
     }
 
+    @NonNull
     public static ceylon.language.meta.model.Type<?> getAppliedMetamodel(TypeDescriptor typeDescriptor) {
         if(typeDescriptor == null)
             throw Metamodel.newModelError("Metamodel not yet supported for Java types");
@@ -620,6 +622,7 @@ public class Metamodel {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
+    @NonNull
     public static <T> ceylon.language.meta.model.Type<T> getAppliedMetamodel(Type pt) {
         TypeDeclaration declaration = pt.getDeclaration();
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Constructor){
