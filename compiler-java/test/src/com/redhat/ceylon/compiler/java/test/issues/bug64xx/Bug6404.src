@@ -83,15 +83,10 @@ class Bug6404C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                             value = "ceylon.language::Anything",
                             declaredVoid = true)
                     public final .java.lang.Object foo() {
-                        if ((
-                            let
-                            {
-                                .java.lang.Object $ceylontmp$0 = this;
-                            }
-                            returning $ceylontmp$0 instanceof .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I && .com.redhat.ceylon.compiler.java.Util.isReified($ceylontmp$0, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, $reified$T));
-                        )) {
+                        anonymous_0_ is$0 = this;
+                        if (is$0 instanceof .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I && .com.redhat.ceylon.compiler.java.Util.isReified(is$0, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, $reified$T))) {
                         } else {
-                            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "this is Bug6404I<T>"));
+                            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "this is Bug6404I<T>") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, $reified$T), is$0));
                         }
                         return null;
                     }
@@ -124,15 +119,10 @@ public final class bug6404_ {
     
     @.ceylon.language.SharedAnnotation$annotation$
     public static void bug6404() {
-        if ((
-            let
-            {
-                .java.lang.Object $ceylontmp$1 = new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).get();
-            }
-            returning .com.redhat.ceylon.compiler.java.Util.isReified($ceylontmp$1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, .ceylon.language.String.$TypeDescriptor$));
-        )) {
+        .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I<.ceylon.language.String> is$1 = new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).get();
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(is$1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, .ceylon.language.String.$TypeDescriptor$))) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "Bug6404C<String>().get() is Bug6404I<String>"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "Bug6404C<String>().get() is Bug6404I<String>") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, .ceylon.language.String.$TypeDescriptor$), is$1));
         }
         new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).get().foo();
     }

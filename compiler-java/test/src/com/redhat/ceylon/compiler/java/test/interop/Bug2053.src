@@ -18,7 +18,7 @@ public final class bug2053_ {
         if (.com.redhat.ceylon.compiler.java.Util.isReified(items$1 = items, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Number.class), .ceylon.language.Null.$TypeDescriptor$))) {
             items$2 = (.ceylon.language.Iterable)items$1;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Number*} items") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Number.class), .ceylon.language.Null.$TypeDescriptor$), items$1));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Number*} items") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Number.class), .ceylon.language.Null.$TypeDescriptor$), items$1));
         }
         x.<.java.lang.Number>bound((
             let
@@ -32,7 +32,7 @@ public final class bug2053_ {
         if (.com.redhat.ceylon.compiler.java.Util.isReified(items$4 = items$2, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Long.class), .ceylon.language.Null.$TypeDescriptor$))) {
             items$5 = (.ceylon.language.Iterable)items$4;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Long*} items") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Long.class), .ceylon.language.Null.$TypeDescriptor$), items$4));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Long*} items") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Long.class), .ceylon.language.Null.$TypeDescriptor$), items$4));
         }
         x.<.java.lang.Long>indirectBound((
             let

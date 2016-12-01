@@ -8,7 +8,7 @@ class AssertIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.m
     public final void m(final .java.lang.Object x) {
         if (x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo&BarInterface x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface.$TypeDescriptor$), x));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo&BarInterface x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface.$TypeDescriptor$), x));
         }
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x).common();
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x).foo();
@@ -21,7 +21,7 @@ class AssertIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.m
         if ((x$1 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo && x$1 instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface) {
             x$2 = x$1;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo&BarInterface x=y") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface.$TypeDescriptor$), x$1));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo&BarInterface x=y") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.statement.conditional.BarInterface.$TypeDescriptor$), x$1));
         }
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$2).common();
         ((.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$2).foo();

@@ -14,7 +14,7 @@ public final class bug1712LF_ {
         final .ceylon.file.Path fileDir = .ceylon.file.parsePath_.parsePath("");
         if (fileDir instanceof .ceylon.file.Directory) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Directory fileDir") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.file.Directory.$TypeDescriptor$, fileDir));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Directory fileDir") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.file.Directory.$TypeDescriptor$, fileDir));
         }
     }
     

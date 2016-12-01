@@ -19,7 +19,7 @@ class AssertConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is Integer x" + .java.lang.System.lineSeparator() + "\tviolated " + "x > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "z < 10"));
             }
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x" + .java.lang.System.lineSeparator() + "\tuntested " + "x > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "z < 10") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Integer.$TypeDescriptor$, x$0));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x" + .java.lang.System.lineSeparator() + "\tuntested " + "x > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "z < 10") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, x$0));
         }
         return z == 1L;
     }
@@ -38,7 +38,7 @@ class AssertConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "z < 10"));
             }
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "z < 10") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Integer.$TypeDescriptor$, y$2));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "z < 10") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$2));
         }
         return z == 1L;
     }

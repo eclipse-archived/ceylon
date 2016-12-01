@@ -11,7 +11,7 @@ class AssertIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         if ((x$0 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
             x$1 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$0;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, x$0));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, x$0));
         }
         x$1.foo();
         final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub x$3;
@@ -19,7 +19,7 @@ class AssertIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         if ((x$2 = x$1) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
             x$3 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)x$2;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub.$TypeDescriptor$, x$2));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub.$TypeDescriptor$, x$2));
         }
         x$3.foo2();
     }
@@ -30,7 +30,7 @@ class AssertIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         if ((x$4 = y) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo) {
             x$5 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$4;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo x=y") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, x$4));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo x=y") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, x$4));
         }
         x$5.foo();
         final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub z$7;
@@ -38,7 +38,7 @@ class AssertIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         if ((z$6 = x$5) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
             z$7 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)z$6;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub z=x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub.$TypeDescriptor$, z$6));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub z=x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub.$TypeDescriptor$, z$6));
         }
         z$7.foo2();
     }

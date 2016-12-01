@@ -33,7 +33,7 @@ final class assertSameElements_ {
                     if (!((ce$3 = cit.next()) instanceof .ceylon.language.Finished)) {
                         ce$4 = (T)ce$3;
                     } else {
-                        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Finished ce=cit.next()") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Finished.$TypeDescriptor$, ce$3));
+                        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Finished ce=cit.next()") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.Finished.$TypeDescriptor$, ce$3));
                     }
                     if (.com.redhat.ceylon.compiler.java.Util.checkNull(je).equals(ce$4)) {
                     } else {
@@ -45,7 +45,7 @@ final class assertSameElements_ {
                     if ((ce$1 = cit.next()) instanceof .ceylon.language.Finished) {
                         ce$2 = (.ceylon.language.Finished)ce$1;
                     } else {
-                        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Finished ce=cit.next()") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Finished.$TypeDescriptor$, ce$1));
+                        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Finished ce=cit.next()") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Finished.$TypeDescriptor$, ce$1));
                     }
                     break loop_0;
                 }

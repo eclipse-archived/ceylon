@@ -19,7 +19,7 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         if ((x$0 = x) != null) {
             x$1 = ((.ceylon.language.Integer)x$0).longValue();
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Integer.$TypeDescriptor$, x$0));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, x$0));
         }
         return x$1;
     }
@@ -30,7 +30,7 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         if ((y$2 = x) != null) {
             y$3 = ((.ceylon.language.Integer)y$2).longValue();
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y=x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Integer.$TypeDescriptor$, y$2));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y=x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$2));
         }
         return y$3;
     }
@@ -38,7 +38,7 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final long m3$priv$(final .ceylon.language.Integer x) {
         if (x == null) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Null.$TypeDescriptor$, x));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Null.$TypeDescriptor$, x));
         }
         return nowt$priv$(x);
     }
@@ -49,7 +49,7 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         if ((y$5 = x) == null) {
             y$6 = y$5;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null y=x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Null.$TypeDescriptor$, y$5));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null y=x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Null.$TypeDescriptor$, y$5));
         }
         return nowt$priv$(y$6);
     }

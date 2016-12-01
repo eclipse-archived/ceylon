@@ -35,7 +35,7 @@ public final class bug1346_ {
             if ((x$3 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A) {
                 x$4 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A)x$3;
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Bug1346_A x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A.$TypeDescriptor$, x$3));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Bug1346_A x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_A.$TypeDescriptor$, x$3));
             }
         } else {
             final .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B x$2;
@@ -43,7 +43,7 @@ public final class bug1346_ {
             if ((x$1 = x) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B) {
                 x$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B)x$1;
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Bug1346_B x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B.$TypeDescriptor$, x$1));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Bug1346_B x") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.test.statement.conditional.Bug1346_B.$TypeDescriptor$, x$1));
             }
         }
     }

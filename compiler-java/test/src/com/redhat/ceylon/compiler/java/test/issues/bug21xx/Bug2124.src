@@ -12,26 +12,16 @@ public final class bug2124_ {
     @.ceylon.language.SharedAnnotation$annotation$
     public static void bug2124() {
         final .java.lang.Object x = .ceylon.language.measure_.<.ceylon.language.Character>measure(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(97), 26L);
-        if (!(
-            let
-            {
-                .java.lang.Object $ceylontmp$0 = x;
-            }
-            returning $ceylontmp$0 instanceof .ceylon.language.Tuple;
-        )) {
+        .java.lang.Object is$0 = x;
+        if (!(is$0 instanceof .ceylon.language.Tuple)) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!x is Tuple<Anything,Anything,Sequential<Anything>>"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!x is Tuple<Anything,Anything,Sequential<Anything>>") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(true, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(true, false, -1, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$), is$0));
         }
         final .java.lang.Object y = new .ceylon.language.Exception();
-        if ((
-            let
-            {
-                .java.lang.Object $ceylontmp$1 = y;
-            }
-            returning $ceylontmp$1 instanceof .java.lang.Exception;
-        )) {
+        .java.lang.Object is$1 = y;
+        if (is$1 instanceof .java.lang.Exception) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "y is Exception"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "y is Exception") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Exception.$TypeDescriptor$, is$1));
         }
     }
     

@@ -15,7 +15,7 @@ final class bug1666_ {
                 if (.com.redhat.ceylon.compiler.java.Util.isReified(s$5 = .ceylon.language.Float.instance(((.ceylon.language.Float)number$4).doubleValue() * 2L), $reified$Num)) {
                     s$6 = s$5;
                 } else {
-                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Num s = number*2") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed($reified$Num, s$5));
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Num s = number*2") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, $reified$Num, s$5));
                 }
                 return (Num)s$6;
             } else if (sel$0 instanceof .ceylon.language.Integer) {
@@ -25,7 +25,7 @@ final class bug1666_ {
                 if (.com.redhat.ceylon.compiler.java.Util.isReified(s$2 = .ceylon.language.Integer.instance(((.ceylon.language.Integer)number$1).longValue() * 2L), $reified$Num)) {
                     s$3 = s$2;
                 } else {
-                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Num s = number*2") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed($reified$Num, s$2));
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Num s = number*2") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, $reified$Num, s$2));
                 }
                 return (Num)s$3;
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");

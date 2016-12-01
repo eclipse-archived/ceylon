@@ -12,7 +12,7 @@ class AssertIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.mode
         if ((nothing$0 = nothing) == null || nothing$0 instanceof .ceylon.language.Character) {
             nothing$1 = (.ceylon.language.Character)nothing$0;
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Character? nothing") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), nothing$0));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Character? nothing") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), nothing$0));
         }
     }
     

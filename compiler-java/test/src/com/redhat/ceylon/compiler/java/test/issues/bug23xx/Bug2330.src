@@ -9,7 +9,7 @@ final class bug2330_ {
         final Item y = (Item)item;
         if ((Item)y instanceof .ceylon.language.Integer) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.Integer.$TypeDescriptor$, y));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y));
         }
         final boolean lt1 = ((.ceylon.language.Comparable)(.ceylon.language.Comparable)y).smallerThan((.ceylon.language.Comparable).ceylon.language.Integer.instance(5L));
         final boolean gt1 = 5L > ((.ceylon.language.Integer)y).longValue();
