@@ -22,9 +22,6 @@ package com.redhat.ceylon.tools.test;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.junit.Assert;
@@ -35,7 +32,6 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.tools.jigsaw.CeylonJigsawTool;
 import com.redhat.ceylon.tools.war.CeylonWarTool;
 
 public class WarToolTests extends AbstractToolTests {
