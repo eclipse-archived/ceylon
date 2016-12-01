@@ -50,7 +50,7 @@ public final class Integer
         Iterator<? extends Integer> it = integers.iterator();
         java.lang.Object o;
         while ((o=it.next())!=finished_.get_()) {
-            sum += ((Float) o).value;
+            sum += ((Integer) o).value;
         }
         return sum;
     }
