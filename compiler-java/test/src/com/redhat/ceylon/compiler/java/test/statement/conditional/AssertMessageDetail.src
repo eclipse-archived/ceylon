@@ -13,25 +13,86 @@ final class assertMessageDetailGeneric_ {
             if ((one$0 = one) instanceof .ceylon.language.String) {
                 one$1 = ((.ceylon.language.String)one$0).toString();
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String one") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(.ceylon.language.String.$TypeDescriptor$, one$0));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String one") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.String.$TypeDescriptor$, one$0));
             }
             throw new .ceylon.language.Exception(null, null);
         } catch (final .ceylon.language.AssertionError e) {
-            if (.ceylon.language.String.contains(.com.redhat.ceylon.compiler.java.Util.throwableMessage(e), .ceylon.language.String.instance("\texpression has type ceylon.language::Integer rather than ceylon.language::String"))) {
+            if (.ceylon.language.String.contains(.com.redhat.ceylon.compiler.java.Util.throwableMessage(e), .ceylon.language.String.instance("\texpression has type ceylon.language::Integer which is not a subtype of ceylon.language::String"))) {
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "e.message.contains(\"\\texpression has type ceylon.language::Integer rather than ceylon.language::String\")"));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "e.message.contains(\"\\texpression has type ceylon.language::Integer which is not a subtype of ceylon.language::String\")"));
             }
         }
         try {
             if (.com.redhat.ceylon.compiler.java.Util.isReified(null, $reified$Element)) {
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element null") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed($reified$Element, null));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element null") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, $reified$Element, null));
             }
             throw new .ceylon.language.Exception(null, null);
         } catch (final .ceylon.language.AssertionError e) {
-            if (.ceylon.language.String.contains(.com.redhat.ceylon.compiler.java.Util.throwableMessage(e), .ceylon.language.String.instance("\texpression has type ceylon.language::null rather than ceylon.language::Object"))) {
+            if (.ceylon.language.String.contains(.com.redhat.ceylon.compiler.java.Util.throwableMessage(e), .ceylon.language.String.instance("\texpression has type ceylon.language::null which is not a subtype of ceylon.language::Integer"))) {
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "e.message.contains(\"\\texpression has type ceylon.language::null rather than ceylon.language::Object\")"));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "e.message.contains(\"\\texpression has type ceylon.language::null which is not a subtype of ceylon.language::Integer\")"));
+            }
+        }
+        try {
+            if (!(one instanceof .ceylon.language.Integer)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Integer one") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.Integer.$TypeDescriptor$, one));
+            }
+            throw new .ceylon.language.Exception(null, null);
+        } catch (final .ceylon.language.AssertionError e) {
+            if (.ceylon.language.String.contains(.com.redhat.ceylon.compiler.java.Util.throwableMessage(e), .ceylon.language.String.instance("\texpression has type ceylon.language::Integer"))) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "e.message.contains(\"\\texpression has type ceylon.language::Integer\")"));
+            }
+        }
+        try {
+            if (!.com.redhat.ceylon.compiler.java.Util.isReified(one, $reified$Element)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Element one") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(true, $reified$Element, one));
+            }
+            throw new .ceylon.language.Exception(null, null);
+        } catch (final .ceylon.language.AssertionError e) {
+            if (.ceylon.language.String.contains(.com.redhat.ceylon.compiler.java.Util.throwableMessage(e), .ceylon.language.String.instance("\texpression has type ceylon.language::Integer"))) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "e.message.contains(\"\\texpression has type ceylon.language::Integer\")"));
+            }
+        }
+        try {
+            if (!(one instanceof .ceylon.language.Integer)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Integer one") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.Integer.$TypeDescriptor$, one));
+            }
+            throw new .ceylon.language.Exception(null, null);
+        } catch (final .ceylon.language.AssertionError e) {
+            if (.ceylon.language.String.contains(.com.redhat.ceylon.compiler.java.Util.throwableMessage(e), .ceylon.language.String.instance("\texpression has type ceylon.language::Integer"))) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "e.message.contains(\"\\texpression has type ceylon.language::Integer\")"));
+            }
+        }
+        try {
+            .java.lang.Object is$6 = one;
+            if (is$6 instanceof .ceylon.language.String) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "one is String") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.String.$TypeDescriptor$, is$6));
+            }
+        } catch (final .ceylon.language.AssertionError e) {
+            .ceylon.language.print_.print(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.throwableMessage(e)));
+            if (.ceylon.language.String.contains(.com.redhat.ceylon.compiler.java.Util.throwableMessage(e), .ceylon.language.String.instance("\texpression has type ceylon.language::Integer which is not a subtype of ceylon.language::String"))) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "e.message.contains(\"\\texpression has type ceylon.language::Integer which is not a subtype of ceylon.language::String\")"));
+            }
+        }
+        try {
+            .ceylon.language.String is$7 = .ceylon.language.String.instance("");
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(is$7, $reified$Element)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"\" is Element") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, $reified$Element, is$7));
+            }
+        } catch (final .ceylon.language.AssertionError e) {
+            if (.ceylon.language.String.contains(.com.redhat.ceylon.compiler.java.Util.throwableMessage(e), .ceylon.language.String.instance("\texpression has type ceylon.language::String which is not a subtype of ceylon.language::Integer"))) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "e.message.contains(\"\\texpression has type ceylon.language::String which is not a subtype of ceylon.language::Integer\")"));
             }
         }
     }
@@ -42,6 +103,6 @@ final class assertMessageDetail_ {
     }
     
     static void assertMessageDetail() {
-        .com.redhat.ceylon.compiler.java.test.statement.conditional.assertMessageDetailGeneric_.<.java.lang.Object>assertMessageDetailGeneric(.ceylon.language.Object.$TypeDescriptor$);
+        .com.redhat.ceylon.compiler.java.test.statement.conditional.assertMessageDetailGeneric_.<.ceylon.language.Integer>assertMessageDetailGeneric(.ceylon.language.Integer.$TypeDescriptor$);
     }
 }
