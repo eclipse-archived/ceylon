@@ -38,10 +38,19 @@ Integer.$st$={
     if (r===undefined)r=10;
     var x = parseInteger(s,r);
     return x===null?ParseException("illegal format for Integer"):x;
+  },
+  sum:function(i) {
+    var s=0;
+    var item;
+    for (var iter=i.iterator();(item=iter.next())!==finished();) {
+      s+=item;
+    }
+    return s;
   }
 };
 Integer.$st$.format.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}},{nm:'radix',mt:'prm',def:1,$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Integer().$st$.format),OpenFunction$jsint(lmp$(ex$,'$'),Float.$st$.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Integer','$m','parse']};};
 Integer.$st$.parse.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}},{nm:'radix',mt:'prm',def:1,$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Integer().$$.prototype.format),OpenFunction$jsint(lmp$(ex$,'$'),Float.$st$.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Integer','$m','parse']};};
+Integer.$st$.sum.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:{t:Null}}}}],$cont:Integer,pa:4097,d:['$','Integer','$m','sum']};};
 
 initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number, JSNumber,
         $init$Integral(), $init$Exponentiable(), $init$Binary());
@@ -71,10 +80,19 @@ Float.$st$={
   parse:function(s) {
     var x=$_parseFloat(s);
     return x===null?ParseException("illegal format for Float"):x;
+  },
+  sum:function(f) {
+    var s=0;
+    var item;
+    for (var iter=f.iterator();(item=iter.next())!==finished();) {
+      s+=item;
+    }
+    return Float(s);
   }
 };
 Float.$st$.format.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_String},ps:[{nm:'float',mt:'prm',$t:{t:Float}},{nm:'minDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'maxDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'decimalSeparator',mt:'prm',def:1,$t:{t:Character}},{nm:'thousandsSeparator',mt:'prm',def:1,$t:{t:'u',l:[{t:Null},{t:Character}]}}],$cont:Float,pa:4097,an:function(){return[tagged($arr$sa$(["Numbers"],{t:$_String})),see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Float().$$.prototype.parse),OpenFunction$jsint(lmp$(ex$,'$'),Integer.$$.prototype.format)],{t:FunctionDeclaration$meta$declaration})),since("1.3.1")];},d:['$','Float','$m','format']};};
 Float.$st$.parse.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Float},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}}],$cont:Float,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Float().$$.prototype.format),OpenFunction$jsint(lmp$(ex$,'$'),Integer.$$.prototype.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Float','$m','parse']};};
+Float.$st$.sum.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Float},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:{t:Null}}}}],$cont:Float,pa:4097,d:['$','Float','$m','sum']};};
 initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,$init$Exponentiable(), JSNumber);
 Float.$crtmm$=function(){return{pa:97,mod:$CCMM$,d:['$','Float']};}
 function $init$Float(){return Float;}
