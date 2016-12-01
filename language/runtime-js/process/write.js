@@ -1,5 +1,5 @@
 (function() {
-  if ((typeof process !== "undefined") && (process.stdout !== undefined)) {
+  if (run$isNode() && (process.stdout !== undefined)) {
     return function(string) {
       if(string)process.stdout.write(string.valueOf());
     }

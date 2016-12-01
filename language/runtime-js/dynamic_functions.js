@@ -275,3 +275,12 @@ function npm$req(name,mod,req) {
   return x;
 }
 ex$.npm$req=npm$req;
+//Functions for determining on which platform we run
+function run$isBrowser() {
+    return (typeof navigator !== "undefined") && (typeof window !== "undefined");
+}
+ex$.run$isBrowser=run$isBrowser;
+function run$isNode() {
+    return (typeof process !== "undefined");
+}
+ex$.run$isNode=run$isNode;

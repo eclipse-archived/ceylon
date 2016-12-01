@@ -1,7 +1,7 @@
 if (this.argv!==undefined)return this.argv;
 this.argv = empty();
 this.namedArgs = {};
-if ((typeof process !== "undefined") && (process.argv !== undefined)) {
+if (run$isNode() && (process.argv !== undefined)) {
     // parse command line arguments
     if (process.argv.length > 2) {
         // Ignore the first two arguments (see https://github.com/ceylon/ceylon.language/issues/503)
@@ -29,7 +29,7 @@ if ((typeof process !== "undefined") && (process.argv !== undefined)) {
         }
         this.argv = $arr$sa$(args,{t:$_String});
     }
-} else if (typeof window !== "undefined") {
+} else if (run$isBrowser()) {
     // parse URL parameters
     var parts = window.location.search.substr(1).replace('+', ' ').split('&');
     if ((parts.length > 1) || ((parts.length > 0) && (parts[0].length > 0))) {

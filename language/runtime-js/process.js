@@ -1,6 +1,6 @@
 //Some native stuff for process, runtime, operatingSystem, language
 var properties = {};
-if (typeof navigator !== "undefined") {
+if (run$isBrowser()) {
     if (navigator.language !== undefined) {
         properties["user.language"] = $_String(navigator.language);
     }
@@ -19,7 +19,7 @@ if (typeof navigator !== "undefined") {
         properties["browser.version"] = $_String(navigator.appVersion);
     }
 }
-if (typeof process !== "undefined") {
+if (run$isNode()) {
     if (process.platform !== undefined) {
         properties["os.name"] = $_String(process.platform);
     }
@@ -50,7 +50,7 @@ properties["file.separator"] = filesep;
 properties["path.separator"] = pathsep;
 
 function _process_pick_writeLine() {
-  if ((typeof process !== "undefined") && (process.stdout !== undefined)) {
+  if (run$isNode() && (process.stdout !== undefined)) {
     return function(line) {
       if(line)this.write(line.valueOf());
       this.write(linesep.valueOf());
@@ -64,7 +64,7 @@ function _process_pick_writeLine() {
 }
 
 function _process_pick_writeErrorLine() {
-  if ((typeof process !== "undefined") && (process.stderr !== undefined)) {
+  if (run$isNode() && (process.stderr !== undefined)) {
     return function(line) {
       if(line)this.writeError(line.valueOf());
       this.writeError(linesep.valueOf());

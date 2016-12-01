@@ -1,5 +1,5 @@
 (function(){
-  if ((typeof process !== "undefined") && (process.exit !== undefined)) {
+  if (run$isNode() && (process.exit !== undefined)) {
     return function(code) {
         process.exit(code);
     }

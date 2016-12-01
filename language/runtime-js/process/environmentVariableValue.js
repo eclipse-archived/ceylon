@@ -1,5 +1,5 @@
 function(name) {
-  if ((typeof process !== "undefined") && (process.env !== undefined)) {
+  if (run$isNode() && (process.env !== undefined)) {
     return process.env[name];
   }
   return null;

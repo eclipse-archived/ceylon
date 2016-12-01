@@ -154,8 +154,9 @@ public class JsOutput {
                         singleFunctionName.substring(dashIdx+2);
                 dashIdx = singleFunctionName.indexOf('-', dashIdx);
             }
-            out("var ", modAlias, "=", "(typeof process !== 'undefined')?", getLanguageModuleAlias(), "npm$req('",
-                    singleFunctionName, "','", path, "',require):require('", JsCompiler.scriptPath(mod), "');\n");
+            out("var ", modAlias, "=", "(", getLanguageModuleAlias(), "run$isNode())?",
+                    getLanguageModuleAlias(), "npm$req('", singleFunctionName, "','",
+                    path, "',require):require('", JsCompiler.scriptPath(mod), "');\n");
             if (modAlias != null && !modAlias.isEmpty()) {
                 out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
             }
