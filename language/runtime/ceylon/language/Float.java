@@ -50,6 +50,27 @@ public final class Float
         return sum;
     }
     
+    public static double product(
+            @TypeInfo("{ceylon.language::Float*}")
+            @Name("floats")
+            Iterable<? extends Float, ? extends java.lang.Object> floats) {
+        double sum = 0.0d;
+        Iterator<? extends Float> it = floats.iterator();
+        java.lang.Object o;
+        while ((o=it.next())!=finished_.get_()) {
+            sum *= ((Float) o).value;
+        }
+        return sum;
+    }
+    
+    public static double smallest(@Name("x") double x, @Name("y") double y) {
+        return Math.min(x, y);
+    }
+    
+    public static double largest(@Name("x") double x, @Name("y") double y) {
+        return Math.max(x, y);
+    }
+    
     @Ignore
     final double value;
     

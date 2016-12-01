@@ -55,6 +55,27 @@ public final class Integer
         return sum;
     }
     
+    public static long product(
+            @TypeInfo("{ceylon.language::Integer*}")
+            @Name("integers")
+            Iterable<? extends Integer, ? extends java.lang.Object> integers) {
+        long sum = 0l;
+        Iterator<? extends Integer> it = integers.iterator();
+        java.lang.Object o;
+        while ((o=it.next())!=finished_.get_()) {
+            sum *= ((Integer) o).value;
+        }
+        return sum;
+    }
+    
+    public static long smallest(@Name("x") long x, @Name("y") long y) {
+        return Math.min(x, y);
+    }
+    
+    public static long largest(@Name("x") long x, @Name("y") long y) {
+        return Math.max(x, y);
+    }
+    
     @Ignore
     final long value;
 

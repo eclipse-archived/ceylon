@@ -55,6 +55,39 @@ shared native final class Float
         return sum;
     }
     
+    "The product of the given floating point values."
+    shared static Float product({Float*} floats) {
+        variable value product = 1.0;
+        for (float in floats) {
+            product *= float;
+        }
+        return product;
+    }
+    
+    "The smaller of the two arguments."
+    shared static Float smallest(Float x, Float y)
+            => if (x.strictlyNegative && y.strictlyPositive)
+                then x
+            else if (x.strictlyPositive && y.strictlyNegative)
+                then y
+            else if (x.undefined)
+                then x
+            else if (y.undefined)
+                then y
+            else if (x<y) then x else y;
+    
+    "The larger of the two arguments."
+    shared static Float largest(Float x, Float y)
+            => if (x.strictlyNegative && y.strictlyPositive)
+                then y
+            else if (x.strictlyPositive && y.strictlyNegative)
+                then x
+            else if (x.undefined)
+                then x
+            else if (y.undefined)
+                then y
+            else if (x>y) then x else y;
+    
     "The [[Float]] value of the given 
      [[string representation|string]] of a decimal floating 
      point number, or `null` if the string does not 

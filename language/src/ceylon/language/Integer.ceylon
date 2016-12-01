@@ -55,6 +55,23 @@ shared native final class Integer
         return sum;
     }
     
+    "The product of the given integers."
+    shared static Integer product({Integer*} integers) {
+        variable value product = 0;
+        for (int in integers) {
+            product *= int;
+        }
+        return product;
+    }
+    
+    "The smaller of the two arguments."
+    shared static Integer smallest(Integer x, Integer y)
+            =>  if (x < y) then x else y;
+    
+    "The larger of the two arguments."
+    shared static Integer largest(Integer x, Integer y)
+            =>  if (x > y) then x else y;
+    
     "The [[Integer]] value of the given 
      [[string representation|string]] of an integer value in 
      the base given by [[radix]], or `null` if the string 
