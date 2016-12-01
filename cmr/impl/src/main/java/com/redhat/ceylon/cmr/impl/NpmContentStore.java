@@ -163,7 +163,7 @@ public class NpmContentStore extends AbstractContentStore {
             if (log != null) log.debug("installing npm module " + name + "@" + version + " in " + out);
             String npmCmd = npmCommand != null ? npmCommand : System.getProperty(Constants.PROP_CEYLON_EXTCMD_NPM, "npm");
             ProcessBuilder pb = new ProcessBuilder()
-                    .command(npmCmd, "install", "-q", name + "@" + version)
+                    .command(npmCmd, "install", "--silent", "--no-bin-links", name + "@" + version)
                     .directory(out.getParentFile())
                     .inheritIO();
             Map<String, String> env = pb.environment();
