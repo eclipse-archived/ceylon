@@ -544,8 +544,8 @@ public class AnalyzerUtil {
                     (Tree.SpecifierStatement) s;
             Tree.SpecifierExpression se = 
                     ss.getSpecifierExpression();
-            return !(ss.getRefinement() &&
-                    se instanceof Tree.LazySpecifierExpression);
+            return !(ss.getRefinement() 
+                    && se instanceof Tree.LazySpecifierExpression);
         }
         else if (s instanceof Tree.ExecutableStatement) {
             return true;
@@ -556,8 +556,9 @@ public class AnalyzerUtil {
                         (Tree.AttributeDeclaration) s;
                 Tree.SpecifierOrInitializerExpression sie = 
                         ad.getSpecifierOrInitializerExpression();
-                return !(sie==null ||
-                        sie instanceof Tree.LazySpecifierExpression);
+                
+                return !(sie==null 
+                        || sie instanceof Tree.LazySpecifierExpression);
             }
             else if (s instanceof Tree.ObjectDefinition) {
                 Tree.ObjectDefinition o = 
