@@ -2,6 +2,9 @@ package ceylon.language.meta;
 
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getAppliedMetamodel;
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getTypeDescriptor;
+
+import com.redhat.ceylon.common.NonNull;
+
 import ceylon.language.Sequential;
 import ceylon.language.meta.model.ClassModel;
 
@@ -26,6 +29,7 @@ public final class type_ {
     @TypeParameters(@TypeParameter(value = "Type", 
     		variance = Variance.OUT, 
     		satisfies = "ceylon.language::Anything"))
+    @NonNull
     public static <Type> 
     ClassModel<? extends Type, ? super Sequential<? extends Object>>
     type(@Ignore TypeDescriptor $reifiedType,

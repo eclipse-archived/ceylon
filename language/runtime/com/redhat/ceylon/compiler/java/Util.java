@@ -2270,9 +2270,23 @@ public class Util {
     public static String assertIsFailed(boolean negated, TypeDescriptor $reifiedType, @Nullable Object operand) {
         ClassModel<? extends Object, ? super Sequential<? extends Object>> expressionType = type_.type(Nothing.NothingType, operand);
         Type<? extends Object> givenType = typeLiteral_.typeLiteral($reifiedType);
-        String message = System.lineSeparator()+"\texpression has type "+expressionType;
+        String message = System.lineSeparator()+"\t\texpression has type "+expressionType;
         if (!expressionType.exactly(givenType)) {
             message += " which is "+(negated ? "": "not")+" a subtype of "+ givenType;
+        }
+        return message;
+    }
+    
+    public static String assertBinOpFailed( 
+            @Nullable Object lhs, 
+            @Nullable Object rhs) {
+        String message = System.lineSeparator()+"\t\tleft-hand expression is " + (lhs == null ? "«null»" : lhs);
+        message += System.lineSeparator()+"\t\tright-hand expression is " + (rhs == null ? "«null»" : rhs);
+        ClassModel<? extends Object, ? super Sequential<? extends Object>> leftType = type_.type(Nothing.NothingType, lhs);
+        ClassModel<? extends Object, ? super Sequential<? extends Object>> rightType = type_.type(Nothing.NothingType, rhs);
+        if (!leftType.exactly(rightType)) {
+            message += System.lineSeparator()+"\t\tleft-hand expression has type " + leftType;
+            message += System.lineSeparator()+"\t\tright-hand expression has type " + rightType;
         }
         return message;
     }
