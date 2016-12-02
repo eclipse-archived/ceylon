@@ -49,7 +49,9 @@ import com.redhat.ceylon.langtools.source.tree.CompilationUnitTree;
 import com.redhat.ceylon.langtools.source.tree.Scope;
 import com.redhat.ceylon.langtools.source.tree.Tree;
 import com.redhat.ceylon.langtools.source.util.JavacTask;
+import com.redhat.ceylon.langtools.source.util.SourcePositions;
 import com.redhat.ceylon.langtools.source.util.TreePath;
+import com.redhat.ceylon.langtools.source.util.Trees;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
@@ -102,7 +104,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Pair;
  *
  * @author Peter von der Ah&eacute;
  */
-public class JavacTrees {
+public class JavacTrees extends Trees {
 
     // in a world of a single context per compilation, these would all be final
     private Resolve resolve;
@@ -706,5 +708,15 @@ public class JavacTrees {
         } else {
             return v.type;
         }
+    }
+
+    @Override
+    public SourcePositions getSourcePositions() {
+        return null;
+    }
+
+    @Override
+    public String getDocComment(TreePath path) {
+        return null;
     }
 }
