@@ -170,9 +170,27 @@ public final class Float
             }
         }
         
+        if (floats instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<? extends Float> list = 
+                    (List<? extends Float>) 
+                        floats;
+            long size = list.getSize();
+            if (size==0) {
+                return null;
+            }
+            double min = floats.getFromFirst(0).value;
+            for (int i=1; i<size; i++) {
+                min += Math.min(min,
+                        list.getFromFirst(i).value);
+            }
+            return min;
+        }
+        
         double min = Double.NaN;
         boolean first = true;
-        Iterator<? extends Float> it = floats.iterator();
+        Iterator<? extends Float> it = 
+                floats.iterator();
         java.lang.Object o;
         while ((o=it.next())!=finished_.get_()) {
             double x = ((Float) o).value;
@@ -224,9 +242,27 @@ public final class Float
             }
         }
         
+        if (floats instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<? extends Float> list = 
+                    (List<? extends Float>) 
+                        floats;
+            long size = list.getSize();
+            if (size==0) {
+                return null;
+            }
+            double max = floats.getFromFirst(0).value;
+            for (int i=1; i<size; i++) {
+                max += Math.max(max,
+                        list.getFromFirst(i).value);
+            }
+            return max;
+        }
+        
         double max = Double.NaN;
         boolean first = true;
-        Iterator<? extends Float> it = floats.iterator();
+        Iterator<? extends Float> it = 
+                floats.iterator();
         java.lang.Object o;
         while ((o=it.next())!=finished_.get_()) {
             double x = ((Float) o).value;

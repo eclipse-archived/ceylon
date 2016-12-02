@@ -175,9 +175,27 @@ public final class Integer
             }
         }
         
+        if (integers instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<? extends Integer> list = 
+                    (List<? extends Integer>) 
+                        integers;
+            long size = list.getSize();
+            if (size==0) {
+                return null;
+            }
+            long min = integers.getFromFirst(0).value;
+            for (int i=1; i<size; i++) {
+                min += Math.min(min,
+                        list.getFromFirst(i).value);
+            }
+            return min;
+        }
+        
         long min = 0l;
         boolean first = true;
-        Iterator<? extends Integer> it = integers.iterator();
+        Iterator<? extends Integer> it = 
+                integers.iterator();
         java.lang.Object o;
         while ((o=it.next())!=finished_.get_()) {
             long x = ((Integer) o).value;
@@ -229,9 +247,27 @@ public final class Integer
             }
         }
         
+        if (integers instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<? extends Integer> list = 
+                    (List<? extends Integer>) 
+                        integers;
+            long size = list.getSize();
+            if (size==0) {
+                return null;
+            }
+            long max = integers.getFromFirst(0).value;
+            for (int i=1; i<size; i++) {
+                max += Math.max(max,
+                        list.getFromFirst(i).value);
+            }
+            return max;
+        }
+        
         long max = 0l;
         boolean first = true;
-        Iterator<? extends Integer> it = integers.iterator();
+        Iterator<? extends Integer> it = 
+                integers.iterator();
         java.lang.Object o;
         while ((o=it.next())!=finished_.get_()) {
             long x = ((Integer) o).value;
