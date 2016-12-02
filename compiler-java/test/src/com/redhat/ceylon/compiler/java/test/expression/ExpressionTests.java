@@ -398,6 +398,10 @@ public class ExpressionTests extends CompilerTests {
         compareWithJavaSource("operator/IndexingTuples");
     }
     @Test
+    public void testOprIndexingAlias(){
+        compareWithJavaSource("operator/IndexingAlias");
+    }
+    @Test
     public void testOprEntryOp(){
         compareWithJavaSource("operator/EntryOp");
     }
