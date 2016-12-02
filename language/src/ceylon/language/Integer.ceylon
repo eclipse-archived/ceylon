@@ -64,6 +64,56 @@ shared native final class Integer
         return product;
     }
     
+    "The largest integer in the given stream, or `null` if 
+     the stream is empty."
+    shared static Integer|Absent max<Absent>
+            (Iterable<Integer,Absent> integers)
+            given Absent satisfies Null {
+        variable value first = true;
+        variable value max = 0;
+        for (x in integers) {
+            if (first) {
+                first = false;
+                max = x;
+            }
+            else if (x > max) {
+                max = x;
+            }
+        }
+        if (first) {
+            assert (is Absent null);
+            return null;
+        }
+        else {
+            return max;
+        }
+    }
+    
+    "The smallest integer in the given stream, or `null` if 
+     the stream is empty."
+    shared static Integer|Absent min<Absent>
+            (Iterable<Integer,Absent> integers)
+            given Absent satisfies Null {
+        variable value first = true;
+        variable value min = 0;
+        for (x in integers) {
+            if (first) {
+                first = false;
+                min = x;
+            }
+            else if (x < min) {
+                min = x;
+            }
+        }
+        if (first) {
+            assert (is Absent null);
+            return null;
+        }
+        else {
+            return min;
+        }
+    }
+    
     "The smaller of the two arguments."
     shared static Integer smallest(Integer x, Integer y)
             =>  if (x < y) then x else y;

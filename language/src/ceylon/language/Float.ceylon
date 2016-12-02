@@ -46,7 +46,8 @@ shared native final class Float
         satisfies Number<Float> & 
                   Exponentiable<Float,Float> {
     
-    "The sum of the given floating point values."
+    "The sum of all the floating point values in the given 
+     stream."
     shared static Float sum({Float*} floats) {
         variable value sum = 0.0;
         for (float in floats) {
@@ -55,7 +56,8 @@ shared native final class Float
         return sum;
     }
     
-    "The product of the given floating point values."
+    "The product of all the floating point values in the 
+     given stream."
     shared static Float product({Float*} floats) {
         variable value product = 1.0;
         for (float in floats) {
@@ -64,7 +66,67 @@ shared native final class Float
         return product;
     }
     
-    "The smaller of the two arguments."
+    "The largest floating point value in the given stream, 
+     `null` if the stream is empty, or an [[undefined]] 
+     value if and only if the stream contains an undefined 
+     value."
+    shared static Float|Absent max<Absent>
+            (Iterable<Float,Absent> floats)
+            given Absent satisfies Null {
+        variable value max = 0.0/0.0;
+        for (x in floats) {
+            if (x.undefined 
+                || x==infinity) {
+                return x;
+            }
+            if (max.undefined
+                || x > max 
+                || x.strictlyPositive 
+                && max.strictlyNegative) {
+                max = x;
+            }
+        }
+        if (max.undefined) {
+            assert (is Absent null);
+            return null; 
+        }
+        else {
+            return max;
+        }
+    }
+    
+    "The smallest floating point value in the given stream, 
+     `null` if the stream is empty, or an [[undefined]] 
+     value if and only if the stream contains an undefined 
+     value."
+    shared static Float|Absent min<Absent>
+            (Iterable<Float,Absent> floats)
+            given Absent satisfies Null {
+        variable value min = 0.0/0.0;
+        for (x in floats) {
+            if (x.undefined 
+                || x==-infinity) {
+                return x;
+            }
+            if (min.undefined
+                || x < min 
+                || x.strictlyNegative 
+                && min.strictlyPositive) {
+                min = x;
+            }
+        }
+        if (min.undefined) {
+            assert (is Absent null);
+            return null; 
+        }
+        else {
+            return min;
+        }
+    }
+    
+    "The smaller of the two given floating point values, or
+     an [[undefined]] value if and only if one of the values
+     is undefined."
     shared static Float smallest(Float x, Float y)
             => if (x.strictlyNegative && y.strictlyPositive)
                 then x
@@ -76,7 +138,9 @@ shared native final class Float
                 then y
             else if (x<y) then x else y;
     
-    "The larger of the two arguments."
+    "The larger of the two given floating point values, or
+     an [[undefined]] value if and only if one of the values
+     is undefined."
     shared static Float largest(Float x, Float y)
             => if (x.strictlyNegative && y.strictlyPositive)
                 then y

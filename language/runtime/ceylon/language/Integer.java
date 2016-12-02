@@ -11,6 +11,8 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -66,6 +68,64 @@ public final class Integer
             product *= ((Integer) o).value;
         }
         return product;
+    }
+    
+    @TypeParameters(@TypeParameter(value="Absent", satisfies="ceylon.language::Null"))
+    @TypeInfo("ceylon.language::Integer|Absent")
+    public static <Absent> java.lang.Object min(
+            @Ignore TypeDescriptor $reifiedAbsent,
+            @TypeInfo("{ceylon.language::Integer*}")
+            @Name("integers")
+            Iterable<? extends Integer, ? extends java.lang.Object> integers) {
+        long min = 0l;
+        boolean first = true;
+        Iterator<? extends Integer> it = integers.iterator();
+        java.lang.Object o;
+        while ((o=it.next())!=finished_.get_()) {
+            long x = ((Integer) o).value;
+            if (first) {
+                min = x;
+                first = false;
+            }
+            else if (x < min) {
+                min = x;
+            }
+        }
+        if (first) {
+            return null;
+        }
+        else {
+            return instance(min);
+        }
+    }
+    
+    @TypeParameters(@TypeParameter(value="Absent", satisfies="ceylon.language::Null"))
+    @TypeInfo("ceylon.language::Integer|Absent")
+    public static <Absent> java.lang.Object max(
+            @Ignore TypeDescriptor $reifiedAbsent,
+            @TypeInfo("{ceylon.language::Integer*}")
+            @Name("integers")
+            Iterable<? extends Integer, ? extends java.lang.Object> integers) {
+        long max = 0l;
+        boolean first = true;
+        Iterator<? extends Integer> it = integers.iterator();
+        java.lang.Object o;
+        while ((o=it.next())!=finished_.get_()) {
+            long x = ((Integer) o).value;
+            if (first) {
+                max = x;
+                first = false;
+            }
+            else if (x > max) {
+                max = x;
+            }
+        }
+        if (first) {
+            return null;
+        }
+        else {
+            return instance(max);
+        }
     }
     
     public static long smallest(@Name("x") long x, @Name("y") long y) {

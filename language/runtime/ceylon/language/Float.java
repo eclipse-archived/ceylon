@@ -9,6 +9,8 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
+import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -61,6 +63,68 @@ public final class Float
             product *= ((Float) o).value;
         }
         return product;
+    }
+    
+    @TypeParameters(@TypeParameter(value="Absent", satisfies="ceylon.language::Null"))
+    @TypeInfo("ceylon.language::Float|Absent")
+    public static <Absent> java.lang.Object min(
+            @Ignore TypeDescriptor $reifiedAbsent,
+            @TypeInfo("{ceylon.language::Float*}")
+            @Name("floats")
+            Iterable<? extends Float, ? extends java.lang.Object> floats) {
+        double min = Double.NaN;
+        Iterator<? extends Float> it = floats.iterator();
+        java.lang.Object o;
+        while ((o=it.next())!=finished_.get_()) {
+            double x = ((Float) o).value;
+            if (getUndefined(x) 
+                || x==Double.NEGATIVE_INFINITY) {
+                return instance(x);
+            }
+            if (getUndefined(min)
+                || x < min
+                || getStrictlyNegative(x)
+                && getStrictlyPositive(min)) {
+                min = x;
+            }
+        }
+        if (getUndefined(min)) {
+            return null;
+        }
+        else {
+            return instance(min);
+        }
+    }
+    
+    @TypeParameters(@TypeParameter(value="Absent", satisfies="ceylon.language::Null"))
+    @TypeInfo("ceylon.language::Float|Absent")
+    public static <Absent> java.lang.Object max(
+            @Ignore TypeDescriptor $reifiedAbsent,
+            @TypeInfo("{ceylon.language::Float*}")
+            @Name("floats")
+            Iterable<? extends Float, ? extends java.lang.Object> floats) {
+        double max = Double.NaN;
+        Iterator<? extends Float> it = floats.iterator();
+        java.lang.Object o;
+        while ((o=it.next())!=finished_.get_()) {
+            double x = ((Float) o).value;
+            if (getUndefined(x) 
+                || x==Double.POSITIVE_INFINITY) {
+                return instance(x);
+            }
+            if (getUndefined(max)
+                || x > max
+                || getStrictlyPositive(x)
+                && getStrictlyNegative(max)) {
+                max = x;
+            }
+        }
+        if (getUndefined(max)) {
+            return null;
+        }
+        else {
+            return instance(max);
+        }
     }
     
     public static double smallest(@Name("x") double x, @Name("y") double y) {
