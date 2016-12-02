@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
@@ -242,7 +245,7 @@ public class AnnotationInvocation {
         }
     }
 
-    public Iterable<AnnotationArgument> findAnnotationArgumentForClassParameter(Parameter classParameter) {
+    public Iterable<AnnotationArgument> findAnnotationArgumentForClassParameter(Node node, Set<Function> s, Parameter classParameter) {
         List<AnnotationArgument> result = new ArrayList<AnnotationArgument>(1);
         if (isInstantiation()) {
             for (AnnotationArgument aa : getAnnotationArguments()) {
@@ -253,8 +256,12 @@ public class AnnotationInvocation {
         } else {
             // we're invoking another constructor
             AnnotationInvocation ctor = (AnnotationInvocation)((Function)getPrimary()).getAnnotationConstructor();
+            if (!s.add(ctor.constructorDeclaration)) {
+                throw new BugException(node, "recursive annotation constructor: "+ctor.constructorDeclaration.getQualifiedNameString()+" invokes itself");
+            }
+            
             // find it's arguments
-            for (AnnotationArgument otherArgument : ctor.findAnnotationArgumentForClassParameter(classParameter)) {
+            for (AnnotationArgument otherArgument : ctor.findAnnotationArgumentForClassParameter(node, s, classParameter)) {
                 if (otherArgument.getTerm() instanceof ParameterAnnotationTerm) {
                     Parameter sourceParameter = ((ParameterAnnotationTerm)otherArgument.getTerm()).getSourceParameter();
                     for (AnnotationArgument aa : getAnnotationArguments()) {

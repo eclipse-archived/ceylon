@@ -232,7 +232,7 @@ class AnnotationInvocationVisitor extends Visitor {
         // The class parameter's we've not yet figured out the value for
         ArrayList<Parameter> unbound = new ArrayList<Parameter>(classParameters);
         for (Parameter classParameter : classParameters) {
-            for (AnnotationArgument argument : ai.findAnnotationArgumentForClassParameter(classParameter)) {
+            for (AnnotationArgument argument : ai.findAnnotationArgumentForClassParameter(invocation, new HashSet<Function>(), classParameter)) {
                 JCExpression expr = transformConstructorArgument(exprGen, invocation, classParameter, argument, fieldPath);
                 appendArgument(args, classParameter, expr);
                 unbound.remove(classParameter);
