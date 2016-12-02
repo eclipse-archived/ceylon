@@ -279,6 +279,7 @@ public class AnnotationModelVisitor extends Visitor {
         this.checkingArguments = prevCheckingArguments;
     }
     
+    @Override
     public void visit(Tree.StringLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -288,6 +289,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.CharLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -297,6 +299,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.FloatLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -310,6 +313,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.NaturalLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -323,6 +327,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.NegativeOp op) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -341,6 +346,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.MetaLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -350,6 +356,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.Tuple literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -361,6 +368,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.SequenceEnumeration literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
