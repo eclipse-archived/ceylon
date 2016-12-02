@@ -46,7 +46,8 @@ shared native final class Integer
                   Binary<Integer> & 
                   Exponentiable<Integer,Integer> {
     
-    "The sum of the given integers."
+    "The sum of all the integers in the given stream."
+    since("1.3.2")
     shared static Integer sum({Integer*} integers) {
         variable value sum = 0;
         for (int in integers) {
@@ -55,7 +56,8 @@ shared native final class Integer
         return sum;
     }
     
-    "The product of the given integers."
+    "The product of all the integers in the given stream."
+    since("1.3.2")
     shared static Integer product({Integer*} integers) {
         variable value product = 1;
         for (int in integers) {
@@ -66,6 +68,7 @@ shared native final class Integer
     
     "The largest integer in the given stream, or `null` if 
      the stream is empty."
+    since("1.3.2")
     shared static Integer|Absent max<Absent>
             (Iterable<Integer,Absent> integers)
             given Absent satisfies Null {
@@ -91,6 +94,7 @@ shared native final class Integer
     
     "The smallest integer in the given stream, or `null` if 
      the stream is empty."
+    since("1.3.2")
     shared static Integer|Absent min<Absent>
             (Iterable<Integer,Absent> integers)
             given Absent satisfies Null {
@@ -114,11 +118,13 @@ shared native final class Integer
         }
     }
     
-    "The smaller of the two arguments."
+    "The smaller of the two given integers."
+    since("1.3.2")
     shared static Integer smallest(Integer x, Integer y)
             =>  if (x < y) then x else y;
     
-    "The larger of the two arguments."
+    "The larger of the two given integers."
+    since("1.3.2")
     shared static Integer largest(Integer x, Integer y)
             =>  if (x > y) then x else y;
     

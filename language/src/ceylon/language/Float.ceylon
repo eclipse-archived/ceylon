@@ -48,6 +48,7 @@ shared native final class Float
     
     "The sum of all the floating point values in the given 
      stream."
+    since("1.3.2")
     shared static Float sum({Float*} floats) {
         variable value sum = 0.0;
         for (float in floats) {
@@ -58,6 +59,7 @@ shared native final class Float
     
     "The product of all the floating point values in the 
      given stream."
+    since("1.3.2")
     shared static Float product({Float*} floats) {
         variable value product = 1.0;
         for (float in floats) {
@@ -70,6 +72,7 @@ shared native final class Float
      `null` if the stream is empty, or an [[undefined]] 
      value if and only if the stream contains an undefined 
      value."
+    since("1.3.2")
     shared static Float|Absent max<Absent>
             (Iterable<Float,Absent> floats)
             given Absent satisfies Null {
@@ -99,6 +102,7 @@ shared native final class Float
      `null` if the stream is empty, or an [[undefined]] 
      value if and only if the stream contains an undefined 
      value."
+    since("1.3.2")
     shared static Float|Absent min<Absent>
             (Iterable<Float,Absent> floats)
             given Absent satisfies Null {
@@ -127,6 +131,7 @@ shared native final class Float
     "The smaller of the two given floating point values, or
      an [[undefined]] value if and only if one of the values
      is undefined."
+    since("1.3.2")
     shared static Float smallest(Float x, Float y)
             => if (x.strictlyNegative && y.strictlyPositive)
                 then x
@@ -141,6 +146,7 @@ shared native final class Float
     "The larger of the two given floating point values, or
      an [[undefined]] value if and only if one of the values
      is undefined."
+    since("1.3.2")
     shared static Float largest(Float x, Float y)
             => if (x.strictlyNegative && y.strictlyPositive)
                 then y
