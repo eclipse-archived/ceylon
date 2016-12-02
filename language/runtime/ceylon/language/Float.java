@@ -147,27 +147,20 @@ public final class Float
         }
         
         double min = Double.NaN;
+        boolean first = true;
         Iterator<? extends Float> it = floats.iterator();
         java.lang.Object o;
         while ((o=it.next())!=finished_.get_()) {
             double x = ((Float) o).value;
-            if (getUndefined(x) 
-                || x==Double.NEGATIVE_INFINITY) {
-                return instance(x);
-            }
-            if (getUndefined(min)
-                || x < min
-                || getStrictlyNegative(x)
-                && getStrictlyPositive(min)) {
+            if (first) {
                 min = x;
+                first = false;
+            }
+            else {
+                min = Math.max(min, x);
             }
         }
-        if (getUndefined(min)) {
-            return null;
-        }
-        else {
-            return instance(min);
-        }
+        return first ? null : instance(min);
     }
     
     @TypeParameters(@TypeParameter(value="Absent", satisfies="ceylon.language::Null"))
@@ -208,27 +201,20 @@ public final class Float
         }
         
         double max = Double.NaN;
+        boolean first = true;
         Iterator<? extends Float> it = floats.iterator();
         java.lang.Object o;
         while ((o=it.next())!=finished_.get_()) {
             double x = ((Float) o).value;
-            if (getUndefined(x) 
-                || x==Double.POSITIVE_INFINITY) {
-                return instance(x);
-            }
-            if (getUndefined(max)
-                || x > max
-                || getStrictlyPositive(x)
-                && getStrictlyNegative(max)) {
+            if (first) {
                 max = x;
+                first = false;
+            }
+            else {
+                max = Math.max(max, x);
             }
         }
-        if (getUndefined(max)) {
-            return null;
-        }
-        else {
-            return instance(max);
-        }
+        return first ? null : instance(max);
     }
     
     public static double smallest(@Name("x") double x, @Name("y") double y) {

@@ -161,16 +161,11 @@ public final class Integer
                 min = x;
                 first = false;
             }
-            else if (x < min) {
-                min = x;
+            else {
+                min = Math.min(min, x);
             }
         }
-        if (first) {
-            return null;
-        }
-        else {
-            return instance(min);
-        }
+        return first ? null : instance(min);
     }
     
     @TypeParameters(@TypeParameter(value="Absent", satisfies="ceylon.language::Null"))
@@ -220,16 +215,11 @@ public final class Integer
                 max = x;
                 first = false;
             }
-            else if (x > max) {
-                max = x;
+            else {
+                max = Math.max(max, x);
             }
         }
-        if (first) {
-            return null;
-        }
-        else {
-            return instance(max);
-        }
+        return first ? null : instance(max);
     }
     
     public static long smallest(@Name("x") long x, @Name("y") long y) {
