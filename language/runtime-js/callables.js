@@ -229,7 +229,7 @@ function spread$2(f) {
       } else if (e.size<=i && params[i].def>0) {
         a.push(undefined);
       } else {
-        console.log("SPREAD WTF2",e&&e.string,"vs",params[i]);
+        console.trace("SPREAD WTF2",e&&e.string,"vs",params[i]);
       }
     }
     if (targs)a.push(targs);
