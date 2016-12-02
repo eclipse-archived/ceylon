@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
@@ -891,7 +890,9 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
     private static com.redhat.ceylon.langtools.tools.javac.main.Option getJavacOpt(String optionName) {
         for (com.redhat.ceylon.langtools.tools.javac.main.Option o : com.redhat.ceylon.langtools.tools.javac.main.Option.getJavaCompilerOptions()) {
-            if (optionName.equals(o.text)) {
+            if (optionName.equals(o.text) ||
+                    o == com.redhat.ceylon.langtools.tools.javac.main.Option.A
+                    && optionName.startsWith(o.text)) {
                 return o;
             }
         }
@@ -938,7 +939,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             helper.lastError = null;
             String value = null;
             int index = argument.indexOf('=');
-            if (index != -1) {
+            if (index != -1 && ! argument.startsWith("-A")) {
                 value = index < argument.length() ? argument.substring(index+1) : "";
                 argument = argument.substring(0, index);
             }
