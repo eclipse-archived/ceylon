@@ -70,6 +70,18 @@ public final class Integer
             }
         }
         
+        if (integers instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<? extends Integer> list = 
+                    (List<? extends Integer>) integers;
+            long size = list.getSize();
+            long sum = 0l;
+            for (int i=0; i<size; i++) {
+                sum += list.getFromFirst(i).value;
+            }
+            return sum;
+        }
+        
         long sum = 0l;
         Iterator<? extends Integer> it = integers.iterator();
         java.lang.Object o;
@@ -103,6 +115,18 @@ public final class Integer
                 }
                 return product;
             }
+        }
+        
+        if (integers instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<? extends Integer> list = 
+                    (List<? extends Integer>) integers;
+            long size = list.getSize();
+            long product = 1l;
+            for (int i=0; i<size; i++) {
+                product *= list.getFromFirst(i).value;
+            }
+            return product;
         }
         
         long product = 1l;

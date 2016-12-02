@@ -65,6 +65,18 @@ public final class Float
             }
         }
         
+        if (floats instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<? extends Float> list = 
+                    (List<? extends Float>) floats;
+            long size = list.getSize();
+            double sum = 0.0d;
+            for (int i=0; i<size; i++) {
+                sum += list.getFromFirst(i).value;
+            }
+            return sum;
+        }
+        
         double sum = 0.0d;
         Iterator<? extends Float> it = floats.iterator();
         java.lang.Object o;
@@ -98,6 +110,18 @@ public final class Float
                 }
                 return product;
             }
+        }
+        
+        if (floats instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<? extends Float> list = 
+                    (List<? extends Float>) floats;
+            long size = list.getSize();
+            double product = 1.0d;
+            for (int i=0; i<size; i++) {
+                product *= list.getFromFirst(i).value;
+            }
+            return product;
         }
         
         double product = 1.0d;
