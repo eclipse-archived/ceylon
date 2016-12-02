@@ -49,7 +49,6 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.FileUtil;
@@ -112,6 +111,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage.Language;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
@@ -905,7 +905,7 @@ public class LanguageCompiler extends JavaCompiler {
 
         String ns = ModuleUtil.getNamespaceFromUri(moduleSpec.getName());
         String name = ModuleUtil.getModuleNameFromUri(moduleSpec.getName());
-        ArtifactContext context = new ArtifactContext(ns, name, moduleSpec.getVersion(), ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(ns, name, moduleSpec.getVersion(), ArtifactContext.JAR, ArtifactContext.CAR);
         if(progressListener != null)
             progressListener.retrievingModuleArtifact(moduleSpec, context);
         ArtifactResult result = repositoryManager.getArtifactResult(context);
@@ -919,6 +919,10 @@ public class LanguageCompiler extends JavaCompiler {
         ceylonEnter.addModuleToAptPath(moduleSpec, result);
 
         for(ArtifactResult dep : result.dependencies()){
+            if (JDKUtils.isJDKModule(dep.name()) ||
+                    JDKUtils.isOracleJDKModule(dep.name())) {
+                continue;
+            }
             // we are running deps, so we need compile/provided/runtime, but not test
             if(dep.moduleScope() == ModuleScope.TEST)
                 continue;
