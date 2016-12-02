@@ -48,6 +48,28 @@ public final class Integer
             @TypeInfo("{ceylon.language::Integer*}")
             @Name("integers")
             Iterable<? extends Integer, ? extends java.lang.Object> integers) {
+
+        if (integers instanceof Array) {
+            java.lang.Object array = 
+                    ((Array<?>) integers).toArray();
+            if (array instanceof int[]) {
+                long sum = 0l;
+                int[] intArray = (int[]) array;
+                for (int i=0, s=intArray.length; i<s; i++) {
+                    sum += intArray[i];
+                }
+                return sum;
+            }
+            if (array instanceof long[]) {
+                long sum = 0l;
+                long[] longArray = (long[]) array;
+                for (int i=0, s=longArray.length; i<s; i++) {
+                    sum += longArray[i];
+                }
+                return sum;
+            }
+        }
+        
         long sum = 0l;
         Iterator<? extends Integer> it = integers.iterator();
         java.lang.Object o;
@@ -61,6 +83,28 @@ public final class Integer
             @TypeInfo("{ceylon.language::Integer*}")
             @Name("integers")
             Iterable<? extends Integer, ? extends java.lang.Object> integers) {
+        
+        if (integers instanceof Array) {
+            java.lang.Object array = 
+                    ((Array<?>) integers).toArray();
+            if (array instanceof int[]) {
+                long product = 1l;
+                int[] intArray = (int[]) array;
+                for (int i=0, s=intArray.length; i<s; i++) {
+                    product *= intArray[i];
+                }
+                return product;
+            }
+            if (array instanceof long[]) {
+                long product = 1l;
+                long[] longArray = (long[]) array;
+                for (int i=0, s=longArray.length; i<s; i++) {
+                    product *= longArray[i];
+                }
+                return product;
+            }
+        }
+        
         long product = 1l;
         Iterator<? extends Integer> it = integers.iterator();
         java.lang.Object o;

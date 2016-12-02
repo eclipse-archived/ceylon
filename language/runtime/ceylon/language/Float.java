@@ -43,6 +43,28 @@ public final class Float
             @TypeInfo("{ceylon.language::Float*}")
             @Name("floats")
             Iterable<? extends Float, ? extends java.lang.Object> floats) {
+        
+        if (floats instanceof Array) {
+            java.lang.Object array = 
+                    ((Array<?>) floats).toArray();
+            if (array instanceof float[]) {
+                float sum = 0.0f;
+                float[] floatArray = (float[]) array;
+                for (int i=0, s=floatArray.length; i<s; i++) {
+                    sum += floatArray[i];
+                }
+                return sum;
+            }
+            if (array instanceof double[]) {
+                double sum = 0.0d;
+                double[] doubleArray = (double[]) array;
+                for (int i=0, s=doubleArray.length; i<s; i++) {
+                    sum += doubleArray[i];
+                }
+                return sum;
+            }
+        }
+        
         double sum = 0.0d;
         Iterator<? extends Float> it = floats.iterator();
         java.lang.Object o;
@@ -56,6 +78,28 @@ public final class Float
             @TypeInfo("{ceylon.language::Float*}")
             @Name("floats")
             Iterable<? extends Float, ? extends java.lang.Object> floats) {
+        
+        if (floats instanceof Array) {
+            java.lang.Object array = 
+                    ((Array<?>) floats).toArray();
+            if (array instanceof float[]) {
+                float product = 1.0f;
+                float[] floatArray = (float[]) array;
+                for (int i=0, s=floatArray.length; i<s; i++) {
+                    product *= floatArray[i];
+                }
+                return product;
+            }
+            if (array instanceof double[]) {
+                double product = 1.0d;
+                double[] doubleArray = (double[]) array;
+                for (int i=0, s=doubleArray.length; i<s; i++) {
+                    product *= doubleArray[i];
+                }
+                return product;
+            }
+        }
+        
         double product = 1.0d;
         Iterator<? extends Float> it = floats.iterator();
         java.lang.Object o;
