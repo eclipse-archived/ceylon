@@ -331,6 +331,10 @@ public class LanguageCompiler extends JavaCompiler {
         super.close(disposeNames);
     }
 
+    public void addResourceFileObject(JavaFileObject rersoureFile) {
+        resourceFileObjects = resourceFileObjects.append(rersoureFile);
+    }
+    
     private void addResources() throws Abort {
        HashSet<String> written = new HashSet<String>();
         try {
