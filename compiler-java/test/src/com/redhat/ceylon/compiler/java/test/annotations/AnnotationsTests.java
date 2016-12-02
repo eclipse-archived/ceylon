@@ -387,4 +387,9 @@ public class AnnotationsTests extends CompilerTests {
     public void testAnnotationSpreadArgs() {
         compareWithJavaSource("AnnotationSpreadArgs");
     }
+    
+    @Test
+    public void testAnnotationContructorHiddenParams() {
+        compareWithJavaSource("AnnotationConstructorHiddenParameters");
+    }
  }
