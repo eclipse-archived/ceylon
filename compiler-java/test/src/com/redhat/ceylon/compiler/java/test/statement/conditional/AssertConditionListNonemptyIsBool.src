@@ -14,9 +14,11 @@ class AssertConditionList implements .com.redhat.ceylon.compiler.java.runtime.mo
             .java.lang.Object y$2 = null;
             if ((y$2 = x$1.getFromFirst(0L)) instanceof .ceylon.language.Integer) {
                 y$3 = ((.ceylon.language.Integer)y$2).longValue();
-                if (y$3 > 0L) {
+                long lhs$4 = y$3;
+                long rhs$5 = 0L;
+                if (lhs$4 > rhs$5) {
                 } else {
-                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "nonempty x" + .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0"));
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "nonempty x" + .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$4), .ceylon.language.Integer.instance(rhs$5)));
                 }
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "nonempty x" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$2));

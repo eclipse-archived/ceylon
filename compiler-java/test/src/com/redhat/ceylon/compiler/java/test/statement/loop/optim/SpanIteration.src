@@ -187,7 +187,7 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private final void simple$priv$() {
         final long $ceylontmp$step$58 = getStep$priv$();
-        if ($ceylontmp$step$58 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if ($ceylontmp$step$58 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$58), .ceylon.language.Integer.instance(0)));
         final long $ceylontmp$first$51 = getFirst$priv$();
         final long $ceylontmp$last$52 = getLast$priv$();
         final boolean $ceylontmp$increasing$53 = $ceylontmp$step$58 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$52, $ceylontmp$first$51) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$52, $ceylontmp$first$51) >= 0;
@@ -209,7 +209,7 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private final void withBreak$priv$() {
         final long $ceylontmp$step$68 = getStep$priv$();
-        if ($ceylontmp$step$68 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if ($ceylontmp$step$68 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$68), .ceylon.language.Integer.instance(0)));
         final long $ceylontmp$first$61 = getFirst$priv$();
         final long $ceylontmp$last$62 = getLast$priv$();
         final boolean $ceylontmp$increasing$63 = $ceylontmp$step$68 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$62, $ceylontmp$first$61) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$62, $ceylontmp$first$61) >= 0;
@@ -234,7 +234,7 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private final void withContinue$priv$() {
         final long $ceylontmp$step$79 = getStep$priv$();
-        if ($ceylontmp$step$79 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if ($ceylontmp$step$79 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$79), .ceylon.language.Integer.instance(0)));
         final long $ceylontmp$first$72 = getFirst$priv$();
         final long $ceylontmp$last$73 = getLast$priv$();
         final boolean $ceylontmp$increasing$74 = $ceylontmp$step$79 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$73, $ceylontmp$first$72) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$73, $ceylontmp$first$72) >= 0;
@@ -259,7 +259,7 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private final void withElseButNoExit$priv$() {
         final long $ceylontmp$step$90 = getStep$priv$();
-        if ($ceylontmp$step$90 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if ($ceylontmp$step$90 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$90), .ceylon.language.Integer.instance(0)));
         final long $ceylontmp$first$83 = getFirst$priv$();
         final long $ceylontmp$last$84 = getLast$priv$();
         final boolean $ceylontmp$increasing$85 = $ceylontmp$step$90 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$84, $ceylontmp$first$83) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$84, $ceylontmp$first$83) >= 0;
@@ -285,7 +285,7 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
     private final void withElseAndExit$priv$() {
         boolean doforelse$91 = true;
         final long $ceylontmp$step$101 = getStep$priv$();
-        if ($ceylontmp$step$101 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if ($ceylontmp$step$101 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$101), .ceylon.language.Integer.instance(0)));
         final long $ceylontmp$first$94 = getFirst$priv$();
         final long $ceylontmp$last$95 = getLast$priv$();
         final boolean $ceylontmp$increasing$96 = $ceylontmp$step$101 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$95, $ceylontmp$first$94) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$95, $ceylontmp$first$94) >= 0;
@@ -510,7 +510,7 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
     
     private final void simple$priv$() {
         final long $ceylontmp$step$166 = getStep$priv$();
-        if ($ceylontmp$step$166 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if ($ceylontmp$step$166 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$166), .ceylon.language.Integer.instance(0)));
         final int $ceylontmp$first$159 = getFirst$priv$();
         final int $ceylontmp$last$160 = getLast$priv$();
         final boolean $ceylontmp$increasing$161 = $ceylontmp$step$166 == 1 ? .ceylon.language.Character.offset($ceylontmp$last$160, $ceylontmp$first$159) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$last$160, $ceylontmp$first$159) >= 0;
@@ -533,7 +533,7 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
     
     private final void withBreak$priv$() {
         final long $ceylontmp$step$177 = getStep$priv$();
-        if ($ceylontmp$step$177 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if ($ceylontmp$step$177 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$177), .ceylon.language.Integer.instance(0)));
         final int $ceylontmp$first$170 = getFirst$priv$();
         final int $ceylontmp$last$171 = getLast$priv$();
         final boolean $ceylontmp$increasing$172 = $ceylontmp$step$177 == 1 ? .ceylon.language.Character.offset($ceylontmp$last$171, $ceylontmp$first$170) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$last$171, $ceylontmp$first$170) >= 0;
@@ -559,7 +559,7 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
     
     private final void withContinue$priv$() {
         final long $ceylontmp$step$189 = getStep$priv$();
-        if ($ceylontmp$step$189 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if ($ceylontmp$step$189 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$189), .ceylon.language.Integer.instance(0)));
         final int $ceylontmp$first$182 = getFirst$priv$();
         final int $ceylontmp$last$183 = getLast$priv$();
         final boolean $ceylontmp$increasing$184 = $ceylontmp$step$189 == 1 ? .ceylon.language.Character.offset($ceylontmp$last$183, $ceylontmp$first$182) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$last$183, $ceylontmp$first$182) >= 0;
@@ -585,7 +585,7 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
     
     private final void withElseButNoExit$priv$() {
         final long $ceylontmp$step$201 = getStep$priv$();
-        if ($ceylontmp$step$201 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if ($ceylontmp$step$201 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$201), .ceylon.language.Integer.instance(0)));
         final int $ceylontmp$first$194 = getFirst$priv$();
         final int $ceylontmp$last$195 = getLast$priv$();
         final boolean $ceylontmp$increasing$196 = $ceylontmp$step$201 == 1 ? .ceylon.language.Character.offset($ceylontmp$last$195, $ceylontmp$first$194) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$last$195, $ceylontmp$first$194) >= 0;
@@ -612,7 +612,7 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
     private final void withElseAndExit$priv$() {
         boolean doforelse$203 = true;
         final long $ceylontmp$step$213 = getStep$priv$();
-        if ($ceylontmp$step$213 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        if ($ceylontmp$step$213 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$213), .ceylon.language.Integer.instance(0)));
         final int $ceylontmp$first$206 = getFirst$priv$();
         final int $ceylontmp$last$207 = getLast$priv$();
         final boolean $ceylontmp$increasing$208 = $ceylontmp$step$213 == 1 ? .ceylon.language.Character.offset($ceylontmp$last$207, $ceylontmp$first$206) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$last$207, $ceylontmp$first$206) >= 0;

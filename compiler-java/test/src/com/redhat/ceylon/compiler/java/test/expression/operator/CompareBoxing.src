@@ -24,9 +24,11 @@ final class compareBoxing_ {
         cmp = .ceylon.language.String.smallerThan(((.ceylon.language.String)stringSelf).toString(), s);
         ord = ((T)tSelf).compare((T)t);
         cmp = ((T)tSelf).smallerThan((T)t);
-        if (((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).getFirst()).longValue() > 0L) {
+        long lhs$0 = ((.ceylon.language.Integer)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).getFirst()).longValue();
+        long rhs$1 = 0L;
+        if (lhs$0 > rhs$1) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "[1].first>0"));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "[1].first>0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
         }
     }
 }
