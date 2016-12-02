@@ -505,6 +505,11 @@ public class ExpressionTests extends CompilerTests {
     }
     
     @Test
+    public void testOprTrickyNot(){
+        compareWithJavaSource("operator/TrickyNot");
+    }
+    
+    @Test
     public void testStpStringTemplate(){
         compareWithJavaSource("stringtemp/StringTemplate");
     }
