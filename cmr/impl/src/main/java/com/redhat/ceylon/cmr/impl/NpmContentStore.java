@@ -160,10 +160,11 @@ public class NpmContentStore extends AbstractContentStore {
             ArtifactContext ac = ArtifactContext.fromNode(node);
             String name = ac.getName();
             String version = ac.getVersion();
-            if (log != null) log.debug("installing npm module " + name + "@" + version + " in " + out);
+            String module = version.isEmpty() ? name : name + "@" + version;
+            if (log != null) log.debug("installing npm module " + module + " in " + out);
             String npmCmd = npmCommand != null ? npmCommand : System.getProperty(Constants.PROP_CEYLON_EXTCMD_NPM, "npm");
             ProcessBuilder pb = new ProcessBuilder()
-                    .command(npmCmd, "install", "--silent", "--no-bin-links", name + "@" + version)
+                    .command(npmCmd, "install", "--silent", "--no-bin-links", module)
                     .directory(out.getParentFile())
                     .inheritIO();
             Map<String, String> env = pb.environment();
