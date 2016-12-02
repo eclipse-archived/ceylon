@@ -221,54 +221,81 @@ public class Versions {
     
     public static class VersionDetails {
         public final String version;
-        public final String oldestCompatibleVersion;
         public final int binaryMajor;
         public final int binaryMinor;
         
         public VersionDetails(String version,
-                String oldestCompatibleVersion,
                 int binaryMajor, int binaryMinor) {
             this.version = version;
-            this.oldestCompatibleVersion = oldestCompatibleVersion;
             this.binaryMajor = binaryMajor;
             this.binaryMinor = binaryMinor;
         }
     }
     
+    public static VersionDetails getDetailsByVersion(VersionDetails[] versions, String version) {
+        for (VersionDetails vd : versions) {
+            if (vd.version.equals(version)) {
+                return vd;
+            }
+        }
+        return null;
+    }
+    
+    public static VersionDetails oldestCompatibleVersion(VersionDetails[] versions, VersionDetails version) {
+        VersionDetails result = null;
+        for (int i = versions.length - 1; i >= 0; i--) {
+            VersionDetails vd = versions[i];
+            if (vd.binaryMajor == version.binaryMajor) {
+                result = vd;
+            }
+        }
+        return result;
+    }
+    
+    public static VersionDetails newestCompatibleVersion(VersionDetails[] versions, VersionDetails version) {
+        VersionDetails result = null;
+        for (VersionDetails vd : versions) {
+            if (vd.binaryMajor == version.binaryMajor) {
+                result = vd;
+            }
+        }
+        return result;
+    }
+    
     public static final VersionDetails[] jvmVersions = {
-            new VersionDetails("0.1", "0.1",        M1_BINARY_MAJOR_VERSION, M1_BINARY_MINOR_VERSION),
-            new VersionDetails("0.2", "0.2",        M2_BINARY_MAJOR_VERSION, M2_BINARY_MINOR_VERSION),
-            new VersionDetails("0.3", "0.3",        M3_BINARY_MAJOR_VERSION, M3_BINARY_MINOR_VERSION),
-            new VersionDetails("0.3.1", "0.3.1",    M3_1_BINARY_MAJOR_VERSION, M3_1_BINARY_MINOR_VERSION),
-            new VersionDetails("0.4", "0.4",        M4_BINARY_MAJOR_VERSION, M4_BINARY_MINOR_VERSION),
-            new VersionDetails("0.5", "0.5",        M5_BINARY_MAJOR_VERSION, M5_BINARY_MINOR_VERSION),
-            new VersionDetails("0.6", "0.6",        M6_BINARY_MAJOR_VERSION, M6_BINARY_MINOR_VERSION),
-            new VersionDetails("1.0.0", "1.0.0",    V1_0_BINARY_MAJOR_VERSION, V1_0_BINARY_MINOR_VERSION),
-            new VersionDetails("1.1.0", "1.1.0",    V1_1_BINARY_MAJOR_VERSION, V1_1_BINARY_MINOR_VERSION),
-            new VersionDetails("1.2.0", "1.2.0",    V1_2_BINARY_MAJOR_VERSION, V1_2_BINARY_MINOR_VERSION),
-            new VersionDetails("1.2.1", "1.2.0",    V1_2_1_JVM_BINARY_MAJOR_VERSION, V1_2_1_JVM_BINARY_MINOR_VERSION),
-            new VersionDetails("1.2.2", "1.2.0",    V1_2_2_JVM_BINARY_MAJOR_VERSION, V1_2_2_JVM_BINARY_MINOR_VERSION),
-            new VersionDetails("1.3.0", "1.2.0",    V1_3_0_JVM_BINARY_MAJOR_VERSION, V1_3_0_JVM_BINARY_MINOR_VERSION),
-            new VersionDetails("1.3.1", "1.2.0",    V1_3_1_JVM_BINARY_MAJOR_VERSION, V1_3_1_JVM_BINARY_MINOR_VERSION),
-            new VersionDetails(CEYLON_VERSION_NUMBER, "1.2.0", JVM_BINARY_MAJOR_VERSION, JVM_BINARY_MINOR_VERSION),
+            new VersionDetails("0.1",   M1_BINARY_MAJOR_VERSION, M1_BINARY_MINOR_VERSION),
+            new VersionDetails("0.2",   M2_BINARY_MAJOR_VERSION, M2_BINARY_MINOR_VERSION),
+            new VersionDetails("0.3",   M3_BINARY_MAJOR_VERSION, M3_BINARY_MINOR_VERSION),
+            new VersionDetails("0.3.1", M3_1_BINARY_MAJOR_VERSION, M3_1_BINARY_MINOR_VERSION),
+            new VersionDetails("0.4",   M4_BINARY_MAJOR_VERSION, M4_BINARY_MINOR_VERSION),
+            new VersionDetails("0.5",   M5_BINARY_MAJOR_VERSION, M5_BINARY_MINOR_VERSION),
+            new VersionDetails("0.6",   M6_BINARY_MAJOR_VERSION, M6_BINARY_MINOR_VERSION),
+            new VersionDetails("1.0.0", V1_0_BINARY_MAJOR_VERSION, V1_0_BINARY_MINOR_VERSION),
+            new VersionDetails("1.1.0", V1_1_BINARY_MAJOR_VERSION, V1_1_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.0", V1_2_BINARY_MAJOR_VERSION, V1_2_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.1", V1_2_1_JVM_BINARY_MAJOR_VERSION, V1_2_1_JVM_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.2", V1_2_2_JVM_BINARY_MAJOR_VERSION, V1_2_2_JVM_BINARY_MINOR_VERSION),
+            new VersionDetails("1.3.0", V1_3_0_JVM_BINARY_MAJOR_VERSION, V1_3_0_JVM_BINARY_MINOR_VERSION),
+            new VersionDetails("1.3.1", V1_3_1_JVM_BINARY_MAJOR_VERSION, V1_3_1_JVM_BINARY_MINOR_VERSION),
+            new VersionDetails(CEYLON_VERSION_NUMBER, JVM_BINARY_MAJOR_VERSION, JVM_BINARY_MINOR_VERSION),
     };
     
     public static final VersionDetails[] jsVersions = {
-            new VersionDetails("0.1", "0.1",        M1_BINARY_MAJOR_VERSION, M1_BINARY_MINOR_VERSION),
-            new VersionDetails("0.2", "0.2",        M2_BINARY_MAJOR_VERSION, M2_BINARY_MINOR_VERSION),
-            new VersionDetails("0.3", "0.3",        M3_BINARY_MAJOR_VERSION, M3_BINARY_MINOR_VERSION),
-            new VersionDetails("0.3.1", "0.3.1",    M3_1_BINARY_MAJOR_VERSION, M3_1_BINARY_MINOR_VERSION),
-            new VersionDetails("0.4", "0.4",        M4_BINARY_MAJOR_VERSION, M4_BINARY_MINOR_VERSION),
-            new VersionDetails("0.5", "0.5",        M5_BINARY_MAJOR_VERSION, M5_BINARY_MINOR_VERSION),
-            new VersionDetails("0.6", "0.6",        M6_BINARY_MAJOR_VERSION, M6_BINARY_MINOR_VERSION),
-            new VersionDetails("1.0.0", "1.0.0",    V1_0_BINARY_MAJOR_VERSION, V1_0_BINARY_MINOR_VERSION),
-            new VersionDetails("1.1.0", "1.1.0",    V1_1_BINARY_MAJOR_VERSION, V1_1_BINARY_MINOR_VERSION),
-            new VersionDetails("1.2.0", "1.2.0",    V1_2_BINARY_MAJOR_VERSION, V1_2_BINARY_MINOR_VERSION),
-            new VersionDetails("1.2.1", "1.2.1",    V1_2_1_JS_BINARY_MAJOR_VERSION, V1_2_1_JS_BINARY_MINOR_VERSION),
-            new VersionDetails("1.2.2", "1.2.2",    V1_2_2_JS_BINARY_MAJOR_VERSION, V1_2_2_JS_BINARY_MINOR_VERSION),
-            new VersionDetails("1.3.0", "1.2.2",    V1_3_0_JS_BINARY_MAJOR_VERSION, V1_3_0_JS_BINARY_MINOR_VERSION),
-            new VersionDetails("1.3.1", "1.2.2",    V1_3_1_JS_BINARY_MAJOR_VERSION, V1_3_1_JS_BINARY_MINOR_VERSION),
-            new VersionDetails(CEYLON_VERSION_NUMBER, "1.2.2", JS_BINARY_MAJOR_VERSION, JS_BINARY_MINOR_VERSION),
+            new VersionDetails("0.1",   M1_BINARY_MAJOR_VERSION, M1_BINARY_MINOR_VERSION),
+            new VersionDetails("0.2",   M2_BINARY_MAJOR_VERSION, M2_BINARY_MINOR_VERSION),
+            new VersionDetails("0.3",   M3_BINARY_MAJOR_VERSION, M3_BINARY_MINOR_VERSION),
+            new VersionDetails("0.3.1", M3_1_BINARY_MAJOR_VERSION, M3_1_BINARY_MINOR_VERSION),
+            new VersionDetails("0.4",   M4_BINARY_MAJOR_VERSION, M4_BINARY_MINOR_VERSION),
+            new VersionDetails("0.5",   M5_BINARY_MAJOR_VERSION, M5_BINARY_MINOR_VERSION),
+            new VersionDetails("0.6",   M6_BINARY_MAJOR_VERSION, M6_BINARY_MINOR_VERSION),
+            new VersionDetails("1.0.0", V1_0_BINARY_MAJOR_VERSION, V1_0_BINARY_MINOR_VERSION),
+            new VersionDetails("1.1.0", V1_1_BINARY_MAJOR_VERSION, V1_1_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.0", V1_2_BINARY_MAJOR_VERSION, V1_2_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.1", V1_2_1_JS_BINARY_MAJOR_VERSION, V1_2_1_JS_BINARY_MINOR_VERSION),
+            new VersionDetails("1.2.2", V1_2_2_JS_BINARY_MAJOR_VERSION, V1_2_2_JS_BINARY_MINOR_VERSION),
+            new VersionDetails("1.3.0", V1_3_0_JS_BINARY_MAJOR_VERSION, V1_3_0_JS_BINARY_MINOR_VERSION),
+            new VersionDetails("1.3.1", V1_3_1_JS_BINARY_MAJOR_VERSION, V1_3_1_JS_BINARY_MINOR_VERSION),
+            new VersionDetails(CEYLON_VERSION_NUMBER, JS_BINARY_MAJOR_VERSION, JS_BINARY_MINOR_VERSION),
     };
     
     /**
