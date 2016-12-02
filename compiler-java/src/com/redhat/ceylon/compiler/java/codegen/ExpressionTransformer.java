@@ -6104,7 +6104,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (elementOrRange instanceof Tree.Element) {
             // foo[index] -- foo could be a Correspondence, Java List or Java Map
             final AbstractIndexTransformer transformer;
-            final Type primaryType = indexedExpr.getPrimary().getTypeModel();
+            final Type primaryType = indexedExpr.getPrimary().getTypeModel().resolveAliases();
             Type leftType = primaryType.getSupertype(typeFact().getCorrespondenceDeclaration());
             if (leftType != null) {
                 Type rightType = getTypeArgument(leftType, 0);
