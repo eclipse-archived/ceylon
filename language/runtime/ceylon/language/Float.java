@@ -69,7 +69,7 @@ public final class Float
     @TypeInfo("ceylon.language::Float|Absent")
     public static <Absent> java.lang.Object min(
             @Ignore TypeDescriptor $reifiedAbsent,
-            @TypeInfo("{ceylon.language::Float*}")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Float,Absent>")
             @Name("floats")
             Iterable<? extends Float, ? extends java.lang.Object> floats) {
         double min = Double.NaN;
@@ -100,7 +100,7 @@ public final class Float
     @TypeInfo("ceylon.language::Float|Absent")
     public static <Absent> java.lang.Object max(
             @Ignore TypeDescriptor $reifiedAbsent,
-            @TypeInfo("{ceylon.language::Float*}")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Float,Absent>")
             @Name("floats")
             Iterable<? extends Float, ? extends java.lang.Object> floats) {
         double max = Double.NaN;

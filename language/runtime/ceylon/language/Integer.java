@@ -74,7 +74,7 @@ public final class Integer
     @TypeInfo("ceylon.language::Integer|Absent")
     public static <Absent> java.lang.Object min(
             @Ignore TypeDescriptor $reifiedAbsent,
-            @TypeInfo("{ceylon.language::Integer*}")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,Absent>")
             @Name("integers")
             Iterable<? extends Integer, ? extends java.lang.Object> integers) {
         long min = 0l;
@@ -103,7 +103,7 @@ public final class Integer
     @TypeInfo("ceylon.language::Integer|Absent")
     public static <Absent> java.lang.Object max(
             @Ignore TypeDescriptor $reifiedAbsent,
-            @TypeInfo("{ceylon.language::Integer*}")
+            @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,Absent>")
             @Name("integers")
             Iterable<? extends Integer, ? extends java.lang.Object> integers) {
         long max = 0l;
