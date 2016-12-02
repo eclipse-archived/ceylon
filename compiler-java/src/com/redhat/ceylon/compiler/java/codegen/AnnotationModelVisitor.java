@@ -129,6 +129,8 @@ public class AnnotationModelVisitor extends Visitor {
         if (annotationConstructor != null) {
             if (!(annotationConstructor instanceof Tree.MethodDefinition 
                         && d instanceof Tree.Return)
+                    && !(d instanceof Tree.AttributeDeclaration
+                    && ((Tree.AttributeDeclaration)d).getDeclarationModel().isParameter())
                     && !d.equals(annotationConstructor)) {
                 d.addError("compiler bug: annotation constructors may only contain a return statement", Backend.Java);
             }
