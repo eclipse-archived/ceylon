@@ -121,6 +121,36 @@ public final class Integer
             @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,Absent>")
             @Name("integers")
             Iterable<? extends Integer, ? extends java.lang.Object> integers) {
+        
+        if (integers instanceof Array) {
+            java.lang.Object array = 
+                    ((Array<?>) integers).toArray();
+            if (array instanceof int[]) {
+                int[] intArray = (int[]) array;
+                int s = intArray.length;
+                if (s==0) {
+                    return null;
+                }
+                int min = intArray[0];
+                for (int i=1; i<s; i++) {
+                    min = Math.min(min, intArray[i]);
+                }
+                return min;
+            }
+            if (array instanceof long[]) {
+                long[] longArray = (long[]) array;
+                int s = longArray.length;
+                if (s==0) {
+                    return null;
+                }
+                long min = longArray[0];
+                for (int i=1; i<s; i++) {
+                    min = Math.min(min, longArray[i]);
+                }
+                return min;
+            }
+        }
+        
         long min = 0l;
         boolean first = true;
         Iterator<? extends Integer> it = integers.iterator();
@@ -150,6 +180,36 @@ public final class Integer
             @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,Absent>")
             @Name("integers")
             Iterable<? extends Integer, ? extends java.lang.Object> integers) {
+        
+        if (integers instanceof Array) {
+            java.lang.Object array = 
+                    ((Array<?>) integers).toArray();
+            if (array instanceof int[]) {
+                int[] intArray = (int[]) array;
+                int s = intArray.length;
+                if (s==0) {
+                    return null;
+                }
+                int min = intArray[0];
+                for (int i=1; i<s; i++) {
+                    min = Math.max(min, intArray[i]);
+                }
+                return min;
+            }
+            if (array instanceof long[]) {
+                long[] longArray = (long[]) array;
+                int s = longArray.length;
+                if (s==0) {
+                    return null;
+                }
+                long min = longArray[0];
+                for (int i=1; i<s; i++) {
+                    min = Math.max(min, longArray[i]);
+                }
+                return min;
+            }
+        }
+        
         long max = 0l;
         boolean first = true;
         Iterator<? extends Integer> it = integers.iterator();
