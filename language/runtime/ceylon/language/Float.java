@@ -54,13 +54,13 @@ public final class Float
             @TypeInfo("{ceylon.language::Float*}")
             @Name("floats")
             Iterable<? extends Float, ? extends java.lang.Object> floats) {
-        double sum = 1.0d;
+        double product = 1.0d;
         Iterator<? extends Float> it = floats.iterator();
         java.lang.Object o;
         while ((o=it.next())!=finished_.get_()) {
-            sum *= ((Float) o).value;
+            product *= ((Float) o).value;
         }
-        return sum;
+        return product;
     }
     
     public static double smallest(@Name("x") double x, @Name("y") double y) {
