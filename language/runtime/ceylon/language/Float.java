@@ -116,6 +116,36 @@ public final class Float
             @TypeInfo("ceylon.language::Iterable<ceylon.language::Float,Absent>")
             @Name("floats")
             Iterable<? extends Float, ? extends java.lang.Object> floats) {
+        
+        if (floats instanceof Array) {
+            java.lang.Object array = 
+                    ((Array<?>) floats).toArray();
+            if (array instanceof float[]) {
+                float[] floatArray = (float[]) array;
+                int s = floatArray.length;
+                if (s==0) {
+                    return null;
+                }
+                float min = floatArray[0];
+                for (int i=1; i<s; i++) {
+                    min = Math.min(min, floatArray[i]);
+                }
+                return min;
+            }
+            if (array instanceof double[]) {
+                double[] doubleArray = (double[]) array;
+                int s = doubleArray.length;
+                if (s==0) {
+                    return null;
+                }
+                double min = doubleArray[0];
+                for (int i=1; i<s; i++) {
+                    min = Math.min(min, doubleArray[i]);
+                }
+                return min;
+            }
+        }
+        
         double min = Double.NaN;
         Iterator<? extends Float> it = floats.iterator();
         java.lang.Object o;
@@ -147,6 +177,36 @@ public final class Float
             @TypeInfo("ceylon.language::Iterable<ceylon.language::Float,Absent>")
             @Name("floats")
             Iterable<? extends Float, ? extends java.lang.Object> floats) {
+        
+        if (floats instanceof Array) {
+            java.lang.Object array = 
+                    ((Array<?>) floats).toArray();
+            if (array instanceof float[]) {
+                float[] floatArray = (float[]) array;
+                int s = floatArray.length;
+                if (s==0) {
+                    return null;
+                }
+                float min = floatArray[0];
+                for (int i=1; i<s; i++) {
+                    min = Math.max(min, floatArray[i]);
+                }
+                return min;
+            }
+            if (array instanceof double[]) {
+                double[] doubleArray = (double[]) array;
+                int s = doubleArray.length;
+                if (s==0) {
+                    return null;
+                }
+                double min = doubleArray[0];
+                for (int i=1; i<s; i++) {
+                    min = Math.max(min, doubleArray[i]);
+                }
+                return min;
+            }
+        }
+        
         double max = Double.NaN;
         Iterator<? extends Float> it = floats.iterator();
         java.lang.Object o;
