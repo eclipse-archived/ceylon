@@ -47,7 +47,14 @@ shared native final class Float
                   Exponentiable<Float,Float> {
     
     "The sum of all the floating point values in the given 
-     stream."
+     stream, `0.0` if the stream is empty, or an 
+     [[undefined]] value if and only if the stream contains 
+     an undefined value.
+     
+     This expression produces the mean of a list of floating
+     point values:
+     
+         Float.sum(list) / list.size"
     since("1.3.2")
     shared static Float sum({Float*} floats) {
         variable value sum = 0.0;
@@ -58,7 +65,14 @@ shared native final class Float
     }
     
     "The product of all the floating point values in the 
-     given stream."
+     given stream, `1.0` if the stream is empty, or an 
+     [[undefined]] value if and only if the stream contains 
+     an undefined value.
+     
+     This expression produces the geometric mean of a list 
+     of floating point values:
+     
+         Float.product(list) ^ (1.0/list.size)"
     since("1.3.2")
     shared static Float product({Float*} floats) {
         variable value product = 1.0;

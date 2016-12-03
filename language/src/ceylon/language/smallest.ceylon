@@ -4,10 +4,16 @@
  requirement of [[Object.equals]] such that `x!=x`, then the 
  other value is returned. In particular, if exactly one is 
  an [[undefined `Float`|Float.undefined]], it is not 
- returned."
+ returned.
+ 
+ _On the JVM platform, for arguments of type `Integer` or 
+ `Float`, prefer [[Integer.smallest]] or [[Float.smallest]]
+ in performance-sensitive code._"
 see (`interface Comparable`, 
      `function largest`, 
-     `function min`)
+     `function min`, 
+     `function Integer.smallest`,
+     `function Float.smallest`)
 tagged("Comparisons")
 shared Element smallest<Element>(Element x, Element y) 
         given Element satisfies Comparable<Element> 

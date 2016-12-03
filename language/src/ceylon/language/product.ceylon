@@ -9,8 +9,13 @@
  identity|Numeric]]).
  
      {Float*} values = ... ;
-     Float result = product { 1.0, *values };"
-see (`function sum`)
+     Float result = product { 1.0, *values };
+ 
+ For the case of a stream of `Integer`s or `Float`s, prefer 
+ [[Integer.product]] or [[Float.product]]."
+see (`function sum`, 
+     `function Integer.product`,
+     `function Float.product`)
 tagged("Streams", "Numbers")
 shared native Value product<Value>({Value+} values) 
         given Value satisfies Numeric<Value>;

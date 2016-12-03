@@ -18,7 +18,9 @@
 see (`interface Comparable`, 
      `function min`, 
      `function largest`,
-     `function Iterable.max`)
+     `function Iterable.max`, 
+     `function Integer.max`,
+     `function Float.max`)
 tagged("Comparisons", "Streams")
 shared native Absent|Value max<Value,Absent>
         (Iterable<Value,Absent> values) 

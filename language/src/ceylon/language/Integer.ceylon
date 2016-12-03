@@ -46,7 +46,8 @@ shared native final class Integer
                   Binary<Integer> & 
                   Exponentiable<Integer,Integer> {
     
-    "The sum of all the integers in the given stream."
+    "The sum of all the integers in the given stream, or
+     `0` if the stream is empty."
     since("1.3.2")
     shared static Integer sum({Integer*} integers) {
         variable value sum = 0;
@@ -56,7 +57,8 @@ shared native final class Integer
         return sum;
     }
     
-    "The product of all the integers in the given stream."
+    "The product of all the integers in the given stream, or
+     `1` if the stream is empty."
     since("1.3.2")
     shared static Integer product({Integer*} integers) {
         variable value product = 1;

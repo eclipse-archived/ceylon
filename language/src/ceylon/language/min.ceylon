@@ -14,7 +14,9 @@
  the stream is undefined."
 see (`interface Comparable`, 
      `function max`,
-     `function smallest`)
+     `function smallest`, 
+     `function Integer.min`,
+     `function Float.min`)
 tagged("Comparisons", "Streams")
 shared native Absent|Value min<Value,Absent>
         (Iterable<Value,Absent> values) 
