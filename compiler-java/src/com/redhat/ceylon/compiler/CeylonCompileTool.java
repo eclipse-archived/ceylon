@@ -888,17 +888,6 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         return result;
     }
 
-    private static com.redhat.ceylon.langtools.tools.javac.main.Option getJavacOpt(String optionName) {
-        for (com.redhat.ceylon.langtools.tools.javac.main.Option o : com.redhat.ceylon.langtools.tools.javac.main.Option.getJavaCompilerOptions()) {
-            if (optionName.equals(o.text) ||
-                    o == com.redhat.ceylon.langtools.tools.javac.main.Option.A
-                    && optionName.startsWith(o.text)) {
-                return o;
-            }
-        }
-        return null;
-    }
-
     /**
      * Run the compilation
      * @throws IOException 
@@ -939,12 +928,13 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             helper.lastError = null;
             String value = null;
             int index = argument.indexOf('=');
-            if (index != -1 && ! argument.startsWith("-A")) {
+            if (index != -1 &&
+                    !com.redhat.ceylon.langtools.tools.javac.main.Option.A.matches(argument)) {
                 value = index < argument.length() ? argument.substring(index+1) : "";
                 argument = argument.substring(0, index);
             }
             
-            com.redhat.ceylon.langtools.tools.javac.main.Option javacOpt = getJavacOpt(argument.replaceAll(":.*", ":"));
+            com.redhat.ceylon.langtools.tools.javac.main.Option javacOpt = getJavacOpt(argument);
             if (javacOpt == null) {
                 throw new IllegalArgumentException(CeylonCompileMessages.msg("option.error.javac", argument));
             }
@@ -979,5 +969,14 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                 arguments.add(value);
             }
         }
+    }
+
+    private static com.redhat.ceylon.langtools.tools.javac.main.Option getJavacOpt(String optionName) {
+        for (com.redhat.ceylon.langtools.tools.javac.main.Option o : com.redhat.ceylon.langtools.tools.javac.main.Option.getJavaCompilerOptions()) {
+            if (o.matches(optionName)) {
+                return o;
+            }
+        }
+        return null;
     }
 }
