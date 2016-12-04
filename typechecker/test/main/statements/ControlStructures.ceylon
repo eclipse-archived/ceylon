@@ -123,6 +123,22 @@ class ControlStructures() {
         @type:"String" value msg = e.message;
         @type:"Null|Throwable" value cause = e.cause;
     }
+    
+    class D<T>(T t) 
+            satisfies Destroyable {
+        shared actual void destroy(Throwable? error) {}
+    }
+        
+    try (x = D(1), y = D(x)) {
+        @type:"ControlStructures.D<Integer>" 
+        value xx = x;
+        @type:"ControlStructures.D<ControlStructures.D<Integer>>" 
+        value yy = y;
+    }
+    
+    String x1 = "";
+    try (@error x1 = D(1), y1 = D(x1)) {}
+    String y1 = "";
 
     class Exception1() extends Exception() {}
     class Exception2() extends Exception() {}

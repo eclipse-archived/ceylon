@@ -1744,6 +1744,16 @@ public abstract class DeclarationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.Resource that) {
+        ConditionScope cb = new ConditionScope();
+        cb.setId(id++);
+        that.setScope(cb);
+        visitElement(that, cb);
+        enterScope(cb);
+        super.visit(that);
+    }
+    
+    @Override
     public void visit(Tree.ExistsOrNonemptyCondition that) {
         super.visit(that);
         String op = 
@@ -1751,14 +1761,14 @@ public abstract class DeclarationVisitor extends Visitor {
                         "exists" : "nonempty";
         Tree.Expression be = that.getBrokenExpression();
         if (be!=null) {
-            be.addError("incorrect syntax: " + op + 
-                    " conditions do not apply to arbitrary expressions, try using postfix '" + 
-                    op + "' operator", 
+            be.addError("incorrect syntax: '" 
+                    + op + "' conditions do not apply to arbitrary expressions (use postfix '" 
+                    + op + "' operator or introduce a variable)", 
                     3100);
         }
         else if (that.getVariable()==null) {
-            that.addError("missing variable or immutable value reference: " + 
-                    op + " condition requires an operand");
+            that.addError("missing variable or value reference: '" 
+                    + op + "' condition requires an operand");
         }
     }
     
@@ -2658,9 +2668,9 @@ public abstract class DeclarationVisitor extends Visitor {
     public void visit(Tree.TryCatchStatement that) {
         super.visit(that);
         if (that.getTryClause().getBlock()!=null &&
-                that.getCatchClauses().isEmpty() && 
-                that.getFinallyClause()==null && 
-                that.getTryClause().getResourceList()==null) {
+            that.getCatchClauses().isEmpty() && 
+            that.getFinallyClause()==null && 
+            that.getTryClause().getResourceList()==null) {
             that.addError("try must have a catch, finally, or resource expression");
         }
     }

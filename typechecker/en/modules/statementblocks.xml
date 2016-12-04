@@ -2629,8 +2629,8 @@ while (n&lt;=max) {
                     <literal>catch</literal> clauses, and/or</para>
                 </listitem>
                 <listitem>
-                    <para>a <literal>finally</literal> clause, as 
-                    specified in <xref linkend="exceptionhandling"/>.</para>
+                    <para>a <literal>finally</literal> clause, as specified in 
+                    <xref linkend="exceptionhandling"/>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2717,13 +2717,11 @@ finally {
     assert (file.closed);
 }</programlisting>
             
-            <programlisting>try (Transaction()) {
-    try (s = Session()) {
-        return s.get(Person, id);
-    }
-    catch (NotFoundException|DeletedException e) {
-        return null;
-    }
+            <programlisting>try (Transaction(), s = Session()) {
+    return s.get(Person, id);
+}
+catch (NotFoundException|DeletedException e) {
+    return null;
 }</programlisting>
             
         </section>
