@@ -505,8 +505,8 @@ public class ExpressionTests extends CompilerTests {
     }
     
     @Test
-    public void testOprTrickyNot(){
-        compareWithJavaSource("operator/TrickyNot");
+    public void testOprBug6650(){
+        compareWithJavaSource("operator/Bug6650");
     }
     
     @Test
