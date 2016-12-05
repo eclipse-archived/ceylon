@@ -62,6 +62,7 @@ shared native final class String
                   Ranged<Integer,Character,String> {
     
     "The concatenation of the given [[strings]]."
+    see (`class StringBuilder`)
     shared static String sum({String*} strings) {
         value result = StringBuilder();
         result.appendAll(strings);
