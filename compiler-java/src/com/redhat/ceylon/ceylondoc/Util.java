@@ -382,6 +382,9 @@ public class Util {
         if (d.isShared()) {
             modifiers.append("shared ");
         }
+        if (d.isStatic()) {
+            modifiers.append("static ");
+        }
         if (d.isFormal()) {
             modifiers.append("formal ");
         } else {
@@ -404,6 +407,9 @@ public class Util {
             }
             if (c.isFinal() && !c.isAnonymous()) {
                 modifiers.append("final ");
+            }
+            if (c.isSealed()) {
+                modifiers.append("sealed ");
             }
         }
         return modifiers.toString().trim();
