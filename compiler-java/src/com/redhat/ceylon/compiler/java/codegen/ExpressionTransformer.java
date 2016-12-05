@@ -2049,7 +2049,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transform(Tree.NotOp op) {
         // No need for an erasure cast since Term must be Boolean and we never need to erase that
-        JCExpression term = transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), null);
+        JCExpression term = transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), op.getTypeModel());
         JCUnary jcu = at(op).Unary(JCTree.Tag.NOT, term);
         return jcu;
     }
