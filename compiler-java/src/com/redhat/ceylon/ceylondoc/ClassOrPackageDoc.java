@@ -520,6 +520,7 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
     }
 
     protected final void writeParameterList(Functional f, Referenceable scope) throws IOException {
+        Unit unit = scope.getUnit();
         for (ParameterList lists : f.getParameterLists()) {
             write("(");
             boolean first = true;
@@ -534,7 +535,14 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                     writeFunctionalParameter(param, scope);
                 } else {
                     if (!Decl.isDynamic(param.getModel())) {
-                        linkRenderer().to(param.getType()).useScope(scope).write();
+                        Type type = param.getType();
+                        if (param.isSequenced()) {
+                            type = unit.getSequentialElementType(type);
+                        }
+                        linkRenderer().to(type).useScope(scope).write();
+                        if (param.isSequenced()) {
+                            write(param.isAtLeastOne() ? "+" : "*");
+                        }
                     } else {
                         around("span class='dynamic'", "dynamic");
                     }
