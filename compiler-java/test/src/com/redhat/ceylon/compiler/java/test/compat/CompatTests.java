@@ -13,8 +13,14 @@ import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.tool.ToolFactory;
+import com.redhat.ceylon.common.tool.ToolLoader;
+import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.tools.TestingToolLoader;
+import com.redhat.ceylon.tools.classpath.CeylonClasspathTool;
 
 public class CompatTests extends CompilerTests {
 
@@ -277,7 +283,7 @@ public class CompatTests extends CompilerTests {
         try {
             mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
                     new ModuleSpec(null, "compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
-            assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
+            assertFileContainsLine(err, "Module com.redhat.ceylon.typechecker/1.2.99 not found in the following repositories:");
         } finally {
             err.delete();
         }
@@ -327,7 +333,7 @@ public class CompatTests extends CompilerTests {
         try {
             mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
                     new ModuleSpec(null, "compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
-            assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
+            assertFileContainsLine(err, "Module com.redhat.ceylon.typechecker/1.2.99 not found in the following repositories:");
         } finally {
             err.delete();
         }
@@ -346,7 +352,7 @@ public class CompatTests extends CompilerTests {
         try {
             mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
                     new ModuleSpec(null, "compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
-            assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
+            assertFileContainsLine(err, "Module com.redhat.ceylon.typechecker/1.2.99 not found in the following repositories:");
         } finally {
             err.delete();
         }

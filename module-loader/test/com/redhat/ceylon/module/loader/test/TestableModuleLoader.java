@@ -39,28 +39,6 @@ public class TestableModuleLoader extends BaseRuntimeModuleLoaderImpl {
             // don't do it
         }
         
-        public void fillOverrides(final Overrides overrides){
-            moduleGraph.visit(new ModuleGraph.Visitor(){
-                @Override
-                public void visit(ModuleGraph.Module module) {
-                    if(module.artifact != null){
-                        // record the version
-                        overrides.addSetArtifact(module.name, module.version);
-                        // record Maven exclusions
-                        for (ArtifactResult dep : module.artifact.dependencies()) {
-                            if(dep.getExclusions() != null){
-                                for (Exclusion exclusion : dep.getExclusions()) {
-                                    ArtifactContext artifactContext = Overrides.createMavenArtifactContext(exclusion.getGroupId(), exclusion.getArtifactId(), null, null, null);
-                                    DependencyOverride doo = new DependencyOverride(artifactContext, Type.REMOVE, false, false);
-                                    overrides.addRemovedArtifact(doo);
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
         public String getModuleVersion(String name) {
             ModuleGraph.Module module = moduleGraph.findModule(name);
             return module != null ? module.version : null;

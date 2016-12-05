@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.loader.BaseModuleLoaderImpl;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
@@ -26,10 +27,9 @@ public class ToolModuleLoader extends BaseModuleLoaderImpl {
             // don't do anything, rely on loadModule calls
         }
         
-        public void loadModule(String module, String version) throws ModuleNotFoundException{
+        public boolean loadModule(String module, String version) throws ModuleNotFoundException{
             try {
-                loadModule(ModuleUtil.getNamespaceFromUri(module), 
-                        
+                return loadModule(ModuleUtil.getNamespaceFromUri(module), 
                         ModuleUtil.getModuleNameFromUri(module), 
                         version, false, false, null);
             } catch (IOException e) {
@@ -37,6 +37,12 @@ public class ToolModuleLoader extends BaseModuleLoaderImpl {
             }
         }
 
+        @Override
+        protected void handleMissingModuleError(String name, String version) throws ModuleNotFoundException {
+            // we don't throw, but collect errors
+            tool.handleMissingModuleError(name, version);
+        }
+        
         public ArtifactResult getModuleArtifact(String name) {
             ModuleGraph.Module module = moduleGraph.findModule(name);
             return module != null ? module.artifact : null;
@@ -72,6 +78,13 @@ public class ToolModuleLoader extends BaseModuleLoaderImpl {
         public void resolve() throws ModuleNotFoundException {
             try {
                 finishLoadingModules();
+                Overrides overrides = repositoryManager.getOverrides();
+                if(overrides == null){
+                    overrides = Overrides.create();
+                    repositoryManager.setOverrides(overrides);
+                }
+                fillOverrides(overrides);
+                reloadArtifactResults();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -94,10 +107,14 @@ public class ToolModuleLoader extends BaseModuleLoaderImpl {
 
     @Override
     public ClassLoader loadModule(String name, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
-        context.loadModule(name, version);
+        loadModuleForTool(name, version, lookupScope);
         return null;
     }
-    
+
+    public boolean loadModuleForTool(String name, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
+        return context.loadModule(name, version);
+    }
+
     @Override
     protected ModuleLoaderContext createModuleLoaderContext(String name, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
         // never called

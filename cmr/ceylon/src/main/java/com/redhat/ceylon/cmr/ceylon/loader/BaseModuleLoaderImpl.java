@@ -13,8 +13,10 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.DependencyOverride;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.DependencySelector;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
@@ -23,6 +25,7 @@ import com.redhat.ceylon.common.CeylonVersionComparator;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.JdkProvider;
 
@@ -87,19 +90,66 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             }
         }
 
+        /**
+         * This is useful if you collected version overrides and plan to re-use the
+         * ArtifactResult for their dependencies, which may be affected by the overrides.
+         */
+        protected void reloadArtifactResults(){
+            moduleGraph.visit(new ModuleGraph.Visitor(){
+                @Override
+                public void visit(ModuleGraph.Module module) {
+                    if(module.artifact != null){
+                        ArtifactContext artifactContext = new ArtifactContext(module.artifact.namespace(), 
+                                module.name, module.version, 
+                                ArtifactContext.CAR, ArtifactContext.JAR);
+                        ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
+                        module.artifact = result;
+                    }
+                }
+            });
+        }
+        
+        public void fillOverrides(final Overrides overrides){
+            moduleGraph.visit(new ModuleGraph.Visitor(){
+                @Override
+                public void visit(ModuleGraph.Module module) {
+                    if(module.artifact != null){
+                        // record the version
+                        overrides.addSetArtifact(module.name, module.version);
+                        if(verbose)
+                            log("Fixing version of module "+module.name+" to "+module.version);
+                        // record Maven exclusions
+                        for (ArtifactResult dep : module.artifact.dependencies()) {
+                            if(!selectDependency(dep))
+                                continue;
+                            if(dep.getExclusions() != null){
+                                for (Exclusion exclusion : dep.getExclusions()) {
+                                    ArtifactContext artifactContext = Overrides.createMavenArtifactContext(exclusion.getGroupId(), exclusion.getArtifactId(), null, null, null);
+                                    DependencyOverride doo = new DependencyOverride(artifactContext, Type.REMOVE, false, false);
+                                    overrides.addRemovedArtifact(doo);
+                                    if(verbose)
+                                        log("Removing module "+exclusion.getGroupId()+":"+exclusion.getArtifactId());
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         public int getModuleCount() {
             return moduleGraph.getCount();
         }
 
-        protected void loadModule(String namespace, String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) 
+        protected boolean loadModule(String namespace, String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) 
         		throws IOException, ModuleNotFoundException  {
         	if(isExcluded(name, version))
-        	    return;
+        	    return false;
             ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
             Overrides overrides = repositoryManager.getOverrides();
             if(overrides != null){
                 if(overrides.isRemoved(artifactContext))
-                    return;
+                    return false;
                 ArtifactContext replacement = overrides.replace(artifactContext);
                 if(replacement != null){
                     artifactContext = replacement;
@@ -114,7 +164,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             }
             // skip JDK modules
             if(jdkProvider.isJDKModule(name))
-                return;
+                return true; // consider them loaded
             ModuleGraph.Module loadedModule = moduleGraph.findModule(name);
             if(loadedModule != null){
                 String loadedVersion = loadedModule.version;
@@ -138,7 +188,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                         // we want an older version, just keep the one we have and ignore that
                         addDependency(dependent, loadedModule);
                         // already resolved and same version, we're good
-                        return;
+                        return true;
                     }
                 }else if(loadedModule.artifact == null){
                     // now we're sure the version was the same
@@ -148,11 +198,11 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                     }
                     addDependency(dependent, loadedModule);
                     // already resolved and same version, we're good
-                    return;
+                    return true;
                 }else{
                     addDependency(dependent, loadedModule);
                     // already resolved and same version, we're good
-                    return;
+                    return true;
                 }
             }
             if(verbose)
@@ -162,9 +212,12 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             if(!optional
                     && (result == null || result.artifact() == null || !result.artifact().exists())){
                 resolvingFailed(artifactContext);
-                throw new ModuleNotFoundException("Could not find module: "+ModuleUtil.makeModuleName(name, version));
+                // some tools want to throw, others to collect as many errors as possible
+                handleMissingModuleError(name, version);
+                // if it doesn't throw, treat it as a missing dependency like we do for optionals
+            }else{
+                resolvingSuccess(result);
             }
-            resolvingSuccess(result);
             // save even missing optional modules as nulls to not re-resolve them
             ModuleGraph.Module mod;
             if(dependent == null)
@@ -194,6 +247,11 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                             Versions.CEYLON_VERSION_NUMBER, false, inCurrentClassLoader, mod);
                 }
             }
+            return result != null;
+        }
+
+        protected void handleMissingModuleError(String name, String version) throws ModuleNotFoundException {
+            throw new ModuleNotFoundException("Could not find module: "+ModuleUtil.makeModuleName(name, version));
         }
 
         protected boolean selectDependencies(String name, String version) {

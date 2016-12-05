@@ -95,8 +95,9 @@ public class WarToolTests extends AbstractToolTests {
                         "--rep", getOutPath(),
                         "--out", getOutPath(),
                         "--static-metamodel",
-                        "ceylon.collection/1.2.0",
-                        "ceylon.buffer/1.3.1"));
+                        "ceylon.collection/1.2.0", // gets auto-upgraded to 1.3.1
+                        "ceylon.html/1.2.2", // stays but depends on collection/1.3.1
+                        "ceylon.buffer/1.3.1")); // stays
         tool.run();
         
         File out = tool.getJarFile();
@@ -106,6 +107,12 @@ public class WarToolTests extends AbstractToolTests {
             // single version
             Assert.assertNotNull(zf.getEntry("WEB-INF/lib/ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
             Assert.assertNotNull(zf.getEntry("WEB-INF/lib/ceylon.collection-1.3.1.jar"));
+            Assert.assertNotNull(zf.getEntry("WEB-INF/lib/ceylon.buffer-1.3.1.jar"));
+            Assert.assertNotNull(zf.getEntry("WEB-INF/lib/ceylon.html-1.2.2.jar"));
+            Assert.assertNull(zf.getEntry("WEB-INF/lib/ceylon.language-1.2.0.jar"));
+            Assert.assertNull(zf.getEntry("WEB-INF/lib/ceylon.language-1.2.2.jar"));
+            Assert.assertNull(zf.getEntry("WEB-INF/lib/ceylon.collection-1.2.0.jar"));
+            Assert.assertNull(zf.getEntry("WEB-INF/lib/ceylon.collection-1.2.2.jar"));
             // dependency
             Assert.assertNotNull(zf.getEntry("WEB-INF/lib/com.redhat.ceylon.model-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
             // no extra jar
@@ -119,6 +126,8 @@ public class WarToolTests extends AbstractToolTests {
             
             String metamodel = read(zf, zf.getEntry("META-INF/ceylon/metamodel"));
             Assert.assertFalse(metamodel.contains("ceylon.language/1.3.1"));
+            Assert.assertFalse(metamodel.contains("ceylon.collection/1.2.0"));
+            Assert.assertFalse(metamodel.contains("ceylon.collection/1.2.2"));
         }
     }
 }

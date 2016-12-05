@@ -91,34 +91,6 @@ public class CompilerModuleLoader extends BaseModuleLoaderImpl {
             return new ModuleSpec(artifactContext.getNamespace(), artifactContext.getName(), artifactContext.getVersion());
         }
 
-        public void fillOverrides(final Overrides overrides){
-            moduleGraph.visit(new ModuleGraph.Visitor(){
-                @Override
-                public void visit(ModuleGraph.Module module) {
-                    if(module.artifact != null){
-                        // record the version
-                        overrides.addSetArtifact(module.name, module.version);
-                        if(verbose)
-                            log("Fixing version of module "+module.name+" to "+module.version);
-                        // record Maven exclusions
-                        for (ArtifactResult dep : module.artifact.dependencies()) {
-                            if(!selectDependency(dep))
-                                continue;
-                            if(dep.getExclusions() != null){
-                                for (Exclusion exclusion : dep.getExclusions()) {
-                                    ArtifactContext artifactContext = Overrides.createMavenArtifactContext(exclusion.getGroupId(), exclusion.getArtifactId(), null, null, null);
-                                    DependencyOverride doo = new DependencyOverride(artifactContext, Type.REMOVE, false, false);
-                                    overrides.addRemovedArtifact(doo);
-                                    if(verbose)
-                                        log("Removing module "+exclusion.getGroupId()+":"+exclusion.getArtifactId());
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
         public String getModuleVersion(String name) {
             ModuleGraph.Module module = moduleGraph.findModule(name);
             return module != null ? module.version : null;

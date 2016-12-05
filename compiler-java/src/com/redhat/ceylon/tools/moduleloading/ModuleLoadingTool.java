@@ -19,6 +19,7 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.RepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.JdkProvider;
 
@@ -90,9 +91,9 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 
 	private boolean internalLoadModule(String namespace, String name, String version) throws IOException {
 	    try {
-            loader.loadModule(name, version);
-            return true;
+            return loader.loadModuleForTool(name, version, ModuleScope.RUNTIME);
         } catch (ModuleNotFoundException e) {
+            // this should not happen, since we collect errors, but just in case…
             String err = getModuleNotFoundErrorMessage(getRepositoryManager(), name, version);
             errorAppend(err);
             errorNewline();
@@ -143,5 +144,15 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 			jdkProvider = new JdkProvider(moduleSpec.getName(), moduleSpec.getVersion(), null, result.artifact());
     	}
     	// else keep the JDK one
+    }
+
+    public void handleMissingModuleError(String name, String version) {
+        try{
+            String err = getModuleNotFoundErrorMessage(getRepositoryManager(), name, version);
+            errorAppend(err);
+            errorNewline();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
