@@ -67,7 +67,7 @@
    - <code>\`function type\`</code> returns the [[FunctionDeclaration|ceylon.language.meta.declaration::FunctionDeclaration]] 
      for the [[type]] function. Similarly <code>\`function List.shorterThan\`</code> for methods.
    - <code>\`value modules\`</code> returns the [[ValueDeclaration|ceylon.language.meta.declaration::ValueDeclaration]] 
-     for the [[modules]] value. Similarly <code>\`function List.size\`</code> for attributes.
+     for the [[modules]] value. Similarly <code>\`value List.size\`</code> for attributes.
    - <code>\`alias AliasName\`</code> returns the [[AliasDeclaration|ceylon.language.meta.declaration::AliasDeclaration]]
      for the `AliasName` type alias. 
    - <code>\`given T\`</code> returns the [[TypeParameter|ceylon.language.meta.declaration::TypeParameter]] 
