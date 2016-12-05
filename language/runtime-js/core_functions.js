@@ -253,12 +253,15 @@ function set_type_args(obj,targs,t) {
   if (obj.$$targs$$ === undefined) {
     obj.$$targs$$={};
   }
+  var mm=getrtmm$$(t);
   for (x in targs) {
     var n=targs[x];
-    if (!n)continue;
+    if (!n) {
+      if (mm && mm.tp[x] && mm.tp[x].def)n=mm.tp[x].def;
+      else continue;
+    }
     var e=obj.$$targs$$[x];
     if (e) {
-      var mm=getrtmm$$(t);
       var iance=mm && mm.tp && mm.tp[x] && mm.tp[x].dv;
       if (iance === 'out') {
         //Intersection
