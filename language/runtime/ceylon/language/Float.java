@@ -23,6 +23,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 })
 @ValueType
 @SharedAnnotation$annotation$
+@SealedAnnotation$annotation$
 @FinalAnnotation$annotation$
 @NativeAnnotation$annotation$(backends={})
 public final class Float
@@ -288,8 +289,7 @@ public final class Float
     @Ignore
     final double value;
     
-    @SharedAnnotation$annotation$
-    public Float(@Name("float") double f) {
+    Float(@Name("float") double f) {
         value = f;
     }
     

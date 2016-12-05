@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @SatisfiedTypes({})
 @ValueType
 @SharedAnnotation$annotation$
+@SealedAnnotation$annotation$
 @AbstractAnnotation$annotation$
 @NativeAnnotation$annotation$(backends={})
 public abstract class Boolean 
@@ -45,8 +46,7 @@ public abstract class Boolean
                 new ParseException("illegal format for Boolean");
     }
 
-    @SharedAnnotation$annotation$
-    public Boolean(){}
+    Boolean() {}
 
     @Ignore
     public static java.lang.String toString(boolean value) {

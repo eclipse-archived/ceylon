@@ -2,7 +2,7 @@
  [[false]] of Boolean logic."
 by ("Gavin")
 tagged("Basic types")
-shared native abstract class Boolean
+shared native abstract sealed class Boolean
         of true | false {
     
     "The `Boolean` value of the given string representation 
@@ -17,7 +17,7 @@ shared native abstract class Boolean
             => package.parseBoolean(string) 
             else ParseException("illegal format for Boolean");
     
-    shared new () {}
+    new () {}
 }
 
 "A value representing truth in Boolean logic."

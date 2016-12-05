@@ -26,6 +26,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Class(extendsType="ceylon.language::Object", basic = false, identifiable = false, constructors = true)
 @ValueType
 @SharedAnnotation$annotation$
+@SealedAnnotation$annotation$
 @FinalAnnotation$annotation$
 @NativeAnnotation$annotation$(backends={})
 public final class Integer
@@ -293,8 +294,7 @@ public final class Integer
     @Ignore
     final long value;
 
-    @SharedAnnotation$annotation$
-    public Integer(@Name("integer") long integer) {
+    Integer(@Name("integer") long integer) {
         value = integer;
     }
 

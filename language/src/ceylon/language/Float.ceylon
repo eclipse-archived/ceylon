@@ -41,7 +41,7 @@
  [floating point number]: http://www.validlab.com/goldberg/paper.pdf
  [NaN]: http://en.wikipedia.org/wiki/NaN"
 tagged("Basic types", "Numbers")
-shared native final class Float
+shared native final sealed class Float
         extends Object
         satisfies Number<Float> & 
                   Exponentiable<Float,Float> {
@@ -276,7 +276,7 @@ shared native final class Float
                 minDecimalPlaces, maxDecimalPlaces, 
                 decimalSeparator, thousandsSeparator);
     
-    shared new(Float float) extends Object() {}
+    new(Float float) extends Object() {}
     
     "Determines whether this value is undefined. The IEEE
      standard denotes undefined values [NaN][] (an 

@@ -40,7 +40,7 @@
      $10_0001_1101_0100"
 see (`value runtime.integerSize`)
 tagged("Basic types", "Numbers")
-shared native final class Integer
+shared native final sealed class Integer
         extends Object
         satisfies Integral<Integer> &
                   Binary<Integer> & 
@@ -222,7 +222,7 @@ shared native final class Integer
             => package.formatInteger(integer, radix, 
                     groupingSeparator);
     
-    shared new (Integer integer) extends Object() {}
+    new (Integer integer) extends Object() {}
     
     "The UTF-32 character with this UCS code point."
     throws (`class OverflowException`,
