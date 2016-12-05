@@ -893,6 +893,8 @@ public abstract class DeclarationVisitor extends Visitor {
                      c.isActual())) {
                 that.addError("member class declared 'formal', 'default', or 'actual' must have a parameter list");
             }
+        }
+        if (c.getParameterList()==null) {   
             Tree.AnnotationList al = 
                     that.getAnnotationList();
             if (hasAnnotation(al, "sealed", unit)) {
@@ -1018,7 +1020,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (that.getIdentifier()==null) {
             //default constructor
-            if (!c.isShared()) {
+            if (!c.isShared() && !c.isSealed()) {
                 that.addError("default constructor must be annotated 'shared'", 
                         705);
             }
