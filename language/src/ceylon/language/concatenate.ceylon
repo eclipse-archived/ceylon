@@ -11,10 +11,14 @@
      concatenate(1..3, [0.0], {\"hello\", \"world\"})
  
  results in the sequence `[1, 2, 3, 0.0, \"hello\", \"world\"]`
- which has the type `[Integer|Float|String*]`."
+ which has the type `[Integer|Float|String*]`.
+ 
+ To concatentate `String`s, use [[String.sum]]. When a lazy
+ stream is desired, use [[expand]]."
 see (`function expand`, 
      `function Iterable.chain`,
-     `function Sequential.append`)
+     `function Sequential.append`,
+     `function String.sum`)
 tagged("Streams")
 shared Element[] concatenate<Element>(
         "The streams to concatenate."
