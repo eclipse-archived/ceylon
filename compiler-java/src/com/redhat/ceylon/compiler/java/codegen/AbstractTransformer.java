@@ -4314,27 +4314,9 @@ public abstract class AbstractTransformer implements Transformation {
                                         make().AnonymousClassDef(make().Modifiers(FINAL), 
                                                 List.<JCTree>of(mdb.build())));
             } else {
-                // use a LazyInvokingIterable
                 ListBuffer<JCTree> methods = new ListBuffer<JCTree>();
-                MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$lookup$.toString());
-                mdb.isOverride(true);
-                mdb.modifiers(PROTECTED | FINAL);
-                mdb.resultType(new TransformedType(naming.makeQualIdent(make().Type(syms().methodHandlesType), "Lookup"), null, makeAtNonNull()));
-                mdb.body(make().Return(make().Apply(List.<JCExpression>nil(), 
-                        naming.makeQualIdent(make().Type(syms().methodHandlesType), "lookup"), 
-                        List.<JCExpression>nil())));
-                methods.add(mdb.build());
-
-                mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$invoke$.toString());
-                mdb.isOverride(true);
-                mdb.modifiers(PROTECTED | FINAL);
-                mdb.resultType(new TransformedType(make().Type(syms().objectType)));
-                mdb.parameter(ParameterDefinitionBuilder.systemParameter(this, "handle")
-                        .type(new TransformedType(make().Type(syms().methodHandleType))));
-                mdb.body(make().Return(make().Apply(List.<JCExpression>nil(), 
-                        naming.makeQualIdent(naming.makeUnquotedIdent("handle"), "invokeExact"), 
-                        List.<JCExpression>of(naming.makeThis()))));
-                methods.add(mdb.build());
+                // generate a method for each expression in the iterable
+                MethodDefinitionBuilder mdb;
                 i = 0;
                 for (JCStatement expr : returns) {
                     mdb = MethodDefinitionBuilder.systemMethod(this, "$"+i);
@@ -4344,16 +4326,33 @@ public abstract class AbstractTransformer implements Transformation {
                     mdb.body(expr);
                     methods.add(mdb.build());
                 }
+                // the $evaluate method switches between them
+                mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$evaluate$.toString());
+                mdb.isOverride(true);
+                mdb.modifiers(PROTECTED | FINAL);
+                mdb.resultType(new TransformedType(make().Type(syms().objectType)));
+                mdb.parameter(ParameterDefinitionBuilder.systemParameter(this, Unfix.$index$.toString())
+                        .type(new TransformedType(make().Type(syms().intType))));
+                JCSwitch swtch;
+                try (SavedPosition sp = noPosition()) {
+                    ListBuffer<JCCase> cases = new ListBuffer<JCCase>();
+                    for (i = 0; i < returns.size(); i++) {
+                        cases.add(make().Case(make().Literal(i), List.<JCStatement>of(make().Return(make().Apply(null, naming.makeUnquotedIdent("$"+i), List.<JCExpression>nil())))));
+                    }
+                    cases.add(make().Case(null, List.<JCStatement>of(make().Return(makeNull()))));
+                    swtch = make().Switch(naming.makeUnquotedIdent(Unfix.$index$), cases.toList());
+                }
+                mdb.body(swtch);
                 return at(sequencedArgument).NewClass(null, 
                         List.<JCExpression>nil(),//of(makeJavaType(seqElemType), makeJavaType(absentType)),
-                        make().TypeApply(make().QualIdent(syms.ceylonLazyInvokingIterableType.tsym),
+                        make().TypeApply(make().QualIdent(syms.ceylonLazyIterableType.tsym),
                                 List.<JCExpression>of(makeJavaType(seqElemType, JT_TYPE_ARGUMENT), makeJavaType(absentType, JT_TYPE_ARGUMENT))), 
                                 List.of(makeReifiedTypeArgument(seqElemType),// td, 
                                         makeReifiedTypeArgument(absentType),//td
                                         make().Literal(list.size()),// numMethods
                                         make().Literal(spread)),// spread), 
                                         make().AnonymousClassDef(make().Modifiers(FINAL), 
-                                                methods.toList()));
+                                                methods.toList().prepend(mdb.build())));
             }
         } finally {
             expressionGen().withinSyntheticClassBody(old);
