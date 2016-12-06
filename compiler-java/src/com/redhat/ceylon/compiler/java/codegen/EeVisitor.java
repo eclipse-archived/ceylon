@@ -56,6 +56,7 @@ public class EeVisitor extends Visitor {
             annotations = new HashSet<String>();
             annotations.add("javax.xml.bind.annotation.XmlAccessorType");
             annotations.add("javax.persistence.Entity");
+            annotations.add("javax.persistence.Embeddable");
             annotations.add("javax.inject.Inject");
             annotations.add("javax.ejb.Stateless");
             annotations.add("javax.ejb.Stateful");
