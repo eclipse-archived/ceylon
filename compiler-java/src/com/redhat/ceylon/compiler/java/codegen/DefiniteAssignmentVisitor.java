@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -24,10 +26,38 @@ public class DefiniteAssignmentVisitor extends Visitor {
     
     private HashMap<Value, ControlBlock> tracked = new HashMap<Value, ControlBlock>();
     
+    private void checkForCycle(Node node, final Declaration decl, final AnnotationInvocation invocation, Set<Declaration> s) {
+        if (!node.getErrors().isEmpty()) {
+            return;
+        }
+        if (!AnnotationModelVisitor.isAnnotationConstructor(decl)) {
+            return;
+        }
+        Declaration d = decl;
+        while (d instanceof Function) {
+            if (!s.add(d)) {
+                node.addError("recursive annotation constructor: '"+decl.getName()+"' invokes itself");
+                break;
+            }
+            AnnotationInvocation annotationConstructor = (AnnotationInvocation)((Function)d).getAnnotationConstructor();
+            if (annotationConstructor == null) {
+                return;
+            }
+            d = annotationConstructor.getPrimary();
+        }
+        for (AnnotationConstructorParameter param : invocation.getConstructorParameters()) {
+            if (param.getDefaultArgument() instanceof InvocationAnnotationTerm) {
+                InvocationAnnotationTerm t = (InvocationAnnotationTerm)param.getDefaultArgument();
+                checkForCycle(node, t.getInstantiation().getPrimary(), t.getInstantiation(), s);
+            }
+        }
+    }
+    
     public void visit(Tree.AnyMethod that) {
         ControlBlock prevControlBlock = forBlock;
         forBlock = null;
         super.visit(that);
+        checkForCycle(that, that.getDeclarationModel(), (AnnotationInvocation)that.getDeclarationModel().getAnnotationConstructor(), new HashSet<Declaration>());
         forBlock = prevControlBlock;
     }
     

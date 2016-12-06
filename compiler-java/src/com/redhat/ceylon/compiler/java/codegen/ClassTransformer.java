@@ -5521,11 +5521,9 @@ public class ClassTransformer extends AbstractTransformer {
         methodBuilder.ignoreModelAnnotations();
         if (container != null && Decl.isAnnotationConstructor(container)) {
             AnnotationInvocation ac = (AnnotationInvocation)((Function)container).getAnnotationConstructor();
-            for (AnnotationConstructorParameter acp : ac.getConstructorParameters()) {
-                if (acp.getParameter().equals(parameter)
-                        && acp.getDefaultArgument() != null) {
-                    methodBuilder.userAnnotations(acp.getDefaultArgument().makeDpmAnnotations(expressionGen()));
-                }
+            AnnotationConstructorParameter acp = ac.findConstructorParameter(parameter);
+            if (acp != null && acp.getDefaultArgument() != null) {
+                methodBuilder.userAnnotations(acp.getDefaultArgument().makeDpmAnnotations(expressionGen()));
             }
         }
         

@@ -6,26 +6,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.NonNull;
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 
 /**
- * The invocation of an annotation constructor or annocation class
+ * The invocation of an annotation constructor or annotation class
  */
 public class AnnotationInvocation {
     
     private Function constructorDeclaration;
     
-    private List<AnnotationConstructorParameter> constructorParameters = new ArrayList<AnnotationConstructorParameter>();
+    private final List<AnnotationConstructorParameter> constructorParameters = new ArrayList<AnnotationConstructorParameter>();
     
     private Declaration primary;
     
@@ -50,8 +51,17 @@ public class AnnotationInvocation {
     /**
      * The parameters of the annotation constructor
      */
+    @NonNull
     public List<AnnotationConstructorParameter> getConstructorParameters() {
         return constructorParameters;
+    }
+    
+    public void addConstructorParameter(AnnotationConstructorParameter p) {
+        constructorParameters.add(p);
+    }
+    
+    public void addConstructorParameter(int index, AnnotationConstructorParameter p) {
+        constructorParameters.add(index, p);
     }
     
     public int indexOfConstructorParameter(Parameter parameter) {
@@ -63,6 +73,16 @@ public class AnnotationInvocation {
             index++;
         }
         return -1;
+    }
+    
+    @Nullable
+    public AnnotationConstructorParameter findConstructorParameter(Parameter parameter) {
+        for (AnnotationConstructorParameter p : constructorParameters) {
+            if (p.getParameter().equals(parameter)) {
+                return p;
+            }
+        }
+        return null;
     }
 
     /** 
@@ -83,7 +103,7 @@ public class AnnotationInvocation {
     }
     
     /**
-     * Is this an annotation class instantiation (i.e. is the primay a Class)?
+     * Is this an annotation class instantiation (i.e. is the primary a Class)?
      */
     public boolean isInstantiation() {
         return getPrimary() instanceof Class;
@@ -135,13 +155,14 @@ public class AnnotationInvocation {
         this.interop = interop;
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         if (getConstructorDeclaration() != null) {
             sb.append(getConstructorDeclaration().getName()).append("(");
             List<AnnotationConstructorParameter> ctorParams = getConstructorParameters();
             for (AnnotationConstructorParameter param : ctorParams) {
-                sb.append(param).append(", ");
+                sb.append(param.getFieldName()).append(", ");
             }
             if (!ctorParams.isEmpty()) {
                 sb.setLength(sb.length()-2);
@@ -150,9 +171,9 @@ public class AnnotationInvocation {
         }
         sb.append(primary != null ? primary.getName() : "NULL").append("{");
         for (AnnotationArgument argument : annotationArguments) {
-            sb.append(argument).append(";\n");
+            sb.append("\n\t\t").append(argument).append(";");
         }
-        return sb.append("}").toString();
+        return sb.append("\n\t};").toString();
     }
     
     /**

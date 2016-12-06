@@ -395,13 +395,7 @@ class AnnotationInvocationVisitor extends Visitor {
     
     private void makeDefaultExpr(Tree.InvocationExpression invocation,
             ParameterAnnotationTerm parameterArgument, Parameter sp) {
-        AnnotationConstructorParameter defaultedCtorParam = null;
-        for (AnnotationConstructorParameter ctorParam : anno.getConstructorParameters()) {
-            if (ctorParam.getParameter().equals(parameterArgument.getSourceParameter())) {
-                defaultedCtorParam = ctorParam;
-                break;
-            }
-        }
+        AnnotationConstructorParameter defaultedCtorParam = anno.findConstructorParameter(parameterArgument.getSourceParameter());
         if (defaultedCtorParam == null) {
             append(exprGen.makeErroneous(invocation, "compiler bug: defaulted parameter " + anno.getConstructorDeclaration().getName() + " could not be found"));
             return;
