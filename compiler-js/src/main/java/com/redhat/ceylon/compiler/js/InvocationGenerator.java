@@ -285,7 +285,7 @@ public class InvocationGenerator {
     /** Generates the code to evaluate the expressions in the named argument list and assign them
      * to variables, then returns a map with the parameter names and the corresponding variable names. */
     Map<String, String> defineNamedArguments(Tree.Primary primary, Tree.NamedArgumentList argList) {
-        Map<String, String> argVarNames = new HashMap<String, String>();
+        Map<String, String> argVarNames = new HashMap<>();
         for (Tree.NamedArgument arg: argList.getNamedArguments()) {
             Parameter p = arg.getParameter();
             final String paramName;
@@ -408,7 +408,20 @@ public class InvocationGenerator {
                             argvars.add(argvar);
                             gen.out(argvar, "=");
                         }
-                        gen.out(gen.getClAlias(), "$arr$sa$([");
+                        if (exprType.isSequential() || (pd != null && pd.isSequenced())) {
+                            gen.out(gen.getClAlias(), "$arr$sa$([");
+                        } else {
+                            int argpos = args.indexOf(arg);
+                            ArrayList<Tree.PositionalArgument> seqargs = new ArrayList<>(args.size()-argpos+1);
+                            for (;argpos<args.size();argpos++) {
+                                seqargs.add(args.get(argpos));
+                            }
+                            final Tree.PositionalArgument lastArg = seqargs.get(seqargs.size()-1);
+                            SequenceGenerator.lazyEnumeration(seqargs, that, sequencedType,
+                                    lastArg instanceof Tree.SpreadArgument ||
+                                            lastArg instanceof Tree.Comprehension, gen);
+                            return argvars;
+                        }
                     }
                     opened=true;
                 } else if (generateVars) {
@@ -462,7 +475,7 @@ public class InvocationGenerator {
                 if (isSpreadArg) {
                     generateSpreadArgument(primary, that, args, (Tree.SpreadArgument)arg, expr, pd);
                 } else {
-                    ((Tree.Comprehension)arg).visit(gen);
+                    arg.visit(gen);
                     if (!arg.getTypeModel().isSequential()) {
                         gen.out(".sequence()");
                     }
