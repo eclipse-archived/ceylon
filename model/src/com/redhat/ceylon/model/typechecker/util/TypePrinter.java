@@ -150,12 +150,14 @@ public class TypePrinter {
                 Unit u = pt.getDeclaration().getUnit();
                 if (abbreviateOptional(pt)) {
                     Type dt = pt.eliminateNull();
-                    String dtn = print(dt, unit);
-                    if (isPrimitiveAbbreviatedType(dt)) {
-                        return dtn + "?";
-                    }
-                    else {
-                        return lt() + dtn + gt() + "?";
+                    if (!dt.isNothing()) {
+                        String dtn = print(dt, unit);
+                        if (isPrimitiveAbbreviatedType(dt)) {
+                            return dtn + "?";
+                        }
+                        else {
+                            return lt() + dtn + gt() + "?";
+                        }
                     }
                 }
                 if (abbreviateEmpty(pt)) {
