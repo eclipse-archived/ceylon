@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.language;
 
 import ceylon.language.Array;
 import ceylon.language.AssertionError;
+import ceylon.language.Iterable;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -85,7 +86,28 @@ public final class ObjectArray<T> implements ReifiedType {
             @Name("size") int size){
         throw Util.makeJavaArrayWrapperException();
     }
-
+    
+    @Ignore
+    public final static with_ with_ = null;
+    
+    @Ignore
+    @com.redhat.ceylon.compiler.java.metadata.ConstructorName("with")
+    public static final class with_ {
+        private with_() {}
+    };
+    
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.compiler.java.metadata.Name("with")
+    public ObjectArray(
+            @Ignore
+            with_ $name$,
+            @com.redhat.ceylon.common.NonNull
+            @Name("elements")
+            @TypeInfo("{T*}")
+    final Iterable<? extends T, ? extends java.lang.Object> elements$param$) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+    
     @Ignore
     // For consistency with the rules for ValueTypes
     public static <T> ObjectArray<T> instance(T[] value){

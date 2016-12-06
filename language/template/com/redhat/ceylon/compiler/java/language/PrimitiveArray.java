@@ -54,7 +54,7 @@ import ceylon.language.impl.BaseIterable;
 //
 //Only the value type static methods are really invoked.
 @Ceylon(major = 8)
-@Class
+@Class(constructors=true)
 @ValueType
 @Generated(value="ant")
 public final class @Classname@ implements ReifiedType {
@@ -106,6 +106,27 @@ public final class @Classname@ implements ReifiedType {
     @Ignore
     // For consistency with the rules for ValueTypes
     public static @Classname@ instance(@PrimitiveType@[] value){
+        throw Util.makeJavaArrayWrapperException();
+    }
+    
+    @Ignore
+    public final static with_ with_ = null;
+    
+    @Ignore
+    @com.redhat.ceylon.compiler.java.metadata.ConstructorName("with")
+    public static final class with_ {
+        private with_() {}
+    };
+    
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.compiler.java.metadata.Name("with")
+    public @Classname@(
+            @Ignore
+            with_ $name$,
+            @com.redhat.ceylon.common.NonNull
+            @Name("elements")
+            @TypeInfo("{@BoxedTypeName@*}")
+            final Iterable<? extends @BoxedType@, ? extends java.lang.Object> elements$param$) {
         throw Util.makeJavaArrayWrapperException();
     }
 
