@@ -38,6 +38,7 @@ public class JsIdentifierNames {
         return uniqueID;
     }
 
+    private static Set<String> trueReservedWords = new HashSet<String>();
     private static Set<String> reservedWords = new HashSet<String>();
     private static Set<String> globals = new HashSet<String>();
 
@@ -47,7 +48,7 @@ public class JsIdentifierNames {
         // keywords in Ceylon because no such identifiers can occur in Ceylon
         // source code anyway.
         //Language
-        reservedWords.addAll(Arrays.asList("undefined", "boolean", "byte", "char", "const",
+        trueReservedWords.addAll(Arrays.asList("undefined", "boolean", "byte", "char", "const",
                 "debugger", "default", "delete", "do", "double", "enum", "export", "false",
                 "final", "float", "goto", "implements", "instanceof", "int", "long",
                 "native", "new", "null", "private", "protected", "public", "short", "static",
@@ -58,6 +59,7 @@ public class JsIdentifierNames {
                 "await", "break", "case", "catch", "continue", "else", "finally", "for",
                 "function", "if", "in", "return", "switch", "this", "throw", "try", "while", "with",
                 "super"));
+        reservedWords.addAll(trueReservedWords);
         //Types
         reservedWords.addAll(Arrays.asList("Date", "Object", "Boolean", "Error", "Number", "RegExp"));
         //JS Object
@@ -89,6 +91,10 @@ public class JsIdentifierNames {
                 "escape", "unescape", "Symbol", "EvalError", "InternalError", "RangeError",
                 "ReferenceError", "SyntaxError", "TypeError", "URIError", "Math", "DataView",
                 "JSON", "ArrayBuffer"));
+    }
+
+    public static boolean isTrueReservedWord(String token) {
+        return trueReservedWords.contains(token);
     }
 
     public static boolean isReservedWord(String token) {

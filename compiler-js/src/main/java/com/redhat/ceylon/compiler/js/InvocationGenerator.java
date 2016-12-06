@@ -647,7 +647,7 @@ public class InvocationGenerator {
                 if (arg instanceof Tree.AttributeArgument == false) {
                     if (first) { first = false; } else { gen.out(","); }
                     String argName = arg.getIdentifier().getText();
-                    if (JsIdentifierNames.isReservedWord(argName)) {
+                    if (JsIdentifierNames.isTrueReservedWord(argName)) {
                         gen.out("$_");
                     }
                     gen.out(argName, ":");
@@ -661,7 +661,7 @@ public class InvocationGenerator {
                     gen.out("Object.defineProperty(", tmpobjvar, ",'");
                     if (arg instanceof Tree.AttributeArgument) {
                         String argName = arg.getIdentifier().getText();
-                        if (JsIdentifierNames.isReservedWord(argName)) {
+                        if (JsIdentifierNames.isTrueReservedWord(argName)) {
                             gen.out("$_");
                         }
                         gen.out(argName, "',{get:function(){ return ");
