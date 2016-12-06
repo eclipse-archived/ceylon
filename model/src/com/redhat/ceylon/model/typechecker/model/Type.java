@@ -3404,7 +3404,8 @@ public class Type extends Reference {
                                 intersectionOfSupertypes(tp)
                                     .substitute(this);
                         if (!arg.isSubtypeOf(bound)) {
-                            arg = bound;
+                            arg = intersectionType(bound, arg, 
+                                    declaration.getUnit());
                             found = true;
                         }
                     }

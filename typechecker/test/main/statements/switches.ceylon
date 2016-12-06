@@ -115,3 +115,9 @@ shared void switchOnvariable() {
         int = 3;
     }
 }
+
+void coverageWithTypeParameter<E>(String|Set<E> ss) {
+    switch (ss)
+    case (is String) {}
+    case (is Set<E>) {}
+}
