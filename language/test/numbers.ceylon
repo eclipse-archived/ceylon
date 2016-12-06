@@ -297,15 +297,20 @@ shared void numbers() {
     check(max([1, 5])==5, "max naturals");
     check(max([-1, +5])==+5, "max integers");
     check(max([-1.5, 5.2])==5.2, "max floats");
-    //eZL
     check(max([ 2, 4, 6, 8, 7, 250, 5, 3, 1 ])==250, "max");
     check(min([ 200, 400, 600, 800, 700, 500, 300, 150 ])==150, "min");
+    check(Integer.max([ 2, 4, 6, 8, 7, 250, 5, 3, 1 ])==250, "max");
+    check(Integer.min([ 200, 400, 600, 800, 700, 500, 300, 150 ])==150, "Integer.min");
+    check(!Integer.max([]) exists, "Integer.max empty");
+    check(!Integer.min([]) exists, "Integer.min empty");
 
     //eZL
     check(smallest(1,2)==1,          "smallest naturals");
+    check(Integer.smallest(1,2)==1,  "Integer.smallest");
     check(smallest(-100, 100)==-100, "smallest integers");
     check(smallest(-1.5, 5.2)==-1.5, "smallest floats");
     check(largest(1,2)==2,           "largest naturals");
+    check(Integer.largest(1,2)==2,   "Integer.largest");
     check(largest(-100, 100)==100,   "largest integers");
     check(largest(-1.5, 5.2)==5.2,   "largest floats");
 
@@ -433,8 +438,10 @@ shared void numbers() {
 
     //number-related functions
     check(sum([1,2,3])==6, "sum()");
+    check(Integer.sum([1,2,3])==6, "Integer.sum()");
     check(max([1,3,2])==3, "max()");
     check(min([3,1,2])==1, "min()");
+    check(Integer.product { 2,3,4 } == 24, "Integer.product");
 
     // Bitwise operators, we need to test their boxed versions as well
     Binary<Integer> box(Integer i){
