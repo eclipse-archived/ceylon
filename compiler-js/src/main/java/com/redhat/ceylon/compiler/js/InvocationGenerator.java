@@ -126,11 +126,7 @@ public class InvocationGenerator {
             }
             final String fname = names.createTempVariable();
             gen.out(fname,"=");
-            if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
-                BmeGenerator.generateQte((Tree.QualifiedTypeExpression)typeArgSource, gen);
-            } else {
-                typeArgSource.visit(gen);
-            }
+            typeArgSource.visit(gen);
             String fuckingargs = "";
             if (!argnames.isEmpty()) {
                 fuckingargs = argnames.toString().substring(1);
@@ -140,23 +136,46 @@ public class InvocationGenerator {
             //TODO we lose type args for now
             return;
         } else {
-            boolean hasSpread = !argList.getPositionalArguments().isEmpty() &&
-                    argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1) instanceof Tree.SpreadArgument &&
-                    !TypeUtils.isSequential(argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1).getTypeModel())
+            final Tree.PositionalArgument lastArg = argList.getPositionalArguments().isEmpty()?null:argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1);
+            boolean hasSpread =  lastArg instanceof Tree.SpreadArgument &&
+                    !TypeUtils.isSequential(lastArg.getTypeModel())
                     && !typeArgSource.getTypeModel().isUnknown();
             if (hasSpread) {
                 gen.out(gen.getClAlias(), "spread$2(");
             }
             if (typeArgSource instanceof Tree.BaseMemberExpression) {
                 final Tree.BaseMemberExpression _bme = (Tree.BaseMemberExpression)typeArgSource;
-                if (gen.isInDynamicBlock() && _bme.getDeclaration() != null &&
-                        "ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
-                    Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
-                    if (ModelUtil.isTypeUnknown(printArg.getTypeModel())) {
-                        gen.out(gen.getClAlias(), "pndo$("); //#397
-                        printArg.visit(gen);
-                        gen.out(")");
-                        return;
+                if (gen.isInDynamicBlock()) {
+                    if (_bme.getDeclaration() == null) {
+                        if (lastArg instanceof Tree.SpreadArgument &&
+                                (lastArg.getTypeModel() == null || lastArg.getTypeModel().isUnknown())) {
+                            BmeGenerator.generateBme(_bme, gen);
+                            gen.out(".apply(0,");
+                            if (argList.getPositionalArguments().size()==1) {
+                                generatePositionalArguments(typeArgSource,
+                                    argList, argList.getPositionalArguments(), false, true);
+                            } else {
+                                gen.out("[");
+                                ArrayList<Tree.PositionalArgument> subargs = new ArrayList<>(argList.getPositionalArguments().size());
+                                subargs.addAll(argList.getPositionalArguments());
+                                subargs.remove(subargs.size()-1);
+                                generatePositionalArguments(typeArgSource,
+                                    argList, subargs, false, true);
+                                gen.out("].concat(");
+                                lastArg.visit(gen);
+                                gen.out(")");
+                            }
+                            gen.out(")");
+                            return;
+                        }
+                    } else if ("ceylon.language::print".equals(_bme.getDeclaration().getQualifiedNameString())) {
+                        Tree.PositionalArgument printArg =  that.getPositionalArgumentList().getPositionalArguments().get(0);
+                        if (ModelUtil.isTypeUnknown(printArg.getTypeModel())) {
+                            gen.out(gen.getClAlias(), "pndo$("); //#397
+                            printArg.visit(gen);
+                            gen.out(")");
+                            return;
+                        }
                     }
                 }
                 BmeGenerator.generateBme(_bme, gen);
@@ -265,7 +284,7 @@ public class InvocationGenerator {
             Functional bmed = (Functional)((Tree.MemberOrTypeExpression)typeArgSource).getDeclaration();
             //If there are fewer arguments than there are parameters...
             final int argsSize = argList.getPositionalArguments().size();
-            int paramArgDiff = ((Functional) bmed).getFirstParameterList().getParameters().size() - argsSize;
+            int paramArgDiff = bmed.getFirstParameterList().getParameters().size() - argsSize;
             if (paramArgDiff > 0) {
                 final Tree.PositionalArgument parg = argsSize > 0 ? argList.getPositionalArguments().get(argsSize-1) : null;
                 if (parg instanceof Tree.Comprehension || parg instanceof Tree.SpreadArgument) {
