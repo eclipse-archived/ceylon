@@ -274,6 +274,16 @@ shared void issues() {
     issue6057();
     issue6604();
     issue6740();
+    dynamic {
+      check(dyn6810()==0, "#6810.1");
+      dynamic a6810=dynamic[1,2,3];
+      value b6810=[1,2,3];
+      check(dyn6810(1,2,3)==6, "#6810.2");
+      check(dyn6810(*a6810)==6, "#6810.3");
+      check(dyn6810(4,5,*a6810)==15,"#6810.4");
+      check(dyn6810(*b6810)==6, "#6810.5");
+      check(dyn6810(4,5,*b6810)==15,"#6810.6");
+    }
 }
 
 void issue5952() {
