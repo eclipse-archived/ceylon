@@ -58,6 +58,7 @@ import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnionType;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -1128,5 +1129,22 @@ public class Decl {
             decl = getDeclarationScope(decl.getContainer());
         }
         return decl;
+    }
+    
+    public static boolean isJavaArrayWith(Constructor ctor) {
+        if ("with".equals(ctor.getName())) {
+            Unit unit = ctor.getUnit();
+            Scope cls = ctor.getContainer();
+            return unit.getJavaObjectArrayDeclaration().equals(cls)
+                    || unit.getJavaIntArrayDeclaration().equals(cls)
+                    || unit.getJavaLongArrayDeclaration().equals(cls)
+                    || unit.getJavaShortArrayDeclaration().equals(cls)
+                    || unit.getJavaDoubleArrayDeclaration().equals(cls)
+                    || unit.getJavaFloatArrayDeclaration().equals(cls)
+                    || unit.getJavaCharArrayDeclaration().equals(cls)
+                    || unit.getJavaByteArrayDeclaration().equals(cls)
+                    || unit.getJavaBooleanArrayDeclaration().equals(cls);
+        }
+        return false;
     }
 }

@@ -1960,7 +1960,9 @@ class NamedArgumentInvocation extends Invocation {
             result = callVarName.makeIdent();
         }
         final Constructor ctor = getConstructor();
-        if (ctor != null && !Decl.isDefaultConstructor(ctor)) {
+        if (ctor != null 
+                && !Decl.isDefaultConstructor(ctor)
+                && !Decl.isJavaArrayWith(ctor)) {
             argsAndTypes.put(-1, 
                     new ExpressionAndType(gen.naming.makeNamedConstructorName(ctor, false),
                             gen.naming.makeNamedConstructorType(ctor, false)));

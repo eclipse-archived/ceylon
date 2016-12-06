@@ -372,6 +372,10 @@ public class CallableBuilder {
             if (Strategy.generateInstantiator(ctor)) {
                 needsCast = Strategy.isInstantiatorUntyped(ctor);
                 callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, cls));
+            } else if (Decl.isJavaArrayWith(ctor)) {
+                callBuilder.arrayWith(
+                        gen.getReturnTypeOfCallable(typeModel).getQualifyingType(), 
+                        gen.makeJavaType(gen.getReturnTypeOfCallable(typeModel), JT_CLASS_NEW));
             } else {
                 callBuilder.instantiate( 
                         gen.makeJavaType(gen.getReturnTypeOfCallable(typeModel), JT_CLASS_NEW));
@@ -409,7 +413,8 @@ public class CallableBuilder {
         }
         
         if (Decl.isConstructor((Declaration)methodClassOrCtor)
-                && !Decl.isDefaultConstructor(Decl.getConstructor((Declaration)methodClassOrCtor))) {
+                && !Decl.isDefaultConstructor(Decl.getConstructor((Declaration)methodClassOrCtor))
+                && !Decl.isJavaArrayWith((Constructor)methodClassOrCtor)) {
             // invoke the param class ctor
             Constructor ctor = Decl.getConstructor((Declaration)methodClassOrCtor);
             callBuilder.argument(gen.naming.makeNamedConstructorName(ctor, false));

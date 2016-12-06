@@ -3640,10 +3640,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = result.prepend(
                     new ExpressionAndType(naming.makeNamedConstructorName(superConstructor, concreteDelegation),
                             naming.makeNamedConstructorType(superConstructor, concreteDelegation)));
-            
         } else if (
                 superConstructor != null 
                         && !Decl.isDefaultConstructor(superConstructor)
+                        && !Decl.isJavaArrayWith(superConstructor)
                         && (invocation.getQmePrimary() instanceof Tree.QualifiedTypeExpression == false
                         || !isCeylonCallable(((Tree.QualifiedTypeExpression)invocation.getQmePrimary()).getPrimary().getTypeModel()))) {
             result = result.prepend(
@@ -4015,6 +4015,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                     callBuilder.invoke(naming.makeInstantiatorMethodName(transformedPrimary.expr, Decl.getConstructedClass(ctor)));
                 }
+            } else if (typeFact().isJavaArrayType(Decl.getConstructedClass(ctor).getType())) {
+                callBuilder.arrayWith(
+                        invocation.getReturnType().getQualifyingType(),
+                        makeJavaType(invocation.getReturnType(), JT_CLASS_NEW));
             } else {
                 if (Decl.getConstructedClass(invocation.getPrimaryDeclaration()).isMember()
                         && invocation.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression

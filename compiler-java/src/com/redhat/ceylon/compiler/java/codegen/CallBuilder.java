@@ -10,6 +10,8 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Type;
 
 /**
  * A builder for constructing method calls and instantiations
@@ -22,6 +24,7 @@ public class CallBuilder {
         ARRAY_READ,
         ARRAY_WRITE,
         NEW_ARRAY,
+        NEW_ARRAY_WITH,
         FIELD_READ
     }
     
@@ -53,6 +56,7 @@ public class CallBuilder {
     private JCExpression arrayInstanceCast;
     private int arrayInstanceDimensions;
     private boolean arrayWriteNeedsCast;
+    private Type arrayType;
     
     private CallBuilder(AbstractTransformer gen) {
         this.gen = gen;
@@ -117,6 +121,14 @@ public class CallBuilder {
         this.methodOrClass = type;
         this.instantiateQualfier = null;
         this.kind = Kind.NEW_ARRAY;
+        return this;
+    }
+    
+    public CallBuilder arrayWith(Type arrayType, JCExpression type) {
+        this.methodOrClass = type;
+        this.instantiateQualfier = null;
+        this.kind = Kind.NEW_ARRAY_WITH;
+        this.arrayType = arrayType; 
         return this;
     }
 
@@ -280,6 +292,33 @@ public class CallBuilder {
             if(arguments.tail.nonEmpty()){
                 // must fill it
                 result = gen.utilInvocation().fillArray(List.of(result, arguments.tail.head));
+            }
+            break;
+        case NEW_ARRAY_WITH:
+            Declaration d = arrayType.getDeclaration();
+            if (d.equals(gen.typeFact().getJavaLongArrayDeclaration())) {
+                result = gen.utilInvocation().toLongArray(arguments.head, arguments.tail);
+            } else if (d.equals(gen.typeFact().getJavaIntArrayDeclaration())) {
+                result = gen.utilInvocation().toIntArray(arguments.head, arguments.tail);
+            } else if (d.equals(gen.typeFact().getJavaShortArrayDeclaration())) {
+                result = gen.utilInvocation().toShortArray(arguments.head, arguments.tail);
+            } else if (d.equals(gen.typeFact().getJavaCharArrayDeclaration())) {
+                result = gen.utilInvocation().toCharArray(arguments.head, arguments.tail);
+            } else if (d.equals(gen.typeFact().getJavaByteArrayDeclaration())) {
+                result = gen.utilInvocation().toByteArray(arguments.head, arguments.tail);
+            } else if (d.equals(gen.typeFact().getJavaBooleanArrayDeclaration())) {
+                result = gen.utilInvocation().toBooleanArray(arguments.head, arguments.tail);
+            } else if (d.equals(gen.typeFact().getJavaFloatArrayDeclaration())) {
+                result = gen.utilInvocation().toFloatArray(arguments.head, arguments.tail);
+            } else if (d.equals(gen.typeFact().getJavaDoubleArrayDeclaration())) {
+                result = gen.utilInvocation().toDoubleArray(arguments.head, arguments.tail);
+            } else {
+                // it must be an ObjectArray
+                
+                result = gen.utilInvocation().toArray(arguments.tail.head,
+                        // don't use makeClassLiteral, because it doesn't c.l.Object -> j.l.Object
+                        gen.makeSelect(gen.makeJavaType(arrayType.getTypeArgumentList().get(0), AbstractTransformer.JT_NO_PRIMITIVES), "class"),
+                        arguments.tail.tail);
             }
             break;
         case FIELD_READ:
