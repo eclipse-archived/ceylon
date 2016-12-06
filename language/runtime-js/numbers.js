@@ -46,11 +46,52 @@ Integer.$st$={
       s+=item;
     }
     return s;
+  },
+  product:function(i) {
+    var s=1;
+    var item;
+    for (var iter=i.iterator();(item=iter.next())!==finished();) {
+      s*=item;
+    }
+    return s;
+  },
+  max:function(i) {
+    var f=true;
+    var m=0;
+    for (var iter=i.iterator();(item=iter.next())!==finished();) {
+      if (f) {
+        m=item;
+        f=false;
+      } else if (item>m)m=item;
+    }
+    return f?null:m;
+  },
+  min:function(i) {
+    var f=true;
+    var m=0;
+    for (var iter=i.iterator();(item=iter.next())!==finished();) {
+      if (f) {
+        m=item;
+        f=false;
+      } else if (item<m)m=item;
+    }
+    return f?null:m;
+  },
+  smallest:function(x,y) {
+    return x<y?x:y;
+  },
+  largest:function(x,y) {
+    return x>y?x:y;
   }
 };
 Integer.$st$.format.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}},{nm:'radix',mt:'prm',def:1,$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Integer().$st$.format),OpenFunction$jsint(lmp$(ex$,'$'),Float.$st$.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Integer','$m','parse']};};
 Integer.$st$.parse.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}},{nm:'radix',mt:'prm',def:1,$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Integer().$$.prototype.format),OpenFunction$jsint(lmp$(ex$,'$'),Float.$st$.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Integer','$m','parse']};};
 Integer.$st$.sum.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:{t:Null}}}}],$cont:Integer,pa:4097,d:['$','Integer','$m','sum']};};
+Integer.$st$.product.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:{t:Null}}}}],$cont:Integer,pa:4097,an:function(){return[doc$($CCMM$,'$:Integer:$m:product'),since("1.3.2")];},d:['$','Integer','$m','product']};};
+Integer.$st$.max.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},'Absent$max']},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:'Absent$max'}}}],$cont:Integer,tp:{Absent$max:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($CCMM$,'$:Integer:$m:max'),since("1.3.2")];},d:['$','Integer','$m','max']};};
+Integer.$st$.min.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Integer},'Absent$min']},ps:[{nm:'integers',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Integer},Absent$Iterable:'Absent$min'}}}],$cont:Integer,tp:{Absent$min:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($CCMM$,'$:Integer:$m:min'),since("1.3.2")];},d:['$','Integer','$m','min']};};
+Integer.$st$.smallest.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{nm:'x',mt:'prm',$t:{t:Integer}},{nm:'y',mt:'prm',$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[doc$($CCMM$,'$:Integer:$m:smallest'),since("1.3.2")];},d:['$','Integer','$m','smallest']};};
+Integer.$st$.largest.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Integer},ps:[{nm:'x',mt:'prm',$t:{t:Integer}},{nm:'y',mt:'prm',$t:{t:Integer}}],$cont:Integer,pa:4097,an:function(){return[doc$($CCMM$,'$:Integer:$m:largest'),since("1.3.2")];},d:['$','Integer','$m','largest']};};
 
 initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number, JSNumber,
         $init$Integral(), $init$Exponentiable(), $init$Binary());
