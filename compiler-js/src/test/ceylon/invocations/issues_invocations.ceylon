@@ -129,6 +129,14 @@ void spreadIssues5<Args>(Anything(*Args) g, Args a)
 void issue6066_1({Anything*} t) => check(t.sequence()==[1,2,3],"#6066.1 ``t``");
 void issue6066_2({Anything*} t) => check(t.sequence()==[[1,2,3]],"#6066.2 ``t``");
 
+void test6777() {
+    variable value i = 10;
+    {Integer+} ints = identity<{Integer+}> { i };
+    check(sum(ints)==10, "#6777.1");
+    i = 20;
+    check(sum(ints)==20, "#6777.2");
+}
+
 void testIssues() {
   objectIssue306.foo().call();
   ClassBug314<Object>();
@@ -162,4 +170,5 @@ void testIssues() {
   issue6066_2({triplet});
   issue6066_2([triplet]);
   issue6066_2{triplet};
+  test6777();
 }
