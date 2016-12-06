@@ -36,7 +36,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 // 
 // Only the value type static methods are really invoked.
 @Ceylon(major = 8)
-@Class
+@Class(constructors=true)
 @ValueType
 @TypeParameters(@TypeParameter(value="T", 
                 variance=Variance.OUT,
@@ -99,6 +99,7 @@ public final class ObjectArray<T> implements ReifiedType {
     @ceylon.language.SharedAnnotation$annotation$
     @com.redhat.ceylon.compiler.java.metadata.Name("with")
     public ObjectArray(
+            @Ignore TypeDescriptor $reifiedT,
             @Ignore
             with_ $name$,
             @com.redhat.ceylon.common.NonNull

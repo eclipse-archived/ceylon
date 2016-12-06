@@ -985,4 +985,10 @@ public class InteropTests extends CompilerTests {
     public void testIopStrictfp() {
         compareWithJavaSource("Strictfp");
     }
+    
+    @Test
+    public void testIopArrayWith() {
+        compareWithJavaSource("ArrayWith");
+        run("com.redhat.ceylon.compiler.java.test.interop.arrayWith");
+    }
 }
