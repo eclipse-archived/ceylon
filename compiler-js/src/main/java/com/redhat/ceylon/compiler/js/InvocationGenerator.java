@@ -648,9 +648,12 @@ public class InvocationGenerator {
                     if (first) { first = false; } else { gen.out(","); }
                     String argName = arg.getIdentifier().getText();
                     if (JsIdentifierNames.isTrueReservedWord(argName)) {
-                        gen.out("$_");
+                        gen.out("\"", argName, "\"");
                     }
-                    gen.out(argName, ":");
+                    else {
+                        gen.out(argName);
+                    }
+                    gen.out(":");
                     arg.visit(gen);
                 }
             }
@@ -662,9 +665,12 @@ public class InvocationGenerator {
                     if (arg instanceof Tree.AttributeArgument) {
                         String argName = arg.getIdentifier().getText();
                         if (JsIdentifierNames.isTrueReservedWord(argName)) {
-                            gen.out("$_");
+                            gen.out("\"", argName, "\"");
                         }
-                        gen.out(argName, "',{get:function(){ return ");
+                        else {
+                            gen.out(argName);
+                        }
+                        gen.out("',{get:function(){ return ");
                         gen.visitSingleExpression(((Tree.AttributeArgument) arg).getSpecifierExpression().getExpression());
                         gen.out("},configurable:true,enumerable:true})");
                     }
