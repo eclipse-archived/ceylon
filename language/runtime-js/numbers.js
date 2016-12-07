@@ -102,16 +102,22 @@ function $init$Integer() {
 atr$(Integer.$$.prototype,'integer',function(){ return this; },undefined,
      function(){return {mod:$CCMM$,$t:{t:Integer},pa:0,$cont:Integer,d:['$','Integer','$at','integer$woput0']};});
 
-function $$max(x, y) {
-  if (x!=x) return x;
-  if (y!=y) return y;
-  return x>y || x==y && y==0 && 1/y<0 ? x : y;
+function $$valueOf(x) {
+  var xx = x.valueOf();
+  return x.fmz$ ? -xx:xx;
 }
-
+function $$isNegZero(x) {
+  return x==0 && 1/x<0;
+}
+function $$max(x, y) {
+  if (isNaN(x)) return x;
+  if (isNaN(y)) return y;
+  return x>y || x==y && $$isNegZero(y) ? x : y;
+}
 function $$min(x, y) {
-  if (x!=x) return x;
-  if (y!=y) return y;
-  return x<y || x==y && x==0 && 1/x<0 ? x : y;
+  if (isNaN(x)) return x;
+  if (isNaN(y)) return y;
+  return x<y || x==y && $$isNegZero(x) ? x : y;
 }
 
 function Float(value) {
@@ -155,9 +161,9 @@ Float.$st$={
     var m=0;
     for (var iter=i.iterator();(item=iter.next())!==finished();) {
       if (f) {
-        m=item.valueOf();
+        m=$$valueOf(item);
         f=false;
-      } else m=$$max(m,item.valueOf());
+      } else m=$$max(m,$$valueOf(item));
     }
     return f?null:Float(m);
   },
@@ -166,17 +172,17 @@ Float.$st$={
     var m=0;
     for (var iter=i.iterator();(item=iter.next())!==finished();) {
       if (f) {
-        m=item.valueOf();
+        m=$$valueOf(item);
         f=false;
-      } else m=$$min(m,item.valueOf());
+      } else m=$$min(m,$$valueOf(item));
     }
     return f?null:Float(m);
   },
   smallest:function(x,y) {
-    return Float($$min(x.valueOf(),y.valueOf()));
+    return Float($$min($$valueOf(x),$$valueOf(y)));
   },
   largest:function(x,y) {
-    return Float($$max(x.valueOf(),y.valueOf()));
+    return Float($$max($$valueOf(x),$$valueOf(y)));
   }
 };
 Float.$st$.format.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_String},ps:[{nm:'float',mt:'prm',$t:{t:Float}},{nm:'minDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'maxDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'decimalSeparator',mt:'prm',def:1,$t:{t:Character}},{nm:'thousandsSeparator',mt:'prm',def:1,$t:{t:'u',l:[{t:Null},{t:Character}]}}],$cont:Float,pa:4097,an:function(){return[tagged($arr$sa$(["Numbers"],{t:$_String})),see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Float().$$.prototype.parse),OpenFunction$jsint(lmp$(ex$,'$'),Integer.$$.prototype.format)],{t:FunctionDeclaration$meta$declaration})),since("1.3.1")];},d:['$','Float','$m','format']};};
