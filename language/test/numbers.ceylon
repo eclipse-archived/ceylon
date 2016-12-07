@@ -305,6 +305,10 @@ shared void numbers() {
     check(!Integer.min([]) exists, "Integer.min empty");
     check(Float.max([1.0,2.0])==2.0,"Float.max");
     check(Float.min([1.0,2.0])==1.0,"Float.min");
+    check(Float.max([-0.0,0.0,-0.0]).strictlyPositive,"Float.max");
+    check(Float.min([0.0,-0.0,0.0]).strictlyNegative,"Float.min");
+    check(Float.max([1.0, 0.0/0.0, 1.0]).undefined,"Float.max undefined");
+    check(Float.min([1.0, 0.0/0.0, 1.0]).undefined,"Float.min undefined");
     check(!Float.max([]) exists, "empty Float.max");
     check(!Float.min([]) exists, "empty Float.min");
 
@@ -312,11 +316,19 @@ shared void numbers() {
     check(smallest(1,2)==1,          "smallest naturals");
     check(Integer.smallest(1,2)==1,  "Integer.smallest");
     check(Float.smallest(1.0,2.0)==1.0,  "Float.smallest");
+    check(Float.smallest(0.0/0.0,2.0).undefined,  "Float.smallest");
+    check(Float.smallest(1.0,0.0/0.0).undefined,  "Float.smallest");
+    check(Float.smallest(0.0,-0.0).strictlyNegative,  "Float.smallest");
+    check(Float.smallest(-0.0,0.0).strictlyNegative,  "Float.smallest");
     check(smallest(-100, 100)==-100, "smallest integers");
     check(smallest(-1.5, 5.2)==-1.5, "smallest floats");
     check(largest(1,2)==2,           "largest naturals");
     check(Integer.largest(1,2)==2,   "Integer.largest");
     check(Float.largest(1.0,2.0)==2.0,   "Float.largest");
+    check(Float.largest(0.0/0.0,2.0).undefined,  "Float.largest");
+    check(Float.largest(1.0,0.0/0.0).undefined,  "Float.largest");
+    check(Float.smallest(0.0,-0.0).strictlyPositive,  "Float.largest");
+    check(Float.smallest(-0.0,0.0).strictlyPositive,  "Float.largest");
     check(largest(-100, 100)==100,   "largest integers");
     check(largest(-1.5, 5.2)==5.2,   "largest floats");
 
