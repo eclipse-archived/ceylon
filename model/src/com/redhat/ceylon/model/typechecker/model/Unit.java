@@ -1476,8 +1476,9 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             return null;
         }
         else if (dec.equals(getJavaObjectArrayDeclaration())) {
-            if (!t.getTypeArguments().isEmpty()) {
-                return t.getTypeArgumentList().get(0);
+            Type supertype = t.getSupertype(dec);
+            if (!supertype.getTypeArguments().isEmpty()) {
+                return supertype.getTypeArgumentList().get(0);
             }
             else {
                 return null;
