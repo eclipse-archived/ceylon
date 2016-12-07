@@ -317,7 +317,7 @@ shared void numbers() {
     check(Integer.smallest(1,2)==1,  "Integer.smallest");
     check(Integer.smallest(4,2)==2,  "Integer.smallest");
     check(Float.smallest(1.0,2.0)==1.0,  "Float.smallest");
-    check(Float.smallest(2.5,2.0)==2.5,  "Float.smallest");
+    check(Float.smallest(2.5,2.1)==2.1,  "Float.smallest");
     check(Float.smallest(0.0/0.0,2.0).undefined,  "Float.smallest undefined");
     check(Float.smallest(1.0,0.0/0.0).undefined,  "Float.smallest undefined");
     check(Float.smallest(0.0,-0.0).strictlyNegative,  "Float.smallest neg zero");
@@ -331,8 +331,8 @@ shared void numbers() {
     check(Float.largest(3.5,2.0)==3.5,   "Float.largest");
     check(Float.largest(0.0/0.0,2.0).undefined,  "Float.largest undefined");
     check(Float.largest(1.0,0.0/0.0).undefined,  "Float.largest undefined");
-    check(Float.smallest(0.0,-0.0).strictlyPositive,  "Float.largest neg zero");
-    check(Float.smallest(-0.0,0.0).strictlyPositive,  "Float.largest neg zero");
+    check(Float.largest(0.0,-0.0).strictlyPositive,  "Float.largest neg zero");
+    check(Float.largest(-0.0,0.0).strictlyPositive,  "Float.largest neg zero");
     check(largest(-100, 100)==100,   "largest integers");
     check(largest(-1.5, 5.2)==5.2,   "largest floats");
 
