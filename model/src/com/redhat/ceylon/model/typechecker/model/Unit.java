@@ -1468,6 +1468,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getJavaArrayElementType(Type type) {
         Type t = type.resolveAliases();
         TypeDeclaration dec = t.getDeclaration();
+        if (dec instanceof Constructor) {
+            dec = dec.getExtendedType()
+                    .getDeclaration();
+        }
         if (!(dec instanceof Class)) {
             return null;
         }
