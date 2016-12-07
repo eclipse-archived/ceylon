@@ -126,14 +126,55 @@ Float.$st$={
     var s=0;
     var item;
     for (var iter=f.iterator();(item=iter.next())!==finished();) {
-      s+=item;
+      s+=item.valueOf();
     }
     return Float(s);
+  },
+  product:function(i) {
+    var s=1;
+    var item;
+    for (var iter=i.iterator();(item=iter.next())!==finished();) {
+      s*=item.valueOf();
+    }
+    return Float(s);
+  },
+  max:function(i) {
+    var f=true;
+    var m=0;
+    for (var iter=i.iterator();(item=iter.next())!==finished();) {
+      if (f) {
+        m=item.valueOf();
+        f=false;
+      } else if (item.valueOf()>m)m=item.valueOf();
+    }
+    return f?null:Float(m);
+  },
+  min:function(i) {
+    var f=true;
+    var m=0;
+    for (var iter=i.iterator();(item=iter.next())!==finished();) {
+      if (f) {
+        m=item.valueOf();
+        f=false;
+      } else if (item.valueOf()<m)m=item.valueOf();
+    }
+    return f?null:Float(m);
+  },
+  smallest:function(x,y) {
+    return x.valueOf()<y.valueOf()?x:y;
+  },
+  largest:function(x,y) {
+    return x.valueOf()>y.valueOf()?x:y;
   }
 };
 Float.$st$.format.$crtmm$=function(){return{mod:$CCMM$,$t:{t:$_String},ps:[{nm:'float',mt:'prm',$t:{t:Float}},{nm:'minDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'maxDecimalPlaces',mt:'prm',def:1,$t:{t:Integer}},{nm:'decimalSeparator',mt:'prm',def:1,$t:{t:Character}},{nm:'thousandsSeparator',mt:'prm',def:1,$t:{t:'u',l:[{t:Null},{t:Character}]}}],$cont:Float,pa:4097,an:function(){return[tagged($arr$sa$(["Numbers"],{t:$_String})),see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Float().$$.prototype.parse),OpenFunction$jsint(lmp$(ex$,'$'),Integer.$$.prototype.format)],{t:FunctionDeclaration$meta$declaration})),since("1.3.1")];},d:['$','Float','$m','format']};};
 Float.$st$.parse.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Float},{t:ParseException}]},ps:[{nm:'string',mt:'prm',$t:{t:$_String}}],$cont:Float,pa:4097,an:function(){return[see($arr$sa$([OpenFunction$jsint(lmp$(ex$,'$'),$init$Float().$$.prototype.format),OpenFunction$jsint(lmp$(ex$,'$'),Integer.$$.prototype.parse)],{t:FunctionDeclaration$meta$declaration})),tagged($arr$sa$(["Numbers","Basic types"],{t:$_String})),since("1.3.1")];},d:['$','Float','$m','parse']};};
 Float.$st$.sum.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Float},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:{t:Null}}}}],$cont:Float,pa:4097,d:['$','Float','$m','sum']};};
+Float.$st$.product.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Float},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:{t:Null}}}}],$cont:Float,pa:4097,an:function(){return[m$1.doc$($CCMM$,'$:Float:$m:product'),since("1.3.2")];},d:['$','Float','$m','product']};};
+Float.$st$.max.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Float},'Absent$max']},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:'Absent$max'}}}],$cont:Float,tp:{Absent$max:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($CCMM$,'$:Float:$m:max'),since("1.3.2")];},d:['$','Float','$m','max']};};
+Float.$st$.min.$crtmm$=function(){return{mod:$CCMM$,$t:{t:'u',l:[{t:Float},'Absent$min']},ps:[{nm:'floats',mt:'prm',$t:{t:Iterable,a:{Element$Iterable:{t:Float},Absent$Iterable:'Absent$min'}}}],$cont:Float,tp:{Absent$min:{sts:[{t:Null}]}},pa:4097,an:function(){return[doc$($CCMM$,'$:Float:$m:min'),since("1.3.2")];},d:['$','Float','$m','min']};};
+Float.$st$.smallest.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Float},ps:[{nm:'x',mt:'prm',$t:{t:Float}},{nm:'y',mt:'prm',$t:{t:Float}}],$cont:Float,pa:4097,an:function(){return[doc$($CCMM$,'$:Float:$m:smallest'),since("1.3.2")];},d:['$','Float','$m','smallest']};};
+Float.$st$.largest.$crtmm$=function(){return{mod:$CCMM$,$t:{t:Float},ps:[{nm:'x',mt:'prm',$t:{t:Float}},{nm:'y',mt:'prm',$t:{t:Float}}],$cont:Float,pa:4097,an:function(){return[doc$($CCMM$,'$:Float:$m:largest'),since("1.3.2")];},d:['$','Float','$m','largest']};};
 initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,$init$Exponentiable(), JSNumber);
 Float.$crtmm$=function(){return{pa:97,mod:$CCMM$,d:['$','Float']};}
 function $init$Float(){return Float;}
