@@ -1657,7 +1657,7 @@ public class ModelUtil {
             if (pd.getTypeParameters().isEmpty() &&
                     !q.involvesTypeParameters() &&
                     !p.isSubtypeOf(q) &&
-                    !(qd instanceof UnknownType)) {
+                    !q.isUnknown()) {
                 return true;
             }
             if (q.isClassOrInterface() &&
@@ -1669,7 +1669,7 @@ public class ModelUtil {
             if (qd.getTypeParameters().isEmpty() &&
                     !p.involvesTypeParameters() &&
                     !q.isSubtypeOf(p) &&
-                    !(p.isUnknown())) {
+                    !p.isUnknown()) {
                 return true;
             }
             if (p.isClassOrInterface() &&
