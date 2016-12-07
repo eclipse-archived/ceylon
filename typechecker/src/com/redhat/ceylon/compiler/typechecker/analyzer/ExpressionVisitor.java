@@ -2822,12 +2822,12 @@ public class ExpressionVisitor extends Visitor {
                         (Tree.StaticMemberOrTypeExpression) p;
                 Declaration dec = bme.getDeclaration();
                 if (dec!=null) {
+                    String str = type.asSourceCodeString(unit);
                     node.addUsageWarning(Warning.inferredNotNull, 
                             "not null type inferred from invocation of function with unchecked nulls: '" 
                             + dec.getName(unit) 
                             + "' is not known to be null-safe (explicitly specify the type '" 
-                            + type.asSourceCodeString(unit) 
-                            + "')");
+                            + str + "' or '" + str + "?')");
                     return;
                 }
             }
@@ -2838,19 +2838,19 @@ public class ExpressionVisitor extends Visitor {
                         term;
             Declaration dec = bme.getDeclaration();
             if (dec!=null) {
+                String str = type.asSourceCodeString(unit);
                 node.addUsageWarning(Warning.inferredNotNull, 
                         "not null type inferred from reference to value with unchecked nulls: '" 
                         + dec.getName(unit) 
                         + "' is not known to be null-safe (explicitly specify the type '" 
-                        + type.asSourceCodeString(unit) 
-                        + "')");
+                        + str + "' or '" + str + "?')");
                 return;
             }
         }
+        String str = type.asSourceCodeString(unit);
         node.addUsageWarning(Warning.inferredNotNull, 
                 "not null type inferred from reference to function or value with unchecked nulls (explicitly specify the type '" 
-                + type.asSourceCodeString(unit) 
-                + "')");
+                + str + "' or '" + str + "?')");
     }
     
     private void setType(Tree.LocalModifier local, 
