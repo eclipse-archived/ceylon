@@ -159,7 +159,7 @@ public final class Integer
                 for (int i=1; i<s; i++) {
                     min = Math.min(min, intArray[i]);
                 }
-                return min;
+                return instance(min);
             }
             if (array instanceof long[]) {
                 long[] longArray = (long[]) array;
@@ -171,7 +171,7 @@ public final class Integer
                 for (int i=1; i<s; i++) {
                     min = Math.min(min, longArray[i]);
                 }
-                return min;
+                return instance(min);
             }
         }
         
@@ -189,7 +189,7 @@ public final class Integer
                 min += Math.min(min,
                         list.getFromFirst(i).value);
             }
-            return min;
+            return instance(min);
         }
         
         long min = 0l;
@@ -227,11 +227,11 @@ public final class Integer
                 if (s==0) {
                     return null;
                 }
-                int min = intArray[0];
+                int max = intArray[0];
                 for (int i=1; i<s; i++) {
-                    min = Math.max(min, intArray[i]);
+                    max = Math.max(max, intArray[i]);
                 }
-                return min;
+                return instance(max);
             }
             if (array instanceof long[]) {
                 long[] longArray = (long[]) array;
@@ -239,11 +239,11 @@ public final class Integer
                 if (s==0) {
                     return null;
                 }
-                long min = longArray[0];
+                long max = longArray[0];
                 for (int i=1; i<s; i++) {
-                    min = Math.max(min, longArray[i]);
+                    max = Math.max(max, longArray[i]);
                 }
-                return min;
+                return instance(max);
             }
         }
         
@@ -261,7 +261,7 @@ public final class Integer
                 max += Math.max(max,
                         list.getFromFirst(i).value);
             }
-            return max;
+            return instance(max);
         }
         
         long max = 0l;

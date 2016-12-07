@@ -154,7 +154,7 @@ public final class Float
                 for (int i=1; i<s; i++) {
                     min = Math.min(min, floatArray[i]);
                 }
-                return min;
+                return instance(min);
             }
             if (array instanceof double[]) {
                 double[] doubleArray = (double[]) array;
@@ -166,7 +166,7 @@ public final class Float
                 for (int i=1; i<s; i++) {
                     min = Math.min(min, doubleArray[i]);
                 }
-                return min;
+                return instance(min);
             }
         }
         
@@ -184,7 +184,7 @@ public final class Float
                 min += Math.min(min,
                         list.getFromFirst(i).value);
             }
-            return min;
+            return instance(min);
         }
         
         double min = Double.NaN;
@@ -222,11 +222,11 @@ public final class Float
                 if (s==0) {
                     return null;
                 }
-                float min = floatArray[0];
+                float max = floatArray[0];
                 for (int i=1; i<s; i++) {
-                    min = Math.max(min, floatArray[i]);
+                    max = Math.max(max, floatArray[i]);
                 }
-                return min;
+                return instance(max);
             }
             if (array instanceof double[]) {
                 double[] doubleArray = (double[]) array;
@@ -234,11 +234,11 @@ public final class Float
                 if (s==0) {
                     return null;
                 }
-                double min = doubleArray[0];
+                double max = doubleArray[0];
                 for (int i=1; i<s; i++) {
-                    min = Math.max(min, doubleArray[i]);
+                    max = Math.max(max, doubleArray[i]);
                 }
-                return min;
+                return instance(max);
             }
         }
         
@@ -256,7 +256,7 @@ public final class Float
                 max += Math.max(max,
                         list.getFromFirst(i).value);
             }
-            return max;
+            return instance(max);
         }
         
         double max = Double.NaN;
