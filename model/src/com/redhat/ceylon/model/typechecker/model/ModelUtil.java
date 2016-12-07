@@ -1654,26 +1654,30 @@ public class ModelUtil {
             }
         }
         if (pd.isFinal()) {
-            if (pd.getTypeParameters().isEmpty() &&
-                    !q.involvesTypeParameters() &&
-                    !p.isSubtypeOf(q) &&
-                    !q.isUnknown()) {
-                return true;
+            if (pd.getTypeParameters().isEmpty() 
+                    && !q.isUnknown()) {
+                Type qq = replaceTypeParameters(q, unit);
+                if (!qq.involvesTypeParameters() 
+                        && !p.isSubtypeOf(qq)) {
+                    return true;
+                }
             }
-            if (q.isClassOrInterface() &&
-                    !pd.inherits(qd)) {
+            if (q.isClassOrInterface() 
+                    && !pd.inherits(qd)) {
                 return true;
             }
         }
-        if (qd.isFinal()) { 
-            if (qd.getTypeParameters().isEmpty() &&
-                    !p.involvesTypeParameters() &&
-                    !q.isSubtypeOf(p) &&
-                    !p.isUnknown()) {
-                return true;
+        if (qd.isFinal()) {
+            if (qd.getTypeParameters().isEmpty() 
+                    && !p.isUnknown()) {
+                Type pp = replaceTypeParameters(p, unit);
+                if (!pp.involvesTypeParameters() 
+                        && !q.isSubtypeOf(pp)) {
+                    return true;
+                }
             }
-            if (p.isClassOrInterface() &&
-                    !qd.inherits(pd)) {
+            if (p.isClassOrInterface() 
+                    && !qd.inherits(pd)) {
                 return true;
             }
         }
@@ -1740,6 +1744,45 @@ public class ModelUtil {
             }
         }
         return false;
+    }
+
+    private static Type replaceTypeParameters(Type type, Unit unit) {
+        if (type.isTypeConstructor()) {
+            return type;
+        }
+        Map<TypeParameter,Type> typeArgs = type.getTypeArguments();
+        if (typeArgs.isEmpty()) {
+            return type;
+        }
+        Map<TypeParameter,Type> resultArgs = null;
+        for (Map.Entry<TypeParameter,Type> e: typeArgs.entrySet()) {
+            Type arg = e.getValue();
+            if (arg.involvesTypeParameters()) {
+                TypeParameter tp = e.getKey();
+                if (resultArgs==null) {
+                    resultArgs = 
+                            new HashMap<TypeParameter,Type>
+                                (typeArgs);
+                }
+                if (tp.isCovariant()) {
+                    resultArgs.put(tp, unit.getAnythingType());
+                }
+                else if (tp.isContravariant()) {
+                    resultArgs.put(tp, unit.getNothingType());
+                }
+                //TODO invariant parameters using use-site variance
+            }
+        }
+        if (resultArgs == null) {
+            return type;
+        }
+        else {
+            Type result = new Type();
+            result.setDeclaration(type.getDeclaration());
+            result.setTypeArguments(resultArgs);
+            result.setVarianceOverrides(type.getVarianceOverrides());
+            return result;
+        }
     }
 
     /**
