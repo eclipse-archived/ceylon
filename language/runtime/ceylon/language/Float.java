@@ -181,7 +181,7 @@ public final class Float
             }
             double min = floats.getFromFirst(0).value;
             for (int i=1; i<size; i++) {
-                min += Math.min(min,
+                min = Math.min(min,
                         list.getFromFirst(i).value);
             }
             return instance(min);
@@ -253,7 +253,7 @@ public final class Float
             }
             double max = floats.getFromFirst(0).value;
             for (int i=1; i<size; i++) {
-                max += Math.max(max,
+                max = Math.max(max,
                         list.getFromFirst(i).value);
             }
             return instance(max);
