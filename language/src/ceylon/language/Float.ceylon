@@ -224,22 +224,22 @@ shared native final class Float
      
      For example:
      
-     - `formatFloat(1234.1234)` is `\"1234.1234\"`
-     - `formatFloat(0.1234)` is `\"0.1234\"`
-     - `formatFloat(1234.0)` is `\"1234.0\"`
-     - `formatFloat(1234.0,0)` is `\"1234\"`
-     - `formatFloat(1234.1234,6)` is `\"1234.123400\"`
-     - `formatFloat(1234.1234,0,2)` is `\"1234.12\"`
-     - `formatFloat(1234.123456,0,5)` is `\"1234.12346\"`
-     - `formatFloat(0.0001,2,2)` is `\"0.00\"`
-     - `formatFloat(0.0001,0,2)` is `\"0\"`
+     - `Float.format(1234.1234)` is `\"1234.1234\"`
+     - `Float.format(0.1234)` is `\"0.1234\"`
+     - `Float.format(1234.0)` is `\"1234.0\"`
+     - `Float.format(1234.0,0)` is `\"1234\"`
+     - `Float.format(1234.1234,6)` is `\"1234.123400\"`
+     - `Float.format(1234.1234,0,2)` is `\"1234.12\"`
+     - `Float.format(1234.123456,0,5)` is `\"1234.12346\"`
+     - `Float.format(0.0001,2,2)` is `\"0.00\"`
+     - `Float.format(0.0001,0,2)` is `\"0\"`
      
      Finally:
      
-     - `formatFloat(-0.0)` is `\"0.0\"`,
-     - `formatFloat(0.0/0)` is `\"NaN\"`,
-     - `formatFloat(1.0/0)` is `\"Infinity\"`, and
-     - `formatFloat(-1.0/0)` is `\"-Infinity\".`
+     - `Float.format(-0.0)` is `\"0.0\"`,
+     - `Float.format(0.0/0)` is `\"NaN\"`,
+     - `Float.format(1.0/0)` is `\"Infinity\"`, and
+     - `Float.format(-1.0/0)` is `\"-Infinity\".`
      
      This function never produces a representation involving 
      scientific notation."

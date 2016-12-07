@@ -192,11 +192,11 @@ shared native final class Integer
      
      For example:
      
-     - `formatInteger(-46)` is `\"-46\"`
-     - `formatInteger(9,2)` is `\"1001\"`
-     - `formatInteger(10,8)` is `\"12\"`
-     - `formatInteger(511,16)` is `\"1ff\"`
-     - `formatInteger(512,32)` is `\"g0\"`"
+     - `Integer.format(-46)` is `\"-46\"`
+     - `Integer.format(9,2)` is `\"1001\"`
+     - `Integer.format(10,8)` is `\"12\"`
+     - `Integer.format(511,16)` is `\"1ff\"`
+     - `Integer.format(512,32)` is `\"g0\"`"
     throws (`class AssertionError`, 
             "if [[radix]] is not between [[minRadix]] and 
              [[maxRadix]]")
