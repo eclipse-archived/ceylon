@@ -1607,6 +1607,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         TypeDeclaration dec = 
                 pt.resolveAliases()
                     .getDeclaration();
+        if (dec instanceof Constructor) {
+            dec = dec.getExtendedType()
+                    .getDeclaration();
+        }
         return dec instanceof Class &&
                 dec.equals(getJavaObjectArrayDeclaration());
     }
@@ -1615,6 +1619,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         TypeDeclaration dec = 
                 pt.resolveAliases()
                     .getDeclaration();
+        if (dec instanceof Constructor) {
+            dec = dec.getExtendedType()
+                    .getDeclaration();
+        }
         return dec instanceof Class &&
                 (dec.equals(getJavaIntArrayDeclaration()) ||
                 dec.equals(getJavaShortArrayDeclaration()) ||

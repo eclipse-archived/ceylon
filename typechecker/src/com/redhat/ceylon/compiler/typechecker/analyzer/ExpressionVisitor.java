@@ -5258,9 +5258,9 @@ public class ExpressionVisitor extends Visitor {
                     Interface rd = unit.getRangedDeclaration();
                     Type rst = pt.getSupertype(rd);
                     if (rst==null) {
-                        primary.addError("illegal receiving type for index range expression: '" +
-                                pt.getDeclaration().getName(unit) + 
-                                "' is not a subtype of 'Ranged'");
+                        primary.addError("illegal receiving type for index range expression: '" 
+                                + pt.getDeclaration().getName(unit) 
+                                + "' is not a subtype of 'Ranged'");
                     }
                     else {
                         List<Type> args = 
@@ -5383,11 +5383,10 @@ public class ExpressionVisitor extends Visitor {
         
         if (cst==null) {
             that.getPrimary()
-                .addError("illegal receiving type for index expression: '" +
-                        pt.getDeclaration()
-                            .getName(unit) + 
-                        "' is not a subtype of '" + superTypeName + "'" +
-                        (allowIndexedCorrespondenceMutator ? 
+                .addError("illegal receiving type for index expression: '" 
+                        + pt.getDeclaration().getName(unit) 
+                        + "' is not a subtype of '" + superTypeName + "'" 
+                        + (allowIndexedCorrespondenceMutator ? 
                                 " or 'IndexedCorrespondenceMutator'" : ""));
         }
         else {
