@@ -6,6 +6,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -211,7 +212,11 @@ public class MethodHandleUtil {
         } catch (NoSuchMethodException | IllegalAccessException e) {
             throw Metamodel.newModelError("Failed to filter parameter", e);
         }
-        return MethodHandles.filterArguments(method, filterIndex, filters);
+        try {
+            return MethodHandles.filterArguments(method, filterIndex, filters);
+        } catch (IllegalArgumentException e) {
+            throw e;
+        }
     }
 
     private static boolean isCeylonCharacter(Type producedType) {
@@ -400,6 +405,10 @@ public class MethodHandleUtil {
         Arrays.fill(ret, element);
         return ret;
     }
+    
+    public static byte[] byteArrayConstructor(ceylon.language.Iterable<? extends ceylon.language.Byte,? extends java.lang.Object> elements){
+        return Util.toByteArray(elements);
+    }
 
     public static short[] shortArrayConstructor(int size){
         return new short[size];
@@ -409,6 +418,10 @@ public class MethodHandleUtil {
         short[] ret = new short[size];
         Arrays.fill(ret, element);
         return ret;
+    }
+    
+    public static short[] shortArrayConstructor(ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> elements){
+        return Util.toShortArray(elements);
     }
 
     public static int[] intArrayConstructor(int size){
@@ -421,6 +434,10 @@ public class MethodHandleUtil {
         return ret;
     }
     
+    public static int[] intArrayConstructor(ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> elements){
+        return Util.toIntArray(elements);
+    }
+    
     public static long[] longArrayConstructor(int size){
         return new long[size];
     }
@@ -429,6 +446,10 @@ public class MethodHandleUtil {
         long[] ret = new long[size];
         Arrays.fill(ret, element);
         return ret;
+    }
+    
+    public static long[] longArrayConstructor(ceylon.language.Iterable<? extends ceylon.language.Integer,? extends java.lang.Object> elements){
+        return Util.toLongArray(elements);
     }
 
     public static float[] floatArrayConstructor(int size){
@@ -441,6 +462,10 @@ public class MethodHandleUtil {
         return ret;
     }
     
+    public static float[] floatArrayConstructor(ceylon.language.Iterable<? extends ceylon.language.Float,? extends java.lang.Object> elements){
+        return Util.toFloatArray(elements);
+    }
+    
     public static double[] doubleArrayConstructor(int size){
         return new double[size];
     }
@@ -449,6 +474,10 @@ public class MethodHandleUtil {
         double[] ret = new double[size];
         Arrays.fill(ret, element);
         return ret;
+    }
+    
+    public static double[] doubleArrayConstructor(ceylon.language.Iterable<? extends ceylon.language.Float,? extends java.lang.Object> elements){
+        return Util.toDoubleArray(elements);
     }
 
     public static char[] charArrayConstructor(int size){
@@ -461,6 +490,10 @@ public class MethodHandleUtil {
         return ret;
     }
     
+    public static char[] charArrayConstructor(ceylon.language.Iterable<? extends ceylon.language.Character,? extends java.lang.Object> elements){
+        return Util.toCharArray(elements);
+    }
+    
     public static boolean[] booleanArrayConstructor(int size){
         return new boolean[size];
     }
@@ -469,6 +502,10 @@ public class MethodHandleUtil {
         boolean[] ret = new boolean[size];
         Arrays.fill(ret, element);
         return ret;
+    }
+    
+    public static boolean[] booleanArrayConstructor(ceylon.language.Iterable<? extends ceylon.language.Boolean,? extends java.lang.Object> elements){
+        return Util.toBooleanArray(elements);
     }
 
     @SuppressWarnings("unchecked")
@@ -483,6 +520,11 @@ public class MethodHandleUtil {
         T[] ret = (T[]) java.lang.reflect.Array.newInstance(componentType, size);
         Arrays.fill(ret, element);
         return ret;
+    }
+    
+    public static <T> T[] objectArrayConstructor(@Ignore TypeDescriptor $reifiedT, ceylon.language.Iterable<? extends T,?> elements){
+        return (T[])Util.toArray((ceylon.language.Iterable)elements, ((TypeDescriptor.Class)$reifiedT).getKlass());
+        
     }
 
     public static MethodHandle getJavaArrayGetterMethodHandle(Class<?> arrayClass) {
@@ -547,5 +589,45 @@ public class MethodHandleUtil {
                 || (arrayClass == IntArray.class && getterName.equals("getCodePointArray")))
             return new Class<?>[]{arrayType};
         throw Metamodel.newModelError("No such property in Java array "+arrayClass+": "+getterName);
+    }
+    
+    public static Member setupArrayWithConstructor(Class<?> javaClass) {
+        String name = "???";
+        try {
+            Member result;
+            if (javaClass == LongArray.class) {
+                name = "longArrayConstructor";
+                result = MethodHandleUtil.class.getDeclaredMethod(name, ceylon.language.Iterable.class);
+            } else if (javaClass == IntArray.class) {
+                name = "intArrayConstructor";
+                result = MethodHandleUtil.class.getDeclaredMethod(name, ceylon.language.Iterable.class);
+            } else if (javaClass == ShortArray.class) {
+                name = "shortArrayConstructor";
+                result = MethodHandleUtil.class.getDeclaredMethod(name, ceylon.language.Iterable.class);
+            } else if (javaClass == FloatArray.class) {
+                name = "floatArrayConstructor";
+                result = MethodHandleUtil.class.getDeclaredMethod(name, ceylon.language.Iterable.class);
+            } else if (javaClass == DoubleArray.class) {
+                name = "doubleArrayConstructor";
+                result = MethodHandleUtil.class.getDeclaredMethod(name, ceylon.language.Iterable.class);
+            } else if (javaClass == BooleanArray.class) {
+                name = "booleanArrayConstructor";
+                result = MethodHandleUtil.class.getDeclaredMethod(name, ceylon.language.Iterable.class);
+            } else if (javaClass == ByteArray.class) {
+                name = "byteArrayConstructor";
+                result = MethodHandleUtil.class.getDeclaredMethod(name, ceylon.language.Iterable.class);
+            } else if (javaClass == CharArray.class) {
+                name = "charArrayConstructor";
+                result = MethodHandleUtil.class.getDeclaredMethod(name, ceylon.language.Iterable.class);
+            } else if (javaClass == ObjectArray.class) {
+                name = "objectArrayConstructor";
+                result = MethodHandleUtil.class.getDeclaredMethod(name, TypeDescriptor.class, ceylon.language.Iterable.class);
+            } else {
+                    throw Metamodel.newModelError("Array type not supported yet: "+javaClass);
+            }
+            return result;
+        } catch (NoSuchMethodException | SecurityException e) {
+            throw Metamodel.newModelError("Failed to find array method constructor "+name+" in MethodHandleUtil", e);
+        }
     }
 }

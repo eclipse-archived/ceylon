@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.IntArray;
+import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
 import com.redhat.ceylon.compiler.java.metadata.Jpa;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.CallableConstructorDeclarationImpl;
@@ -32,6 +34,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.model.Applicable;
 import ceylon.language.meta.model.ClassModel;
+import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.InvocationException;
 
 /**
@@ -97,12 +100,18 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
         java.lang.Class<?> javaClass = Metamodel.getJavaClass(freeClass.declaration);
         // FIXME: faster lookup with types? but then we have to deal with erasure and stuff
         Member found = null;
-        
+        Member[] defaultedMethods;
         if (freeConstructor != null && ModelUtil.isConstructor(freeConstructor.declaration)) {
-            namedConstructorDispatch(constructorReference, freeConstructor,
-                    javaClass); 
+            if(MethodHandleUtil.isJavaArray(javaClass)){
+                // *Array.with constructor
+                found =  MethodHandleUtil.setupArrayWithConstructor(javaClass);
+            } else {
+                namedConstructorDispatch(constructorReference, freeConstructor,
+                        javaClass); 
+            }
+            defaultedMethods = null;
         } else {
-            Member[] defaultedMethods = firstDefaulted != -1 ? new Member[dispatch.length] : null;
+            defaultedMethods = firstDefaulted != -1 ? new Member[dispatch.length] : null;
             if(MethodHandleUtil.isJavaArray(javaClass)){
                 found = MethodHandleUtil.setupArrayConstructor(javaClass, defaultedMethods);
             }else if(!javaClass.isMemberClass() 
@@ -130,43 +139,7 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
                 if (constructor == null) {
                     throw new NullPointerException();
                 }
-                /*
-                for(Constructor<?> constr : javaClass.getDeclaredConstructors()){
-                    if (constr.isAnnotationPresent(Name.class)){
-                        continue;
-                    }
-                    if(constr.isAnnotationPresent(Ignore.class)){
-                        // it's likely an overloaded constructor
-                        // FIXME: proper checks
-                        if(firstDefaulted != -1){
-                            Class<?>[] ptypes = constr.getParameterTypes();
-                            if (ptypes.length > 0 && ptypes[0].equals(com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$.class)) {
-                                // it was a serialization constructor, we're not interested in those.
-                                continue;
-                            }
-                            int implicitParameterCount = 0;
-                            if (MethodHandleUtil.isReifiedTypeSupported(constr, javaClass.isMemberClass())) { 
-                                implicitParameterCount += classDecl.getTypeParameters().size();
-                            }
-                            if (classDecl.isClassMember() && javaClass.isMemberClass() 
-                                    || classDecl.isInterfaceMember() && invokeOnCompanionInstance/*!declaration.constructor.isShared()* /) { 
-                                // non-shared member classes don't get instantiators, so there's the 
-                                // synthetic outerthis parameter to account for.
-                                implicitParameterCount++;
-                            }
-                            // this doesn't need to count synthetic parameters because we only use the constructor for Java types
-                            // which can't have defaulted parameters
-                            int params = constr.getParameterTypes().length - implicitParameterCount;
-                            defaultedMethods[params - firstDefaulted] = constr;
-                        }
-                        continue;
-                    }
-                    // FIXME: deal with private stuff?
-                    if(found != null){
-                        throw Metamodel.newModelError("More than one constructor found for: "+javaClass+", 1st: "+found+", 2nd: "+constr);
-                    }
-                    found = constr;
-                }*/
+                
             }else{
                 // find the MH for the primary instantiatorfor a 
                 // A ceylon member class
@@ -191,30 +164,8 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
                 if (constructor == null) {
                     throw new NullPointerException();
                 }
-                /*for(Method meth : outerJavaClass.getDeclaredMethods()){
-                    // FIXME: we need a better way to look things up: they're all @Ignore...
-    //                if(meth.isAnnotationPresent(Ignore.class))
-    //                    continue;
-                    if(!meth.getName().equals(builderName))
-                        continue;
-                    // FIXME: proper checks
-                    if(firstDefaulted != -1){
-                        int reifiedTypeParameterCount = MethodHandleUtil.isReifiedTypeSupported(meth, true) 
-                                ? classDecl.getTypeParameters().size() : 0;
-                        int params = meth.getParameterTypes().length - reifiedTypeParameterCount;
-                        if(params != parameters.size()){
-                            defaultedMethods[params - firstDefaulted] = meth;
-                            continue;
-                        }
-                    }
-    
-                    // FIXME: deal with private stuff?
-                    if(found != null){
-                        throw Metamodel.newModelError("More than one constructor method found for: "+javaClass+", 1st: "+found+", 2nd: "+meth);
-                    }
-                    found = meth;
-                }*/
             }
+        }
         
         if(found != null){
             // now find the overloads
@@ -254,7 +205,6 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
                         true);
                 dispatch[1] = constructor;
             }
-        }
         }
     }
     /*
@@ -529,6 +479,9 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
                 throw Metamodel.newModelError("Problem getting a MH for constructor for: "+javaClass, e);
             }
             reifiedTypeParameters = functionModel.getTypeParameters();
+            if(isJavaArray && "objectArrayConstructor".equals(foundMethod.getName())){
+                reifiedTypeParameters = ((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)((Declaration)functionModel).getContainer()).getTypeParameters();
+            }
             constructorModel = null;
         } else if (found instanceof java.lang.reflect.Constructor<?>) {
             com.redhat.ceylon.model.typechecker.model.Declaration functionOrConstructorModel = constructorReference.getDeclaration();
