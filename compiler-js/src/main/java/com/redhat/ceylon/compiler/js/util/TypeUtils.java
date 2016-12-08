@@ -678,6 +678,9 @@ public class TypeUtils {
     }
 
     public static boolean isSequential(Type pt) {
+        if (pt == null) {
+            return false;
+        }
         return pt.isClassOrInterface() && pt.getDeclaration().inherits(
                 pt.getDeclaration().getUnit().getSequentialDeclaration());
     }

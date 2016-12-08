@@ -146,7 +146,9 @@ public class InvocationGenerator {
             if (typeArgSource instanceof Tree.BaseMemberExpression) {
                 final Tree.BaseMemberExpression _bme = (Tree.BaseMemberExpression)typeArgSource;
                 if (gen.isInDynamicBlock()) {
-                    if (_bme.getDeclaration() == null) {
+                    if (_bme.getDeclaration() == null || _bme.getDeclaration().isDynamic()
+                            || (_bme.getDeclaration() instanceof TypedDeclaration &&
+                            ((TypedDeclaration)_bme.getDeclaration()).isDynamicallyTyped())) {
                         if (lastArg instanceof Tree.SpreadArgument &&
                                 (lastArg.getTypeModel() == null || lastArg.getTypeModel().isUnknown())) {
                             BmeGenerator.generateBme(_bme, gen);
@@ -492,10 +494,10 @@ public class InvocationGenerator {
                     gen.out(",");
                 }
                 if (isSpreadArg) {
-                    generateSpreadArgument(primary, that, args, (Tree.SpreadArgument)arg, expr, pd);
+                    generateSpreadArgument(primary, (Tree.SpreadArgument)arg, expr, pd);
                 } else {
                     arg.visit(gen);
-                    if (!arg.getTypeModel().isSequential()) {
+                    if (!arg.getTypeModel().isSequential() && !arg.getTypeModel().isUnknown()) {
                         gen.out(".sequence()");
                     }
                 }
@@ -560,8 +562,6 @@ public class InvocationGenerator {
     }
 
     private void generateSpreadArgument(final Tree.Primary primary,
-            final Tree.ArgumentList that,
-            final List<Tree.PositionalArgument> args,
             final Tree.SpreadArgument arg, Tree.Expression expr,
             final Parameter pd) {
         TypedDeclaration td = pd == null ? null : pd.getModel();
@@ -574,20 +574,22 @@ public class InvocationGenerator {
             TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen, false,
                     arg.getTypeModel().getVarianceOverrides());
         } else if (pd == null) {
+            final Declaration primDec = primary instanceof Tree.MemberOrTypeExpression ? ((Tree.MemberOrTypeExpression)primary).getDeclaration() : null;
             if (gen.isInDynamicBlock() && primary instanceof Tree.MemberOrTypeExpression
-                    && ((Tree.MemberOrTypeExpression)primary).getDeclaration() == null
+                    && (primDec == null || primDec.isDynamic() ||
+                    (primDec instanceof TypedDeclaration && ((TypedDeclaration)primDec).isDynamicallyTyped()))
                     && arg.getTypeModel() != null && arg.getTypeModel().getDeclaration().inherits((
-                            that.getUnit().getTupleDeclaration()))) {
+                            arg.getUnit().getTupleDeclaration()))) {
                 //Spread dynamic parameter
                 Type tupleType = arg.getTypeModel();
                 Type targ = tupleType.getTypeArgumentList().get(2);
                 arg.visit(gen);
                 gen.out(".$_get(0)");
                 int i = 1;
-                while (!targ.isSubtypeOf(that.getUnit().getEmptyType())) {
+                while (!targ.isSubtypeOf(arg.getUnit().getEmptyType())) {
                     gen.out(",");
                     arg.visit(gen);
-                    gen.out(".$_get("+(i++)+")");
+                    gen.out(".$_get(" + (i++) + ")");
                     targ = targ.getTypeArgumentList().get(2);
                 }
             } else {
@@ -598,21 +600,23 @@ public class InvocationGenerator {
             if (!TypeUtils.isSequential(arg.getTypeModel())) {
                 gen.out(".sequence()");
             }
-        } else if (!args.get(args.size()-1).getTypeModel().isEmpty()) {
+        } else if (!arg.getTypeModel().isEmpty()) {
             final String specialSpreadVar = gen.getNames().createTempVariable();
             gen.out("(", specialSpreadVar, "=");
-            args.get(args.size()-1).visit(gen);
-            if (TypeUtils.isSequential(args.get(args.size()-1).getTypeModel())) {
-                gen.out(",");
-            } else {
-                gen.out(".sequence(),");
+            arg.visit(gen);
+            final boolean unknownSpread = arg.getTypeModel().isUnknown();
+            final String get0 = unknownSpread ?"[":".$_get(";
+            final String get1 = unknownSpread ?"]":")";
+            if (!unknownSpread && !TypeUtils.isSequential(arg.getTypeModel())) {
+                gen.out(".sequence()");
             }
+            gen.out(",");
             if (pd.isDefaulted()) {
                 gen.out(gen.getClAlias(), "nn$(",
-                        specialSpreadVar, ".$_get(0))?", specialSpreadVar,
-                        ".$_get(0):undefined)");
+                        specialSpreadVar, get0, "0", get1, ")?", specialSpreadVar,
+                        get0, "0", get1, ":undefined)");
             } else {
-                gen.out(specialSpreadVar, ".$_get(0))");
+                gen.out(specialSpreadVar, get0, "0", get1, ")");
             }
             //Find out if there are more params
             final List<Parameter> moreParams;
@@ -637,7 +641,7 @@ public class InvocationGenerator {
                         final String cs=Integer.toString(c++);
                         if (restp.isDefaulted()) {
                             gen.out(",", gen.getClAlias(), "nn$(", specialSpreadVar,
-                                    ".$_get(", cs, "))?", specialSpreadVar, ".$_get(", cs, "):undefined");
+                                    get0, cs, get1, ")?", specialSpreadVar, get0, cs, get1, ":undefined");
                         } else if (restp.isSequenced()) {
                             if (c == 2) {
                                 gen.out(",", specialSpreadVar, ".rest");
@@ -645,7 +649,7 @@ public class InvocationGenerator {
                                 gen.out(",", specialSpreadVar, ".sublistFrom(", cs, ")");
                             }
                         } else {
-                            gen.out(",", specialSpreadVar, ".$_get(", cs, ")");
+                            gen.out(",", specialSpreadVar, get0, cs, get1);
                         }
                     } else {
                         found = restp.equals(pd);
