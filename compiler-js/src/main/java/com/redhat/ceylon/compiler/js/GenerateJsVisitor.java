@@ -2896,15 +2896,21 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     @Override public void visit(final Tree.AddAssignOp that) {
-        assignOp(that, "plus", null);
+        if (!arithmeticAssignOp(that, "+")) {
+            assignOp(that, "plus", null);
+        }
     }
 
     @Override public void visit(final Tree.SubtractAssignOp that) {
-        assignOp(that, "minus", null);
+        if (!arithmeticAssignOp(that, "-")) {
+            assignOp(that, "minus", null);
+        }
     }
 
     @Override public void visit(final Tree.MultiplyAssignOp that) {
-        assignOp(that, "times", null);
+        if (!arithmeticAssignOp(that, "*")) {
+            assignOp(that, "times", null);
+        }
     }
 
     @Override public void visit(final Tree.DivideAssignOp that) {
@@ -2912,7 +2918,9 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     @Override public void visit(final Tree.RemainderAssignOp that) {
-        assignOp(that, "remainder", null);
+        if (!arithmeticAssignOp(that, "%")) {
+            assignOp(that, "remainder", null);
+        }
     }
 
     public void visit(Tree.ComplementAssignOp that) {
@@ -2930,6 +2938,82 @@ public class GenerateJsVisitor extends Visitor {
     }
     public void visit(Tree.OrAssignOp that) {
         assignOp(that, "||", null);
+    }
+
+    private boolean arithmeticAssignOp(final Tree.AssignmentOp that, final String operand) {
+        final Term lhs = that.getLeftTerm();
+        final Type ltype = lhs.getTypeModel();
+        final Type rtype = that.getRightTerm().getTypeModel();
+        final boolean oneFloat = ltype.isFloat() || rtype.isFloat();
+        if (TypeUtils.intsOrFloats(ltype, rtype)) {
+            if (lhs instanceof BaseMemberExpression) {
+                BaseMemberExpression lhsBME = (BaseMemberExpression) lhs;
+                Declaration lhsDecl = lhsBME.getDeclaration();
+
+                final String getLHS = memberAccess(lhsBME, null);
+                out("(");
+                BmeGenerator.generateMemberAccess(lhsBME, new GenerateCallback() {
+                    @Override public void generateValue() {
+                        if (oneFloat) {
+                            out(getClAlias(), "Float(");
+                        }
+                        out(getLHS, operand);
+                        if (!isNaturalLiteral(that.getRightTerm())) {
+                            that.getRightTerm().visit(GenerateJsVisitor.this);
+                        }
+                        if (oneFloat) {
+                            out(")");
+                        }
+                    }
+                }, null, this);
+                if (!hasSimpleGetterSetter(lhsDecl)) { out(",", getLHS); }
+                out(")");
+
+            } else if (lhs instanceof QualifiedMemberExpression) {
+                QualifiedMemberExpression lhsQME = (QualifiedMemberExpression) lhs;
+                if (TypeUtils.isNativeJs(lhsQME)) {
+                    // ($1.foo = Box($1.foo).operator($2))
+                    final String tmp = names.createTempVariable();
+                    final String dec = isInDynamicBlock() && lhsQME.getDeclaration() == null ?
+                            lhsQME.getIdentifier().getText() : lhsQME.getDeclaration().getName();
+                    out("(", tmp, "=");
+                    lhsQME.getPrimary().visit(this);
+                    out(",", tmp, ".", dec, "=");
+                    int boxType = boxStart(lhsQME);
+                    out(tmp, ".", dec);
+                    if (boxType == 4) out("/*TODO: callable targs 8*/");
+                    boxUnboxEnd(boxType);
+                    out(operand);
+                    if (!isNaturalLiteral(that.getRightTerm())) {
+                        that.getRightTerm().visit(this);
+                    }
+                    out(")");
+                } else {
+                    final String lhsPrimaryVar = createRetainedTempVar();
+                    final String getLHS = memberAccess(lhsQME, lhsPrimaryVar);
+                    out("(", lhsPrimaryVar, "=");
+                    lhsQME.getPrimary().visit(this);
+                    out(",");
+                    BmeGenerator.generateMemberAccess(lhsQME, new GenerateCallback() {
+                        @Override public void generateValue() {
+                            out(getLHS, operand);
+                            if (!isNaturalLiteral(that.getRightTerm())) {
+                                that.getRightTerm().visit(GenerateJsVisitor.this);
+                            }
+                        }
+                    }, lhsPrimaryVar, this);
+
+                    if (!hasSimpleGetterSetter(lhsQME.getDeclaration())) {
+                        out(",", getLHS);
+                    }
+                    out(")");
+                }
+            } else if (lhs instanceof Tree.IndexExpression) {
+                lhs.addUnsupportedError("Index expressions are not supported in this kind of assignment.");
+            }
+            return true;
+        }
+        return false;
     }
 
     private void assignOp(final Tree.AssignmentOp that, final String functionName,
