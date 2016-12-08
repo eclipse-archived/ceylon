@@ -283,6 +283,12 @@ shared void issues() {
       check(dyn6810(4,5,*a6810)==15,"#6810.4");
       check(dyn6810(*b6810)==6, "#6810.5");
       check(dyn6810(4,5,*b6810)==15,"#6810.6");
+      void f6810_1(dynamic x, dynamic y) => check(x+y==3, "#6810 with void func, dynamic args");
+      dynamic f6810_2 = void (dynamic x, dynamic y) => check(x+y==3, "#6810 with dynamic ref to func");
+      f6810_1(*a6810);
+      f6810_1(*b6810);
+      f6810_2(*a6810);
+      f6810_2(*b6810);
     }
 }
 
