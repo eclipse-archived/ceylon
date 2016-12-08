@@ -62,7 +62,7 @@ public final class ObjectArray<T> implements ReifiedType {
             /**
              * The initial value of the array elements.
              */
-    		@TypeInfo("T|ceylon.language::Null") 
+    		@TypeInfo("T?") 
             @Defaulted @Name("element") 
             T element){
         throw Util.makeJavaArrayWrapperException();
@@ -104,7 +104,7 @@ public final class ObjectArray<T> implements ReifiedType {
             with_ $name$,
             @com.redhat.ceylon.common.NonNull
             @Name("elements")
-            @TypeInfo("{T*}")
+            @TypeInfo("{T?*}")
     final Iterable<? extends T, ? extends java.lang.Object> elements$param$) {
         throw Util.makeJavaArrayWrapperException();
     }
@@ -177,7 +177,7 @@ public final class ObjectArray<T> implements ReifiedType {
     /**
      * A view of this array as a Ceylon {@code Array<T>}.
      */
-    @TypeInfo("ceylon.language::Array<T|ceylon.language::Null>")
+    @TypeInfo("ceylon.language::Array<T?>")
     public ceylon.language.Array<T> getArray(){
         throw Util.makeJavaArrayWrapperException();
     }
@@ -328,7 +328,7 @@ public final class ObjectArray<T> implements ReifiedType {
      * A Ceylon {@code Iterable<T?>} containing the elements 
      * of this Java object array.
      */
-    @TypeInfo("ceylon.language::Iterable<T|ceylon.language::Null,ceylon.language::Null>")
+    @TypeInfo("{T?*}")
     public ceylon.language.Iterable<T,ceylon.language.Null> getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
