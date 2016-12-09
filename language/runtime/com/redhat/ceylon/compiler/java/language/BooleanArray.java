@@ -362,7 +362,7 @@ public final class BooleanArray implements ReifiedType {
      * A Ceylon {@code Iterable<ceylon.language.Boolean>} containing the 
      * elements of this primitive Java array.
      */
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Boolean,ceylon.language::Null>")
+    @TypeInfo("{ceylon.language::Boolean*}")
     public ceylon.language.Iterable<ceylon.language.Boolean,ceylon.language.Null> getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }

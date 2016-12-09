@@ -362,7 +362,7 @@ public final class LongArray implements ReifiedType {
      * A Ceylon {@code Iterable<ceylon.language.Integer>} containing the 
      * elements of this primitive Java array.
      */
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>")
+    @TypeInfo("{ceylon.language::Integer*}")
     public ceylon.language.Iterable<ceylon.language.Integer,ceylon.language.Null> getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
