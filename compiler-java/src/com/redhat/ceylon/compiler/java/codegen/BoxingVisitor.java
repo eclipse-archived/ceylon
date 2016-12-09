@@ -66,6 +66,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.WithinOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Interface;
@@ -243,6 +244,13 @@ public abstract class BoxingVisitor extends Visitor {
                     CodegenUtil.markTypeErased(that);
                     CodegenUtil.markUntrustedType(that);
                 }
+            }
+        }
+        if (that.getPrimary() instanceof Tree.MemberOrTypeExpression
+                && Decl.isConstructor(((Tree.MemberOrTypeExpression)that.getPrimary()).getDeclaration())) {
+            Constructor ctor = Decl.getConstructor(((Tree.MemberOrTypeExpression)that.getPrimary()).getDeclaration());
+            if (Decl.isJavaObjectArrayWith(ctor)) {
+                CodegenUtil.markTypeErased(that);
             }
         }
     }
