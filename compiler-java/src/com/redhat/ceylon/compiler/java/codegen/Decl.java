@@ -1147,4 +1147,21 @@ public class Decl {
         }
         return false;
     }
+
+    public static boolean isJavaArrayFrom(Declaration decl) {
+        if ("from".equals(decl.getName())) {
+            Unit unit = decl.getUnit();
+            Scope cls = decl.getContainer();
+            return unit.getJavaObjectArrayDeclaration().equals(cls)
+                    || unit.getJavaIntArrayDeclaration().equals(cls)
+                    || unit.getJavaLongArrayDeclaration().equals(cls)
+                    || unit.getJavaShortArrayDeclaration().equals(cls)
+                    || unit.getJavaDoubleArrayDeclaration().equals(cls)
+                    || unit.getJavaFloatArrayDeclaration().equals(cls)
+                    || unit.getJavaCharArrayDeclaration().equals(cls)
+                    || unit.getJavaByteArrayDeclaration().equals(cls)
+                    || unit.getJavaBooleanArrayDeclaration().equals(cls);
+        }
+        return false;
+    }
 }

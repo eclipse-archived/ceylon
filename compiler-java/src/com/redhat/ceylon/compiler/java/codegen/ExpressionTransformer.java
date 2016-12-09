@@ -5136,8 +5136,14 @@ public class ExpressionTransformer extends AbstractTransformer {
             final ParameterList parameterList) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
         if (methodOrClass instanceof Function) {
-            callBuilder.invoke(gen.naming.makeName(
-                    (Function)methodOrClass, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED));
+            JCExpression fn;
+            if (Decl.isJavaArrayFrom((Declaration)methodOrClass)) {
+                fn = gen.makeUnwrapArray((Declaration)methodOrClass);
+            } else {
+                fn = naming.makeName(
+                        (Function)methodOrClass, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED);
+            }
+            callBuilder.invoke(fn);
         } else if (methodOrClass instanceof Class) {
             callBuilder.instantiate(
                     gen.makeJavaType(((Class)methodOrClass).getType(), JT_RAW | JT_NO_PRIMITIVES));

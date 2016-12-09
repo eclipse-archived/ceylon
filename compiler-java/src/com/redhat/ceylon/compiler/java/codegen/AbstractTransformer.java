@@ -6272,5 +6272,30 @@ public abstract class AbstractTransformer implements Transformation {
     public boolean isJavaStrictfp(Declaration d) {
         return getEeVisitor().isJavaStrictfp(d);
     }
+    
+    JCExpression makeUnwrapArray(final Declaration methodOrClass) {
+        Scope javaArrayDecl = methodOrClass.getContainer();
+        String name;
+        if (javaArrayDecl.equals(typeFact().getJavaIntArrayDeclaration())) {
+            name = "com.redhat.ceylon.compiler.java.Util.unwrapIntArray";
+        } else if (javaArrayDecl.equals(typeFact().getJavaLongArrayDeclaration())) {
+            name = "com.redhat.ceylon.compiler.java.Util.unwrapLongArray";
+        } else if (javaArrayDecl.equals(typeFact().getJavaShortArrayDeclaration())) {
+            name = "com.redhat.ceylon.compiler.java.Util.unwrapShortArray";
+        } else if (javaArrayDecl.equals(typeFact().getJavaFloatArrayDeclaration())) {
+            name = "com.redhat.ceylon.compiler.java.Util.unwrapFloatArray";
+        } else if (javaArrayDecl.equals(typeFact().getJavaDoubleArrayDeclaration())) {
+            name = "com.redhat.ceylon.compiler.java.Util.unwrapDoubleArray";
+        } else if (javaArrayDecl.equals(typeFact().getJavaByteArrayDeclaration())) {
+            name = "com.redhat.ceylon.compiler.java.Util.unwrapByteArray";
+        } else if (javaArrayDecl.equals(typeFact().getJavaBooleanArrayDeclaration())) {
+            name = "com.redhat.ceylon.compiler.java.Util.unwrapBooleanArray";
+        } else if (javaArrayDecl.equals(typeFact().getJavaCharArrayDeclaration())) {
+            name = "com.redhat.ceylon.compiler.java.Util.unwrapCharArray";
+        } else {
+            name = "com.redhat.ceylon.compiler.java.Util.unwrapObjectArray";
+        }
+        return naming.makeQuotedQualIdentFromString(name);
+    }
 
 }

@@ -224,6 +224,11 @@ abstract class Invocation {
             
         if (Decl.isJavaStaticOrInterfacePrimary(getPrimary())) {
             Declaration methodOrClass = ((Tree.QualifiedMemberOrTypeExpression)getPrimary()).getDeclaration();
+            if (Decl.isJavaArrayFrom(methodOrClass)) {
+                JCExpression fn = gen.makeUnwrapArray(methodOrClass);
+                return new TransformedInvocationPrimary(
+                        fn, null);
+            }
             if (methodOrClass instanceof Function
                     && getQmePrimary() instanceof Tree.BaseTypeExpression) {
                 return new TransformedInvocationPrimary(gen.naming.makeName(
