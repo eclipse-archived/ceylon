@@ -991,4 +991,12 @@ public class InteropTests extends CompilerTests {
         compareWithJavaSource("ArrayWith");
         run("com.redhat.ceylon.compiler.java.test.interop.arrayWith");
     }
+    
+    @Test
+    @Ignore
+    public void testIopArrayFrom() {
+        //compareWithJavaSource("ArrayFrom");
+        compile("ArrayFrom.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.interop.arrayFrom");
+    }
 }
