@@ -77,6 +77,25 @@ class ArrayWith() {
         ObjectArray<Integer> integerArray = ObjectArray<Integer>.with({1, 2, 3});
     }
     
+    shared void named() {
+        LongArray emptyLongArray = LongArray.with{elements={};};
+        LongArray longArray = LongArray.with{elements={1, 2, 3};};
+        IntArray intArray = IntArray.with{elements={1, 2, 3};};
+        ShortArray shortArray = ShortArray.with{elements={1, 2, 3};};
+        
+        ByteArray byteArray = ByteArray.with{elements={1.byte, 2.byte, 3.byte};};
+        
+        BooleanArray booleanArray = BooleanArray.with{elements={true, false, true};};
+        
+        FloatArray floatArray = FloatArray.with{elements={1.0, 2.0, 3.0};};
+        DoubleArray doubleArray = DoubleArray.with{elements={1.0, 2.0, 3.0};};
+        
+        CharArray charArray = CharArray.with{elements={'a', 'b', 'c'};};
+        
+        ObjectArray<Object> objArray = ObjectArray<Object>.with{elements={true, "", 1};};
+        ObjectArray<Integer> integerArray = ObjectArray<Integer>.with{elements={1, 2, 3};};
+    }
+    
     shared void enumeratedElements() {
         LongArray emptyLongArray = LongArray.with{};
         LongArray longArray = LongArray.with{1, 2, 3};
@@ -94,6 +113,9 @@ class ArrayWith() {
         
         ObjectArray<Object> objArray = ObjectArray<Object>.with{true, "", 1};
         ObjectArray<Integer> integerArray = ObjectArray<Integer>.with{1, 2, 3};
+        
+        void setIt(ObjectArray<Integer> arr) {}
+        setIt(ObjectArray.with{1, 2, 3});
     }
     
     shared void spread() {
@@ -130,6 +152,7 @@ class ArrayWith() {
 void arrayWith() {
     value aw = ArrayWith();
     aw.positional();
+    aw.named();
     aw.enumeratedElements();
     aw.spread();
     aw.ref();
