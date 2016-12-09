@@ -4,6 +4,7 @@ import ceylon.language.Array;
 import ceylon.language.AssertionError;
 import ceylon.language.Iterable;
 
+import com.redhat.ceylon.common.NonNull;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -106,6 +107,22 @@ public final class ObjectArray<T> implements ReifiedType {
             @Name("elements")
             @TypeInfo("{T?*}")
     final Iterable<? extends T, ? extends java.lang.Object> elements$param$) {
+        throw Util.makeJavaArrayWrapperException();
+    }
+    
+    @ceylon.language.SharedAnnotation$annotation$
+    @ceylon.language.StaticAnnotation$annotation$
+    @com.redhat.ceylon.common.NonNull
+    @com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.language::ObjectArray<T>")
+    @com.redhat.ceylon.compiler.java.metadata.TypeParameters({@com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T")})
+    public static final <T>ObjectArray<T> from(
+            @com.redhat.ceylon.compiler.java.metadata.Ignore
+            final TypeDescriptor $reified$T, 
+            @com.redhat.ceylon.compiler.java.metadata.Name("array")
+            @com.redhat.ceylon.common.NonNull
+            @com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Array<T?>")
+            final ceylon.language.Array<T> array) {
         throw Util.makeJavaArrayWrapperException();
     }
     

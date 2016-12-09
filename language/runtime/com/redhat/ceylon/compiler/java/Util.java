@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
+import ceylon.language.Array;
 import ceylon.language.ArraySequence;
 import ceylon.language.AssertionError;
 import ceylon.language.Callable;
@@ -2289,5 +2290,89 @@ public class Util {
             message += System.lineSeparator()+"\t\tright-hand expression has type " + rightType;
         }
         return message;
+    }
+    
+    public static long[] unwrapLongArray(Object array) {
+        Object a = ((Array)array).toArray();
+        if (a instanceof long[]) {
+            return (long[])a;
+        } else {
+            throw new ceylon.language.AssertionError("unexpected array "+a.getClass().getComponentType().getName()+"[]");
+        }
+    }
+    
+    public static int[] unwrapIntArray(Object array) {
+        Object a = ((Array)array).toArray();
+        if (a instanceof int[]) {
+            return (int[])a;
+        } else {
+            throw new ceylon.language.AssertionError("unexpected array "+a.getClass().getComponentType().getName()+"[]");
+        }
+    }
+    
+    public static short[] unwrapShortArray(Array<? extends java.lang.Short> array) {
+        Object a = array.toArray();
+        if (a instanceof short[]) {
+            return (short[])a;
+        } else {
+            throw new ceylon.language.AssertionError("unexpected array "+a.getClass().getComponentType().getName()+"[]");
+        }
+    }
+    
+    public static double[] unwrapDoubleArray(Object array) {
+        Object a = ((Array)array).toArray();
+        if (a instanceof double[]) {
+            return (double[])a;
+        } else {
+            throw new ceylon.language.AssertionError("unexpected array "+a.getClass().getComponentType().getName()+"[]");
+        }
+    }
+    
+    public static float[] unwrapFloatArray(Array<? extends java.lang.Float> array) {
+        Object a = array.toArray();
+        if (a instanceof float[]) {
+            return (float[])a;
+        } else {
+            throw new ceylon.language.AssertionError("unexpected array "+a.getClass().getComponentType().getName()+"[]");
+        }
+    }
+    
+    public static char[] unwrapCharArray(Object array) {
+        Object a = ((Array)array).toArray();
+        if (a instanceof char[]) {
+            return (char[])a;
+        } else {
+            throw new ceylon.language.AssertionError("unexpected array "+a.getClass().getComponentType().getName()+"[]");
+        }
+    }
+
+    public static byte[] unwrapByteArray(Object array) {
+        Object a = ((Array)array).toArray();
+        if (a instanceof byte[]) {
+            return (byte[])a;
+        } else {
+            throw new ceylon.language.AssertionError("unexpected array "+a.getClass().getComponentType().getName()+"[]");
+        }
+    }
+
+    public static boolean[] unwrapBooleanArray(Object array) {
+        Object a = ((Array)array).toArray();
+        if (a instanceof boolean[]) {
+            return (boolean[])a;
+        } else {
+            throw new ceylon.language.AssertionError("unexpected array "+a.getClass().getComponentType().getName()+"[]");
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T,WTF> T[] unwrapObjectArray(
+            @SuppressWarnings("unused") TypeDescriptor $reified$T, 
+            @SuppressWarnings("unused") TypeDescriptor $reified$WTF, Array<T> array) {
+        Object a = array.toArray();
+        if (a instanceof Object[]) {
+            return (T[])a;
+        }
+        throw new ceylon.language.AssertionError("unexpected array "+a.getClass().getComponentType().getName()+"[] with type "+ $reified$T);
+        
     }
 }

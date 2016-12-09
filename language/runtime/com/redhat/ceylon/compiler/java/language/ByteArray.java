@@ -118,6 +118,10 @@ public final class ByteArray implements ReifiedType {
         private with_() {}
     };
     
+    /**
+     * Synthetic constructor for creating an array with the same elements
+     * as the given iterable
+     */
     @ceylon.language.SharedAnnotation$annotation$
     @com.redhat.ceylon.compiler.java.metadata.Name("with")
     public ByteArray(
@@ -129,6 +133,43 @@ public final class ByteArray implements ReifiedType {
             final Iterable<? extends ceylon.language.Byte, ? extends java.lang.Object> elements$param$) {
         throw Util.makeJavaArrayWrapperException();
     }
+    
+    /*
+    @Ignore
+    public final static from_ from_ = null;
+    
+    @Ignore
+    @com.redhat.ceylon.compiler.java.metadata.ConstructorName("from")
+    public static final class from_ {
+        private from_() {}
+    };
+    
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.compiler.java.metadata.Name("from")
+    public ByteArray(
+            @Ignore
+            from_ $name$,
+            @com.redhat.ceylon.common.NonNull
+            @Name("array")
+            @TypeInfo("{ceylon.language::Byte*}")
+            final Array<? extends ceylon.language.Byte> array$param$) {
+        throw Util.makeJavaArrayWrapperException();
+    }*/
+    
+    /**
+     * Synthetic method for unwrapping the array backing a {@code ceylon.language::Array}
+     */
+    @ceylon.language.SharedAnnotation$annotation$
+    @ceylon.language.StaticAnnotation$annotation$
+    @com.redhat.ceylon.common.NonNull
+    @TypeInfo("com.redhat.ceylon.compiler.java.language::ByteArray")
+    @com.redhat.ceylon.compiler.java.metadata.Name("from")
+    public static final ByteArray from(@com.redhat.ceylon.common.NonNull
+            @Name("array")
+            @TypeInfo("ceylon.language::Array<java.lang::Byte>|ceylon.language::Array<ceylon.language::Byte>")
+            final ceylon.language.Array array$param$) {
+        throw Util.makeJavaArrayWrapperException();
+    } 
 
     /**
      * Get the element with the given {@code index}.

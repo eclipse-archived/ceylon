@@ -235,6 +235,9 @@
             <filter token="JavaBoxedType" value="java.lang.Short"/>
             <filter token="JavaBoxedTypeName" value="java.lang::Short"/>
             
+            <filter token="ArrayFromJavaType" value="ceylon.language.Array&lt;? extends java.lang.Short&gt;"/>
+            <filter token="ArrayFromCeylonType" value="ceylon.language::Array&lt;java.lang::Short&gt;"/>
+            
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value="/*"/>
             <filter token="OptionalEnd" value="*/"/>
@@ -260,6 +263,9 @@
             <filter token="JavaBoxedType" value="java.lang.Integer"/>
             <filter token="JavaBoxedTypeName" value="java.lang::Integer"/>
             
+            <filter token="ArrayFromJavaType" value="ceylon.language.Array"/>
+            <filter token="ArrayFromCeylonType" value="ceylon.language::Array&lt;java.lang::Integer&gt;|ceylon.language::Array&lt;ceylon.language::Character&gt;"/>
+            
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value=""/>
             <filter token="OptionalEnd" value=""/>
@@ -284,6 +290,9 @@
             <filter token="JavaBoxedType" value="java.lang.Long"/>
             <filter token="JavaBoxedTypeName" value="java.lang::Long"/>
             
+            <filter token="ArrayFromJavaType" value="ceylon.language.Array"/>
+            <filter token="ArrayFromCeylonType" value="ceylon.language::Array&lt;java.lang::Long&gt;|ceylon.language::Array&lt;ceylon.language::Integer&gt;"/>
+            
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value=""/>
             <filter token="OptionalEnd" value=""/>
@@ -306,6 +315,10 @@
             <filter token="BoxedTypeName" value="ceylon.language::Byte"/>
             <filter token="JavaBoxedType" value="java.lang.Byte"/>
             <filter token="JavaBoxedTypeName" value="java.lang::Byte"/>
+            
+            <filter token="ArrayFromJavaType" value="ceylon.language.Array"/>
+            <filter token="ArrayFromCeylonType" value="ceylon.language::Array&lt;java.lang::Byte&gt;|ceylon.language::Array&lt;ceylon.language::Byte&gt;"/>
+            
             <filter token="UnboxMethod" value="byteValue"/>
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value=""/>
@@ -329,6 +342,10 @@
             <filter token="BoxedTypeName" value="ceylon.language::Boolean"/>
             <filter token="JavaBoxedType" value="java.lang.Boolean"/>
             <filter token="JavaBoxedTypeName" value="java.lang::Boolean"/>
+            
+            <filter token="ArrayFromJavaType" value="ceylon.language.Array"/>
+            <filter token="ArrayFromCeylonType" value="ceylon.language::Array&lt;java.lang::Boolean&gt;|ceylon.language::Array&lt;ceylon.language::Boolean&gt;"/>
+            
             <filter token="UnboxMethod" value="booleanValue"/>
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value=""/>
@@ -352,6 +369,10 @@
             <filter token="BoxedTypeName" value="ceylon.language::Character"/>
             <filter token="JavaBoxedType" value="java.lang.Character"/>
             <filter token="JavaBoxedTypeName" value="java.lang::Character"/>
+            
+            <filter token="ArrayFromJavaType" value="ceylon.language.Array&lt;? extends java.lang.Character&gt;"/>
+            <filter token="ArrayFromCeylonType" value="ceylon.language::Array&lt;java.lang::Character&gt;"/>
+            
             <filter token="UnboxMethod" value="intValue"/>
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value="/*"/>
@@ -374,6 +395,10 @@
             <filter token="JavaBoxedType" value="java.lang.Float"/>
             <filter token="JavaBoxedTypeName" value="java.lang::Float"/>
             <filter token="UnboxMethod" value="doubleValue"/>
+            
+            <filter token="ArrayFromJavaType" value="ceylon.language.Array&lt;? extends java.lang.Float&gt;"/>
+            <filter token="ArrayFromCeylonType" value="ceylon.language::Array&lt;java.lang::Float&gt;"/>
+            
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value="/*"/>
             <filter token="OptionalEnd" value="*/"/>
@@ -396,6 +421,10 @@
             <filter token="BoxedTypeName" value="ceylon.language::Float"/>
             <filter token="JavaBoxedType" value="java.lang.Double"/>
             <filter token="JavaBoxedTypeName" value="java.lang::Double"/>
+
+            <filter token="ArrayFromJavaType" value="ceylon.language.Array"/>
+            <filter token="ArrayFromCeylonType" value="ceylon.language::Array&lt;java.lang::Double&gt;|ceylon.language::Array&lt;ceylon.language::Float&gt;"/>
+            
             <filter token="UnboxMethod" value="doubleValue"/>
             <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
             <filter token="OptionalStart" value=""/>
