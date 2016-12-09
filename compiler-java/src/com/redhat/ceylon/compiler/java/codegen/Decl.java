@@ -1156,6 +1156,15 @@ public class Decl {
         }
         return false;
     }
+    
+    public static boolean isJavaObjectArrayWith(Constructor ctor) {
+        if ("with".equals(ctor.getName())) {
+            Unit unit = ctor.getUnit();
+            Scope cls = ctor.getContainer();
+            return unit.getJavaObjectArrayDeclaration().equals(cls);
+        }
+        return false;
+    }
 
     public static boolean isJavaArrayFrom(Declaration decl) {
         if (decl.isClassMember() && "from".equals(decl.getName())) {
