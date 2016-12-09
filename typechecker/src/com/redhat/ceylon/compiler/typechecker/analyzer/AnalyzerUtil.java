@@ -734,6 +734,11 @@ public class AnalyzerUtil {
             addTypeUnknownError(node, type, message);
             return null;
         }
+        else if (type.isNothing()) {
+            node.addError(message + 
+                    ": operand has type `Nothing`");
+            return null;
+        }
         else {
             Type supertype = type.getSupertype(td);
             if (supertype==null) {
