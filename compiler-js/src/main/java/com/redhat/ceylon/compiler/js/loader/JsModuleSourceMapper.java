@@ -168,7 +168,7 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
             if ("npm".equals(artifact.namespace())) {
                 try {
                     final File root = ((AbstractRepository)artifact.repository()).getRoot().getContent(File.class);
-                    final String npmPath = artifact.artifact().getAbsolutePath();
+                    final String npmPath = artifact.artifact().getAbsolutePath().replace(File.separator, "/");
                     ((JsonModule)module).setNpmPath(npmPath.substring(root.getAbsolutePath().length()+1));
                     module.setJsMajor(Versions.JS_BINARY_MAJOR_VERSION);
                     module.setJsMinor(Versions.JS_BINARY_MINOR_VERSION);
