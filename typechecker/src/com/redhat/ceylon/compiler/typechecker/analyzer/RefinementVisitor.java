@@ -86,7 +86,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  *
  */
 public class RefinementVisitor extends Visitor {
-        
+    
     @Override
     public void visit(Tree.AnyMethod that) {
         super.visit(that);
@@ -1602,26 +1602,43 @@ public class RefinementVisitor extends Visitor {
                 refinedParams.getParameters();
         if (paramsList.size()!=refinedParamsList.size()) {
            handleWrongParameterListLength(that, 
-                   member, refinedMember, forNative);
+                   member, refinedMember, forNative,
+                   pl);
         }
         else {
             for (int i=0; i<paramsList.size(); i++) {
                 Parameter rparam = refinedParamsList.get(i);
                 Parameter param = paramsList.get(i);
+                Tree.Parameter parameter = 
+                        pl.getParameters().get(i);
                 if (forNative &&
                         !param.getName().equals(rparam.getName())) {
-                    that.addError("parameter does not have the same name as its header: '"
+                    parameter.addError("parameter does not have the same name as its header: '"
                             + param.getName() + "' is not '" + rparam.getName() + "' for "
                             + message(refinedMember.getDeclaration()));
                 }
+                /*if (rparam.isSequenced() && !param.isSequenced()) {
+                    parameter.addError("parameter must be variadic: parameter '" 
+                            + rparam.getName()
+                            + "' of "
+                            + (forNative ? "native header " : "refined member ")
+                            + message(refinedMember.getDeclaration()) 
+                            + " is variadic");
+                }
+                if (!rparam.isSequenced() && param.isSequenced()) {
+                    parameter.addError("parameter may not be variadic: parameter '" 
+                            + rparam.getName()
+                            + "' of "
+                            + (forNative ? "native header " : "refined member ")
+                            + message(refinedMember.getDeclaration()) 
+                            + " is not variadic");
+                }*/
                 Type refinedParameterType = 
                         refinedMember.getTypedParameter(rparam)
                                 .getFullType();
                 Type parameterType = 
                         member.getTypedParameter(param)
                                 .getFullType();
-                Tree.Parameter parameter = 
-                        pl.getParameters().get(i);
                 Node typeNode = parameter;
                 if (parameter instanceof Tree.ParameterDeclaration) {
                     Tree.ParameterDeclaration pd = 
@@ -1687,7 +1704,8 @@ public class RefinementVisitor extends Visitor {
             Tree.Declaration that,
             Reference member, 
             Reference refinedMember,
-            boolean forNative) {
+            boolean forNative, 
+            Tree.ParameterList paramList) {
         StringBuilder message = new StringBuilder();
         String subject = 
                 forNative ? 
@@ -1707,7 +1725,7 @@ public class RefinementVisitor extends Visitor {
                     .append(containerName(refinedMember))
                     .append("'");
         }
-        that.addError(message.toString(), 9100);
+        paramList.addError(message.toString(), 9100);
     }
 
     private static void checkRefiningParameterType(

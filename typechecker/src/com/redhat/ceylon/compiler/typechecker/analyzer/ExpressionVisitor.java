@@ -1706,28 +1706,31 @@ public class ExpressionVisitor extends Visitor {
                             refinedProducedReference
                             .getTypedParameter(refinedParameter)
                             .getFullType();
+                    Parameter parameter;
                     if (parameterList==null || 
                             parameterList.getParameters().size()<=j) {
-                        Parameter p = 
+                        parameter = 
                                 parameters.getParameters()
                                     .get(j);
-                        p.getModel().setType(refinedParameterType);
+                        parameter.getModel()
+                            .setType(refinedParameterType);
+                        parameter.setSequenced(refinedParameter.isSequenced());
                     }
                     else {
-                        Tree.Parameter parameter = 
+                        Tree.Parameter param = 
                                 parameterList.getParameters()
                                     .get(j);
-                        Parameter p = 
-                                parameter.getParameterModel();
+                        parameter = 
+                                param.getParameterModel();
                         Type parameterType = 
-                                p.getModel()
+                                parameter.getModel()
                                     .getTypedReference()
                                     .getFullType();
-                        Node typeNode = parameter;
-                        if (parameter instanceof Tree.ParameterDeclaration) {
+                        Node typeNode = param;
+                        if (param instanceof Tree.ParameterDeclaration) {
                             Tree.ParameterDeclaration pd = 
                                     (Tree.ParameterDeclaration) 
-                                        parameter;
+                                        param;
                             Tree.Type type = 
                                     pd.getTypedDeclaration()
                                         .getType();
@@ -1740,18 +1743,35 @@ public class ExpressionVisitor extends Visitor {
                                 parameterType, 
                                 refinedParameterType, 
                                 typeNode, 
-                                "type of parameter '" + p.getName() + 
-                                "' of '" + method.getName() + 
-                                "' declared by '" + ci.getName() +
-                                "' is different to type of corresponding parameter '" +
-                                refinedParameter.getName() + "' of refined method '" + 
-                                refinedMethod.getName() + "' of '" + 
-                                ((Declaration) refinedMethod.getContainer()).getName() + 
-                                "'");
+                                "type of parameter '" + parameter.getName() 
+                                + "' of '" + method.getName() 
+                                + "' declared by '" + ci.getName() 
+                                + "' is different to type of corresponding parameter " 
+                                + message(refinedMethod, refinedParameter));
+                        /*if (refinedParameter.isSequenced() && !parameter.isSequenced()) {
+                            param.addError("parameter must be variadic: parameter " 
+                                    + message(refinedMethod, refinedParameter)
+                                    + " is variadic");
+                        }
+                        if (!refinedParameter.isSequenced() && parameter.isSequenced()) {
+                            param.addError("parameter may not be variadic: parameter " 
+                                    + message(refinedMethod, refinedParameter)
+                                    + " is not variadic");
+                        }*/
                     }
                 }
             }
         }
+    }
+
+    private String message(Function fun, Parameter param) {
+        return "'" 
+                + param.getName() 
+                + "' of refined method '" 
+                + fun.getName() 
+                + "' of '" 
+                + ((Declaration) fun.getContainer()).getName() 
+                + "'";
     }
 
     private Reference accountForIntermediateRefinements(

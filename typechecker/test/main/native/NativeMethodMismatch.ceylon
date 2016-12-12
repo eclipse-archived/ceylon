@@ -41,7 +41,7 @@ native void nativeMethodMismatch3(Integer i);
     throw Exception("NativeMethodMismatch-JVM");
 }
 
-@error native("js") void nativeMethodMismatch3(@error String s) {
+native("js") void nativeMethodMismatch3(@error String s) {
     throw Exception("NativeMethodMismatch-JS");
 }
 
