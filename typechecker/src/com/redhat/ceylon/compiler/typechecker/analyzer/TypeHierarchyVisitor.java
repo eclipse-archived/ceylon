@@ -402,9 +402,17 @@ public class TypeHierarchyVisitor extends Visitor {
                                 example.getContainer();
                     if (!clazz.equals(declaringType)) {
                         addUnimplementedFormal(clazz, example);
-                        that.addError("formal member '" + example.getName() + 
-                                "' of '" + declaringType.getName() +
-                                "' not implemented in class hierarchy", 300);
+                        String name = example.getName();
+                        that.addError("formal member '"
+                                + name + "' of '"
+                                + declaringType.getName()
+                                + "' not implemented for concrete class '"
+                                + clazz.getName()
+                                + "': '"
+                                + clazz.getName()
+                                + "' neither directly implements nor inherits a concrete implementation of '"
+                                + name + "'",
+                                300);
                         continue;
                     }
                 }
