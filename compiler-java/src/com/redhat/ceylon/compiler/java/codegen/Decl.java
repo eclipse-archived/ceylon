@@ -1136,14 +1136,14 @@ public class Decl {
             Unit unit = ctor.getUnit();
             Scope cls = ctor.getContainer();
             return unit.getJavaObjectArrayDeclaration().equals(cls)
-                    || unit.getJavaIntArrayDeclaration().equals(cls)
-                    || unit.getJavaLongArrayDeclaration().equals(cls)
-                    || unit.getJavaShortArrayDeclaration().equals(cls)
-                    || unit.getJavaDoubleArrayDeclaration().equals(cls)
-                    || unit.getJavaFloatArrayDeclaration().equals(cls)
-                    || unit.getJavaCharArrayDeclaration().equals(cls)
-                    || unit.getJavaByteArrayDeclaration().equals(cls)
-                    || unit.getJavaBooleanArrayDeclaration().equals(cls);
+                || unit.getJavaIntArrayDeclaration().equals(cls)
+                || unit.getJavaLongArrayDeclaration().equals(cls)
+                || unit.getJavaShortArrayDeclaration().equals(cls)
+                || unit.getJavaDoubleArrayDeclaration().equals(cls)
+                || unit.getJavaFloatArrayDeclaration().equals(cls)
+                || unit.getJavaCharArrayDeclaration().equals(cls)
+                || unit.getJavaByteArrayDeclaration().equals(cls)
+                || unit.getJavaBooleanArrayDeclaration().equals(cls);
         }
         return false;
     }
@@ -1162,14 +1162,14 @@ public class Decl {
             Unit unit = decl.getUnit();
             Scope cls = decl.getContainer();
             return unit.getJavaObjectArrayDeclaration().equals(cls)
-                    || unit.getJavaIntArrayDeclaration().equals(cls)
-                    || unit.getJavaLongArrayDeclaration().equals(cls)
-                    || unit.getJavaShortArrayDeclaration().equals(cls)
-                    || unit.getJavaDoubleArrayDeclaration().equals(cls)
-                    || unit.getJavaFloatArrayDeclaration().equals(cls)
-                    || unit.getJavaCharArrayDeclaration().equals(cls)
-                    || unit.getJavaByteArrayDeclaration().equals(cls)
-                    || unit.getJavaBooleanArrayDeclaration().equals(cls);
+                || unit.getJavaIntArrayDeclaration().equals(cls)
+                || unit.getJavaLongArrayDeclaration().equals(cls)
+                || unit.getJavaShortArrayDeclaration().equals(cls)
+                || unit.getJavaDoubleArrayDeclaration().equals(cls)
+                || unit.getJavaFloatArrayDeclaration().equals(cls)
+                || unit.getJavaCharArrayDeclaration().equals(cls)
+                || unit.getJavaByteArrayDeclaration().equals(cls)
+                || unit.getJavaBooleanArrayDeclaration().equals(cls);
         }
         return false;
     }
