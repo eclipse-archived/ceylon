@@ -158,3 +158,11 @@ function variadicness(t) {
   }
   return 0;
 }
+//For lazy iterables from an array of literals
+//"literal array for iterable"
+function $lai$(a){
+  return function(i){
+    return i<a.length?a[i]:finished();
+  }
+}
+ex$.$lai$=$lai$;

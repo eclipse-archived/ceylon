@@ -66,7 +66,7 @@ public class SequenceGenerator {
             } else if (that.getTypeModel().isSequential()) {
                 gen.out(gen.getClAlias(), "$arr$sa$([");
             } else {
-                gen.out(gen.getClAlias(), "$arr$([");
+                gen.out(gen.getClAlias(), "sarg$(", gen.getClAlias(), "$lai$([");
                 wantsIter = true;
             }
             int count=0;
@@ -165,7 +165,11 @@ public class SequenceGenerator {
     /** Closes a native array and invokes reifyCeylonType (rt$) with the specified type parameters. */
     static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,Type> types,
             final GenerateJsVisitor gen, final boolean wantsIterable) {
-        gen.out("],");
+        if (wantsIterable) {
+            gen.out("]),undefined,{Element$Iterable:");
+        } else {
+            gen.out("],");
+        }
         boolean nonempty=false;
         Type elem = null;
         for (Map.Entry<TypeParameter,Type> e : types.entrySet()) {
@@ -181,6 +185,11 @@ public class SequenceGenerator {
             elem = that.getUnit().getAnythingType();
         }
         TypeUtils.typeNameOrList(that, elem, gen, false);
+        if (wantsIterable) {
+            gen.out(",Absent$Iterable:{t:", gen.getClAlias(),
+                    nonempty?"Nothing}}":"Null}}");
+
+        }
         if (nonempty) {
             gen.out(",1");
         }
