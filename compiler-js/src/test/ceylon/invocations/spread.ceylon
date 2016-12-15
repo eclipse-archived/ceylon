@@ -84,11 +84,11 @@ void testSpread() {
   value smrst2=pad("x")(3,*param);
   check(smrst2=="..x", "static method ref spread 2 expected ..x got ``smrst2``");
   value issue367={"hello","world"}.spread(String.padTrailing)(6,'!');
-  check(issue367.sequence()=={"hello!","world!"}, "Issue 367 #1");
-  check(ints.spread(test367_1)(1,2,3).sequence()=={6,6,6}, "Issue 367 #2");
-  check(ints.spread(test367_2)({1,2,3}).sequence()=={6,6,6}, "Issue 367 #3");
-  check(ints.spread(test367_3)(3,3).sequence()=={6,6,6}, "Issue 367 #4");
-  check(ints.spread(test367_4)(3,3).sequence()=={6,6,6}, "Issue 367 #5");
+  check(issue367.sequence()==["hello!","world!"], "Issue 367 #1");
+  check(ints.spread(test367_1)(1,2,3).sequence()==[6,6,6], "Issue 367 #2");
+  check(ints.spread(test367_2)({1,2,3}).sequence()==[6,6,6], "Issue 367 #3");
+  check(ints.spread(test367_3)(3,3).sequence()==[6,6,6], "Issue 367 #4");
+  check(ints.spread(test367_4)(3,3).sequence()==[6,6,6], "Issue 367 #5");
   //#436
   value i436=[[1],[2]]*.map<Integer>;
   value r436=i436(42.plus);

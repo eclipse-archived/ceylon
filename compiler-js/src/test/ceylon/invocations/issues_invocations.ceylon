@@ -115,14 +115,14 @@ void test627() {
     singleton627.join(Singleton(Singleton(1)));
 }
 
-void spreadIssues1(Integer* x) => check(x=={1,2,3},"spreadIssues1");
+void spreadIssues1(Integer* x) => check([1,2,3]==x,"spreadIssues1");
 void spreadIssues2(Integer x, Integer* y) {
   check(x==1,"spreadIssues2.1");
-  check(y=={2,3},"spreadIssues2.2");
+  check([2,3]==y,"spreadIssues2.2");
 }
 void spreadIssues3([Integer, Integer, Integer] t) =>
   check(t==[1,2,3],"spreadIssues3");
-void spreadIssues4({Integer*} x) => check(x=={1,2,3},"spreadIssues4");
+void spreadIssues4({Integer*} x) => check([1,2,3]==x,"spreadIssues4");
 void spreadIssues5<Args>(Anything(*Args) g, Args a)
     given Args satisfies Anything[]
   => g(*a);
