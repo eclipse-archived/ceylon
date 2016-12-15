@@ -57,7 +57,8 @@ public class DefaultToolOptions {
     public final static String RUNTOOL_COMPILE = "runtool.compile";
     public final static String RUNTOOL_RUN = "runtool.run";
     public final static String RUNTOOL_MODULE = "runtool.module";
-    
+    public final static String RUNTOOL_ARG = "runtool.arg";
+
     public final static String SECTION_TESTTOOL = "testtool";
     
     public final static String TESTTOOL_COMPILE = "testtool.compile";
