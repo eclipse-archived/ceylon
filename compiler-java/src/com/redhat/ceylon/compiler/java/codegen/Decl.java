@@ -1132,7 +1132,7 @@ public class Decl {
     }
     
     public static boolean isJavaArrayWith(Constructor ctor) {
-        if ("with".equals(ctor.getName())) {
+        if (ctor.isClassMember() && "with".equals(ctor.getName())) {
             Unit unit = ctor.getUnit();
             Scope cls = ctor.getContainer();
             return unit.getJavaObjectArrayDeclaration().equals(cls)
@@ -1149,7 +1149,7 @@ public class Decl {
     }
     
     public static boolean isJavaObjectArrayWith(Constructor ctor) {
-        if ("with".equals(ctor.getName())) {
+        if (ctor.isClassMember() && "with".equals(ctor.getName())) {
             Unit unit = ctor.getUnit();
             Scope cls = ctor.getContainer();
             return unit.getJavaObjectArrayDeclaration().equals(cls);
@@ -1158,7 +1158,7 @@ public class Decl {
     }
 
     public static boolean isJavaArrayFrom(Declaration decl) {
-        if ("from".equals(decl.getName())) {
+        if (decl.isClassMember() && "from".equals(decl.getName())) {
             Unit unit = decl.getUnit();
             Scope cls = decl.getContainer();
             return unit.getJavaObjectArrayDeclaration().equals(cls)
