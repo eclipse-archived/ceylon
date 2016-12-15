@@ -1,6 +1,6 @@
 package com.redhat.ceylon.common.tool;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 
