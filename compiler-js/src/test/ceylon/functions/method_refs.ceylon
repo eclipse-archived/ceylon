@@ -24,11 +24,11 @@ void testGenericMethodReferences() {
     value strings={"a","b"};
     value f = strings.collect<String>;
     value g = f((String s)=>s.uppercased);
-    check(g == {"A","B"}, "Method references with type arguments");
+    check(g == ["A","B"], "Method references with type arguments");
     {String*}? opts = strings;
     value h = opts?.collect<String>;
     if (exists k=h((String s)=>s.uppercased)) {
-      check(k == {"A","B"}, "Method ref safe op w/type arguments");
+      check(k == ["A","B"], "Method ref safe op w/type arguments");
     } else {
       fail("???? method ref safe op w/targs");
     }
@@ -52,11 +52,11 @@ void testStaticMethodReferences() {
     check(iref(1) == MethodRefTest.Inner.prefix(mri)(1), "Static method ref 6");
     value ints = {1,2,3,4}.sequence();
     check((List<Integer>.get(ints)(1) else -1) == 2, "Static method ref 7");
-    check(List<Integer>.map<String>(ints)((Integer x)=>x.string).sequence() == {"1","2","3","4"}, "Static method ref 8");
+    check(List<Integer>.map<String>(ints)((Integer x)=>x.string).sequence() == ["1","2","3","4"], "Static method ref 8");
     value smr1 = List<Integer>.get;
     value smr2 = List<Integer>.map<String>;
     check((smr1(ints)(1) else -1) == 2, "Static method ref 9");
-    check(smr2(ints)((Integer x)=>x.string).sequence() == {"1","2","3","4"}, "Static method ref 10");
+    check(smr2(ints)((Integer x)=>x.string).sequence() == ["1","2","3","4"], "Static method ref 10");
     value pad = String.padLeading;
     value test11=pad("x")(3,'.');
     check(test11=="..x", "Static method ref 11 expected ..x got ``test11``");
