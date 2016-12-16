@@ -675,7 +675,10 @@ public class TypeParser {
                 Package foundPackage = moduleScope.getPackage(pkg);
                 if(foundPackage != null)
                     newDeclaration = loader.getDeclaration(foundPackage.getModule(), pkg, fullName, scope);
-                else if(scope != null){
+                else if(scope != null && !pkg.isEmpty()){
+                    // try the default module, damnit
+                    newDeclaration = loader.getDeclaration(loader.getLoadedModule(Module.DEFAULT_MODULE_NAME, null), pkg, fullName, scope);
+                }else if(scope != null){
                     // if we did not find any package and the scope is null, chances are we're after a type variable
                     // or a relative type, so use the module scope
                     newDeclaration = loader.getDeclaration(moduleScope, pkg, fullName, scope);

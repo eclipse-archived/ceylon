@@ -111,8 +111,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String TIMER_MODEL_LOADER_CATEGORY = "model loader";
     
     public static final String CEYLON_CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
-    private static final String CEYLON_MODULE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Module";
-    private static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
+    protected static final String CEYLON_MODULE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Module";
+    protected static final String CEYLON_PACKAGE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Package";
     public static final String CEYLON_IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
     private static final String CEYLON_CLASS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Class";
     private static final String CEYLON_JPA_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Jpa";
@@ -744,7 +744,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         
         LazyPackage pkg = findOrCreatePackage(module, pkgName);
 
-        decl = createDeclaration(module, container, classMirror, declarationType, decls);
+        decl = createDeclaration(container, classMirror, declarationType, decls);
         cacheDeclaration(module, container, classMirror, declarationType, decl, decls);
 
         // find/make its Unit
@@ -1226,7 +1226,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return null;
     }
 
-    private Declaration createDeclaration(Module module, Declaration container, ClassMirror classMirror,
+    private Declaration createDeclaration(Declaration container, ClassMirror classMirror,
             DeclarationType declarationType, List<Declaration> decls) {
         Declaration decl = null;
         Declaration hdr = null;
@@ -2100,6 +2100,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private void loadPackageDescriptor(Package pkg) {
+        if(!pkg.getModule().isAvailable())
+            lazyLoadModule(pkg.getModule());
         // Don't try to load a package descriptor for ceylon.language 
         // if we're bootstrapping
         if (isBootstrap 
@@ -2138,6 +2140,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         loadCompiledPackage(packageClass, pkg);
     }
 
+    protected void lazyLoadModule(Module module) {
+    }
+    
     private void loadCompiledPackage(ClassMirror packageClass, Package pkg) {
         String name = getAnnotationStringValue(packageClass, CEYLON_PACKAGE_ANNOTATION, "name");
         Boolean shared = getAnnotationBooleanValue(packageClass, CEYLON_PACKAGE_ANNOTATION, "shared");
@@ -2253,21 +2258,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 String pkgName = module.getNameAsString();
                 if(pkgName.isEmpty())
                     return false;
-                String moduleClassName = pkgName + "." + NamingBase.MODULE_DESCRIPTOR_CLASS_NAME;
-                logVerbose("[Trying to look up module from "+moduleClassName+"]");
-                ClassMirror moduleClass = loadClass(module, pkgName, moduleClassName);
-                if(moduleClass == null){
-                    // perhaps we have an old module?
-                    String oldModuleClassName = pkgName + "." + NamingBase.OLD_MODULE_DESCRIPTOR_CLASS_NAME;
-                    logVerbose("[Trying to look up older module descriptor from "+oldModuleClassName+"]");
-                    ClassMirror oldModuleClass = loadClass(module, pkgName, oldModuleClassName);
-                    // keep it only if it has a module annotation, otherwise it could be a normal value
-                    if(oldModuleClass != null && oldModuleClass.getAnnotation(CEYLON_MODULE_ANNOTATION) != null)
-                        moduleClass = oldModuleClass;
-                }
+                ClassMirror moduleClass = findModuleClass(module, pkgName);
                 if(moduleClass != null){
                     // load its module annotation
-                    return loadCompiledModule(module, moduleClass, moduleClassName, loadModuleImports);
+                    return loadCompiledModule(module, moduleClass, loadModuleImports);
                 }
                 // give up
                 return false;
@@ -2275,7 +2269,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         });
     }
 
-    private boolean loadCompiledModule(Module module, ClassMirror moduleClass, String moduleClassName, boolean loadModuleImports) {
+    protected ClassMirror findModuleClass(Module module, String pkgName) {
+        String moduleClassName = pkgName + "." + NamingBase.MODULE_DESCRIPTOR_CLASS_NAME;
+        logVerbose("[Trying to look up module from "+moduleClassName+"]");
+        ClassMirror moduleClass = loadClass(module, pkgName, moduleClassName);
+        if(moduleClass == null){
+            // perhaps we have an old module?
+            String oldModuleClassName = pkgName + "." + NamingBase.OLD_MODULE_DESCRIPTOR_CLASS_NAME;
+            logVerbose("[Trying to look up older module descriptor from "+oldModuleClassName+"]");
+            ClassMirror oldModuleClass = loadClass(module, pkgName, oldModuleClassName);
+            // keep it only if it has a module annotation, otherwise it could be a normal value
+            if(oldModuleClass != null && oldModuleClass.getAnnotation(CEYLON_MODULE_ANNOTATION) != null)
+                moduleClass = oldModuleClass;
+        }
+        return moduleClass;
+    }
+    
+    private boolean loadCompiledModule(Module module, ClassMirror moduleClass, boolean loadModuleImports) {
+        String moduleClassName = moduleClass.getQualifiedName();
         String name = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "name");
         String version = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "version");
         if(name == null || name.isEmpty()){
@@ -2402,7 +2413,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return getAnnotationStringValue(mirror, type, "value");
     }
     
-    private String getAnnotationStringValue(AnnotatedMirror mirror, String type, String field) {
+    protected String getAnnotationStringValue(AnnotatedMirror mirror, String type, String field) {
         return (String) getAnnotationValue(mirror, type, field);
     }
     

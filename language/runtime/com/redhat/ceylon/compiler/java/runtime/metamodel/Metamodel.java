@@ -1893,6 +1893,8 @@ public class Metamodel {
                 spec = name;
             else
                 spec = name + "/" + version;
+            if(moduleManager.getModelLoader().isFubar())
+                return getOrCreateMetamodel(getModuleManager().getModules().getDefaultModule());
             throw new ceylon.language.AssertionError("Module "+spec+" is not available");
         }
         return module;

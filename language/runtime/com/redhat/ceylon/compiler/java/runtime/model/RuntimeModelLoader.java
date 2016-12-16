@@ -23,6 +23,7 @@ import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -38,6 +39,8 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     private Map<Module,ClassLoader> classLoaders = new HashMap<Module,ClassLoader>();
     private Map<String, Module> moduleCache = new HashMap<String, Module>();
     private CachedTOCJars jars = new CachedTOCJars();
+    private ClassLoader defaultClassLoader;
+    private Map<String, Module> lazyLoadedModulesByPackage = new HashMap<>();
 
     public RuntimeModelLoader(ModuleManager moduleManager, Modules modules) {
         super(moduleManager, modules, new LoaderJULLogger());
@@ -85,7 +88,11 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     public URI getContentUri(Module module, String path) {
         return jars.getContentUri(module, path);
     }
-    
+
+    public void setDefaultClassLoader(ClassLoader cl){
+        this.defaultClassLoader = cl;
+    }
+
     @Override
     protected Class<?> loadClass(Module module, String name) {
         ClassLoader classLoader = classLoaders.get(module);
@@ -99,7 +106,14 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
                     return null;
                 }
             }
-            return null;
+            try{
+                if(defaultClassLoader != null)
+                    return defaultClassLoader.loadClass(name);
+                return getClass().getClassLoader().loadClass(name);
+            }catch(ClassNotFoundException|NoClassDefFoundError x){
+                return null;
+            }
+//            return null;
         }
         try{
             return classLoader.loadClass(name);
@@ -178,10 +192,50 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
             String jdkModuleName = JDKUtils.getJDKModuleNameForPackage(pkgName);
             if(jdkModuleName != null)
                 return findModule(jdkModuleName, JDKUtils.jdk.version);
-            return lookupModuleByPackageName(pkgName);
+            return lazyLoadModuleForPackage(pkgName);
+//            return lookupModuleByPackageName(pkgName);
         }
     }
     
+    private Module lazyLoadModuleForPackage(String pkgName) {
+        if(lazyLoadedModulesByPackage.containsKey(pkgName)){
+            return lazyLoadedModulesByPackage.get(pkgName);
+        }
+        Module module;
+        if(pkgName.isEmpty()){
+            System.err.println("default module");
+            module = modules.getDefaultModule();
+        }else{
+            // pretend it's the default module trying to load a new module? not sure what
+            // to do here
+            Module loadByModule = modules.getDefaultModule();
+            ClassMirror moduleClass = findModuleClass(loadByModule, pkgName);
+            if(moduleClass != null){
+                String name = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "name");
+                String version = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "version");
+                System.err.println("lazy-loading module "+name+"/"+version);
+                module = findOrCreateModule(name, version);
+                loadCompiledModule(module);
+                // damnit, make it import the default module, otherwise it won't be able to see non-ceylon modules
+                module.addImport(new ModuleImport(null, modules.getDefaultModule(), false, false));
+                // FIXME: do other things like what RuntimeModuleManager does?
+            }else{
+                // try parent package
+                int lastDot = pkgName.lastIndexOf('.');
+                String parentPackage;
+                if(lastDot == -1)
+                    parentPackage = "";
+                else
+                    parentPackage = pkgName.substring(0, lastDot);
+                System.err.println("no module found, trying parent: "+parentPackage);
+                module = lazyLoadModuleForPackage(parentPackage);
+            }
+        }
+        // cache module and return
+        lazyLoadedModulesByPackage.put(pkgName, module);
+        return module;
+    }
+
     @Override
     protected String cacheKeyByModule(Module module, String name) {
         if(module == null)
@@ -222,5 +276,15 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     @Override
     protected void makeInteropAnnotationConstructorInvocation(AnnotationProxyMethod ctor, AnnotationProxyClass klass, List<Parameter> ctorParams) {
         // no code needed
+    }
+    
+    @Override
+    protected void lazyLoadModule(Module module) {
+        System.err.println("Lazy-loading module: "+module);
+        loadCompiledModule(module);
+    }
+
+    public boolean isFubar() {
+        return defaultClassLoader != null;
     }
 }
