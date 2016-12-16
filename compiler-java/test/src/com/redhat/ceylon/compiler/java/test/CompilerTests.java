@@ -102,6 +102,7 @@ public abstract class CompilerTests {
     protected final static String destDirGeneral = "build/test-cars";
     protected final static String cacheDirGeneral = "build/test-cache";
     public static final String LANGUAGE_MODULE_CAR = "../language/ide-dist/ceylon.language-"+TypeChecker.LANGUAGE_MODULE_VERSION+".car";
+    public static final String MODEL_MODULE_CAR = "../dist/dist/repo/com/redhat/ceylon/model/"+TypeChecker.LANGUAGE_MODULE_VERSION+"/com.redhat.ceylon.model-"+TypeChecker.LANGUAGE_MODULE_VERSION+".jar";
     protected final String destDir;
     protected final String cacheDir;
     protected final String moduleName;
@@ -895,6 +896,7 @@ public abstract class CompilerTests {
         // set up the runtime module system
         Metamodel.resetModuleManager();
         Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
+        Metamodel.loadModule("com.redhat.ceylon.model", TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(MODEL_MODULE_CAR)), loader);
         for (ModuleWithArtifact module : modules) {
             Metamodel.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
         }
