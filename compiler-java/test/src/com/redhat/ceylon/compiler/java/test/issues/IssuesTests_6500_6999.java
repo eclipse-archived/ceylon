@@ -25,6 +25,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.jar.JarFile;
@@ -33,7 +40,9 @@ import java.util.zip.ZipEntry;
 import org.junit.Assume;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
@@ -188,5 +197,64 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     @Test
     public void testBug6769() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6769", "bug67xx/Bug6769.ceylon");
+    }
+
+    @Test
+    public void testDynamicMetamodel() throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        File classesOutputFolder = new File(destDir+"-jar-classes");
+        cleanCars(classesOutputFolder.getPath());
+        classesOutputFolder.mkdirs();
+
+        File jarOutputFolder = new File(destDir+"-jar");
+        cleanCars(jarOutputFolder.getPath());
+        jarOutputFolder.mkdirs();
+
+        compileJavaModule(jarOutputFolder, classesOutputFolder, 
+                moduleName+".bug67xx.dyn.a", "1", 
+                new File(dir), new File[0], 
+                moduleName.replace('.', '/')+"/bug67xx/dyn/a/A.java");
+
+        File mavenRepoFolder = new File(destDir+"-maven-repo");
+        cleanCars(mavenRepoFolder.getPath());
+        mavenRepoFolder.mkdirs();
+        File mavenRepoTarget = new File(mavenRepoFolder, moduleName.replace('.', '/')+"/bug67xx/dyn/a/1");
+        mavenRepoTarget.mkdirs();
+        
+        File jarSrc = new File(jarOutputFolder, moduleName.replace('.', '/')+"/bug67xx/dyn/a/1/"+moduleName+".bug67xx.dyn.a-1.jar");
+        File jarDst = new File(mavenRepoTarget, "a-1.jar");
+        Files.copy(jarSrc.toPath(), jarDst.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        
+        File pomSrc = new File(getPackagePath()+"bug67xx/dyn/a/pom.xml");
+        File pomDst = new File(mavenRepoTarget, "a-1.pom");
+        Files.copy(pomSrc.toPath(), pomDst.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        
+        compile(Arrays.asList("-rep", "aether:"+getPackagePath()+"/bug67xx/dyn/b/settings.xml"), 
+                "bug67xx/dyn/b/B.ceylon");
+        
+        File carFile = new File(destDir+"/"+moduleName.replace('.', '/')+"/bug67xx/dyn/b/1/"+moduleName+".bug67xx.dyn.b-1.car");
+
+        cleanCars(classesOutputFolder.getPath());
+        classesOutputFolder.mkdirs();
+
+        compileJavaModule(jarOutputFolder, classesOutputFolder, 
+                moduleName+".bug67xx.dyn.c", "1", 
+                new File(dir), new File[]{
+                        carFile, 
+                        jarDst,
+                        new File(LANGUAGE_MODULE_CAR),
+                }, 
+                moduleName.replace('.', '/')+"/bug67xx/dyn/c/C.java");
+
+        File jarCSrc = new File(jarOutputFolder, moduleName.replace('.', '/')+"/bug67xx/dyn/c/1/"+moduleName+".bug67xx.dyn.c-1.jar");
+
+        URLClassLoader cl = new URLClassLoader(new URL[]{
+                carFile.toURL(),
+                jarDst.toURL(),
+                jarCSrc.toURL(),
+        }, getClass().getClassLoader());
+        Class<?> klass = Class.forName(moduleName+".bug67xx.dyn.c.C", true, cl);
+        Method method = klass.getMethod("main", String[].class);
+        Metamodel.getModuleManager().getModelLoader().setDefaultClassLoader(cl);
+        method.invoke(null, (Object)new String[]{});
     }
 }
