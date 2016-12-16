@@ -19,9 +19,14 @@
  */
 package com.redhat.ceylon.compiler.java.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -43,11 +48,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
 import java.util.regex.Matcher;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -71,11 +78,16 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.java.util.RepositoryLister;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.javax.tools.Diagnostic;
 import com.redhat.ceylon.javax.tools.DiagnosticListener;
 import com.redhat.ceylon.javax.tools.FileObject;
+import com.redhat.ceylon.javax.tools.JavaCompiler;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
+import com.redhat.ceylon.javax.tools.ToolProvider;
+import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
 import com.redhat.ceylon.langtools.source.util.TaskEvent.Kind;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
@@ -1345,6 +1357,83 @@ public abstract class CompilerTests {
             while((line = br.readLine()) != null)
                 sb.append(line).append("\n");
             return sb.toString();
+        }
+    }
+
+    protected void compileJavaModule(File jarOutputFolder, File classesOutputFolder,
+            String moduleName, String moduleVersion, String... sourceFileNames) throws IOException {
+        compileJavaModule(jarOutputFolder, classesOutputFolder,
+                          moduleName, moduleVersion, new File(dir), new File[0], sourceFileNames);
+    }
+
+    protected void compileJavaModule(File jarOutputFolder, File classesOutputFolder,
+            String moduleName, String moduleVersion, 
+            File sourceFolder, 
+            File[] extraClassPath,
+            String... sourceFileNames) throws IOException {
+        JavaCompiler javaCompiler = ToolProvider.getSystemJavaCompiler();
+        assertNotNull("Missing Java compiler, this test is probably being run with a JRE instead of a JDK!", javaCompiler);
+        StandardJavaFileManager fileManager = javaCompiler.getStandardFileManager(null, null, null);
+        Set<String> sourceDirectories = new HashSet<String>();
+        File[] javaSourceFiles = new File[sourceFileNames.length];
+        for (int i = 0; i < javaSourceFiles.length; i++) {
+            javaSourceFiles[i] = new File(sourceFolder, sourceFileNames[i]);
+            String sfn = sourceFileNames[i].replace(File.separatorChar, '/');
+            int p = sfn.lastIndexOf('/');
+            String sourceDir = sfn.substring(0, p);
+            sourceDirectories.add(sourceDir);
+        }
+        Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjects(javaSourceFiles);
+        StringBuilder cp = new StringBuilder();
+        for (int i = 0; i < extraClassPath.length; i++) {
+            if(i > 0)
+                cp.append(File.pathSeparator);
+            cp.append(extraClassPath[i]);
+        }
+        CompilationTask task = javaCompiler.getTask(null, null, null, Arrays.asList("-d", classesOutputFolder.getPath(), 
+                "-cp", cp.toString(),
+                "-sourcepath", sourceFolder.getPath()), null, compilationUnits);
+        assertEquals(Boolean.TRUE, task.call());
+        
+        File jarFolder = new File(jarOutputFolder, moduleName.replace('.', File.separatorChar)+File.separatorChar+moduleVersion);
+        jarFolder.mkdirs();
+        File jarFile = new File(jarFolder, moduleName+"-"+moduleVersion+".jar");
+        // now jar it up
+        JarOutputStream outputStream = new JarOutputStream(new FileOutputStream(jarFile));
+        for(String sourceFileName : sourceFileNames){
+            String classFileName = sourceFileName.substring(0, sourceFileName.length()-5)+".class";
+            ZipEntry entry = new ZipEntry(classFileName);
+            outputStream.putNextEntry(entry);
+
+            File classFile = new File(classesOutputFolder, classFileName);
+            FileInputStream inputStream = new FileInputStream(classFile);
+            Util.copy(inputStream, outputStream);
+            inputStream.close();
+            outputStream.flush();
+        }
+        outputStream.close();
+        for(String sourceDir : sourceDirectories){
+            File module = null;
+            String sourceName = "module.properties";
+            File properties = new File(sourceFolder, sourceDir + File.separator + sourceName);
+            if(properties.exists()){
+                module = properties;
+            }else{
+                sourceName = "module.xml";
+                properties = new File(sourceFolder, sourceDir + File.separator + sourceName);
+                if(properties.exists()){
+                    module = properties;
+                }
+            }
+            if(module != null){
+                File moduleFile = new File(sourceFolder, sourceDir + File.separator + sourceName);
+                FileInputStream inputStream = new FileInputStream(moduleFile);
+                FileOutputStream moduleOutputStream = new FileOutputStream(new File(jarFolder, sourceName));
+                Util.copy(inputStream, moduleOutputStream);
+                inputStream.close();
+                moduleOutputStream.flush();
+                moduleOutputStream.close();
+            }
         }
     }
 }
