@@ -200,6 +200,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     }
 
     @Test
+    public void testBug6774() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6774", "bug67xx/Bug6774.ceylon");
+    }
+
+    @Test
     public void testDynamicMetamodel() throws IOException, ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         File classesOutputFolder = new File(destDir+"-jar-classes");
         cleanCars(classesOutputFolder.getPath());
