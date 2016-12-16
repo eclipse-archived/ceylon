@@ -193,6 +193,8 @@ public class JavaCompilerImpl implements Compiler {
             if (javaOptions.getJavacTarget() > 0) {
                 translatedOptions.add(Option.TARGET.getText());
                 translatedOptions.add(String.valueOf(javaOptions.getJavacTarget()));
+                translatedOptions.add(Option.SOURCE.getText());
+                translatedOptions.add(String.valueOf(javaOptions.getJavacTarget()));
             }
         }
         return translatedOptions;
