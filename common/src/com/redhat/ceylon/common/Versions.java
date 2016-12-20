@@ -79,12 +79,14 @@ public class Versions {
      * 1.1 is 7.0
      * 1.2.0 is 8.0
      * 1.2.1, 1.2.2 is 8.0 for JVM, 9.0 for JS
-     * 1.3.0 up to 1.3.2-SNAPSHOT is 8.1 for JVM, 9.1 for JS
+     * 1.3.0 up to 1.3.2-SNAPSHOT is 8.1 for JVM
+     * 1.3.0 up to 1.3.1 is 9.1 for JS
+     * 1.3.2-SNAPSHOT is 9.2 for JS (support for sequenced annotations in the model)
      */
     public static final int JVM_BINARY_MAJOR_VERSION = 8;
     public static final int JVM_BINARY_MINOR_VERSION = 1;
     public static final int JS_BINARY_MAJOR_VERSION = 9;
-    public static final int JS_BINARY_MINOR_VERSION = 1;
+    public static final int JS_BINARY_MINOR_VERSION = 2;
     
     public static final int M1_BINARY_MAJOR_VERSION = 0;
     public static final int M1_BINARY_MINOR_VERSION = 0;
