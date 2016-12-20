@@ -34,24 +34,20 @@ public class JsonModule extends Module implements NpmAware {
         model = value;
         final String binVersion = (String)model.get("$mod-bin");
         final int dotidx = binVersion.indexOf('.');
-        setJsMajor(Integer.parseInt((String)binVersion.substring(0,dotidx), 10));
-        setJsMinor(Integer.parseInt((String)binVersion.substring(dotidx+1), 10));
+        setJsMajor(Integer.parseInt(binVersion.substring(0,dotidx), 10));
+        setJsMinor(Integer.parseInt(binVersion.substring(dotidx+1), 10));
         if (model.get("$mod-pa") != null) {
             int bits = (int)model.get("$mod-pa");
             setNativeBackends(JsonPackage.hasAnnotationBit(bits, "native") ? Backend.JavaScript.asSet() : Backends.ANY);
         }
         @SuppressWarnings("unchecked")
-        Map<String,Object> moduleAnns = (Map<String,Object>)model.get("$mod-anns");
-        if (moduleAnns != null) {
-            for (Map.Entry<String, Object> e : moduleAnns.entrySet()) {
-                String name = e.getKey();
-                Annotation ann = new Annotation();
-                ann.setName(name);
-                for (String arg : (List<String>)e.getValue()) {
-                    ann.addPositionalArgument(arg);
-                }
-                getAnnotations().add(ann);
-            }
+        final Object moduleAnns = model.get("$mod-anns");
+        if (moduleAnns instanceof List) {
+            JsonPackage.setNewAnnotations(getAnnotations(), (List<Map<String,List<String>>>)moduleAnns);
+        } else if (moduleAnns instanceof Map) {
+            JsonPackage.setOldAnnotations(getAnnotations(), (Map<String, List<String>>)moduleAnns);
+        } else if (moduleAnns != null) {
+            throw new IllegalArgumentException("Annotations should be a List (new format) or a Map (old format)");
         }
     }
     public Map<String, Object> getModel() {

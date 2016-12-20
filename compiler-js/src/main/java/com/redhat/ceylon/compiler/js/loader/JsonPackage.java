@@ -82,11 +82,11 @@ import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 public class JsonPackage extends LazyPackage {
 
     //Ugly hack to have a ref to Basic at hand, to use as implicit supertype of classes
-    private final static Map<String,Object> idobj = new HashMap<String, Object>();
+    private final static Map<String,Object> idobj = new HashMap<>();
     //This is to use as the implicit supertype of interfaces
-    private final static Map<String,Object> objclass = new HashMap<String, Object>();
+    private final static Map<String,Object> objclass = new HashMap<>();
     //This is for type parameters
-    private final static Map<String,Object> voidclass = new HashMap<String, Object>();
+    private final static Map<String,Object> voidclass = new HashMap<>();
     private Map<String,Object> model;
     private final String pkgname;
     private boolean loaded = false;
@@ -135,17 +135,13 @@ public class JsonPackage extends LazyPackage {
                     setShared(hasAnnotationBit(bits, "shared"));
                 }
                 @SuppressWarnings("unchecked")
-                Map<String,Object> pkgAnns = (Map<String,Object>)model.remove("$pkg-anns");
-                if (pkgAnns != null) {
-                    for (Map.Entry<String, Object> e : pkgAnns.entrySet()) {
-                        String name = e.getKey();
-                        Annotation ann = new Annotation();
-                        ann.setName(name);
-                        for (String arg : (List<String>)e.getValue()) {
-                            ann.addPositionalArgument(arg);
-                        }
-                        getAnnotations().add(ann);
-                    }
+                Object pkgAnns = model.remove("$pkg-anns");
+                if (pkgAnns instanceof List) {
+                    JsonPackage.setNewAnnotations(getAnnotations(), (List<Map<String,List<String>>>)pkgAnns);
+                } else if (pkgAnns instanceof Map) {
+                    JsonPackage.setOldAnnotations(getAnnotations(), (Map<String,List<String>>)pkgAnns);
+                } else if (pkgAnns != null) {
+                    throw new IllegalArgumentException("Annotations should be a List (new format) or a Map (old format)");
                 }
             }
 
@@ -235,8 +231,7 @@ public class JsonPackage extends LazyPackage {
             }
             parent.addMember(cls);
             m.put(KEY_METATYPE, cls);
-            setAnnotations(cls, (Integer)m.remove(KEY_PACKED_ANNS),
-                    (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
+            setAnnotations(cls, (Integer)m.remove(KEY_PACKED_ANNS), m.remove(KEY_ANNOTATIONS));
         }
         //Type parameters are about the first thing we need to load
         final List<TypeParameter> tparms = parseTypeParameters(
@@ -289,7 +284,7 @@ public class JsonPackage extends LazyPackage {
                 cnst.setExtendedType(cls.getType());
                 cnst.setDynamic(cons.getValue().remove(KEY_DYNAMIC) != null);
                 setAnnotations(cnst, (Integer)cons.getValue().remove(KEY_PACKED_ANNS),
-                        (Map<String,Object>)cons.getValue().remove(KEY_ANNOTATIONS));
+                        cons.getValue().remove(KEY_ANNOTATIONS));
                 final List<Map<String,Object>> modelPlist = (List<Map<String,Object>>)cons.getValue().remove(
                         KEY_PARAMS);
                 cls.addMember(cnst);
@@ -411,7 +406,7 @@ public class JsonPackage extends LazyPackage {
      * @param types A list of maps where each map is a reference to a type or type parameter.
      * @param typeParams The type parameters that can be referenced from the list of maps. */
     private List<Type> parseTypeList(List<Map<String,Object>> types, List<TypeParameter> typeParams) {
-        List<Type> ts = new ArrayList<Type>(types.size());
+        List<Type> ts = new ArrayList<>(types.size());
         for (Map<String,Object> st : types) {
             ts.add(getTypeFromJson(st, null, typeParams));
         }
@@ -427,11 +422,11 @@ public class JsonPackage extends LazyPackage {
             List<TypeParameter> existing) {
         if (typeParams == null) return Collections.emptyList();
         //New array with existing parms to avoid modifying that one
-        List<TypeParameter> allparms = new ArrayList<TypeParameter>((existing == null ? 0 : existing.size()) + typeParams.size());
+        List<TypeParameter> allparms = new ArrayList<>((existing == null ? 0 : existing.size()) + typeParams.size());
         if (existing != null && !existing.isEmpty()) {
             allparms.addAll(existing);
         }
-        List<TypeParameter> tparms = new ArrayList<TypeParameter>(typeParams.size());
+        List<TypeParameter> tparms = new ArrayList<>(typeParams.size());
         //To avoid circularity, this is done in two phases:
         //First create the type parameters
         for (Map<String,Object> tp : typeParams) {
@@ -516,7 +511,7 @@ public class JsonPackage extends LazyPackage {
     }
 
     /** Creates a parameter list from a list of maps where each map represents a parameter.
-     * @param The list of maps to create the parameters.
+     * @param params The list of maps to create the parameters.
      * @param owner The declaration to assign to each parameter.
      * @param typeParameters The type parameters which can be referenced from the parameters. */
     private ParameterList parseParameters(List<Map<String,Object>> params, Declaration owner, List<TypeParameter> typeParameters) {
@@ -578,9 +573,7 @@ public class JsonPackage extends LazyPackage {
                             }
                         }
                     }
-                    @SuppressWarnings("unchecked")
-                    final Map<String,Object> _anns = (Map<String,Object>)p.remove(KEY_ANNOTATIONS);
-                    setAnnotations(paramModel, (Integer)p.remove(KEY_PACKED_ANNS), _anns);
+                    setAnnotations(paramModel, (Integer)p.remove(KEY_PACKED_ANNS), p.remove(KEY_ANNOTATIONS));
                 }
                 //owner.getMembers().add(param);
                 plist.getParameters().add(param);
@@ -596,8 +589,7 @@ public class JsonPackage extends LazyPackage {
         m.remove(KEY_NAME);
         md.setContainer(parent);
         md.setScope(parent);
-        setAnnotations(md, (Integer)m.remove(KEY_PACKED_ANNS),
-                (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
+        setAnnotations(md, (Integer)m.remove(KEY_PACKED_ANNS), m.remove(KEY_ANNOTATIONS));
         md.setUnit(u2);
         if (parent == this) {
             //Top-level declarations are directly added to the unit
@@ -646,12 +638,10 @@ public class JsonPackage extends LazyPackage {
             u2.addDeclaration(d);
             addMember(null);
         }
-        @SuppressWarnings("unchecked")
-        final Map<String,Object> _anns = (Map<String,Object>)m.remove(KEY_ANNOTATIONS);
-        setAnnotations(d, (Integer)m.remove(KEY_PACKED_ANNS), _anns);
+        setAnnotations(d, (Integer)m.remove(KEY_PACKED_ANNS), m.remove(KEY_ANNOTATIONS));
         d.setDynamic(m.remove(KEY_DYNAMIC) != null);
         if (m.containsKey("var")) {
-            ((Value)d).setVariable(true);
+            d.setVariable(true);
         }
         @SuppressWarnings("unchecked")
         final Map<String,Object> ktype = (Map<String,Object>)m.get(KEY_TYPE);
@@ -670,9 +660,7 @@ public class JsonPackage extends LazyPackage {
                 u2.addDeclaration(s);
                 addMember(null);
             }
-            @SuppressWarnings("unchecked")
-            final Map<String,Object> sanns = (Map<String,Object>)smap.remove(KEY_ANNOTATIONS);
-            setAnnotations(s, (Integer)smap.remove(KEY_PACKED_ANNS), sanns);
+            setAnnotations(s, (Integer)smap.remove(KEY_PACKED_ANNS), smap.remove(KEY_ANNOTATIONS));
             s.setType(d.getType());
         }
         return d;
@@ -720,8 +708,7 @@ public class JsonPackage extends LazyPackage {
             }
             parent.addMember(t);
             m.put(KEY_METATYPE, t);
-            setAnnotations(t, (Integer)m.remove(KEY_PACKED_ANNS),
-                    (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
+            setAnnotations(t, (Integer)m.remove(KEY_PACKED_ANNS), m.remove(KEY_ANNOTATIONS));
         }
         if (m.remove(KEY_DYNAMIC) != null) {
             t.setDynamic(true);
@@ -807,10 +794,8 @@ public class JsonPackage extends LazyPackage {
             }
             parent.addMember(obj);
             obj.setType(type.getType());
-            setAnnotations(obj, (Integer)m.get(KEY_PACKED_ANNS),
-                    (Map<String,Object>)m.get(KEY_ANNOTATIONS));
-            setAnnotations(obj.getTypeDeclaration(), (Integer)m.remove(KEY_PACKED_ANNS),
-                    (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
+            setAnnotations(obj, (Integer)m.get(KEY_PACKED_ANNS), m.get(KEY_ANNOTATIONS));
+            setAnnotations(obj.getTypeDeclaration(), (Integer)m.remove(KEY_PACKED_ANNS), m.remove(KEY_ANNOTATIONS));
             if (type.getExtendedType() == null) {
                 if (m.containsKey("super")) {
                     type.setExtendedType(getTypeFromJson((Map<String,Object>)m.remove("super"),
@@ -862,8 +847,7 @@ public class JsonPackage extends LazyPackage {
                 alias.setScope(parent);
                 alias.setName(name);
                 alias.setUnit(u2);
-                setAnnotations(alias, (Integer)m.remove(KEY_PACKED_ANNS),
-                        (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
+                setAnnotations(alias, (Integer)m.remove(KEY_PACKED_ANNS), m.remove(KEY_ANNOTATIONS));
                 if (parent == this) {
                     u2.addDeclaration(alias);
                 }
@@ -927,7 +911,7 @@ public class JsonPackage extends LazyPackage {
         if (td == null && m.containsKey("comp")) {
             @SuppressWarnings("unchecked")
             final List<Map<String,Object>> tmaps = (List<Map<String,Object>>)m.get(KEY_TYPES);
-            final ArrayList<Type> types = new ArrayList<Type>(tmaps.size());
+            final ArrayList<Type> types = new ArrayList<>(tmaps.size());
             if ("u".equals(m.get("comp"))) {
                 UnionType ut = new UnionType(u2);
                 for (Map<String, Object> tmap : tmaps) {
@@ -1127,7 +1111,7 @@ public class JsonPackage extends LazyPackage {
             return null;
         }
         //Substitute type parameters
-        final HashMap<TypeParameter, Type> concretes = new HashMap<TypeParameter, Type>(targs.size());
+        final HashMap<TypeParameter, Type> concretes = new HashMap<>(targs.size());
         HashMap<TypeParameter,SiteVariance> variances = null;
         Declaration d = td;
         while (d != null) {
@@ -1173,7 +1157,7 @@ public class JsonPackage extends LazyPackage {
             throw new IllegalStateException("No model available to load " + getNameAsString() + "::" + name);
         }
         @SuppressWarnings("unchecked")
-        final Map<String,Object> map = model == null ? null : (Map<String,Object>)model.get(name);
+        final Map<String,Object> map = (Map<String,Object>)model.get(name);
         if (map == null) {
             if ("Nothing".equals(name)) {
                 if (isLanguagePackage()) {
@@ -1216,40 +1200,66 @@ public class JsonPackage extends LazyPackage {
         return (bits & (1 << idx)) > 0;
     }
 
-    private void setAnnotations(Declaration d, Integer bits, Map<String,Object> m) {
-        if (bits != null) {
-            d.setShared(hasAnnotationBit(bits, "shared"));
-            d.setActual(hasAnnotationBit(bits, "actual"));
-            d.setFormal(hasAnnotationBit(bits, "formal"));
-            d.setDefault(hasAnnotationBit(bits, "default"));
-            d.setNativeBackends(hasAnnotationBit(bits, "native") ? Backend.JavaScript.asSet() : Backends.ANY);
-            d.setAnnotation(hasAnnotationBit(bits, "annotation"));
-            d.setStatic(hasAnnotationBit(bits, "static"));
-            if (hasAnnotationBit(bits, "sealed")) {
-                ((TypeDeclaration)d).setSealed(true);
-            }
-            if (d instanceof com.redhat.ceylon.model.typechecker.model.Class) {
-                ((com.redhat.ceylon.model.typechecker.model.Class)d).setFinal(hasAnnotationBit(bits, "final"));
-                ((com.redhat.ceylon.model.typechecker.model.Class)d).setAbstract(hasAnnotationBit(bits, "abstract"));
-            } else if (d instanceof Constructor) {
-                ((Constructor)d).setAbstract(hasAnnotationBit(bits, "abstract"));
-            }
-            if (hasAnnotationBit(bits, "late")) {
-                ((Value)d).setLate(true);
-            }
-            if (hasAnnotationBit(bits, "variable")) {
-                ((Value)d).setVariable(true);
-            }
+    private void setBitAnnotations(Declaration d, int bits) {
+        d.setShared(hasAnnotationBit(bits, "shared"));
+        d.setActual(hasAnnotationBit(bits, "actual"));
+        d.setFormal(hasAnnotationBit(bits, "formal"));
+        d.setDefault(hasAnnotationBit(bits, "default"));
+        d.setNativeBackends(hasAnnotationBit(bits, "native") ? Backend.JavaScript.asSet() : Backends.ANY);
+        d.setAnnotation(hasAnnotationBit(bits, "annotation"));
+        d.setStatic(hasAnnotationBit(bits, "static"));
+        if (hasAnnotationBit(bits, "sealed")) {
+            ((TypeDeclaration)d).setSealed(true);
         }
-        if (m == null) return;
-        for (Map.Entry<String, Object> e : m.entrySet()) {
+        if (d instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+            ((com.redhat.ceylon.model.typechecker.model.Class)d).setFinal(hasAnnotationBit(bits, "final"));
+            ((com.redhat.ceylon.model.typechecker.model.Class)d).setAbstract(hasAnnotationBit(bits, "abstract"));
+        } else if (d instanceof Constructor) {
+            ((Constructor)d).setAbstract(hasAnnotationBit(bits, "abstract"));
+        }
+        if (hasAnnotationBit(bits, "late")) {
+            ((Value)d).setLate(true);
+        }
+        if (hasAnnotationBit(bits, "variable")) {
+            ((Value)d).setVariable(true);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void setAnnotations(Declaration d, Integer bits, Object anns) {
+        if (bits != null) {
+            setBitAnnotations(d, bits);
+        }
+        if (anns == null) return;
+        if (anns instanceof List) {
+            setNewAnnotations(d.getAnnotations(), (List<Map<String,List<String>>>)anns);
+        } else if (anns instanceof Map) {
+            setOldAnnotations(d.getAnnotations(), (Map<String,List<String>>)anns);
+        } else {
+            throw new IllegalArgumentException("Annotations should be a List (new format) or a Map (old format)");
+        }
+    }
+    static void setNewAnnotations(List<Annotation> existing, List<Map<String,List<String>>> anns) {
+        for (Map<String, List<String>> a : anns) {
+            String name = a.keySet().iterator().next();
+            Annotation ann = new Annotation();
+            ann.setName(name);
+            for (String arg : a.get(name)) {
+                ann.addPositionalArgument(arg);
+            }
+            existing.add(ann);
+        }
+    }
+
+    static void setOldAnnotations(List<Annotation> existing, Map<String,List<String>> m) {
+        for (Map.Entry<String, List<String>> e : m.entrySet()) {
             String name = e.getKey();
             Annotation ann = new Annotation();
             ann.setName(name);
-            for (String arg : (List<String>)e.getValue()) {
+            for (String arg : e.getValue()) {
                 ann.addPositionalArgument(arg);
             }
-            d.getAnnotations().add(ann);
+            existing.add(ann);
         }
     }
 
@@ -1308,8 +1318,8 @@ public class JsonPackage extends LazyPackage {
      */
     public static List<TypeParameter> merge(List<TypeParameter> l1, List<TypeParameter> l2) {
         int size = (l1 == null ? 0 : l1.size()) + (l2 == null ? 0 : l2.size());
-        ArrayList<TypeParameter> merged = new ArrayList<TypeParameter>(size);
-        HashSet<String> names = new HashSet<String>();
+        ArrayList<TypeParameter> merged = new ArrayList<>(size);
+        HashSet<String> names = new HashSet<>();
         if (l1 != null) {
             for (TypeParameter t : l1) {
                 merged.add(t);

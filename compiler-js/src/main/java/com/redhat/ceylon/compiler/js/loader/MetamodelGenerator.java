@@ -687,7 +687,7 @@ public class MetamodelGenerator {
      * If the map is null, only the bitset annotations are calculated and returned.
      * @return The bitmask for the bitset annotations. */
     public static int encodeAnnotations(List<Annotation> annotations, Object d, Map<String, Object> m) {
-        HashMap<String, Object> anns = m == null ? null : new HashMap<String, Object>();
+        List<Map<String, List<String>>> anns = m == null ? null : new ArrayList<Map<String, List<String>>>(annotations.size());
         int bits = 0;
         for (Annotation a : annotations) {
             String name = a.getName();
@@ -699,7 +699,7 @@ public class MetamodelGenerator {
                 if (args == null) {
                     args = Collections.emptyList();
                 }
-                anns.put(name, args);
+                anns.add(Collections.singletonMap(name, args));
             }
         }
         if (d instanceof Value && ((Value)d).isVariable()) {
