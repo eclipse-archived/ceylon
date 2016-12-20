@@ -80,6 +80,7 @@ atr$(arrprot$,'rest', function() {
 function sarg$(elems,spread,$$targs$$){
   $init$sarg();
   var that=new sarg$.$$;
+  set_type_args(that,{T$LazyIterable:$$targs$$.T$LazyIterable||$$targs$$.Element$Iterable},sarg$);
   Iterable($$targs$$,that);
   that.e=elems;
   that.s=spread;
