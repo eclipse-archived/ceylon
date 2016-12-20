@@ -1968,9 +1968,16 @@ public class GenerateJsVisitor extends Visitor {
                 }
             }
         } else {
-            final String lhs = generateToString(new GenerateCallback() {
+            final boolean isDynamic = that.getPrimary() instanceof Tree.Dynamic;
+            String lhs = generateToString(new GenerateCallback() {
                 @Override public void generateValue() {
+                    if (isDynamic) {
+                        out("(");
+                    }
                     GenerateJsVisitor.super.visit(that);
+                    if (isDynamic) {
+                        out(")");
+                    }
                 }
             });
             if (d != null && d.isStatic()) {
