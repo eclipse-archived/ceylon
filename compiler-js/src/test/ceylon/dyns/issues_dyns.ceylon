@@ -289,6 +289,11 @@ shared void issues() {
       f6810_1(*b6810);
       f6810_2(*a6810);
       f6810_2(*b6810);
+      variable value test6814=false;
+      dynamic [
+        void hello() => test6814=true;
+      ].hello();
+      check(test6814, "#6814");
     }
 }
 
