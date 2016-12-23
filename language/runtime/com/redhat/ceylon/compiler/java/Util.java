@@ -2033,6 +2033,22 @@ public class Util {
         };
     }
     
+    /** Convert a ceylon iterable to a ceylon iterable **/
+    @NonNull
+    public static <Element> ceylon.language.Iterable<Element,java.lang.Object> toIterable(
+            @NonNull
+            final TypeDescriptor $reified$Element,
+            @NonNull
+            final ceylon.language.Iterable<? extends Element,java.lang.Object> it) {
+        return new AbstractIterable<Element, java.lang.Object>($reified$Element, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends Element> iterator() {
+                return it.iterator();
+            }
+        };
+    }
+    
     /** Convert a java array to a ceylon iterable (to support java iterables in spread arguments*/
     @NonNull
     public static ceylon.language.Iterable<ceylon.language.Boolean,java.lang.Object> toIterable(
