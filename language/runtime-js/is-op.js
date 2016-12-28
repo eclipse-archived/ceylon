@@ -199,8 +199,7 @@ function is$(obj,type,containers){
       return true;
     } else {
       // try narrowing to subtype if both current and requested type are dynamic
-      var objtype = obj.getT$all()[obj.getT$name()];
-      if (objtype && objtype.dynmem$ && type.t.dynmem$ && extendsType(type, {t:objtype}, true)) {
+      if (obj.getT$name()==="<Dynamic>" && extendsType(type, {t:'u',l:obj.$crtmm$.sts}, true)) {
         var _getT$all = obj.getT$all;
         var _$$ = obj.$$;
         try {

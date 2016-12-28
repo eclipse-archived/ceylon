@@ -58,7 +58,7 @@ function dre$$(object, type, loc, stack) {
     object.T$all={};
     object.getT$all=function(){return this.T$all};
     object.T$all['ceylon.language::Object']=$_Object;
-    object.$crtmm$={mod:$CCMM$,$t:{t:$_Object},sts:[]};
+    object.$crtmm$={mod:$CCMM$,$t:{t:$_Object},sts:[],d:{mt:'c'}};
   }
   //Add type
   object.T$all[tname]=type;
