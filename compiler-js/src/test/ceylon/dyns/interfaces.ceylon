@@ -86,15 +86,15 @@ void testNarrowDynamicInterfaces() {
     HasA abc;
     dynamic { abc = dynamic [ a = "a"; b = "b"; c = "c"; ]; }
     check(abc is HasA, "object has its static type");
-    check(abc is HasAB, "narrow type");
-    check(abc is HasABC, "narrow type 2");
+    check(!abc is HasAB, "narrow type");
+    check(!abc is HasABC, "narrow type 2");
     check(abc is HasA, "object still has its static type");
     check(!abc is OtherHasABC, "don't narrow to unrelated type");
     check(abc is HasA, "object still has its static type 2");
     HasA ab;
     dynamic { ab = dynamic [ a = "a"; b = "b"; ]; }
     check(ab is HasA, "second object has its static type");
-    check(ab is HasAB, "narrow type 3");
+    check(!ab is HasAB, "narrow type 3");
     check(!ab is HasABC, "don't narrow to inappropriate type");
     check(!ab is OtherHasABC, "don't narrow to inappropriate and unrelated type");
 }
