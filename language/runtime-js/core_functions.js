@@ -4,7 +4,7 @@ function initType(type, typeName) {
     var cons = function() {}
     type.$$ = cons;
     cons.T$name = typeName;
-    cons.T$all = {}
+    cons.T$all = {};
     cons.T$all[typeName] = type;
     for (var i=2; i<arguments.length; ++i) {
         var superTypes = arguments[i].$$.T$all;
