@@ -5,7 +5,7 @@ function dre$$(object, type, loc, stack) {
   if (is$(object, type))return object;
   //If it's already of another type, throw
   if (object===null || object===undefined)return object;
-  if (object.$$ !== undefined && object.getT$all()[object.getT$name()].dynmem$===undefined) {
+  if (object.$$ !== undefined && object.getT$name()!=='<Dynamic>') {
     if (loc===false)return object;
     throw new TypeError("Cannot modify the type of an object to "+qname$(type)+" at runtime " + loc);
   }
@@ -57,76 +57,27 @@ function dre$$(object, type, loc, stack) {
   } else if (stack.indexOf(object)<0) {
     stack.push(object);
   }
-  for (var sat in sats) {
-    var expected = sats[sat].dynmem$;
-    if (expected) {
-      for (var i=0; i < expected.length; i++) {
-        var propname="$prop$get"+expected[i][0].uppercased+expected[i].substring(1);
-        var proptype=type.t.$$.prototype[propname];
-        if (proptype) {
-          proptype=getrtmm$$(proptype);
-        }
-        if (actual.indexOf(expected[i])<0 && object[expected[i]]===undefined) {
-          if (!(proptype && extendsType({t:Null},proptype.$t))) {
-            if (loc===false)return object;
-            throw new Error("Native object is missing property '" + expected[i] + "' " + loc);
-          }
-        } else {
-          var val=object[expected[i]],dynmemberType;
-          if (val===object) {
-            //avoid instance circularity
-            if (!is$(val,proptype.$t)) {
-              //and make this an intersection type
-              tname=tname+"|"+proptype.$t.t.$$.T$name;
-              //Copy the satisfied types and add the new one
-              var _ts={};
-              for (var _tn in t_all) {
-                _ts[_tn]=t_all[_tn];
-              }
-              _ts[proptype.$t.t.$$.prototype.getT$name()]=proptype.$t.t;
-              t_all=_ts;
-            }
-          } else if (proptype && proptype.$t && !is$(val,proptype.$t)) {
-            if (proptype.$t.t===$_Array) {
-              if (natc$(val,proptype.$t.a.Element$Array,false,stack)===false)return object;
-            } else if (proptype.$t.t===Integer) {
-              if (ndnc$(val,'i',false)===false)return object;
-            } else if (proptype.$t.t===Float) {
-              if (ndnc$(val,'f',false)===false)return object;
-            } else if ((dynmemberType=memberTypeIsDynamicInterface$(proptype.$t))!==undefined) {
-              //If the member type is a dynamic interface, dress up the value
-              if (stack.indexOf(val)<0) {
-                dre$$(val,dynmemberType,loc,stack);
-              }
-            } else {
-              var _t=proptype.$t;
-              if (typeof(_t)==='string') {
-                if (otargs[_t]) {
-                  _t=otargs[_t];
-                } else {
-                  var mm=getrtmm$$(type.t);
-                  if (mm && mm.sts) {
-                    for (var i=0;i<mm.sts.length;i++) {
-                      if (mm.sts[i].a && mm.sts[i].a[_t]) {
-                        otargs[_t]=mm.sts[i].a[_t];
-                        _t=mm.sts[i].a[_t]; break;
-                      }
-                    }
-                  }
-                }
-              }
-              if (ndtc$(val,_t,false)===false)return object;
-            }
-          }
-        }
-      }
-    }
+  if (object.$$===undefined) {
+    //Make anonymous class
+    object.$$=$_Object.$$;
+    object.getT$name=function(){return "<Dynamic>"};
+    object.T$all={};
+    object.getT$all=function(){return this.T$all};
+    object.T$all['ceylon.language::Object']=$_Object;
+    object.$crtmm$={mod:$CCMM$,$t:{t:$_Object},sts:[]};
   }
-  object.$$=type.t.$$;
-  object.getT$name=function(){return tname}
-  object.getT$all=function(){return t_all} 
+  //Add type
+  object.T$all[tname]=type;
+  object.$crtmm$.sts.push(type);
+  //Initialize object with type info
+  type.t(otargs,object);
   if (type.a) {
-    object.$$targs$$=otargs;
+    if (object.$$targs$$===undefined) {
+      object.$$targs$$={};
+    }
+    for (targ in otargs) {
+      object.$$targs$$[targ]=otargs[targ];
+    }
   }
   for (var sat in sats) {
     var expected = sats[sat].dynmem$;
@@ -149,18 +100,10 @@ function dre$$(object, type, loc, stack) {
           if (val===object) {
             //avoid instance circularity
             if (!is$(val,proptype.$t)) {
-              //and make this an intersection type
-              var tname=object.getT$name()+"|"+proptype.$t.t.$$.T$name;
-              object.getT$name=function(){return tname;}
-              //Copy the satisfied types and add the new one
-              var _ts={};
-              for (var _tn in object.getT$all()) {
-                _ts[_tn]=object.getT$all()[_tn];
-              }
-              _ts[proptype.$t.t.$$.prototype.getT$name()]=proptype.$t.t;
-              object.getT$all=function(){return _ts;}
-              //type arguments
-              object.$$=$_Object.$$;
+              //add satisfied type
+              object.$crtmm$.sts.push(proptype.$t);
+              object.T$all[proptype.$t.t.$$.prototype.getT$name()]=proptype.$t.t;
+              proptype.$t.t(proptype.$t.a,object);
             }
           } else if (proptype && proptype.$t && !is$(val,proptype.$t)) {
             if (proptype.$t.t===$_Array) {
@@ -197,6 +140,7 @@ function dre$$(object, type, loc, stack) {
         }
       }
     }
+    object.T$all[sats[sat].$$.prototype.getT$name()]=sats[sat];
   }
   if (typeof(object)==='object') {
     if (actual.indexOf('string')<0) {
@@ -247,7 +191,7 @@ function natc$(a,t,loc,stack) {
   if (a===empty())return $arr$([],t);
   if (Array.isArray(a)) {
     for (var i=0;i<a.length;i++) {
-      if (!is$(a[i],t) && (a[i] && a[i].$$)===undefined) {
+      if (!is$(a[i],t) && (a[i] && a[i].getT$all)===undefined) {
         a[i]=dre$$(a[i],t,loc,stack);
       }
     }
