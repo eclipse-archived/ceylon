@@ -97,4 +97,13 @@ void testNarrowDynamicInterfaces() {
     check(!ab is HasAB, "narrow type 3");
     check(!ab is HasABC, "don't narrow to inappropriate type");
     check(!ab is OtherHasABC, "don't narrow to inappropriate and unrelated type");
+    dynamic {
+      dynamic d6775=dynamic [ a = "a"; b = "b"; c = "c"; ];
+      HasABC a6775=d6775;
+      OtherHasABC b6775=d6775;
+      check(d6775 is HasABC, "#6775.1");
+      check(d6775 is OtherHasABC, "#6775.2");
+      check(d6775 is HasABC&OtherHasABC, "#6775.3");
+      check(className(a6775)==className(b6775), "#6775.4");
+    }
 }
