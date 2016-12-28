@@ -45,12 +45,6 @@ function dre$$(object, type, loc, stack) {
   var actual = typeof(object)==='object'?Object.getOwnPropertyNames(object):[];
   var sats = type.t.$$.prototype.getT$all();
   var tname=type.t.$$.T$name;
-  if (type.a) {
-    var otargs={};
-    for (var t in type.a) {
-      otargs[t]=type.a[t];
-    }
-  }
   var t_all=sats;
   if (stack===undefined) {
     stack=[object];
@@ -70,14 +64,16 @@ function dre$$(object, type, loc, stack) {
   object.T$all[tname]=type;
   object.$crtmm$.sts.push(type);
   //Initialize object with type info
-  type.t(otargs,object);
   if (type.a) {
+    type.t(type.a,object);
     if (object.$$targs$$===undefined) {
       object.$$targs$$={};
     }
-    for (targ in otargs) {
-      object.$$targs$$[targ]=otargs[targ];
+    for (targ in type.a) {
+      if (!object.$$targs$$[targ])object.$$targs$$[targ]=type.a[targ];
     }
+  } else {
+    type.t(object);
   }
   for (var sat in sats) {
     var expected = sats[sat].dynmem$;
@@ -103,7 +99,11 @@ function dre$$(object, type, loc, stack) {
               //add satisfied type
               object.$crtmm$.sts.push(proptype.$t);
               object.T$all[proptype.$t.t.$$.prototype.getT$name()]=proptype.$t.t;
-              proptype.$t.t(proptype.$t.a,object);
+              if (proptype.$t.a) {
+                proptype.$t.t(proptype.$t.a,object);
+              } else {
+                proptype.$t.t(object);
+              }
             }
           } else if (proptype && proptype.$t && !is$(val,proptype.$t)) {
             if (proptype.$t.t===$_Array) {
