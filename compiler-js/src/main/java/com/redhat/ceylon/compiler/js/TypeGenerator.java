@@ -305,7 +305,7 @@ public class TypeGenerator {
         gen.out(GenerateJsVisitor.function, gen.getNames().name(d));
         final boolean withTargs = generateParameters(that.getTypeParameterList(), null, d, gen);
         gen.beginBlock();
-        final List<Declaration> superDecs = new ArrayList<Declaration>(3);
+        final List<Declaration> superDecs = new ArrayList<>(3);
         if (!gen.opts.isOptimize()) {
             new SuperVisitor(superDecs).visit(that.getInterfaceBody());
         }

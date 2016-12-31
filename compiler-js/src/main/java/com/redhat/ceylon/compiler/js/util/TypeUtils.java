@@ -1530,7 +1530,7 @@ public class TypeUtils {
         }
         final ArrayList<Type> r = new ArrayList<>(treeTypes.size());
         for (Tree.StaticType st : treeTypes) {
-            r.add(st.getTypeModel());
+            r.add(st.getTypeModel().resolveAliases());
         }
         return r;
     }
