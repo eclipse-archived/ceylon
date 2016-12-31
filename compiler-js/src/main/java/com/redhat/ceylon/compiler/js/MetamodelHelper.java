@@ -140,7 +140,7 @@ public class MetamodelHelper {
     }
 
     static void generateClosedTypeLiteral(final Tree.TypeLiteral that, final GenerateJsVisitor gen) {
-        final Type ltype = that.getType().getTypeModel();
+        final Type ltype = that.getType().getTypeModel().resolveAliases();
         final TypeDeclaration td = ltype.getDeclaration();
         final Map<TypeParameter,Type> targs = ltype.getTypeArguments();
         final boolean isConstructor = that instanceof Tree.NewLiteral
@@ -218,8 +218,9 @@ public class MetamodelHelper {
         } else {
             gen.out(gen.getNames().constructorSeparator(cd), gen.getNames().name(cd), ",");
         }
-        TypeUtils.printTypeArguments(meta, meta.getTypeModel().getTypeArguments(), gen, false,
-                meta.getTypeModel().getVarianceOverrides());
+        final Type mtype = meta.getTypeModel().resolveAliases();
+        TypeUtils.printTypeArguments(meta, mtype.getTypeArguments(), gen, false,
+                mtype.getVarianceOverrides());
         if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
             gen.out(",undefined,");
             TypeUtils.printTypeArguments(meta, ltype.getTypeArguments(), gen, false,
@@ -230,7 +231,7 @@ public class MetamodelHelper {
 
     static void generateMemberLiteral(final Tree.MemberLiteral that, final GenerateJsVisitor gen) {
         final com.redhat.ceylon.model.typechecker.model.Reference ref = that.getTarget();
-        Type ltype = that.getType() == null ? null : that.getType().getTypeModel();
+        Type ltype = that.getType() == null ? null : that.getType().getTypeModel().resolveAliases();
         final Declaration d = ref.getDeclaration();
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
 
@@ -321,11 +322,7 @@ public class MetamodelHelper {
                 gen.out(gen.getNames().name(ltype.getDeclaration()));
                 gen.out(d.isStatic()?".$st$.":".$$.prototype.");
             }
-            if (d instanceof Value) {
-                gen.out(gen.getNames().getter(d, true),",");
-            } else {
-                gen.out(gen.getNames().name(d),",");
-            }
+            gen.out(gen.getNames().getter(vd, true),",");
             TypeUtils.printTypeArguments(that, that.getTypeModel().getTypeArguments(), gen, false,
                     that.getTypeModel().getVarianceOverrides());
             gen.out(")");
@@ -339,11 +336,7 @@ public class MetamodelHelper {
                 gen.out(gen.getNames().name(ltype.getDeclaration()));
                 gen.out(d.isStatic()?".$st$.":".$$.prototype.");
             }
-            if (d instanceof Value) {
-                gen.out(gen.getNames().getter(d, true));
-            } else {
-                gen.out(gen.getNames().name(d));
-            }
+            gen.out(gen.getNames().name(d));
             if (ltype != null && ltype.getTypeArguments() != null && !ltype.getTypeArguments().isEmpty()) {
                 gen.out(",a:");
                 TypeUtils.printTypeArguments(that, ltype.getTypeArguments(), gen, false,
