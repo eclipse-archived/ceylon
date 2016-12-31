@@ -199,7 +199,11 @@ function ut$(a,b){
     //new union
   } else if (a.t===b.t) {
     if (a.a&&b.a) {
-      return {t:a.t,a:it$(a.a,b.a)};
+      var targs={};
+      for (targ in a.a) {
+        targs[targ]=ut$(a.a[targ],b.a[targ]);
+      }
+      return {t:a.t,a:targs};
     }
     return a;
   }
@@ -238,7 +242,11 @@ function it$(a,b){
     //Create new intersection
   } else if (a.t===b.t) {
     if (a.a&&b.a) {
-      return {t:a.t,a:ut$(a.a,b.a)};
+      var targs={};
+      for (targ in a.a) {
+        targs[targ]=it$(a.a[targ],b.a[targ]);
+      }
+      return {t:a.t,a:targs};
     }
     return a;
   }
