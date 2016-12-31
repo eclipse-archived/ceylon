@@ -133,8 +133,6 @@ public class ClassGenerator {
         if (withTargs) {
             gen.out(gen.getClAlias(), "set_type_args(", me, ",$$targs$$);");
             gen.endLine();
-        } else if (sats != null) {
-            addSatisfiedTypeArguments(sats, that, me, gen);
         }
         addFunctionTypeArguments(d, me, gen);
         List<Tree.Parameter> defparams = null;
@@ -223,25 +221,6 @@ public class ClassGenerator {
         TypeGenerator.initializeType(that, gen, initDeferrer);
         if (d.isSerializable()) {
             SerializationHelper.addDeserializer(that, d, gen);
-        }
-    }
-
-    public static void addSatisfiedTypeArguments(final Tree.SatisfiedTypes sats,
-            final Node node, final String objname, final GenerateJsVisitor gen) {
-        //Check if any of the satisfied types have type arguments
-        for(Tree.StaticType sat : sats.getTypes()) {
-            boolean first = true;
-            Map<TypeParameter,Type> targs = sat.getTypeModel().getTypeArguments();
-            if (targs != null && !targs.isEmpty()) {
-                if (first) {
-                    gen.out(objname, ".$$targs$$=");
-                    TypeUtils.printTypeArguments(node, targs, gen, false, null);
-                    gen.endLine(true);
-                    first = false;
-                } else {
-                    gen.out("/*TODO: more type arguments 1*/");
-                }
-            }
         }
     }
 
