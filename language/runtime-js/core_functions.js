@@ -249,6 +249,24 @@ function it$(a,b){
       return {t:a.t,a:targs};
     }
     return a;
+  } else if (a.t===Nothing || b.t===Nothing) {
+    return {t:Nothing};
+  } else if (a.t===Anything) {
+    return b;
+  } else if (b.t===Anything) {
+    return a;
+  }
+  //Check the metatype
+  var at=getrtmm$$(a.t);
+  var bt=getrtmm$$(b.t);
+  if (at && bt) {
+    at=get_model(at); bt=get_model(bt);
+    if (at && bt && at.mt==='c' && bt.mt==='c') {
+      //Check if one extends the other, otherwise it's Nothing
+      if (!extendsType(a,b) && !extendsType(b,a)) {
+        return {t:Nothing};
+      }
+    }
   }
   return {t:'i',l:[a,b]};
 }
