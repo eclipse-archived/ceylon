@@ -268,7 +268,7 @@ public class MetamodelGenerator {
             map.put(KEY_DS_VARIANCE, "in");
         }
         if (tp.getSelfType() != null) {
-            map.put(KEY_SELF_TYPE, typeMap(tp.getSelfType(), from));
+            map.put(KEY_SELF_TYPE, tp.getSelfType().getDeclaration().getName());
         }
         if (tp.getSatisfiedTypes() != null && !tp.getSatisfiedTypes().isEmpty()) {
             encodeTypes(tp.getSatisfiedTypes(), map, KEY_SATISFIES, from);
@@ -457,7 +457,7 @@ public class MetamodelGenerator {
         }
         //self type
         if (d.getSelfType() != null) {
-            m.put(KEY_SELF_TYPE, typeMap(d.getSelfType(), d));
+            m.put(KEY_SELF_TYPE, d.getSelfType().getDeclaration().getName());
         }
 
         //Extends
@@ -662,7 +662,7 @@ public class MetamodelGenerator {
             m.put(KEY_TYPE_PARAMS, tpl);
         }
         if (d.getSelfType() != null) {
-            m.put(KEY_SELF_TYPE, typeMap(d.getSelfType(), d));
+            m.put(KEY_SELF_TYPE, d.getSelfType().getDeclaration().getName());
         }
         m.put("$alias", typeMap(d.getExtendedType(), d));
         encodeTypes(d.getCaseTypes(), m, "of", d);
