@@ -31,7 +31,8 @@ public enum Warning {
     uncheckedTypeArguments("Unchecked type arguments"),
     expressionTypeCallable("Expressions of type 'Callable'"),
     expressionTypeIterable("Expressions of type 'Iterable'"), 
-    inferredNotNull("Inferred not null types");
+    inferredNotNull("Inferred not null types"),
+    zeroFloatLiteral("Literal so small it is indistinguishable from zero");
     /*
      * Don't forget to update the documentation
      * of the suppressWarnings annotation in
