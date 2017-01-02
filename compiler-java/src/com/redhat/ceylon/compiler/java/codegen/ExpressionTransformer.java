@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.CondList;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarDefBuilder;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarTrans;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -1252,7 +1253,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (value == Double.POSITIVE_INFINITY) {
             throw new ErroneousException(literal, "literal so large it is indistinguishable from infinity: '"+ literal.getText() + "' (use infinity)");
         } else if (value == 0.0 && !literal.getText().equals("0.0")) {
-            throw new ErroneousException(literal, "literal so small it is indistinguishable from zero: '" + literal.getText() + "' (use 0.0)");
+            literal.addUsageWarning(Warning.zeroFloatLiteral, "literal so small it is indistinguishable from zero: '" + literal.getText() + "' (use 0.0)");
         }
         return value;
     }

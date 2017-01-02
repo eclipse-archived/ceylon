@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.common.Backend;
@@ -1792,6 +1793,10 @@ public class GenerateJsVisitor extends Visitor {
         final String f = that.getText();
         final int dot = f.indexOf('.');
         boolean wrap = true;
+        double parsed=Double.parseDouble(f);
+        if (parsed == 0.0 && !f.equals("0.0")) {
+            that.addUsageWarning(Warning.zeroFloatLiteral, "literal so small it is indistinguishable from zero: '" + f + "' (use 0.0)");
+        }
         if (f.indexOf('E', dot) < 0 && f.indexOf('e', dot) < 0) {
             for (int i = dot+1; i < f.length(); i++) {
                 if (f.charAt(i) != '0') {
