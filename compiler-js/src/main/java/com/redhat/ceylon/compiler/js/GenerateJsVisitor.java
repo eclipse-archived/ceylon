@@ -2103,7 +2103,14 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     public void visit(final Tree.Dynamic that) {
-        invoker.nativeObject(that.getNamedArgumentList());
+        if (that.getNamedArgumentList() == null) {
+            out("[]");
+        } else if (that.getNamedArgumentList().getSequencedArgument()==null &&
+                that.getNamedArgumentList().getNamedArguments().isEmpty()) {
+            out("{}");
+        } else {
+            invoker.nativeObject(that.getNamedArgumentList());
+        }
     }
 
     @Override
