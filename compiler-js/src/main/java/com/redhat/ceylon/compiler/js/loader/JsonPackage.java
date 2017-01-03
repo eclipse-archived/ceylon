@@ -848,10 +848,6 @@ public class JsonPackage extends LazyPackage {
                 alias.setName(name);
                 alias.setUnit(u2);
                 setAnnotations(alias, (Integer)m.remove(KEY_PACKED_ANNS), m.remove(KEY_ANNOTATIONS));
-                if (parent == this) {
-                    u2.addDeclaration(alias);
-                }
-                parent.addMember(alias);
                 m.put(KEY_METATYPE, alias);
             } else if (maybe instanceof TypeAlias) {
                 alias = (TypeAlias)maybe;
@@ -890,6 +886,10 @@ public class JsonPackage extends LazyPackage {
         }
         m.clear();
         m.put(KEY_METATYPE, alias);
+        if (parent == this) {
+            u2.addDeclaration(alias);
+        }
+        parent.addMember(alias);
         return alias;
     }
 
@@ -1187,7 +1187,7 @@ public class JsonPackage extends LazyPackage {
             return loadMethod(name, map, this, existing);
         } else if (metatype.equals(METATYPE_OBJECT) || metatype instanceof Value) {
             return loadObject(name, map, this, existing);
-        } else if (metatype.equals(METATYPE_ALIAS)) {
+        } else if (metatype.equals(METATYPE_ALIAS) || metatype instanceof TypeAlias) {
             return loadTypeAlias(name, map, this, existing);
         }
         System.out.println("WTF is this shit " + map);
