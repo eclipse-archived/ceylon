@@ -41,6 +41,7 @@ public class LazyPackage extends Package {
     private List<Declaration> compiledDeclarations = new ArrayList<Declaration>(3);
     private Set<Unit> lazyUnits = new HashSet<Unit>();
     private Map<String,Declaration> cache = new HashMap<String,Declaration>();
+    private boolean descriptorLoaded;
     
     public LazyPackage(AbstractModelLoader modelLoader){
         this.modelLoader = modelLoader;
@@ -308,5 +309,13 @@ public class LazyPackage extends Package {
                 lazyUnits.add(unit);
             }
         });
+    }
+
+    public void setDescriptorLoaded(boolean loaded) {
+        this.descriptorLoaded = loaded;
+    }
+
+    public boolean isDescriptorLoaded() {
+        return descriptorLoaded;
     }
 }

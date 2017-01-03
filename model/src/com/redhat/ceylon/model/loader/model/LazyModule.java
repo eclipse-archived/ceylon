@@ -56,7 +56,7 @@ public abstract class LazyModule extends Module {
         if(!defaultModule){
             pkg = findPackageInModule(this, name);
             if(pkg != null)
-                return pkg;
+                return loadPackage(pkg);
         }
         // then try in dependencies
         Set<Module> visited = new HashSet<Module>();
@@ -64,7 +64,7 @@ public abstract class LazyModule extends Module {
             // we don't have to worry about the default module here since we can't depend on it
             pkg = findPackageInImport(name, dependency, visited);
             if(pkg != null)
-                return pkg;
+                return loadPackage(pkg);
         }
         AbstractModelLoader modelLoader = getModelLoader();
         JdkProvider jdkProvider = modelLoader.getJdkProvider();
@@ -75,7 +75,7 @@ public abstract class LazyModule extends Module {
             if(languageModule instanceof LazyModule){
                 pkg = findPackageInModule((LazyModule) languageModule, name);
                 if(pkg != null)
-                    return pkg;
+                    return loadPackage(pkg);
             }
         }
         // never try to load java packages from the default module because it would
@@ -86,6 +86,12 @@ public abstract class LazyModule extends Module {
         // do the lookup of the default module last
         if(defaultModule)
             pkg = modelLoader.findExistingPackage(this, name);
+        return pkg;
+    }
+
+    private Package loadPackage(Package pkg) {
+        if(pkg instanceof LazyPackage)
+            return getModelLoader().loadPackage((LazyPackage) pkg);
         return pkg;
     }
 

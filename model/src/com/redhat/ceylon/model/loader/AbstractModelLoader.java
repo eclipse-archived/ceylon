@@ -2017,7 +2017,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 String quotedPkgName = JVMModuleUtil.quoteJavaKeywords(pkgName);
                 LazyPackage pkg = findCachedPackage(module, quotedPkgName);
                 if(pkg != null)
-                    return pkg;
+                    return loadPackage(pkg);
                 // special case for the jdk module
                 String moduleName = module.getNameAsString();
                 if(jdkProvider.isJDKModule(moduleName)){
@@ -2033,6 +2033,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return null;
             }
         });
+    }
+    
+    public LazyPackage loadPackage(LazyPackage pkg) {
+        if(!pkg.isDescriptorLoaded() && packageDescriptorsNeedLoading)
+            loadPackageDescriptor(pkg);
+        return pkg;
     }
     
     private LazyPackage findCachedPackage(Module module, String quotedPkgName) {
@@ -2053,8 +2059,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             public LazyPackage call() throws Exception {
                 String quotedPkgName = JVMModuleUtil.quoteJavaKeywords(pkgName);
                 LazyPackage pkg = findCachedPackage(module, quotedPkgName);
-                if(pkg != null)
-                    return pkg;
+                if(pkg != null){
+                    return loadPackage(pkg);
+                }
                 // try to find it from the module, perhaps it already got created and we didn't catch it
                 if(module instanceof LazyModule){
                     pkg = (LazyPackage) ((LazyModule) module).findPackageNoLazyLoading(pkgName);
@@ -2091,7 +2098,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         synchronizedRun(new Runnable() {
             @Override
             public void run() {
-                for(Package pkg : packagesByName.values()){
+                for(LazyPackage pkg : packagesByName.values()){
                     loadPackageDescriptor(pkg);
                 }
                 packageDescriptorsNeedLoading  = true;
@@ -2099,9 +2106,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         });
     }
 
-    private void loadPackageDescriptor(Package pkg) {
+    private void loadPackageDescriptor(LazyPackage pkg) {
         if(!pkg.getModule().isAvailable())
             lazyLoadModule(pkg.getModule());
+        // Consider the descriptor loaded, we're not going to change our mind
+        pkg.setDescriptorLoaded(true);
         // Don't try to load a package descriptor for ceylon.language 
         // if we're bootstrapping
         if (isBootstrap 
