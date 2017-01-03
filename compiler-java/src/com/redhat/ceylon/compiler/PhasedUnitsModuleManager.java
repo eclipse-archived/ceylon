@@ -66,6 +66,11 @@ public class PhasedUnitsModuleManager extends ReflectionModuleManager {
     }
 
     @Override
+    protected void loadPackageDescriptors() {
+        getModelLoader().loadPackageDescriptors();
+    }
+    
+    @Override
     public boolean isModuleLoadedFromSource(String moduleName) {
         for(ModuleSpec spec : modulesSpecs){
             if(spec.getName().equals(moduleName))

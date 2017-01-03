@@ -59,9 +59,11 @@ public abstract class ReflectionModuleManager extends LazyModuleManager {
             loadStaticMetamodel();
             getModelLoader().loadStandardModules();
         }
-        getModelLoader().loadPackageDescriptors();
+        loadPackageDescriptors();
     }
     
+    protected void loadPackageDescriptors() {}
+
     protected void loadStaticMetamodel() {}
 
     @Override
