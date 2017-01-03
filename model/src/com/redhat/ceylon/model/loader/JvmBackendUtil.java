@@ -801,6 +801,14 @@ public class JvmBackendUtil {
         staticMetamodelLoader.loadModule(module.getName(), module.getVersion(), artifact);
     }
 
+    public static boolean isStaticMetamodel(java.lang.Class<?> fromClass) {
+        URL res = fromClass.getResource("/META-INF/ceylon/metamodel");
+        if (res == null) {
+            res = fromClass.getResource("/ANDROID-META-INF/ceylon/metamodel");
+        }
+        return res != null;
+    }
+
     public static InputStream getStaticMetamodelInputStream(java.lang.Class<?> fromClass) {
         InputStream stream = fromClass.getResourceAsStream("/META-INF/ceylon/metamodel");
         if (stream == null) {

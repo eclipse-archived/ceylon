@@ -9,6 +9,7 @@ import java.util.Set;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.JdkProvider;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.LoaderJULLogger;
 import com.redhat.ceylon.model.loader.ModelResolutionException;
 import com.redhat.ceylon.model.loader.impl.reflect.CachedTOCJars;
@@ -41,6 +42,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     private CachedTOCJars jars = new CachedTOCJars();
     private ClassLoader defaultClassLoader;
     private Map<String, Module> lazyLoadedModulesByPackage = new HashMap<>();
+    private Boolean staticMetamodelCache;
 
     public RuntimeModelLoader(ModuleManager moduleManager, Modules modules) {
         super(moduleManager, modules, new LoaderJULLogger());
@@ -107,13 +109,17 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
                 }
             }
             try{
+                // see if we have an explicit default CL
                 if(defaultClassLoader != null)
                     return defaultClassLoader.loadClass(name);
-                return getClass().getClassLoader().loadClass(name);
+                // for a dynamic CL we can try our own class loader too
+                if(isDynamicMetamodel())
+                    return getClass().getClassLoader().loadClass(name);
             }catch(ClassNotFoundException|NoClassDefFoundError x){
                 return null;
             }
-//            return null;
+            // no luck
+            return null;
         }
         try{
             return classLoader.loadClass(name);
@@ -192,8 +198,9 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
             String jdkModuleName = JDKUtils.getJDKModuleNameForPackage(pkgName);
             if(jdkModuleName != null)
                 return findModule(jdkModuleName, JDKUtils.jdk.version);
-            return lazyLoadModuleForPackage(pkgName);
-//            return lookupModuleByPackageName(pkgName);
+            if(isDynamicMetamodel())
+                return lazyLoadModuleForPackage(pkgName);
+            return lookupModuleByPackageName(pkgName);
         }
     }
     
@@ -284,7 +291,15 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         loadCompiledModule(module);
     }
 
-    public boolean isFubar() {
-        return defaultClassLoader != null;
+    /**
+     * We have a dynamic metamodel if we don't have a static metamodel, and nobody
+     * ever manually set us up
+     */
+    @Override
+    public boolean isDynamicMetamodel() {
+        if(staticMetamodelCache == null)
+            staticMetamodelCache = JvmBackendUtil.isStaticMetamodel(getClass());
+        return !getModuleManager().isManualMetamodelSetup() 
+                && !staticMetamodelCache;
     }
 }

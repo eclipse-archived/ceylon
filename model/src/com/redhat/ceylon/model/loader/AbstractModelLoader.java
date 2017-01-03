@@ -6457,4 +6457,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         return null;
     }
+
+    /**
+     * Override in sub-classes
+     */
+    @Override
+    public boolean isDynamicMetamodel() {
+        return false;
+    }
 }

@@ -66,4 +66,9 @@ public interface ModelLoader {
      * @return null if module is not already loaded
      */
     public Module getLoadedModule(String moduleName, String version);
+
+    /**
+     * Return true if we're running with a dynamic metamodel
+     */
+    public boolean isDynamicMetamodel();
 }

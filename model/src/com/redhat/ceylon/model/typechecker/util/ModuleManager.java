@@ -265,4 +265,12 @@ public class ModuleManager {
     public Backends getSupportedBackends() {
         return Backends.ANY;
     }
+
+    /**
+     * Return true if the metamodel has already been manually set up. This is only invalidated in some
+     * cases in the RuntimeModuleManager.
+     */
+    public boolean isManualMetamodelSetup() {
+        return true;
+    }
 }

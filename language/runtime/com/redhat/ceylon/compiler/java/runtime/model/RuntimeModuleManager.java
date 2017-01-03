@@ -30,6 +30,7 @@ import com.redhat.ceylon.model.typechecker.model.Unit;
 public class RuntimeModuleManager extends ReflectionModuleManager implements StaticMetamodelLoader {
 
     private RuntimeResolver runtimeResolver;
+    private boolean manualMetamodelSetup;
 
 	public RuntimeModuleManager(RuntimeResolver runtimeResolver) {
         super();
@@ -80,6 +81,7 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     		ArtifactResult artifact, ClassLoader classLoader, boolean staticMetamodel) {
         RuntimeModelLoader modelLoader = getModelLoader();
         synchronized(modelLoader.getLock()){
+            manualMetamodelSetup = true;
             Module module = getOrCreateModule(splitModuleName(name), version);
             // The default module is created as available, so we use a different test for it, because we are the only
             // ones setting the module's Unit
@@ -227,5 +229,10 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
 	@Override
 	public void loadModule(String name, String version, ArtifactResult artifact) {
 		loadModule(name, version, artifact, getClass().getClassLoader(), true);
+	}
+	
+	@Override
+	public boolean isManualMetamodelSetup() {
+	    return manualMetamodelSetup;
 	}
 }
