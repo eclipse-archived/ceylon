@@ -251,4 +251,13 @@ public abstract class LazyModule extends Module {
     public void setPackagePathsProvider(PackagePathsProvider packagePathsProvider) {
         this.packagePathsProvider = packagePathsProvider;
     }
+    
+    @Override
+    public Module getLanguageModule() {
+        Module ret = super.getLanguageModule();
+        // try to lazy-load it if required
+        if(!ret.isAvailable())
+            getModelLoader().lazyLoadModule(ret);
+        return ret;
+    }
 }

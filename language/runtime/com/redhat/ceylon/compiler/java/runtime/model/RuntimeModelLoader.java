@@ -283,9 +283,10 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     }
     
     @Override
-    protected void lazyLoadModule(Module module) {
-        System.err.println("Lazy-loading module: "+module);
-        loadCompiledModule(module);
+    public void lazyLoadModule(Module module) {
+        if(isDynamicMetamodel()){
+            loadCompiledModule(module);
+        }
     }
 
     /**

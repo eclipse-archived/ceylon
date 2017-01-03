@@ -2140,7 +2140,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         loadCompiledPackage(packageClass, pkg);
     }
 
-    protected void lazyLoadModule(Module module) {
+    public void lazyLoadModule(Module module) {
     }
     
     private void loadCompiledPackage(ClassMirror packageClass, Package pkg) {
