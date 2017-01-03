@@ -198,7 +198,6 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     		return size() > 100;
     	}
     };
-    private ClassLoader defaultClassLoader;
     
     public boolean cachedIs(Object o, TypeDescriptor type) {
         TypeDescriptor instanceType = Metamodel.getTypeDescriptor(o);

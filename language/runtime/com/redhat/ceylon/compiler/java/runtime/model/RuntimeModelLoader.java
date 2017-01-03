@@ -210,7 +210,6 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
         }
         Module module;
         if(pkgName.isEmpty()){
-            System.err.println("default module");
             module = modules.getDefaultModule();
         }else{
             // pretend it's the default module trying to load a new module? not sure what
@@ -220,7 +219,6 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
             if(moduleClass != null){
                 String name = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "name");
                 String version = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "version");
-                System.err.println("lazy-loading module "+name+"/"+version);
                 module = findOrCreateModule(name, version);
                 loadCompiledModule(module);
                 // damnit, make it import the default module, otherwise it won't be able to see non-ceylon modules
@@ -234,7 +232,6 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
                     parentPackage = "";
                 else
                     parentPackage = pkgName.substring(0, lastDot);
-                System.err.println("no module found, trying parent: "+parentPackage);
                 module = lazyLoadModuleForPackage(parentPackage);
             }
         }
