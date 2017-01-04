@@ -310,6 +310,12 @@ public class TypeParserTests {
         public Module getLoadedModule(String moduleName, String version) {
             throw new RuntimeException("Not yet implemented");
         }
+
+
+        @Override
+        public boolean isDynamicMetamodel() {
+            return false;
+        }
         
     }
     
