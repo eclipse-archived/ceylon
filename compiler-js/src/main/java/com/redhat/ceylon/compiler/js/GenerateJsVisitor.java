@@ -2018,7 +2018,7 @@ public class GenerateJsVisitor extends Visitor {
         return scope;
     }
 
-    String getMember(Node node, Declaration decl, String lhs) {
+    String getMember(Node node, String lhs) {
         final StringBuilder sb = new StringBuilder();
         if (lhs != null) {
             if (lhs.length() > 0) {
@@ -2041,7 +2041,7 @@ public class GenerateJsVisitor extends Visitor {
 
     String memberAccessBase(Node node, Declaration decl, boolean setter,
                 String lhs) {
-        final StringBuilder sb = new StringBuilder(getMember(node, decl, lhs));
+        final StringBuilder sb = new StringBuilder(getMember(node, lhs));
         final boolean isConstructor = decl instanceof Constructor;
         if (sb.length() > 0) {
             if (node instanceof Tree.BaseMemberOrTypeExpression) {
@@ -3545,12 +3545,23 @@ public class GenerateJsVisitor extends Visitor {
         visitStatements(block.getStatements());
         if (wrap) {
             final ContinueBreakVisitor cbv = continues.pop();
+            final ContinueBreakVisitor prev = continues.isEmpty()?null:continues.peek();
             out("}());if(", cbv.getReturnName(), "!==undefined){return ", cbv.getReturnName(), ";}");
             if (cbv.isContinues()) {
-                out("else if(", cbv.getContinueName(),"){continue;}");
+                out("else if(", cbv.getContinueName());
+                if (prev != null && prev.isContinues()) {
+                    out("){", prev.getContinueName(), "=true;return ", cbv.getReturnName(), ";}");
+                } else {
+                    out("){continue;}");
+                }
             }
             if (cbv.isBreaks()) {
-                out("else if(", cbv.getBreakName(),"){break;}");
+                out("else if(", cbv.getBreakName());
+                if (prev != null && prev.isBreaks()) {
+                    out("){", prev.getBreakName(), "=true;return ", cbv.getReturnName(), ";}");
+                } else {
+                    out("){break;}");
+                }
             }
             forgetCapturedValues(capturedValues);
         }
