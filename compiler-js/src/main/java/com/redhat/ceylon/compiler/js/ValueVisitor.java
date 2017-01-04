@@ -169,4 +169,21 @@ public class ValueVisitor extends Visitor {
         super.visit(that);
     }
 
+    public void visit(Tree.SequenceEnumeration that) {
+        boolean cs = enterCapturingScope();
+        if (that.getSequencedArgument() != null &&
+                !SequenceGenerator.allLiterals(that.getSequencedArgument().getPositionalArguments())) {
+            for (Tree.PositionalArgument arg : that.getSequencedArgument().getPositionalArguments()) {
+                if (arg instanceof Tree.ListedArgument) {
+                    ((Tree.ListedArgument) arg).getExpression().visit(this);
+                } else if (arg instanceof Tree.SpreadArgument) {
+                    ((Tree.SpreadArgument) arg).getExpression().visit(this);
+                } else if (arg instanceof Tree.Comprehension) {
+                    arg.visit(this);
+                }
+            }
+        }
+        exitCapturingScope(cs);
+    }
+
 }
