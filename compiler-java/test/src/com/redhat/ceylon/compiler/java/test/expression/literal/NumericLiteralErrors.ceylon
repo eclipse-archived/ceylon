@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-@noanno
+@noanno suppressWarnings("unusedDeclaration") 
 class NumericLiteralErrors(){
     shared void m() {
         // make sure we test all the max/min limits
