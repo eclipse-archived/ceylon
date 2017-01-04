@@ -311,7 +311,7 @@ public class RecoveryTests extends CompilerTests {
             @Override
             public boolean expected(CompilerError e) {
                 return e.message != null
-                        && e.message.matches("formal member '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+' not implemented in class hierarchy");
+                        && e.message.matches("formal member '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+' not implemented for concrete class.*");
             }
         });
     }
@@ -322,7 +322,7 @@ public class RecoveryTests extends CompilerTests {
             @Override
             public boolean expected(CompilerError e) {
                 return e.message != null
-                        && e.message.matches("formal member '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+' not implemented in class hierarchy");
+                        && e.message.matches("formal member '[a-zA-Z0-9_]+' of '[a-zA-Z0-9_]+' not implemented for concrete class.*");
             }
         });
     }
