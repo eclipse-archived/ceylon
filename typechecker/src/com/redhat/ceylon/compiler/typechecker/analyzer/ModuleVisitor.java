@@ -314,45 +314,48 @@ public class ModuleVisitor extends Visitor {
     @Override
     public void visit(Tree.ImportModule that) {
         super.visit(that);
-        if (phase==Phase.REMAINING) {
-            String version = 
-                    getVersionString(that.getVersion(), that);
-            Tree.Identifier ns = that.getNamespace();
-            String namespace = ns!=null ? ns.getText() : null;
-            List<String> name;
-            Node node;
+        String version = 
+                getVersionString(that.getVersion(), that);
+        List<String> name;
+        Node node;
 
-            Tree.ImportPath importPath = 
-                    that.getImportPath();
-            Tree.QuotedLiteral quotedLiteral = 
-                    that.getQuotedLiteral();
-            if (importPath!=null) {
-                name = getNameAsList(importPath);
-                node = importPath;
+        Tree.ImportPath importPath = 
+                that.getImportPath();
+        Tree.QuotedLiteral quotedLiteral = 
+                that.getQuotedLiteral();
+        if (importPath!=null) {
+            name = getNameAsList(importPath);
+            node = importPath;
+        }
+        else if (quotedLiteral!=null) {
+            String nameString = 
+                    getNameString(quotedLiteral);
+            name = asList(nameString.split("\\."));
+            node = quotedLiteral;
+        }
+        else {
+            name = Collections.emptyList();
+            node = null;
+        }
+        
+        if (node!=null) {
+            Tree.QuotedLiteral artifact = 
+                    that.getArtifact();
+            if (artifact!=null) {
+                String nameString = getNameString(artifact);
+                name.add("");
+                name.addAll(asList(nameString.split("\\.")));
             }
-            else if (quotedLiteral!=null) {
-                String nameString = 
-                        getNameString(quotedLiteral);
-                name = asList(nameString.split("\\."));
-                node = quotedLiteral;
-            }
-            else {
-                name = Collections.emptyList();
-                node = null;
-            }
-            
-            if (node!=null) {
-                Tree.QuotedLiteral artifact = 
-                        that.getArtifact();
-                if (artifact!=null) {
-                    String nameString = getNameString(artifact);
-                    name.add("");
-                    name.addAll(asList(nameString.split("\\.")));
-                }
-            }
-            
+        }
+        if (phase==Phase.SRC_MODULE){
             String path = formatPath(name);
             that.setName(path);
+        }else if (phase==Phase.REMAINING) {
+            // set in previous phase
+            String path = that.getName();
+
+            Tree.Identifier ns = that.getNamespace();
+            String namespace = ns!=null ? ns.getText() : null;
             boolean hasMavenName = 
                     isMavenModule(path);
             boolean forCeylon 

@@ -294,7 +294,6 @@ public class CeylonVersionTool extends CeylonBaseTool {
     
     private void fixModuleImportNames(Tree.CompilationUnit cu) {
         ModuleVisitor hugeHackMan = new ModuleVisitor(null, null, null, false);
-        hugeHackMan.setPhase(Phase.REMAINING);
         hugeHackMan.visit(cu);
     }
 
