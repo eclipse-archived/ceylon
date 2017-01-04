@@ -36,6 +36,8 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleVisitor.Phase;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
@@ -236,6 +238,7 @@ public class CeylonVersionTool extends CeylonBaseTool {
         TokenRewriteStream tokenStream = new TokenRewriteStream(lexer);
         CeylonParser parser = new CeylonParser(tokenStream);
         Tree.CompilationUnit cu = parser.compilationUnit();
+        fixModuleImportNames(cu);
         String v = this.confirm == Confirm.dependencies ? this.newVersion : confirm("update.module.version", module.getNameAsString(), module.getVersion(), this.newVersion);
         if (v == null) {
             return false;
@@ -254,6 +257,7 @@ public class CeylonVersionTool extends CeylonBaseTool {
         TokenRewriteStream tokenStream = new TokenRewriteStream(lexer);
         CeylonParser parser = new CeylonParser(tokenStream);
         Tree.CompilationUnit cu = parser.compilationUnit();
+        fixModuleImportNames(cu);
         List<Tree.ImportModule> moduleImports = findUpdatedImport(cu, updatedModuleVersions);
         for (Tree.ImportModule moduleImport : moduleImports) {
             String importedModuleName = moduleImport.getName();
@@ -280,12 +284,20 @@ public class CeylonVersionTool extends CeylonBaseTool {
             CommonTokenStream tokenStream = new CommonTokenStream(lexer);
             CeylonParser parser = new CeylonParser(tokenStream);
             Tree.CompilationUnit cu = parser.compilationUnit();
+            fixModuleImportNames(cu);
             List<Tree.ImportModule> moduleImports = findImport(cu);
             for (Tree.ImportModule moduleImport : moduleImports) {
                 outputDependency(module, moduleImport);
             }
         }
     }
+    
+    private void fixModuleImportNames(Tree.CompilationUnit cu) {
+        ModuleVisitor hugeHackMan = new ModuleVisitor(null, null, null, false);
+        hugeHackMan.setPhase(Phase.REMAINING);
+        hugeHackMan.visit(cu);
+    }
+
     private void outputVersion(Module module) throws IOException {
         out.append(CeylonVersionMessages.msg("output.module", 
                 module.getNameAsString(), module.getVersion()))
