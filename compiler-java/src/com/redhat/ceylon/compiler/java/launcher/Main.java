@@ -44,6 +44,7 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.EnvironmentException;
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.tools.CeylonLocation;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
@@ -628,7 +629,7 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                 comp = LanguageCompiler.instance(context);
             } catch (Overrides.OverrideException e) {
                 CeylonLog.instance(context).error("ceylon.overrides", e.getMessage());
-                this.exitState = ExitState.cmderror();
+                this.exitState = new ExitState(ERROR, CeylonState.ERROR, 0, e);
                 return CMDERR;
             } 
             if (comp == null) {
