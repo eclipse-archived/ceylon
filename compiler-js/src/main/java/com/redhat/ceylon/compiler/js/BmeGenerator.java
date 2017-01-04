@@ -78,7 +78,7 @@ public class BmeGenerator {
                 gen.out(exp);
                 return;
             }
-            String who = isCallable && decl.isMember() ? gen.getMember(bme, decl, null) : null;
+            String who = isCallable && decl.isMember() ? gen.getMember(bme, null) : null;
             if (who == null || who.isEmpty()) {
                 //We may not need to wrap this in certain cases
                 ClassOrInterface cont = ModelUtil.getContainingClassOrInterface(bme.getScope());
