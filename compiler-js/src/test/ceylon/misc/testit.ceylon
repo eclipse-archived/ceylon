@@ -51,5 +51,6 @@ shared void test() {
     test656();
     testNatives();
     testAssertions();
+    testCapture();
     results();
 }
