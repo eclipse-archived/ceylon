@@ -298,7 +298,7 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(75, "native classes do not satisfy the same interfaces: 'NativeClassMismatch5'"),
                 new CompilerError(82, "native header for non-native declaration: 'NativeClassMismatch6' is not declared native"),
                 new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6' is not declared native"),
-                new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented in class hierarchy"),
+                new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented for concrete class 'NativeClassMismatch7': 'NativeClassMismatch7' neither directly implements nor inherits a concrete implementation of 'test1'"),
                 new CompilerError(92, "native backend for declaration conflicts with its scope: native implementation 'test1' for '\"js\"' occurs in a scope which only supports '\"jvm\"'"),
                 new CompilerError(102, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for the 'jvm' backend"),
                 new CompilerError(106, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for the 'jvm' backend"),
