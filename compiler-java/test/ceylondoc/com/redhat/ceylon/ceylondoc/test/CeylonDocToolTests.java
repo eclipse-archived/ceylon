@@ -1114,7 +1114,7 @@ public class CeylonDocToolTests {
     
 	private void assertSequencedParameter(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubClass.type.html", 
-                Pattern.compile("<span class='void'>void</span> <span class='identifier'>methodWithSequencedParameter</span>\\(<span title='ceylon.language::Integer'><span class='type-identifier'>Integer</span></span>\\[\\] <span class='parameter'>numbers</span>\\)"));
+                Pattern.compile("<span class='void'>void</span> <span class='identifier'>methodWithSequencedParameter</span>\\(<span title='ceylon.language::Integer'><span class='type-identifier'>Integer</span></span>\\* <span class='parameter'>numbers</span>\\)"));
 	}
     
     private void assertCallableParameter(File destDir) throws Exception {
