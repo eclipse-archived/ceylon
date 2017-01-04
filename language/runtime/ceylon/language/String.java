@@ -28,7 +28,7 @@ import ceylon.language.impl.BaseIterator;
 
 @Ceylon(major = 8)
 @Class(extendsType="ceylon.language::Object", 
-       basic = false, identifiable = false)
+       basic = false, identifiable = false, constructors = true)
 @SatisfiedTypes({"ceylon.language::SearchableList<ceylon.language::Character>",
                  "ceylon.language::Comparable<ceylon.language::String>",
                  "ceylon.language::Summable<ceylon.language::String>",
