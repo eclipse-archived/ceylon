@@ -25,6 +25,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 
 public class ExpressionTests extends CompilerTests {
 	
