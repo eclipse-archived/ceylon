@@ -21,11 +21,13 @@ package com.redhat.ceylon.compiler.java.test.expression;
 
 import java.io.File;
 
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class ExpressionTests extends CompilerTests {
 	
@@ -507,6 +509,8 @@ public class ExpressionTests extends CompilerTests {
     
     @Test
     public void testOprBug6650(){
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
         compareWithJavaSource("operator/Bug6650");
     }
     
