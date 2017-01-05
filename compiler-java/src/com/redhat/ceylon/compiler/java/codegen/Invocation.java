@@ -1519,7 +1519,12 @@ class NamedArgumentInvocation extends Invocation {
         } else {
             throw BugException.unhandledTypeCase(tupleType);
         }
-        JCTree.JCExpression sequenceValue  = gen.makeLazyIterable(sequencedArgument, iteratedType, absentType, flags);
+        JCTree.JCExpression sequenceValue;
+        if (gen.expressionGen().allListedArgumentsCtc(sequencedArgument.getPositionalArguments())) {
+            sequenceValue = gen.makeConstantIterable(sequencedArgument, iteratedType, absentType, flags); 
+        } else {
+            sequenceValue = gen.makeLazyIterable(sequencedArgument, iteratedType, absentType, flags);
+        }
         JCTree.JCExpression sequenceType = gen.makeJavaType(parameterType, flags);
         
         Naming.SyntheticName argName = argName(parameter);
