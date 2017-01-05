@@ -17,6 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+native("jvm")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.pom.b "1" {
     import com.redhat.ceylon.compiler.java.test.cmr.modules.pom.a "1";
+    import maven:"javax.ws.rs:jsr311-api" "1.1.1";
 }

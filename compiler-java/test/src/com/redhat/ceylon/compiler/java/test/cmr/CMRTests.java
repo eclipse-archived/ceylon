@@ -1448,6 +1448,11 @@ public class CMRTests extends CompilerTests {
                 +"    <artifactId>a</artifactId>\n"
                 +"    <version>1</version>\n"
                 +"  </dependency>\n"
+                +"  <dependency>\n"
+                +"    <groupId>javax.ws.rs</groupId>\n"
+                +"    <artifactId>jsr311-api</artifactId>\n"
+                +"    <version>1.1.1</version>\n"
+                +"  </dependency>\n"
                 +" </dependencies>\n"
                 +"</project>\n",
                 pomContents);
