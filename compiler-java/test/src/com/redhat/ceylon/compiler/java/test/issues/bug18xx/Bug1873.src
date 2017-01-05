@@ -6,23 +6,7 @@ final class bug1873_ {
     }
     
     static void bug1873() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.String.instance("hello");
-                
-                case 1: 
-                    return .ceylon.language.String.instance("world");
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        };
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
         final .ceylon.language.Sequence<? extends .ceylon.language.String> strs2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)(
             let
             {

@@ -20,20 +20,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
     }
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> defaulted$b(final long a) {
-        return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Integer.instance(1L);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        };
+        return new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L));
     }
     
     private void defaulted$priv$$canonical$(final long a, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> b) {
@@ -127,23 +114,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                     protected final .java.lang.Object $evaluate$(int $index$) {
                         switch ($index$) {
                         case 0: 
-                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
-                                
-                                @.java.lang.Override
-                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                    switch ($index$) {
-                                    case 0: 
-                                        return .ceylon.language.Integer.instance(4L);
-                                    
-                                    case 1: 
-                                        return .ceylon.language.Integer.instance(5L);
-                                    
-                                    default: 
-                                        return null;
-                                    
-                                    }
-                                }
-                            };
+                            return new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(4L), .ceylon.language.Integer.instance(5L));
                         
                         default: 
                             return null;
@@ -201,23 +172,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             return .ceylon.language.Integer.instance(3L);
                         
                         case 2: 
-                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
-                                
-                                @.java.lang.Override
-                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                    switch ($index$) {
-                                    case 0: 
-                                        return .ceylon.language.Integer.instance(4L);
-                                    
-                                    case 1: 
-                                        return .ceylon.language.Integer.instance(5L);
-                                    
-                                    default: 
-                                        return null;
-                                    
-                                    }
-                                }
-                            };
+                            return new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(4L), .ceylon.language.Integer.instance(5L));
                         
                         default: 
                             return null;
@@ -244,20 +199,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                 public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                                         {
-                                            $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                                                
-                                                @.java.lang.Override
-                                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                                    switch ($index$) {
-                                                    case 0: 
-                                                        return .ceylon.language.Integer.instance(2L);
-                                                    
-                                                    default: 
-                                                        return null;
-                                                    
-                                                    }
-                                                }
-                                            }.iterator();
+                                            $iterator$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(2L)).iterator();
                                         }
                                         private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                                         private .ceylon.language.Integer i;
@@ -315,20 +257,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                 public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                                         {
-                                            $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                                                
-                                                @.java.lang.Override
-                                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                                    switch ($index$) {
-                                                    case 0: 
-                                                        return .ceylon.language.Integer.instance(4L);
-                                                    
-                                                    default: 
-                                                        return null;
-                                                    
-                                                    }
-                                                }
-                                            }.iterator();
+                                            $iterator$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(4L)).iterator();
                                         }
                                         private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                                         private .ceylon.language.Integer i;

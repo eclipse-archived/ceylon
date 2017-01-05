@@ -10,20 +10,7 @@ final class mplFatArrow_ {
             
             @.java.lang.Override
             public .java.lang.Object $call$() {
-                new .ceylon.language.String(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Character.instance(32);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                });
+                new .ceylon.language.String(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Character.instance(32)));
                 return null;
             }
         };

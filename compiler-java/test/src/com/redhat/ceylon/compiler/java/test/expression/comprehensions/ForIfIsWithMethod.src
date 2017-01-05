@@ -14,7 +14,7 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
@@ -59,8 +59,8 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                     }
                 };
             }
-        });
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        }));
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
@@ -105,7 +105,7 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                     }
                 };
             }
-        });
+        }));
     }
     
     @.java.lang.Override

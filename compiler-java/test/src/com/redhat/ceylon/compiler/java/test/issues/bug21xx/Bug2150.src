@@ -98,7 +98,7 @@ final class bug2150_ {
         final boolean b = (
             let
             {
-                .ceylon.language.Boolean $ceylontmp$0 = (.ceylon.language.Boolean)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                .ceylon.language.Boolean $ceylontmp$0 = (.ceylon.language.Boolean)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Boolean> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$){
@@ -122,14 +122,14 @@ final class bug2150_ {
                             }
                         };
                     }
-                }.getFirst();
+                }).getFirst();
             }
             returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.Boolean.instance(false);
         ).booleanValue();
         final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean mb = (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean $ceylontmp$1 = (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean $ceylontmp$1 = (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                     
                     public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean>(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2150Boolean.$TypeDescriptor$){
@@ -153,14 +153,14 @@ final class bug2150_ {
                             }
                         };
                     }
-                }.getFirst();
+                }).getFirst();
             }
             returning $ceylontmp$1 != null ? $ceylontmp$1 : .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.get_();
         );
         final .ceylon.language.Comparison c = (.ceylon.language.Comparison)(
             let
             {
-                .ceylon.language.Comparison $ceylontmp$2 = (.ceylon.language.Comparison)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Comparison, .java.lang.Object>(.ceylon.language.Comparison.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                .ceylon.language.Comparison $ceylontmp$2 = (.ceylon.language.Comparison)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.smaller_, .java.lang.Object>(.ceylon.language.smaller_.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Comparison, .java.lang.Object>(.ceylon.language.Comparison.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Comparison> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Comparison>(.ceylon.language.Comparison.$TypeDescriptor$){
@@ -184,7 +184,7 @@ final class bug2150_ {
                             }
                         };
                     }
-                }.getFirst();
+                }).getFirst();
             }
             returning $ceylontmp$2 != null ? $ceylontmp$2 : .ceylon.language.larger_.get_();
         );

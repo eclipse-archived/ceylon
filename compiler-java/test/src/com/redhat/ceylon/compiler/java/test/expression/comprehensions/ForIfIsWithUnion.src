@@ -6,7 +6,7 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
@@ -47,11 +47,11 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                     }
                 };
             }
-        });
+        }));
     }
     
     public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
@@ -96,7 +96,7 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                     }
                 };
             }
-        });
+        }));
     }
     
     @.java.lang.Override

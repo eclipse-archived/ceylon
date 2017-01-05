@@ -9,26 +9,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
 class Bug1942 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug1942() {
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> first = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> first = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$){
                     {
-                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                            
-                            @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            protected final .java.lang.Object $evaluate$(int $index$) {
-                                switch ($index$) {
-                                case 0: 
-                                    return .ceylon.language.Integer.instance(1L);
-                                
-                                default: 
-                                    return null;
-                                
-                                }
-                            }
-                        }.iterator();
+                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L)).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer aa;
@@ -76,7 +62,7 @@ class Bug1942 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     }
                 };
             }
-        };
+        });
     }
     
     private final void f$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("g")

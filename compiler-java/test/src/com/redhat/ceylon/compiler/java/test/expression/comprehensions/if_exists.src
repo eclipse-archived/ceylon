@@ -6,7 +6,7 @@ final class ifFor_ {
     }
     
     static void ifFor(final .ceylon.language.String x, final .java.lang.Object x2) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> c1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> c1 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -34,8 +34,8 @@ final class ifFor_ {
                     }
                 };
             }
-        };
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> c2 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        });
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> c2 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -75,6 +75,6 @@ final class ifFor_ {
                     }
                 };
             }
-        };
+        });
     }
 }

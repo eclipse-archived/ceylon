@@ -99,68 +99,11 @@ class ArrayWith implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     
     public final void positional() {
-        final long[] longArray = .com.redhat.ceylon.compiler.java.Util.toLongArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Integer.instance(1L);
-                
-                case 1: 
-                    return .ceylon.language.Integer.instance(2L);
-                
-                case 2: 
-                    return .ceylon.language.Integer.instance(3L);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        });
+        final long[] longArray = .com.redhat.ceylon.compiler.java.Util.toLongArray(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         <.ceylon.language.Integer>check$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(3L)), longArray);
-        final int[] intArray = .com.redhat.ceylon.compiler.java.Util.toIntArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Integer.instance(1L);
-                
-                case 1: 
-                    return .ceylon.language.Integer.instance(2L);
-                
-                case 2: 
-                    return .ceylon.language.Integer.instance(3L);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        });
+        final int[] intArray = .com.redhat.ceylon.compiler.java.Util.toIntArray(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         <.ceylon.language.Integer>check$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(3L)), intArray);
-        final short[] shortArray = .com.redhat.ceylon.compiler.java.Util.toShortArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Integer.instance(1L);
-                
-                case 1: 
-                    return .ceylon.language.Integer.instance(2L);
-                
-                case 2: 
-                    return .ceylon.language.Integer.instance(3L);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        });
+        final short[] shortArray = .com.redhat.ceylon.compiler.java.Util.toShortArray(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
         <.ceylon.language.Integer>check$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(3L)), shortArray);
         final byte[] byteArray = .com.redhat.ceylon.compiler.java.Util.toByteArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Byte, .java.lang.Object>(.ceylon.language.Byte.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
@@ -202,126 +145,12 @@ class ArrayWith implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 }
             }
         }.sequence(), byteArray);
-        final boolean[] booleanArray = .com.redhat.ceylon.compiler.java.Util.toBooleanArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Boolean, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Boolean.instance(true);
-                
-                case 1: 
-                    return .ceylon.language.Boolean.instance(false);
-                
-                case 2: 
-                    return .ceylon.language.Boolean.instance(true);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        });
-        final float[] floatArray = .com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Float.instance(1.0);
-                
-                case 1: 
-                    return .ceylon.language.Float.instance(2.0);
-                
-                case 2: 
-                    return .ceylon.language.Float.instance(3.0);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        });
-        final double[] doubleArray = .com.redhat.ceylon.compiler.java.Util.toDoubleArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Float.instance(1.0);
-                
-                case 1: 
-                    return .ceylon.language.Float.instance(2.0);
-                
-                case 2: 
-                    return .ceylon.language.Float.instance(3.0);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        });
-        final char[] charArray = .com.redhat.ceylon.compiler.java.Util.toCharArray(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Character.instance(97);
-                
-                case 1: 
-                    return .ceylon.language.Character.instance(98);
-                
-                case 2: 
-                    return .ceylon.language.Character.instance(99);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        });
-        final .java.lang.Object[] objArray = (.java.lang.Object[])(.java.lang.Object[]).com.redhat.ceylon.compiler.java.Util.toArray((.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Boolean.instance(true);
-                
-                case 1: 
-                    return .ceylon.language.String.instance("");
-                
-                case 2: 
-                    return .ceylon.language.Integer.instance(1L);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        }, .java.lang.Object.class);
-        final .ceylon.language.Integer[] integerArray = (.ceylon.language.Integer[])(.ceylon.language.Integer[]).com.redhat.ceylon.compiler.java.Util.toArray((.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Integer.instance(1L);
-                
-                case 1: 
-                    return .ceylon.language.Integer.instance(2L);
-                
-                case 2: 
-                    return .ceylon.language.Integer.instance(3L);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        }, .ceylon.language.Integer.class);
+        final boolean[] booleanArray = .com.redhat.ceylon.compiler.java.Util.toBooleanArray(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Boolean, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false), .ceylon.language.Boolean.instance(true)));
+        final float[] floatArray = .com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0)));
+        final double[] doubleArray = .com.redhat.ceylon.compiler.java.Util.toDoubleArray(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0)));
+        final char[] charArray = .com.redhat.ceylon.compiler.java.Util.toCharArray(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Character.instance(97), .ceylon.language.Character.instance(98), .ceylon.language.Character.instance(99)));
+        final .java.lang.Object[] objArray = (.java.lang.Object[])(.java.lang.Object[]).com.redhat.ceylon.compiler.java.Util.toArray((.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Boolean.instance(true), .ceylon.language.String.instance(""), .ceylon.language.Integer.instance(1L)), .java.lang.Object.class);
+        final .ceylon.language.Integer[] integerArray = (.ceylon.language.Integer[])(.ceylon.language.Integer[]).com.redhat.ceylon.compiler.java.Util.toArray((.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)), .ceylon.language.Integer.class);
     }
     
     public final void named() {
@@ -335,78 +164,21 @@ class ArrayWith implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         final long[] longArray = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> arg$29$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Integer.instance(1L);
-                        
-                        case 1: 
-                            return .ceylon.language.Integer.instance(2L);
-                        
-                        case 2: 
-                            return .ceylon.language.Integer.instance(3L);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> arg$29$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
             }
             returning .com.redhat.ceylon.compiler.java.Util.toLongArray(arg$29$0);
         );
         final int[] intArray = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> arg$30$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Integer.instance(1L);
-                        
-                        case 1: 
-                            return .ceylon.language.Integer.instance(2L);
-                        
-                        case 2: 
-                            return .ceylon.language.Integer.instance(3L);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> arg$30$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
             }
             returning .com.redhat.ceylon.compiler.java.Util.toIntArray(arg$30$0);
         );
         final short[] shortArray = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> arg$31$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Integer.instance(1L);
-                        
-                        case 1: 
-                            return .ceylon.language.Integer.instance(2L);
-                        
-                        case 2: 
-                            return .ceylon.language.Integer.instance(3L);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> arg$31$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
             }
             returning .com.redhat.ceylon.compiler.java.Util.toShortArray(arg$31$0);
         );
@@ -439,130 +211,35 @@ class ArrayWith implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         final boolean[] booleanArray = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> arg$33$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Boolean, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Boolean.instance(true);
-                        
-                        case 1: 
-                            return .ceylon.language.Boolean.instance(false);
-                        
-                        case 2: 
-                            return .ceylon.language.Boolean.instance(true);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> arg$33$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Boolean, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false), .ceylon.language.Boolean.instance(true));
             }
             returning .com.redhat.ceylon.compiler.java.Util.toBooleanArray(arg$33$0);
         );
         final float[] floatArray = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Float, ? extends .java.lang.Object> arg$34$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Float.instance(1.0);
-                        
-                        case 1: 
-                            return .ceylon.language.Float.instance(2.0);
-                        
-                        case 2: 
-                            return .ceylon.language.Float.instance(3.0);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable<? extends .ceylon.language.Float, ? extends .java.lang.Object> arg$34$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0));
             }
             returning .com.redhat.ceylon.compiler.java.Util.toFloatArray(arg$34$0);
         );
         final double[] doubleArray = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Float, ? extends .java.lang.Object> arg$35$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Float.instance(1.0);
-                        
-                        case 1: 
-                            return .ceylon.language.Float.instance(2.0);
-                        
-                        case 2: 
-                            return .ceylon.language.Float.instance(3.0);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable<? extends .ceylon.language.Float, ? extends .java.lang.Object> arg$35$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0));
             }
             returning .com.redhat.ceylon.compiler.java.Util.toDoubleArray(arg$35$0);
         );
         final char[] charArray = (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> arg$36$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Character.instance(97);
-                        
-                        case 1: 
-                            return .ceylon.language.Character.instance(98);
-                        
-                        case 2: 
-                            return .ceylon.language.Character.instance(99);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object> arg$36$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Character.instance(97), .ceylon.language.Character.instance(98), .ceylon.language.Character.instance(99));
             }
             returning .com.redhat.ceylon.compiler.java.Util.toCharArray(arg$36$0);
         );
         final .java.lang.Object[] objArray = (.java.lang.Object[])(.java.lang.Object[])(
             let
             {
-                .ceylon.language.Iterable arg$37$0 = (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Boolean.instance(true);
-                        
-                        case 1: 
-                            return .ceylon.language.String.instance("");
-                        
-                        case 2: 
-                            return .ceylon.language.Integer.instance(1L);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable arg$37$0 = (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Boolean.instance(true), .ceylon.language.String.instance(""), .ceylon.language.Integer.instance(1L));
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$37$reified$0 = .ceylon.language.Object.$TypeDescriptor$;
             }
             returning .com.redhat.ceylon.compiler.java.Util.toArray(arg$37$0, .java.lang.Object.class);
@@ -570,26 +247,7 @@ class ArrayWith implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         final .ceylon.language.Integer[] integerArray = (.ceylon.language.Integer[])(.ceylon.language.Integer[])(
             let
             {
-                .ceylon.language.Iterable arg$38$0 = (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Integer.instance(1L);
-                        
-                        case 1: 
-                            return .ceylon.language.Integer.instance(2L);
-                        
-                        case 2: 
-                            return .ceylon.language.Integer.instance(3L);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable arg$38$0 = (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$38$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
             }
             returning .com.redhat.ceylon.compiler.java.Util.toArray(arg$38$0, .ceylon.language.Integer.class);

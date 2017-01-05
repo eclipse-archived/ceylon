@@ -51,39 +51,10 @@ final class bug601_ {
                     protected final .java.lang.Object $evaluate$(int $index$) {
                         switch ($index$) {
                         case 0: 
-                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
-                                
-                                @.java.lang.Override
-                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                    switch ($index$) {
-                                    case 0: 
-                                        return .ceylon.language.String.instance("hello");
-                                    
-                                    case 1: 
-                                        return .ceylon.language.String.instance("world");
-                                    
-                                    default: 
-                                        return null;
-                                    
-                                    }
-                                }
-                            };
+                            return new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
                         
                         case 1: 
-                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                                
-                                @.java.lang.Override
-                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                    switch ($index$) {
-                                    case 0: 
-                                        return .ceylon.language.String.instance("");
-                                    
-                                    default: 
-                                        return null;
-                                    
-                                    }
-                                }
-                            };
+                            return new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance(""));
                         
                         default: 
                             return null;
@@ -105,36 +76,10 @@ final class bug601_ {
                     protected final .java.lang.Object $evaluate$(int $index$) {
                         switch ($index$) {
                         case 0: 
-                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, true){
-                                
-                                @.java.lang.Override
-                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                    switch ($index$) {
-                                    case 0: 
-                                        return .ceylon.language.String.split("hello world");
-                                    
-                                    default: 
-                                        return null;
-                                    
-                                    }
-                                }
-                            };
+                            return new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.String.split("hello world"));
                         
                         case 1: 
-                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                                
-                                @.java.lang.Override
-                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                    switch ($index$) {
-                                    case 0: 
-                                        return .ceylon.language.String.instance("");
-                                    
-                                    default: 
-                                        return null;
-                                    
-                                    }
-                                }
-                            };
+                            return new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance(""));
                         
                         default: 
                             return null;
@@ -156,7 +101,7 @@ final class bug601_ {
                     protected final .java.lang.Object $evaluate$(int $index$) {
                         switch ($index$) {
                         case 0: 
-                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                            return new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                                 
                                 public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -186,23 +131,10 @@ final class bug601_ {
                                         }
                                     };
                                 }
-                            };
+                            });
                         
                         case 1: 
-                            return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                                
-                                @.java.lang.Override
-                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                    switch ($index$) {
-                                    case 0: 
-                                        return .ceylon.language.String.instance("");
-                                    
-                                    default: 
-                                        return null;
-                                    
-                                    }
-                                }
-                            };
+                            return new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance(""));
                         
                         default: 
                             return null;

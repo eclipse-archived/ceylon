@@ -123,7 +123,7 @@ public final class bug2135_ {
         final boolean t2 = true;
         final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> seq = .ceylon.language.empty_.get_();
         final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> seq2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -186,14 +186,14 @@ public final class bug2135_ {
                     }
                 };
             }
-        };
+        });
         .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$3 = iter.sequence();
         .ceylon.language.Empty rhs$4 = .ceylon.language.empty_.get_();
         if (lhs$3.equals(rhs$4)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter.sequence() == []") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$3, rhs$4));
         }
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -244,14 +244,14 @@ public final class bug2135_ {
                     }
                 };
             }
-        };
+        });
         .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$6 = iter2.sequence();
         .ceylon.language.Empty rhs$7 = .ceylon.language.empty_.get_();
         if (lhs$6.equals(rhs$7)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter2.sequence() == []") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$6, rhs$7));
         }
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter3 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter3 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -302,14 +302,14 @@ public final class bug2135_ {
                     }
                 };
             }
-        };
+        });
         .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$9 = iter3.sequence();
         .ceylon.language.Empty rhs$10 = .ceylon.language.empty_.get_();
         if (lhs$9.equals(rhs$10)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter3.sequence() == []") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$9, rhs$10));
         }
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter4 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter4 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -379,14 +379,14 @@ public final class bug2135_ {
                     }
                 };
             }
-        };
+        });
         .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$13 = iter4.sequence();
         .ceylon.language.Empty rhs$14 = .ceylon.language.empty_.get_();
         if (lhs$13.equals(rhs$14)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter4.sequence() == []") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$13, rhs$14));
         }
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter5 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter5 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -428,14 +428,14 @@ public final class bug2135_ {
                     }
                 };
             }
-        };
+        });
         .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$16 = iter5.sequence();
         .ceylon.language.Empty rhs$17 = .ceylon.language.empty_.get_();
         if (lhs$16.equals(rhs$17)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter5.sequence() == []") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$16, rhs$17));
         }
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter6 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter6 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -477,7 +477,7 @@ public final class bug2135_ {
                     }
                 };
             }
-        };
+        });
         .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$19 = iter6.sequence();
         .ceylon.language.Sequence<? extends .ceylon.language.String> rhs$20 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("1")});
         if (lhs$19.equals(rhs$20)) {

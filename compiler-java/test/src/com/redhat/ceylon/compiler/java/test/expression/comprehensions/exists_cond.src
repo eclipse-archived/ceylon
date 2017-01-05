@@ -12,7 +12,7 @@ final class existsCond_ {
                 null,
                 .ceylon.language.String.instance("b"),
                 null});
-        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$){
@@ -73,6 +73,6 @@ final class existsCond_ {
                     }
                 };
             }
-        });
+        }));
     }
 }

@@ -213,20 +213,7 @@ final class variadicMethods_ {
                 .ceylon.language.String.instance("a"),
                 box.<.ceylon.language.String>box(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("b")),
                 .ceylon.language.String.instance("c")}), "a", box.<.ceylon.language.String>box(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("b")).toString()));
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> vals = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.String.instance("a");
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        };
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> vals = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"));
         java.variadicJavaString(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(vals.sequence()));
         java.variadicCeylonString(.ceylon.language.String.instance("a"), box.<.ceylon.language.String>box(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("b")), .ceylon.language.String.instance("c"));
         java.variadicCeylonString((
@@ -489,7 +476,7 @@ final class comprehensions_ {
     
     static void comprehensions() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
-        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
@@ -519,8 +506,8 @@ final class comprehensions_ {
                     }
                 };
             }
-        }.sequence()));
-        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        }).sequence()));
+        java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
@@ -550,7 +537,7 @@ final class comprehensions_ {
                     }
                 };
             }
-        }.sequence(), 1.0));
+        }).sequence(), 1.0));
         java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {

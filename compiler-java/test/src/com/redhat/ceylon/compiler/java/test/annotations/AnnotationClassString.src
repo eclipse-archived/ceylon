@@ -223,20 +223,7 @@ final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon
     }
     
     public static .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $default$s() {
-        return new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.String.instance("foo");
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        };
+        return new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("foo"));
     }
     
     @.java.lang.Override

@@ -30,21 +30,7 @@ final class bug6096_ {
     }
     
     static void bug6096() {
-        final double y = 1L * ((.ceylon.language.Float).ceylon.language.sum_.<.ceylon.language.Float>sum(.ceylon.language.Float.$TypeDescriptor$, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-            
-            @.java.lang.Override
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Float.instance(1.0);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        })).doubleValue();
+        final double y = 1L * ((.ceylon.language.Float).ceylon.language.sum_.<.ceylon.language.Float>sum(.ceylon.language.Float.$TypeDescriptor$, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0)))).doubleValue();
         final double z = 1L * ((.ceylon.language.Float)(
             let
             {

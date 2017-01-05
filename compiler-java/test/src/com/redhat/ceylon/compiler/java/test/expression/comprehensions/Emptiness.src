@@ -6,35 +6,9 @@ final class emptiness_ {
     }
     
     static void emptiness() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> maybeEmpty = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Integer.instance(1L);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        };
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmpty = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Integer.instance(1L);
-                
-                default: 
-                    return null;
-                
-                }
-            }
-        };
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> maybeEmptyCompIter = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> maybeEmpty = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L));
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmpty = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L));
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> maybeEmptyCompIter = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -64,8 +38,8 @@ final class emptiness_ {
                     }
                 };
             }
-        };
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmptyCompIter = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        });
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmptyCompIter = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -95,7 +69,7 @@ final class emptiness_ {
                     }
                 };
             }
-        };
+        });
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> maybeEmptyCompSeq = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
@@ -284,7 +258,7 @@ final class emptinessParameterised_ {
     }
     
     static <Element, Absent>void emptinessParameterised(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends Element, ? extends Absent> it) {
-        final .ceylon.language.Iterable<? extends Element, ? extends Absent> c1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Element, Absent>($reified$Element, $reified$Absent){
+        final .ceylon.language.Iterable<? extends Element, ? extends Absent> c1 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<Element, Absent>($reified$Element, $reified$Absent, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Element, Absent>($reified$Element, $reified$Absent){
             
             public final .ceylon.language.Iterator<Element> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Element>($reified$Element){
@@ -314,8 +288,8 @@ final class emptinessParameterised_ {
                     }
                 };
             }
-        };
-        final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends Absent> c2 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Sequence<? extends Element>, Absent>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element), $reified$Absent){
+        });
+        final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends Absent> c2 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Sequence<? extends Element>, Absent>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element), $reified$Absent, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Sequence<? extends Element>, Absent>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element), $reified$Absent){
             
             public final .ceylon.language.Iterator<.ceylon.language.Sequence<? extends Element>> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Sequence<? extends Element>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element)){
@@ -375,8 +349,8 @@ final class emptinessParameterised_ {
                     }
                 };
             }
-        };
-        final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> c3 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Element, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Element, .ceylon.language.Object.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
+        });
+        final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> c3 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<Element, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Element, .ceylon.language.Object.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Element, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Element, .ceylon.language.Object.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<Element> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<Element>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Element, .ceylon.language.Object.$TypeDescriptor$)){
@@ -421,7 +395,7 @@ final class emptinessParameterised_ {
                     }
                 };
             }
-        };
+        });
         final .ceylon.language.Sequential<? extends Element> c4 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Element, Absent>($reified$Element, $reified$Absent){
             
             public final .ceylon.language.Iterator<Element> iterator() {

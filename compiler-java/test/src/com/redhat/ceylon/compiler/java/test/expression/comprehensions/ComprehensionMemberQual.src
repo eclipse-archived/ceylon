@@ -16,25 +16,12 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
     }
     
     private final void m$priv$() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                            
-                            @.java.lang.Override
-                            protected final .java.lang.Object $evaluate$(int $index$) {
-                                switch ($index$) {
-                                case 0: 
-                                    return .ceylon.language.Integer.instance(1L);
-                                
-                                default: 
-                                    return null;
-                                
-                                }
-                            }
-                        }.iterator();
+                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L)).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer i;
@@ -59,7 +46,7 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-        };
+        });
     }
     
     public .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualClass.Inner Inner$new$() {
@@ -82,25 +69,12 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
         }
         
         private final void m$priv$() {
-            final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                 
                 public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                         {
-                            $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                                
-                                @.java.lang.Override
-                                protected final .java.lang.Object $evaluate$(int $index$) {
-                                    switch ($index$) {
-                                    case 0: 
-                                        return .ceylon.language.Integer.instance(1L);
-                                    
-                                    default: 
-                                        return null;
-                                    
-                                    }
-                                }
-                            }.iterator();
+                            $iterator$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L)).iterator();
                         }
                         private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                         private .ceylon.language.Integer i;
@@ -125,7 +99,7 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
                         }
                     };
                 }
-            };
+            });
         }
         
         @.java.lang.Override
@@ -157,25 +131,12 @@ final class ComprehensionMemberQualInterfaceFormal$impl implements .java.io.Seri
     private final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceFormal $this;
     
     private void m$priv$() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                            
-                            @.java.lang.Override
-                            protected final .java.lang.Object $evaluate$(int $index$) {
-                                switch ($index$) {
-                                case 0: 
-                                    return .ceylon.language.Integer.instance(1L);
-                                
-                                default: 
-                                    return null;
-                                
-                                }
-                            }
-                        }.iterator();
+                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L)).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer i;
@@ -200,7 +161,7 @@ final class ComprehensionMemberQualInterfaceFormal$impl implements .java.io.Seri
                     }
                 };
             }
-        };
+        });
     }
 }
 interface ComprehensionMemberQualInterfaceNonshared {
@@ -224,25 +185,12 @@ final class ComprehensionMemberQualInterfaceNonshared$impl implements .java.io.S
     }
     
     private void m$priv$() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                     {
-                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                            
-                            @.java.lang.Override
-                            protected final .java.lang.Object $evaluate$(int $index$) {
-                                switch ($index$) {
-                                case 0: 
-                                    return .ceylon.language.Integer.instance(1L);
-                                
-                                default: 
-                                    return null;
-                                
-                                }
-                            }
-                        }.iterator();
+                        $iterator$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L)).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                     private .ceylon.language.Integer i;
@@ -267,7 +215,7 @@ final class ComprehensionMemberQualInterfaceNonshared$impl implements .java.io.S
                     }
                 };
             }
-        };
+        });
     }
 }
 final class comprehensionMemberQualLocal_ {
@@ -293,25 +241,12 @@ final class comprehensionMemberQualLocal_ {
             }
             
             private final void m$priv$() {
-                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                             {
-                                $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                                    
-                                    @.java.lang.Override
-                                    protected final .java.lang.Object $evaluate$(int $index$) {
-                                        switch ($index$) {
-                                        case 0: 
-                                            return .ceylon.language.Integer.instance(1L);
-                                        
-                                        default: 
-                                            return null;
-                                        
-                                        }
-                                    }
-                                }.iterator();
+                                $iterator$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L)).iterator();
                             }
                             private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                             private .ceylon.language.Integer i;
@@ -336,7 +271,7 @@ final class comprehensionMemberQualLocal_ {
                             }
                         };
                     }
-                };
+                });
             }
             
             @.java.lang.Override
@@ -362,25 +297,12 @@ final class comprehensionMemberQualLocal_ {
             }
             
             private final void m$priv$() {
-                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                     
                     public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                         return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
                             {
-                                $iterator$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                                    
-                                    @.java.lang.Override
-                                    protected final .java.lang.Object $evaluate$(int $index$) {
-                                        switch ($index$) {
-                                        case 0: 
-                                            return .ceylon.language.Integer.instance(1L);
-                                        
-                                        default: 
-                                            return null;
-                                        
-                                        }
-                                    }
-                                }.iterator();
+                                $iterator$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L)).iterator();
                             }
                             private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
                             private .ceylon.language.Integer i;
@@ -405,7 +327,7 @@ final class comprehensionMemberQualLocal_ {
                             }
                         };
                     }
-                };
+                });
             }
             
             @.java.lang.Override

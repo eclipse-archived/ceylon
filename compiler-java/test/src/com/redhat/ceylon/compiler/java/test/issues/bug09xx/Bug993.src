@@ -69,7 +69,7 @@ class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runt
     public final void f() {
         final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.this).e();
         final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)this).e();
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> s = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> s = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -127,7 +127,7 @@ class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runt
                     }
                 };
             }
-        };
+        });
     }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromInterface.Inner Inner$new$() {
@@ -163,7 +163,7 @@ class Bug993BottomFromClass extends .com.redhat.ceylon.compiler.java.test.issues
     public final void f() {
         final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.this).e();
         final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)this).e();
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> s = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> s = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -221,7 +221,7 @@ class Bug993BottomFromClass extends .com.redhat.ceylon.compiler.java.test.issues
                     }
                 };
             }
-        };
+        });
     }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomFromClass.Inner Inner$new$() {
@@ -269,7 +269,7 @@ final class Bug993BottomInterface$impl implements .java.io.Serializable {
     public void f() {
         final .ceylon.language.Sequence<? extends .ceylon.language.Character> s1 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top).com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.this.$this).e();
         final .ceylon.language.Sequence<? extends .ceylon.language.Character> s2 = ((.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<? extends .ceylon.language.Sequence<? extends .ceylon.language.Character>>)(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top)$this).e();
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> s = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> s = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -327,7 +327,7 @@ final class Bug993BottomInterface$impl implements .java.io.Serializable {
                     }
                 };
             }
-        };
+        });
     }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993BottomInterface$impl.Inner Inner$new$() {
