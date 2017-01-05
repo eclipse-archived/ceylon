@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.expression.operator;
 
-final class spreadIntoIterable_ {
+class SpreadOptimization implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
-    private spreadIntoIterable_() {
+    SpreadOptimization() {
     }
     
-    static void spreadIntoIterable() {
+    public final void spreadListIntoEnum() {
         final .ceylon.language.List<? extends .ceylon.language.String> list = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("a"),
                 .ceylon.language.String.instance("b"),
@@ -146,103 +146,95 @@ final class spreadIntoIterable_ {
                 }
             }
         };
-        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong jj = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it3 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
-            
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                    {
-                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(3)).iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer x;
-                    private boolean x$exhausted$;
-                    
-                    private final boolean x() {
-                        final .java.lang.Object $ceylontmp$item$12 = $iterator$0.next();
-                        x$exhausted$ = $ceylontmp$item$12 == .ceylon.language.finished_.get_();
-                        if (x$exhausted$) {
-                            return false;
-                        } else {
-                            x = (.ceylon.language.Integer)$ceylontmp$item$12;
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.x()) {
-                            final .ceylon.language.Integer x = this.x;
-                            return .ceylon.language.Integer.instance(x.longValue() + (
-                                let
-                                {
-                                    long $ceylontmp$op$13 = jj.ref;
-                                    jj.ref = $ceylontmp$op$13 + 1;
-                                }
-                                returning $ceylontmp$op$13;
-                            ));
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
+    }
+    
+    public final void spreadJavaListIntoEnum() {
+        final .java.util.List<.ceylon.language.String> list = .java.util.Arrays.<.ceylon.language.String>asList(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> it = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toIterable(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.Util.checkNull(list)));
+        long lhs$12 = it.getSize();
+        long rhs$13 = 2L;
+        if (lhs$12 == rhs$13) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.size == 2") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$12), .ceylon.language.Integer.instance(rhs$13)));
+        }
+        if (!it.longerThan(3L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.longerThan(3)"));
+        }
+        if (it.shorterThan(3L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.shorterThan(3)"));
+        }
+        if (!it.longerThan(2L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.longerThan(2)"));
+        }
+        if (!it.shorterThan(2L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(2)"));
+        }
+        if (it.longerThan(1L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.longerThan(1)"));
+        }
+        if (!it.shorterThan(1L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(1)"));
+        }
+    }
+    
+    private final void f$priv$(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> expect, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> args) {
+        .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$14 = expect.sequence();
+        .ceylon.language.Sequential<? extends .ceylon.language.String> rhs$15 = args.sequence();
+        if (lhs$14.equals(rhs$15)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expect.sequence() == args.sequence()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$14, rhs$15));
+        }
+    }
+    
+    public final void spreadListIntoNamedArgs() {
+        final .ceylon.language.List<? extends .ceylon.language.String> list = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c")});
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> arg$16$0 = list;
+                .ceylon.language.Iterable arg$16$1 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, list);
+                f$priv$(arg$16$0, arg$16$1);
             }
-        });
-        .ceylon.language.print_.print(it3);
-        .ceylon.language.print_.print(it3);
-        jj.ref = 0L;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it4 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
-            
-            @.java.lang.Override
-            protected final .java.lang.Object $evaluate$(int $index$) {
-                switch ($index$) {
-                case 0: 
-                    return .ceylon.language.Integer.instance(jj.ref);
-                
-                case 1: 
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
-                        
-                        public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                                {
-                                    $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(3)).iterator();
-                                }
-                                private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                                private .ceylon.language.Integer x;
-                                private boolean x$exhausted$;
-                                
-                                private final boolean x() {
-                                    final .java.lang.Object $ceylontmp$item$14 = $iterator$0.next();
-                                    x$exhausted$ = $ceylontmp$item$14 == .ceylon.language.finished_.get_();
-                                    if (x$exhausted$) {
-                                        return false;
-                                    } else {
-                                        x = (.ceylon.language.Integer)$ceylontmp$item$14;
-                                        return true;
-                                    }
-                                }
-                                
-                                public final .java.lang.Object next() {
-                                    if (this.x()) {
-                                        final .ceylon.language.Integer x = this.x;
-                                        return .ceylon.language.Integer.instance(x.longValue() + (
-                                            let
-                                            {
-                                                long $ceylontmp$op$15 = jj.ref;
-                                                jj.ref = $ceylontmp$op$15 + 1;
-                                            }
-                                            returning $ceylontmp$op$15;
-                                        ));
-                                    } else return .ceylon.language.finished_.get_();
-                                }
-                            };
-                        }
-                    };
-                
-                default: 
-                    return null;
-                
-                }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> arg$17$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("a")}, .com.redhat.ceylon.compiler.java.Util.sequentialOf(.ceylon.language.String.$TypeDescriptor$, list));
+                .ceylon.language.Iterable arg$17$1 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, list, .ceylon.language.String.instance("a"));
+                f$priv$(arg$17$0, arg$17$1);
             }
-        };
-        .ceylon.language.print_.print(it4);
-        .ceylon.language.print_.print(it4);
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.SpreadOptimization.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.operator.SpreadOptimization.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class spreadOptimization_ {
+    
+    private spreadOptimization_() {
+    }
+    
+    static void spreadOptimization() {
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.SpreadOptimization().spreadListIntoEnum();
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.SpreadOptimization().spreadJavaListIntoEnum();
+        new .com.redhat.ceylon.compiler.java.test.expression.operator.SpreadOptimization().spreadListIntoNamedArgs();
     }
 }

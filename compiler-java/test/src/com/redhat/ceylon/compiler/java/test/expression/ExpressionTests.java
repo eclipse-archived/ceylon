@@ -483,9 +483,9 @@ public class ExpressionTests extends CompilerTests {
         compareWithJavaSource("operator/SpreadMethodReference");
     }
     @Test
-    public void testOprSpreadIntoIterable(){
-        compareWithJavaSource("operator/SpreadIntoIterable");
-        run("com.redhat.ceylon.compiler.java.test.expression.operator.spreadIntoIterable");
+    public void testOprSpreadOptimization(){
+        compareWithJavaSource("operator/SpreadOptimization");
+        run("com.redhat.ceylon.compiler.java.test.expression.operator.spreadOptimization");
     }
     @Test
     public void testOprNullSafeMethodReference(){
