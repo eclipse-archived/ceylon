@@ -1,0 +1,131 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+final class spreadIntoIterable_ {
+    
+    private spreadIntoIterable_() {
+    }
+    
+    static void spreadIntoIterable() {
+        final .ceylon.language.List<? extends .ceylon.language.String> list = (.ceylon.language.List<? extends .ceylon.language.String>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> it = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, list);
+        it = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, list, .ceylon.language.String.instance("a"));
+        it = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+        final .ceylon.language.Iterable it2 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Boolean.instance(true), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(-1L), .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(-1.0), .ceylon.language.Character.instance(99), .ceylon.language.String.instance(""));
+        final .java.lang.String b = "b";
+        it = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance(b);
+                
+                case 1: 
+                    return list;
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong jj = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it3 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(3)).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer x;
+                    private boolean x$exhausted$;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmp$item$12 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$12 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
+                            return false;
+                        } else {
+                            x = (.ceylon.language.Integer)$ceylontmp$item$12;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.x()) {
+                            final .ceylon.language.Integer x = this.x;
+                            return .ceylon.language.Integer.instance(x.longValue() + (
+                                let
+                                {
+                                    long $ceylontmp$op$13 = jj.ref;
+                                    jj.ref = $ceylontmp$op$13 + 1;
+                                }
+                                returning $ceylontmp$op$13;
+                            ));
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+        .ceylon.language.print_.print(it3);
+        .ceylon.language.print_.print(it3);
+        jj.ref = 0L;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it4 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(jj.ref);
+                
+                case 1: 
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                        
+                        public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                                {
+                                    $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(3)).iterator();
+                                }
+                                private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                                private .ceylon.language.Integer x;
+                                private boolean x$exhausted$;
+                                
+                                private final boolean x() {
+                                    final .java.lang.Object $ceylontmp$item$14 = $iterator$0.next();
+                                    x$exhausted$ = $ceylontmp$item$14 == .ceylon.language.finished_.get_();
+                                    if (x$exhausted$) {
+                                        return false;
+                                    } else {
+                                        x = (.ceylon.language.Integer)$ceylontmp$item$14;
+                                        return true;
+                                    }
+                                }
+                                
+                                public final .java.lang.Object next() {
+                                    if (this.x()) {
+                                        final .ceylon.language.Integer x = this.x;
+                                        return .ceylon.language.Integer.instance(x.longValue() + (
+                                            let
+                                            {
+                                                long $ceylontmp$op$15 = jj.ref;
+                                                jj.ref = $ceylontmp$op$15 + 1;
+                                            }
+                                            returning $ceylontmp$op$15;
+                                        ));
+                                    } else return .ceylon.language.finished_.get_();
+                                }
+                            };
+                        }
+                    };
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        .ceylon.language.print_.print(it4);
+        .ceylon.language.print_.print(it4);
+    }
+}
