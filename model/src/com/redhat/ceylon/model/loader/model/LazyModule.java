@@ -266,4 +266,10 @@ public abstract class LazyModule extends Module {
             getModelLoader().lazyLoadModule(ret);
         return ret;
     }
+    
+    @Override
+    public void setLanguageModule(Module languageModule) {
+        // Added to satisfy the model loader
+        super.setLanguageModule(languageModule);
+    }
 }
