@@ -191,6 +191,7 @@ public class Symtab {
     public  Type ceylonArrayIterableType;
     public  Type ceylonAbstractIterableType;
     public  Type ceylonAbstractIteratorType;
+    public  Type ceylonConstantIterableType;
     public  Type ceylonLazyIterableType;
     public  Type ceylonLazyInvokingIterableType;
     public  Type ceylonCharacterType;
@@ -966,6 +967,7 @@ public class Symtab {
         ceylonArrayIterableType = enterClass("com.redhat.ceylon.compiler.java.language.ArrayIterable");
         ceylonAbstractIterableType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractIterable");
         ceylonAbstractIteratorType = enterClass("com.redhat.ceylon.compiler.java.language.AbstractIterator");
+        ceylonConstantIterableType = enterClass("com.redhat.ceylon.compiler.java.language.ConstantIterable");
         ceylonLazyIterableType = enterClass("com.redhat.ceylon.compiler.java.language.LazyIterable");
         ceylonLazyInvokingIterableType = enterClass("com.redhat.ceylon.compiler.java.language.LazyInvokingIterable");
         ceylonCharacterType = enterClass("ceylon.language.Character");

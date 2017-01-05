@@ -4215,6 +4215,35 @@ public abstract class AbstractTransformer implements Transformation {
                     elems));
     }
     
+    JCExpression makeConstantIterable(Tree.SequencedArgument sequencedArgument, 
+            Type seqElemType, Type absentType, 
+            int flags) {
+        ListBuffer<JCExpression> listed = new ListBuffer<JCExpression>();
+        JCExpression spread = null;
+        for (Tree.PositionalArgument pa : sequencedArgument.getPositionalArguments()) {
+            if (pa instanceof Tree.ListedArgument) {
+                Tree.Expression expr = ((Tree.ListedArgument)pa).getExpression();
+                listed.add(expressionGen().transformExpression(expr, BoxingStrategy.BOXED, seqElemType));
+            } else if (pa instanceof Tree.SpreadArgument || pa instanceof Tree.Comprehension) {
+                spread = transformSpreadOrComprehension(pa, seqElemType);
+            }
+        }
+        if (spread == null) {
+            spread = makeNull();
+        }
+        return at(sequencedArgument).NewClass(null, 
+                List.<JCExpression>nil(), 
+                make().TypeApply(make().QualIdent(syms().ceylonConstantIterableType.tsym),
+                        List.of(makeJavaType(seqElemType, JT_TYPE_ARGUMENT),
+                        makeJavaType(absentType, JT_TYPE_ARGUMENT))),
+                listed.toList()
+                        .prepend(spread)
+                        .prepend(makeReifiedTypeArgument(absentType))
+                        .prepend(makeReifiedTypeArgument(seqElemType)), 
+                         
+                null);
+    }
+    
     /**
      * Makes a lazy iterable literal, for a sequenced argument to a named invocation 
      * (<code>f{foo=""; expr1, expr2, *expr3}</code>) or
@@ -4238,37 +4267,8 @@ public abstract class AbstractTransformer implements Transformation {
                     if(i != list.size()-1){
                         jcExpression = makeErroneous(arg, "compiler bug: spread or comprehension argument is not last in sequence literal");
                     }else{
-                        Type type = typeFact().getIterableType(seqElemType);
                         spread = true;
-                        if(arg instanceof Tree.SpreadArgument){
-                            Tree.Expression expr = ((Tree.SpreadArgument) arg).getExpression();
-                            if (typeFact().isIterableType(expr.getTypeModel())) {
-                                // always boxed since it is a sequence
-                                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
-                            } else if (typeFact().isJavaIterableType(expr.getTypeModel())) {
-                                // need to convert j.l.Iterable to a c.l.Iterable
-                                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
-                                Type iteratedType = typeFact().getJavaIteratedType(expr.getTypeModel());
-                                jcExpression = utilInvocation().toIterable(
-                                        makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
-                                        makeReifiedTypeArgument(iteratedType), jcExpression);
-                            } else if (typeFact().isJavaArrayType(expr.getTypeModel())) {
-                                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
-                                Type iteratedType = typeFact().getJavaArrayElementType(expr.getTypeModel());
-                                if (typeFact().isJavaObjectArrayType(expr.getTypeModel())) {
-                                    jcExpression = utilInvocation().toIterable(
-                                            makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
-                                            makeReifiedTypeArgument(iteratedType), jcExpression);
-                                } else { //primitive
-                                    jcExpression = utilInvocation().toIterable(jcExpression);
-                                }
-                            } else {
-                                throw BugException.unhandledTypeCase(expr.getTypeModel());
-                            }
-
-                        }else{
-                            jcExpression = expressionGen().transformComprehension((Comprehension) arg, type);
-                        }
+                        jcExpression = transformSpreadOrComprehension(arg, seqElemType);
                     }
                 }else if(arg instanceof Tree.ListedArgument){
                     Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
@@ -4357,6 +4357,41 @@ public abstract class AbstractTransformer implements Transformation {
         } finally {
             expressionGen().withinSyntheticClassBody(old);
         }
+    }
+
+    protected JCExpression transformSpreadOrComprehension(Tree.PositionalArgument arg, Type seqElemType) {
+        Type type = typeFact().getIterableType(seqElemType);
+        JCExpression jcExpression;
+        if(arg instanceof Tree.SpreadArgument){
+            Tree.Expression expr = ((Tree.SpreadArgument) arg).getExpression();
+            if (typeFact().isIterableType(expr.getTypeModel())) {
+                // always boxed since it is a sequence
+                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+            } else if (typeFact().isJavaIterableType(expr.getTypeModel())) {
+                // need to convert j.l.Iterable to a c.l.Iterable
+                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+                Type iteratedType = typeFact().getJavaIteratedType(expr.getTypeModel());
+                jcExpression = utilInvocation().toIterable(
+                        makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
+                        makeReifiedTypeArgument(iteratedType), jcExpression);
+            } else if (typeFact().isJavaArrayType(expr.getTypeModel())) {
+                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+                Type iteratedType = typeFact().getJavaArrayElementType(expr.getTypeModel());
+                if (typeFact().isJavaObjectArrayType(expr.getTypeModel())) {
+                    jcExpression = utilInvocation().toIterable(
+                            makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
+                            makeReifiedTypeArgument(iteratedType), jcExpression);
+                } else { //primitive
+                    jcExpression = utilInvocation().toIterable(jcExpression);
+                }
+            } else {
+                throw BugException.unhandledTypeCase(expr.getTypeModel());
+            }
+
+        }else{
+            jcExpression = expressionGen().transformComprehension((Comprehension) arg, type);
+        }
+        return jcExpression;
     }
 
     /**
