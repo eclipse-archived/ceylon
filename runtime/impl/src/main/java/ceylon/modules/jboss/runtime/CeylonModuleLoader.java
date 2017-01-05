@@ -374,13 +374,15 @@ public class CeylonModuleLoader extends ModuleLoader
             final List<DependencySpec> deps = new ArrayList<>();
 
             ModuleSpec.Builder builder = ModuleSpec.build(moduleIdentifier);
-            // add module's jar
-            ResourceLoader resourceLoader = ResourceLoaderProvider.getResourceLoader(moduleIdentifier, repository, moduleFile);
-            // filter
-            PathFilter filter = (artifact.filter() != null ? new CMRPathFilter(artifact.filter()) : PathFilters.acceptAll());
-            // module resource root
-            ResourceLoaderSpec rls = ResourceLoaderSpec.createResourceLoaderSpec(resourceLoader, filter);
-            builder.addResourceRoot(rls);
+            if(!ModuleUtil.isMavenJarlessModule(moduleFile)){
+                // add module's jar
+                ResourceLoader resourceLoader = ResourceLoaderProvider.getResourceLoader(moduleIdentifier, repository, moduleFile);
+                // filter
+                PathFilter filter = (artifact.filter() != null ? new CMRPathFilter(artifact.filter()) : PathFilters.acceptAll());
+                // module resource root
+                ResourceLoaderSpec rls = ResourceLoaderSpec.createResourceLoaderSpec(resourceLoader, filter);
+                builder.addResourceRoot(rls);
+            }
             // add potential native lib lookup
             ResourceLoader nativeLoader = new NativeLibraryResourceLoader(new File(moduleFile.getParent(), "lib"));
             builder.addResourceRoot(ResourceLoaderSpec.createResourceLoaderSpec(nativeLoader));
