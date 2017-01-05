@@ -539,6 +539,9 @@ public class Metamodel {
             // make sure its imports are also loaded
             for(ModuleImport mi : declaration.getImports()){
                 com.redhat.ceylon.model.typechecker.model.Module importedModule = mi.getModule();
+                // don't try loading optional modules
+                if(mi.isOptional())
+                    continue;
                 // make sure we don't run in circles
                 if(importedModule != null && !visitedModules.contains(importedModule)) {
                     String ns = mi.getNamespace() != null ? mi.getNamespace() : namespace;
