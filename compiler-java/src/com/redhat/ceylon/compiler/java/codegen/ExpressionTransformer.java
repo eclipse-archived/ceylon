@@ -1827,30 +1827,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             java.util.List<Tree.PositionalArgument> list = sequencedArgument.getPositionalArguments();
             if(list.isEmpty())
                 return makeErroneous(value, "compiler bug: empty iterable literal with sequenced arguments: "+value);
-            boolean allCtc = true;
-            for (Tree.PositionalArgument pa : list) {
-                if (pa instanceof Tree.ListedArgument) {
-                    Term term = ((Tree.ListedArgument)pa).getExpression().getTerm();
-                    if (term instanceof Tree.StringLiteral
-                            || term instanceof Tree.NaturalLiteral
-                            || term instanceof Tree.FloatLiteral
-                            || term instanceof Tree.CharLiteral
-                            || (term instanceof Tree.NegativeOp
-                                && (((Tree.NegativeOp)term).getTerm() instanceof Tree.NaturalLiteral
-                                || ((Tree.NegativeOp)term).getTerm() instanceof Tree.FloatLiteral))
-                            ||(term instanceof Tree.BaseMemberExpression
-                                && (((Tree.BaseMemberExpression)term).getDeclaration().equals(typeFact().getTrueValueDeclaration())
-                                    || ((Tree.BaseMemberExpression)term).getDeclaration().equals(typeFact().getFalseValueDeclaration())))) {
-                    } else {
-                        allCtc = false;
-                        break;
-                    }
-                }
-            }
             Type seqElemType = typeFact().getIteratedType(value.getTypeModel());
             seqElemType = wrapInOptionalForInterop(seqElemType, expectedType, containsUncheckedNulls(list));
             Type absentType = typeFact().getIteratedAbsentType(value.getTypeModel());
-            if (allCtc) {
+            if (allListedArgumentsCtc(list)) {
                 return makeConstantIterable(sequencedArgument, seqElemType, absentType, 0);
             } else {
                 if(list.size() == 1 && list.get(0) instanceof Tree.Comprehension){
@@ -1862,6 +1842,34 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             return makeEmpty();
         }
+    }
+
+    /**
+     * Return true if all the ListedArguments in the given list are compile time constants
+     * (or at least literals).
+     */
+    protected boolean allListedArgumentsCtc(java.util.List<Tree.PositionalArgument> list) {
+        boolean allCtc = true;
+        for (Tree.PositionalArgument pa : list) {
+            if (pa instanceof Tree.ListedArgument) {
+                Term term = ((Tree.ListedArgument)pa).getExpression().getTerm();
+                if (term instanceof Tree.StringLiteral
+                        || term instanceof Tree.NaturalLiteral
+                        || term instanceof Tree.FloatLiteral
+                        || term instanceof Tree.CharLiteral
+                        || (term instanceof Tree.NegativeOp
+                            && (((Tree.NegativeOp)term).getTerm() instanceof Tree.NaturalLiteral
+                            || ((Tree.NegativeOp)term).getTerm() instanceof Tree.FloatLiteral))
+                        ||(term instanceof Tree.BaseMemberExpression
+                            && (((Tree.BaseMemberExpression)term).getDeclaration().equals(typeFact().getTrueValueDeclaration())
+                                || ((Tree.BaseMemberExpression)term).getDeclaration().equals(typeFact().getFalseValueDeclaration())))) {
+                } else {
+                    allCtc = false;
+                    break;
+                }
+            }
+        }
+        return allCtc;
     }
 
     private boolean containsUncheckedNulls(java.util.List<Tree.PositionalArgument> list) {
