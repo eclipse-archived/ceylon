@@ -89,20 +89,7 @@ final class bug1165_ {
                                             return (
                                                 let
                                                 {
-                                                    .ceylon.language.Iterable arg$4$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                                                        
-                                                        @.java.lang.Override
-                                                        protected final .java.lang.Object $evaluate$(int $index$) {
-                                                            switch ($index$) {
-                                                            case 0: 
-                                                                return .ceylon.language.String.instance("JUDCon");
-                                                            
-                                                            default: 
-                                                                return null;
-                                                            
-                                                            }
-                                                        }
-                                                    };
+                                                    .ceylon.language.Iterable arg$4$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("JUDCon"));
                                                 }
                                                 returning new B(arg$4$0);
                                             );

@@ -36,84 +36,70 @@ public final class bug2135_ {
         (
             let
             {
-                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, 1, true){
+                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                     
-                    @.java.lang.Override
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
-                                
-                                public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
-                                        {
-                                        }
-                                        private boolean $next$0$exhausted$;
-                                        
-                                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                                        private final boolean $next$0() {
-                                            if ($next$0$exhausted$) return false;
-                                            $next$0$exhausted$ = true;
-                                            if (1L == 2L) {
-                                                return true;
-                                            }
-                                            return false;
-                                        }
-                                        private .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$1;
-                                        
-                                        private final boolean $iterator$1() {
-                                            if ($iterator$1 != null) return true;
-                                            if (!this.$next$0()) return false;
-                                            $iterator$1 = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)})).iterator();
-                                            return true;
-                                        }
-                                        private .ceylon.language.Integer fd;
-                                        private boolean fd$exhausted$;
-                                        
-                                        private final boolean fd() {
-                                            while (this.$iterator$1()) {
-                                                final .java.lang.Object $ceylontmp$item$1 = $iterator$1.next();
-                                                fd$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
-                                                if (fd$exhausted$) {
-                                                    $iterator$1 = null;
-                                                } else {
-                                                    fd = (.ceylon.language.Integer)$ceylontmp$item$1;
-                                                    return true;
-                                                }
-                                            }
-                                            fd$exhausted$ = true;
-                                            return false;
-                                        }
-                                        
-                                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                                        private final boolean $next$2() {
-                                            ifcomp_2: while (true) {
-                                                if (!this.fd()) break ifcomp_2;
-                                                final .ceylon.language.Integer fd = this.fd;
-                                                if (1L == 1L) {
-                                                    break ifcomp_2;
-                                                }
-                                            }
-                                            return !fd$exhausted$;
-                                        }
-                                        
-                                        public final .java.lang.Object next() {
-                                            if (this.$next$2()) {
-                                                final .ceylon.language.Integer fd = this.fd;
-                                                return .ceylon.language.String.instance(fd.toString());
-                                            } else return .ceylon.language.finished_.get_();
-                                        }
-                                    };
+                    public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                        return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                            {
+                            }
+                            private boolean $next$0$exhausted$;
+                            
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            private final boolean $next$0() {
+                                if ($next$0$exhausted$) return false;
+                                $next$0$exhausted$ = true;
+                                if (1L == 2L) {
+                                    return true;
                                 }
-                            };
-                        
-                        default: 
-                            return null;
-                        
-                        }
+                                return false;
+                            }
+                            private .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$1;
+                            
+                            private final boolean $iterator$1() {
+                                if ($iterator$1 != null) return true;
+                                if (!this.$next$0()) return false;
+                                $iterator$1 = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)})).iterator();
+                                return true;
+                            }
+                            private .ceylon.language.Integer fd;
+                            private boolean fd$exhausted$;
+                            
+                            private final boolean fd() {
+                                while (this.$iterator$1()) {
+                                    final .java.lang.Object $ceylontmp$item$1 = $iterator$1.next();
+                                    fd$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
+                                    if (fd$exhausted$) {
+                                        $iterator$1 = null;
+                                    } else {
+                                        fd = (.ceylon.language.Integer)$ceylontmp$item$1;
+                                        return true;
+                                    }
+                                }
+                                fd$exhausted$ = true;
+                                return false;
+                            }
+                            
+                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                            private final boolean $next$2() {
+                                ifcomp_2: while (true) {
+                                    if (!this.fd()) break ifcomp_2;
+                                    final .ceylon.language.Integer fd = this.fd;
+                                    if (1L == 1L) {
+                                        break ifcomp_2;
+                                    }
+                                }
+                                return !fd$exhausted$;
+                            }
+                            
+                            public final .java.lang.Object next() {
+                                if (this.$next$2()) {
+                                    final .ceylon.language.Integer fd = this.fd;
+                                    return .ceylon.language.String.instance(fd.toString());
+                                } else return .ceylon.language.finished_.get_();
+                            }
+                        };
                     }
-                };
+                });
                 .java.lang.String arg$0$1 = .ceylon.language.printAll_.printAll$separator(arg$0$0);
                 .ceylon.language.printAll_.printAll(arg$0$0, arg$0$1);
             }

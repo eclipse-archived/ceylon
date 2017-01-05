@@ -14,30 +14,7 @@ public final class bug2046_ {
         (
             let
             {
-                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 4, false){
-                    
-                    @.java.lang.Override
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Float.instance(1.0);
-                        
-                        case 1: 
-                            return .ceylon.language.Float.instance(2.0);
-                        
-                        case 2: 
-                            return .ceylon.language.Float.instance(3.0);
-                        
-                        case 3: 
-                            return .ceylon.language.Float.instance(4.0);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0), .ceylon.language.Float.instance(4.0));
                 .java.lang.String arg$0$1 = .ceylon.language.printAll_.printAll$separator(arg$0$0);
                 .ceylon.language.printAll_.printAll(arg$0$0, arg$0$1);
             }

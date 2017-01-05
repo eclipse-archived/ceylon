@@ -10,20 +10,7 @@ public final class bug671_ {
             let
             {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$);
-                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
-                    
-                    @.java.lang.Override
-                    protected final .java.lang.Object $evaluate$(int $index$) {
-                        switch ($index$) {
-                        case 0: 
-                            return .ceylon.language.Integer.instance(1L);
-                        
-                        default: 
-                            return null;
-                        
-                        }
-                    }
-                };
+                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L));
             }
             returning new .ceylon.language.Array<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
         );
