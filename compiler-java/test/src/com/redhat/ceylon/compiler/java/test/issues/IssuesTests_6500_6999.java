@@ -266,4 +266,10 @@ public class IssuesTests_6500_6999 extends CompilerTests {
         runInJBossModulesSameVM("run", "com.redhat.ceylon.compiler.java.test.issues.bug68xx.bug6846/1", 
                 Arrays.asList("--auto-export-maven-dependencies"));
     }
+
+    @Test
+    public void testBug6840() throws Throwable {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug68xx.Bug6840",
+                "bug68xx/Bug6840.ceylon");
+    }
 }
