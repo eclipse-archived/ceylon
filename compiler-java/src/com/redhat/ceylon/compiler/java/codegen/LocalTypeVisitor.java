@@ -352,6 +352,7 @@ public class LocalTypeVisitor extends Visitor {
         if(model != null
                 && (model instanceof Function || model instanceof Class)
                 && !model.isParameter() // if it's a parameter we don't need to wrap it in a class
+                && (model instanceof Class == false || !that.getStaticMethodReferencePrimary())
                 && !that.getDirectlyInvoked()){
             String prefix = this.prefix;
             enterAnonymousClass();
@@ -362,7 +363,25 @@ public class LocalTypeVisitor extends Visitor {
             super.visit(that);
         }
     }
-    
+
+    @Override
+    public void visit(Tree.QualifiedMemberOrTypeExpression that) {
+        Declaration model = that.getDeclaration();
+        if(model != null
+                && (model instanceof Function || model instanceof Class)
+                && !model.isParameter() // if it's a parameter we don't need to wrap it in a class
+                && (model instanceof Class == false || !that.getStaticMethodReferencePrimary())
+                && !that.getDirectlyInvoked()){
+            String prefix = this.prefix;
+            enterAnonymousClass();
+            super.visit(that);
+            exitAnonymousClass();
+            this.prefix = prefix;
+        }else{
+            super.visit(that);
+        }
+    }
+
     @Override
     public void visit(Tree.SequenceEnumeration that) {
         // WARNING: do not count those as they contain Tree.SequencedArgument that we do count
