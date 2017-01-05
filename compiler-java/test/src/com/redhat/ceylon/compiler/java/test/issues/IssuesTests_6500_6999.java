@@ -125,7 +125,7 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     @Test
     public void testBug6592() {
         CompilationAssertion expectSysError = new CompilationAssertion() {
-            public void onBug(ErrorCollector collector, ExitState exitState) {
+            public void onError(ErrorCollector collector, ExitState exitState) {
                 TreeSet<CompilerError> treeSet = collector.get(Kind.ERROR);
                 assertEquals(1, treeSet.size());
                 CompilerError e = treeSet.iterator().next();
@@ -137,7 +137,7 @@ public class IssuesTests_6500_6999 extends CompilerTests {
                 new String[]{"bug65xx/bug6592/bug6592.ceylon"}, 
                 expectSysError);
         expectSysError = new CompilationAssertion() {
-            public void onBug(ErrorCollector collector, ExitState exitState) {
+            public void onError(ErrorCollector collector, ExitState exitState) {
                 TreeSet<CompilerError> treeSet = collector.get(Kind.ERROR);
                 assertEquals(1, treeSet.size());
                 CompilerError e = treeSet.iterator().next();
