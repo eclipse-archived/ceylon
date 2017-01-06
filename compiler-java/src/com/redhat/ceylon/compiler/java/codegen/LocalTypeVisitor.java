@@ -390,7 +390,12 @@ public class LocalTypeVisitor extends Visitor {
 
     @Override
     public void visit(Tree.SequencedArgument that) {
-        // All listed arguments are in an iterable class
+        if (Strategy.useConstantIterable(that)) {
+            // In this case we use a constant iterable, and that isn't anonymous
+            super.visit(that);
+            return;
+        } 
+        // Otherwise, all listed arguments are in an iterable class
         String prefix = null;
         for(Tree.PositionalArgument arg : that.getPositionalArguments()){
             // any listed arg causes another anonymous class around the whole 

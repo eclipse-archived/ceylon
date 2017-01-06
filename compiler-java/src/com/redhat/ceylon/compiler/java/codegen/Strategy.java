@@ -27,6 +27,8 @@ import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOw
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.model.LazyClass;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -556,6 +558,36 @@ class Strategy {
         } else {
             throw BugException.unhandledDeclarationCase((Declaration)decl);
         }
+    }
+    
+    /**
+     * Return true if all the ListedArguments in the given list are compile time constants
+     * (or at least literals): In this case we will use a ConstantIterable instead 
+     * of an anonymous subclass of LazyIterable.
+     */
+    public static boolean useConstantIterable(SequencedArgument sequencedArgument) {
+        Unit unit = sequencedArgument.getUnit();
+        boolean allCtc = true;
+        for (Tree.PositionalArgument pa : sequencedArgument.getPositionalArguments()) {
+            if (pa instanceof Tree.ListedArgument) {
+                Term term = ((Tree.ListedArgument)pa).getExpression().getTerm();
+                if (term instanceof Tree.StringLiteral
+                        || term instanceof Tree.NaturalLiteral
+                        || term instanceof Tree.FloatLiteral
+                        || term instanceof Tree.CharLiteral
+                        || (term instanceof Tree.NegativeOp
+                            && (((Tree.NegativeOp)term).getTerm() instanceof Tree.NaturalLiteral
+                            || ((Tree.NegativeOp)term).getTerm() instanceof Tree.FloatLiteral))
+                        ||(term instanceof Tree.BaseMemberExpression
+                            && (((Tree.BaseMemberExpression)term).getDeclaration().equals(unit.getTrueValueDeclaration())
+                                || ((Tree.BaseMemberExpression)term).getDeclaration().equals(unit.getFalseValueDeclaration())))) {
+                } else {
+                    allCtc = false;
+                    break;
+                }
+            }
+        }
+        return allCtc;
     }
     
 }

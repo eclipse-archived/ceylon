@@ -1520,7 +1520,7 @@ class NamedArgumentInvocation extends Invocation {
             throw BugException.unhandledTypeCase(tupleType);
         }
         JCTree.JCExpression sequenceValue;
-        if (gen.expressionGen().allListedArgumentsCtc(sequencedArgument.getPositionalArguments())) {
+        if (Strategy.useConstantIterable(sequencedArgument)) {
             sequenceValue = gen.makeConstantIterable(sequencedArgument, iteratedType, absentType, flags); 
         } else {
             sequenceValue = gen.makeLazyIterable(sequencedArgument, iteratedType, absentType, flags);
