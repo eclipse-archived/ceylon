@@ -1798,7 +1798,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
         else {
-            iface.setStatic(true);
+            iface.setStatic(classMirror.getEnclosingClass() != null);
         }
         
         manageNativeBackend(iface, classMirror, isNativeHeader);
