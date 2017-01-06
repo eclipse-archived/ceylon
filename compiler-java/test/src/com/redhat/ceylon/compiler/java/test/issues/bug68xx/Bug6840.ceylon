@@ -44,9 +44,12 @@ shared Application application = Application();
 
 // should be Bug6840$1$1anonymous_1_
 // but is    Bug6840$2$1anonymous_1_
-shared class Bug6840() {
-    
+shared class Bug6840() satisfies Correspondence<String, Boolean> {
+
     print(`Bug6840`);
+
+    defines(String key) => true;
+    get(String key) => true;
     
     shared void foo() {
         Ref<FileViewProvider> providerRef = Ref<FileViewProvider>();

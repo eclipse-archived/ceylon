@@ -351,6 +351,7 @@ public class LocalTypeVisitor extends Visitor {
         Declaration model = that.getDeclaration();
         if(model != null
                 && (model instanceof Function || model instanceof Class)
+                && !that.getAssigned()
                 && !model.isParameter() // if it's a parameter we don't need to wrap it in a class
                 && (model instanceof Class == false || !that.getStaticMethodReferencePrimary())
                 && !that.getDirectlyInvoked()){
@@ -369,6 +370,7 @@ public class LocalTypeVisitor extends Visitor {
         Declaration model = that.getDeclaration();
         if(model != null
                 && (model instanceof Function || model instanceof Class)
+                && !that.getAssigned()
                 && !model.isParameter() // if it's a parameter we don't need to wrap it in a class
                 && (model instanceof Class == false || !that.getStaticMethodReferencePrimary())
                 && !that.getDirectlyInvoked()){
