@@ -17,6 +17,7 @@ import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ClassOrInterfaceDeclarationImpl;
+import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
@@ -38,6 +39,7 @@ import ceylon.language.Tuple;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.sequence_;
+import ceylon.language.meta.classDeclaration_;
 import ceylon.language.meta.typeLiteral_;
 import ceylon.language.meta.type_;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
@@ -2280,15 +2282,28 @@ public class Util {
                   .getArrayElementClass();
     }
     
+    private static boolean hasReified(Object instance) {
+        return instance == null || instance instanceof ReifiedType;
+    }
+    
+    private static String typeDescription(Object instance) {
+        if (hasReified(instance)) {
+            return "type " + type_.type(Nothing.NothingType, instance).toString();
+        } else {
+            return classDeclaration_.classDeclaration(instance).toString();
+        }
+    }
+    
     /**
      * Returns part of the error message for an AssertionError
      * thrown for a failed {@code is} assertion.
      */
     public static String assertIsFailed(boolean negated, TypeDescriptor $reifiedType, @Nullable Object operand) {
-        ClassModel<? extends Object, ? super Sequential<? extends Object>> expressionType = type_.type(Nothing.NothingType, operand);
+        String typeDescription = typeDescription(operand);
         Type<? extends Object> givenType = typeLiteral_.typeLiteral($reifiedType);
-        String message = System.lineSeparator()+"\t\texpression has type "+expressionType;
-        if (!expressionType.exactly(givenType)) {
+        String message = System.lineSeparator()+"\t\texpression has "+typeDescription;
+        if (!(hasReified(operand) 
+                && type_.type(Nothing.NothingType, operand).exactly(givenType))) {
             message += " which is "+(negated ? "": "not")+" a subtype of "+ givenType;
         }
         return message;
@@ -2299,11 +2314,11 @@ public class Util {
             @Nullable Object rhs) {
         String message = System.lineSeparator()+"\t\tleft-hand expression is " + (lhs == null ? "«null»" : lhs);
         message += System.lineSeparator()+"\t\tright-hand expression is " + (rhs == null ? "«null»" : rhs);
-        ClassModel<? extends Object, ? super Sequential<? extends Object>> leftType = type_.type(Nothing.NothingType, lhs);
-        ClassModel<? extends Object, ? super Sequential<? extends Object>> rightType = type_.type(Nothing.NothingType, rhs);
-        if (!leftType.exactly(rightType)) {
-            message += System.lineSeparator()+"\t\tleft-hand expression has type " + leftType;
-            message += System.lineSeparator()+"\t\tright-hand expression has type " + rightType;
+        if (!(hasReified(lhs) 
+                && hasReified(rhs) 
+                && type_.type(Nothing.NothingType, lhs).exactly(type_.type(Nothing.NothingType, rhs)))) {
+            message += System.lineSeparator()+"\t\tleft-hand expression has " + typeDescription(lhs);
+            message += System.lineSeparator()+"\t\tright-hand expression has " + typeDescription(rhs);
         }
         return message;
     }

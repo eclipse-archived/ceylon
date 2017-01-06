@@ -999,4 +999,10 @@ public class InteropTests extends CompilerTests {
         compile("ArrayFrom.ceylon");
         run("com.redhat.ceylon.compiler.java.test.interop.arrayFrom");
     }
+    
+    @Test
+    public void testIopAssertionMessageDetail() {
+        compile("IopAssertionMessageDetail.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.interop.assertionMessageDetail");
+    }
 }
