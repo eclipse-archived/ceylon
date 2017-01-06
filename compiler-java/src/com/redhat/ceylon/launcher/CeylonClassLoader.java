@@ -92,6 +92,7 @@ public class CeylonClassLoader extends URLClassLoader {
         // Determine the necessary folders
         File ceylonHome = LauncherUtil.determineHome();
         File ceylonRepo = LauncherUtil.determineRepo(ceylonHome);
+        boolean includeSlf4j = LauncherUtil.isIncludeSlf4j();
 
         // Perform some sanity checks
         checkFolders(ceylonHome, ceylonRepo);
@@ -111,7 +112,9 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-loader", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-aether", version)); // optional
-        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-webdav", version)); // optional
+        // sardine depends on slf4j
+        if(includeSlf4j)
+            archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-webdav", version)); // optional
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-javascript", version)); // optional
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.langtools.classfile", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.tool.provider", version));
@@ -145,14 +148,18 @@ public class CeylonClassLoader extends URLClassLoader {
         // For the "doc" tool
         archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.2.7"));
         archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.13"));
-        // For the --out http:// functionality of the compiler
-        archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1")); // optional
+        // For the --out http:// functionality of the compiler (sardine)
+        if(includeSlf4j){
+            archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1")); // optional
+            archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.6.1")); // optional
+            archives.add(getRepoJar(ceylonRepo, "org.slf4j.simple", "1.6.1")); // optional
+        }
+
+        // For aether and webdav/sardine
         archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.3.2")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.3.2")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.1.1")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.8")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.6.1")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.slf4j.simple", "1.6.1")); // optional
 
         return archives;
     }
