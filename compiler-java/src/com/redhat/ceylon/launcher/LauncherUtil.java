@@ -192,9 +192,9 @@ public class LauncherUtil {
     }
 
     public static boolean isIncludeSlf4j() {
-        String answer = System.getProperty(Constants.PROP_CEYLON_LOAD_SLF4J);
+        String answer = System.getProperty(Constants.PROP_CEYLON_INCLUDE_SLF4J);
         if (answer == null) {
-            answer = System.getenv(Constants.ENV_CEYLON_LOAD_SLF4J);
+            answer = System.getenv(Constants.ENV_CEYLON_INCLUDE_SLF4J);
             if (answer == null) {
                 return true;
             }
