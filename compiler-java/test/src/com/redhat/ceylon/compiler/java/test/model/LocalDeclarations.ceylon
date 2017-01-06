@@ -127,6 +127,12 @@ shared class LocalDeclarationsClassContainer(shared Object sharedParam = object 
             object localObject{}
         });
     };
+    
+    void constantIterable() {
+        List<String> list = ["a", "b", "c"];//Arrays.asList("hello", "world");
+        variable value it = {*list};
+        value x = () => object {};
+    }
 }
 shared void localDeclarationsMethodContainer(){
     class LocalClass(){
