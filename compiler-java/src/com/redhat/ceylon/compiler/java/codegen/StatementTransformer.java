@@ -34,6 +34,7 @@ import java.util.Set;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.NonNull;
 import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.BinOpTransformation;
+import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.WithinTransformation;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -262,6 +263,8 @@ public class StatementTransformer extends AbstractTransformer {
                     } else if (booleanExpr instanceof Tree.EqualityOp
                             ||booleanExpr instanceof Tree.ComparisonOp) {
                         return new EqualityOpBooleanCond((Tree.BooleanCondition)cond, negated, (Tree.BinaryOperatorExpression)booleanExpr);
+                    } else if (booleanExpr instanceof Tree.WithinOp) {
+                        return new WithinOpBooleanCond((Tree.BooleanCondition)cond, negated, (Tree.WithinOp)booleanExpr);
                     }
                 }
                 return new BooleanCond((Tree.BooleanCondition)cond);
@@ -913,6 +916,12 @@ public class StatementTransformer extends AbstractTransformer {
                 EqualityOpBooleanCond eqOpCond = (EqualityOpBooleanCond)cond;
                 msg.violatedBinOp(eqOpCond.getLeftName(),
                         eqOpCond.getRightName());
+            }
+            if (cond instanceof WithinOpBooleanCond) {
+                WithinOpBooleanCond withinOpCond = (WithinOpBooleanCond)cond;
+                msg.violatedWithinOp(withinOpCond.getLeftVarName(),
+                        withinOpCond.getMiddleVarName(),
+                        withinOpCond.getRightVarName());
             }
         }
         
@@ -1686,7 +1695,102 @@ public class StatementTransformer extends AbstractTransformer {
             return result;
         }
     }
+    
+    private class WithinOpBooleanCond implements Cond {
 
+        private final Tree.BooleanCondition cond;
+        private final Tree.WithinOp op;
+        private final SyntheticName leftVarName;
+        private final SyntheticName middleVarName;
+        private final SyntheticName rightVarName;
+        private final WithinTransformation within;
+        private final boolean negate;
+        private final BooleanVarTrans var;
+        
+        public WithinOpBooleanCond(Tree.BooleanCondition booleanCondition, boolean negated, Tree.WithinOp op) {
+            super();
+            this.cond = booleanCondition;
+            this.op = op;
+            this.negate = negated;
+            this.leftVarName = naming.alias("lhs");
+            this.middleVarName = naming.alias("middle");
+            this.rightVarName = naming.alias("rhs");
+            this.within = expressionGen().new WithinTransformation(op);
+            this.within.setLeft(leftVarName.makeIdent());
+            this.within.setRight(rightVarName.makeIdent());
+            this.within.setMiddleName(middleVarName);
+            this.var = new BooleanVarTrans() {
+                @Override
+                public CName getVariableName() {
+                    return leftVarName;
+                }
+                
+                @Override
+                public List<JCStatement> makeTestVarDecl(int flags, boolean init) {
+                    return List.<JCStatement>of(
+                            makeVar(leftVarName, 
+                                within.makeLhsType(), 
+                                within.makeLhs()),
+                            makeVar(middleVarName, 
+                                    within.makeMiddleType(), 
+                                    within.makeMiddle()),
+                            makeVar(rightVarName, 
+                                    within.makeRhsType(), 
+                                    within.makeRhs()));
+                }
+                
+            };
+        }
+
+        public JCExpression getLeftVarName() {
+            JCExpression result = leftVarName.makeIdent();
+            if (within.getLhsTypeBoxed() == BoxingStrategy.UNBOXED) {
+                result = expressionGen().boxType(result, within.getLowerType());
+            }
+            return result;
+        }
+
+        public JCExpression getMiddleVarName() {
+            JCExpression result = middleVarName.makeIdent();
+            if (within.getMiddleBoxed() == BoxingStrategy.UNBOXED) {
+                result = expressionGen().boxType(result, within.getMiddleType());
+            }
+            return result;
+        }
+
+        public JCExpression getRightVarName() {
+            JCExpression result = rightVarName.makeIdent();
+            if (within.getRhsTypeBoxed() == BoxingStrategy.UNBOXED) {
+                result = expressionGen().boxType(result, within.getUpperType());
+            }
+            return result;
+        }
+
+        @Override
+        public Tree.Condition getCondition() {
+            return cond;
+        }
+
+        @Override
+        public VarTrans getVarTrans() {
+            return var;
+        }
+
+        @Override
+        public VarTrans getElseVarTrans() {
+            return var;
+        }
+
+        @Override
+        public JCExpression makeTest() {
+            JCExpression result = within.build();
+            if (negate) {
+                result = make().Unary(Tag.NOT, result);
+            }
+            return result;
+        }
+        
+    }
 
     private Type actualType(Tree.TypedDeclaration decl) {
         return decl.getType().getTypeModel();

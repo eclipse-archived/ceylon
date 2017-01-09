@@ -2474,83 +2474,208 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.WithinOp op) {
-        Tree.Term middleTerm = op.getTerm();
-        
-        Tree.Bound lowerBound = op.getLowerBound();
-        OperatorTranslation lowerOp = Operators.getOperator(lowerBound instanceof Tree.OpenBound ? Tree.SmallerOp.class : Tree.SmallAsOp.class);
-        Tree.Term lowerTerm = lowerBound.getTerm();
-        
-        
-        Tree.Bound upperBound = op.getUpperBound();
-        OperatorTranslation upperOp = Operators.getOperator(upperBound instanceof Tree.OpenBound ? Tree.SmallerOp.class : Tree.SmallAsOp.class);
-        Tree.Term upperTerm = upperBound.getTerm();
-        
-        Type middleType = getComparableType(middleTerm);
-        
-        Type lowerType = getComparableType(lowerTerm);
-        
-        Type upperType = getComparableType(upperTerm);
-        
-        // If any of the terms is optimizable, then use optimized
-        OptimisationStrategy opt;
-        boolean optimizeLower = lowerOp.isTermOptimisable(lowerTerm, lowerType, this) == OptimisationStrategy.OPTIMISE
-                || lowerOp.isTermOptimisable(middleTerm, middleType, this) == OptimisationStrategy.OPTIMISE;
-        boolean optimizeUpper = upperOp.isTermOptimisable(middleTerm, middleType, this) == OptimisationStrategy.OPTIMISE
-        || upperOp.isTermOptimisable(upperTerm, upperType, this) == OptimisationStrategy.OPTIMISE;
-        if ((lowerType.isExactly(middleType) 
-                && middleType.isExactly(upperType)
-                && (optimizeLower
-                        ||optimizeUpper))// if all same type and any optimizable
-            || (optimizeLower // otherwise onle if all optimizable
-                && optimizeUpper)) {
-            opt = OptimisationStrategy.OPTIMISE;
-            middleType.setUnderlyingType(middleTerm.getTypeModel().getUnderlyingType());
-        } else {
-            opt = OptimisationStrategy.NONE;
-        }
-        
+        WithinTransformation within = new WithinTransformation(op);
         SyntheticName middleName = naming.alias("middle");
         List<JCStatement> vars = List.<JCStatement>of(makeVar(middleName, 
-                makeJavaType(middleType, opt.getBoxingStrategy() == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES), 
-                transformExpression(middleTerm, opt.getBoxingStrategy(), middleType)));
+                within.makeMiddleType(), 
+                within.makeMiddle()));
         
-        JCExpression lower = transformBound(middleName, middleType, lowerType, lowerOp, opt, middleTerm, lowerBound, false);
-        JCExpression upper = transformBound(middleName, middleType, upperType, upperOp, opt, middleTerm, upperBound, true);
-        at(op);
-        OperatorTranslation andOp = Operators.getOperator(Tree.AndOp.class);
-        OptimisationStrategy optimisationStrategy = OptimisationStrategy.OPTIMISE;
-        return make().LetExpr(vars, transformOverridableBinaryOperator(op, andOp, optimisationStrategy, lower, upper, null, null, op.getTypeModel()).build());
-    }
+        within.setLeft(within.makeLhs());
+        within.setMiddleName(middleName);
+        within.setRight(within.makeRhs());
 
-    protected Type getComparableType(Tree.Term middleTerm) {
-        final Type middleSuper = getSupertype(middleTerm, typeFact().getComparableDeclaration());
-        Type middleType = middleSuper;
-        Type middleSelf = middleType.getDeclaration().getSelfType();
-        if (middleSelf != null) {
-            // Simplify Comparable<X> to X
-            middleType = middleType.getTypeArguments().get(middleSelf.getDeclaration());
-        }
-        return middleType;
+        JCExpression andExpr = within.build();
+        return make().LetExpr(vars, andExpr);
     }
+    
+    class WithinTransformation {
+        private Tree.WithinOp op;
+        private SyntheticName middleName;
+        private JCExpression left;
+        private JCExpression right;
+        private Term middleTerm;
+        private Tree.Bound lowerBound;
+        private Tree.Bound upperBound;
+        private OptimisationStrategy opt;
+        private Type middleType;
+        private Type lowerType;
+        private Type upperType;
 
-    public JCExpression transformBound(
-            SyntheticName middle, Type middleType, Type otherType, final OperatorTranslation operator, final OptimisationStrategy optimisationStrategy, Tree.Term middleTerm, Tree.Bound bound, boolean isUpper) {
-        ;
-        final JCExpression left;
-        final JCExpression right;
-        Type leftType;
-        if (isUpper) {
-            left = middle.makeIdent();
-            leftType = middleType;
-            right = transformExpression(bound.getTerm(), optimisationStrategy.getBoxingStrategy(), null);
+        public WithinTransformation(Tree.WithinOp op) {
+            this.op = op;
+            this.middleTerm = op.getTerm();
+            this.lowerBound = op.getLowerBound();// < or <=
+            this.upperBound = op.getUpperBound();// < or <=
             
-        } else {
-            left = transformExpression(bound.getTerm(), optimisationStrategy.getBoxingStrategy(), null);
-            leftType = otherType;
-            right = middle.makeIdent();
+            this.middleType = getComparableType(middleTerm);
+            this.lowerType = getComparableType(lowerBound.getTerm());
+            this.upperType = getComparableType(upperBound.getTerm());
+            
+            this.opt = getWithinOptimization(middleTerm, middleType, 
+                    lowerBound, lowerType, 
+                    upperBound, upperType);
         }
-        at(bound);
-        return transformOverridableBinaryOperator(middleTerm, operator, optimisationStrategy, left, right, null, leftType, null, bound.getTypeModel()).build();
+        
+        public JCExpression makeLhs() {
+            return transformExpression(lowerBound.getTerm(), opt.getBoxingStrategy(), null);
+        }
+        public JCExpression makeLhsType() {
+            return makeJavaType(lowerType, opt.getBoxingStrategy() == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
+        }
+        public BoxingStrategy getLhsTypeBoxed() {
+            return opt.getBoxingStrategy();
+        }
+        public JCExpression makeRhs() {
+            return transformExpression(upperBound.getTerm(), opt.getBoxingStrategy(), null);
+        }
+        public JCExpression makeRhsType() {
+            return makeJavaType(upperType, opt.getBoxingStrategy() == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
+        }
+        public BoxingStrategy getRhsTypeBoxed() {
+            return opt.getBoxingStrategy();
+        }
+        public JCExpression makeMiddleType() {
+            return makeJavaType(middleType, opt.getBoxingStrategy() == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
+        }
+        public JCExpression makeMiddle() {
+            return transformExpression(middleTerm, opt.getBoxingStrategy(), middleType);
+        }
+        public BoxingStrategy getMiddleBoxed() {
+            return opt.getBoxingStrategy();
+        }
+        
+        public SyntheticName getMiddleName() {
+            return middleName;
+        }
+        
+        public Type getLowerType() {
+            return lowerType;
+        }
+        
+        public Type getMiddleType() {
+            return middleType;
+        }
+
+        public Type getUpperType() {
+            return upperType;
+        }
+
+        public void setMiddleName(SyntheticName middleName) {
+            this.middleName = middleName;
+        }
+
+        public JCExpression getLeft() {
+            return left;
+        }
+
+        public void setLeft(JCExpression left) {
+            this.left = left;
+        }
+
+        public JCExpression getRight() {
+            return right;
+        }
+
+        public void setRight(JCExpression right) {
+            this.right = right;
+        }
+
+        protected OperatorTranslation getOperatorTranslation(Tree.Bound lowerBound) {
+            return Operators.getOperator(lowerBound instanceof Tree.OpenBound ? Tree.SmallerOp.class : Tree.SmallAsOp.class);
+        }
+
+        private JCExpression transformWithin(Tree.WithinOp op, 
+                OptimisationStrategy opt, 
+                Tree.Term middleTerm,
+                SyntheticName middleName, 
+                Type middleType, 
+                JCExpression left, 
+                Tree.Bound lowerBound,
+                Type lowerType, 
+                JCExpression right, 
+                Tree.Bound upperBound, 
+                Type upperType) {
+            
+            JCExpression lower = transformBound(lowerBound, middleName.makeIdent(), 
+                    middleType, left, lowerType, getOperatorTranslation(lowerBound), opt, middleTerm,  false);
+            JCExpression upper = transformBound(upperBound, middleName.makeIdent(), 
+                    middleType, right, upperType, getOperatorTranslation(upperBound), opt, middleTerm, true);
+            at(op);
+            OperatorTranslation andOp = Operators.getOperator(Tree.AndOp.class);
+            OptimisationStrategy optimisationStrategy = OptimisationStrategy.OPTIMISE;
+            JCExpression andExpr = transformOverridableBinaryOperator(op, andOp, 
+                    optimisationStrategy, lower, upper, null, null, op.getTypeModel()).build();
+            return andExpr;
+        }
+
+        protected OptimisationStrategy getWithinOptimization(Tree.Term middleTerm, Type middleType,
+                Tree.Bound lowerBound, Type lowerType, Tree.Bound upperBound, 
+                Type upperType) {
+            // If any of the terms is optimizable, then use optimized
+            Tree.Term lowerTerm = lowerBound.getTerm();
+            OperatorTranslation lowerOp = getOperatorTranslation(lowerBound);
+            Tree.Term upperTerm = upperBound.getTerm();
+            OperatorTranslation upperOp = getOperatorTranslation(upperBound);
+            
+            OptimisationStrategy opt;
+            boolean optimizeLower = lowerOp.isTermOptimisable(lowerTerm, lowerType, ExpressionTransformer.this) == OptimisationStrategy.OPTIMISE
+                    || lowerOp.isTermOptimisable(middleTerm, middleType, ExpressionTransformer.this) == OptimisationStrategy.OPTIMISE;
+            boolean optimizeUpper = upperOp.isTermOptimisable(middleTerm, middleType, ExpressionTransformer.this) == OptimisationStrategy.OPTIMISE
+                    || upperOp.isTermOptimisable(upperTerm, upperType, ExpressionTransformer.this) == OptimisationStrategy.OPTIMISE;
+            if ((lowerType.isExactly(middleType) 
+                    && middleType.isExactly(upperType)
+                    && (optimizeLower
+                            ||optimizeUpper))// if all same type and any optimizable
+                || (optimizeLower // otherwise onle if all optimizable
+                    && optimizeUpper)) {
+                opt = OptimisationStrategy.OPTIMISE;
+                middleType.setUnderlyingType(middleTerm.getTypeModel().getUnderlyingType());
+            } else {
+                opt = OptimisationStrategy.NONE;
+            }
+            return opt;
+        }
+        
+        private Type getComparableType(Tree.Term middleTerm) {
+            final Type middleSuper = getSupertype(middleTerm, typeFact().getComparableDeclaration());
+            Type middleType = middleSuper;
+            Type middleSelf = middleType.getDeclaration().getSelfType();
+            if (middleSelf != null) {
+                // Simplify Comparable<X> to X
+                middleType = middleType.getTypeArguments().get(middleSelf.getDeclaration());
+            }
+            return middleType;
+        }
+        
+        private JCExpression transformBound(Tree.Bound bound,
+                JCExpression endpoint1, Type middleType, JCExpression endpoint2, Type otherType, 
+                final OperatorTranslation operator, final OptimisationStrategy optimisationStrategy, 
+                Tree.Term middleTerm, boolean isUpper) {
+            final JCExpression left;
+            final JCExpression right;
+            Type leftType;
+            if (isUpper) {
+                left = endpoint1;
+                leftType = middleType;
+                right = endpoint2; 
+                
+            } else {
+                left = endpoint2; 
+                leftType = otherType;
+                right = endpoint1;
+            }
+            at(bound);
+            return transformOverridableBinaryOperator(middleTerm, operator, 
+                    optimisationStrategy, left, right, null, leftType, null, bound.getUnit().getBooleanType()).build();
+        }
+        
+        public JCExpression build() {
+            JCExpression andExpr = transformWithin(op, opt, 
+                    middleTerm, middleName, middleType, 
+                    left, lowerBound, lowerType, 
+                    right, upperBound, upperType);
+            return andExpr;
+        }
     }
 
     public JCExpression transform(Tree.ScaleOp op) {

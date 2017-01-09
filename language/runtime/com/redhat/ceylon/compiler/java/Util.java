@@ -2323,6 +2323,16 @@ public class Util {
         return message;
     }
     
+    public static String assertWithinOpFailed(
+            @NonNull Object lhs,
+            @NonNull Object middle, 
+            @NonNull Object rhs) {
+        String message = System.lineSeparator()+"\t\tleft-hand expression is " + (lhs == null ? "«null»" : lhs);
+        message += System.lineSeparator()+"\t\tmiddle expression is " + (rhs == null ? "«null»" : middle);
+        message += System.lineSeparator()+"\t\tright-hand expression is " + (rhs == null ? "«null»" : rhs);
+        return message;
+    }
+    
     public static long[] unwrapLongArray(Object array) {
         Object a = ((Array)array).toArray();
         if (a instanceof long[]) {

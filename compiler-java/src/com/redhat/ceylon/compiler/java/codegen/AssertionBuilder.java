@@ -205,4 +205,9 @@ class AssertionBuilder {
         return this;
     }
     
+    public AssertionBuilder violatedWithinOp(JCExpression leftName, JCExpression middleName, JCExpression rightName) {
+        this.violatedBinOp = gen.utilInvocation().assertWithinOpFailed(leftName, middleName, rightName);
+        return this;
+    }
+    
 }

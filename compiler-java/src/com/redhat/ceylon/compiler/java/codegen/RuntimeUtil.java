@@ -297,4 +297,9 @@ class RuntimeUtil {
         return makeUtilInvocation(null, "assertBinOpFailed", List.of(
                 lhs, rhs));
     }
+    
+    public JCExpression assertWithinOpFailed(JCExpression lhs, JCExpression middle, JCExpression rhs) {
+        return makeUtilInvocation(null, "assertWithinOpFailed", List.of(
+                lhs, middle, rhs));
+    }
 }
