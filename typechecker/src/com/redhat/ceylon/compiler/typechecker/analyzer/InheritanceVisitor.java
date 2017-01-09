@@ -419,7 +419,8 @@ public class InheritanceVisitor extends Visitor {
         
         for (Tree.StaticType t: that.getTypes()) {
             Type type = t.getTypeModel();
-            if (!isTypeUnknown(type)) {
+            if (!isTypeUnknown(type) 
+                    && type.isClassOrInterface()) {
                 type = type.resolveAliases();
                 TypeDeclaration dec = type.getDeclaration();
                 if (td instanceof ClassOrInterface &&
