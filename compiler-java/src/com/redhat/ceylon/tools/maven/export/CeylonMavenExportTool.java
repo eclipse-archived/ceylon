@@ -1,0 +1,277 @@
+package com.redhat.ceylon.tools.maven.export;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
+import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
+import com.redhat.ceylon.cmr.impl.ShaSigner;
+import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.tool.Argument;
+import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.OptionArgument;
+import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.ToolUsageError;
+import com.redhat.ceylon.compiler.java.tools.MavenPomUtil;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RepositoryException;
+import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
+
+@Summary("Generate a Ceylon executable jar for a given module")
+@Description("Gerate an executable _fat jar_ which contains the given module and all its run-time"
+        + " dependencies, including the Ceylon run-time, which makes that jar self-sufficient and"
+        + " executable by `java` as if the Ceylon module was run by `ceylon run`."
+)
+public class CeylonMavenExportTool extends ModuleLoadingTool {
+
+    private List<ModuleSpec> modules;
+	private File out;
+    private final List<String> excludedModules = new ArrayList<>();
+
+    @Argument(order = 1, argumentName="module", multiplicity="+")
+    public void setModules(List<String> modules) {
+        setModuleSpecs(ModuleSpec.parseEachList(modules));
+    }
+
+    public void setModuleSpecs(List<ModuleSpec> modules) {
+        this.modules = modules;
+    }
+
+    @Description("Target Maven repository folder (defaults to `maven-repository`).")
+    @OptionArgument(shortName = 'o', argumentName="file")
+    public void setOut(File out) {
+        this.out = out;
+    }
+
+    @OptionArgument(argumentName="moduleOrFile", shortName='x')
+    @Description("Excludes modules from the resulting far jat. Can be a module name or " + 
+            "a file containing module names. Can be specified multiple times. Note that "+
+            "this excludes the module from the resulting fat jar, but if your modules require that "+
+            "module to be present at runtime it will still be required and may cause your "+
+            "application to fail to start if it is not provided at runtime.")
+    public void setExcludeModule(List<String> exclusions) {
+        for (String each : exclusions) {
+            File xFile = new File(each);
+            if (xFile.exists() && xFile.isFile()) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(xFile))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        this.excludedModules.add(line);
+                    }
+                } catch (IOException e) {
+                    throw new ToolUsageError(CeylonMavenExportMessages.msg("exclude.file.failure", each), 
+                            e);
+                }
+            } else {
+                this.excludedModules.add(each);
+            }
+        }
+    }
+
+    @Override
+    public void run() throws Exception {
+        String firstModuleName = null, firstModuleVersion = null;
+        for (ModuleSpec module : modules) {
+            String moduleName = module.getName();
+            String version = checkModuleVersionsOrShowSuggestions(
+                    moduleName,
+                    module.isVersioned() ? module.getVersion() : null,
+                    ModuleQuery.Type.JVM,
+                    Versions.JVM_BINARY_MAJOR_VERSION,
+                    Versions.JVM_BINARY_MINOR_VERSION,
+                    null, null, // JS binary but don't care since JVM
+                    null);
+            if(version == null)
+                return;
+            if(firstModuleName == null){
+                firstModuleName = moduleName;
+                firstModuleVersion = version;
+            }
+            loadModule(null, moduleName, version);
+        }
+        // FIXME: we probably want to allow exporting of multiple versions
+        loader.resolve();
+
+        final File outputFolder = applyCwd(out != null ? out : new File("maven-repository"));
+        if(!outputFolder.exists()){
+            FileUtil.mkdirs(outputFolder);
+        }else{
+            // FIXME: error if regular file?
+            // FIXME: or add, don't delete?
+            FileUtil.delete(outputFolder);
+        }
+        loader.visitModules(new ModuleGraph.Visitor() {
+            @Override
+            public void visit(ModuleGraph.Module module) {
+                if(module.artifact == null || module.artifact.artifact() == null)
+                    return;
+                // FIXME: skip Maven modules?
+                makeMavenModule(module, outputFolder);
+            }
+        });
+        flush();
+    }
+
+    protected void makeMavenModule(Module module, File outputFolder) {
+        String name = module.artifact.name();
+        int sep = name.lastIndexOf(':');
+        if(sep == -1)
+            sep = name.lastIndexOf('.');
+        String groupId = name.substring(0, sep);
+        String artifactId = name.substring(sep+1);
+        String path = groupId.replace('.', '/') + "/" + artifactId + "/" + module.version;
+        File folder = new File(outputFolder, path);
+        FileUtil.mkdirs(folder);
+        String mavenFileName = artifactId+"-"+module.version;
+        try {
+            File jarFile = new File(folder, mavenFileName+".jar");
+            File pomFile = new File(folder, mavenFileName+".pom");
+            Files.copy(module.artifact.artifact().toPath(), jarFile.toPath(), 
+                    StandardCopyOption.REPLACE_EXISTING);
+            // extract its pom.xml too
+            try(ZipFile zf = new ZipFile(module.artifact.artifact())){
+                ZipEntry pomEntry = zf.getEntry("META-INF/maven/"+groupId+"/"+artifactId+"/pom.xml");
+                if(pomEntry != null){
+                    try(InputStream is = zf.getInputStream(pomEntry)){
+                        Files.copy(is, pomFile.toPath(), 
+                                StandardCopyOption.REPLACE_EXISTING);
+                    }
+                }else{
+                    generatePomFromModule(pomFile, module.artifact);
+                }
+            }
+            // now sha1 them
+            ShaSigner.sign(jarFile, null, false);
+            ShaSigner.sign(pomFile, null, false);
+        } catch (RepositoryException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePomFromModule(File pomFile, ArtifactResult artifact) {
+        try (OutputStream os = new FileOutputStream(pomFile)){
+            XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
+                    new OutputStreamWriter(os, "utf-8"));
+
+            out.writeStartDocument();
+            out.writeCharacters("\n");
+            
+            // FIXME: what to do with the default module?
+            
+            out.writeStartElement("project");
+            out.writeAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
+            out.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            out.writeAttribute("xsi:schemaLocation", "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd");
+            
+            out.writeCharacters("\n ");
+            out.writeStartElement("modelVersion");
+            out.writeCharacters("4.0.0");
+            out.writeEndElement();
+
+            String[] coordinates = MavenPomUtil.getMavenCoordinates(artifact.name());
+            
+            out.writeCharacters("\n ");
+            out.writeStartElement("groupId");
+            out.writeCharacters(coordinates[0]);
+            out.writeEndElement();
+
+            out.writeCharacters("\n ");
+            out.writeStartElement("artifactId");
+            out.writeCharacters(coordinates[1]);
+            out.writeEndElement();
+
+            out.writeCharacters("\n ");
+            out.writeStartElement("version");
+            out.writeCharacters(artifact.version());
+            out.writeEndElement();
+
+            out.writeCharacters("\n ");
+            out.writeStartElement("name");
+            out.writeCharacters(artifact.name());
+            out.writeEndElement();
+
+            List<ArtifactResult> imports = artifact.dependencies();
+            if(!imports.isEmpty()){
+                out.writeCharacters("\n ");
+                out.writeStartElement("dependencies");
+
+                for(ArtifactResult dep : imports){
+                    String dependencyName = dep.name();
+                    
+                    // skip c.l and jdk
+                    if(dependencyName.equals(com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME)
+                            || jdkProvider.isJDKModule(dependencyName))
+                        continue;
+                    
+                    String[] mavenCoordinates = MavenPomUtil.getMavenCoordinates(dependencyName);
+                    out.writeCharacters("\n  ");
+                    out.writeStartElement("dependency");
+                    
+                    out.writeCharacters("\n    ");
+                    out.writeStartElement("groupId");
+                    out.writeCharacters(mavenCoordinates[0]);
+                    out.writeEndElement();
+
+                    out.writeCharacters("\n    ");
+                    out.writeStartElement("artifactId");
+                    out.writeCharacters(mavenCoordinates[1]);
+                    out.writeEndElement();
+
+                    out.writeCharacters("\n    ");
+                    out.writeStartElement("version");
+                    out.writeCharacters(dep.version());
+                    out.writeEndElement();
+                    
+                    if(dep.optional()){
+                        out.writeCharacters("\n    ");
+                        out.writeStartElement("optional");
+                        out.writeCharacters("true");
+                        out.writeEndElement();
+                    }
+                    
+                    out.writeCharacters("\n  ");
+                    out.writeEndElement();
+                }
+
+                out.writeCharacters("\n ");
+                out.writeEndElement();
+            }
+
+            
+            out.writeCharacters("\n");
+            out.writeEndElement();
+            out.writeEndDocument();
+            
+            out.flush();
+        }
+        catch (IOException | XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    @Override
+    protected boolean shouldExclude(String moduleName, String version) {
+        return super.shouldExclude(moduleName, version) ||
+                this.excludedModules.contains(moduleName);
+    }
+}

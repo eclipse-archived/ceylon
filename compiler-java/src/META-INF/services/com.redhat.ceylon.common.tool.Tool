@@ -16,3 +16,4 @@ com.redhat.ceylon.tools.jigsaw.CeylonJigsawTool
 com.redhat.ceylon.tools.antdoc.CeylonAntTaskDocTool
 com.redhat.ceylon.tools.bootstrap.CeylonBootstrapTool
 com.redhat.ceylon.tools.fatjar.CeylonFatJarTool
+com.redhat.ceylon.tools.maven.export.CeylonMavenExportTool

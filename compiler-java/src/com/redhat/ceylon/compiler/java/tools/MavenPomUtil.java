@@ -45,7 +45,7 @@ import com.redhat.ceylon.model.typechecker.model.ModuleImport;
  */
 public class MavenPomUtil {
 
-    private static String[] getMavenCoordinates(String moduleName){
+    public static String[] getMavenCoordinates(String moduleName){
         int lastDot = moduleName.lastIndexOf(":");
         if(lastDot == -1)
             lastDot = moduleName.lastIndexOf(".");
