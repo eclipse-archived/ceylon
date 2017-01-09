@@ -154,6 +154,23 @@ void assertMessageDetailGeneric<Element>(Element zero) {
         assert(e.message.contains("\t\tleft-hand expression is 0"));
         assert(e.message.contains("\t\tright-hand expression is 1"));
     }
+    
+    // within
+    try {
+        assert(1<2<2);
+        throw;
+    } catch (AssertionError e) {
+        assert(e.message.contains("\t\tmiddle expression is 2"));
+        assert(e.message.contains("\t\tright-hand expression is 2"));
+    }
+    
+    try {
+        assert(1<1<2);
+        throw;
+    } catch (AssertionError e) {
+        assert(e.message.contains("\t\tleft-hand expression is 1"));
+        assert(e.message.contains("\t\tmiddle expression is 1"));
+    }
 }
 @noanno
 void assertMessageDetail() {
