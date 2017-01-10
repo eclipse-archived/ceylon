@@ -54,6 +54,11 @@ public class ToolModuleLoader extends BaseModuleLoaderImpl {
         }
         
         @Override
+        protected boolean includeOptional() {
+            return tool.includeOptionalDependencies();
+        }
+        
+        @Override
         protected boolean selectDependencies(String name, String version) {
             // Resolve even provided modules but not their dependencies since they're meaningless
             // because they can change on the container

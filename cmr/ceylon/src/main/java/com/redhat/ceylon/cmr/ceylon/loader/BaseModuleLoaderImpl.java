@@ -270,11 +270,14 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
 
         protected void prepareContext(ArtifactContext artifactContext) {
         }
+        
+        protected boolean includeOptional(){
+            return false;
+        }
 
         @Override
         public boolean selectDependency(ArtifactResult dep) {
-            // FIXME: make configurable
-            if(dep.optional())
+            if(!includeOptional() && dep.optional())
                 return false;
             return includeDependencyInLookupScope(dep);
         }

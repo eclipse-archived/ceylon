@@ -155,4 +155,8 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean includeOptionalDependencies() {
+        return false;
+    }
 }
