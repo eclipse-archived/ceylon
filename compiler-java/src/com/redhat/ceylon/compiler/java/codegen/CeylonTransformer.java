@@ -466,21 +466,8 @@ public class CeylonTransformer extends AbstractTransformer {
             final Tree.TypedDeclaration decl,
             final Tree.AttributeSetterDefinition setterDecl) {
         
-        // For everything else generate a getter/setter method
-        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .wrapped(this, attrClassName, null, attrName, declarationModel, declarationModel.isToplevel())
-            .is(Flags.PUBLIC, declarationModel.isShared());
-        if (isJavaStrictfp(declarationModel)) {
-            builder.is(Flags.STRICTFP, true);
-        }
-        if (isJavaSynchronized(declarationModel)) {
-            builder.is(Flags.SYNCHRONIZED, true);
-        }
-        if (isJavaNative(declarationModel)) {
-            builder.is(Flags.NATIVE, true);
-            builder.isJavaNative(true);
-        }
-        JCExpression initialValue = null;
+
+        final JCExpression initialValue;
         HasErrorException expressionError = null;
         BoxingStrategy boxingStrategy = null;
         if (expression != null) {
@@ -504,11 +491,29 @@ public class CeylonTransformer extends AbstractTransformer {
                     if (p != null) {
                         boxingStrategy = CodegenUtil.getBoxingStrategy(p.getModel());
                         initialValue = naming.makeName(p.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED);
+                    } else {
+                        initialValue = null;
                     }
                 }
+            } else {
+                initialValue = null;
             }
         }
         
+        // For everything else generate a getter/setter method
+        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
+            .wrapped(this, attrClassName, null, attrName, declarationModel, declarationModel.isToplevel(), initialValue)
+            .is(Flags.PUBLIC, declarationModel.isShared());
+        if (isJavaStrictfp(declarationModel)) {
+            builder.is(Flags.STRICTFP, true);
+        }
+        if (isJavaSynchronized(declarationModel)) {
+            builder.is(Flags.SYNCHRONIZED, true);
+        }
+        if (isJavaNative(declarationModel)) {
+            builder.is(Flags.NATIVE, true);
+            builder.isJavaNative(true);
+        }
         
         // For captured local variable Values, use a VariableBox
         if (Decl.isBoxedVariable(declarationModel)) {
@@ -577,7 +582,7 @@ public class CeylonTransformer extends AbstractTransformer {
         } else {
             if (Decl.isValue(declarationModel)) {
                 // For local and toplevel value attributes
-                if (!declarationModel.isVariable() && !declarationModel.isLate()) {
+                if (!declarationModel.isVariable() && !(declarationModel.isLate())) {
                     builder.immutable();
                 }
             } else {

@@ -27,6 +27,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
@@ -1172,5 +1173,17 @@ public class Decl {
                 || unit.getJavaBooleanArrayDeclaration().equals(cls);
         }
         return false;
+    }
+
+    /**
+     * A value is memoized if it's {@code late} and has a specifier
+     * <pre><code> 
+     *   late value foo = ...
+     * </code></pre>
+     * See #3544
+     */
+    public static boolean isMemoized(AttributeDeclaration decl) {
+        return decl.getSpecifierOrInitializerExpression() != null
+                && decl.getDeclarationModel().isLate();
     }
 }

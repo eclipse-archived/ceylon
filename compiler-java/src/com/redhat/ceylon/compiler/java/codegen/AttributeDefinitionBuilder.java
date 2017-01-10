@@ -77,13 +77,14 @@ public class AttributeDefinitionBuilder {
     private long fieldModifiers = Flags.PRIVATE;
 
     private boolean readable = true;
-    private final MethodDefinitionBuilder getterBuilder;
+    private MethodDefinitionBuilder getterBuilder;
 
     private JCTree.JCExpression initialValue;
+    private JCTree.JCExpression memoizedInitialValue;
     private HasErrorException initialException;
 
     private boolean writable = true;
-    private final MethodDefinitionBuilder setterBuilder;
+    private MethodDefinitionBuilder setterBuilder;
     
     private AbstractTransformer owner;
 
@@ -109,7 +110,7 @@ public class AttributeDefinitionBuilder {
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, Node node, TypedDeclaration attrType, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect, 
-            boolean field, boolean isIndirect) {
+            boolean field, boolean isIndirect, JCExpression memoizedInitialValue) {
         int typeFlags = 0;
         TypedReference typedRef = owner.getTypedReference(attrType);
         TypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
@@ -150,6 +151,7 @@ public class AttributeDefinitionBuilder {
         final boolean hasInitFlag = (toplevel && !late) || lateWithInit;
         this.variable = attrType.isVariable();
         this.deferredInitError = toplevel && !late;
+        this.memoizedInitialValue = memoizedInitialValue;
         
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
@@ -203,14 +205,14 @@ public class AttributeDefinitionBuilder {
     
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
-            boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, NamingBase.Unfix.$object$.toString(), toplevel, false, false, false);
+            boolean toplevel, JCExpression memoizedInitialValue) {
+        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, NamingBase.Unfix.$object$.toString(), toplevel, false, false, false, memoizedInitialValue);
     }
     
     public static AttributeDefinitionBuilder singleton(AbstractTransformer owner, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false, false, false);
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false, false, false, null);
         adb.getterBuilder.realName(attrType.getName());
         return adb;
     }
@@ -218,14 +220,19 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder indirect(AbstractTransformer owner, 
             String javaClassName, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, null, attrName, "value", toplevel, true, false, false);
+        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, null, attrName, "value", toplevel, true, false, false, null);
     }
     
     public static AttributeDefinitionBuilder getter(AbstractTransformer owner, 
             String attrAndFieldName, TypedDeclaration attrType) {
+        return getter(owner, attrAndFieldName, attrType, null);
+    }
+    
+    public static AttributeDefinitionBuilder getter(AbstractTransformer owner, 
+            String attrAndFieldName, TypedDeclaration attrType, JCExpression memoizedInitialiValue) {
         String getterName = Naming.getGetterName(attrType, false);
         AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, null, null,
-                        attrAndFieldName, attrAndFieldName, false, false, false, false);
+                        attrAndFieldName, attrAndFieldName, false, false, false, false, memoizedInitialiValue);
         if (!"ref".equals(getterName)
                 && !"get_".equals(getterName)
                 && !attrType.getName().equals(NamingBase.getJavaAttributeName(getterName))
@@ -241,8 +248,14 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder setter(AbstractTransformer owner, 
             Node node, 
             String attrAndFieldName, TypedDeclaration attrType) {
+        return setter(owner, node, attrAndFieldName, attrType, null);
+    }
+    
+    public static AttributeDefinitionBuilder setter(AbstractTransformer owner, 
+            Node node, 
+            String attrAndFieldName, TypedDeclaration attrType, JCExpression memoizedInitialValue) {
         AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, node, attrType, null, null,
-                attrAndFieldName, attrAndFieldName, false, false, false, false)
+                attrAndFieldName, attrAndFieldName, false, false, false, false, memoizedInitialValue)
             .skipField()
             .skipGetter();
         return adb;
@@ -252,7 +265,7 @@ public class AttributeDefinitionBuilder {
             Node node, 
             String attrAndFieldName, TypedDeclaration attrType, boolean isIndirect) {
         AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, node, attrType, null, null,
-                attrAndFieldName, attrAndFieldName, false, false, true, isIndirect).skipField();
+                attrAndFieldName, attrAndFieldName, false, false, true, isIndirect, null).skipField();
         return adb;
     }
     
@@ -642,8 +655,11 @@ public class AttributeDefinitionBuilder {
     /** Generate the initializer statements where the field gets set to its initial value */
     private List<JCStatement> initValueField() {
         List<JCStatement> stmts = List.<JCStatement>nil();
-        if (initialValue != null) {
-            JCExpression initValue = this.initialValue;
+        JCExpression initValue = this.initialValue;
+        if (initValue == null) {
+            initValue = this.memoizedInitialValue;
+        }
+        if (initValue != null) {
             if (useJavaBox && initialValueBoxing != BoxingStrategy.JAVA) {
                 SyntheticName temp =  owner.naming.temp();
                 JCExpression type = owner.makeJavaType(attrType, initialValueBoxing == BoxingStrategy.BOXED ? AbstractTransformer.JT_NO_PRIMITIVES : 0);
@@ -760,7 +776,11 @@ public class AttributeDefinitionBuilder {
                 JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.Tag.NE, makeExceptionFieldAccess(), 
                         owner.makeNull()), rethrow, null);
                 catchStmts = List.<JCTree.JCStatement>of(ifThrow, throwStmt);
-            }else{
+            }else if (memoizedInitialValue != null) {
+                catchStmts = List.<JCStatement>of(owner.make().Return(makeValueFieldAccess()))
+                        .prependList(makeInitialized(true, initValueField()));
+                
+            }else {
                 catchStmts = List.<JCTree.JCStatement>of(throwStmt);
             }
             stmts = List.<JCTree.JCStatement>of(
