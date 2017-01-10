@@ -5658,7 +5658,7 @@ public class ClassTransformer extends AbstractTransformer {
             // generate a field and getter
             AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                     // TODO attr build take a JCExpression className
-                    .wrapped(this, null, objectClassBuilder, model.getName(), model, true, null)
+                    .wrapped(this, model.getName(), model, true, null)
                     .userAnnotations(makeAtIgnore())
                     .userAnnotationsSetter(makeAtIgnore())
                     .immutable()

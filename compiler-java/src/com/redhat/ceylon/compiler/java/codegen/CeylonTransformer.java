@@ -467,9 +467,6 @@ public class CeylonTransformer extends AbstractTransformer {
             final Tree.AttributeSetterDefinition setterDecl) {
         
         // For everything else generate a getter/setter method
-        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .wrapped(this, attrClassName, null, attrName, declarationModel, declarationModel.isToplevel(), 
-                    null);
         ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
                 .klass(this, attrClassName, null, false);
         
@@ -509,10 +506,9 @@ public class CeylonTransformer extends AbstractTransformer {
             }
         }
         
-
-        
-        
-
+        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
+                .wrapped(this, attrName, declarationModel, declarationModel.isToplevel(), 
+                        declarationModel.isLate() && expression != null ? initialValue : null);
         builder .is(Flags.PUBLIC, declarationModel.isShared());
         if (isJavaStrictfp(declarationModel)) {
             builder.is(Flags.STRICTFP, true);
@@ -672,7 +668,7 @@ public class CeylonTransformer extends AbstractTransformer {
         
         // For everything else generate a getter/setter method
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .indirect(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
+            .indirect(this, attrName, declarationModel, declarationModel.isToplevel())
             .getterBlock(getterBlock)
             .immutable();
         

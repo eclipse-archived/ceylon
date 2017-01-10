@@ -35,7 +35,6 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
-import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -56,11 +55,7 @@ public class AttributeDefinitionBuilder {
 
     private final TypedDeclaration attrTypedDecl;
     private final String attrName;
-    /** 
-     * If this is a wrapped attribute, and this builder is responsible for 
-     * generating the wrapper class, this is the name of the wrapper class 
-     */
-    private final String javaClassName;
+    
     /**
      * If this is a wrapped attribute, this is the class builder for the 
      * wrapper class
@@ -105,10 +100,9 @@ public class AttributeDefinitionBuilder {
     private final InitTest initTest;
     private final boolean useJavaBox;
     private BoxingStrategy initialValueBoxing;
-    private boolean isNative; 
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, Node node, TypedDeclaration attrType, 
-            String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect, 
+            String attrName, String fieldName, boolean toplevel, boolean indirect, 
             boolean field, boolean isIndirect, JCExpression memoizedInitialValue) {
         int typeFlags = 0;
         TypedReference typedRef = owner.getTypedReference(attrType);
@@ -127,7 +121,6 @@ public class AttributeDefinitionBuilder {
         this.isHash = CodegenUtil.isHashAttribute((FunctionOrValue) attrType);
         this.attrTypedDecl = attrType;
         this.owner = owner;
-        this.javaClassName = javaClassName;
         this.attrType = nonWideningType;
         this.useJavaBox = owner.useJavaBox(attrTypedDecl, this.attrType) 
                 || 
@@ -196,23 +189,23 @@ public class AttributeDefinitionBuilder {
     }
     
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
-            String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
+            String attrName, TypedDeclaration attrType, 
             boolean toplevel, JCExpression memoizedInitialValue) {
-        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, NamingBase.Unfix.$object$.toString(), toplevel, false, false, false, memoizedInitialValue);
+        return new AttributeDefinitionBuilder(owner, null, attrType, attrName, NamingBase.Unfix.$object$.toString(), toplevel, false, false, false, memoizedInitialValue);
     }
     
     public static AttributeDefinitionBuilder singleton(AbstractTransformer owner, 
-            String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
+            String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false, false, false, null);
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, attrName, attrName, toplevel, false, false, false, null);
         adb.getterBuilder.realName(attrType.getName());
         return adb;
     }
     
     public static AttributeDefinitionBuilder indirect(AbstractTransformer owner, 
-            String javaClassName, String attrName, TypedDeclaration attrType, 
+            String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, null, attrName, "value", toplevel, true, false, false, null);
+        return new AttributeDefinitionBuilder(owner, null, attrType, attrName, "value", toplevel, true, false, false, null);
     }
     
     public static AttributeDefinitionBuilder getter(AbstractTransformer owner, 
@@ -223,7 +216,7 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder getter(AbstractTransformer owner, 
             String attrAndFieldName, TypedDeclaration attrType, JCExpression memoizedInitialiValue) {
         String getterName = Naming.getGetterName(attrType, false);
-        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, null, null,
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, 
                         attrAndFieldName, attrAndFieldName, false, false, false, false, memoizedInitialiValue);
         if (!"ref".equals(getterName)
                 && !"get_".equals(getterName)
@@ -246,7 +239,7 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder setter(AbstractTransformer owner, 
             Node node, 
             String attrAndFieldName, TypedDeclaration attrType, JCExpression memoizedInitialValue) {
-        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, node, attrType, null, null,
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, node, attrType, 
                 attrAndFieldName, attrAndFieldName, false, false, false, false, memoizedInitialValue)
             .skipField()
             .skipGetter();
@@ -256,7 +249,7 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder field(AbstractTransformer owner, 
             Node node, 
             String attrAndFieldName, TypedDeclaration attrType, boolean isIndirect) {
-        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, node, attrType, null, null,
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, node, attrType, 
                 attrAndFieldName, attrAndFieldName, false, false, true, isIndirect, null).skipField();
         return adb;
     }
@@ -321,7 +314,7 @@ public class AttributeDefinitionBuilder {
      */
     public List<JCTree> buildWithWrapperClass(ClassDefinitionBuilder classBuilder) {
         ListBuffer<JCTree> defs = new ListBuffer<JCTree>();
-        appendDefinitionsTo(defs);
+        appendDefinitionsTo(defs, classBuilder != null);
         if (classBuilder != null) {
             classBuilder.getInitBuilder().modifiers(Flags.PRIVATE);
             classBuilder
@@ -333,7 +326,7 @@ public class AttributeDefinitionBuilder {
             if(getterClass == null){
                 classBuilder.annotations(owner.makeAtAttribute(setterClass))
                     .annotations(owner.makeAtName(attrName))
-                    .satisfies(getSatisfies());
+                    .satisfies(getSatisfies(classBuilder != null));
             }else{
                 classBuilder.annotations(owner.makeAtIgnore());
                 classBuilder.annotations(owner.makeAtSetter(getterClass));
@@ -352,7 +345,7 @@ public class AttributeDefinitionBuilder {
      * Appends to <tt>defs</tt> the definitions that would go into the class generated by {@link #build()}
      * @param defs a {@link ListBuffer} to which the definitions will be appended.
      */
-    public void appendDefinitionsTo(ListBuffer<JCTree> defs) {
+    private void appendDefinitionsTo(ListBuffer<JCTree> defs, boolean withWrapperClass) {
         if (hasField) {
             if (initialException == null) {
                 // the value, init flag and exception fields
@@ -368,7 +361,7 @@ public class AttributeDefinitionBuilder {
             if (initialException != null) {
                 getterBuilder.block(owner.make().Block(0, List.<JCStatement>of(owner.makeThrowUnresolvedCompilationError(initialException))));
             }
-            getterBuilder.modifiers(getGetSetModifiers());
+            getterBuilder.modifiers(getGetSetModifiers(withWrapperClass));
             getterBuilder.annotationFlags(annotationFlags);
             if (this.modelAnnotations != null) {
                 getterBuilder.modelAnnotations(this.modelAnnotations.toList());
@@ -386,7 +379,7 @@ public class AttributeDefinitionBuilder {
             if (initialException != null) {
                 setterBuilder.block(owner.make().Block(0, List.<JCStatement>of(owner.makeThrowUnresolvedCompilationError(initialException))));
             }
-            setterBuilder.modifiers(getGetSetModifiers());
+            setterBuilder.modifiers(getGetSetModifiers(withWrapperClass));
             // mark it with @Ignore if it's late but not variable
             setterBuilder.annotationFlags(annotationFlags | (late && !variable ? Annotations.IGNORE : 0));
             if (this.userAnnotationsSetter != null) {
@@ -396,9 +389,9 @@ public class AttributeDefinitionBuilder {
         }
     }
 
-    private List<Type> getSatisfies() {
+    private List<Type> getSatisfies(boolean withClassBuilder) {
         List<Type> types = List.<Type>nil();
-        if (javaClassName != null && readable && !toplevel) {
+        if (withClassBuilder && readable && !toplevel) {
             types = types.append(owner.getGetterInterfaceType(attrTypedDecl));
         }
         return types;
@@ -419,9 +412,10 @@ public class AttributeDefinitionBuilder {
         }
     }
 
-    private long getGetSetModifiers() {
+    /** modifiers for the getter & setter */
+    private long getGetSetModifiers(boolean withWrapperClass) {
         long mods = modifiers;
-        if (javaClassName != null) {
+        if (withWrapperClass) {
             mods |= Flags.PUBLIC;
         }
         return mods & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC | Flags.SYNCHRONIZED | Flags.NATIVE | Flags.STRICTFP);
