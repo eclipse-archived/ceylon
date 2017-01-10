@@ -34,6 +34,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -46,18 +47,7 @@ import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 public class MavenPomUtil {
 
     public static String[] getMavenCoordinates(String moduleName){
-        int lastDot = moduleName.lastIndexOf(":");
-        if(lastDot == -1)
-            lastDot = moduleName.lastIndexOf(".");
-        String groupId;
-        String artifactId;
-        if(lastDot != -1){
-            groupId = moduleName.substring(0, lastDot);
-            artifactId = moduleName.substring(lastDot+1);
-        }else{
-            groupId = artifactId = moduleName;
-        }
-        return new String[]{groupId, artifactId};
+        return ModuleUtil.getMavenCoordinates(moduleName);
     }
     
     public static void writeMavenManifest2(File outputFolder, Module module,  

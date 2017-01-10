@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -31,7 +32,8 @@ public class FileArtifactResult extends AbstractCeylonArtifactResult {
     private final File file;
     private final String repositoryDisplayString;
 
-    protected FileArtifactResult(Repository repository, RepositoryManager manager, String name, String version, File file, String repositoryDisplayString) {
+    protected FileArtifactResult(Repository repository, RepositoryManager manager, String name, String version,
+            File file, String repositoryDisplayString) {
         super(repository, manager, name, version);
         this.file = file;
         this.repositoryDisplayString = repositoryDisplayString;

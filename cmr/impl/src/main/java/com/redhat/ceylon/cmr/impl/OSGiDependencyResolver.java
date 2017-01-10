@@ -36,6 +36,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.common.ModuleUtil;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -104,7 +105,11 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
         for (String bundle : bundles) {
             infos.add(parseModuleInfo(bundle));
         }
-        ModuleInfo ret = new ModuleInfo(name, version, null, infos);
+        ModuleInfo ret = new ModuleInfo(name, version,
+                // FIXME: does OSGi store this?
+                ModuleUtil.getMavenGroupIdIfMavenModule(name),
+                ModuleUtil.getMavenArtifactIdIfMavenModule(name),
+                null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(name, version, ret);
         return ret;

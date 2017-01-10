@@ -192,6 +192,18 @@ public class Launcher {
             public List<Exclusion> getExclusions() {
                 return null;
             }
+
+            @Override
+            public String groupId() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public String artifactId() {
+                // TODO Auto-generated method stub
+                return null;
+            }
         };
     }
 

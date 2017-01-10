@@ -34,7 +34,7 @@ public class ModuleSearchResult {
             this.namespace = namespace;
             this.name = name;
             for (String v : versions) {
-                ModuleVersionDetails mvd = new ModuleVersionDetails(namespace, name, v);
+                ModuleVersionDetails mvd = new ModuleVersionDetails(namespace, name, v, null, null);
                 mvd.setDoc(doc);
                 mvd.setLicense(license);
                 mvd.getAuthors().addAll(authors);

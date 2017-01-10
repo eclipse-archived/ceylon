@@ -620,6 +620,16 @@ public class JvmBackendUtil {
                     }
 
                     @Override
+                    public String artifactId() {
+                        return ModuleUtil.getMavenArtifactIdIfMavenModule(name);
+                    }
+                    
+                    @Override
+                    public String groupId() {
+                        return ModuleUtil.getMavenGroupIdIfMavenModule(name);
+                    }
+                    
+                    @Override
                     public String repositoryDisplayString() {
                         return "Android dependency";
                     }
@@ -696,6 +706,16 @@ public class JvmBackendUtil {
                 return name;
             }
 
+            @Override
+            public String artifactId() {
+                return ModuleUtil.getMavenArtifactIdIfMavenModule(name);
+            }
+            
+            @Override
+            public String groupId() {
+                return ModuleUtil.getMavenGroupIdIfMavenModule(name);
+            }
+            
             @Override
             public boolean exported() {
                 return false;

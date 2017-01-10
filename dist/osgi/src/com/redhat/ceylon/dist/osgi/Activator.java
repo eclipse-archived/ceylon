@@ -93,6 +93,14 @@ public class Activator implements BundleActivator {
             return null;
         }
         @Override
+        public String groupId() {
+            return null;
+        }
+        @Override
+        public String artifactId() {
+            return null;
+        }
+        @Override
         public String namespace() {
             return null;
         }

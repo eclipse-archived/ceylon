@@ -66,11 +66,11 @@ public class MavenRepository extends AbstractRepository {
     private static class MavenArtifactResult extends AbstractCeylonArtifactResult {
         private Node node;
 
-        private MavenArtifactResult(CmrRepository repository, RepositoryManager manager, String name, String version, Node node) {
+        private MavenArtifactResult(CmrRepository repository, RepositoryManager manager, String name, String version,
+                Node node) {
             super(repository, manager, name, version);
             this.node = node;
         }
-
         
         @Override
         public String namespace() {

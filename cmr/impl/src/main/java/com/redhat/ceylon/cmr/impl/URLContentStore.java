@@ -89,8 +89,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
     private static int HERD_V3 = 3;
     private static int HERD_V4 = 4;
     private static int HERD_V5 = 5;
+    private static int HERD_V6 = 6;
 
-    private static int HERD_LATEST = HERD_V5;
+    private static int HERD_LATEST = HERD_V6;
 
     private int herdVersion = HERD_V1; // assume 1 until we find otherwise
 
@@ -110,7 +111,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 && !apiVersion.equals(String.valueOf(HERD_V2))
                 && !apiVersion.equals(String.valueOf(HERD_V3))
                 && !apiVersion.equals(String.valueOf(HERD_V4))
-                && !apiVersion.equals(String.valueOf(HERD_V5)))
+                && !apiVersion.equals(String.valueOf(HERD_V5))
+                && !apiVersion.equals(String.valueOf(HERD_V6)))
             throw new IllegalArgumentException("Only Herd APIs 1 to "+HERD_LATEST+" are supported: requested API "+apiVersion);
     }
 
@@ -566,7 +568,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         p.moveToOpenTag("results");
         
         while(p.moveToOptionalOpenTag("module-version")){
-            String module = null, version = null, doc = null, license = null;
+            String module = null, version = null, doc = null, license = null, groupId = null, artifactId = null;
             authors.clear();
             dependencies.clear();
             types.clear();
@@ -579,6 +581,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     version = p.contents();
                 }else if(p.isOpenTag("doc")){
                     doc = p.contents();
+                }else if(p.isOpenTag("groupId")){
+                    groupId = p.contents();
+                }else if(p.isOpenTag("artifactId")){
+                    artifactId = p.contents();
                 }else if(p.isOpenTag("license")){
                     license = p.contents();
                 }else if(p.isOpenTag("authors")){
@@ -595,6 +601,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 throw new RuntimeException("Missing required version");
             ModuleVersionDetails newVersion = result.addVersion(null, module, version);
             if(newVersion != null){
+                if(groupId != null && !groupId.isEmpty())
+                    newVersion.setGroupId(groupId);
+                if(artifactId != null && !artifactId.isEmpty())
+                    newVersion.setArtifactId(artifactId);
                 if(doc != null && !doc.isEmpty())
                     newVersion.setDoc(doc);
                 if(license != null && !license.isEmpty())
@@ -602,7 +612,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                 if(!authors.isEmpty())
                     newVersion.getAuthors().addAll(authors);
                 if(overrides != null)
-                    dependencies = overrides.applyOverrides(module, version, new ModuleInfo(module, version, null, dependencies)).getDependencies();
+                    dependencies = overrides.applyOverrides(module, version, new ModuleInfo(module, version, 
+                            groupId, artifactId, null, dependencies)).getDependencies();
                 if(!dependencies.isEmpty())
                     newVersion.getDependencies().addAll(dependencies);
                 if(!types.isEmpty())
@@ -736,7 +747,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         }
         int resultCount = 0;
         while(p.moveToOptionalOpenTag("module")){
-            String module = null, doc = null, license = null;
+            String module = null, doc = null, license = null, groupId = null, artifactId = null;
             authors.clear();
             versions.clear();
             dependencies.clear();
@@ -751,6 +762,10 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     // inside the "module" tag containing all the rest of the
                     // information below
                     versions.add(p.contents());
+                }else if(p.isOpenTag("groupId")){
+                    groupId = p.contents();
+                }else if(p.isOpenTag("artifactId")){
+                    artifactId = p.contents();
                 }else if(p.isOpenTag("doc")){
                     doc = p.contents();
                 }else if(p.isOpenTag("license")){
@@ -773,7 +788,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             }else{
                 // TODO See TODO above
                 for (String v : versions) {
-                    ModuleVersionDetails mvd = new ModuleVersionDetails(null, module, v);
+                    ModuleVersionDetails mvd = new ModuleVersionDetails(null, module, v, groupId, artifactId);
                     mvd.setDoc(doc);
                     mvd.setLicense(license);
                     mvd.getAuthors().addAll(authors);

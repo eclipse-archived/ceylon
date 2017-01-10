@@ -160,4 +160,33 @@ public abstract class ModuleUtil {
     public static boolean isMavenJarlessModule(File jar) {
         return jar.getName().toLowerCase().endsWith(".pom");
     }
+
+    public static String[] getMavenCoordinates(String moduleName){
+        int lastDot = moduleName.lastIndexOf(":");
+        if(lastDot == -1)
+            lastDot = moduleName.lastIndexOf(".");
+        String groupId;
+        String artifactId;
+        if(lastDot != -1){
+            groupId = moduleName.substring(0, lastDot);
+            artifactId = moduleName.substring(lastDot+1);
+        }else{
+            groupId = artifactId = moduleName;
+        }
+        return new String[]{groupId, artifactId};
+    }
+
+    public static String getMavenGroupIdIfMavenModule(String moduleName) {
+        int lastDot = moduleName.lastIndexOf(":");
+        if(lastDot == -1)
+            return null;
+        return moduleName.substring(0, lastDot);
+    }
+
+    public static String getMavenArtifactIdIfMavenModule(String moduleName) {
+        int lastDot = moduleName.lastIndexOf(":");
+        if(lastDot == -1)
+            return null;
+        return moduleName.substring(lastDot+1);
+    }
 }

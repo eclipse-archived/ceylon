@@ -102,5 +102,15 @@ public class ResolverTestCase extends AbstractAetherTest {
         public String repositoryDisplayString() {
             return "Test!";
         }
+        
+        @Override
+        public String groupId() {
+            return null;
+        }
+        
+        @Override
+        public String artifactId() {
+            return null;
+        }
     }
 }

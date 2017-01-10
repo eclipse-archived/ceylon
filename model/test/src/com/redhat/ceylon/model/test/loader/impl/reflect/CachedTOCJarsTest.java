@@ -140,5 +140,15 @@ public class CachedTOCJarsTest {
         public List<Exclusion> getExclusions() {
             return null;
         }
+        
+        @Override
+        public String artifactId() {
+            return null;
+        }
+        
+        @Override
+        public String groupId() {
+            return null;
+        }
     }
 }

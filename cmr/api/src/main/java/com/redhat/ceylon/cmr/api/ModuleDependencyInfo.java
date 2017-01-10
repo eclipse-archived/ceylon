@@ -34,7 +34,7 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
     private ModuleScope scope;
     private Backends backends;
 
-    public ModuleDependencyInfo(String namespace, String name, String version, 
+    public ModuleDependencyInfo(String namespace, String name, String version,
             boolean optional, boolean shared) {
         this(namespace, name, version, optional, shared, Backends.ANY);
     }
@@ -44,7 +44,7 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
         this(namespace, name, version, optional, shared, backends, ModuleScope.COMPILE);
     }
     
-    public ModuleDependencyInfo(String namespace, String name, String version, 
+    public ModuleDependencyInfo(String namespace, String name, String version,
             boolean optional, boolean shared, Backends backends, ModuleScope scope) {
         this.namespace = namespace;
         this.name = name;

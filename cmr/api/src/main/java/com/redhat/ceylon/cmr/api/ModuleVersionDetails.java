@@ -21,30 +21,37 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     private NavigableSet<ModuleDependencyInfo> dependencies = new TreeSet<ModuleDependencyInfo>();
     private NavigableSet<ModuleVersionArtifact> artifactTypes = new TreeSet<ModuleVersionArtifact>();
     private NavigableSet<String> members = new TreeSet<>();
+    private String groupId;
+    private String artifactId;
 
-    public ModuleVersionDetails(String module, String version) {
-        this(null, module, version);
+    public ModuleVersionDetails(String module, String version, String groupId, String artifactId) {
+        this(null, module, version, groupId, artifactId);
     }
 
-    public ModuleVersionDetails(String namespace, String module, String version) {
+    public ModuleVersionDetails(String namespace, String module, String version, String groupId, String artifactId) {
         assert(version != null);
         this.namespace = namespace;
         this.module = module;
         this.version = version;
+        this.groupId = groupId;
+        this.artifactId = artifactId;
     }
 
     // THis constructor is only used by the unit tests
-    public ModuleVersionDetails(String namespace, String module, String version, String doc, String license, String... by) {
-        this(namespace, module, version);
+    public ModuleVersionDetails(String namespace, String module, String version,
+            String doc, String license, String... by) {
+        this(namespace, module, version, null, null);
         this.doc = doc;
         this.license = license;
         this.authors.addAll(Arrays.asList(by));
     }
 
-    public ModuleVersionDetails(String namespace, String module, String version, String doc, String license, Set<String> authors, 
+    public ModuleVersionDetails(String namespace, String module, String version, 
+            String groupId, String artifactId,
+            String doc, String license, Set<String> authors, 
             Set<ModuleDependencyInfo> dependencies, Set<ModuleVersionArtifact> artifactTypes,
             boolean remote, String origin) {
-        this(namespace, module, version);
+        this(namespace, module, version, groupId, artifactId);
         this.doc = doc;
         this.license = license;
         this.authors.addAll(authors);
@@ -130,6 +137,14 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
         this.artifactTypes.addAll(types);
     }
 
+    public String getArtifactId() {
+        return artifactId;
+    }
+    
+    public String getGroupId() {
+        return groupId;
+    }
+    
     public NavigableSet<String> getMembers() {
         return members;
     }
@@ -185,6 +200,14 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
                 + ", remote: " + remote
                 + ", origin: " + origin
                 + "]";
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public void setArtifactId(String artifactId) {
+        this.artifactId = artifactId;
     }
 
 }

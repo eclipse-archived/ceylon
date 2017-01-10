@@ -32,7 +32,7 @@ public class LazyArtifactResult extends AbstractArtifactResult {
 
     private synchronized ArtifactResult getDelegate() {
         if (delegate == null) {
-            final ArtifactContext context = new ArtifactContext(null, name(), version());
+            final ArtifactContext context = new ArtifactContext(null, name(), version(), ArtifactContext.CAR, ArtifactContext.JAR);
             context.setThrowErrorIfMissing(!optional);
             delegate = manager.getArtifactResult(context);
         }
@@ -79,5 +79,15 @@ public class LazyArtifactResult extends AbstractArtifactResult {
     @Override
     public PathFilter filter(){
         return getDelegate().filter();
+    }
+    
+    @Override
+    public String artifactId() {
+        return getDelegate().artifactId();
+    }
+    
+    @Override
+    public String groupId() {
+        return getDelegate().groupId();
     }
 }

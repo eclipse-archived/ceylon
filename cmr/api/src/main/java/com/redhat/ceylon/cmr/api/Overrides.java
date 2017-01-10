@@ -273,19 +273,21 @@ public class Overrides {
                     optional = artifactOverrides.isOptional(ctx);
             }
 
-            result.add(new ModuleDependencyInfo(depNamespace, depName, depVersion, optional, export, backends, scope));
+            result.add(new ModuleDependencyInfo(depNamespace, depName, depVersion,
+                    optional, export, backends, scope));
         }
         String filter = source.getFilter();
         if(artifactOverrides != null){
             if(artifactOverrides.getFilter() != null)
                 filter = artifactOverrides.getFilter();
             for(DependencyOverride add : artifactOverrides.getAdd()){
-                result.add(new ModuleDependencyInfo(add.getArtifactContext().getNamespace(), add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
+                result.add(new ModuleDependencyInfo(add.getArtifactContext().getNamespace(), 
+                        add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
                         add.isOptional(),
                         add.isShared()));
             }
         }
-        return new ModuleInfo(module, version, filter, result);
+        return new ModuleInfo(module, version, source.getGroupId(), source.getArtifactId(), filter, result);
     }
 
     private static Overrides parse(String overridesFileName, Overrides overrides) throws OverrideException{

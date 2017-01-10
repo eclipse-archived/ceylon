@@ -102,7 +102,8 @@ public class RootRepositoryManager extends AbstractNodeRepositoryManager {
                         log.error(e.toString());
                     }
                     // we expect the remote nodes to support Ceylon module info
-                    return new FileArtifactResult(NodeUtils.getRepository(node), this, context.getName(), context.getVersion(), file, repositoryDisplayString);
+                    return new FileArtifactResult(NodeUtils.getRepository(node), this, context.getName(), context.getVersion(),
+                            file, repositoryDisplayString);
                 } finally {
                     IOUtils.safeClose(sizedInputStream.getInputStream());
                 }

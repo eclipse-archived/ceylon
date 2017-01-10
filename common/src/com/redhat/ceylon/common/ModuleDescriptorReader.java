@@ -39,6 +39,8 @@ public class ModuleDescriptorReader {
     private Method moduleLicense;
     private Method moduleAuthors;
     private Method moduleImports;
+    private Method moduleGroupId;
+    private Method moduleArtifactId;
 
     // WARNING: this exception class name is used in com.redhat.ceylon.ant.ModuleDescriptorReader because of FUCKED UP
     // classpath issues in the ant task. If you ever manage to untangle this mess: BE MY GUEST. 
@@ -69,6 +71,10 @@ public class ModuleDescriptorReader {
             this.moduleAuthors.setAccessible(true);
             this.moduleImports = mdr.getMethod("getModuleImports");
             this.moduleImports.setAccessible(true);
+            this.moduleGroupId = mdr.getMethod("getModuleGroupId");
+            this.moduleGroupId.setAccessible(true);
+            this.moduleArtifactId = mdr.getMethod("getModuleArtifactId");
+            this.moduleArtifactId.setAccessible(true);
             Constructor<?> constructor = mdr.getConstructor(String.class, File.class);
             constructor.setAccessible(true);
             this.instance = constructor.newInstance(moduleName, srcDir);
@@ -155,5 +161,21 @@ public class ModuleDescriptorReader {
             throw new RuntimeException(e);
         }
     }
-    
+
+    public String getModuleArtifactId() {
+        try {
+            return (String)moduleArtifactId.invoke(instance);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String getModuleGroupId() {
+        try {
+            return (String)moduleGroupId.invoke(instance);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

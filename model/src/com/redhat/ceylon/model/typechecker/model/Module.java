@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Module 
@@ -531,5 +532,25 @@ public class Module
     
     public Map<ClassOrInterface, Set<Class>> getServices() {
         return services != null ? services : Collections.<ClassOrInterface, Set<Class>>emptyMap();
+    }
+
+    public String getGroupId() {
+        for (Annotation annotation : getAnnotations()) {
+            if(annotation.getName().equals("artifact")){
+                return annotation.getNamedArguments().get("group");
+            }
+        }
+        return ModuleUtil.getMavenCoordinates(getNameAsString())[0];
+    }
+
+    public String getArtifactId() {
+        for (Annotation annotation : getAnnotations()) {
+            if(annotation.getName().equals("artifact")){
+                String artifact = annotation.getNamedArguments().get("artifact");
+                if(artifact == null || artifact.isEmpty())
+                    return getNameAsString();
+            }
+        }
+        return ModuleUtil.getMavenCoordinates(getNameAsString())[1];
     }
 }

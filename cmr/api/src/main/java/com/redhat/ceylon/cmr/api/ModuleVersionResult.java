@@ -18,7 +18,7 @@ public class ModuleVersionResult {
     public ModuleVersionDetails addVersion(String namespace, String module, String version) {
         if(versions.containsKey(version))
             return null;
-        ModuleVersionDetails newVersion = new ModuleVersionDetails(namespace, module, version);
+        ModuleVersionDetails newVersion = new ModuleVersionDetails(namespace, module, version, null, null); // set up later
         versions.put(version, newVersion);
         return newVersion;
     }

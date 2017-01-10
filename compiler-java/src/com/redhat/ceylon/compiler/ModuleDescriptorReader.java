@@ -218,4 +218,12 @@ class ModuleDescriptorReader {
         }
         return imports;
     }
+    
+    public String getModuleGroupId(){
+        return moduleDescriptor.getGroupId();
+    }
+
+    public String getModuleArtifactId(){
+        return moduleDescriptor.getArtifactId();
+    }
 }

@@ -119,7 +119,8 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
             return null;
         if(version != null && !version.equals(descriptor.getVersion()))
             return null;
-        ModuleInfo ret = new ModuleInfo(descrName, descriptor.getVersion(), null, infos);
+        ModuleInfo ret = new ModuleInfo(descrName, descriptor.getVersion(), 
+                descriptor.getGroupId(), descriptor.getArtifactId(), null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(descrName, descriptor.getVersion(), ret);
         return ret;

@@ -89,7 +89,8 @@ public class FlatRepository extends DefaultRepository {
                 if (dependencies == null) {
                     Overrides overrides = ((CmrRepository)repository()).getRoot().getService(Overrides.class);
                     if(overrides != null) {
-                        dependencies = new ModuleInfo(name(), version(), null, new HashSet<ModuleDependencyInfo>());
+                        dependencies = new ModuleInfo(name(), version(), groupId(), artifactId(), 
+                                null, new HashSet<ModuleDependencyInfo>());
                         dependencies = overrides.applyOverrides(name(), version(), dependencies);
                     }
                     

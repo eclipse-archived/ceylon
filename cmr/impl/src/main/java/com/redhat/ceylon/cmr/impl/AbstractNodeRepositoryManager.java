@@ -240,7 +240,8 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             } catch (IOException e) {
                 throw new RepositoryException("Failed to unzip folder downloaded from Herd: " + zipResult.artifact(), e);
             }
-            return new FileArtifactResult(zipResult.repository(), this, zipResult.name(), zipResult.version(), unzippedFolder, zipResult.repositoryDisplayString());
+            return new FileArtifactResult(zipResult.repository(), this, zipResult.name(), zipResult.version(),
+                    unzippedFolder, zipResult.repositoryDisplayString());
         } else {
             return null;
         }

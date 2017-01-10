@@ -110,4 +110,8 @@ public interface ArtifactResult {
      * List of Maven exclusions
      */
     List<Exclusion> getExclusions();
+    
+    String groupId();
+    
+    String artifactId();
 }

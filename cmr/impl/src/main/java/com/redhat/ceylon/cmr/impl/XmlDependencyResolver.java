@@ -59,7 +59,7 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
             for (ModuleIdentifier mi : module.getDependencies()) {
                 infos.add(new ModuleDependencyInfo(null, mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport(), Backends.JAVA));
             }
-            ModuleInfo ret = new ModuleInfo(name, version, module.getFilter(), infos);
+            ModuleInfo ret = new ModuleInfo(name, version, module.getGroupId(), module.getArtifactId(), module.getFilter(), infos);
             if(overrides != null)
                 ret = overrides.applyOverrides(name, version, ret);
             return ret;
@@ -139,6 +139,8 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
         private ModuleIdentifier module;
         private Set<ModuleIdentifier> dependencies = new LinkedHashSet<>();
         private String filter;
+        private String groupId;
+        private String artifactId;
 
         public Module(ModuleIdentifier module) {
             this.module = module;
@@ -191,6 +193,22 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
         public String getFilter() {
             return filter;
         }
+
+        public String getArtifactId() {
+            return artifactId;
+        }
+
+        public void setArtifactId(String artifactId) {
+            this.artifactId = artifactId;
+        }
+
+        public String getGroupId() {
+            return groupId;
+        }
+
+        public void setGroupId(String groupId) {
+            this.groupId = groupId;
+        }
     }
 
     protected static Module parse(InputStream is) throws Exception {
@@ -199,6 +217,16 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
             Element root = document.getDocumentElement();
             ModuleIdentifier main = getModuleIdentifier(root);
             Module module = new Module(main);
+            Element properties = getChildElement(root, "properties");
+            if (properties != null) {
+                for (Element property : getElements(properties, "property")) {
+                    String name = property.getAttribute("name");
+                    if("groupId".equals(name))
+                        module.setGroupId(property.getAttribute("value"));
+                    else if("artifactId".equals(name))
+                        module.setArtifactId(property.getAttribute("value"));
+                }
+            }
             Element dependencies = getChildElement(root, "dependencies");
             if (dependencies != null) {
                 for (Element dependency : getElements(dependencies, "module")) {

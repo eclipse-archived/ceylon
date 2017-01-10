@@ -483,7 +483,8 @@ public abstract class AbstractRepository implements CmrRepository {
             boolean foundInfo = false;
             boolean binaryShouldMatch = false;
             boolean binaryMatch = false;
-            ModuleVersionDetails mvd = new ModuleVersionDetails(getNamespace(), name, version);
+            // null here and read the info later
+            ModuleVersionDetails mvd = new ModuleVersionDetails(getNamespace(), name, version, null, null);
             String[] suffixes = lookup.getType().getSuffixes();
             // When we need to find ALL requested suffixes we maintain a set of those not found yet
             HashSet<String> suffixesToFind = null;
@@ -681,7 +682,8 @@ public abstract class AbstractRepository implements CmrRepository {
             throw new RuntimeException("Assertion failed: we didn't find the version child for " + moduleName + "/" + latestVersion);
 
         String memberName = query.getMemberName();
-        ModuleVersionDetails mvd = new ModuleVersionDetails(getNamespace(), moduleName, latestVersion);
+        // null group/artifact and fill it up later
+        ModuleVersionDetails mvd = new ModuleVersionDetails(getNamespace(), moduleName, latestVersion, null, null);
         boolean found = false;
         // Now try to retrieve information for each of the suffixes
         for (String suffix : suffixes) {
@@ -742,6 +744,12 @@ public abstract class AbstractRepository implements CmrRepository {
                             return ArtifactInfoResult.NO_MATCH;
                         }
                         mvd.getMembers().addAll(matchingMembers);
+                    }
+                    if (mvd2.getGroupId() != null) {
+                        mvd.setGroupId(mvd2.getGroupId());
+                    }
+                    if (mvd2.getArtifactId() != null) {
+                        mvd.setArtifactId(mvd2.getArtifactId());
                     }
                     if (mvd2.getDoc() != null) {
                         mvd.setDoc(mvd2.getDoc());

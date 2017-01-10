@@ -64,6 +64,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
     private static final String CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
     private static final String IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
     private static final String LOCAL_CONTAINER_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.LocalContainer";
+    private static final String ARTIFACT_ANNOTATION = "ceylon.language.ArtifactAnnotation$annotation$";
 
     @Override
     public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
@@ -108,9 +109,26 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         if(version == null)
             return null;
         
+        Annotation artifactAnnotation = ClassFileUtil.findAnnotation(moduleInfo, ARTIFACT_ANNOTATION);
+        String groupId, artifactId;
+        if(artifactAnnotation != null){
+            groupId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "group");
+            artifactId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "artifact");
+            if(artifactId == null || artifactId.isEmpty())
+                artifactId = moduleName;
+            System.err.println("read groupId: "+groupId);
+        }else{
+            String[] coordinates = ModuleUtil.getMavenCoordinates(moduleName);
+            groupId = coordinates[0];
+            artifactId = coordinates[1];
+            System.err.println("computed groupId: "+groupId);
+        }
+
         final Object[] dependencies = (Object[]) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "dependencies");
-        final Set<ModuleDependencyInfo> infos = getDependencies(moduleInfo, dependencies, moduleName, version, overrides);
-        ModuleInfo ret = new ModuleInfo(moduleName, version, null, infos);
+        final Set<ModuleDependencyInfo> infos = getDependencies(moduleInfo, dependencies, moduleName, version, 
+                groupId, artifactId, overrides);
+
+        ModuleInfo ret = new ModuleInfo(moduleName, version, groupId, artifactId, null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(moduleName, version, ret);
         return ret;
@@ -199,6 +217,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
     	Annotation moduleAnnotation = ClassFileUtil.findAnnotation(moduleInfo, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return null;
+        Annotation artifactAnnotation = ClassFileUtil.findAnnotation(moduleInfo, ARTIFACT_ANNOTATION);
         
         String doc = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "doc");
         String license = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "license");
@@ -207,8 +226,21 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
         
         int[] binver = getBinaryVersions(moduleInfo);
+        String groupId, artifactId;
+        if(artifactAnnotation != null){
+            groupId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "group");
+            artifactId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "artifact");
+            if(artifactId == null || artifactId.isEmpty())
+                artifactId = moduleName;
+        }else{
+            String[] coordinates = ModuleUtil.getMavenCoordinates(moduleName);
+            groupId = coordinates[0];
+            artifactId = coordinates[1];
+        }
 
-        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, getVersionFromFilename(moduleName, moduleArchive.getName()));
+        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, 
+                getVersionFromFilename(moduleName, moduleArchive.getName()),
+                groupId, artifactId);
         mvd.setDoc(doc);
         mvd.setLicense(license);
         if (by != null) {
@@ -216,7 +248,8 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         		mvd.getAuthors().add((String)author);
         	}
         }
-        mvd.getDependencies().addAll(getDependencies(moduleInfo, dependencies, moduleName, mvd.getVersion(), overrides));
+        mvd.getDependencies().addAll(getDependencies(moduleInfo, dependencies, moduleName, mvd.getVersion(), 
+                groupId, artifactId, overrides));
         ModuleVersionArtifact mva = new ModuleVersionArtifact(type, binver[0], binver[1]);
         mvd.getArtifactTypes().add(mva);
         
@@ -307,7 +340,9 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
     }
 
     private static Set<ModuleDependencyInfo> getDependencies(ClassFile moduleInfo, Object[] dependencies, 
-    		String module, String version, Overrides overrides) {
+    		String module, String version, 
+    		String groupId, String artifactId,
+    		Overrides overrides) {
     	
         if (dependencies == null) {
             return Collections.<ModuleDependencyInfo>emptySet();
@@ -349,7 +384,8 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         }
         
         if (overrides != null) {
-            result = overrides.applyOverrides(module, version, new ModuleInfo(module, version, null, result)).getDependencies();
+            result = overrides.applyOverrides(module, version, new ModuleInfo(module, version, groupId, artifactId, 
+                    null, result)).getDependencies();
         }
         
         return result;
@@ -362,7 +398,20 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
     	Annotation moduleAnnotation = ClassFileUtil.findAnnotation(moduleInfo, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return false;
-        
+
+        Annotation artifactAnnotation = ClassFileUtil.findAnnotation(moduleInfo, ARTIFACT_ANNOTATION);
+        String groupId, artifactId;
+        if(artifactAnnotation != null){
+            groupId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "group");
+            artifactId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "artifact");
+            if(artifactId == null || artifactId.isEmpty())
+                artifactId = moduleName;
+        }else{
+            String[] coordinates = ModuleUtil.getMavenCoordinates(moduleName);
+            groupId = coordinates[0];
+            artifactId = coordinates[1];
+        }
+
         String version = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "version");
         if (version == null)
             return false;
@@ -381,7 +430,8 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         }
         Object[] dependencies = (Object[])ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "dependencies");
         if (dependencies != null) {
-            for (ModuleDependencyInfo dep : getDependencies(moduleInfo, dependencies, moduleName, version, overrides)) {
+            for (ModuleDependencyInfo dep : getDependencies(moduleInfo, dependencies, moduleName, version, 
+                    groupId, artifactId, overrides)) {
                 if (matches(dep.getModuleName(), query))
                     return true;
             }

@@ -27,6 +27,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.PathFilterParser;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.PathFilter;
@@ -43,7 +44,8 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     private ModuleInfo infos;
     private boolean resolved = false;
 
-    protected AbstractCeylonArtifactResult(Repository repository, RepositoryManager manager, String name, String version) {
+    protected AbstractCeylonArtifactResult(Repository repository, RepositoryManager manager, 
+            String name, String version) {
         super(repository, null, name, version);
         this.manager = manager;
     }
@@ -119,6 +121,28 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
             }
         }
         return dependencies;
+    }
+    
+    @Override
+    public String artifactId() {
+        String groupId = resolve().getGroupId();
+        String artifactId = resolve().getArtifactId();
+        if(groupId != null && !groupId.isEmpty()){
+            if(artifactId != null && !artifactId.isEmpty())
+                return artifactId;
+            // if we have a group but not artifact, default to the entire name
+            return name();
+        }
+        return ModuleUtil.getMavenCoordinates(name())[1];
+    }
+    
+    @Override
+    public String groupId() {
+        String groupId = resolve().getGroupId();
+        if(groupId != null && !groupId.isEmpty()){
+            return groupId;
+        }
+        return ModuleUtil.getMavenCoordinates(name())[0];
     }
 }
 

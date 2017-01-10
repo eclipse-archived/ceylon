@@ -231,17 +231,31 @@ public class Main {
             protected File artifactInternal() {
                 throw new UnsupportedOperationException();
             }
+            
+            @Override
+            public String groupId() {
+                return null;
+            }
+            
+            @Override
+            public String artifactId() {
+                return null;
+            }
         }
         
         static class Module extends AbstractArtifactResult {
             public final File jar;
             public final Type type;
             public final List<Dependency> dependencies = new LinkedList<Dependency>();
+            private String groupId;
+            private String artifactId;
 
-            public Module(String name, String version, Type type, File jar) {
+            public Module(String name, String version, String groupId, String artifactId, Type type, File jar) {
                 super(null, null, name, version);
                 this.type = type;
                 this.jar = jar;
+                this.groupId = groupId;
+                this.artifactId = artifactId;
             }
             
             public void addDependency(String name, String version, boolean optional, boolean shared) {
@@ -329,6 +343,16 @@ public class Main {
             public void setFilter(PathFilter filter) {
                 setFilterInternal(filter);
             }
+
+            @Override
+            public String groupId() {
+                return groupId;
+            }
+
+            @Override
+            public String artifactId() {
+                return artifactId;
+            }
         }
 
         private List<File> potentialJars = new LinkedList<File>();
@@ -340,7 +364,7 @@ public class Main {
                 MavenResolver = MavenBackupDependencyResolver.INSTANCE;
         }
         
-        private static final Module NO_MODULE = new Module("$$$", "$$$", Type.UNKNOWN, null);
+        private static final Module NO_MODULE = new Module("$$$", "$$$", null, null, Type.UNKNOWN, null);
         
         ClassPath(Overrides overrides){
             String classPath = System.getProperty("java.class.path");
@@ -450,7 +474,7 @@ public class Main {
             	name = JDKUtils.getJava9ModuleName(name, version);
             }
             if(JDKUtils.isJDKModule(name) || JDKUtils.isOracleJDKModule(name)){
-                module = new Module(name, JDKUtils.jdk.version, Type.JDK, null);
+                module = new Module(name, JDKUtils.jdk.version, null, null, Type.JDK, null);
                 modules.put(key, module);
                 return module;
             }
@@ -459,7 +483,7 @@ public class Main {
                 return module;
             } else {
                 if(allowMissingModules){
-                    return new Module(name, version, Type.UNKNOWN, null);
+                    return new Module(name, version, null, null, Type.UNKNOWN, null);
                 }else{
                     throw new ModuleNotFoundException("Module "+key+" not found");
                 }
@@ -696,6 +720,8 @@ public class Main {
                 if(moduleAnnotation == null)
                     throw new IOException("Missing module annotation");
 
+                Annotation artifactAnnotation = ClassFileUtil.findAnnotation(classFile, annotationsAttribute, ceylon.language.ArtifactAnnotation$annotation$.class);
+
                 Object moduleName = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "name");
                 Object moduleVersion = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "version");
                 if(moduleName instanceof String == false 
@@ -708,8 +734,21 @@ public class Main {
                     throw new IOException("Module version does not match module descriptor");
                 name = (String)moduleName;
                 version = (String)moduleVersion;
+
+                String groupId, artifactId;
+                if(artifactAnnotation != null){
+                    groupId = (String) ClassFileUtil.getAnnotationValue(classFile, artifactAnnotation, "group");
+                    artifactId = (String) ClassFileUtil.getAnnotationValue(classFile, artifactAnnotation, "artifact");
+                    if(artifactId == null || artifactId.isEmpty())
+                        artifactId = name;
+                }else{
+                    String[] coordinates = ModuleUtil.getMavenCoordinates(name);
+                    groupId = coordinates[0];
+                    artifactId = coordinates[1];
+                }
+
                 
-                Module module = new Module(name, version, Type.CEYLON, file);
+                Module module = new Module(name, version, groupId, artifactId, Type.CEYLON, file);
                 Object moduleDependencies = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "dependencies");
                 ArtifactOverrides ao = null;
                 if(overrides != null){
@@ -826,7 +865,8 @@ public class Main {
                 if(version != null && moduleInfo.getVersion() != null && !version.equals(moduleInfo.getVersion()))
                     return null;
     			Module module = new Module(name != null ? name : moduleInfo.getName(), 
-    			        version != null ? version : moduleInfo.getVersion(), 
+    			        version != null ? version : moduleInfo.getVersion(),
+    			        moduleInfo.getGroupId(), moduleInfo.getArtifactId(),
     			        moduleType, file);
     			for(ModuleDependencyInfo dep : moduleInfo.getDependencies()){
     			    // skip this nonsense scope
@@ -858,13 +898,13 @@ public class Main {
         }
 
         private Module loadDefaultJar(File file) throws IOException {
-            return new Module("default", null, Type.CEYLON, file);
+            return new Module("default", null, null, null, Type.CEYLON, file);
         }
 
         private Module loadJava9ModuleJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
         	Java9Module java9Module = Java9ModuleReader.getJava9Module(zipFile, moduleDescriptor);
         	if(java9Module != null)
-        		return new Module(java9Module.name, java9Module.version, Type.JAVA9, file);
+        		return new Module(java9Module.name, java9Module.version, null, null, Type.JAVA9, file);
         	// or throw?
         	return null;
         }
