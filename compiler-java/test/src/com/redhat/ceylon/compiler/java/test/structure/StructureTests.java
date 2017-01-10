@@ -165,6 +165,11 @@ public class StructureTests extends CompilerTests {
         compareWithJavaSource("attribute/LateToplevel");
     }
     
+    @Test
+    public void testAtrLateAndLazy(){
+        compareWithJavaSource("attribute/LateAndLazy");
+    }
+    
     //
     // Classes
     
