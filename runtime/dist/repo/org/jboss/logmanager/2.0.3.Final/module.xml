@@ -23,6 +23,11 @@
 -->
 
 <module xmlns="urn:jboss:module:1.1" name="org.jboss.logmanager" slot="2.0.3.Final">
+    <properties>
+        <property name="groupId" value="org.jboss.logmanager"/>
+        <property name="artifactId" value="jboss-logmanager"/>
+    </properties>
+
     <resources>
         <resource-root path="org.jboss.logmanager-2.0.3.Final.jar"/>
     </resources>

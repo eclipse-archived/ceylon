@@ -23,6 +23,10 @@
   -->
 
 <module xmlns="urn:jboss:module:1.1" name="com.redhat.ceylon.module-resolver-webdav" slot="@ceylon-version@">
+    <properties>
+        <property name="groupId" value="org.ceylon-lang"/>
+    </properties>
+
     <resources>
         <resource-root path="com.redhat.ceylon.module-resolver-webdav-@ceylon-version@.jar"/>
     </resources>

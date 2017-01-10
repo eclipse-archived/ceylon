@@ -17,6 +17,10 @@
   -->
 
 <module xmlns="urn:jboss:module:1.0" name="com.redhat.ceylon.compiler.js" slot="@ceylon-version@">
+    <properties>
+        <property name="groupId" value="org.ceylon-lang"/>
+    </properties>
+
     <resources>
         <resource-root path="com.redhat.ceylon.compiler.js-@ceylon-version@.jar"/>
     </resources>

@@ -23,6 +23,11 @@
   -->
 
 <module xmlns="urn:jboss:module:1.0" name="org.tautua.markdownpapers.core" slot="1.2.7">
+    <properties>
+        <property name="groupId" value="org.tautua.markdownpapers"/>
+        <property name="artifactId" value="markdownpapers-core"/>
+    </properties>
+
     <resources>
         <resource-root path="org.tautua.markdownpapers.core-1.2.7.jar"/>
     </resources>

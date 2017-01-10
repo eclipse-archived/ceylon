@@ -23,6 +23,11 @@
   -->
 
 <module xmlns="urn:jboss:module:1.0" name="org.eclipse.aether.transport.file" slot="1.1.0">
+    <properties>
+        <property name="groupId" value="org.eclipse.aether"/>
+        <property name="artifactId" value="aether-transport-file"/>
+    </properties>
+
     <resources>
         <resource-root path="org.eclipse.aether.transport.file-1.1.0.jar"/>
     </resources>

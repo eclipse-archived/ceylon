@@ -23,6 +23,11 @@
   -->
 
 <module xmlns="urn:jboss:module:1.0" name="org.eclipse.aether.api" slot="1.1.0">
+    <properties>
+        <property name="groupId" value="org.eclipse.aether"/>
+        <property name="artifactId" value="aether-api"/>
+    </properties>
+
     <resources>
         <resource-root path="org.eclipse.aether.api-1.1.0.jar"/>
     </resources>

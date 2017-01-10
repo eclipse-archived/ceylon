@@ -23,6 +23,10 @@
   -->
 
 <module xmlns="urn:jboss:module:1.1" name="ceylon.runtime" slot="@ceylon-version@">
+    <properties>
+        <property name="groupId" value="org.ceylon-lang"/>
+    </properties>
+
     <resources>
         <resource-root path="ceylon.runtime-@ceylon-version@.jar"/>
     </resources>
