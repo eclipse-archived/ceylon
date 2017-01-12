@@ -600,7 +600,7 @@ public class AttributeDefinitionBuilder {
     protected long valueFieldModifiers() {
         long flags = fieldModifiers | (modifiers & (Flags.STATIC | Flags.FINAL | Flags.TRANSIENT | Flags.VOLATILE));
         // only make it final if we have an init, otherwise we still have to initialise it
-        if (!writable && (initialValue != null || valueConstructor)) {
+        if (!writable && memoizedInitialValue == null && (initialValue != null || valueConstructor)) {
             flags |= Flags.FINAL;
         }
         return flags;

@@ -505,11 +505,11 @@ public class CeylonTransformer extends AbstractTransformer {
                 initialValue = null;
             }
         }
-        
+        boolean memoized = declarationModel.isLate() && expression != null;
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                 .wrapped(this, attrName, declarationModel, declarationModel.isToplevel(), 
-                        declarationModel.isLate() && expression != null ? initialValue : null);
-        builder .is(Flags.PUBLIC, declarationModel.isShared());
+                        memoized ? initialValue : null);
+        builder.is(Flags.PUBLIC, declarationModel.isShared());
         if (isJavaStrictfp(declarationModel)) {
             builder.is(Flags.STRICTFP, true);
         }
@@ -519,6 +519,9 @@ public class CeylonTransformer extends AbstractTransformer {
         if (isJavaNative(declarationModel)) {
             builder.is(Flags.NATIVE, true);
             builder.isJavaNative(true);
+        }
+        if (memoized && !declarationModel.isVariable()) {
+            builder.immutable();
         }
 
         
@@ -649,7 +652,7 @@ public class CeylonTransformer extends AbstractTransformer {
         } else {
             if (expressionError != null) {
                 builder.initialValueError(expressionError);
-            } else if(initialValue != null) {
+            } else if(!memoized && initialValue != null) {
                 builder.initialValue(initialValue, boxingStrategy);
             }
             builder.is(Flags.STATIC, true);
