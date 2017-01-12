@@ -116,12 +116,10 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
             artifactId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "artifact");
             if(artifactId == null || artifactId.isEmpty())
                 artifactId = moduleName;
-            System.err.println("read groupId: "+groupId);
         }else{
             String[] coordinates = ModuleUtil.getMavenCoordinates(moduleName);
             groupId = coordinates[0];
             artifactId = coordinates[1];
-            System.err.println("computed groupId: "+groupId);
         }
 
         final Object[] dependencies = (Object[]) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "dependencies");
