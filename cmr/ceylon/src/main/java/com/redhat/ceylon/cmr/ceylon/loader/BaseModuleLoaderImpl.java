@@ -84,6 +84,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                 }
             }
             moduleGraph.pruneExclusions(this);
+            moduleGraph.checkForCycles();
             if(verbose){
                 moduleGraph.dump(false);
                 System.err.println("Total: "+getModuleCount());

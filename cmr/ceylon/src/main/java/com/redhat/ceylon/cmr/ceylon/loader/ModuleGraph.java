@@ -1,9 +1,11 @@
 package com.redhat.ceylon.cmr.ceylon.loader;
 
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
@@ -182,6 +184,26 @@ public class ModuleGraph {
                 continue;
             visitor.visit(mod);
             visit(visitor, visited, mod.dependencies);
+        }
+    }
+
+    public void checkForCycles(){
+        Set<Module> visited = new HashSet<Module>();
+        Deque<Module> fromRoot = new LinkedList<Module>();
+        checkForCycles(fromRoot, visited, roots);
+    }
+
+    private void checkForCycles(Deque<Module> fromRoot, Set<Module> visited, Set<Module> modules) {
+        for(Module mod : modules){
+            boolean cycle = fromRoot.contains(mod);
+            fromRoot.addLast(mod);
+            if(cycle){
+                // FIXME: API
+                System.err.println("Cycle detected: "+fromRoot);
+            }
+            if(visited.add(mod))
+                checkForCycles(fromRoot, visited, mod.dependencies);
+            fromRoot.removeLast();
         }
     }
 
