@@ -234,6 +234,9 @@
                 <exclude name="com/redhat/ceylon/common/**" />
                 <exclude name="com/redhat/ceylon/launcher/**" />
             </fileset>
+            <fileset dir="${build.classes}">
+                <include name="com/redhat/ceylon/launcher/LauncherUtil*.class" />
+            </fileset>
             <fileset dir="${javac.src}">
                 <include name="com/redhat/ceylon/langtools/tools/javac/resources/*.properties" />
             </fileset>

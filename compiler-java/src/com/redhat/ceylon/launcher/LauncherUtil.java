@@ -91,7 +91,7 @@ public class LauncherUtil {
     }
     
     public static File determineRuntimeJar() throws URISyntaxException {
-        return new File(CeylonClassLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+        return new File(LauncherUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
     }
     
     private static File findCeylonScript() {
