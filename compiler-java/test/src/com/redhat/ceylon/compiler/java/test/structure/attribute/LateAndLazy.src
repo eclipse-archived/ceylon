@@ -9,6 +9,14 @@ class LateAndLazy implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         this.lateVariableDefinite = null;
         this.lateVariableOptional = null;
         this.$init$lateVariableOptional = false;
+        this.lateDefinite2 = 0L;
+        this.$init$lateDefinite2 = false;
+        this.lateOptional2 = null;
+        this.$init$lateOptional2 = false;
+        this.lateVariableDefinite2 = 0L;
+        this.$init$lateVariableDefinite2 = false;
+        this.lateVariableOptional2 = null;
+        this.$init$lateVariableOptional2 = false;
     }
     private .java.lang.String lateDefinite;
     
@@ -62,6 +70,64 @@ class LateAndLazy implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     public final void setLateVariableOptional(final .ceylon.language.String lateVariableOptional) {
         this.lateVariableOptional = lateVariableOptional;
         this.$init$lateVariableOptional = true;
+    }
+    private long lateDefinite2;
+    private volatile transient boolean $init$lateDefinite2 = false;
+    
+    public final long getLateDefinite2() {
+        if (this.$init$lateDefinite2) {
+            return this.lateDefinite2;
+        } else {
+            this.lateDefinite2 = .ceylon.language.system_.get_().getMilliseconds();
+            this.$init$lateDefinite2 = true;
+            return this.lateDefinite2;
+        }
+    }
+    private .ceylon.language.Integer lateOptional2;
+    private volatile transient boolean $init$lateOptional2 = false;
+    
+    public final .ceylon.language.Integer getLateOptional2() {
+        if (this.$init$lateOptional2) {
+            return this.lateOptional2;
+        } else {
+            this.lateOptional2 = .ceylon.language.Integer.instance(.ceylon.language.system_.get_().getMilliseconds());
+            this.$init$lateOptional2 = true;
+            return this.lateOptional2;
+        }
+    }
+    private long lateVariableDefinite2;
+    private volatile transient boolean $init$lateVariableDefinite2 = false;
+    
+    public final long getLateVariableDefinite2() {
+        if (this.$init$lateVariableDefinite2) {
+            return this.lateVariableDefinite2;
+        } else {
+            this.lateVariableDefinite2 = .ceylon.language.system_.get_().getMilliseconds();
+            this.$init$lateVariableDefinite2 = true;
+            return this.lateVariableDefinite2;
+        }
+    }
+    
+    public final void setLateVariableDefinite2(final long lateVariableDefinite2) {
+        this.lateVariableDefinite2 = lateVariableDefinite2;
+        this.$init$lateVariableDefinite2 = true;
+    }
+    private .ceylon.language.Integer lateVariableOptional2;
+    private volatile transient boolean $init$lateVariableOptional2 = false;
+    
+    public final .ceylon.language.Integer getLateVariableOptional2() {
+        if (this.$init$lateVariableOptional2) {
+            return this.lateVariableOptional2;
+        } else {
+            this.lateVariableOptional2 = .ceylon.language.Integer.instance(.ceylon.language.system_.get_().getMilliseconds());
+            this.$init$lateVariableOptional2 = true;
+            return this.lateVariableOptional2;
+        }
+    }
+    
+    public final void setLateVariableOptional2(final .ceylon.language.Integer lateVariableOptional2) {
+        this.lateVariableOptional2 = lateVariableOptional2;
+        this.$init$lateVariableOptional2 = true;
     }
     
     @.java.lang.Override

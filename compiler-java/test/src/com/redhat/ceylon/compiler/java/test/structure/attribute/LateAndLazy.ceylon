@@ -4,6 +4,11 @@ class LateAndLazy() {
     shared late String? lateOptional = "";
     shared late variable String lateVariableDefinite = "";
     shared late variable String? lateVariableOptional = "";
+    
+    shared late Integer lateDefinite2 = system.milliseconds;
+    shared late Integer? lateOptional2 = system.milliseconds;
+    shared late variable Integer lateVariableDefinite2 = system.milliseconds;
+    shared late variable Integer? lateVariableOptional2 = system.milliseconds;
 }
 @noanno
 shared late String lateDefinite = "";
