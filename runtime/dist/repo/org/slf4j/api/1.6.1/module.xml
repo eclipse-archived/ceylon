@@ -23,6 +23,11 @@
   -->
 
 <module xmlns="urn:jboss:module:1.0" name="org.slf4j.api" slot="1.6.1">
+    <properties>
+        <property name="groupId" value="org.slf4j"/>
+        <property name="artifactId" value="slf4j-api"/>
+    </properties>
+
     <resources>
         <resource-root path="org.slf4j.api-1.6.1.jar"/>
     </resources>

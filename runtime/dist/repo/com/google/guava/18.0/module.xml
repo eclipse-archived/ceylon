@@ -23,6 +23,11 @@
   -->
 
 <module xmlns="urn:jboss:module:1.0" name="com.google.guava" slot="18.0">
+    <properties>
+        <property name="groupId" value="com.google.guava"/>
+        <property name="artifactId" value="guava"/>
+    </properties>
+
     <resources>
         <resource-root path="com.google.guava-18.0.jar"/>
     </resources>

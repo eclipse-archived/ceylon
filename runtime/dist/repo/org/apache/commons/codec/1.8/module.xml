@@ -23,6 +23,11 @@
   -->
 
 <module xmlns="urn:jboss:module:1.0" name="org.apache.commons.codec" slot="1.8">
+    <properties>
+        <property name="groupId" value="commons-codec"/>
+        <property name="artifactId" value="commons-codec"/>
+    </properties>
+
     <resources>
         <resource-root path="org.apache.commons.codec-1.8.jar"/>
     </resources>

@@ -23,6 +23,11 @@
   -->
 
 <module xmlns="urn:jboss:module:1.0" name="org.apache.commons.logging" slot="1.1.1">
+    <properties>
+        <property name="groupId" value="commons-logging"/>
+        <property name="artifactId" value="commons-logging"/>
+    </properties>
+
     <resources>
         <resource-root path="org.apache.commons.logging-1.1.1.jar"/>
     </resources>

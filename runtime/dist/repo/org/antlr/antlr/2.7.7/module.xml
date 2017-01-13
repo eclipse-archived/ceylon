@@ -23,6 +23,11 @@
   -->
 
 <module xmlns="urn:jboss:module:1.0" name="org.antlr.antlr" slot="2.7.7">
+    <properties>
+        <property name="groupId" value="antlr"/>
+        <property name="artifactId" value="antlr"/>
+    </properties>
+
     <resources>
         <resource-root path="org.antlr.antlr-2.7.7.jar"/>
     </resources>
