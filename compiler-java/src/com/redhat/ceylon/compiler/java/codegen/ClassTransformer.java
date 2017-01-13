@@ -3472,7 +3472,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             if (memoized) {
                 memoizedInitialValue = initialValue;
-                initialValue = makeNull();
+                initialValue = makeDefaultExprForType(nonWideningType);
             }
             int flags = 0;
             
