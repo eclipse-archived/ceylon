@@ -440,4 +440,14 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
     public boolean includeOptionalDependencies() {
         return forImport;
     }
+
+    @Override
+    public void cycleDetected(List<Module> path) {
+        try {
+            errorAppend(CeylonMavenExportMessages.msg("module.cycle", path));
+            errorNewline();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

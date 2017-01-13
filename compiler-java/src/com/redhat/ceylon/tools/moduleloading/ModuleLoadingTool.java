@@ -1,10 +1,12 @@
 package com.redhat.ceylon.tools.moduleloading;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
 import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleSpec;
@@ -158,5 +160,9 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 
     public boolean includeOptionalDependencies() {
         return false;
+    }
+
+    public void cycleDetected(List<Module> path) {
+        // log it as a warning?
     }
 }

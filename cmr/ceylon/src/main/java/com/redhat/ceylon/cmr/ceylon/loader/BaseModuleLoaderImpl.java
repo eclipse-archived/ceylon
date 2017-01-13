@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.SortedMap;
@@ -18,6 +19,7 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.CycleListener;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.DependencySelector;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.cmr.impl.FlatRepository;
@@ -38,7 +40,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
     protected final Map<String, ModuleLoaderContext> contexts = new HashMap<String, ModuleLoaderContext>();
     protected final boolean verbose;
 
-    protected abstract class ModuleLoaderContext implements DependencySelector {
+    protected abstract class ModuleLoaderContext implements DependencySelector, CycleListener {
         protected final String module;
         protected final String modver;
         protected final ModuleScope lookupScope;
@@ -84,7 +86,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                 }
             }
             moduleGraph.pruneExclusions(this);
-            moduleGraph.checkForCycles();
+            moduleGraph.checkForCycles(this);
             if(verbose){
                 moduleGraph.dump(false);
                 System.err.println("Total: "+getModuleCount());
@@ -251,6 +253,11 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             return result != null;
         }
 
+        @Override
+        public void cycleDetected(List<Module> path) {
+            // do nothing?
+        }
+        
         protected void handleMissingModuleError(String name, String version) throws ModuleNotFoundException {
             throw new ModuleNotFoundException("Could not find module: "+ModuleUtil.makeModuleName(name, version));
         }

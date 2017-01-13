@@ -1,11 +1,9 @@
 package com.redhat.ceylon.cmr.ceylon.loader;
 
-import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
@@ -24,7 +22,11 @@ public class ModuleGraph {
     public static interface Visitor {
         void visit(Module module);
     }
-    
+
+    public static interface CycleListener {
+        void cycleDetected(List<Module> path);
+    }
+
     public class Module {
         public final String name;
         public final String version;
@@ -187,22 +189,21 @@ public class ModuleGraph {
         }
     }
 
-    public void checkForCycles(){
+    public void checkForCycles(CycleListener cycleListener){
         Set<Module> visited = new HashSet<Module>();
-        Deque<Module> fromRoot = new LinkedList<Module>();
-        checkForCycles(fromRoot, visited, roots);
+        LinkedList<Module> fromRoot = new LinkedList<Module>();
+        checkForCycles(cycleListener, fromRoot, visited, roots);
     }
 
-    private void checkForCycles(Deque<Module> fromRoot, Set<Module> visited, Set<Module> modules) {
+    private void checkForCycles(CycleListener cycleListener, LinkedList<Module> fromRoot, Set<Module> visited, Set<Module> modules) {
         for(Module mod : modules){
             boolean cycle = fromRoot.contains(mod);
             fromRoot.addLast(mod);
             if(cycle){
-                // FIXME: API
-                System.err.println("Cycle detected: "+fromRoot);
+                cycleListener.cycleDetected(fromRoot);
             }
             if(visited.add(mod))
-                checkForCycles(fromRoot, visited, mod.dependencies);
+                checkForCycles(cycleListener, fromRoot, visited, mod.dependencies);
             fromRoot.removeLast();
         }
     }

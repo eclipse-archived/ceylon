@@ -1,6 +1,7 @@
 package com.redhat.ceylon.tools.moduleloading;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
@@ -8,6 +9,7 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.loader.BaseModuleLoaderImpl;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Visitor;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -57,7 +59,13 @@ public class ToolModuleLoader extends BaseModuleLoaderImpl {
         protected boolean includeOptional() {
             return tool.includeOptionalDependencies();
         }
-        
+
+        @Override
+        public void cycleDetected(List<Module> path) {
+            // pass it on
+            tool.cycleDetected(path);
+        }
+
         @Override
         protected boolean selectDependencies(String name, String version) {
             // Resolve even provided modules but not their dependencies since they're meaningless
