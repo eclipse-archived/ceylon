@@ -13,6 +13,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -160,6 +161,8 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
             // FIXME: or add, don't delete?
             FileUtil.delete(outputFolder);
         }
+        final List<ArtifactResult> writtenModules = new LinkedList<>();
+        final List<ArtifactResult> externalDependencies = new LinkedList<>();
         loader.visitModules(new ModuleGraph.Visitor() {
             @Override
             public void visit(ModuleGraph.Module module) {
@@ -167,22 +170,217 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
                     return;
                 // FIXME: skip Maven modules?
                 if(forImport){
-                    if(!module.artifact.groupId().equals("org.ceylon-lang"))
+                    if(!module.artifact.groupId().equals("org.ceylon-lang")){
+                        externalDependencies.add(module.artifact);
                         return;
+                    }
                     makeMavenImportFolder(module, outputFolder);
+                    writtenModules.add(module.artifact);
                 }else
                     makeMavenModule(module, outputFolder);
             }
         });
+        if(forImport){
+            makeMavenImportSpecialFolders(writtenModules, externalDependencies, outputFolder);
+        }
         flush();
     }
 
-    protected void makeMavenImportFolder(Module module, File outputFolder) {
-        String groupId = module.artifact.groupId();
-        String artifactId = module.artifact.artifactId();
-        File folder = new File(outputFolder, artifactId);
+    private void makeMavenImportSpecialFolders(List<ArtifactResult> writtenModules, List<ArtifactResult> externalDependencies, File outputFolder) {
+        File pomAllFile = makePomFile(outputFolder, "ceylon-all");
+        generatePomForAll(pomAllFile, writtenModules);
+
+        File pomSystemFile = makePomFile(outputFolder, "ceylon-system");
+        generatePomForSystem(pomSystemFile, writtenModules);
+    
+        File pomCompleteFile = makePomFile(outputFolder, "ceylon-complete");
+        generatePomForComplete(pomCompleteFile, writtenModules, externalDependencies);
+    }
+
+    private File makePomFile(File outputFolder, String allArtifactId) {
+        File folder = new File(outputFolder, allArtifactId);
         FileUtil.mkdirs(folder);
-        File pomFile = new File(folder, "pom.xml");
+        return new File(folder, "pom.xml");
+    }
+
+    private void generatePomForAll(File pomFile, List<ArtifactResult> writtenModules) {
+        try (OutputStream os = new FileOutputStream(pomFile)){
+            XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
+                    new OutputStreamWriter(os, "utf-8"));
+
+            // FIXME: what to do with the default module?
+            
+            writePomHeader(out);
+
+            writePomParent(out, writtenModules.get(0));
+
+            writeElement(out, "artifactId", "ceylon-all");
+            writeNewline(out);
+            writeElement(out, "name", "ceylon-all");
+
+            writePomDependencies(out, writtenModules);
+
+            writePomFooter(out);
+        }
+        catch (IOException | XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void generatePomForSystem(File pomFile, List<ArtifactResult> writtenModules) {
+        try (OutputStream os = new FileOutputStream(pomFile)){
+            XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
+                    new OutputStreamWriter(os, "utf-8"));
+
+            // FIXME: what to do with the default module?
+            
+            writePomHeader(out);
+
+            writePomParent(out, writtenModules.get(0));
+
+            writeElement(out, "artifactId", "ceylon-system");
+            writeNewline(out);
+            writeElement(out, "name", "ceylon-system");
+            writeNewline(out);
+            writeElement(out, "packaging", "pom");
+
+            writePomDependencies(out, writtenModules);
+
+            writePomFooter(out);
+        }
+        catch (IOException | XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void writeNewline(XMLStreamWriter out) throws XMLStreamException{
+        out.writeCharacters("\n");
+    }
+
+    private int indent = 0;
+    
+    private void writeIndent(XMLStreamWriter out) throws XMLStreamException{
+        if(indent == 0)
+            return;
+        out.writeCharacters("\n");
+        for(int i=0;i<indent;i++)
+            out.writeCharacters("  ");
+    }
+
+    private void writeOpen(XMLStreamWriter out, String element) throws XMLStreamException{
+        writeIndent(out);
+        out.writeStartElement(element);
+        indent++;
+    }
+
+    private void writeClose(XMLStreamWriter out) throws XMLStreamException{
+        indent--;
+        writeIndent(out);
+        out.writeEndElement();
+    }
+
+    private void writeElement(XMLStreamWriter out, String element, String text) throws XMLStreamException{
+        writeIndent(out);
+        out.writeStartElement(element);
+        out.writeCharacters(text);
+        out.writeEndElement();
+    }
+
+    
+    private void generatePomForComplete(File pomFile, List<ArtifactResult> writtenModules, List<ArtifactResult> externalDependencies) {
+        try (OutputStream os = new FileOutputStream(pomFile)){
+            XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
+                    new OutputStreamWriter(os, "utf-8"));
+
+            // FIXME: what to do with the default module?
+            
+            writePomHeader(out);
+
+            writePomParent(out, writtenModules.get(0));
+
+            writeElement(out, "artifactId", "ceylon-complete");
+            writeNewline(out);
+            writeElement(out, "name", "ceylon-complete");
+            writeNewline(out);
+
+            writeOpen(out, "dependencies");
+            {
+                writeOpen(out, "dependency");
+                {
+                    writeElement(out, "groupId", "org.ceylon-lang");
+                    writeElement(out, "artifactId", "ceylon-all");
+                }
+                writeClose(out);
+            }
+            writeClose(out);
+            
+            writeNewline(out);
+            writeOpen(out, "build");
+            {
+                writeOpen(out, "plugins");
+                {
+                    writeOpen(out, "plugin");
+                    {
+                        writeElement(out, "artifactId", "maven-shade-plugin");
+                        writeElement(out, "version", "2.4.2");
+                        writeOpen(out, "executions");
+                        {
+                            writeOpen(out, "execution");
+                            {
+                                writeOpen(out, "goals");
+                                {
+                                    writeElement(out, "goal", "shade");
+                                }
+                                writeClose(out);
+                                
+                                writeOpen(out, "configuration");
+                                {
+                                    writeElement(out, "createDependencyReducedPom", "true");
+                                    writeElement(out, "createSourcesJar", "true");
+                                    
+                                    writeOpen(out, "artifactSet");
+                                    {
+                                        writeOpen(out, "includes");
+                                        {
+                                            writeElement(out, "include", "org.ceylon-lang:*");
+                                            List<ArtifactResult> sortedImports = new ArrayList<>(externalDependencies);
+                                            Collections.sort(sortedImports, ImportComparator);
+                                            for(ArtifactResult dep : sortedImports){
+                                                String dependencyName = dep.name();
+
+                                                // skip jdk
+                                                if(jdkProvider.isJDKModule(dependencyName))
+                                                    continue;
+
+                                                writeElement(out, "include", dep.groupId()+":"+dep.artifactId());
+                                            }
+                                        }
+                                        writeClose(out);
+                                    }
+                                    writeClose(out);
+                                }
+                                writeClose(out);
+                            }
+                            writeClose(out);
+                        }
+                        writeClose(out);
+                    }
+                    writeClose(out);
+                }
+                writeClose(out);
+            }
+            writeClose(out);
+
+
+            writePomFooter(out);
+        }
+        catch (IOException | XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void makeMavenImportFolder(Module module, File outputFolder) {
+        File pomFile = makePomFile(outputFolder, module.artifact.artifactId());
         generatePomFromModule(pomFile, module.artifact);
     }
 
@@ -224,212 +422,164 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
             XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
                     new OutputStreamWriter(os, "utf-8"));
 
-            out.writeStartDocument("UTF-8", "1.0");
-            out.writeCharacters("\n");
-            
             // FIXME: what to do with the default module?
             
-            out.writeStartElement("project");
-            out.writeAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
-            out.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            out.writeAttribute("xsi:schemaLocation", "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd");
-            
-            out.writeCharacters("\n  ");
-            out.writeStartElement("modelVersion");
-            out.writeCharacters("4.0.0");
-            out.writeEndElement();
-            out.writeCharacters("\n");
+            writePomHeader(out);
 
             if(forImport){
-                out.writeCharacters("\n  ");
-                out.writeStartElement("parent");
-
-                out.writeCharacters("\n    ");
-                out.writeStartElement("groupId");
-                out.writeCharacters(artifact.groupId());
-                out.writeEndElement();
-
-                out.writeCharacters("\n    ");
-                out.writeStartElement("artifactId");
-                out.writeCharacters("ceylon-parent");
-                out.writeEndElement();
-
-                out.writeCharacters("\n    ");
-                out.writeStartElement("version");
-                out.writeCharacters(artifact.version());
-                out.writeEndElement();
-
-                out.writeCharacters("\n  ");
-                out.writeEndElement();
-                out.writeCharacters("\n");
+                writePomParent(out, artifact);
             }else{
-                out.writeCharacters("\n  ");
-                out.writeStartElement("groupId");
-                out.writeCharacters(artifact.groupId());
-                out.writeEndElement();
+                writeElement(out, "groupId", artifact.groupId());
             }
 
-            out.writeCharacters("\n  ");
-            out.writeStartElement("artifactId");
-            out.writeCharacters(artifact.artifactId());
-            out.writeEndElement();
+            writeElement(out, "artifactId", artifact.artifactId());
+            writeNewline(out);
+            writeElement(out, "name", artifact.name());
 
-            out.writeCharacters("\n\n  ");
-            out.writeStartElement("name");
-            out.writeCharacters(artifact.name());
-            out.writeEndElement();
 
             if(forImport){
-                out.writeCharacters("\n  ");
-                out.writeStartElement("packaging");
-                out.writeCharacters("jar");
-                out.writeEndElement();
+                writeElement(out, "packaging", "jar");
+                writeNewline(out);
                 
-                out.writeCharacters("\n\n  ");
-                out.writeStartElement("properties");
+                writeOpen(out, "properties");
+                {
+                    writeElement(out, "jarFile", "${ceylon.home}/repo/"+artifact.name().replace('.', '/')
+                            +"/${ceylon.version}/"+artifact.name()+"-${ceylon.version}."
+                            +(artifact.artifact().getName().endsWith(".jar") ? "jar" : "car"));
 
-                out.writeCharacters("\n    ");
-                out.writeStartElement("jarFile");
-                out.writeCharacters("${ceylon.home}/repo/"+artifact.name().replace('.', '/')
-                        +"/${ceylon.version}/"+artifact.name()+"-${ceylon.version}."
-                        +(artifact.artifact().getName().endsWith(".jar") ? "jar" : "car"));
-                out.writeEndElement();
-
-                out.writeCharacters("\n    ");
-                out.writeStartElement("sourcesFile");
-                out.writeCharacters("${ceylon.home}/repo/"+artifact.name().replace('.', '/')
-                        +"/${ceylon.version}/"+artifact.name()+"-${ceylon.version}.src");
-                out.writeEndElement();
-
-                out.writeCharacters("\n  ");
-                out.writeEndElement();
+                    writeElement(out, "sourcesFile", "${ceylon.home}/repo/"+artifact.name().replace('.', '/')
+                            +"/${ceylon.version}/"+artifact.name()+"-${ceylon.version}.src");
+                }
+                writeClose(out);
             }else{
-                out.writeCharacters("\n  ");
-                out.writeStartElement("version");
-                out.writeCharacters(artifact.version());
-                out.writeEndElement();
+                writeElement(out, "version", artifact.version());
             }
 
             List<ArtifactResult> imports = artifact.dependencies();
-            if(!imports.isEmpty()){
-                out.writeCharacters("\n\n  ");
-                out.writeStartElement("dependencies");
-
-                List<ArtifactResult> sortedImports = new ArrayList<>(imports);
-                Collections.sort(sortedImports, ImportComparator);
-                for(ArtifactResult dep : sortedImports){
-                    String dependencyName = dep.name();
-                    ArtifactResult moduleArtifact = loader.getModuleArtifact(dependencyName);
-                    
-                    // skip jdk
-                    if(jdkProvider.isJDKModule(dependencyName))
-                        continue;
-                    
-                    // get the real values from the module
-                    String[] mavenCoordinates = MavenPomUtil.getMavenCoordinates(dependencyName);
-                    if(moduleArtifact != null){
-                        mavenCoordinates[0] = moduleArtifact.groupId();
-                        mavenCoordinates[1] = moduleArtifact.artifactId();
-                    }
-                    
-                    out.writeCharacters("\n    ");
-                    out.writeStartElement("dependency");
-                    
-                    out.writeCharacters("\n      ");
-                    out.writeStartElement("groupId");
-                    out.writeCharacters(mavenCoordinates[0]);
-                    out.writeEndElement();
-
-                    out.writeCharacters("\n      ");
-                    out.writeStartElement("artifactId");
-                    out.writeCharacters(mavenCoordinates[1]);
-                    out.writeEndElement();
-
-                    if(!forImport || !mavenCoordinates[0].equals("org.ceylon-lang")){
-                        out.writeCharacters("\n      ");
-                        out.writeStartElement("version");
-                        if(forImport){
-                            out.writeCharacters("${");
-                            out.writeCharacters(dep.name());
-                            out.writeCharacters("}");
-                        }else
-                            out.writeCharacters(dep.version());
-                        out.writeEndElement();
-                    }
-                    
-                    if(dep.optional()){
-                        out.writeCharacters("\n      ");
-                        out.writeStartElement("optional");
-                        out.writeCharacters("true");
-                        out.writeEndElement();
-                    }
-                    
-                    out.writeCharacters("\n    ");
-                    out.writeEndElement();
-                }
-
-                out.writeCharacters("\n  ");
-                out.writeEndElement();
-            }
+            writePomDependencies(out, imports);
 
             if(forImport){
-                out.writeCharacters("\n\n  ");
-                out.writeStartElement("build");
+                writeNewline(out);
+                writeOpen(out, "build");
+                {
+                    writeOpen(out, "plugins");
+                    {
+                        writeOpen(out, "plugin");
+                        {
+                            writeElement(out, "groupId", "com.coderplus.maven.plugins");
+                            writeElement(out, "artifactId", "copy-rename-maven-plugin");
+                        }
+                        writeClose(out);
 
-                out.writeCharacters("\n    ");
-                out.writeStartElement("plugins");
-
-                out.writeCharacters("\n      ");
-                out.writeStartElement("plugin");
-
-                out.writeCharacters("\n        ");
-                out.writeStartElement("groupId");
-                out.writeCharacters("com.coderplus.maven.plugins");
-                out.writeEndElement();
-
-                out.writeCharacters("\n        ");
-                out.writeStartElement("artifactId");
-                out.writeCharacters("copy-rename-maven-plugin");
-                out.writeEndElement();
-
-                out.writeCharacters("\n      ");
-                out.writeEndElement();
-
-                out.writeCharacters("\n      ");
-                out.writeStartElement("plugin");
-
-                out.writeCharacters("\n        ");
-                out.writeStartElement("groupId");
-                out.writeCharacters("org.codehaus.mojo");
-                out.writeEndElement();
-
-                out.writeCharacters("\n        ");
-                out.writeStartElement("artifactId");
-                out.writeCharacters("build-helper-maven-plugin");
-                out.writeEndElement();
-
-                out.writeCharacters("\n      ");
-                out.writeEndElement();
-
-                out.writeCharacters("\n    ");
-                out.writeEndElement();
-
-                out.writeCharacters("\n  ");
-                out.writeEndElement();
+                        writeOpen(out, "plugin");
+                        {
+                            writeElement(out, "groupId", "org.codehaus.mojo");
+                            writeElement(out, "artifactId", "build-helper-maven-plugin");
+                        }
+                        writeClose(out);
+                    }
+                    writeClose(out);
+                }
+                writeClose(out);
             }
-            
-            out.writeCharacters("\n\n");
-            out.writeEndElement();
-            out.writeCharacters("\n");
-            out.writeEndDocument();
-            
-            out.flush();
+
+            writePomFooter(out);
         }
         catch (IOException | XMLStreamException e) {
             throw new RuntimeException(e);
         }
     }
     
+    private void writePomFooter(XMLStreamWriter out) throws XMLStreamException {
+        writeNewline(out);
+        writeClose(out);
+        out.writeCharacters("\n");
+        out.writeEndDocument();
+        
+        out.flush();
+    }
+
+    private void writePomDependencies(XMLStreamWriter out, List<ArtifactResult> imports) throws XMLStreamException {
+        if(!imports.isEmpty()){
+            writeNewline(out);
+            writeOpen(out, "dependencies");
+            {
+                List<ArtifactResult> sortedImports = new ArrayList<>(imports);
+                Collections.sort(sortedImports, ImportComparator);
+                for(ArtifactResult dep : sortedImports){
+                    String dependencyName = dep.name();
+                    ArtifactResult moduleArtifact = loader.getModuleArtifact(dependencyName);
+
+                    // skip jdk
+                    if(jdkProvider.isJDKModule(dependencyName))
+                        continue;
+
+                    // get the real values from the module
+                    String[] mavenCoordinates = MavenPomUtil.getMavenCoordinates(dependencyName);
+                    if(moduleArtifact != null){
+                        mavenCoordinates[0] = moduleArtifact.groupId();
+                        mavenCoordinates[1] = moduleArtifact.artifactId();
+                    }
+
+                    writeOpen(out, "dependency");
+                    {
+                        writeElement(out, "groupId", mavenCoordinates[0]);
+                        writeElement(out, "artifactId", mavenCoordinates[1]);
+
+                        if(!forImport || !mavenCoordinates[0].equals("org.ceylon-lang")){
+                            String version;
+                            if(forImport){
+                                version = "${";
+                                String name;
+                                if(dep.name().startsWith("org.apache.maven."))
+                                    name = "org.apache.maven";
+                                else if(dep.name().startsWith("org.eclipse.aether."))
+                                    name = "org.eclipse.aether";
+                                else
+                                    name = dep.name();
+                                version += name;
+                                version += "}";
+                            }else
+                                version = dep.version();
+                            writeElement(out, "version", version);
+                        }
+
+                        if(dep.optional()){
+                            writeElement(out, "optional", "true");
+                        }
+                    }
+                    writeClose(out);
+                }
+            }
+            writeClose(out);
+        }
+    }
+
+    private void writePomParent(XMLStreamWriter out, ArtifactResult artifact) throws XMLStreamException {
+        writeOpen(out, "parent");
+        {
+            writeElement(out, "groupId", artifact.groupId());
+            writeElement(out, "artifactId", "ceylon-parent");
+            writeElement(out, "version", artifact.version());
+        }
+        writeClose(out);
+
+        writeNewline(out);
+    }
+
+    private void writePomHeader(XMLStreamWriter out) throws XMLStreamException {
+        out.writeStartDocument("UTF-8", "1.0");
+        out.writeCharacters("\n");
+        
+        writeOpen(out, "project");
+        out.writeAttribute("xmlns", "http://maven.apache.org/POM/4.0.0");
+        out.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        out.writeAttribute("xsi:schemaLocation", "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd");
+        
+        writeElement(out, "modelVersion", "4.0.0");
+        writeNewline(out);
+    }
+
     @Override
     protected boolean shouldExclude(String moduleName, String version) {
         return super.shouldExclude(moduleName, version) ||
