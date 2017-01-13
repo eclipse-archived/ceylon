@@ -41,7 +41,7 @@ shared sealed interface ClassOrInterface<out Type=Anything>
      - If it is the current type or a subtype, and the attribute exists in this type, then the attribute
        of the current type is returned. For example, looking up 'unit' in [[Integer]] with [[Integer]] as [[Container]]
        will return [[Integer.unit]].
-     - If it is a supertype of this type, and that supertype defines this attribyte, then that supertype's
+     - If it is a supertype of this type, and that supertype defines this attribute, then that supertype's
        attribute is returned. For example, looking up 'hash' in [[Integer]] with [[Object]] as [[Container]] will return [[Object.hash]].
      - If it is a type that is disjoint from this type, the attribute will be looked up in the common supertype
        between that type and this type. For example, looking up 'hash' in [[Integer]] with [[String]] as [[Container]] 
