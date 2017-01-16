@@ -134,7 +134,7 @@ public class AttributeGenerator {
                     gen.outerSelf(decl);
                     gen.out(",'", gen.getNames().name(decl), "',function(){");
                     if (isLate) {
-                        gen.generateUnitializedAttributeReadCheck(varName, gen.getNames().name(decl));
+                        gen.generateUnitializedAttributeReadCheck(varName, gen.getNames().name(decl), null);
                     }
                     if (initVal && !isLate) {
                         gen.out("return $valinit$", varName, "();}");
@@ -162,7 +162,7 @@ public class AttributeGenerator {
                     gen.out(GenerateJsVisitor.function, gen.getNames().getter(decl, false),"(){");
                     if (initVal) {
                         if (isLate) {
-                            gen.generateUnitializedAttributeReadCheck(varName, decl.getName());
+                            gen.generateUnitializedAttributeReadCheck(varName, decl.getName(), expr);
                             gen.out("return ", varName, ";}");
                         } else {
                             gen.out("return $valinit$", varName, "();}");
@@ -230,7 +230,7 @@ public class AttributeGenerator {
                 //Just return the private value #451
                 if (d.isLate()) {
                     //TODO what about statics?
-                    gen.generateUnitializedAttributeReadCheck("this."+atname, gen.getNames().name(d));
+                    gen.generateUnitializedAttributeReadCheck("this."+atname, gen.getNames().name(d), that.getSpecifierOrInitializerExpression());
                 }
                 if (d.isStatic()) {
                     gen.out("return ");
@@ -323,7 +323,8 @@ public class AttributeGenerator {
                     gen.defineAttribute(outerName, gen.getNames().name(d));
                     gen.out("{");
                     if (d.isLate()) {
-                        gen.generateUnitializedAttributeReadCheck("this."+privname, gen.getNames().name(d));
+                        gen.generateUnitializedAttributeReadCheck("this."+privname, gen.getNames().name(d),
+                                that.getSpecifierOrInitializerExpression());
                     }
                     if (TypeUtils.isNativeExternal(d)) {
                         if (gen.stitchNative(d, that)) {
