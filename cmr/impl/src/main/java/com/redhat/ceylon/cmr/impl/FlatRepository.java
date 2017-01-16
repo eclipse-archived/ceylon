@@ -30,6 +30,7 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
@@ -89,7 +90,9 @@ public class FlatRepository extends DefaultRepository {
                 if (dependencies == null) {
                     Overrides overrides = ((CmrRepository)repository()).getRoot().getService(Overrides.class);
                     if(overrides != null) {
-                        dependencies = new ModuleInfo(name(), version(), groupId(), artifactId(), 
+                        // don't use groupId() because it calls resolve() and we have no external info
+                        String[] coordinates = ModuleUtil.getMavenCoordinates(name());
+                        dependencies = new ModuleInfo(name(), version(), coordinates[0], coordinates[1], 
                                 null, new HashSet<ModuleDependencyInfo>());
                         dependencies = overrides.applyOverrides(name(), version(), dependencies);
                     }
