@@ -1,0 +1,14 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+ext {
+    ceylonModuleName = 'tools'
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile project(':common')
+    compile project(':model')
+    compile project(':cmr')
+}
+

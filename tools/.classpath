@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-cli"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-typechecker"/>
+	<classpathentry kind="lib" path="/ceylon-dist/dist/repo/org/antlr/runtime/3.4/org.antlr.runtime-3.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-bootstrap"/>
+	<classpathentry kind="lib" path="/ceylon-dist/dist/repo/com/github/rjeschke/txtmark/0.13/com.github.rjeschke.txtmark-0.13.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

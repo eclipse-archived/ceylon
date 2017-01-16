@@ -11,6 +11,7 @@
     <property name="javac.src" location="langtools/src/share/classes" />
     <property name="ceylonc.src" location="src" />
     <property name="common.src" location="../common/src" />
+    <property name="bootstrap.src" location="../bootstrap/src" />
     <property name="test.src" location="test/src" />
     <property name="test.ceylond.src" location="test/ceylondoc" />
 
@@ -23,7 +24,6 @@
     <property name="ceylon.compiler.dist" value="${build.dist.repo}/${ceylon.compiler.dir}" />
     <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/java/test/ceylon/${module.com.redhat.ceylon.compiler.version}" />
     <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.java.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car" />
-    <property name="ceylon.bootstrap.src" value="${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.src" />
 
     <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -34,11 +34,13 @@
     </tstamp>
 
     <path id="compiler.classpath">
+        <pathelement path="${ceylon.bootstrap.lib}" />
         <pathelement path="${ceylon.common.lib}" />
         <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.classfile.lib}" />
         <pathelement path="${ceylon.model.lib}" />
         <pathelement path="${ceylon.module-resolver.lib}" />
+        <pathelement path="${ceylon.tools.lib}" />
         <pathelement path="${ceylon.typechecker.lib}" />
         <pathelement path="${antlr.lib}" />
         <pathelement path="${txtmark.lib}" />
@@ -106,8 +108,6 @@
         <delete file="${ceylon.compiler.lib}.sha1" />
         <delete file="${ceylon.repo.dir}/${ceylon.compiler.src}" />
         <delete file="${ceylon.repo.dir}/${ceylon.compiler.src}.sha1" />
-        <delete file="${ceylon.repo.dir}/${ceylon.bootstrap.src}" />
-        <delete file="${ceylon.repo.dir}/${ceylon.bootstrap.src}.sha1" />
     </target>
 
     <target name="dist" depends="build" description="Create Ceylon compiler distribution">
@@ -119,17 +119,8 @@
                 <include name="**/*.java"/>
             </fileset>
         </zip>
-        <zip destfile="${build.dist.repo}/${ceylon.bootstrap.src}">
-            <fileset dir="${ceylonc.src}">
-                <include name="com/redhat/ceylon/launcher/*.java" />
-                <exclude name="com/redhat/ceylon/launcher/Start.java" />
-            </fileset>
-        </zip>
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.compiler.src}"/>
-        </antcall>
-        <antcall target="sha1sum">
-            <param name="file" value="${build.dist.repo}/${ceylon.bootstrap.src}"/>
         </antcall>
     </target>
 
@@ -155,7 +146,6 @@
             <compilerarg value="-XDignore.symbol.file" />
             <exclude name="**/Java7Checker.java" />
             <exclude name="com/redhat/ceylon/ant/**" />
-            <exclude name="com/redhat/ceylon/launcher/**" />
             <include name="com/redhat/**" />
             <include name="com/redhat/ceylon/langtools/tools/javac/**" />
             <include name="com/redhat/ceylon/langtools/source/**" />
@@ -172,15 +162,15 @@
             <include name="com/redhat/ceylon/ant/**" />
             <include name="com/redhat/ceylon/launcher/**" />
         </delete>
-        <javac srcdir="${javac.src}:${ceylonc.src}:${common.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="1.6" source="1.6" includeantruntime="true">
+        <javac srcdir="${javac.src}:${ceylonc.src}:${common.src}:${bootstrap.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="1.6" source="1.6" includeantruntime="true">
             <include name="**/Java7Checker.java" />
             <include name="com/redhat/ceylon/tools/Tool.java" />
             <include name="com/redhat/ceylon/tools/Plugin.java" />
             <include name="com/redhat/ceylon/ant/**" />
-            <include name="com/redhat/ceylon/launcher/**" />
             <include name="com/redhat/ceylon/common/*" />
             <include name="com/redhat/ceylon/common/config/*" />
             <include name="com/redhat/ceylon/common/tools/ModuleWildcardsHelper.java" />
+            <include name="com/redhat/ceylon/launcher/*" />
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${ceylonc.src}">
@@ -246,9 +236,6 @@
                 <exclude name="com/redhat/ceylon/common/**" />
                 <exclude name="com/redhat/ceylon/launcher/**" />
             </fileset>
-            <fileset dir="${build.classes}">
-                <include name="com/redhat/ceylon/launcher/LauncherUtil*.class" />
-            </fileset>
             <fileset dir="${javac.src}">
                 <include name="com/redhat/ceylon/langtools/tools/javac/resources/*.properties" />
             </fileset>
@@ -274,39 +261,8 @@
         </jar>
     </target>
 
-    <!-- Rule to build bootstrap jar -->
-    <target name="bootstrap.jar" depends="compiler.classes">
-        <mkdir dir="${build.lib}" />
-        <jar destfile="${build.lib}/ceylon-bootstrap.jar" filesetmanifest="merge">
-            <fileset dir="${build.classes}">
-                <include name="com/redhat/ceylon/launcher/Bootstrap*.class" />
-                <include name="com/redhat/ceylon/launcher/CeylonClassLoader.class" />
-                <include name="com/redhat/ceylon/launcher/LauncherUtil.class" />
-                <include name="META-INF/MANIFEST.MF" />
-            </fileset>
-        </jar>
-    </target>
-
-    <!-- Rule to build bootstrap module -->
-    <target name="bootstrap.module" depends="compiler.classes">
-        <mkdir dir="${build.dist.repo}/${ceylon.bootstrap.dir}" />
-        <jar destfile="${build.dist.repo}/${ceylon.bootstrap.jar}">
-            <fileset dir="${build.classes}">
-                <include name="com/redhat/ceylon/launcher/**" />
-                <exclude name="com/redhat/ceylon/launcher/Start.class" />
-            </fileset>
-            <manifest>
-                <attribute name="Bundle-SymbolicName" value="ceylon.bootstrap"/>
-                <attribute name="Bundle-Version" value="${module.ceylon.bootstrap.osgi.version}-${qualifier}"/>
-            </manifest>
-        </jar>
-        <antcall target="sha1sum">
-            <param name="file" value="${build.dist.repo}/${ceylon.bootstrap.jar}" />
-        </antcall>
-    </target>
-
     <!-- Rule to build compiler jar -->
-    <target name="build" depends="compiler.jar,ant.jar,bootstrap.jar,bootstrap.module">
+    <target name="build" depends="compiler.jar,ant.jar">
         <mkdir dir="${build.dist}" />
         <mkdir dir="${build.bin}" />
         <mkdir dir="${build.ceylon.cars}" />
@@ -448,9 +404,6 @@
 		<antcall target="bundle-proxy">
 			<param name="archivePath" value="${ceylon.compiler.lib}"/>
 		</antcall>
-        <antcall target="bundle-proxy">
-            <param name="archivePath" value="${ceylon.bootstrap.lib}"/>
-        </antcall>
 	    
 		<delete dir="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/lib/" includes="compiler-tests-*.jar" failonerror="false"/>
         <jar destfile="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">

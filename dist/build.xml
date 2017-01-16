@@ -19,12 +19,13 @@
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
     <property name="ceylon.bin.dir" location="${ceylon.dist.dir}/bin"/>
 
-    <property name="modules" value="ceylon-common,ceylon-cli,ceylon-model,ceylon-module-loader,ceylon-module-resolver,ceylon-module-resolver-aether,ceylon-module-resolver-javascript,ceylon-module-resolver-webdav,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon-tool-provider,ceylon-java-main,ceylon.language,ceylon-runtime" />
-    <property name="moddirs" value="common,cli,model,module-loader,cmr,cmr-aether,cmr-js,cmr-webdav,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
+    <property name="modules" value="ceylon-bootstrap,ceylon-common,ceylon-cli,ceylon-model,ceylon-module-loader,ceylon-module-resolver,ceylon-module-resolver-aether,ceylon-module-resolver-javascript,ceylon-module-resolver-webdav,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon-tool-provider,ceylon-java-main,ceylon.language,ceylon-runtime,ceylon-tools" />
+    <property name="moddirs" value="bootstrap,common,cli,model,module-loader,cmr,cmr-aether,cmr-js,cmr-webdav,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main,tools" />
 
     <property name="projects.base.dir" location="${basedir}/.." />
 
     <dirset id="testdirs" dir="${projects.base.dir}">
+        <include name="bootstrap" />
         <include name="common" />
         <include name="cli" />
         <include name="model" />
@@ -38,6 +39,7 @@
         <include name="compiler-java" />
         <include name="compiler-js" />
         <include name="tool-provider" />
+        <include name="tools" />
         <include name="language" />
         <include name="runtime" />
         <include name="java-main" />
@@ -45,6 +47,7 @@
 
     <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
+    <property name="project-bootstrap.dir" location="${projects.base.dir}/bootstrap"/>
     <property name="project-common.dir" location="${projects.base.dir}/common"/>
     <property name="project-cli.dir" location="${projects.base.dir}/cli"/>
     <property name="project-model.dir" location="${projects.base.dir}/model"/>
@@ -59,6 +62,7 @@
     <property name="project-module-resolver-webdav.dir" location="${projects.base.dir}/cmr-webdav"/>
     <property name="project-runtime.dir" location="${projects.base.dir}/runtime"/>
     <property name="project-tool-provider.dir" value="${projects.base.dir}/tool-provider"/>
+    <property name="project-tools.dir" value="${projects.base.dir}/tools"/>
     <property name="project-js.dir" location="${projects.base.dir}/compiler-js"/>
     <property name="project-java-main.dir" location="${projects.base.dir}/java-main"/>
     
@@ -177,6 +181,7 @@ Some super-charged ant tasks:
                 <module name="com.redhat.ceylon.typechecker" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.langtools.classfile" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.tool.provider" version="${ceylon.version}"/>
+                <module name="com.redhat.ceylon.tools" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.compiler.java" version="${ceylon.version}"/>
                 <module name="com.redhat.ceylon.compiler.js" version="${ceylon.version}"/>
                 <module name="ceylon.bootstrap" version="${ceylon.version}"/>
@@ -391,6 +396,9 @@ Use this when NOT doing a release!">
                 <include name="ceylon-ant.jar"/>
             </fileset>
         </copy>
+        <copy tofile="${ceylon.dist.dir}/lib/ceylon-bootstrap.jar">
+            <file name="${ceylon.bootstrap.lib}"/>
+        </copy>
     </target>
 
     <target name="copy-samples">
@@ -445,7 +453,25 @@ Use this when NOT doing a release!">
         </ant>
     </target>
 
-    <target name="install-compiler" depends="install-common,install-cli,install-langtools-classfile,install-model,install-cmr,install-typechecker,install-compiler-nodeps" />
+    <target name="install-bootstrap" depends="install-common,install-bootstrap-nodeps" />
+    <target name="install-bootstrap-nodeps">
+        <ant antfile="${project-bootstrap.dir}/build.xml" target="publish" dir="${project-bootstrap.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-tools" depends="install-cli,install-tools-nodeps" />
+    <target name="install-tools-nodeps">
+        <ant antfile="${project-tools.dir}/build.xml" target="publish" dir="${project-tools.dir}" inheritall="false">
+            <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+            <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+            <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+        </ant>
+    </target>
+
+    <target name="install-compiler" depends="install-bootstrap,install-common,install-cli,install-langtools-classfile,install-model,install-cmr,install-typechecker,install-tools,install-compiler-nodeps" />
     <target name="install-compiler-nodeps">
         <ant antfile="${project-compiler.dir}/build.xml" target="publish" dir="${project-compiler.dir}" inheritall="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>

@@ -28,6 +28,7 @@ import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -35,7 +36,6 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
-import com.redhat.ceylon.compiler.java.tools.MavenPomUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
@@ -515,7 +515,7 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
                         continue;
 
                     // get the real values from the module
-                    String[] mavenCoordinates = MavenPomUtil.getMavenCoordinates(dependencyName);
+                    String[] mavenCoordinates = ModuleUtil.getMavenCoordinates(dependencyName);
                     if(moduleArtifact != null){
                         mavenCoordinates[0] = moduleArtifact.groupId();
                         mavenCoordinates[1] = moduleArtifact.artifactId();
