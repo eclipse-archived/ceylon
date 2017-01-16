@@ -23,6 +23,7 @@
     <property name="ceylon.compiler.dist" value="${build.dist.repo}/${ceylon.compiler.dir}" />
     <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/java/test/ceylon/${module.com.redhat.ceylon.compiler.version}" />
     <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.java.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car" />
+    <property name="ceylon.bootstrap.src" value="${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.src" />
 
     <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -105,6 +106,8 @@
         <delete file="${ceylon.compiler.lib}.sha1" />
         <delete file="${ceylon.repo.dir}/${ceylon.compiler.src}" />
         <delete file="${ceylon.repo.dir}/${ceylon.compiler.src}.sha1" />
+        <delete file="${ceylon.repo.dir}/${ceylon.bootstrap.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.bootstrap.src}.sha1" />
     </target>
 
     <target name="dist" depends="build" description="Create Ceylon compiler distribution">
@@ -116,8 +119,17 @@
                 <include name="**/*.java"/>
             </fileset>
         </zip>
+        <zip destfile="${build.dist.repo}/${ceylon.bootstrap.src}">
+            <fileset dir="${ceylonc.src}">
+                <include name="com/redhat/ceylon/launcher/*.java" />
+                <exclude name="com/redhat/ceylon/launcher/Start.java" />
+            </fileset>
+        </zip>
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.compiler.src}"/>
+        </antcall>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.bootstrap.src}"/>
         </antcall>
     </target>
 
