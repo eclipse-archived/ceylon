@@ -9,5 +9,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-langtools-classfile"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon.language"/>
+	<classpathentry kind="lib" path="/ceylon.language/ide-dist/ceylon.language-1.3.2-SNAPSHOT.car"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
