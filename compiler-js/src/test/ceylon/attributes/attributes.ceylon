@@ -33,6 +33,7 @@ shared void test() {
     check(forwardAttributeTest.first == 1, "forwardAttributeTest");
 	testObj = Test6163();
 	check(testObj.someStringProperty == "", "#6163");
+    testLazies();
     results();
 }
 {Integer+} forwardAttributeTest = { fat1, fat2, fat3 };
