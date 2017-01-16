@@ -16,6 +16,14 @@ public class JavaCompilerOptions extends CompilerOptions {
     private List<String> aptModules = new LinkedList<>();
     private List<String> javacOptions = new LinkedList<>();
     private long javacTarget;
+    private boolean noOsgi;
+    private String osgiProvidedBundles;
+    private boolean noPom;
+    private boolean pack200;
+    private boolean jigsaw;
+    private boolean ee;
+    private List<String> eeImport;
+    private List<String> eeAnnotation;
 
     public boolean isFlatClasspath() {
         return flatClasspath;
@@ -73,6 +81,70 @@ public class JavaCompilerOptions extends CompilerOptions {
         this.javacTarget = javacTarget;
     }
 
+    public boolean isNoOsgi() {
+        return noOsgi;
+    }
+
+    public void setNoOsgi(boolean noOsgi) {
+        this.noOsgi = noOsgi;
+    }
+
+    public String getOsgiProvidedBundles() {
+        return osgiProvidedBundles;
+    }
+
+    public void setOsgiProvidedBundles(String osgiProvidedBundles) {
+        this.osgiProvidedBundles = osgiProvidedBundles;
+    }
+
+    public boolean isNoPom() {
+        return noPom;
+    }
+
+    public void setNoPom(boolean noPom) {
+        this.noPom = noPom;
+    }
+
+    public boolean isPack200() {
+        return pack200;
+    }
+
+    public void setPack200(boolean pack200) {
+        this.pack200 = pack200;
+    }
+
+    public boolean isGenerateModuleInfo() {
+        return jigsaw;
+    }
+
+    public void setGenerateModuleInfo(boolean jigsaw) {
+        this.jigsaw = jigsaw;
+    }
+
+    public boolean isEe() {
+        return ee;
+    }
+
+    public void setEe(boolean ee) {
+        this.ee = ee;
+    }
+
+    public List<String> getEeImport() {
+        return eeImport;
+    }
+
+    public void setEeImport(List<String> eeImport) {
+        this.eeImport = eeImport;
+    }
+
+    public List<String> getEeAnnotation() {
+        return eeAnnotation;
+    }
+
+    public void setEeAnnotation(List<String> eeAnnotation) {
+        this.eeAnnotation = eeAnnotation;
+    }
+
     @Override
     public void mapOptions(CeylonConfig config) {
         super.mapOptions(config);
@@ -80,13 +152,21 @@ public class JavaCompilerOptions extends CompilerOptions {
         setFlatClasspath(DefaultToolOptions.getDefaultFlatClasspath(config));
         setAutoExportMavenDependencies(DefaultToolOptions.getDefaultAutoExportMavenDependencies(config));
         setFullyExportMavenDependencies(DefaultToolOptions.getDefaultFullyExportMavenDependencies(config));
+        setNoOsgi(DefaultToolOptions.getCompilerNoOsgi(config));
+        setOsgiProvidedBundles(DefaultToolOptions.getCompilerOsgiProvidedBundles(config));
+        setNoPom(DefaultToolOptions.getCompilerNoPom(config));
+        setGenerateModuleInfo(DefaultToolOptions.getCompilerGenerateModuleInfo(config));
+        setPack200(DefaultToolOptions.getCompilerPack200(config));
         setJdkProvider(DefaultToolOptions.getCompilerJdkProvider(config));
-        setJavacOptions(DefaultToolOptions.getCompilerJavac(config));
-        setJavacTarget(DefaultToolOptions.getCompilerTargetVersion());
         String[] aptModules = DefaultToolOptions.getCompilerAptModules(config);
         if (aptModules != null) {
             setAptModules(Arrays.asList(aptModules));
         }
+        setJavacTarget(DefaultToolOptions.getCompilerTargetVersion());
+        setJavacOptions(DefaultToolOptions.getCompilerJavac(config));
+        setEe(DefaultToolOptions.getCompilerEe(config));
+        setEeImport(DefaultToolOptions.getCompilerEeImport(config));
+        setEeAnnotation(DefaultToolOptions.getCompilerEeAnnotation(config));
     }
 
     /**

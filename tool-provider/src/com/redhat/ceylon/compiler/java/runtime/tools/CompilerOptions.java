@@ -13,10 +13,13 @@ public class CompilerOptions extends Options {
     private List<File> files = new LinkedList<>();
     private List<File> sourcePath = new LinkedList<>();
     private List<File> resourcePath = new LinkedList<>();
+    private List<String> suppressWarnings;
     private String resourceRootName;
     private String outputRepository;
     private Writer outWriter;
     private String encoding;
+    private String includeDependencies;
+    private boolean progress;
 
     public List<String> getModules() {
         return modules;
@@ -72,6 +75,30 @@ public class CompilerOptions extends Options {
         this.outputRepository = outputRepository;
     }
 
+    public List<String> getSuppressWarnings() {
+        return suppressWarnings;
+    }
+    
+    public void setSuppressWarnings(List<String> suppressWarnings) {
+        this.suppressWarnings = suppressWarnings;
+    }
+    
+    public boolean getProgress() {
+        return progress;
+    }
+    
+    public void setProgress(boolean progress) {
+        this.progress = progress;
+    }
+    
+    public String getIncludeDependencies() {
+        return includeDependencies;
+    }
+    
+    public void setIncludeDependencies(String includeDependencies) {
+        this.includeDependencies = includeDependencies;
+    }
+    
     public Writer getOutWriter() {
         return outWriter;
     }
@@ -99,6 +126,9 @@ public class CompilerOptions extends Options {
         setSourcePath(DefaultToolOptions.getCompilerSourceDirs(config));
         setResourcePath(DefaultToolOptions.getCompilerResourceDirs(config));
         setResourceRootName(DefaultToolOptions.getCompilerResourceRootName(config));
+        setSuppressWarnings(DefaultToolOptions.getCompilerSuppressWarnings(config));
+        setProgress(DefaultToolOptions.getCompilerProgress(config));
+        setIncludeDependencies(DefaultToolOptions.getCompilerIncludeDependencies(config));
     }
 
     /**

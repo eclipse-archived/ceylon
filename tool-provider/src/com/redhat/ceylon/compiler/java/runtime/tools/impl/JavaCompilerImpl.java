@@ -177,6 +177,22 @@ public class JavaCompilerImpl implements Compiler {
             if(javaOptions.isFullyExportMavenDependencies()) {
                 translatedOptions.add(Option.CEYLONFULLYEXPORTMAVENDEPENDENCIES.getText());
             }
+            if(javaOptions.isNoOsgi()) {
+                translatedOptions.add(Option.CEYLONNOOSGI.getText());
+            }
+            if (javaOptions.getOsgiProvidedBundles() != null) {
+                translatedOptions.add(Option.CEYLONOSGIPROVIDEDBUNDLES.getText());
+                translatedOptions.add(javaOptions.getOsgiProvidedBundles());
+            }
+            if(javaOptions.isNoPom()) {
+                translatedOptions.add(Option.CEYLONNOPOM.getText());
+            }
+            if(javaOptions.isGenerateModuleInfo()) {
+                translatedOptions.add(Option.CEYLONJIGSAW.getText());
+            }
+            if(javaOptions.isPack200()) {
+                translatedOptions.add(Option.CEYLONPACK200.getText());
+            }
             if (javaOptions.getJdkProvider() != null) {
                 translatedOptions.add(Option.CEYLONJDKPROVIDER.getText());
                 translatedOptions.add(javaOptions.getJdkProvider());
@@ -187,14 +203,29 @@ public class JavaCompilerImpl implements Compiler {
                     translatedOptions.add(aptModule);
                 }
             }
-            if (javaOptions.getJavacOptions() != null) {
-                CeylonCompileTool.addJavacArguments(translatedOptions, javaOptions.getJavacOptions());
-            }
             if (javaOptions.getJavacTarget() > 0) {
                 translatedOptions.add(Option.TARGET.getText());
                 translatedOptions.add(String.valueOf(javaOptions.getJavacTarget()));
                 translatedOptions.add(Option.SOURCE.getText());
                 translatedOptions.add(String.valueOf(javaOptions.getJavacTarget()));
+            }
+            if (javaOptions.getJavacOptions() != null) {
+                CeylonCompileTool.addJavacArguments(translatedOptions, javaOptions.getJavacOptions());
+            }
+            if(javaOptions.isEe()) {
+                translatedOptions.add(Option.CEYLONEE.getText());
+            }
+            if (javaOptions.getEeImport() != null) {
+                for (String imp : javaOptions.getEeImport()) {
+                    translatedOptions.add(Option.CEYLONEEIMPORTS.getText());
+                    translatedOptions.add(imp);
+                }
+            }
+            if (javaOptions.getEeAnnotation() != null) {
+                for (String imp : javaOptions.getEeAnnotation()) {
+                    translatedOptions.add(Option.CEYLONEEANNOTATIONS.getText());
+                    translatedOptions.add(imp);
+                }
             }
         }
         return translatedOptions;
