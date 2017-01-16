@@ -32,7 +32,7 @@ task invokeAntBuild( type : GradleBuild ) {
     ]
 
     // TODO: There are too many of these manual dependencies being listed... feels like duct-tape and string.
-    dependsOn ':compiler-java:assemble', ':ant-plugin:publishInternal', ':ceylon-bootstrap:publishInternal',':runtime-externals:setupRepo'
+    dependsOn ':compiler-java:assemble', ':ant-plugin:publishInternal', ':runtime-externals:setupRepo'
 
     // These are workarounds to not let this task be invoked everytime
     inputs.file 'build.xml'

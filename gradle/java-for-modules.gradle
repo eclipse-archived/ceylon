@@ -32,7 +32,7 @@ if(!ext.properties.containsKey('ceylonNamespace')) {
 // ----------------------------------------------------------------------------
 // Fail if prequisite properties are not in common-build.properties
 // ----------------------------------------------------------------------------
-requiresCBP "module.com.redhat.ceylon.${ceylonModuleName}.version"
+requiresCBP "module.${ceylonNamespace}.${ceylonModuleName}.version"
 requiresCBP 'build.dist.repo'
 requiresCBP "ceylon.${ceylonPublishModuleName}.dir"
 requiresCBP 'compile.java.target'
@@ -41,7 +41,7 @@ requiresCBP 'compile.java.source'
 ext {
     bundleVariant = ext.properties.containsKey('ceylonModuleVariant') ? ".${ceylonModuleVariant}" : ''
     bundleSymbolicName = ceylonNamespace + '.' + ceylonModuleName + bundleVariant
-    moduleVersion = cbp."module.com.redhat.ceylon.${ceylonModuleName}.version"
+    moduleVersion = cbp."module.${ceylonNamespace}.${ceylonModuleName}.version"
     bundleVersionWithoutTimestamp =  OsgiVersion.fromCeylonVersion(moduleVersion)
     bundleVersionWithTimestamp =  OsgiVersion.withTimestamp(bundleVersionWithoutTimestamp, TimeStamp.OSGI_TIMESTAMP)
     archivePublishDir = "${repoDir}/" +  cbp."ceylon.${ceylonPublishModuleName}.dir"

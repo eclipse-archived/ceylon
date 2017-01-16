@@ -22,7 +22,7 @@ task installCompiler {
     dependsOn ':typechecker:publishInternal'
     dependsOn ':compiler-java:publishInternal'
     dependsOn ':ant-plugin:publishInternal'
-    dependsOn ':ceylon-bootstrap:publishInternal'
+    dependsOn ':bootstrap:publishInternal'
     mustRunAfter setupRepo
 }
 
