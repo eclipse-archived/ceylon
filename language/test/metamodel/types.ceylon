@@ -1093,5 +1093,12 @@ class StaticMembers<T> {
     //    shared T attribute => nothing;
     //    shared T method(T t) => t;
     //}
+    shared static alias Alias => Set<T>;
+    shared new (){}
+}
+class StaticAnon {
+    shared static object anon {
+        shared String attribute => "anonymous";
+    }
     shared new (){}
 }
