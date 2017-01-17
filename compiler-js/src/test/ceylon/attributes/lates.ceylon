@@ -32,7 +32,7 @@ void testLazies() {
   check(now<latevardef, "#3544.2");
   if (exists x=lateopt, exists y=latevaropt) {
     check(now<x, "#3544.3");
-    check(now<x, "#3544.4");
+    check(now<y, "#3544.4");
   } else {
     fail("#3544 tops");
   }
