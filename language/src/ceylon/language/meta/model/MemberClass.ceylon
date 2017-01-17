@@ -22,7 +22,7 @@ shared sealed interface MemberClass<in Container=Nothing, out Type=Anything, in 
         satisfies ClassModel<Type, Arguments> & Member<Container, Class<Type, Arguments>>
         given Arguments satisfies Anything[] {
     
-    shared actual formal Class<Type, Arguments> bind(Object container);
+    shared actual formal Class<Type, Arguments> bind(Anything container);
     
     shared actual formal MemberClassCallableConstructor<Container, Type, Arguments>? defaultConstructor;
     
