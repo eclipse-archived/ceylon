@@ -1734,7 +1734,7 @@ public class GenerateJsVisitor extends Visitor {
         out("if(", privname, "===undefined)");
         if (expr == null) {
             out("throw ", getClAlias(),
-                    "InitializationError('Attempt to read uninitialized attribute «", pubname, "»');");
+                    "InitializationError('Attempt to read uninitialized attribute \\u00ab", pubname, "\\u00bb');");
         } else {
             out("{",privname,"=");
             expr.visit(this);
@@ -1744,7 +1744,7 @@ public class GenerateJsVisitor extends Visitor {
     void generateImmutableAttributeReassignmentCheck(FunctionOrValue decl, String privname, String pubname) {
         if (decl.isLate() && !decl.isVariable()) {
             out("if(", privname, "!==undefined)throw ", getClAlias(),
-                    "InitializationError('Attempt to reassign immutable attribute «", pubname, "»');");
+                    "InitializationError('Attempt to reassign immutable attribute \\u00ab", pubname, "\\u00bb');");
         }
     }
 
