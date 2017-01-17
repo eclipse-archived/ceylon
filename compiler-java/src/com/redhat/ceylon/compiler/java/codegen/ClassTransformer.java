@@ -3424,12 +3424,12 @@ public class ClassTransformer extends AbstractTransformer {
         return false;
     }
 
-    public void transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
+    public void transform(Tree.AttributeDeclaration decl, ClassDefinitionBuilder classBuilder) {
         final Value model = decl.getDeclarationModel();
         boolean lazy = decl.getSpecifierOrInitializerExpression() instanceof LazySpecifierExpression;
         boolean useField = Strategy.useField(model) && !lazy;
         String attrName = decl.getIdentifier().getText();
-
+        boolean memoized = Decl.isMemoized(decl);
         // Only a non-formal or a concrete-non-lazy attribute has a corresponding field
         // and if a captured class parameter exists with the same name we skip this part as well
         Parameter parameter = CodegenUtil.findParamForDecl(decl);
@@ -3437,6 +3437,7 @@ public class ClassTransformer extends AbstractTransformer {
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
         JCThrow err = null;
+        JCExpression memoizedInitialValue = null;
         if (!lazy && 
                 (concrete || 
                         (!Decl.isFormal(decl)
@@ -3469,7 +3470,10 @@ public class ClassTransformer extends AbstractTransformer {
                             model.isStatic() && nonWideningType.isTypeParameter() ? typeFact().getAnythingType() : nonWideningType, flags);
                 }
             }
-
+            if (memoized) {
+                memoizedInitialValue = initialValue;
+                initialValue = makeDefaultExprForType(nonWideningType);
+            }
             int flags = 0;
             
             if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
@@ -3517,8 +3521,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     classBuilder.getInitBuilder().init((List)buildInit);
                                 }
                             }
-                        } else {
-                            
+                        } else if (!memoized) {
                             classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
                             if (!isEe(model) && model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
                                 classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
@@ -3544,7 +3547,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (!withinInterface || model.isShared()) {
                 // Generate getter in main class or interface (when shared)
                 at(decl.getType());
-                AttributeDefinitionBuilder getter = makeGetter(decl, false, lazy);
+                AttributeDefinitionBuilder getter = makeGetter(decl, false, lazy, memoizedInitialValue);
                 if (err != null) {
                     getter.getterBlock(make().Block(0, List.<JCStatement>of(err)));
                 }
@@ -3552,16 +3555,18 @@ public class ClassTransformer extends AbstractTransformer {
             }
             if (withinInterface && lazy) {
                 // Generate getter in companion class
-                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true, lazy));
+                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true, lazy, null));
             }
             if (Decl.isVariable(decl) || Decl.isLate(decl)) {
                 if (!withinInterface || model.isShared()) {
                     // Generate setter in main class or interface (when shared)
-                    classBuilder.attribute(makeSetter(decl, false, lazy));
+                    if (!memoized || Decl.isVariable(decl)) {
+                        classBuilder.attribute(makeSetter(decl, false, lazy, memoizedInitialValue));
+                    }
                 }
                 if (withinInterface && lazy) {
                     // Generate setter in companion class
-                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, true, lazy));
+                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, true, lazy, null));
                 }
             }
         }
@@ -4014,11 +4019,11 @@ public class ClassTransformer extends AbstractTransformer {
             .isJavaNative(decl.getDeclarationModel().isJavaNative());
     }
     
-    private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy) {
+    private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, JCExpression memoizedInitialValue) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
-            .getter(this, attrName, decl.getDeclarationModel());
+            .getter(this, attrName, decl.getDeclarationModel(), memoizedInitialValue);
         if(!decl.getDeclarationModel().isInterfaceMember()
                 || (decl.getDeclarationModel().isShared() ^ forCompanion))
             getter.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, decl));
@@ -4037,15 +4042,15 @@ public class ClassTransformer extends AbstractTransformer {
         returnExpr = naming.makeQualIdent(naming.makeName(v, Naming.NA_WRAPPER), "get_");
         returnExpr = make().Apply(null, returnExpr, List.<JCExpression>nil());
         JCReturn returnValue = make().Return(returnExpr);
-        List<JCStatement> stmts = List.<JCTree.JCStatement>of(returnValue);   
+        List<JCStatement> stmts = List.<JCTree.JCStatement>of(returnValue);
         JCTree.JCBlock block = make().Block(0L, stmts);
         return block;
     }
 
-    private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy) {
+    private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, JCExpression memoizedInitialValue) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
-        AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl, attrName, decl.getDeclarationModel());
+        AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl, attrName, decl.getDeclarationModel(), memoizedInitialValue);
         setter.userAnnotationsSetter(expressionGen().transformAnnotations(OutputElement.SETTER, decl));
         return makeGetterOrSetter(decl, forCompanion, lazy, setter, false);
     }
@@ -5653,7 +5658,7 @@ public class ClassTransformer extends AbstractTransformer {
             // generate a field and getter
             AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                     // TODO attr build take a JCExpression className
-                    .wrapped(this, null, objectClassBuilder, model.getName(), model, true)
+                    .wrapped(this, model.getName(), model, true, null)
                     .userAnnotations(makeAtIgnore())
                     .userAnnotationsSetter(makeAtIgnore())
                     .immutable()

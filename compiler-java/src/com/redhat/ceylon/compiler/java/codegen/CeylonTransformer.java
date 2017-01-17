@@ -467,26 +467,19 @@ public class CeylonTransformer extends AbstractTransformer {
             final Tree.AttributeSetterDefinition setterDecl) {
         
         // For everything else generate a getter/setter method
-        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .wrapped(this, attrClassName, null, attrName, declarationModel, declarationModel.isToplevel())
-            .is(Flags.PUBLIC, declarationModel.isShared());
-        if (isJavaStrictfp(declarationModel)) {
-            builder.is(Flags.STRICTFP, true);
-        }
-        if (isJavaSynchronized(declarationModel)) {
-            builder.is(Flags.SYNCHRONIZED, true);
-        }
-        if (isJavaNative(declarationModel)) {
-            builder.is(Flags.NATIVE, true);
-            builder.isJavaNative(true);
-        }
-        JCExpression initialValue = null;
-        HasErrorException expressionError = null;
-        BoxingStrategy boxingStrategy = null;
+        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
+                .klass(this, attrClassName, null, false);
+        
+        
+        final HasErrorException expressionError;
         if (expression != null) {
             expressionError = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getExpression());
-            
-        } 
+        } else {
+            expressionError = null;
+        }
+        
+        BoxingStrategy boxingStrategy = null;
+        final JCExpression initialValue;
         if (expressionError != null) {
             initialValue = make().Erroneous();
         } else {
@@ -504,16 +497,37 @@ public class CeylonTransformer extends AbstractTransformer {
                     if (p != null) {
                         boxingStrategy = CodegenUtil.getBoxingStrategy(p.getModel());
                         initialValue = naming.makeName(p.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED);
+                    } else {
+                        initialValue = null;
                     }
                 }
+            } else {
+                initialValue = null;
             }
         }
-        
+        boolean memoized = declarationModel.isLate() && expression != null;
+        AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
+                .wrapped(this, attrName, declarationModel, declarationModel.isToplevel(), 
+                        memoized ? initialValue : null);
+        builder.is(Flags.PUBLIC, declarationModel.isShared());
+        if (isJavaStrictfp(declarationModel)) {
+            builder.is(Flags.STRICTFP, true);
+        }
+        if (isJavaSynchronized(declarationModel)) {
+            builder.is(Flags.SYNCHRONIZED, true);
+        }
+        if (isJavaNative(declarationModel)) {
+            builder.is(Flags.NATIVE, true);
+            builder.isJavaNative(true);
+        }
+        if (memoized && !declarationModel.isVariable()) {
+            builder.immutable();
+        }
+
         
         // For captured local variable Values, use a VariableBox
         if (Decl.isBoxedVariable(declarationModel)) {
-            // we're not calling build so we need to restore the class builder
-            builder.restoreClassBuilder();
+            classBuilder.restoreClassBuilder();
             if (expressionError != null) {
                 return List.<JCTree>of(this.makeThrowUnresolvedCompilationError(expressionError));
             } else {
@@ -526,8 +540,7 @@ public class CeylonTransformer extends AbstractTransformer {
         if (block == null && expression == null && !Decl.isToplevel(declarationModel)) {
             JCExpression typeExpr = makeJavaType(getGetterInterfaceType(declarationModel));
             JCTree.JCVariableDecl var = makeVar(attrClassName, typeExpr, null);
-            // we're not calling build so we need to restore the class builder
-            builder.restoreClassBuilder();
+            classBuilder.restoreClassBuilder();
             return List.<JCTree>of(var);
         }
         
@@ -577,7 +590,7 @@ public class CeylonTransformer extends AbstractTransformer {
         } else {
             if (Decl.isValue(declarationModel)) {
                 // For local and toplevel value attributes
-                if (!declarationModel.isVariable() && !declarationModel.isLate()) {
+                if (!declarationModel.isVariable() && !(declarationModel.isLate())) {
                     builder.immutable();
                 }
             } else {
@@ -617,8 +630,7 @@ public class CeylonTransformer extends AbstractTransformer {
         
         if (Decl.isLocal(declarationModel)) {
             if (expressionError != null) {
-                // we're not calling build so we need to restore the class builder
-                builder.restoreClassBuilder();
+                classBuilder.restoreClassBuilder();
                 return List.<JCTree>of(this.makeThrowUnresolvedCompilationError(expressionError));
             }
             builder.classAnnotations(makeAtLocalDeclaration(declarationModel.getQualifier(), false));
@@ -632,18 +644,19 @@ public class CeylonTransformer extends AbstractTransformer {
             } else {
                 typeExpr = makeJavaType(getGetterInterfaceType(declarationModel));
             }
-            return builder.build().append(makeLocalIdentityInstance(
+            
+            return builder.buildWithWrapperClass(classBuilder).append(makeLocalIdentityInstance(
                     typeExpr,
                     attrClassName, 
                     attrClassName, declarationModel.isShared(), initialValue));
         } else {
             if (expressionError != null) {
                 builder.initialValueError(expressionError);
-            } else if(initialValue != null) {
+            } else if(!memoized && initialValue != null) {
                 builder.initialValue(initialValue, boxingStrategy);
             }
             builder.is(Flags.STATIC, true);
-            return builder.build();
+            return builder.buildWithWrapperClass(classBuilder);
         }
     }
     
@@ -658,11 +671,14 @@ public class CeylonTransformer extends AbstractTransformer {
         
         // For everything else generate a getter/setter method
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
-            .indirect(this, attrClassName, attrName, declarationModel, declarationModel.isToplevel())
+            .indirect(this, attrName, declarationModel, declarationModel.isToplevel())
             .getterBlock(getterBlock)
             .immutable();
         
-        List<JCTree> attr =  builder.build();
+        ClassDefinitionBuilder classBuilder = ClassDefinitionBuilder
+                .klass(this, attrClassName, null, false);
+        
+        List<JCTree> attr =  builder.buildWithWrapperClass(classBuilder);
         JCNewClass newExpr = makeNewClass(attrClassName, false, null);
         JCExpression result = makeLetExpr(naming.temp(), List.<JCStatement>of((JCStatement)attr.get(0)), newExpr);
         return result;

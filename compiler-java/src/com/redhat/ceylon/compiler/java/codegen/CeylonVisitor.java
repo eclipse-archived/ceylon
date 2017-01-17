@@ -280,9 +280,7 @@ public class CeylonVisitor extends Visitor {
         Value singletonModel = ctor.getDeclarationModel();
         // generate a field
         AttributeDefinitionBuilder adb = AttributeDefinitionBuilder
-        .singleton(gen, 
-                null,//gen.naming.makeTypeDeclarationName(Decl.getConstructedClass(ctor.getEnumerated())), 
-                null, 
+        .singleton(gen,
                 singletonModel.getName(), singletonModel, false);
         adb.modelAnnotations(gen.makeAtEnumerated());
         adb.modelAnnotations(gen.makeAtIgnore());

@@ -1038,7 +1038,7 @@ public class GenerateJsVisitor extends Visitor {
         defineAttribute(names.self(d), names.name(pdec));
         out("{");
         if (pdec.isLate()) {
-            generateUnitializedAttributeReadCheck("this."+privname, names.name(p));
+            generateUnitializedAttributeReadCheck("this."+privname, names.name(p), null);
         }
         out("return this.", privname, ";}");
         if (pdec.isVariable() || pdec.isLate()) {
@@ -1727,16 +1727,24 @@ public class GenerateJsVisitor extends Visitor {
         }
     }
 
-    void generateUnitializedAttributeReadCheck(String privname, String pubname) {
+    void generateUnitializedAttributeReadCheck(String privname, String pubname,
+                                               Tree.SpecifierOrInitializerExpression expr) {
         //TODO we can later optimize this, to replace this getter with the plain one
         //once the value has been defined
-        out("if(", privname, "===undefined)throw ", getClAlias(),
-                "InitializationError('Attempt to read uninitialized attribute «", pubname, "»');");
+        out("if(", privname, "===undefined)");
+        if (expr == null) {
+            out("throw ", getClAlias(),
+                    "InitializationError('Attempt to read uninitialized attribute \\u00ab", pubname, "\\u00bb');");
+        } else {
+            out("{",privname,"=");
+            expr.visit(this);
+            out(";}");
+        }
     }
     void generateImmutableAttributeReassignmentCheck(FunctionOrValue decl, String privname, String pubname) {
         if (decl.isLate() && !decl.isVariable()) {
             out("if(", privname, "!==undefined)throw ", getClAlias(),
-                    "InitializationError('Attempt to reassign immutable attribute «", pubname, "»');");
+                    "InitializationError('Attempt to reassign immutable attribute \\u00ab", pubname, "\\u00bb');");
         }
     }
 
@@ -2279,7 +2287,7 @@ public class GenerateJsVisitor extends Visitor {
             defineAttribute(names.self(outer), names.name(d));
             out("{");
             if (vdec.isLate()) {
-                generateUnitializedAttributeReadCheck("this."+atname, names.name(d));
+                generateUnitializedAttributeReadCheck("this."+atname, names.name(d), null);
             }
             out("return this.", atname, ";}");
             if (vdec.isVariable() || vdec.isLate()) {
@@ -2555,6 +2563,9 @@ public class GenerateJsVisitor extends Visitor {
             } else if (qme.getPrimary() instanceof Tree.Package == false) {
                 super.visit(qme);
                 out(".");
+                if (qme.getDeclaration() != null && qme.getDeclaration().isStatic()) {
+                    out("$st$.");
+                }
             }
         }
         

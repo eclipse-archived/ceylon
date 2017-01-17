@@ -2409,16 +2409,10 @@ public abstract class DeclarationVisitor extends Visitor {
                 if (that instanceof Tree.AttributeDeclaration) {
                     Tree.AttributeDeclaration ad = 
                             (Tree.AttributeDeclaration) that;
-                    if (ad.getSpecifierOrInitializerExpression()==null) {
-                        ((Value) model).setLate(true);
-                    }
-                    else {
-                        that.addError("value is not an uninitialized reference, and may not be annotated 'late'", 
-                                1900);
-                    }
+                    ((Value) model).setLate(true);
                 }
                 else {
-                    that.addError("value is not an uninitialized reference, and may not be annotated 'late'", 
+                    that.addError("value is not a reference, and may not be annotated 'late'", 
                             1900);
                 }
             }

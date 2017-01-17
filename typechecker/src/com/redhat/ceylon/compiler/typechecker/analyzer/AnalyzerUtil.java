@@ -558,7 +558,8 @@ public class AnalyzerUtil {
                         ad.getSpecifierOrInitializerExpression();
                 
                 return !(sie==null 
-                        || sie instanceof Tree.LazySpecifierExpression);
+                        || sie instanceof Tree.LazySpecifierExpression
+                        || ad.getDeclarationModel().isLate());
             }
             else if (s instanceof Tree.ObjectDefinition) {
                 Tree.ObjectDefinition o = 

@@ -1,5 +1,6 @@
-function AssertionError(msg,that){
+function AssertionError(msg,cause,that){
   $init$AssertionError();
+  if (cause===undefined)cause=null;
   if(that===undefined) {
     that=new Error(msg);
     that.getT$name=function(){return AssertionError.$$.prototype.constructor.T$name; };
@@ -13,7 +14,7 @@ function AssertionError(msg,that){
     that.suppressed=$arr$([],{t:Throwable});
   }
   that.$sm_=msg;
-  Throwable(msg,undefined,that);
+  Throwable(msg,cause,that);
   return that;
 }
 
