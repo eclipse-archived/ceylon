@@ -17,8 +17,11 @@ shared sealed interface Qualified<out Kind=Anything, in Container=Nothing>
     
     "Type-unsafe container binding, to be used when the container type is unknown until runtime.
      
+     A null argument is only permitted for `static` members (which 
+     have no container instance). In all other cases a non-null container is required.
+     
      This has the same behaviour as invoking this `Member` directly, but exchanges compile-time type
      safety with runtime checks."
     throws(`class IncompatibleTypeException`, "If the container is not assignable to this member's container")
-    shared formal Kind bind(Object container);
+    shared formal Kind bind(Anything container);
 }

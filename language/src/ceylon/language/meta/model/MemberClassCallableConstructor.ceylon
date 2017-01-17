@@ -18,5 +18,5 @@ shared sealed interface MemberClassCallableConstructor<in Container=Nothing, out
      by this constructor."
     shared actual formal ClassModel<Type> container;
     
-    shared actual formal CallableConstructor<Type, Arguments> bind(Object container);
+    shared actual formal CallableConstructor<Type, Arguments> bind(Anything container);
 }

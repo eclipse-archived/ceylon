@@ -121,10 +121,12 @@ import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.model.Declared;
 import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.Generic;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
+import ceylon.language.meta.model.Member;
 import ceylon.language.meta.model.TypeApplicationException;
 import ceylon.language.meta.model.ValueModel;
 
@@ -659,8 +661,7 @@ public class Metamodel {
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
 
             if(declaration.isToplevel() 
-                    || isLocalType(declaration)
-                    || declaration.isStatic())
+                    || isLocalType(declaration))
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, pt, null, null);
             
             // Workaround for old binaries where static members could have some qualified TDs
@@ -1851,12 +1852,19 @@ public class Metamodel {
         return Util.apply(function, arguments, variadicElementType);
     }
     
+    
     public static <K,C>K bind(ceylon.language.meta.model.Qualified<K,C> member, Type containerType, Object container){
-        if(container == null)
+        if (container == null
+                && (!(member instanceof Declared
+                    && (((Declared)member).getDeclaration() instanceof NestableDeclaration)
+                    && ((NestableDeclaration)((Declared)member).getDeclaration()).getStatic()))) {
             throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got ceylon.language::Null");
-        Type argumentType = Metamodel.getProducedType(container);
-        if(!argumentType.isSubtypeOf(containerType))
-            throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got "+argumentType);
+        } 
+        if(container != null) {
+            Type argumentType = Metamodel.getProducedType(container);
+            if(!argumentType.isSubtypeOf(containerType))
+                throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got "+argumentType);
+        }
         return member.$call$(container);
     }
 

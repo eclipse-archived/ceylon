@@ -2,5 +2,5 @@
 shared sealed interface MemberInterface<in Container=Nothing, out Type=Anything>
     satisfies InterfaceModel<Type> & Member<Container, Interface<Type>> {
     
-    shared actual formal Interface<Type> bind(Object container);
+    shared actual formal Interface<Type> bind(Anything container);
 }
