@@ -2563,6 +2563,9 @@ public class GenerateJsVisitor extends Visitor {
             } else if (qme.getPrimary() instanceof Tree.Package == false) {
                 super.visit(qme);
                 out(".");
+                if (qme.getDeclaration() != null && qme.getDeclaration().isStatic()) {
+                    out("$st$.");
+                }
             }
         }
         

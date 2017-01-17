@@ -227,16 +227,20 @@ public class AttributeGenerator {
                 //this is for native member attribute declaration with no value
                 gen.stitchNative(d, that);
             } else {
-                //Just return the private value #451
-                if (d.isLate()) {
-                    //TODO what about statics?
-                    gen.generateUnitializedAttributeReadCheck("this."+atname, gen.getNames().name(d), that.getSpecifierOrInitializerExpression());
-                }
                 if (d.isStatic()) {
-                    gen.out("return ");
-                    that.getSpecifierOrInitializerExpression().visit(gen);
-                    gen.out(";");
+                    if (d.isLate()) {
+                        gen.generateUnitializedAttributeReadCheck(outerName + "."+atname, gen.getNames().name(d), that.getSpecifierOrInitializerExpression());
+                        gen.out("return ", outerName, ".", atname, ";");
+                    } else {
+                        gen.out("return ");
+                        that.getSpecifierOrInitializerExpression().visit(gen);
+                        gen.out(";");
+                    }
                 } else {
+                    if (d.isLate()) {
+                        //Just return the private value #451
+                        gen.generateUnitializedAttributeReadCheck("this."+atname, gen.getNames().name(d), that.getSpecifierOrInitializerExpression());
+                    }
                     gen.out("return this.", atname , ";");
                 }
             }
