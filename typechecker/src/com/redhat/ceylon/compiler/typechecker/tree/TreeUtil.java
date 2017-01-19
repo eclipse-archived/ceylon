@@ -49,8 +49,9 @@ public class TreeUtil {
                     String an = name(p.getIdentifier());
                     String alias = unit==null ? name : //WTF?!
                         unit.getModifiers().get(name); 
-                    if(alias == null)
+                    if (alias == null) {
                         alias = name;
+                    }
                     if (an.equals(alias)) {
                         return a;
                     }
@@ -65,16 +66,12 @@ public class TreeUtil {
         Tree.PositionalArgumentList pal = 
                 ann.getPositionalArgumentList();
         if (pal!=null) {
-            List<Tree.PositionalArgument> args = 
-                    pal.getPositionalArguments();
-            return args.size();
+            return pal.getPositionalArguments().size();
         }
         Tree.NamedArgumentList nal = 
                 ann.getNamedArgumentList();
         if (nal!=null) {
-            List<Tree.NamedArgument> args = 
-                    nal.getNamedArguments();
-            return args.size();
+            return nal.getNamedArguments().size();
         }
         return 0;
     }
@@ -132,7 +129,8 @@ public class TreeUtil {
         if (!bs.none()) {
             return !ModelUtil.isForBackend(bs, 
                     unit.getSupportedBackends());
-        } else {
+        }
+        else {
             return false;
         }
     }
