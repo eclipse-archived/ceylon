@@ -329,7 +329,7 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
                 // TODO what if we find more constructors than defaulted methods contains?
                 // TODO badly need to abstract/refactor this shit, 
                 // so there's just one API for figuring out the dispatch array.
-                if (ii == 0 && javaClass.isMemberClass()) {
+                if (ii == 0 && javaClass.isMemberClass() && !Modifier.isStatic(javaClass.getModifiers())) {
                     // ignore the hidden outer instance parameter
                     ii++;
                     continue;

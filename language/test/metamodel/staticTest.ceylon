@@ -42,10 +42,10 @@ shared void staticTest() {
     } catch (TypeApplicationException e) {
         assert(e.message == "Cannot apply a static declaration with no container type: use staticApply");
     } 
-    assert(is String staticMemberResult = `class StaticMembers.MemberClass`.staticInstantiate(`StaticMembers<String>`, [`String`, `Integer`], *["", 1]),
-        staticMemberResult == "");
-    assert(is String memberMemberResult = `class StaticMembers.MemberClass`.memberInstantiate(StaticMembers<String>(), [`String`, `Integer`], *["", 1]),
-        memberMemberResult == "");
+    assert(is StaticMembers<String>.MemberClass<Integer> staticMemberResult = `class StaticMembers.MemberClass`.staticInstantiate(`StaticMembers<String>`, [`String`, `Integer`], *["", 1]),
+        staticMemberResult.attribute == "");
+    assert(is StaticMembers<String>.MemberClass<Integer> memberMemberResult = `class StaticMembers.MemberClass`.memberInstantiate(StaticMembers<String>(), [`String`, `Integer`], *["", 1]),
+        memberMemberResult.attribute == "");
     
     // TODO interfaces
     // TODO aliases

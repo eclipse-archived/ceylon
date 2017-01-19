@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 
 @Ceylon(major = 8)
@@ -182,11 +183,21 @@ public abstract class ClassDeclarationImpl
         }
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
-        com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.appliedReference(null, producedTypes);
-        ClassImpl<Type, Arguments> ret = (ClassImpl<Type, Arguments>) Metamodel.getAppliedMetamodel(appliedType.getType());
-        Metamodel.checkReifiedTypeArgument("staticClassApply", "Class<$1,$2>", Variance.OUT, appliedType.getType(), $reifiedType, 
-                Variance.IN, Metamodel.getProducedType(ret.$reifiedArguments), $reifiedArguments);
-        return ret;
+        com.redhat.ceylon.model.typechecker.model.Type ct = Metamodel.getProducedType(Metamodel.getTypeDescriptor(containerType));
+        com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.appliedReference(ct, producedTypes);
+        //MemberClassImpl<Object, Type, Arguments> ret = (MemberClassImpl<Object, Type, Arguments>) Metamodel.getAppliedMetamodel(appliedType.getType());
+        //Metamodel.checkReifiedTypeArgument("staticClassApply", "Class<$1,$2>", Variance.OUT, appliedType.getType(), $reifiedType, 
+        //        Variance.IN, Metamodel.getProducedType(ret.$reifiedArguments), $reifiedArguments);
+        //return (ClassImpl)ret.$call$();
+        TypeDescriptor reifiedArguments;
+        if(!declaration.isAnonymous())
+            reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)declaration, appliedType.getType());
+        else
+            reifiedArguments = TypeDescriptor.NothingType;
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType.getType());
+
+        return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, appliedType.getType(), null, null);
+        
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -364,7 +375,8 @@ public abstract class ClassDeclarationImpl
             ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments,
             @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
             ceylon.language.Sequential<?> arguments){
-        return staticClassApply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, containerType, typeArguments).apply(arguments);
+        return staticClassApply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, containerType, typeArguments)
+                    .apply(arguments);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
