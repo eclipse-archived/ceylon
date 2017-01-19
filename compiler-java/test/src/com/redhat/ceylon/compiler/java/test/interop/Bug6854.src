@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class bug6854_ {
+    
+    private bug6854_() {
+    }
+    
+    static void bug6854() {
+        .com.redhat.ceylon.compiler.java.test.interop.Bug6854.StaticAndUppercase();
+        new .com.redhat.ceylon.compiler.java.test.interop.Bug6854.staticAndLowercase();
+    }
+}

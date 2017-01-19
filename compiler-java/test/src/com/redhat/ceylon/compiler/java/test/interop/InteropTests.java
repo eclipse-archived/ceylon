@@ -1005,4 +1005,10 @@ public class InteropTests extends CompilerTests {
         compile("IopAssertionMessageDetail.ceylon");
         run("com.redhat.ceylon.compiler.java.test.interop.assertionMessageDetail");
     }
+    
+    @Test
+    public void testIopBug6854() {
+        compile("Bug6854.java");
+        compareWithJavaSource("Bug6854");
+    }
 }
