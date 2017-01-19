@@ -182,6 +182,9 @@ public abstract class ClassDeclarationImpl
             throw new ceylon.language.meta.model.TypeApplicationException("Cannot staticClassApply a non-static declaration: use " + (getToplevel() ? "apply" : "memberClassApply"));
         }
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        if (getStatic()) {
+            producedTypes.addAll(0, Metamodel.getModel(containerType).getTypeArgumentList());
+        }
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.model.typechecker.model.Type ct = Metamodel.getProducedType(Metamodel.getTypeDescriptor(containerType));
         com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.appliedReference(ct, producedTypes);

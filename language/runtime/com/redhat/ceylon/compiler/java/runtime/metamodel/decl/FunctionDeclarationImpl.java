@@ -202,7 +202,10 @@ public class FunctionDeclarationImpl
         com.redhat.ceylon.model.typechecker.model.Reference appliedFunction = declaration.appliedReference(((ClassOrInterfaceImpl<?>)containerType).producedType, producedTypes);
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
-
+        if (getStatic()) {
+            producedTypes.addAll(0, Metamodel.getModel(containerType).getTypeArgumentList());
+        }
+        
         Metamodel.checkReifiedTypeArgument("apply", "Function<$1,$2>", Variance.OUT, 
                 declaration.getUnit().getCallableReturnType(appliedFunction.getFullType()), $reifiedReturn, 
                 Variance.IN, Metamodel.getProducedTypeForArguments(declaration.getUnit(), (Functional)declaration, appliedFunction), $reifiedArguments);
@@ -225,7 +228,9 @@ public class FunctionDeclarationImpl
         TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
         TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
         TypeDescriptor reifiedContainer = Metamodel.getTypeDescriptorForProducedType(containerType);
-
+        if (getStatic()) {
+            producedTypes.addAll(0, containerType.getTypeArgumentList());
+        }
         Metamodel.checkReifiedTypeArgument("memberApply", "Method<$1,$2,$3>", 
                 Variance.IN, containerType, $reifiedContainer, 
                 Variance.OUT, appliedFunction.getType(), $reifiedType,

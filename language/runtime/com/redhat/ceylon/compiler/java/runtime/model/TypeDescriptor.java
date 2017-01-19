@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.java.Util.isBasic;
 import static com.redhat.ceylon.compiler.java.Util.isIdentifiable;
 import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getProducedType;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -314,6 +315,9 @@ public abstract class TypeDescriptor
             List<Type> typeArgs = new ArrayList<Type>(typeArguments.length);
             for(TypeDescriptor typeArg : typeArguments){
                 typeArgs.add(Metamodel.getProducedType(typeArg));
+            }
+            if (Modifier.isStatic(klass.getModifiers())) {
+                typeArgs.addAll(0, qualifyingType.getTypeArgumentList());
             }
             Type type = decl.appliedType(qualifyingType, typeArgs);
             type = applyUseSiteVariance(decl, type);
