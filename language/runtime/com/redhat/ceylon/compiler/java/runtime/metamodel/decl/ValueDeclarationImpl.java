@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.AnnotationBearing;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Reflection;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.AttributeImpl;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ValueImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.loader.NamingBase;
@@ -115,7 +116,13 @@ public class ValueDeclarationImpl
             TypeDescriptor $reifiedSet,
             ceylon.language.meta.model.Type<?> container) {
         com.redhat.ceylon.model.typechecker.model.Value modelDecl = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
-        com.redhat.ceylon.model.typechecker.model.TypedReference typedReference = modelDecl.appliedTypedReference(null, Collections.<Type>emptyList());
+        Type qType;
+        if (getStatic()) {
+            qType = ((ClassImpl)container).producedType;
+        } else {
+            qType = null;
+        }
+        com.redhat.ceylon.model.typechecker.model.TypedReference typedReference = modelDecl.appliedTypedReference(qType, Collections.<Type>emptyList());
 
         com.redhat.ceylon.model.typechecker.model.Type getType = typedReference.getType();
         TypeDescriptor reifiedGet = Metamodel.getTypeDescriptorForProducedType(getType);

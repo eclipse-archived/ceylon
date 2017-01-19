@@ -449,6 +449,9 @@ public abstract class ClassOrInterfaceDeclarationImpl
                                                                         ceylon.language.meta.model.Type<? extends Object> container){
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(types);
         Type qualifyingType = Metamodel.getModel(container);
+        if (getStatic()) {
+            producedTypes.addAll(0, qualifyingType.getTypeArgumentList());
+        }
         Metamodel.checkQualifyingType(qualifyingType, declaration);
         Metamodel.checkTypeArguments(qualifyingType, declaration, producedTypes);
         // find the proper qualifying type
