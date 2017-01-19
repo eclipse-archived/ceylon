@@ -643,9 +643,8 @@ public class Metamodel {
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
 
             if(declaration.isToplevel() 
-                    || declaration.isStatic()
                     || isLocalType(declaration))
-                return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, pt, null, null);
+                return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, pt, Metamodel.getAppliedMetamodel(pt.getQualifyingType()), null);
             
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl(reifiedContainer, reifiedType, reifiedArguments, pt);
@@ -660,7 +659,9 @@ public class Metamodel {
                 reifiedArguments = TypeDescriptor.NothingType;
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
 
-            if(declaration.isToplevel() || isLocalType(declaration))
+            if(declaration.isToplevel() 
+                    || isLocalType(declaration)
+                    || declaration.isStatic())
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, pt, null, null);
             
             // Workaround for old binaries where static members could have some qualified TDs
