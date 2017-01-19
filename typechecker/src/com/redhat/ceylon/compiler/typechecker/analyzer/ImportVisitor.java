@@ -537,6 +537,7 @@ public class ImportVisitor extends Visitor {
                 //spec says you can't hide a language modifier
                 //unless the modifier itself has an alias
                 //(this is perhaps a little heavy-handed)
+                //TODO: this should be a warning!!!!
                 member.addError("import hides a language modifier: '" + 
                         alias + "' is a language modifier");
             }
