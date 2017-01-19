@@ -2673,26 +2673,48 @@ public abstract class DeclarationVisitor extends Visitor {
     public void visit(Tree.Import that) {
         super.visit(that);
         Tree.ImportPath path = that.getImportPath();
-        if (path!=null && 
-                formatPath(path.getIdentifiers())
-                    .equals(LANGUAGE_MODULE_NAME)) {
+        if (path!=null) {
+            boolean languagePackage =
+                    formatPath(path.getIdentifiers())
+                        .equals(LANGUAGE_MODULE_NAME);
             Tree.ImportMemberOrTypeList imtl = 
                     that.getImportMemberOrTypeList();
             if (imtl!=null) {
+                Map<String, String> mods = 
+                        unit.getModifiers();
                 for (Tree.ImportMemberOrType imt: 
                         imtl.getImportMemberOrTypes()) {
                     Tree.Alias a = imt.getAlias();
                     Tree.Identifier id = 
                             imt.getIdentifier();
-                    if (a!=null && id!=null) {
-                        Tree.Identifier aid = 
-                                a.getIdentifier();
+                    if (id!=null) {
                         String name = name(id);
-                        String alias = name(aid);
-                        Map<String, String> mods = 
-                                unit.getModifiers();
-                        if (mods.containsKey(name)) {
-                            mods.put(name, alias);
+                        if (languagePackage) {
+                            if (a!=null) {
+                                Tree.Identifier aid = 
+                                        a.getIdentifier();
+                                String alias = name(aid);
+                                if (mods.containsKey(name)) {
+                                    mods.put(name, alias);
+                                }
+                            }
+                        }
+                        else {
+                            if (a==null) {
+                                if (mods.containsKey(name) &&
+                                        name.equals(mods.get(name))) {
+                                    mods.put(name, "$");
+                                }
+                            }
+                            else {
+                                Tree.Identifier aid = 
+                                        a.getIdentifier();
+                                String alias = name(aid);
+                                if (mods.containsKey(alias) &&
+                                        alias.equals(mods.get(alias))) {
+                                    mods.put(alias, "$");
+                                }
+                            }
                         }
                     }
                 }
