@@ -392,7 +392,6 @@ Use this when NOT doing a release!">
         <mkdir dir="${ceylon.dist.dir}/lib"/>
         <copy todir="${ceylon.dist.dir}/lib">
             <fileset dir="${project-compiler.dir}/build/lib">
-                <include name="ceylon-bootstrap.jar"/>
                 <include name="ceylon-ant.jar"/>
             </fileset>
         </copy>
