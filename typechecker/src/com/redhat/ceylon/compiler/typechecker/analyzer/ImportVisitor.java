@@ -538,7 +538,8 @@ public class ImportVisitor extends Visitor {
                 //unless the modifier itself has an alias
                 //(this is perhaps a little heavy-handed)
                 //TODO: this should be a warning!!!!
-                member.addError("import hides a language modifier: '" + 
+                member.addUsageWarning(Warning.hidesLanguageModifier,
+                        "import hides a language modifier: '" + 
                         alias + "' is a language modifier");
             }
             else {

@@ -32,7 +32,8 @@ public enum Warning {
     expressionTypeCallable("Expressions of type 'Callable'"),
     expressionTypeIterable("Expressions of type 'Iterable'"), 
     inferredNotNull("Inferred not null types"),
-    zeroFloatLiteral("Literal so small it is indistinguishable from zero");
+    zeroFloatLiteral("Literal so small it is indistinguishable from zero"), 
+    hidesLanguageModifier("Import hides a language modifier");
     /*
      * Don't forget to update the documentation
      * of the suppressWarnings annotation in

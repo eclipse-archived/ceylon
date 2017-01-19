@@ -433,6 +433,7 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `redundantImportAlias`,
      `ceylonNamespace`,
      `javaNamespace,` 
+     `hidesLanguageModifier`,
      `suppressedAlready`, 
      `suppressesNothing`, 
      `unknownWarning`, 
