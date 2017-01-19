@@ -1190,6 +1190,8 @@ public class Naming extends NamingBase implements LocalId {
             name = getAttrClassName((Value)decl, namingOptions);
         } else if (decl instanceof Setter) {
             name = getAttrClassName((Setter)decl, namingOptions);
+        } else if (decl instanceof JavaMethod) {
+            name = ((JavaMethod)decl).getRealName();
         } else {
             name = decl.getName();
             if ((namingOptions & NA_WRAPPER_UNQUOTED) == 0) {
