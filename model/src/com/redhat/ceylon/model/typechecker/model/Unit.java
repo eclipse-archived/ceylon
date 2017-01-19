@@ -2548,6 +2548,9 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         put("annotation");
         put("optional");
         put("serializable");
+        put("small");
+        put("service");
+        put("static");
     }
     public Map<String, String> getModifiers() {
         return modifiers;
