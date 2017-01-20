@@ -167,21 +167,47 @@ shared final sealed annotation class LateAnnotation()
                     ValueDeclaration> {}
 
 "Annotation to disable definite initialization analysis for 
- a toplevel value, or for an attribute of a class.
+ an attribute of a class, or for a toplevel value, or to
+ specify that an attribute of a class should be initialized
+ lazily.
  
- - In the case of a class attribute, the attribute may not
-   be initialized by its declaration, and may be left 
-   unassigned by the class initializer.
- - In the case of a toplevel value, the value may not be
-   initialized by its declaration.
+ - In the case of a class attribute, the attribute may have 
+   no initializer and may be left unassigned by the class 
+   initializer.
+ - In the case of a toplevel value, the value may have no
+   initializer.
+ 
+ If a `late` value does have an initializer, the initializer
+ will be executed lazily the first time the value is 
+ evaluated, if the value has not already been assigned.
  
  A `late` value may be assigned by any code to which it is
  visible, but repeated assignment produces an 
  [[InitializationError]].
  
- Evaluation of a `late` value cannot be guaranteed sound by
- the compiler, and so evaluation of a `late` value before 
- initialization produces an [[InitializationError]]."
+ Evaluation of a `late` value with no initializer cannot be 
+ guaranteed sound by the compiler, and so evaluation of a 
+ `late` value with no initializer before it has been 
+ assigned produces an [[InitializationError]].
+ 
+     class Lately() {
+     
+         shared interface Calculator {
+             shared formal Float calculatePi();
+         }
+ 
+         //an uninitialized attribute
+         late Calculator calculator;
+         
+         //a lazy attribute
+         shared late Float pi = calculator.calculatePi();
+         
+         shared void init(Calculator calculator) {
+             //initialize the attribute
+             this.calculator = calculator;
+         }
+         
+     }"
 shared annotation LateAnnotation late()
         => LateAnnotation();
 
