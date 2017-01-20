@@ -132,11 +132,28 @@ moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
       { $moduleDescriptor = new ModuleDescriptor($MODULE); 
         $moduleDescriptor.setAnnotationList($annotations.annotationList);
         $moduleDescriptor.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
-      packagePath
-      { $moduleDescriptor.setImportPath($packagePath.importPath); }
+      p0=packagePath
+      { $moduleDescriptor.setImportPath($p0.importPath); }
       (
-        STRING_LITERAL
-        { $moduleDescriptor.setVersion(new QuotedLiteral($STRING_LITERAL)); }
+        ins=importNamespace
+        { $moduleDescriptor.setNamespace($ins.identifier); }
+        SEGMENT_OP
+        ( 
+          s1=STRING_LITERAL
+          { $moduleDescriptor.setGroupQuotedLiteral(new QuotedLiteral($s1)); }
+        |
+          p1=packagePath
+          { $moduleDescriptor.setGroupImportPath($p1.importPath); }
+        )
+        (
+          SEGMENT_OP
+          s2=STRING_LITERAL
+          { $moduleDescriptor.setArtifact(new QuotedLiteral($s2)); }
+        )?
+      )?
+      (
+        s3=STRING_LITERAL
+        { $moduleDescriptor.setVersion(new QuotedLiteral($s3)); }
       )?
       importModuleList
       { $moduleDescriptor.setImportModuleList($importModuleList.importModuleList); }
@@ -311,7 +328,7 @@ packagePath returns [ImportPath importPath]
       ( 
         m=MEMBER_OP 
         { $importPath.setEndToken($m); }
-        (
+        ((LIDENTIFIER) =>
           pn2=packageName 
           { $importPath.addIdentifier($pn2.identifier); 
             $importPath.setEndToken(null); }
