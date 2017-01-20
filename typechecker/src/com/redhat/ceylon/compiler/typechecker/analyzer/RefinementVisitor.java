@@ -859,16 +859,15 @@ public class RefinementVisitor extends Visitor {
                         (TypeDeclaration) 
                             refined.getContainer();
                 if (interveningType.isJava() &&
-                        getInterveningRefinements(member, 
-                            root, type, interveningType)
-                                .size()>1) {
-                    //TODO: perhaps we should be checking
-                    //      that there is at least one
-                    //      intervening *Java* type!!
-                    //Java types only support 
-                    //single-instantiation inheritance,
-                    //but they do support inheritance
-                    //of raw types
+                        atLeastOneJava(getInterveningRefinements(
+                            member, root, type, interveningType))) {
+                    //If there is at least one 
+                    //intervening Java refinement, 
+                    //check that refinement instead
+                    //of this member (Java types only 
+                    //support single-instantiation 
+                    //inheritance, but they do support 
+                    //inheritance of raw types)
                     continue;
                 }
                 if (isOverloadedVersion(refined)) {
@@ -973,6 +972,16 @@ public class RefinementVisitor extends Visitor {
                                 + message(root));
             }
         }
+    }
+
+    private static boolean atLeastOneJava(
+            List<Declaration> members) {
+        for (Declaration d: members) {
+            if (d.isJava()) {
+                return members.size()>1;
+            }
+        }
+        return false;
     }
 
     /*private boolean refinesOverloaded(Declaration dec, 
