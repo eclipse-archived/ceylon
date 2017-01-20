@@ -859,9 +859,12 @@ public class RefinementVisitor extends Visitor {
                         (TypeDeclaration) 
                             refined.getContainer();
                 if (interveningType.isJava() &&
-                    getInterveningRefinements(member, 
+                        getInterveningRefinements(member, 
                             root, type, interveningType)
-                        .size()>1) {
+                                .size()>1) {
+                    //TODO: perhaps we should be checking
+                    //      that there is at least one
+                    //      intervening *Java* type!!
                     //Java types only support 
                     //single-instantiation inheritance,
                     //but they do support inheritance
