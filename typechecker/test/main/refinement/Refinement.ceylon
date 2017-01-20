@@ -374,3 +374,13 @@ class OptionsExt(String abc) extends Options(abc) {}
 class OptionsExtExt() extends OptionsExt("initial") {
     shared actual variable String abc = "initial";
 }
+
+interface FooFoo<out T> {
+    shared formal {T+} val;
+}
+interface BarBar<out T> satisfies FooFoo<T> {
+    shared actual formal [T+] val;
+}
+class BatBat() satisfies FooFoo<Integer>&BarBar<Object> {
+    @error shared actual [Object+] val => ["bob"];
+}
