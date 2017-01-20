@@ -1,5 +1,5 @@
 import ceylon.language { public=shared, var=variable, 
-    @error abstract=sum, shared=product }
+    abstract=sum, shared=product }
 
 public class Foo() {
     public var Integer count=0;
