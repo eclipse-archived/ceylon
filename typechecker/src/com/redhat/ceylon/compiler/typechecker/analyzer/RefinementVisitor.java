@@ -858,9 +858,14 @@ public class RefinementVisitor extends Visitor {
                 TypeDeclaration interveningType = 
                         (TypeDeclaration) 
                             refined.getContainer();
-                if (getInterveningRefinements(member, 
+                if (interveningType.isJava() &&
+                    getInterveningRefinements(member, 
                             root, type, interveningType)
                         .size()>1) {
+                    //Java types only support 
+                    //single-instantiation inheritance,
+                    //but they do support inheritance
+                    //of raw types
                     continue;
                 }
                 if (isOverloadedVersion(refined)) {
