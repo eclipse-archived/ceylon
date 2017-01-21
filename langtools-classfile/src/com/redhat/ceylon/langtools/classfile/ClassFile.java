@@ -1,3 +1,7 @@
+package com.redhat.ceylon.langtools.classfile;
+
+ 
+
 /*
  * Copyright (c) 2007, 2013, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -23,15 +27,16 @@
  * questions.
  */
 
-package com.redhat.ceylon.langtools.classfile;
-
-import java.io.File;
+ 
+  
+import java.io.File; 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.redhat.ceylon.langtools.classfile.AccessFlags.*;
+import com.redhat.ceylon.langtools.classfile.AccessFlags.*;
+
 
 /**
  * See JVMS, section 4.2.
@@ -140,10 +145,10 @@ public class ClassFile {
     }
 
     public boolean isInterface() {
-        return access_flags.is(ACC_INTERFACE);
-    }
+        return access_flags.is(512);
+    } 
 
-    public int byteLength() {
+    public int byteLength() { 
         return  4 +     // magic
                 2 +     // minor
                 2 +     // major
