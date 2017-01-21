@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.JVMModuleUtil;
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.TypeCreator;
 import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -95,7 +96,7 @@ public class Naming extends NamingBase implements LocalId {
     private static final String ANNOS_POSTFIX = Suffix.$annotations$.toString();
     private static final String DELEGATION_POSTFIX = Suffix.$delegation$.toString();
 
-    static enum DeclNameFlag {
+    public static enum DeclNameFlag {
         /** 
          * A qualified name. 
          * <li>For a top level this includes the package name.
@@ -318,13 +319,13 @@ public class Naming extends NamingBase implements LocalId {
     /** 
      * Helper class for {@link #makeTypeDeclarationExpression(JCExpression, TypeDeclaration, DeclNameFlag...)}
      */
-    abstract class TypeDeclarationBuilder<R> {
+    public static abstract class TypeDeclarationBuilder<R> {
         private final StringBuilder sb = new StringBuilder();
         protected final Declaration decl;
-        TypeDeclarationBuilder(Declaration decl) {
+        public TypeDeclarationBuilder(Declaration decl) {
             this.decl = decl;
         }
-        abstract void select(String s);
+        protected abstract void select(String s);
         final void append(String s) {
             sb.append(s);
         }
@@ -340,7 +341,7 @@ public class Naming extends NamingBase implements LocalId {
             select(isCeylonTypeDecl() ? quoteClassName(name) : name);
             sb.setLength(0);
         }
-        abstract R result();
+        protected abstract R result();
         public void clear() {
             sb.setLength(0);
         }
@@ -359,10 +360,10 @@ public class Naming extends NamingBase implements LocalId {
             this.qualifying = expr;
             this.expr = expr;
         }
-        void select(String s) {
+        protected void select(String s) {
             expr = makeQualIdent(expr, s);
         }
-        JCExpression result() {
+        protected JCExpression result() {
             return expr;
         }
         public void clear() {
@@ -381,7 +382,7 @@ public class Naming extends NamingBase implements LocalId {
             this.qualifying = expr;
             this.expr = expr != null ? new StringBuffer(expr) : null;
         }
-        void select(String s) {
+        protected void select(String s) {
             if (expr == null  && s != null) {
                 expr = new StringBuffer(s);
             } else if (s == null && expr != null ) {
@@ -389,7 +390,7 @@ public class Naming extends NamingBase implements LocalId {
                 expr.append(".").append(s);
             }
         }
-        String result() {
+        protected String result() {
             return expr.toString();
         }
         public void clear() {
@@ -398,7 +399,7 @@ public class Naming extends NamingBase implements LocalId {
         }
     }
     
-    JCExpression makeTypeDeclarationExpression(JCExpression qualifyingExpr, final TypeDeclaration decl, DeclNameFlag... options) {
+    public JCExpression makeTypeDeclarationExpression(JCExpression qualifyingExpr, final TypeDeclaration decl, DeclNameFlag... options) {
         // be more resilient to errors
         if(decl == null)
             return make().Erroneous();
@@ -406,7 +407,7 @@ public class Naming extends NamingBase implements LocalId {
         return makeTypeDeclaration(helper, decl, options);
     }
 
-    private <R> R makeTypeDeclaration(TypeDeclarationBuilder<R> declarationBuilder,
+    public <R> R makeTypeDeclaration(TypeDeclarationBuilder<R> declarationBuilder,
             final TypeDeclaration decl, DeclNameFlag... options) {
         EnumSet<DeclNameFlag> flags = EnumSet.noneOf(DeclNameFlag.class);
         flags.addAll(Arrays.asList(options));
@@ -605,16 +606,16 @@ public class Naming extends NamingBase implements LocalId {
      * @param decl The declaration
      * @param options Option flags
      */
-    String makeTypeDeclarationName(final TypeDeclaration decl, DeclNameFlag... options) {
+    public String makeTypeDeclarationName(final TypeDeclaration decl, DeclNameFlag... options) {
         StringDeclName helper = new StringDeclName(decl, null);
         return makeTypeDeclaration(helper, decl, options);
     }
 
-    JCExpression makeDeclarationName(TypeDeclaration decl, DeclNameFlag... flags) {
+    public JCExpression makeDeclarationName(TypeDeclaration decl, DeclNameFlag... flags) {
         return makeTypeDeclarationExpression(null, decl, flags);
     }
     
-    String getCompanionClassName(TypeDeclaration decl, boolean qualified) {
+    public String getCompanionClassName(TypeDeclaration decl, boolean qualified) {
         if (qualified) {
             return makeTypeDeclarationName(decl, DeclNameFlag.QUALIFIED, DeclNameFlag.COMPANION);
         } else {
@@ -866,7 +867,7 @@ public class Naming extends NamingBase implements LocalId {
         return makeQuotedQualIdent(makeUnquotedIdent(""), components);
     }
 
-    JCExpression makeQuotedFQIdent(String qualifiedName) {
+    public JCExpression makeQuotedFQIdent(String qualifiedName) {
         return makeQuotedFQIdent(Util.quoteJavaKeywords(qualifiedName.split("\\.")));
     }
 

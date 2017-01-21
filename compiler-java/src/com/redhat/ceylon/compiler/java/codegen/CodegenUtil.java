@@ -76,7 +76,7 @@ public class CodegenUtil {
         return node.getUnboxed();
     }
 
-    static boolean isUnBoxed(TypedDeclaration decl){
+    public static boolean isUnBoxed(TypedDeclaration decl){
         // null is considered boxed
         return BooleanUtil.isTrue(decl.getUnboxed());
     }
@@ -132,7 +132,7 @@ public class CodegenUtil {
         return node.getTypeErased();
     }
 
-    static boolean hasTypeErased(TypedDeclaration decl){
+    public static boolean hasTypeErased(TypedDeclaration decl){
         return decl.getTypeErased();
     }
 

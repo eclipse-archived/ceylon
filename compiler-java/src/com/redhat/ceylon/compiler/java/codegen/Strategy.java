@@ -56,7 +56,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * Utility functions telling you about code generation strategies
  * @see Decl
  */
-class Strategy {
+public class Strategy {
     private Strategy() {}
     
     public static boolean defaultParameterMethodTakesThis(Tree.Declaration decl) {
@@ -266,7 +266,7 @@ class Strategy {
                         || !Decl.isShared(model));
     }
     
-    static boolean generateInstantiator(Declaration model) {
+    public static boolean generateInstantiator(Declaration model) {
         if (model instanceof Class) {
             Class cls = (Class)model;
             return !cls.isAbstract()

@@ -2174,8 +2174,12 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
     
+    public boolean shouldAddReifiedTypeInterface(ClassOrInterface model) {
+        return model.getExtendedType() == null || willEraseToObject(model.getExtendedType()) || !Decl.isCeylon(model.getExtendedType().getDeclaration());
+    }
+    
     private void addReifiedTypeInterface(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
-        if(model.getExtendedType() == null || willEraseToObject(model.getExtendedType()) || !Decl.isCeylon(model.getExtendedType().getDeclaration()))
+        if(shouldAddReifiedTypeInterface(model))
             classBuilder.reifiedType();
     }
 
@@ -2358,9 +2362,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    private void addAtMembers(ClassDefinitionBuilder classBuilder, ClassOrInterface model, 
-            Tree.ClassOrInterface def) {
-        List<JCExpression> members = List.nil();
+    public <AnnotationType> AnnotationType prepareMembersAnnotation(ClassOrInterface model, 
+            Tree.ClassOrInterface def, AnnotationCreator<AnnotationType> creator) {
+        List<Object> members = List.nil();
         for(Declaration member : model.getMembers()){
             if(member instanceof ClassOrInterface == false
                     && member instanceof TypeAlias == false){
@@ -2379,15 +2383,20 @@ public class ClassTransformer extends AbstractTransformer {
                     && Decl.isAncestorLocal(innerTypeTree))
                 // for the same reason we do not generate aliases in transform(ClassOrInterface def) let's not list them
                 continue;
-            JCAnnotation atMember;
+            Object atMember;
             // interfaces are moved to toplevel so they can lose visibility of member types if they are local
             if(Decl.isLocal(model) && model instanceof Interface)
-                atMember = makeAtMember(innerType.getName());
+                atMember = innerType.getName();
             else
-                atMember = makeAtMember(innerType.getType());
+                atMember = innerType.getType();
             members = members.prepend(atMember);
         }
-        classBuilder.annotations(makeAtMembers(members));
+        return creator.createMembersAnnotation(members);
+    }
+
+    private void addAtMembers(ClassDefinitionBuilder classBuilder, ClassOrInterface model, 
+            Tree.ClassOrInterface def) {
+        classBuilder.annotations(prepareMembersAnnotation(model, def, javacJavaTypeAnnotationsCreator));
     }
 
     private Tree.Declaration findInnerType(Tree.ClassOrInterface def, String name) {
@@ -3626,7 +3635,7 @@ public class ClassTransformer extends AbstractTransformer {
     /**
      * Encapsulates the modifiers we use for various things.
      */
-    class ModifierTransformation {
+    public class ModifierTransformation {
         protected long declarationSharedFlags(Declaration decl){
             return Decl.isShared(decl) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
         }
@@ -3951,7 +3960,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private ModifierTransformation modifierTransformation = new ModifierTransformation();
-    ModifierTransformation modifierTransformation() {
+    public ModifierTransformation modifierTransformation() {
         return modifierTransformation;
     }
     ModifierTransformation replaceModifierTransformation(ModifierTransformation mt) {
@@ -4271,6 +4280,49 @@ public class ClassTransformer extends AbstractTransformer {
                 defaultValuesBody);
     }
     
+    
+    public <TypeType> TypeType prepareResultType(Function method, int flags, TypeCreator<TypeType> creator) {
+        if (method.isParameter()) {
+            if (Decl.isUnboxedVoid(method) && !Strategy.useBoxedVoid(method)) {
+                return creator.voidType();
+            } else {
+                Parameter parameter = method.getInitializerParameter();
+                Type resultType = parameter.getType();
+                for (int ii = 1; ii < method.getParameterLists().size(); ii++) {
+                    resultType = typeFact().getCallableType(resultType);
+                }
+                return prepareJavaType(resultType, CodegenUtil.isUnBoxed(method) ? 0 : AbstractTransformer.JT_NO_PRIMITIVES, creator);
+            }
+        }
+        TypedReference typedRef = getTypedReference(method);
+        TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
+        Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
+        if(method.isActual()
+                && CodegenUtil.hasTypeErased(method))
+            flags |= AbstractTransformer.JT_RAW;
+        if (method.isShortcutRefinement()
+                && Decl.isSmall(method.getRefinedDeclaration())) {
+            flags |= AbstractTransformer.JT_SMALL;
+        }
+        return prepareResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags, creator);
+    }
+    
+    public <TypeType> TypeType prepareResultType(TypedDeclaration typedDeclaration, Type type, int flags, TypeCreator<TypeType> creator) {
+        if (typedDeclaration == null
+                || ((!(typedDeclaration instanceof Function) || !((Function)typedDeclaration).isParameter())
+                        && AbstractTransformer.isAnything(type))) {
+            if ((typedDeclaration instanceof Function)
+                    && ((Function)typedDeclaration).isDeclaredVoid()
+                    && !Strategy.useBoxedVoid((Function)typedDeclaration)) {
+                return creator.voidTypeIdent();
+            } else {
+                return prepareJavaType(typedDeclaration, typeFact().getAnythingType(), flags, creator);
+            }
+        } else {
+            return prepareJavaType(typedDeclaration, type, flags, creator);
+        }
+    }
+
     private List<MethodDefinitionBuilder> transformMethod(
             final Function methodModel,
             Tree.TypeParameterList typeParameterList,

@@ -86,7 +86,12 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public String getQualifiedName() {
-        return klass.getName();
+        // as taken from ClassSymbol.className():
+        String canonicalName = klass.getCanonicalName();
+        if(canonicalName != null)
+            return canonicalName;
+        else
+            return  klass.getName();
     }
 
     @Override

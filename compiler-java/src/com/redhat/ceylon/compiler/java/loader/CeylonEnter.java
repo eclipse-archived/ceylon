@@ -608,15 +608,30 @@ public class CeylonEnter extends Enter {
             sp.log("Preparation phase");
         }
 
+        additionalTypecheckingPhases(listOfUnits, sp, modelLoader, gen);
         int size = listOfUnits.size();
         
+        int i=1;
+        for (PhasedUnit pu : listOfUnits) {
+            if(sp != null)
+                progressPreparation(5, i++, size, pu);
+            CompilationUnit compilationUnit = pu.getCompilationUnit();
+            compilationUnit.visit(new WarningSuppressionVisitor<Warning>(Warning.class, pu.getSuppressedWarnings()));
+        }
+        
+        collectTreeErrors(true, true);
+    }
+
+    public static void additionalTypecheckingPhases(
+            final java.util.List<PhasedUnit> listOfUnits, StatusPrinter sp, AbstractModelLoader modelLoader, CeylonTransformer gen) {
+        int size = listOfUnits.size();
         int i=1;
         // This phase is proper to the Java backend 
         ForcedCaptureVisitor fcv = new ForcedCaptureVisitor();
         
         for (PhasedUnit pu : listOfUnits) {
             if(sp != null)
-                progressPreparation(1, i++, size, pu);
+                progressPreparation(sp, 1, i++, size, pu);
             Unit unit = pu.getUnit();
             final CompilationUnit compilationUnit = pu.getCompilationUnit();
             compilationUnit.visit(fcv);
@@ -649,14 +664,14 @@ public class CeylonEnter extends Enter {
         i=1;
         for (PhasedUnit pu : listOfUnits) {
             if(sp != null)
-                progressPreparation(2, i++, size, pu);
+                progressPreparation(sp, 2, i++, size, pu);
             pu.getCompilationUnit().visit(eeVisitor);
             pu.getCompilationUnit().visit(uv);
         }
         i=1;
         for (PhasedUnit pu : listOfUnits) {
             if(sp != null)
-                progressPreparation(3, i++, size, pu);
+                progressPreparation(sp, 3, i++, size, pu);
             pu.getCompilationUnit().visit(boxingDeclarationVisitor);
             pu.getCompilationUnit().visit(smallDeclarationVisitor);
         }
@@ -664,7 +679,7 @@ public class CeylonEnter extends Enter {
         // the others can run at the same time
         for (PhasedUnit pu : listOfUnits) {
             if(sp != null)
-                progressPreparation(4, i++, size, pu);
+                progressPreparation(sp, 4, i++, size, pu);
             CompilationUnit compilationUnit = pu.getCompilationUnit();
             compilationUnit.visit(mnv);
             compilationUnit.visit(boxingVisitor);
@@ -675,22 +690,16 @@ public class CeylonEnter extends Enter {
             compilationUnit.visit(tpCaptureVisitor);
             compilationUnit.visit(localInterfaceVisitor);
         }
-        
-        i=1;
-        for (PhasedUnit pu : listOfUnits) {
-            if(sp != null)
-                progressPreparation(5, i++, size, pu);
-            CompilationUnit compilationUnit = pu.getCompilationUnit();
-            compilationUnit.visit(new WarningSuppressionVisitor<Warning>(Warning.class, pu.getSuppressedWarnings()));
-        }
-        
-        collectTreeErrors(true, true);
     }
 
-    private void progressPreparation(int phase, int i, int size, PhasedUnit pu) {
+    static private void progressPreparation(StatusPrinter sp, int phase, int i, int size, PhasedUnit pu) {
         sp.clearLine();
         sp.log("Preparing "+phase+"/5 ["+(i++)+"/"+size+"] ");
         sp.log(pu.getPathRelativeToSrcDir());
+    }
+
+    private void progressPreparation(int phase, int i, int size, PhasedUnit pu) {
+        progressPreparation(sp, phase, i, size, pu);
     }
 
     private void collectTreeErrors(boolean runAssertions, final boolean reportWarnings) {

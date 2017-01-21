@@ -261,19 +261,8 @@ public class MethodDefinitionBuilder
     }
 
     JCExpression makeResultType(TypedDeclaration typedDeclaration, Type type, int flags) {
-        if (typedDeclaration == null
-                || ((!(typedDeclaration instanceof Function) || !((Function)typedDeclaration).isParameter())
-                        && AbstractTransformer.isAnything(type))) {
-            if ((typedDeclaration instanceof Function)
-                    && ((Function)typedDeclaration).isDeclaredVoid()
-                    && !Strategy.useBoxedVoid((Function)typedDeclaration)) {
-                return makeVoidType();
-            } else {
-                return gen.makeJavaType(typedDeclaration, gen.typeFact().getAnythingType(), flags);
-            }
-        } else {
-            return gen.makeJavaType(typedDeclaration, type, flags);
-        }
+        ClassTransformer transformer = gen.classGen();
+        return transformer.prepareResultType(typedDeclaration, type, flags, transformer.javacTypeCreator);
     }
 
     /*
@@ -678,32 +667,8 @@ public class MethodDefinitionBuilder
     }
 
     public MethodDefinitionBuilder resultType(Function method, int flags) {
-        if (method.isParameter()) {
-            if (Decl.isUnboxedVoid(method) && !Strategy.useBoxedVoid(method)) {
-                return resultType(new TransformedType(gen.make().Type(gen.syms().voidType), 
-                        gen.makeJavaTypeAnnotations(method, false),
-                        gen.makeNullabilityAnnotations(method)));
-            } else {
-                Parameter parameter = method.getInitializerParameter();
-                Type resultType = parameter.getType();
-                for (int ii = 1; ii < method.getParameterLists().size(); ii++) {
-                    resultType = gen.typeFact().getCallableType(resultType);
-                }
-                return resultType(gen.makeJavaType(resultType, CodegenUtil.isUnBoxed(method) ? 0 : AbstractTransformer.JT_NO_PRIMITIVES), 
-                        method);
-            }
-        }
-        TypedReference typedRef = gen.getTypedReference(method);
-        TypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
-        Type nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
-        if(method.isActual()
-                && CodegenUtil.hasTypeErased(method))
-            flags |= AbstractTransformer.JT_RAW;
-        if (method.isShortcutRefinement()
-                && Decl.isSmall(method.getRefinedDeclaration())) {
-            flags |= AbstractTransformer.JT_SMALL;
-        }
-        return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
+        ClassTransformer classGen = gen.classGen();
+        return resultType(classGen.prepareResultType(method, flags, classGen.javacTypeCreator), method);
     }
     
     public MethodDefinitionBuilder resultTypeNonWidening(Type currentType, TypedReference typedRef, 

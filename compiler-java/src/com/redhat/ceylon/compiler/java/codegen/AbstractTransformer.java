@@ -24,6 +24,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedN
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.FINAL;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PRIVATE;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PROTECTED;
+import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.VOID;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
 
@@ -135,8 +136,8 @@ public abstract class AbstractTransformer implements Transformation {
 
     // the @TypeInfo of a static inner class should not include type arguments
     // for the qualifying classes. See #2388
-    static class TypeSerializer extends TypePrinter {
-        TypeSerializer() {
+    public static class TypeSerializer extends TypePrinter {
+        public TypeSerializer() {
             super(
                 true,//printAbbreviated 
                 true,//printTypeParameters 
@@ -847,7 +848,7 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
-    TypedReference getTypedReference(TypedDeclaration decl){
+    public TypedReference getTypedReference(TypedDeclaration decl){
         java.util.List<Type> typeArgs = Collections.<Type>emptyList();
         if (decl instanceof Function) {
             // For methods create type arguments for any type parameters it might have
@@ -868,7 +869,7 @@ public abstract class AbstractTransformer implements Transformation {
         return decl.appliedTypedReference(null, typeArgs);
     }
     
-    TypedReference nonWideningTypeDecl(TypedReference typedReference) {
+    public TypedReference nonWideningTypeDecl(TypedReference typedReference) {
         return nonWideningTypeDecl(typedReference, typedReference.getQualifyingType());
     }
     
@@ -1364,7 +1365,7 @@ public abstract class AbstractTransformer implements Transformation {
         return true;
     }
 
-    Type nonWideningType(TypedReference declaration, TypedReference refinedDeclaration){
+    public Type nonWideningType(TypedReference declaration, TypedReference refinedDeclaration){
         final Reference pr;
         if (declaration.equals(refinedDeclaration)) {
             pr = declaration;
@@ -1731,15 +1732,15 @@ public abstract class AbstractTransformer implements Transformation {
      */
     
     /** For use in {@code implements} clauses. */
-    static final int JT_SATISFIES = 1 << 0;
+    public static final int JT_SATISFIES = 1 << 0;
     /** For use in {@code extends} clauses. */
-    static final int JT_EXTENDS = 1 << 1;
+    public static final int JT_EXTENDS = 1 << 1;
     
     /** For use when a primitive type won't do. */
-    static final int JT_NO_PRIMITIVES = 1 << 2;
+    public static final int JT_NO_PRIMITIVES = 1 << 2;
     
     /** For generating a type without type arguments. */
-    static final int JT_RAW = 1 << 3;
+    public static final int JT_RAW = 1 << 3;
     /** For use in {@code catch} statements. */
     static final int JT_CATCH = 1 << 4;
     /** 
@@ -1787,7 +1788,7 @@ public abstract class AbstractTransformer implements Transformation {
     /**
      * This function is used solely for method return types and parameters 
      */
-    JCExpression makeJavaType(TypedDeclaration typeDecl, Type type, int flags) {
+    public <TypeType> TypeType prepareJavaType(TypedDeclaration typeDecl, Type type, int flags, TypeCreator<TypeType> creator) {
         if (typeDecl instanceof Function
                 && ((Function)typeDecl).isParameter()) {
             Function p = (Function)typeDecl;
@@ -1795,11 +1796,15 @@ public abstract class AbstractTransformer implements Transformation {
             for (int ii = 1; ii < p.getParameterLists().size(); ii++) {
                 pt = typeFact().getCallableType(pt);
             }
-            return makeJavaType(typeFact().getCallableType(pt), flags);
+            return prepareJavaType(typeFact().getCallableType(pt), flags, creator);
         } else {
             boolean usePrimitives = CodegenUtil.isUnBoxed(typeDecl);
-            return makeJavaType(type, flags | (usePrimitives ? 0 : AbstractTransformer.JT_NO_PRIMITIVES));
+            return prepareJavaType(type, flags | (usePrimitives ? 0 : AbstractTransformer.JT_NO_PRIMITIVES), creator);
         }
+    }
+    
+    JCExpression makeJavaType(TypedDeclaration typeDecl, Type type, int flags) {
+        return prepareJavaType(typeDecl, type, flags, javacTypeCreator);
     }
 
     JCExpression makeJavaType(TypeSymbol tsym){
@@ -1911,10 +1916,11 @@ public abstract class AbstractTransformer implements Transformation {
         return rawSupertype(ceylonType.getExtendedType(), flags);
     }
     
-    JCExpression makeJavaType(final Type ceylonType, final int flags) {
+
+    public <TypeType> TypeType prepareJavaType(final Type ceylonType, final int flags, TypeCreator<TypeType> creator) {
         Type type = ceylonType;
         if(type == null || type.isUnknown())
-            return make().Erroneous();
+            return creator.erroneous();
         
         if (type.getDeclaration() instanceof Constructor) {
             type = type.getExtendedType();
@@ -1949,7 +1955,7 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
         if (type.isTypeConstructor()) {
-            return make().QualIdent(syms().ceylonAbstractTypeConstructorType.tsym);
+            return creator.ceylonAbstractTypeConstructorTypeIdent();
         }
         
         // ERASURE
@@ -1965,23 +1971,23 @@ public abstract class AbstractTransformer implements Transformation {
             if ((flags & JT_SATISFIES) != 0) {
                 return null;
             } else {
-                return make().Type(syms().objectType);
+                return creator.objectType();
             }
         } else if (willEraseToAnnotation(type)) {
-            return make().Type(syms().annotationType);
+            return creator.annotationType();
         } else if (willEraseToException(type)) {
             if ((flags & JT_CLASS_NEW) != 0
                     || (flags & JT_EXTENDS) != 0) {
-                return makeIdent(syms().ceylonExceptionType);
+                return creator.ceylonExceptionTypeIdent();
             } else {
-                return make().Type(syms().exceptionType);
+                return creator.exceptionType();
             }
         } else if (willEraseToThrowable(type)) {
             if ((flags & JT_CLASS_NEW) != 0
                     || (flags & JT_EXTENDS) != 0) {
-                return makeIdent(syms().throwableType);
+                return creator.throwableTypeIdent();
             } else {
-                return make().Type(syms().throwableType);
+                return creator.throwableType();
             }
         } else if (willEraseToSequence(type)) {
             if ((flags & (JT_CLASS_NEW | JT_EXTENDS | JT_IS)) == 0) {
@@ -1996,31 +2002,31 @@ public abstract class AbstractTransformer implements Transformation {
         } else if ((flags & (JT_SATISFIES | JT_EXTENDS | JT_NO_PRIMITIVES | JT_CLASS_NEW)) == 0
                 && ((isCeylonBasicType(type) && !isOptional(type)) || isJavaString(type))) {
             if (isCeylonString(type) || isJavaString(type)) {
-                return make().Type(syms().stringType);
+                return creator.stringType();
             } else if (isCeylonBoolean(type)) {
-                return make().TypeIdent(TypeTag.BOOLEAN);
+                return creator.booleanTypeIdent();
             } else if (isCeylonInteger(type)) {
                 if ("short".equals(type.getUnderlyingType())) {
-                    return make().TypeIdent(TypeTag.SHORT);
+                    return creator.shortTypeIdent();
                 } else if ((flags & JT_SMALL) != 0 || "int".equals(type.getUnderlyingType())) {
-                    return make().TypeIdent(TypeTag.INT);
+                    return creator.intTypeIdent();
                 } else {
-                    return make().TypeIdent(TypeTag.LONG);
+                    return creator.longTypeIdent();
                 }
             } else if (isCeylonFloat(type)) {
                 if ((flags & JT_SMALL) != 0 || "float".equals(type.getUnderlyingType())) {
-                    return make().TypeIdent(TypeTag.FLOAT);
+                    return creator.floatTypeIdent();
                 } else {
-                    return make().TypeIdent(TypeTag.DOUBLE);
+                    return creator.doubleTypeIdent();
                 }
             } else if (isCeylonCharacter(type)) {
                 if ((flags & JT_SMALL) != 0 || "char".equals(type.getUnderlyingType())) {
-                    return make().TypeIdent(TypeTag.CHAR);
+                    return creator.charTypeIdent();
                 } else {
-                    return make().TypeIdent(TypeTag.INT);
+                    return creator.intTypeIdent();
                 }
             } else if (isCeylonByte(type)) {
-                return make().TypeIdent(TypeTag.BYTE);
+                return creator.byteTypeIdent();
             }
         } else if (isCeylonBoolean(type)
                 && !isTypeParameter(type)) {
@@ -2028,10 +2034,10 @@ public abstract class AbstractTransformer implements Transformation {
             // special case to get rid of $true and $false types
             type = typeFact.getBooleanType();
         } else if ((flags & JT_VALUE_TYPE) == 0 && isJavaArray(type)){
-            return getJavaArrayElementType(type, flags);
+            return getJavaArrayElementType(type, flags, creator);
         }
         
-        JCExpression jt = null;
+        TypeType jt = null;
         
         Type simpleType;
         if((flags & JT_CLASS_LITERAL) == 0)
@@ -2132,25 +2138,25 @@ public abstract class AbstractTransformer implements Transformation {
                     && simpleType.getDeclaration() instanceof Interface
                     // this is only valid for interfaces, not for their companion which stay where they are
                     && (flags & JT_COMPANION) == 0){
-                JCExpression baseType;
+                TypeType baseType;
                 TypeDeclaration tdecl = simpleType.getDeclaration();
                 // collect all the qualifying type args we'd normally have
                 java.util.List<TypeParameter> qualifyingTypeParameters = new java.util.ArrayList<TypeParameter>();
                 java.util.Map<TypeParameter, Type> qualifyingTypeArguments = new java.util.HashMap<TypeParameter, Type>();
                 collectQualifyingTypeArguments(qualifyingTypeParameters, qualifyingTypeArguments, qualifyingTypes);
                 
-                ListBuffer<JCExpression> typeArgs = makeTypeArgs(isCeylonCallable(simpleType), 
+                ListBuffer<TypeType> typeArgs = prepareTypeArgs(isCeylonCallable(simpleType), 
                         flags, 
-                        qualifyingTypeArguments, qualifyingTypeParameters, simpleType);
+                        qualifyingTypeArguments, qualifyingTypeParameters, simpleType, creator);
                 if (isCeylonCallable(type) && 
                         (flags & JT_CLASS_NEW) != 0) {
-                    baseType = makeIdent(syms().ceylonAbstractCallableType);
+                    baseType = creator.ceylonAbstractCallableTypeIdent();
                 } else {
-                    baseType = naming.makeDeclarationName(tdecl, DeclNameFlag.QUALIFIED);
+                    baseType = creator.declarationIdent(tdecl, DeclNameFlag.QUALIFIED);
                 }
 
                 if (typeArgs != null && typeArgs.size() > 0) {
-                    jt = make().TypeApply(baseType, typeArgs.toList());
+                    jt = creator.apply(baseType, typeArgs.toList());
                 } else {
                     jt = baseType;
                 }
@@ -2159,40 +2165,45 @@ public abstract class AbstractTransformer implements Transformation {
                 if(qualifyingTypes != null){
                     for (Reference qualifyingType : qualifyingTypes) {
                         if (!qualifyingType.getDeclaration().equals(simpleType.getDeclaration()) && simpleType.getDeclaration().isStatic()) {
-                            jt = makeRawType(flags, (Type)qualifyingType , (Type)qualifyingType );
+                            jt = prepareRawType(flags, (Type)qualifyingType , (Type)qualifyingType, creator);
                         } else {
-                            jt = makeParameterisedType(qualifyingType.getType(), type, flags | (simpleType.getDeclaration().isStatic() ? JT_RAW : 0), jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index);
+                            jt = prepareParameterisedType(qualifyingType.getType(), type, flags | (simpleType.getDeclaration().isStatic() ? JT_RAW : 0), jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index, creator);
                         }
                         index++;
                     }
                 }else{
-                    jt = makeParameterisedType(simpleType, type, flags, jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index);
+                    jt = prepareParameterisedType(simpleType, type, flags, jt, qualifyingTypes, firstQualifyingTypeWithTypeParameters, index, creator);
                 }
             }else{
-                jt = makeParameterisedType(type, type, flags, jt, qualifyingTypes, 0, 0);
+                jt = prepareParameterisedType(type, type, flags, jt, qualifyingTypes, 0, 0, creator);
             }
         } else {
-            jt = makeRawType(flags, type, simpleType);
+            jt = prepareRawType(flags, type, simpleType, creator);
         }
         
-        return (jt != null) ? jt : makeErroneous(null, "compiler bug: the java type corresponding to " + ceylonType + " could not be computed");
+        return (jt != null) ? jt : creator.erroneous("compiler bug: the java type corresponding to " + ceylonType + " could not be computed");
     }
 
-    protected JCExpression makeRawType(final int flags, Type type, Type simpleType) {
-        JCExpression jt;
+    
+    JCExpression makeJavaType(final Type ceylonType, final int flags) {
+        return prepareJavaType(ceylonType, flags, javacTypeCreator);
+    }
+
+    protected <TypeType> TypeType prepareRawType(final int flags, Type type, Type simpleType, TypeCreator<TypeType> creator) {
+        TypeType jt;
         TypeDeclaration tdecl = simpleType.getDeclaration();
         // For an ordinary class or interface type T:
         // - The Ceylon type T results in the Java type T
         if (isCeylonCallable(type) && 
                 (flags & JT_CLASS_NEW) != 0) {
-            jt = makeIdent(syms().ceylonAbstractCallableType);
+            jt = creator.ceylonAbstractCallableTypeIdent();
         } else if(tdecl instanceof TypeParameter)
-            jt = makeQuotedIdent(tdecl.getName());
+            jt = creator.typeParamemerIdent((TypeParameter)tdecl);
         // don't use underlying type if we want no primitives
         else if((flags & (JT_SATISFIES | JT_NO_PRIMITIVES)) != 0 || simpleType.getUnderlyingType() == null){
-            jt = naming.makeDeclarationName(tdecl, jtFlagsToDeclNameOpts(flags));
+            jt = creator.declarationIdent(tdecl, jtFlagsToDeclNameOpts(flags));
         }else
-            jt = makeQuotedFQIdent(simpleType.getUnderlyingType());
+            jt = creator.underlyingTypeIdent(simpleType);
         return jt;
     }
 
@@ -2329,44 +2340,44 @@ public abstract class AbstractTransformer implements Transformation {
         return Decl.isJavaObjectArray(decl);
     }
 
-    private JCExpression getJavaArrayElementType(Type type, int flags) {
+    private <TypeType> TypeType getJavaArrayElementType(Type type, int flags, TypeCreator<TypeType> creator) {
         if(type == null)
-            return makeErroneous(null, "compiler bug: "+ type + " is not a java array");
+            return creator.erroneous("compiler bug: "+ type + " is not a java array");
         type = simplifyType(type);
         if(type == null || type.getDeclaration() instanceof Class == false)
-            return makeErroneous(null, "compiler bug: " + type + " is not a java array");
+            return creator.erroneous("compiler bug: " + type + " is not a java array");
         Class c = (Class) type.getDeclaration();
         String name = c.getQualifiedNameString();
         if(name.equals("java.lang::ObjectArray")){
             // fetch its type parameter
             if(type.getTypeArgumentList().size() != 1)
-                return makeErroneous(null, "compiler bug: " + type + " is missing parameter type to java ObjectArray");
+                return creator.erroneous("compiler bug: " + type + " is missing parameter type to java ObjectArray");
             Type elementType = type.getTypeArgumentList().get(0);
             if(elementType == null)
-                return makeErroneous(null, "compiler bug: " + type + " has null parameter type to java ObjectArray");
+                return creator.erroneous("compiler bug: " + type + " has null parameter type to java ObjectArray");
             elementType = simplifyType(elementType);
             int newFlags = flags;
             if((flags & JT_NO_PRIMITIVES) != 0)
                 newFlags |= JT_TYPE_ARGUMENT;
-            return make().TypeArray(makeJavaType(elementType, newFlags));
+            return creator.array(prepareJavaType(elementType, newFlags, creator));
         }else if(name.equals("java.lang::ByteArray")){
-            return make().TypeArray(make().TypeIdent(TypeTag.BYTE));
+            return creator.array(creator.byteTypeIdent());
         }else if(name.equals("java.lang::ShortArray")){
-            return make().TypeArray(make().TypeIdent(TypeTag.SHORT));
+            return creator.array(creator.shortTypeIdent());
         }else if(name.equals("java.lang::IntArray")){
-            return make().TypeArray(make().TypeIdent(TypeTag.INT));
+            return creator.array(creator.intTypeIdent());
         }else if(name.equals("java.lang::LongArray")){
-            return make().TypeArray(make().TypeIdent(TypeTag.LONG));
+            return creator.array(creator.longTypeIdent());
         }else if(name.equals("java.lang::FloatArray")){
-            return make().TypeArray(make().TypeIdent(TypeTag.FLOAT));
+            return creator.array(creator.floatTypeIdent());
         }else if(name.equals("java.lang::DoubleArray")){
-            return make().TypeArray(make().TypeIdent(TypeTag.DOUBLE));
+            return creator.array(creator.doubleTypeIdent());
         }else if(name.equals("java.lang::BooleanArray")){
-            return make().TypeArray(make().TypeIdent(TypeTag.BOOLEAN));
+            return creator.array(creator.booleanTypeIdent());
         }else if(name.equals("java.lang::CharArray")){
-            return make().TypeArray(make().TypeIdent(TypeTag.CHAR));
+            return creator.array(creator.charTypeIdent());
         }else {
-            return makeErroneous(null, "compiler bug: " + type + " is an unknown java array type");
+            return creator.erroneous("compiler bug: " + type + " is an unknown java array type");
         }
     }
     
@@ -2377,12 +2388,12 @@ public abstract class AbstractTransformer implements Transformation {
         return type.isSubtypeOf(typeFact().getJavaEnumType(type));
     }
 
-    public JCExpression makeParameterisedType(Type type, Type generalType, final int flags, 
-            JCExpression qualifyingExpression, java.util.List<Reference> qualifyingTypes, 
-            int firstQualifyingTypeWithTypeParameters, int index) {
-        JCExpression baseType;
+    public <TypeType> TypeType prepareParameterisedType(Type type, Type generalType, final int flags, 
+            TypeType qualifyingExpression, java.util.List<Reference> qualifyingTypes, 
+            int firstQualifyingTypeWithTypeParameters, int index, TypeCreator<TypeType> creator) {
+        TypeType baseType;
         TypeDeclaration tdecl = type.getDeclaration();
-        ListBuffer<JCExpression> typeArgs = null;
+        ListBuffer<TypeType> typeArgs = null;
         if(index >= firstQualifyingTypeWithTypeParameters) {
             int taFlags = flags;
             if (qualifyingTypes != null && index < qualifyingTypes.size()-1) {
@@ -2390,13 +2401,14 @@ public abstract class AbstractTransformer implements Transformation {
                 // have type parameters with proper variance
                 taFlags &= ~(JT_EXTENDS | JT_SATISFIES);
             }
-            typeArgs = makeTypeArgs( 
+            typeArgs = prepareTypeArgs( 
                     type,
-                    taFlags);
+                    taFlags,
+                    creator);
         }
         if (isCeylonCallable(generalType) && 
                 (flags & JT_CLASS_NEW) != 0) {
-            baseType = makeIdent(syms().ceylonAbstractCallableType);
+            baseType = creator.ceylonAbstractCallableTypeIdent();
         } else if (index == 0) {
             // in Ceylon we'd move the nested decl to a companion class
             // but in Java we just don't have type params to the qualifying type if the
@@ -2406,29 +2418,30 @@ public abstract class AbstractTransformer implements Transformation {
                     && qualifyingTypes.size() > 1
                     && firstQualifyingTypeWithTypeParameters == 0
                     && (flags & JT_NON_QUALIFIED) == 0) {
-                baseType = naming.makeCompanionClassName(tdecl);
+                baseType = creator.companionClassIdent((Interface)tdecl);
             } else {
-                baseType = naming.makeDeclarationName(tdecl, jtFlagsToDeclNameOpts(flags));
+                baseType = creator.declarationIdent(tdecl, jtFlagsToDeclNameOpts(flags));
             }
             
         } else {
-            baseType = naming.makeTypeDeclarationExpression(qualifyingExpression, tdecl, 
+            baseType = creator.typeDeclarationIdent(qualifyingExpression, tdecl, 
                     jtFlagsToDeclNameOpts(flags 
                             | JT_NON_QUALIFIED 
                             | (type.getDeclaration() instanceof Interface ? JT_COMPANION : 0)));
         }
 
         if (typeArgs != null && typeArgs.size() > 0) {
-            qualifyingExpression = make().TypeApply(baseType, typeArgs.toList());
+            qualifyingExpression = creator.apply(baseType, typeArgs.toList());
         } else {
             qualifyingExpression = baseType;
         }
         return qualifyingExpression;
     }
 
-    private ListBuffer<JCExpression> makeTypeArgs(
+    private <TypeType> ListBuffer<TypeType> prepareTypeArgs(
             Type simpleType, 
-            int flags) {
+            int flags,
+            TypeCreator<TypeType> creator) {
         Map<TypeParameter, Type> tas = simpleType.getTypeArguments();
         java.util.List<TypeParameter> tps = Strategy.getEffectiveTypeParameters(simpleType.getDeclaration());
         if (tps.size() != tas.size()) {
@@ -2449,13 +2462,13 @@ public abstract class AbstractTransformer implements Transformation {
         }
         
 
-        return makeTypeArgs(isCeylonCallable(simpleType), flags, tas, tps, simpleType);
+        return prepareTypeArgs(isCeylonCallable(simpleType), flags, tas, tps, simpleType, creator);
     }
 
-    private ListBuffer<JCExpression> makeTypeArgs(boolean isCeylonCallable,
+    private <TypeType> ListBuffer<TypeType> prepareTypeArgs(boolean isCeylonCallable,
             int flags, Map<TypeParameter, Type> tas,
-            java.util.List<TypeParameter> tps, Type simpleType) {
-        ListBuffer<JCExpression> typeArgs = new ListBuffer<JCExpression>();
+            java.util.List<TypeParameter> tps, Type simpleType, TypeCreator<TypeType> creator) {
+        ListBuffer<TypeType> typeArgs = new ListBuffer<TypeType>();
         
         for (TypeParameter tp : tps) {
             Type ta = tas.get(tp);
@@ -2504,7 +2517,7 @@ public abstract class AbstractTransformer implements Transformation {
                     && !isTypeParameter(ta)) {
                 ta = typeFact.getBooleanType();
             } 
-            JCExpression jta;
+            TypeType jta;
             
             if(!tp.getSatisfiedTypes().isEmpty()){
                 boolean needsCastForBounds = false;
@@ -2547,13 +2560,13 @@ public abstract class AbstractTransformer implements Transformation {
                     //   Foo<Object> (see https://github.com/ceylon/ceylon-compiler/issues/633 for why)
                     if((flags & (JT_SATISFIES | JT_EXTENDS)) != 0){
                         if (ta.isExactlyNothing()) {
-                            jta = make().Type(syms().objectType);
+                            jta = creator.objectType();
                         } else {
                             if (!tp.getSatisfiedTypes().isEmpty()) {
                                 // union or intersection: Use the common upper bound of the types
-                                jta = makeJavaType(tp.getSatisfiedTypes().get(0), JT_TYPE_ARGUMENT);
+                                jta = prepareJavaType(tp.getSatisfiedTypes().get(0), JT_TYPE_ARGUMENT, creator);
                             } else {
-                                jta = make().Type(syms().objectType);
+                                jta = creator.objectType();
                             }
                         }
                     }else if (ta.isExactlyNothing()){
@@ -2569,9 +2582,9 @@ public abstract class AbstractTransformer implements Transformation {
                         } else if (tp.isCovariant() && !isDependedOn) {
                             // DO NOT trust use-site covariance for Nothing, because we consider "out Nothing" to be the same
                             // as "Nothing". Only look at declaration-site covariance
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), make().Type(syms().objectType));
+                            jta = creator.wildcard(BoundKind.EXTENDS, creator.objectType());
                         } else {
-                            jta = make().Type(syms().objectType);
+                            jta = creator.objectType();
                         }
                     }else{
                         // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
@@ -2581,11 +2594,11 @@ public abstract class AbstractTransformer implements Transformation {
                         // FIXME: it may be necessary to uncomment this in the future,
                         // see https://github.com/ceylon/ceylon/issues/6365
                         if (((flags & JT_CLASS_NEW) == 0) && simpleType.isContravariant(tp)/* && !isDependedOn*/) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
+                            jta = creator.wildcard(BoundKind.SUPER, prepareJavaType(ta, JT_TYPE_ARGUMENT, creator));
                         } else if (((flags & JT_CLASS_NEW) == 0) && simpleType.isCovariant(tp) && !isDependedOn) {
-                            jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, JT_TYPE_ARGUMENT));
+                            jta = creator.wildcard(BoundKind.EXTENDS, prepareJavaType(ta, JT_TYPE_ARGUMENT, creator));
                         } else {
-                            jta = makeJavaType(ta, JT_TYPE_ARGUMENT);
+                            jta = prepareJavaType(ta, JT_TYPE_ARGUMENT, creator);
                         }
                     }
                 }
@@ -2594,7 +2607,7 @@ public abstract class AbstractTransformer implements Transformation {
                 if ((flags & (JT_SATISFIES | JT_EXTENDS)) != 0) {
                     // - The Ceylon type Foo<T> appearing in an extends or satisfies clause
                     //   results in the Java type Foo<T>
-                    jta = makeJavaType(ta, JT_TYPE_ARGUMENT);
+                    jta = prepareJavaType(ta, JT_TYPE_ARGUMENT, creator);
                 } else {
                     // - The Ceylon type Foo<T> appearing anywhere else results in the Java type
                     // - Foo<T> if Foo is invariant in T,
@@ -2608,11 +2621,11 @@ public abstract class AbstractTransformer implements Transformation {
                             /*&& !isDependedOn*/) {
                         // DO NOT trust use-site contravariance for Anything, because we consider "in Anything" to be the same
                         // as "Anything". Only look at declaration-site contravariance
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
+                        jta = creator.wildcard(BoundKind.SUPER, prepareJavaType(ta, JT_TYPE_ARGUMENT, creator));
                     } else if (((flags & JT_CLASS_NEW) == 0) && simpleType.isCovariant(tp) && !isDependedOn) {
-                        jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, JT_TYPE_ARGUMENT));
+                        jta = creator.wildcard(BoundKind.EXTENDS, prepareJavaType(ta, JT_TYPE_ARGUMENT, creator));
                     } else {
-                        jta = makeJavaType(ta, JT_TYPE_ARGUMENT);
+                        jta = prepareJavaType(ta, JT_TYPE_ARGUMENT, creator);
                     }
                 }
             }
@@ -3733,7 +3746,248 @@ public abstract class AbstractTransformer implements Transformation {
         return makeJavaTypeAnnotations(decl, true);
     }
     
-    JCTree.JCAnnotation makeJavaTypeAnnotations(TypedDeclaration decl, boolean handleFunctionalParameter) {
+    public interface AnnotationCreator<AnnotationType> {
+        AnnotationType createTypeInfoAnnotation(String name, boolean erased, boolean declaredVoid, boolean untrusted, boolean uncheckedNull);
+        AnnotationType createMembersAnnotation(List<Object> members);
+    }
+
+    protected AnnotationCreator<List<JCTree.JCAnnotation>> javacJavaTypeAnnotationsCreator = new AnnotationCreator<List<JCTree.JCAnnotation>>() {
+        @Override
+        public List<JCTree.JCAnnotation> createTypeInfoAnnotation(String name, boolean erased, boolean declaredVoid, boolean untrusted, boolean uncheckedNull) {
+            ListBuffer<JCExpression> annotationArgs = new ListBuffer<JCExpression>();
+            annotationArgs.add(
+                    make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name)));
+            if (erased) {
+                annotationArgs.add(
+                        make().Assign(naming.makeUnquotedIdent("erased"), make().Literal(erased)));
+            }
+            if (declaredVoid) {
+                annotationArgs.add(
+                        make().Assign(naming.makeUnquotedIdent("declaredVoid"), make().Literal(declaredVoid)));
+            }
+            if (untrusted) {
+                annotationArgs.add(
+                        make().Assign(naming.makeUnquotedIdent("untrusted"), make().Literal(untrusted)));
+            }
+            if (uncheckedNull) {
+                annotationArgs.add(
+                        make().Assign(naming.makeUnquotedIdent("uncheckedNull"), make().Literal(uncheckedNull)));
+            }
+            return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList());
+        }
+
+        @Override
+        public List<JCTree.JCAnnotation> createMembersAnnotation(List<Object> membersAsTypeOrString) {
+            List<JCExpression> members = List.nil();
+            for (Object m : membersAsTypeOrString) {
+                JCTree.JCAnnotation atMember;
+                if (m instanceof Type) {
+                    atMember = makeAtMember((Type)m);
+                } else {
+                    atMember = makeAtMember(m.toString());
+                }
+                members = members.prepend(atMember);
+            }
+            return makeAtMembers(members);
+        }
+    };
+
+    public interface TypeCreator<TypeType> {
+        TypeType erroneous();
+        TypeType erroneous(String message);
+
+        TypeType voidType();
+        TypeType voidTypeIdent();
+        TypeType booleanTypeIdent();
+        TypeType typeDescriptorTypeIdent();
+        TypeType shortTypeIdent();
+        TypeType longTypeIdent();
+        TypeType floatTypeIdent();
+        TypeType doubleTypeIdent();
+        TypeType charTypeIdent();
+        TypeType intTypeIdent();
+        TypeType byteTypeIdent();
+        
+        TypeType ceylonAbstractTypeConstructorTypeIdent();
+        TypeType ceylonAbstractCallableTypeIdent();
+        TypeType ceylonExceptionTypeIdent();
+        TypeType objectType();
+        TypeType stringType();
+        TypeType exceptionType();
+        TypeType throwableType();
+        TypeType throwableTypeIdent();
+        TypeType annotationType();
+
+        TypeType array(TypeType elementType);
+
+        TypeType declarationIdent(TypeDeclaration tdecl, DeclNameFlag... flags);
+        TypeType typeDeclarationIdent(TypeType qualifyingExpr, final TypeDeclaration decl, DeclNameFlag... options);
+        
+        TypeType typeParamemerIdent(TypeParameter tdecl);
+        TypeType underlyingTypeIdent(Type type);
+        TypeType companionClassIdent(Interface tdecl);
+        
+        
+        
+        TypeType apply(TypeType clazz, List<TypeType> arguments);
+        
+        TypeType wildcard(BoundKind boundKind, TypeType bound);
+    }
+
+    protected TypeCreator<JCTree.JCExpression> javacTypeCreator = new TypeCreator<JCTree.JCExpression>() {
+        @Override
+        public JCTree.JCExpression erroneous() {
+            return make().Erroneous();
+        }
+
+        @Override
+        public JCTree.JCExpression erroneous(String message) {
+            return makeErroneous(null, message);
+        }
+
+        @Override
+        public JCTree.JCExpression voidType() {
+            return make().Type(syms().voidType);
+        }
+        
+        @Override
+        public JCTree.JCExpression voidTypeIdent() {
+            return make().TypeIdent(VOID);
+        }
+
+        @Override
+        public JCExpression typeDescriptorTypeIdent(){
+            return makeJavaType(syms().ceylonTypeDescriptorType.tsym);
+        }
+        
+        @Override
+        public JCTree.JCExpression booleanTypeIdent() {
+            return make().TypeIdent(TypeTag.BOOLEAN);
+        }
+        
+        @Override
+        public JCTree.JCExpression shortTypeIdent() {
+            return make().TypeIdent(TypeTag.SHORT);
+        }
+        
+        @Override
+        public JCTree.JCExpression longTypeIdent() {
+            return make().TypeIdent(TypeTag.LONG);
+        }
+
+        @Override
+        public JCTree.JCExpression floatTypeIdent() {
+            return make().TypeIdent(TypeTag.FLOAT);
+        }
+        
+        @Override
+        public JCTree.JCExpression doubleTypeIdent() {
+            return make().TypeIdent(TypeTag.DOUBLE);
+        }
+        
+        @Override
+        public JCTree.JCExpression charTypeIdent() {
+            return make().TypeIdent(TypeTag.CHAR);
+        }
+        
+        @Override
+        public JCTree.JCExpression intTypeIdent() {
+            return make().TypeIdent(TypeTag.INT);
+        }
+        
+        @Override
+        public JCTree.JCExpression byteTypeIdent() {
+            return make().TypeIdent(TypeTag.BYTE);
+        }
+        
+        @Override
+        public JCExpression ceylonAbstractTypeConstructorTypeIdent() {
+            return make().QualIdent(syms().ceylonAbstractTypeConstructorType.tsym);
+        }
+
+        @Override
+        public JCExpression ceylonAbstractCallableTypeIdent() {
+            return makeIdent(syms().ceylonAbstractCallableType);
+        }
+
+        @Override
+        public JCTree.JCExpression objectType() {
+            return make().Type(syms().objectType);
+        }
+
+        @Override
+        public JCTree.JCExpression exceptionType() {
+            return make().Type(syms().exceptionType);
+        }
+
+        @Override
+        public JCTree.JCExpression throwableTypeIdent() {
+            return makeIdent(syms().throwableType);
+        }
+
+        @Override
+        public JCTree.JCExpression throwableType() {
+            return make().Type(syms().throwableType);
+        }
+
+        @Override
+        public JCTree.JCExpression stringType() {
+            return make().Type(syms().stringType);
+        }
+
+        @Override
+        public JCTree.JCExpression annotationType() {
+            return make().Type(syms().annotationType);
+        }
+        
+        @Override
+        public JCExpression ceylonExceptionTypeIdent() {
+            return makeIdent(syms().ceylonExceptionType);
+        }
+        
+        @Override
+        public JCExpression array(JCExpression elementType) {
+            return make().TypeArray(elementType);
+        }
+        
+        @Override
+        public JCExpression apply(JCExpression clazz, List<JCExpression> arguments) {
+            return make().TypeApply(clazz, arguments);
+        }
+
+        @Override
+        public JCExpression wildcard(BoundKind boundKind, JCExpression bound) {
+            return make().Wildcard(make().TypeBoundKind(boundKind), bound);
+        }
+
+        @Override
+        public JCExpression declarationIdent(TypeDeclaration tdecl, DeclNameFlag... flags) {
+            return naming.makeDeclarationName(tdecl, flags);
+        }
+
+        @Override
+        public JCExpression typeDeclarationIdent(JCExpression qualifyingExpr, final TypeDeclaration decl, DeclNameFlag... options) {
+            return naming.makeTypeDeclarationExpression(qualifyingExpr, decl, options);
+        }
+
+        @Override
+        public JCExpression typeParamemerIdent(TypeParameter tdecl) {
+            return makeQuotedIdent(tdecl.getName());
+        }
+        
+        @Override
+        public JCExpression underlyingTypeIdent(Type type) {
+            return makeQuotedFQIdent(type.getUnderlyingType());
+        }
+        
+        @Override
+        public JCExpression companionClassIdent(Interface tdecl) {
+            return naming.makeCompanionClassName(tdecl);
+        }
+        
+    };
+    
+    public <AnnotationType> AnnotationType prepareTypeInfoAnnotation(TypedDeclaration decl, boolean handleFunctionalParameter, AnnotationCreator<AnnotationType> creator) {
         if(decl == null || decl.getType() == null)
             return null;
         Type type;
@@ -3747,43 +4001,32 @@ public abstract class AbstractTransformer implements Transformation {
         
         boolean declaredVoid = decl instanceof Function && Strategy.useBoxedVoid((Function)decl) && Decl.isUnboxedVoid(decl);
         
-        return makeJavaTypeAnnotations(type, declaredVoid, 
+        return prepareTypeInfoAnnotation(type, declaredVoid, 
                 CodegenUtil.hasTypeErased(decl),
                 CodegenUtil.hasUntrustedType(decl),
                 needsJavaTypeAnnotations(decl, type),
-                decl.hasUncheckedNullType());
+                decl.hasUncheckedNullType(),
+                creator);
     }
 
-    private JCTree.JCAnnotation makeJavaTypeAnnotations(Type type, boolean declaredVoid, 
-                                                              boolean hasTypeErased, boolean untrusted, 
-                                                              boolean required, boolean uncheckedNull) {
+    JCTree.JCAnnotation makeJavaTypeAnnotations(TypedDeclaration decl, boolean handleFunctionalParameter) {
+        List<JCTree.JCAnnotation> javaTypeAnnotations = prepareTypeInfoAnnotation(decl, handleFunctionalParameter, javacJavaTypeAnnotationsCreator);
+        if (javaTypeAnnotations != null) {
+            return javaTypeAnnotations.head;
+        }
+        return null;
+    }
+    
+    private <AnnotationType> AnnotationType prepareTypeInfoAnnotation(Type type, boolean declaredVoid, 
+              boolean hasTypeErased, boolean untrusted, 
+              boolean required, boolean uncheckedNull, AnnotationCreator<AnnotationType> creator) {
         if (!required)
             return null;
         String name = serialiseTypeSignature(type);
         boolean erased = hasTypeErased || hasErasure(type);
-        // Add the original type to the annotations
-        ListBuffer<JCExpression> annotationArgs = new ListBuffer<JCExpression>();
-        annotationArgs.add(
-                make().Assign(naming.makeUnquotedIdent("value"), make().Literal(name)));
-        if (erased) {
-            annotationArgs.add(
-                    make().Assign(naming.makeUnquotedIdent("erased"), make().Literal(erased)));
-        }
-        if (declaredVoid) {
-            annotationArgs.add(
-                    make().Assign(naming.makeUnquotedIdent("declaredVoid"), make().Literal(declaredVoid)));
-        }
-        if (untrusted) {
-            annotationArgs.add(
-                    make().Assign(naming.makeUnquotedIdent("untrusted"), make().Literal(untrusted)));
-        }
-        if (uncheckedNull) {
-            annotationArgs.add(
-                    make().Assign(naming.makeUnquotedIdent("uncheckedNull"), make().Literal(uncheckedNull)));
-        }
-        return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList()).head;
+        return creator.createTypeInfoAnnotation(name, erased, declaredVoid, untrusted, uncheckedNull);
     }
-
+    
     protected JCTree.JCAnnotation makeNullabilityAnnotations(TypedDeclaration typedDecl) {
         if (typedDecl == null) {
             return null;
@@ -5162,11 +5405,11 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Erroneous(errs);
     }
     
-    List<JCExpression> makeTypeParameterBounds(java.util.List<Type> satisfiedTypes){
-        ListBuffer<JCExpression> bounds = new ListBuffer<JCExpression>();
+    public <TypeType> List<TypeType> prepareTypeParameterBounds(java.util.List<Type> satisfiedTypes, TypeCreator<TypeType> creator){
+        ListBuffer<TypeType> bounds = new ListBuffer<TypeType>();
         for (Type t : satisfiedTypes) {
             if (!willEraseToObject(t)) {
-                JCExpression bound = makeJavaType(t, AbstractTransformer.JT_NO_PRIMITIVES);
+                TypeType bound = prepareJavaType(t, AbstractTransformer.JT_NO_PRIMITIVES, creator);
                 // if it's a class, we need to move it first as per JLS http://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.4
                 if(t.getDeclaration() instanceof Class)
                     bounds.prepend(bound);
@@ -5176,7 +5419,11 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return bounds.toList();
     }
-    
+
+    public List<JCExpression> makeTypeParameterBounds(java.util.List<Type> satisfiedTypes) {
+        return prepareTypeParameterBounds(satisfiedTypes, javacTypeCreator);
+    }
+        
     /**
      * Determines whether any of the given type parameters  
      * (not including {@code tp}) has contraints dependent on {@code tp}.  
@@ -5454,10 +5701,14 @@ public abstract class AbstractTransformer implements Transformation {
         return makeClassLiteral(type, 0);
     }
 
-    public JCExpression makeClassLiteral(Type type, int extraFlags) {
-        return makeSelect(makeJavaType(type, JT_NO_PRIMITIVES | JT_RAW | JT_CLASS_LITERAL | extraFlags), "class");
+    public <TypeType> TypeType prepareClassLiteral(Type type, int extraFlags, TypeCreator<TypeType> creator) {
+        return prepareJavaType(type, JT_NO_PRIMITIVES | JT_RAW | JT_CLASS_LITERAL | extraFlags, creator);
     }
 
+    public JCExpression makeClassLiteral(Type type, int extraFlags) {
+        return makeSelect(prepareClassLiteral(type, JT_NO_PRIMITIVES | JT_RAW | JT_CLASS_LITERAL | extraFlags, javacTypeCreator), "class");
+    }
+    
     /**
      * Same as makeClassLiteral but does not use erasure rules
      */
