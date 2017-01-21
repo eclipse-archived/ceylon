@@ -1668,12 +1668,14 @@ public class TypeArgumentInference {
         int size = inferredTypeArgs.size();
         boolean found = false;
         for (int i=0; i<size; i++) {
-            List<Type> bounds = 
-                    typeParameters.get(i)
-                        .getSatisfiedTypes();
-            if (!bounds.isEmpty()) {
-                found = true;
-            }
+            TypeParameter tp = typeParameters.get(i);
+//            if (!tp.isCovariant()) {
+                List<Type> bounds = 
+                        tp.getSatisfiedTypes();
+                if (!bounds.isEmpty()) {
+                    found = true;
+                }
+//            }
         }
         
         if (found) {
@@ -1681,7 +1683,8 @@ public class TypeArgumentInference {
             Reference ref;
             if (declaration instanceof Value) {
                 Value value = (Value) declaration;
-                if (value.getType().isTypeConstructor()) {
+                if (value.getType()
+                         .isTypeConstructor()) {
                     if (qualifyingType == null) {
                         ref = declaration.appliedReference(null, 
                                 NO_TYPE_ARGS);
@@ -1691,7 +1694,8 @@ public class TypeArgumentInference {
                                 declaration, NO_TYPE_ARGS);
                     }
                     TypeDeclaration dec = 
-                            ref.getType().getDeclaration();
+                            ref.getType()
+                               .getDeclaration();
                     ref = dec.appliedReference(null, 
                             inferredTypeArgs);
                 }
@@ -1720,7 +1724,9 @@ public class TypeArgumentInference {
                 TypeParameter tp = typeParameters.get(i);
                 Type arg = inferredTypeArgs.get(i);
                 Type constrainedArg = 
-                        constrainInferredType(tp, arg, args);
+//                        tp.isCovariant() ? arg :
+                            constrainInferredType(
+                                    tp, arg, args);
                 result.add(constrainedArg);
             }
             return result;
