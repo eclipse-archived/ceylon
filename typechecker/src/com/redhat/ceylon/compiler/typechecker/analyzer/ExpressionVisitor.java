@@ -6181,14 +6181,15 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Term tt = that.getTerm();
                 if (tt!=null) {
                     Type pt = tt.getTypeModel();
-                    if (!isTypeUnknown(pt)) {
-                        if (!t.covers(pt)) {
-                            that.addError(
-                                    "specified type does not cover the cases of the operand expression: '" 
-                                    + t.asString(unit) 
-                                    + "' does not cover '"
-                                    + pt.asString(unit) + "'");
-                        }
+                    if (isTypeUnknown(pt)) {
+                        tt.addError("of operand has unknown type");
+                    }
+                    else if (!t.covers(pt)) {
+                        that.addError(
+                                "specified type does not cover the cases of the operand expression: '" 
+                                + t.asString(unit) 
+                                + "' does not cover '"
+                                + pt.asString(unit) + "'");
                     }
                     //Just especially for the IDE!
                     if (tt instanceof Tree.Super) {

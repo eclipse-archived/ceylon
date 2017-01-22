@@ -57,7 +57,7 @@ void run() {
         dynamic x = dynamic [];
         @error value f1 = foo(x);
         value f2 = foo<Integer>(x);
-        value f3 = foo(x of Integer);
+        @error value f3 = foo(x of Integer);
         
         for (xx in x) {}
         
