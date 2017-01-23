@@ -630,18 +630,6 @@ public class InheritanceVisitor extends Visitor {
                         caseTypeDec.getTypeParameters();
                 Set<TypeParameter> used =
                         new HashSet<TypeParameter>();
-//                if (args.size()<typeParameters.size()) {
-//                    TypeParameter tp = 
-//                            typeParameters.get(args.size());
-//                    if (tp!=null && tp.isDefaulted()) {
-//                        tal.addError(
-//                                "missing explicit type argument for defaulted type parameter '"
-//                                + tp.getName()
-//                                + "' of '"
-//                                + caseTypeDec.getName()
-//                                + "' (all type arguments must be explicitly specified for case type)");
-//                    }
-//                }
                 for (int i=0; 
 //                        i<args.size() && 
                         i<typeParameters.size(); 
@@ -650,14 +638,19 @@ public class InheritanceVisitor extends Visitor {
                             typeParameters.get(i);
                     Type argType;
                     Node node;
+                    String typeArg;
                     if (i<args.size()) {
                         Tree.Type arg = args.get(i);
                         argType = arg.getTypeModel();
                         node = arg;
+                        typeArg = "type argument";
                     }
                     else {
                         argType = typeParameter.getDefaultTypeArgument();
                         node = tal;
+                        typeArg = "default type argument '" 
+                                + argType.asString(node.getUnit()) 
+                                + "' of '" + typeParameter.getName() + "' ";
                     }
                     if (argType!=null) {
                         TypeDeclaration argTypeDec = 
@@ -668,7 +661,8 @@ public class InheritanceVisitor extends Visitor {
                                         argTypeDec;
                             if (!tp.getDeclaration()
                                     .equals(type)) {
-                                node.addError("type argument is not a type parameter of the enumerated type: '" 
+                                node.addError(typeArg 
+                                        + "is not a type parameter of the enumerated type: '" 
                                         + tp.getName() 
                                         + "' is not a type parameter of '"
                                         + type.getName() 
@@ -683,16 +677,24 @@ public class InheritanceVisitor extends Visitor {
                             checkAssignable(
                                     typeParameter.getType(), 
                                     argType, node, 
-                                    "type argument not an upper bound of the type parameter");
+                                    typeArg 
+                                    + " is not an upper bound of the type parameter '" 
+                                    + typeParameter.getName() 
+                                    + "' ");
                         }
                         else if (typeParameter.isContravariant()) {
                             checkAssignable(argType, 
                                     typeParameter.getType(), node, 
-                                    "type argument not a lower bound of the type parameter");
+                                    typeArg 
+                                    + " is not a lower bound of the type parameter '" 
+                                    + typeParameter.getName() 
+                                    + "' ");
                         }
                         else {
-                            node.addError("type argument is not a type parameter of the enumerated type: '" +
-                                    argTypeDec.getName() + "'");
+                            node.addError(typeArg
+                                    + "is not a type parameter of the enumerated type: '" 
+                                    + argTypeDec.getName() 
+                                    + "'");
                         }
                     }
                 }
