@@ -77,4 +77,4 @@ see(`interface OptionalAnnotation`,
     `function optionalAnnotation`, 
     `function sequencedAnnotations`)
 shared interface Annotation 
-        of ConstrainedAnnotation<Annotation,Anything,Nothing> {}
+        of ConstrainedAnnotation<> {}
