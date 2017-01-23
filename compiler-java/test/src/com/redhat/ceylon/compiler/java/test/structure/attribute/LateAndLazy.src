@@ -28,6 +28,14 @@ class LateAndLazy implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             return this.lateDefinite;
         }
     }
+    
+    public final void setLateDefinite(final .java.lang.String lateDefinite) {
+        if (this.lateDefinite == null) {
+            this.lateDefinite = lateDefinite;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
     private .ceylon.language.String lateOptional;
     private volatile transient boolean $init$lateOptional = false;
     
@@ -38,6 +46,15 @@ class LateAndLazy implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             this.lateOptional = .ceylon.language.String.instance("");
             this.$init$lateOptional = true;
             return this.lateOptional;
+        }
+    }
+    
+    public final void setLateOptional(final .ceylon.language.String lateOptional) {
+        if (!this.$init$lateOptional) {
+            this.lateOptional = lateOptional;
+            this.$init$lateOptional = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
     }
     private .java.lang.String lateVariableDefinite;
@@ -83,6 +100,15 @@ class LateAndLazy implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             return this.lateDefinite2;
         }
     }
+    
+    public final void setLateDefinite2(final long lateDefinite2) {
+        if (!this.$init$lateDefinite2) {
+            this.lateDefinite2 = lateDefinite2;
+            this.$init$lateDefinite2 = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
     private .ceylon.language.Integer lateOptional2;
     private volatile transient boolean $init$lateOptional2 = false;
     
@@ -93,6 +119,15 @@ class LateAndLazy implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             this.lateOptional2 = .ceylon.language.Integer.instance(.ceylon.language.system_.get_().getMilliseconds());
             this.$init$lateOptional2 = true;
             return this.lateOptional2;
+        }
+    }
+    
+    public final void setLateOptional2(final .ceylon.language.Integer lateOptional2) {
+        if (!this.$init$lateOptional2) {
+            this.lateOptional2 = lateOptional2;
+            this.$init$lateOptional2 = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
     }
     private long lateVariableDefinite2;
@@ -150,6 +185,14 @@ class LateAndLazyAndStatic implements .com.redhat.ceylon.compiler.java.runtime.m
             return .com.redhat.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateDefinite;
         }
     }
+    
+    public static final void setLateDefinite(final .java.lang.String lateDefinite) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateDefinite == null) {
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateDefinite = lateDefinite;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
     private static .ceylon.language.String lateOptional;
     private static volatile boolean $init$lateOptional = false;
     static {
@@ -164,6 +207,15 @@ class LateAndLazyAndStatic implements .com.redhat.ceylon.compiler.java.runtime.m
             .com.redhat.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateOptional = .ceylon.language.String.instance("");
             .com.redhat.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateOptional = true;
             return .com.redhat.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateOptional;
+        }
+    }
+    
+    public static final void setLateOptional(final .ceylon.language.String lateOptional) {
+        if (!.com.redhat.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateOptional) {
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.lateOptional = lateOptional;
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.$init$lateOptional = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
     }
     private static .java.lang.String lateVariableDefinite;
@@ -228,6 +280,14 @@ public final class lateDefinite_ {
             return .com.redhat.ceylon.compiler.java.test.structure.attribute.lateDefinite_.$object$;
         }
     }
+    
+    public static void set_(final .java.lang.String lateDefinite) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.attribute.lateDefinite_.$object$ == null) {
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.lateDefinite_.$object$ = lateDefinite;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
 }
 public final class lateOptional_ {
     
@@ -243,6 +303,15 @@ public final class lateOptional_ {
             .com.redhat.ceylon.compiler.java.test.structure.attribute.lateOptional_.$object$ = .ceylon.language.String.instance("");
             .com.redhat.ceylon.compiler.java.test.structure.attribute.lateOptional_.$init$$object$ = true;
             return .com.redhat.ceylon.compiler.java.test.structure.attribute.lateOptional_.$object$;
+        }
+    }
+    
+    public static void set_(final .ceylon.language.String lateOptional) {
+        if (!.com.redhat.ceylon.compiler.java.test.structure.attribute.lateOptional_.$init$$object$) {
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.lateOptional_.$object$ = lateOptional;
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.lateOptional_.$init$$object$ = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
     }
 }
