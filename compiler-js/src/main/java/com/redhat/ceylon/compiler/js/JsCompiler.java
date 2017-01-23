@@ -225,7 +225,7 @@ public class JsCompiler {
                 if (suppressedWarnings == null)
                     suppressedWarnings = EnumSet.noneOf(Warning.class);
                 pu.getCompilationUnit().visit(
-                            new WarningSuppressionVisitor<Warning>(Warning.class, suppressedWarnings));
+                            new WarningSuppressionVisitor<>(Warning.class, suppressedWarnings));
                 //Perform capture analysis
                 for (com.redhat.ceylon.model.typechecker.model.Declaration d : pu.getDeclarations()) {
                     if (d instanceof TypedDeclaration && d instanceof com.redhat.ceylon.model.typechecker.model.Setter == false) {
