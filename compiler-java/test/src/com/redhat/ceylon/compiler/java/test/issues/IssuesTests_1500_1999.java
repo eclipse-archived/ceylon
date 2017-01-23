@@ -676,7 +676,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
                 Arrays.asList("-continue"),
                 null,
                 new CompilerError(22, "declaration is not a value, and may not be annotated 'late'"),
-                new CompilerError(22, "value is not an uninitialized reference, and may not be annotated 'late'"));
+                new CompilerError(22, "value is not a reference, and may not be annotated 'late'"));
     }
 
     @Test

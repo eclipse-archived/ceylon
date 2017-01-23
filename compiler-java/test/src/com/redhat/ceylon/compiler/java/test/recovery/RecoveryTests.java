@@ -894,10 +894,8 @@ public class RecoveryTests extends CompilerTests {
 
         TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors,
-                new CompilerError(20, "incorrect syntax: mismatched token '{' expecting statement-ending ';'"),
                 new CompilerError(20, "incorrect syntax: mismatched token 'ERROR' expecting initial-lowercase identifier"),
-                new CompilerError(20, "incorrect syntax: no viable alternative at token '\"1.0.0\"'"),
-                new CompilerError(20, "incorrect syntax: missing opening brace '{' at 'okmodule'")
+                new CompilerError(20, "incorrect syntax: missing ':' operator at '\"1.0.0\"'")
         // this one is gone for some reason
 //                new CompilerError(21, "incorrect syntax: no viable alternative at token '}'")
         );
