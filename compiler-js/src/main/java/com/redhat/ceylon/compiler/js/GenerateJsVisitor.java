@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import com.redhat.ceylon.compiler.js.loader.JsonModule;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import org.antlr.runtime.CommonToken;
 
@@ -274,12 +275,19 @@ public class GenerateJsVisitor extends Visitor {
     private String generateToString(final GenerateCallback callback) {
         return out.generateToString(callback);
     }
-    
+
     @Override
     public void visit(final Tree.CompilationUnit that) {
         root = that;
         if (!that.getModuleDescriptors().isEmpty()) {
             final Tree.ModuleDescriptor md = that.getModuleDescriptors().get(0);
+            if (md.getNamespace() != null && md.getGroupQuotedLiteral() != null) {
+                String npmName = md.getGroupQuotedLiteral().getText();
+                if (npmName.charAt(0)=='"' && npmName.charAt(npmName.length()-1) == '"') {
+                    npmName = npmName.substring(1, npmName.length()-1);
+                }
+                ((JsonModule)that.getUnit().getPackage().getModule()).setNpmPath(npmName);
+            }
             out("ex$.$mod$ans$=");
             TypeUtils.outputAnnotationsFunction(md.getAnnotationList(), new TypeUtils.AnnotationFunctionHelper() {
                 @Override

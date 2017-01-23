@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.js.loader.NpmAware;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -34,7 +35,11 @@ public class NpmDescriptorGenerator {
 
     public String generateDescriptor() throws IOException {
         Map<String,Object> desc = new HashMap<>();
-        desc.put("name", mod.getNameAsString());
+        if (mod instanceof NpmAware && ((NpmAware)mod).getNpmPath() != null) {
+            desc.put("name", ((NpmAware)mod).getNpmPath());
+        } else {
+            desc.put("name", mod.getNameAsString());
+        }
         desc.put("version", mod.getVersion());
         for (Annotation ann : mod.getAnnotations()) {
             List<String> args = ann.getPositionalArguments();
