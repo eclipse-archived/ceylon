@@ -544,6 +544,15 @@ shared void caseTypes() {
     case (is BrokeCase<String,String>) {}
 }
 
+@error interface BrokeEnum2<T> of BrokeCase2<T> {}
+class BrokeCase2<T,U=T>() satisfies BrokeEnum2<T> {}
+
+shared void caseTypes2() {
+    BrokeEnum2<String> x = BrokeCase2<String, Integer>();
+    switch (x)
+    case (is BrokeCase2<String,String>) {}
+}
+
 void switchOfTest<That>(That that) given That of Integer {
     switch (that)
     case (is Integer) {}
