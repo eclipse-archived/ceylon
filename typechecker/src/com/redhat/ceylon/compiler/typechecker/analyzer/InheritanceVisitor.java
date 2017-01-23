@@ -668,10 +668,11 @@ public class InheritanceVisitor extends Visitor {
                                         argTypeDec;
                             if (!tp.getDeclaration()
                                     .equals(type)) {
-                                node.addError("type argument is not a type parameter of the enumerated type: '" +
-                                        tp.getName() + 
-                                        "' is not a type parameter of '" + 
-                                        type.getName());
+                                node.addError("type argument is not a type parameter of the enumerated type: '" 
+                                        + tp.getName() 
+                                        + "' is not a type parameter of '"
+                                        + type.getName() 
+                                        + "'");
                             }
                             else if (!used.add(tp)) {
                                 node.addError("type parameter of the enumerated type is used twice as a type argument: '" +
