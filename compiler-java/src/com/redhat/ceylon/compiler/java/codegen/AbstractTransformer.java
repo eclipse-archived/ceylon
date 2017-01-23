@@ -1899,7 +1899,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             
-            if (ta.isNothing()
+            if (ta.isExactlyNothing()
                     // if we're in a type argument, extends or satisfies already, union and intersection types should 
                     // use the same erasure rules as bottom: prefer wildcards
                     || ((flags & (__JT_FULL_TYPE | JT_EXTENDS | JT_SATISFIES)) != 0
