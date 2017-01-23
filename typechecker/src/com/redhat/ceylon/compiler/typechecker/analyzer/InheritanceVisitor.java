@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeNamesAsIntersection;
@@ -16,6 +17,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOf
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -618,84 +620,84 @@ public class InheritanceVisitor extends Visitor {
     void checkCaseType(TypeDeclaration type, 
             Tree.StaticType ct,
             TypeDeclaration caseTypeDec) {
-        if (caseTypeDec instanceof ClassOrInterface && 
-                ct instanceof Tree.SimpleType) {
+        if (caseTypeDec instanceof ClassOrInterface 
+                && ct instanceof Tree.SimpleType 
+                && isGeneric(caseTypeDec)) {
             Tree.SimpleType t = (Tree.SimpleType) ct;
             Tree.TypeArgumentList tal = 
                     t.getTypeArgumentList();
-            if (tal!=null) {
-                List<Tree.Type> args = 
+            List<Tree.Type> args = 
+                    tal == null ? 
+                        Collections.emptyList() :
                         tal.getTypes();
-                List<TypeParameter> typeParameters =
-                        caseTypeDec.getTypeParameters();
-                Set<TypeParameter> used =
-                        new HashSet<TypeParameter>();
-                for (int i=0; 
-//                        i<args.size() && 
-                        i<typeParameters.size(); 
-                        i++) {
-                    TypeParameter typeParameter =
-                            typeParameters.get(i);
-                    Type argType;
-                    Node node;
-                    String typeArg;
-                    if (i<args.size()) {
-                        Tree.Type arg = args.get(i);
-                        argType = arg.getTypeModel();
-                        node = arg;
-                        typeArg = "type argument";
-                    }
-                    else {
-                        argType = typeParameter.getDefaultTypeArgument();
-                        node = tal;
-                        typeArg = "default type argument '" 
-                                + argType.asString(node.getUnit()) 
-                                + "' of '" + typeParameter.getName() + "' ";
-                    }
-                    if (argType!=null) {
-                        TypeDeclaration argTypeDec = 
-                                argType.getDeclaration();
-                        if (argType.isTypeParameter()) {
-                            TypeParameter tp = 
-                                    (TypeParameter) 
-                                        argTypeDec;
-                            if (!tp.getDeclaration()
-                                    .equals(type)) {
-                                node.addError(typeArg 
-                                        + "is not a type parameter of the enumerated type: '" 
-                                        + tp.getName() 
-                                        + "' is not a type parameter of '"
-                                        + type.getName() 
-                                        + "'");
-                            }
-                            else if (!used.add(tp)) {
-                                node.addError("type parameter of the enumerated type is used twice as a type argument: '" +
-                                        argTypeDec.getName());
-                            }
-                        }
-                        else if (typeParameter.isCovariant()) {
-                            checkAssignable(
-                                    typeParameter.getType(), 
-                                    argType, node, 
-                                    typeArg 
-                                    + " is not an upper bound of the type parameter '" 
-                                    + typeParameter.getName() 
-                                    + "' ");
-                        }
-                        else if (typeParameter.isContravariant()) {
-                            checkAssignable(argType, 
-                                    typeParameter.getType(), node, 
-                                    typeArg 
-                                    + " is not a lower bound of the type parameter '" 
-                                    + typeParameter.getName() 
-                                    + "' ");
-                        }
-                        else {
-                            node.addError(typeArg
+            List<TypeParameter> typeParameters =
+                    caseTypeDec.getTypeParameters();
+            Set<TypeParameter> used =
+                    new HashSet<TypeParameter>();
+            for (int i=0;
+                    i<typeParameters.size(); 
+                    i++) {
+                TypeParameter typeParameter =
+                        typeParameters.get(i);
+                Type argType;
+                Node node;
+                String typeArg;
+                if (i<args.size()) {
+                    Tree.Type arg = args.get(i);
+                    argType = arg.getTypeModel();
+                    node = arg;
+                    typeArg = "type argument";
+                }
+                else {
+                    argType = typeParameter.getDefaultTypeArgument();
+                    node = tal;
+                    typeArg = "default type argument '" 
+                            + argType.asString(node.getUnit()) 
+                            + "' of '" + typeParameter.getName() + "' ";
+                }
+                if (argType!=null) {
+                    TypeDeclaration argTypeDec = 
+                            argType.getDeclaration();
+                    if (argType.isTypeParameter()) {
+                        TypeParameter tp = 
+                                (TypeParameter) 
+                                    argTypeDec;
+                        if (!tp.getDeclaration()
+                                .equals(type)) {
+                            node.addError(typeArg 
                                     + "is not a type parameter of the enumerated type: '" 
-                                    + argTypeDec.getName() 
+                                    + tp.getName() 
+                                    + "' is not a type parameter of '"
+                                    + type.getName() 
                                     + "'");
                         }
+                        else if (!used.add(tp)) {
+                            node.addError("type parameter of the enumerated type is used twice as a type argument: '" +
+                                    argTypeDec.getName());
+                        }
+                    }
+                    else if (typeParameter.isCovariant()) {
+                        checkAssignable(
+                                typeParameter.getType(), 
+                                argType, node, 
+                                typeArg 
+                                + " is not an upper bound of the type parameter '" 
+                                + typeParameter.getName() 
+                                + "' ");
+                    }
+                    else if (typeParameter.isContravariant()) {
+                        checkAssignable(argType, 
+                                typeParameter.getType(), node, 
+                                typeArg 
+                                + " is not a lower bound of the type parameter '" 
+                                + typeParameter.getName() 
+                                + "' ");
+                    }
+                    else {
+                        node.addError(typeArg
+                                + "is not a type parameter of the enumerated type: '" 
+                                + argTypeDec.getName() 
+                                + "'");
                     }
                 }
             }
