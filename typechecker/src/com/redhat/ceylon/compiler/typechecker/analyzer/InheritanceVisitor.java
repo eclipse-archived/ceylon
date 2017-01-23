@@ -628,7 +628,7 @@ public class InheritanceVisitor extends Visitor {
                     t.getTypeArgumentList();
             List<Tree.Type> args = 
                     tal == null ? 
-                        Collections.emptyList() :
+                        Collections.<Tree.Type>emptyList() :
                         tal.getTypes();
             List<TypeParameter> typeParameters =
                     caseTypeDec.getTypeParameters();
