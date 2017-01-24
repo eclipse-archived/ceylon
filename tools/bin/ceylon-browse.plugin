@@ -1,5 +1,4 @@
 ; Plugin definition for the "ceylon browse" tool
 summary=Open module documentation in the browser
-module=com.redhat.ceylon.compiler.java/@ceylon-version@
+module=com.redhat.ceylon.tools/@ceylon-version@
 class=com.redhat.ceylon.tools.browse.CeylonBrowseTool
-

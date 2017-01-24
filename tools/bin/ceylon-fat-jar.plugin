@@ -1,5 +1,4 @@
 ; Plugin definition for the "ceylon fat-jar" tool
 summary=Generate a Ceylon executable jar for a given module
-module=com.redhat.ceylon.compiler.java/@ceylon-version@
+module=com.redhat.ceylon.tools/@ceylon-version@
 class=com.redhat.ceylon.tools.fatjar.CeylonFatJarTool
-

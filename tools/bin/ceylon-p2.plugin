@@ -1,0 +1,5 @@
+; Plugin definition for the "ceylon p2" tool
+summary=Generates p2 repository metadata suitable for Eclipse
+module=com.redhat.ceylon.tools/@ceylon-version@
+class=com.redhat.ceylon.tools.p2.CeylonP2Tool
+hidden=true
