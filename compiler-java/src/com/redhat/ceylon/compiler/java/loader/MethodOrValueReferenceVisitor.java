@@ -399,7 +399,8 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     @Override public void visit(Tree.AttributeDeclaration that) {
         super.visit(that);
         final SpecifierOrInitializerExpression specifier = that.getSpecifierOrInitializerExpression();
-        if (specifier != null && specifier instanceof Tree.LazySpecifierExpression) {
+        if (specifier != null && (specifier instanceof Tree.LazySpecifierExpression
+                || that.getDeclarationModel().isLate())) {
             boolean cs = enterCapturingScope();
             specifier.visit(this);
             exitCapturingScope(cs);
