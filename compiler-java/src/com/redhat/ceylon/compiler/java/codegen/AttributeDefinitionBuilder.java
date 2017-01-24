@@ -756,7 +756,11 @@ public class AttributeDefinitionBuilder {
                         owner.makeNull()), rethrow, null);
                 catchStmts = List.<JCTree.JCStatement>of(ifThrow, throwStmt);
             }else if (memoizedInitialValue != null) {
-                catchStmts = List.<JCStatement>of(owner.make().Return(makeValueFieldAccess()))
+                JCExpression f = makeValueFieldAccess();
+                if (isHash) {
+                    f = owner.convertToIntForHashAttribute(f);
+                }
+                catchStmts = List.<JCStatement>of(owner.make().Return(f))
                         .prependList(makeInitialized(true, initValueField()));
                 
             }else {
