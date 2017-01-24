@@ -520,10 +520,6 @@ public class CeylonTransformer extends AbstractTransformer {
             builder.is(Flags.NATIVE, true);
             builder.isJavaNative(true);
         }
-        if (memoized && !declarationModel.isVariable()) {
-            builder.immutable();
-        }
-
         
         // For captured local variable Values, use a VariableBox
         if (Decl.isBoxedVariable(declarationModel)) {

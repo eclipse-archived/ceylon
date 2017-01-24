@@ -3560,9 +3560,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (Decl.isVariable(decl) || Decl.isLate(decl)) {
                 if (!withinInterface || model.isShared()) {
                     // Generate setter in main class or interface (when shared)
-                    if (!memoized || Decl.isVariable(decl)) {
-                        classBuilder.attribute(makeSetter(decl, false, lazy, memoizedInitialValue));
-                    }
+                    classBuilder.attribute(makeSetter(decl, false, lazy, memoizedInitialValue));
                 }
                 if (withinInterface && lazy) {
                     // Generate setter in companion class
