@@ -19,6 +19,8 @@ void runTests() {
     characters();
     print("Strings");
     strings();
+    print("Memoized");
+    memoized();
     print("Lists");
     lists();
     print("Sequences");
