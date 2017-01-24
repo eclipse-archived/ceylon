@@ -26,3 +26,7 @@ class LateAndLazyAndStatic {
     shared static late variable String? lateVariableOptional = "";
     shared new() {}
 }
+@noanno
+class LateHash() {
+    shared actual late Integer hash = 10;
+}

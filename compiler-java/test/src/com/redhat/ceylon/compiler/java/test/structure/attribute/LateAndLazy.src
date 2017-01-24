@@ -266,6 +266,53 @@ class LateAndLazyAndStatic implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.LateAndLazyAndStatic.class);
 }
+class LateHash implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    LateHash() {
+        this.hash = 0L;
+        this.$init$hash = false;
+    }
+    private long hash;
+    private volatile transient boolean $init$hash = false;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        if (this.$init$hash) {
+            return (int)(
+                let
+                {
+                    long $ceylontmp$hash$0 = this.hash;
+                }
+                returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
+            );
+        } else {
+            this.hash = 10L;
+            this.$init$hash = true;
+            return (int)(
+                let
+                {
+                    long $ceylontmp$hash$1 = this.hash;
+                }
+                returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+            );
+        }
+    }
+    
+    public final void setHash(final long hash) {
+        if (!this.$init$hash) {
+            this.hash = hash;
+            this.$init$hash = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.LateHash.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.LateHash.class);
+}
 public final class lateDefinite_ {
     
     private lateDefinite_() {
