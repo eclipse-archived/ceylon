@@ -867,14 +867,14 @@ final class lambdas_ {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.interop.lambdas_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
             }
         }
-        j.setKlass(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
-        j.setKlass(.com.redhat.ceylon.compiler.java.Util.classErasure(LocalClass.class));
-        j.setKlass(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.StaticMemberClass.class));
-        j.setKlass(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.MemberClass.class));
-        j.klassMethod(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
-        final .java.lang.Class<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava> jklass1 = j.<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterised(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
-        final .java.lang.Class<? extends .com.redhat.ceylon.compiler.java.test.interop.LambdasJava> jklass2 = j.<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterisedCovariant(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
-        final .java.lang.Class<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava> jklass3 = j.<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterisedWithBounds(.com.redhat.ceylon.compiler.java.Util.classErasure(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
+        j.setKlass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
+        j.setKlass(LocalClass.class);
+        j.setKlass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.StaticMemberClass.class);
+        j.setKlass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.MemberClass.class);
+        j.klassMethod(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
+        final .java.lang.Class<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava> jklass1 = j.<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterised(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
+        final .java.lang.Class<? extends .com.redhat.ceylon.compiler.java.test.interop.LambdasJava> jklass2 = j.<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterisedCovariant(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
+        final .java.lang.Class<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava> jklass3 = j.<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>klassMethodParameterisedWithBounds(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
         final .ceylon.language.meta.model.Class klass = (.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class));
         j.setKlass(.com.redhat.ceylon.compiler.java.Util.javaClassForModel(klass));
         j.klassMethod(.com.redhat.ceylon.compiler.java.Util.javaClassForModel(klass));
