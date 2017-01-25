@@ -46,7 +46,7 @@ function jsc$2(f$,parms,targs) {
   }
   if (f$.$flattened$||f$.$unflattened$)return f$;
   var f=function c2(){
-    return f$.apply(undefined,arguments);
+    return f$.apply(undefined,dre$$Arguments(arguments,targs));
   };
   if (targs) {
     f.$$targs$$=targs;
@@ -265,6 +265,41 @@ function mkseq$(t,seq) {
   if (seq)t.seq=seq;
   return t;
 }
+
+function dre$$Arguments(args, targs) {
+    var tupleArgumentsType = targs.Arguments$Callable;
+    if (tupleArgumentsType.t !== 'T') {
+        if (tupleArgumentsType.t === Tuple) {
+            tupleArgumentsType = detpl$(tupleArgumentsType);
+        } else {
+            console.log(tupleArgumentsType);
+            throw new Error("TODO non-tuple arguments type not implemented!");
+        }
+    }
+    var oldArguments = [].slice.call(args);
+    var newArguments = [];
+    for (argumentType of tupleArgumentsType.l) {
+        if (!(argumentType.seq > 0)) {
+            var argument = oldArguments.pop();
+            dre$$(argument, argumentType);
+            newArguments.push(argument);
+        } else {
+            if (argumentType.seq === 2) {
+                asrt$(oldArguments.length > 0, "nonempty varargs must have argument");
+            }
+            var variadicArguments = [];
+            while (oldArguments.length > 0) {
+                var argument = oldArguments.pop();
+                dre$$(argument, asrt$(false, "TODO what type belongs here?"));
+                variadicArguments.push(argument);
+            }
+            newArguments.push(tpl$(variadicArguments));
+            break;
+        }
+    }
+    return newArguments;
+}
+
 ex$.JsCallableList=JsCallableList;
 ex$.JsCallable=JsCallable;
 ex$.$JsCallable=$JsCallable;
