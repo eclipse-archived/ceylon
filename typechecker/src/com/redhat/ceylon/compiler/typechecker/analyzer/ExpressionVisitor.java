@@ -3505,7 +3505,8 @@ public class ExpressionVisitor extends Visitor {
             List<Type> types = 
                     unit.getCallableArgumentTypes(paramType);
             List<Tree.Parameter> aps = 
-                    apls.get(0).getParameters();
+                    apls.get(0)
+                        .getParameters();
             Declaration declaration = param==null ? 
                     null : param.getDeclaration();
             for (int j=0; 
@@ -3537,9 +3538,11 @@ public class ExpressionVisitor extends Visitor {
                 anon.getParameterLists();
         if (!fpls.isEmpty() && !apls.isEmpty()) {
             List<Parameter> fps = 
-                    fpls.get(0).getParameters();
+                    fpls.get(0)
+                        .getParameters();
             List<Tree.Parameter> aps = 
-                    apls.get(0).getParameters();
+                    apls.get(0)
+                        .getParameters();
             for (int j=0; 
                     j<fps.size() && j<aps.size(); 
                     j++) {
