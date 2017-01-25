@@ -1,0 +1,265 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class classLiteral_ {
+    
+    private classLiteral_() {
+    }
+    
+    static <T>void classLiteral(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        final .ceylon.language.meta.model.Class c = (.ceylon.language.meta.model.Class<? extends .ceylon.language.String, ? super .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>>>).ceylon.language.meta.typeLiteral_.typeLiteral(.ceylon.language.String.$TypeDescriptor$);
+        .ceylon.language.String lhs$0 = .ceylon.language.String.instance("ceylon.language::String");
+        .ceylon.language.String rhs$1 = .ceylon.language.String.instance(c.toString());
+        if (lhs$0.equals(rhs$1)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"ceylon.language::String\"==c.string") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$0, rhs$1));
+        }
+        .ceylon.language.String lhs$2 = .ceylon.language.String.instance("class ceylon.language.String");
+        .ceylon.language.String rhs$3 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.com.redhat.ceylon.compiler.java.Util.javaClassForModel(c)));
+        if (lhs$2.equals(rhs$3)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class ceylon.language.String\"==ClassLiteral.classString(c)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
+        }
+        .ceylon.language.String lhs$4 = .ceylon.language.String.instance("class ceylon.language.String");
+        .ceylon.language.String rhs$5 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.String.class));
+        if (lhs$4.equals(rhs$5)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class ceylon.language.String\"==ClassLiteral.classString(`String`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$4, rhs$5));
+        }
+        .ceylon.language.String lhs$6 = .ceylon.language.String.instance("class ceylon.language.Integer");
+        .ceylon.language.String rhs$7 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.Integer.class));
+        if (lhs$6.equals(rhs$7)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class ceylon.language.Integer\"==ClassLiteral.classString(`Integer`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$6, rhs$7));
+        }
+        .ceylon.language.String lhs$8 = .ceylon.language.String.instance("class ceylon.language.Boolean");
+        .ceylon.language.String rhs$9 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.Boolean.class));
+        if (lhs$8.equals(rhs$9)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class ceylon.language.Boolean\"==ClassLiteral.classString(`Boolean`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$8, rhs$9));
+        }
+        .ceylon.language.String lhs$10 = .ceylon.language.String.instance("class ceylon.language.Float");
+        .ceylon.language.String rhs$11 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.Float.class));
+        if (lhs$10.equals(rhs$11)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class ceylon.language.Float\"==ClassLiteral.classString(`Float`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$10, rhs$11));
+        }
+        .ceylon.language.String lhs$12 = .ceylon.language.String.instance("class ceylon.language.Character");
+        .ceylon.language.String rhs$13 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.Character.class));
+        if (lhs$12.equals(rhs$13)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class ceylon.language.Character\"==ClassLiteral.classString(`Character`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$12, rhs$13));
+        }
+        .ceylon.language.String lhs$14 = .ceylon.language.String.instance("class ceylon.language.Byte");
+        .ceylon.language.String rhs$15 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.Byte.class));
+        if (lhs$14.equals(rhs$15)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class ceylon.language.Byte\"==ClassLiteral.classString(`Byte`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$14, rhs$15));
+        }
+        .ceylon.language.String lhs$16 = .ceylon.language.String.instance("class java.lang.Object");
+        .ceylon.language.String rhs$17 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Object.class));
+        if (lhs$16.equals(rhs$17)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class java.lang.Object\"==ClassLiteral.classString(`Object`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$16, rhs$17));
+        }
+        .ceylon.language.String lhs$18 = .ceylon.language.String.instance("class java.lang.Object");
+        .ceylon.language.String rhs$19 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Object.class));
+        if (lhs$18.equals(rhs$19)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class java.lang.Object\"==ClassLiteral.classString(`Basic`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$18, rhs$19));
+        }
+        .ceylon.language.String lhs$20 = .ceylon.language.String.instance("class java.lang.Object");
+        .ceylon.language.String rhs$21 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Object.class));
+        if (lhs$20.equals(rhs$21)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class java.lang.Object\"==ClassLiteral.classString(`Identifiable`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$20, rhs$21));
+        }
+        .ceylon.language.String lhs$22 = .ceylon.language.String.instance("class java.lang.Throwable");
+        .ceylon.language.String rhs$23 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Throwable.class));
+        if (lhs$22.equals(rhs$23)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class java.lang.Throwable\"==ClassLiteral.classString(`Throwable`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$22, rhs$23));
+        }
+        .ceylon.language.String lhs$24 = .ceylon.language.String.instance("class java.lang.Exception");
+        .ceylon.language.String rhs$25 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Exception.class));
+        if (lhs$24.equals(rhs$25)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class java.lang.Exception\"==ClassLiteral.classString(`Exception`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$24, rhs$25));
+        }
+        .ceylon.language.String lhs$26 = .ceylon.language.String.instance("interface java.lang.annotation.Annotation");
+        .ceylon.language.String rhs$27 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.annotation.Annotation.class));
+        if (lhs$26.equals(rhs$27)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"interface java.lang.annotation.Annotation\"==ClassLiteral.classString(`Annotation`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$26, rhs$27));
+        }
+        .ceylon.language.String lhs$28 = .ceylon.language.String.instance("interface java.lang.annotation.Annotation");
+        .ceylon.language.String rhs$29 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.annotation.Annotation.class));
+        if (lhs$28.equals(rhs$29)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"interface java.lang.annotation.Annotation\"==ClassLiteral.classString(`ConstrainedAnnotation`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$28, rhs$29));
+        }
+        .ceylon.language.String lhs$30 = .ceylon.language.String.instance("class [Lceylon.language.String;");
+        .ceylon.language.String rhs$31 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.String[].class));
+        if (lhs$30.equals(rhs$31)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Lceylon.language.String;\"==ClassLiteral.classString(`ObjectArray<String>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$30, rhs$31));
+        }
+        .ceylon.language.String lhs$32 = .ceylon.language.String.instance("class [I");
+        .ceylon.language.String rhs$33 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(int[].class));
+        if (lhs$32.equals(rhs$33)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [I\"==ClassLiteral.classString(`IntArray`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$32, rhs$33));
+        }
+        .ceylon.language.String lhs$34 = .ceylon.language.String.instance("class [S");
+        .ceylon.language.String rhs$35 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(short[].class));
+        if (lhs$34.equals(rhs$35)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [S\"==ClassLiteral.classString(`ShortArray`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$34, rhs$35));
+        }
+        .ceylon.language.String lhs$36 = .ceylon.language.String.instance("class [J");
+        .ceylon.language.String rhs$37 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(long[].class));
+        if (lhs$36.equals(rhs$37)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [J\"==ClassLiteral.classString(`LongArray`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$36, rhs$37));
+        }
+        .ceylon.language.String lhs$38 = .ceylon.language.String.instance("class [B");
+        .ceylon.language.String rhs$39 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(byte[].class));
+        if (lhs$38.equals(rhs$39)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [B\"==ClassLiteral.classString(`ByteArray`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$38, rhs$39));
+        }
+        .ceylon.language.String lhs$40 = .ceylon.language.String.instance("class [C");
+        .ceylon.language.String rhs$41 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(char[].class));
+        if (lhs$40.equals(rhs$41)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [C\"==ClassLiteral.classString(`CharArray`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$40, rhs$41));
+        }
+        .ceylon.language.String lhs$42 = .ceylon.language.String.instance("class [F");
+        .ceylon.language.String rhs$43 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(float[].class));
+        if (lhs$42.equals(rhs$43)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [F\"==ClassLiteral.classString(`FloatArray`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$42, rhs$43));
+        }
+        .ceylon.language.String lhs$44 = .ceylon.language.String.instance("class [D");
+        .ceylon.language.String rhs$45 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(double[].class));
+        if (lhs$44.equals(rhs$45)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [D\"==ClassLiteral.classString(`DoubleArray`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$44, rhs$45));
+        }
+        .ceylon.language.String lhs$46 = .ceylon.language.String.instance("class [Z");
+        .ceylon.language.String rhs$47 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(boolean[].class));
+        if (lhs$46.equals(rhs$47)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Z\"==ClassLiteral.classString(`BooleanArray`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$46, rhs$47));
+        }
+        .ceylon.language.String lhs$48 = .ceylon.language.String.instance("class [Ljava.lang.Object;");
+        .ceylon.language.String rhs$49 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Object[].class));
+        if (lhs$48.equals(rhs$49)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Ljava.lang.Object;\"==ClassLiteral.classString(`ObjectArray<Object>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$48, rhs$49));
+        }
+        .ceylon.language.String lhs$50 = .ceylon.language.String.instance("class [Ljava.lang.Object;");
+        .ceylon.language.String rhs$51 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Object[].class));
+        if (lhs$50.equals(rhs$51)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Ljava.lang.Object;\"==ClassLiteral.classString(`ObjectArray<Basic>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$50, rhs$51));
+        }
+        .ceylon.language.String lhs$52 = .ceylon.language.String.instance("class [Ljava.lang.Object;");
+        .ceylon.language.String rhs$53 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Object[].class));
+        if (lhs$52.equals(rhs$53)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Ljava.lang.Object;\"==ClassLiteral.classString(`ObjectArray<Identifiable>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$52, rhs$53));
+        }
+        .ceylon.language.String lhs$54 = .ceylon.language.String.instance("class [Ljava.lang.Throwable;");
+        .ceylon.language.String rhs$55 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Throwable[].class));
+        if (lhs$54.equals(rhs$55)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Ljava.lang.Throwable;\"==ClassLiteral.classString(`ObjectArray<Throwable>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$54, rhs$55));
+        }
+        .ceylon.language.String lhs$56 = .ceylon.language.String.instance("class [Ljava.lang.Exception;");
+        .ceylon.language.String rhs$57 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Exception[].class));
+        if (lhs$56.equals(rhs$57)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Ljava.lang.Exception;\"==ClassLiteral.classString(`ObjectArray<Exception>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$56, rhs$57));
+        }
+        .ceylon.language.String lhs$58 = .ceylon.language.String.instance("class [Ljava.lang.annotation.Annotation;");
+        .ceylon.language.String rhs$59 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.annotation.Annotation[].class));
+        if (lhs$58.equals(rhs$59)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Ljava.lang.annotation.Annotation;\"==ClassLiteral.classString(`ObjectArray<Annotation>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$58, rhs$59));
+        }
+        .ceylon.language.String lhs$60 = .ceylon.language.String.instance("class [Ljava.lang.annotation.Annotation;");
+        .ceylon.language.String rhs$61 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.annotation.Annotation[].class));
+        if (lhs$60.equals(rhs$61)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [Ljava.lang.annotation.Annotation;\"==ClassLiteral.classString(`ObjectArray<ConstrainedAnnotation>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$60, rhs$61));
+        }
+        .ceylon.language.String lhs$62 = .ceylon.language.String.instance("class [[I");
+        .ceylon.language.String rhs$63 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(int[][].class));
+        if (lhs$62.equals(rhs$63)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [[I\"==ClassLiteral.classString(`ObjectArray<IntArray>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$62, rhs$63));
+        }
+        .ceylon.language.String lhs$64 = .ceylon.language.String.instance("class [[Lceylon.language.String;");
+        .ceylon.language.String rhs$65 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.String[][].class));
+        if (lhs$64.equals(rhs$65)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class [[Lceylon.language.String;\"==ClassLiteral.classString(`ObjectArray<ObjectArray<String>>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$64, rhs$65));
+        }
+        .ceylon.language.String lhs$66 = .ceylon.language.String.instance("interface ceylon.language.Set");
+        .ceylon.language.String rhs$67 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.Set.class));
+        if (lhs$66.equals(rhs$67)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"interface ceylon.language.Set\"==ClassLiteral.classString(`Set<String>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$66, rhs$67));
+        }
+        .ceylon.language.String lhs$68 = .ceylon.language.String.instance("interface ceylon.language.Set");
+        .ceylon.language.String rhs$69 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.Set.class));
+        if (lhs$68.equals(rhs$69)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"interface ceylon.language.Set\"==ClassLiteral.classString(`Set<T>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$68, rhs$69));
+        }
+        .ceylon.language.String lhs$70 = .ceylon.language.String.instance("interface ceylon.language.Set");
+        .ceylon.language.String rhs$71 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.Set.class));
+        if (lhs$70.equals(rhs$71)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"interface ceylon.language.Set\"==ClassLiteral.classString(`Set<T&Float>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$70, rhs$71));
+        }
+        .ceylon.language.String lhs$72 = .ceylon.language.String.instance("class com.redhat.ceylon.compiler.java.test.interop.ClassLiteral$MemberClass");
+        .ceylon.language.String rhs$73 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.MemberClass.class));
+        if (lhs$72.equals(rhs$73)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class com.redhat.ceylon.compiler.java.test.interop.ClassLiteral$MemberClass\"==ClassLiteral.classString(`ClassLiteral.MemberClass`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$72, rhs$73));
+        }
+        .ceylon.language.String lhs$74 = .ceylon.language.String.instance("class com.redhat.ceylon.compiler.java.test.interop.ClassLiteral$StaticMemberClass");
+        .ceylon.language.String rhs$75 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.StaticMemberClass.class));
+        if (lhs$74.equals(rhs$75)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class com.redhat.ceylon.compiler.java.test.interop.ClassLiteral$StaticMemberClass\"==ClassLiteral.classString(`ClassLiteral.StaticMemberClass`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$74, rhs$75));
+        }
+        .ceylon.language.String lhs$76 = .ceylon.language.String.instance("interface java.util.Map$Entry");
+        .ceylon.language.String rhs$77 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.util.Map.Entry.class));
+        if (lhs$76.equals(rhs$77)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"interface java.util.Map$Entry\"==ClassLiteral.classString(`Map<String,String>.Entry<String,String>`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$76, rhs$77));
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class classLiteral_run_ {
+    
+    private classLiteral_run_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void classLiteral_run() {
+        .com.redhat.ceylon.compiler.java.test.interop.classLiteral_.<.ceylon.language.String>classLiteral(.ceylon.language.String.$TypeDescriptor$);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.classLiteral_run_.classLiteral_run();
+    }
+}

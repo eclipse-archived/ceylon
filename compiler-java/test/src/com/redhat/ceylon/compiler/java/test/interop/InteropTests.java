@@ -1011,4 +1011,12 @@ public class InteropTests extends CompilerTests {
         compile("Bug6854.java");
         compareWithJavaSource("Bug6854");
     }
+    
+    @Test
+    public void testClassLiteral() {
+        compile("ClassLiteral.java");
+        compareWithJavaSource("ClassLiteral");
+        //compile("ClassLiteral.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.interop.classLiteral_run");
+    }
 }
