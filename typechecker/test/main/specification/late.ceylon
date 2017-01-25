@@ -60,3 +60,11 @@ class ZzZ() {
 void xXx(@error late String y) {
     @error late String x;
 }
+
+class LateMutation() {
+    shared late Integer x = 10;
+    shared void init() {
+        @error x++;
+        @error x+=1;
+    }
+}

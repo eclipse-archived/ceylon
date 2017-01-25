@@ -54,3 +54,16 @@ void testNotVariable() {
         @error y++;
     });
 }
+
+
+
+void fun(String|Anything(String) foo) {}
+
+alias Alias => String|Anything(String);
+
+void fun2(Alias foo) {}
+
+void funrun() {
+    fun((str) => 1);
+    fun2((str) => 1); 
+}
