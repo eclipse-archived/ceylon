@@ -584,22 +584,22 @@ public class SpecificationVisitor extends Visitor {
                             (isFormal ? "formal" : "default") + 
                             "'");
                 }
-                else if (!isVariable() && !isLate()) {
-                    if (member instanceof Value) {
-                        if (node instanceof Tree.AssignOp) {
-                            term.addError("value may not be assigned here: " +
-                                    name() + " is not a variable", 
-                                    803);
-                        }
-                        else {
-                            term.addError("value is not a variable: " +
-                                    name(), 
-                                    800);
-                        }
+                else if (!(member instanceof Value)) {
+                    term.addError("not a variable value: " +
+                            name());
+                }
+                else if (node instanceof Tree.AssignOp) {
+                    if (!isVariable() && !isLate()) {
+                        term.addError("value is already assigned: " +
+                                name() + " is neither 'variable' nor 'late'", 
+                                800);
                     }
-                    else {
-                        term.addError("not a variable value: " +
-                                name());
+                }
+                else {
+                    if (!isVariable()) {
+                        term.addError("value may not be mutated: " +
+                                name() + " is not 'variable'",
+                                800);
                     }
                 }
             }
