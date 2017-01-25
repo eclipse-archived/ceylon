@@ -731,7 +731,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(isJavaCharSequence(exprType) && expectedType.isExactly(typeFact().getStringDeclaration().getType())){
             return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
         }
-        if(isCeylonClassOrInterfaceModel(exprType) && isJavaClass(expectedType)){
+        if(isCeylonClassOrInterfaceModel(exprType) 
+                && isJavaClass(expectedType)
+                && !(ret instanceof JCTree.JCFieldAccess && ret.toString().endsWith(".class"))){
             // FIXME: perhaps cast as RAW?
             JCTree arg = ret;
             // try to turn (.ceylon.language.meta.model.Class)
@@ -1702,6 +1704,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 reifiedArgumentsExpr,
                                 make().Literal(expr.getDeclaration().getName())));
             } else {
+                if (coerced) {
+                    Type t = expr.getType().getTypeModel();
+                    if (!typeFact().isJavaObjectArrayType(t)
+                            || t.getTypeArgumentList().get(0).isClassOrInterface()) {
+                        return makeSelect(makeJavaType(t, JT_NO_PRIMITIVES | JT_RAW ), "class");
+                    }
+                }
                 return makeTypeLiteralCall(expr.getType().getTypeModel(), true, expr.getTypeModel());
             }
         }else if(expr.getDeclaration() instanceof TypeParameter){
