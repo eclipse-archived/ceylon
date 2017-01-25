@@ -28,11 +28,13 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -575,7 +577,7 @@ public class TypeHierarchyVisitor extends Visitor {
             return; //stop the cycle here but try and process the rest
         }
 
-        if ( visited.contains(declaration) ) {
+        if (visited.contains(declaration)) {
             return;
         }
         visited.add(declaration);
@@ -599,9 +601,13 @@ public class TypeHierarchyVisitor extends Visitor {
         }
         for (com.redhat.ceylon.model.typechecker.model.Type 
                 superSatisfiedType: declaration.getBrokenSupertypes()) {
-            visitDAGNode(superSatisfiedType.getDeclaration(), 
-                    sortedDag, visited, stackOfProcessedType, 
-                    errorReporter);
+            TypeDeclaration typeDec = superSatisfiedType.getDeclaration();
+            if (!(typeDec instanceof UnionType) && 
+                !(typeDec instanceof IntersectionType)) {
+                visitDAGNode(typeDec,
+                        sortedDag, visited, stackOfProcessedType, 
+                        errorReporter);
+            }
         }
         stackOfProcessedType.remove(stackOfProcessedType.size()-1);
         sortedDag.add(type);
