@@ -3469,7 +3469,17 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private Type callableFromUnion(Type paramType) {
-        if (paramType!=null && paramType.isUnion()) {
+        if (paramType==null) {
+            return null;
+        }
+        if (paramType.getDeclaration()
+                    .isAlias()) {
+            //TODO: this is a bit too aggressive, 
+            //      we don't really need to resolve
+            //      aliases in type arguments
+            paramType = paramType.resolveAliases();
+        }
+        if (paramType.isUnion()) {
             List<Type> cts = paramType.getCaseTypes();
             List<Type> list = 
                     new ArrayList<Type>
