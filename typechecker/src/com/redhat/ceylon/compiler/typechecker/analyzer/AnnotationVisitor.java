@@ -11,6 +11,7 @@ import static com.redhat.ceylon.model.loader.model.AnnotationTarget.PACKAGE;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.PARAMETER;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.TYPE;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -18,7 +19,6 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Primary;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -1210,27 +1210,74 @@ public class AnnotationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.MemberLiteral tl) {
+        super.visit(tl);
+        Tree.Type type = tl.getType();
+        if (type!=null) {
+            checkJavaArrayElementType(
+                    errorNode(type), 
+                    tl.getUnit(), 
+                    (Type) type.getTypeModel());
+        }
+    }
+    
+    @Override
+    public void visit(Tree.TypeLiteral tl) {
+        super.visit(tl);
+        Tree.Type type = tl.getType();
+        if (type!=null) {
+            checkJavaArrayElementType(
+                    errorNode(type), 
+                    tl.getUnit(), 
+                    (Type) type.getTypeModel());
+        }
+    }
+
+    private static Node errorNode(Tree.Type type) {
+        if (type instanceof Tree.SimpleType) {
+            Tree.SimpleType st = 
+                    (Tree.SimpleType) type;
+            return st.getTypeArgumentList();
+        }
+        else {
+            return type;
+        }
+    }
+    
+    @Override
     public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
-        Unit unit = that.getUnit();
         Type type = (Type) that.getTarget();
-        if (type!=null && unit.isJavaObjectArrayType(type)) {
+        if (type!=null) {
+            checkJavaArrayElementType(
+                    errorNode(that), 
+                    that.getUnit(), 
+                    type);
+        }
+    }
+
+    private static Node errorNode(Tree.BaseTypeExpression that) {
+        Tree.TypeArguments tas = 
+                that.getTypeArguments();
+        return tas instanceof Tree.TypeArgumentList ?
+                tas : that;
+    }
+
+    private void checkJavaArrayElementType(
+            Node errNode, Unit unit, Type type) {
+        if (unit.isJavaObjectArrayType(type)) {
             Type ta = unit.getJavaArrayElementType(type);
-            if (!ModelUtil.isTypeUnknown(ta) && 
+            if (!isTypeUnknown(ta) && 
                     (ta.isNothing() || 
                      ta.isIntersection() || 
-                     unit.getDefiniteType(ta).isUnion() ||
+                     unit.getDefiniteType(ta)
+                         .isUnion() ||
                      ta.isTypeParameter())) {
-                Tree.TypeArguments tas = that.getTypeArguments();
-                Node errNode = 
-                        tas instanceof Tree.TypeArgumentList ?
-                                tas : that;
                 errNode.addError(
                         "illegal Java array element type: arrays with element type '" 
                                 + ta.asString(unit) + "' may not be instantiated");
             }
         }
-        
     }
     
 }
