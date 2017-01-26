@@ -11,6 +11,7 @@ import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
 import com.redhat.ceylon.compiler.java.language.AbstractIterable;
 import com.redhat.ceylon.compiler.java.language.AbstractIterator;
+import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -2267,7 +2268,26 @@ public class Util {
         if(decl instanceof ClassOrInterfaceDeclarationImpl){
             ClassOrInterfaceDeclarationImpl ci =
                     (ClassOrInterfaceDeclarationImpl) decl;
-            return (java.lang.Class<? extends T>) classErasure(ci.getJavaClass());
+            String prefix = null;
+            while (ci.getJavaClass().equals(ObjectArray.class)) {
+                model = ((ClassOrInterface)model.getTypeArgumentList().getFromFirst(0));
+                decl = model.getDeclaration();
+                ci = (ClassOrInterfaceDeclarationImpl) decl;
+                prefix = prefix == null ? "[" : prefix+"[";
+            }
+            java.lang.Class result = (java.lang.Class<? extends T>) classErasure(ci.getJavaClass());
+            if (prefix != null) {
+                String name = result.isArray()
+                        && result.getComponentType().isPrimitive() 
+                        ? prefix+result.getName()
+                        : prefix+"L" + result.getName() + ";";
+                try {
+                    result = java.lang.Class.forName(name, false, result.getClassLoader());
+                } catch (ClassNotFoundException e1) {
+                    rethrow(e1);
+                }
+            }
+            return result;
         }
         throw new ceylon.language.AssertionError("Unsupported declaration type: "+decl);
     }
