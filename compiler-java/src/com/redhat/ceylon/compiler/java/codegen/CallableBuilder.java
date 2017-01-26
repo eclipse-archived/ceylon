@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_CLASS_NEW;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_COMPANION;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_EXTENDS;
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_SATISFIES;
 import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.JT_NO_PRIMITIVES;
 
 import java.util.ArrayList;
@@ -150,6 +151,8 @@ public class CallableBuilder {
     private Naming.Substitution instanceSubstitution;
 
     private List<JCAnnotation> annotations;
+
+    private String name;
     
     private CallableBuilder(CeylonTransformer gen, Node node, Type typeModel, ParameterList paramLists) {
         this.gen = gen;
@@ -266,6 +269,7 @@ public class CallableBuilder {
         cb.useTransformation(tx);
         
         cb.checkForFunctionalInterface(expectedType);
+        cb.setSamClassName(forwardCallTo.getDeclaration().getName());
         
         return letStmts.isEmpty() ? cb.build() : gen.make().LetExpr(letStmts.toList(), cb.build());
     }
@@ -317,7 +321,7 @@ public class CallableBuilder {
         cb.useTransformation(tx);
         
         cb.checkForFunctionalInterface(expectedType);
-        
+        cb.setSamClassName(gen.naming.tempName().toString());
         return letStmts.isEmpty() ? cb.build() : gen.make().LetExpr(letStmts.toList(), cb.build());
     }
 
@@ -536,7 +540,7 @@ public class CallableBuilder {
         inner.useDefaultTransformation(innerBody);
         if(expectedType != null)
             inner.checkForFunctionalInterface(expectedType);
-
+        inner.setSamClassName(producedReference.getDeclaration().getName());
         return inner;
     }
     
@@ -602,7 +606,7 @@ public class CallableBuilder {
         outer.companionAccess = Decl.isPrivateAccessRequiringCompanion(qmte);
         if(expectedType != null)
             outer.checkForFunctionalInterface(expectedType);
-        
+        outer.setSamClassName(qmte.getDeclaration().getName());
         return outer;
     }
     
@@ -669,6 +673,7 @@ public class CallableBuilder {
             cb.parameterDefaultValueMethods(pl);
             cb.delegateDefaultedCalls = delegateDefaultedCalls;
             cb.useDefaultTransformation(stmts);
+            cb.setSamClassName(model.getName());
             stmts = List.<JCStatement>of(gen.make().Return(cb.build()));
         }
         CallableBuilder cb = new CallableBuilder(gen, node, callableTypeModel, parameterListTree.get(0).getModel());
@@ -677,6 +682,7 @@ public class CallableBuilder {
         cb.delegateDefaultedCalls = delegateDefaultedCalls;
         cb.useDefaultTransformation(stmts);
         cb.annotations = gen.makeAtMethod().prependList(gen.makeAtName(model.getName())).prependList(gen.makeAtLocalDeclaration(model.getQualifier(), false));
+        cb.setSamClassName(model.getName());
         return cb;
     }
     
@@ -1745,8 +1751,6 @@ public class CallableBuilder {
         }
         
         transformation.appendMethods(classBody);
-        gen.at(node);
-        JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0, annotations != null ? annotations : List.<JCAnnotation>nil()), classBody.toList());
         
         int variadicIndex = isVariadic ? numParams - 1 : -1;
         
@@ -1757,8 +1761,10 @@ public class CallableBuilder {
             callableType = typeModel;
         }
         
-        JCNewClass callableInstance;
+        JCExpression callableInstance;
         if(functionalInterface == null){
+            gen.at(node);
+            JCClassDecl classDef = gen.make().AnonymousClassDef(gen.make().Modifiers(0, annotations != null ? annotations : List.<JCAnnotation>nil()), classBody.toList());
             callableInstance = gen.at(node).NewClass(null, 
                     null, 
                     gen.makeJavaType(callableType, JT_EXTENDS | JT_CLASS_NEW), 
@@ -1768,16 +1774,33 @@ public class CallableBuilder {
                                           gen.make().TypeCast(gen.syms().shortType, gen.makeInteger(variadicIndex))),
                     classDef);
         }else{
-            callableInstance = gen.make().NewClass(null, 
+            gen.at(node);
+            JCExpression extends_;
+            List<JCExpression> implements_ = List.<JCExpression>of(gen.make().Type(gen.syms().serializableType));
+            if (functionalInterface.isClass()) {
+                extends_ = gen.makeJavaType(functionalInterface, JT_EXTENDS | JT_CLASS_NEW);
+            } else {
+                implements_ = implements_.prepend(gen.makeJavaType(functionalInterface, JT_SATISFIES | JT_CLASS_NEW));
+                extends_ = null;
+            }
+            SyntheticName tempName = gen.naming.synthetic(name+"$sam");
+            JCClassDecl classDef = gen.make().ClassDef(gen.make().Modifiers(0, annotations != null ? annotations : List.<JCAnnotation>nil()), 
+                    tempName.asName(),
+                    List.<JCTypeParameter>nil(),
+                    extends_,
+                    implements_, 
+                    classBody.toList());
+            callableInstance = gen.make().LetExpr(List.<JCStatement>of(classDef),
+                    gen.make().NewClass(null, 
                     null, 
-                    gen.makeJavaType(functionalInterface, JT_EXTENDS | JT_CLASS_NEW), 
+                    tempName.makeIdent(), 
                     List.<JCExpression>nil(),
-                    classDef);
+                    null));
         }
 
         JCExpression result;
         if (typeModel.isTypeConstructor()) {
-            result = buildTypeConstructor(callableType, callableInstance);
+            result = buildTypeConstructor(callableType, (JCNewClass)callableInstance);
         } else {
             result = callableInstance;
         }
@@ -2001,5 +2024,9 @@ public class CallableBuilder {
             // implement, even if the SAM method comes from a supertype
             functionalInterface(expectedType, functionalInterface);
         }
+    }
+    
+    public void setSamClassName(String name) {
+        this.name = name;
     }
 }
