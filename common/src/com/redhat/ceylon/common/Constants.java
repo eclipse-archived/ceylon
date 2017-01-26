@@ -56,6 +56,12 @@ public abstract class Constants {
     
     public static final String REPO_URL_CEYLON = "https://modules.ceylon-lang.org/repo/1";
 
+    public static final String ATTR_ASSEMBLY_REPOSITORY = "X-Ceylon-Assembly-Repository";
+    public static final String ATTR_ASSEMBLY_MAIN_CLASS = "X-Ceylon-Assembly-Main-Class";
+    public static final String ATTR_ASSEMBLY_MAIN_MODULE = "X-Ceylon-Assembly-Main-Module";
+    public static final String ATTR_ASSEMBLY_RUN = "X-Ceylon-Assembly-Run";
+    public static final String ATTR_ASSEMBLY_OVERRIDES = "X-Ceylon-Assembly-Overrides";
+    
     // The default timeout for establishing connections is set to 20 seconds
     // The multiplier is applied on top of that for read timeouts
     public static final int DEFAULT_TIMEOUT = 20000;
