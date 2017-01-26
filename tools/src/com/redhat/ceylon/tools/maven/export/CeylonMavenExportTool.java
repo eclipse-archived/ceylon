@@ -40,10 +40,13 @@ import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
-@Summary("Generate a Ceylon executable jar for a given module")
-@Description("Gerate an executable _fat jar_ which contains the given module and all its run-time"
-        + " dependencies, including the Ceylon run-time, which makes that jar self-sufficient and"
-        + " executable by `java` as if the Ceylon module was run by `ceylon run`."
+@Summary("Generate a Maven repository for a given module")
+@Description("Gerate Maven repository which contains the given module and all its run-time"
+        + " dependencies, including the Ceylon run-time, which makes that repository usable by"
+        + " Maven as a regular Maven repository.\n\n"
+        + "Alternately, running with `--for-import` creates a special repository set up suitable"
+        + " for importing the Ceylon distribution to Maven Central. This is mostly useful for the"
+        + " Ceylon team."
 )
 public class CeylonMavenExportTool extends ModuleLoadingTool {
 
@@ -105,11 +108,8 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
     }
 
     @OptionArgument(argumentName="moduleOrFile", shortName='x')
-    @Description("Excludes modules from the resulting far jat. Can be a module name or " + 
-            "a file containing module names. Can be specified multiple times. Note that "+
-            "this excludes the module from the resulting fat jar, but if your modules require that "+
-            "module to be present at runtime it will still be required and may cause your "+
-            "application to fail to start if it is not provided at runtime.")
+    @Description("Excludes modules from the resulting Maven repository. Can be a module name or " + 
+            "a file containing module names. Can be specified multiple times.")
     public void setExcludeModule(List<String> exclusions) {
         for (String each : exclusions) {
             File xFile = new File(each);
