@@ -46,6 +46,7 @@ import com.redhat.ceylon.tools.version.VersionToolTests;
     InfoToolTests.class,
     JigsawToolTests.class,
     MarkdownTests.class,
+    MavenExportToolTests.class,
     NewProjectToolTests.class,
     PlaintextTests.class,
     PluginToolTests.class,
