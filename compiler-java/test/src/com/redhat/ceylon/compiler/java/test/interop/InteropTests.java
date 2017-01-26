@@ -876,6 +876,12 @@ public class InteropTests extends CompilerTests {
         compileAndRun("com.redhat.ceylon.compiler.java.test.interop.classModelCoercionTest", "LambdasRuntime.ceylon");
         assertErrors("LambdasErrors", new CompilerError(12, "refined declaration is not a real method: 'm' in 'Sub3' refines 'm' in 'InterfaceWithCoercedMembers'"));
     }
+    
+    @Test
+    public void testSerializableLambdas() {
+        compile("SerializableLambdas.java", "SerializableLambdas.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.interop.serializableLambdas");
+    }
 
     @Test
     public void testIopStaticEnumSet(){
