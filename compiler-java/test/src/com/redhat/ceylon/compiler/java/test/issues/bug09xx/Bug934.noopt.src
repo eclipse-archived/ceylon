@@ -21,7 +21,7 @@ final class bug934_collectMatches_ {
                 ko.ref = (.ceylon.language.Sequence<? extends Element>).ceylon.language.Tuple.instance($reified$Element, new .java.lang.Object[]{element}, ko.ref);
             }
         }
-        return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, $reified$Element)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, $reified$Element)), new .java.lang.Object[]{
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, $reified$Element)), .ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element)), new .java.lang.Object[]{
                 ((.ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Sequential)ok.ref).sequence(),
                 ko.ref.sequence()});
     }

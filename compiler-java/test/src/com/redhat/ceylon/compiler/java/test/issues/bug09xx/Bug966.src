@@ -113,8 +113,8 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence<? extends Element> sequence() {
-        return $ceylon$language$Sequence$this$.sequence();
+    public .ceylon.language.Sequence sequence() {
+        return (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)$ceylon$language$Sequence$this$.sequence();
     }
     
     @.java.lang.Override

@@ -460,8 +460,8 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .ceylon.language.String> sequence() {
-        return $ceylon$language$Iterable$this$.sequence();
+    public .ceylon.language.Sequential sequence() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
@@ -1354,8 +1354,8 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .ceylon.language.String> sequence() {
-        return $ceylon$language$Iterable$this$.sequence();
+    public .ceylon.language.Sequential sequence() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override

@@ -41,7 +41,7 @@ class SpreadOptimization implements .com.redhat.ceylon.compiler.java.runtime.mod
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(2)"));
         }
-        .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$2 = it.sequence();
+        .java.lang.Object lhs$2 = it.sequence();
         .ceylon.language.List<? extends .ceylon.language.String> rhs$3 = list;
         if (lhs$2.equals(rhs$3)) {
         } else {
@@ -78,7 +78,7 @@ class SpreadOptimization implements .com.redhat.ceylon.compiler.java.runtime.mod
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(3)"));
         }
-        .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$6 = it.sequence();
+        .java.lang.Object lhs$6 = it.sequence();
         .ceylon.language.Sequence<? extends .ceylon.language.String> rhs$7 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("a"),
                 .ceylon.language.String.instance("a"),
@@ -119,7 +119,7 @@ class SpreadOptimization implements .com.redhat.ceylon.compiler.java.runtime.mod
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(1)"));
         }
-        .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$10 = it.sequence();
+        .java.lang.Object lhs$10 = it.sequence();
         .ceylon.language.Sequence<? extends .ceylon.language.String> rhs$11 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("a"),
                 .ceylon.language.String.instance("b")});
@@ -184,8 +184,8 @@ class SpreadOptimization implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     private final void f$priv$(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> expect, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> args) {
-        .ceylon.language.Sequential<? extends .ceylon.language.String> lhs$14 = expect.sequence();
-        .ceylon.language.Sequential<? extends .ceylon.language.String> rhs$15 = args.sequence();
+        .java.lang.Object lhs$14 = expect.sequence();
+        .java.lang.Object rhs$15 = args.sequence();
         if (lhs$14.equals(rhs$15)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expect.sequence() == args.sequence()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$14, rhs$15));

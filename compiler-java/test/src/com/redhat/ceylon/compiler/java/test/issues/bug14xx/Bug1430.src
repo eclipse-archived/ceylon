@@ -69,8 +69,8 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence<? extends .ceylon.language.Integer> sequence() {
-        return $ceylon$language$Sequence$this$.sequence();
+    public .ceylon.language.Sequence sequence() {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)$ceylon$language$Sequence$this$.sequence();
     }
     
     @.java.lang.Override

@@ -92,7 +92,7 @@ final class switchTupleCase_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.statement([\"a\", \"b\"]) == \"ab\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$7, rhs$8));
         }
-        .ceylon.language.String lhs$9 = .ceylon.language.String.instance(stc.statement(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b")).sequence()));
+        .ceylon.language.String lhs$9 = .ceylon.language.String.instance(stc.statement((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b")).sequence()));
         .ceylon.language.String rhs$10 = .ceylon.language.String.instance("other");
         if (lhs$9.equals(rhs$10)) {
         } else {
@@ -120,7 +120,7 @@ final class switchTupleCase_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "stc.expression([\"a\", \"b\"]) == \"ab\"") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$15, rhs$16));
         }
-        .ceylon.language.String lhs$17 = .ceylon.language.String.instance(stc.expression(new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b")).sequence()));
+        .ceylon.language.String lhs$17 = .ceylon.language.String.instance(stc.expression((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b")).sequence()));
         .ceylon.language.String rhs$18 = .ceylon.language.String.instance("other");
         if (lhs$17.equals(rhs$18)) {
         } else {

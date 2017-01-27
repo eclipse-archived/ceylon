@@ -450,8 +450,8 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends T> sequence() {
-        return $ceylon$language$Iterable$this$.sequence();
+    public .ceylon.language.Sequential sequence() {
+        return (.ceylon.language.Sequential<? extends T>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
@@ -1014,8 +1014,8 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends T> sequence() {
-        return $ceylon$language$Iterable$this$.sequence();
+    public .ceylon.language.Sequential sequence() {
+        return (.ceylon.language.Sequential<? extends T>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override
