@@ -343,7 +343,13 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
             return null;
         if (ctor instanceof CallableConstructorDeclaration) {
             if (ctor instanceof ClassWithInitializerDeclarationConstructor) {
-                return new ClassInitializerConstructor<>(this);
+                TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)((ClassWithInitializerDeclarationConstructor)ctor).declaration, this.producedType);
+                Metamodel.checkReifiedTypeArgument("getDeclaredConstructor", "CallableConstructor<$1,$2>",
+                        //        // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
+                                Variance.OUT, this.producedType, $reifiedType,
+                                Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reified$Arguments);
+                ClassInitializerConstructor c = new ClassInitializerConstructor<>(this);
+                return c;
             }
             CallableConstructorDeclarationImpl callableCtor = (CallableConstructorDeclarationImpl)ctor;
             com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
