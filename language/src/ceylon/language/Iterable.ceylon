@@ -274,11 +274,28 @@ shared interface Iterable<out Element=Anything,
      stream. This operation eagerly evaluates and collects 
      every element of the stream."
     since("1.1.0")
-    shared default Element[] sequence()
-            => let (array = Array(this)) 
-                if (array.empty)
-                    then []
-                    else ArraySequence(array);
+    //shared default Element[] sequence() 
+    //        => let (array = Array(this)) 
+    //            if (array.empty)
+    //                then []
+    //                else ArraySequence(array);
+    
+    
+    shared default [Element+] | []&Iterable<Element,Absent> sequence() {
+        value array = Array(this);
+        value sequence = if (array.empty)
+        then []
+        else ArraySequence(array);
+        if (nonempty sequence) {
+            return sequence;
+        }
+        else {
+            if (is Iterable<Element,Absent> empty = []) {
+                return empty;
+            } 
+            throw AssertionError("Assertion failed: Sequence expected");
+        }
+    }
     
     "A [[Range]] containing all indexes of this stream, or 
      `[]` if this list is empty. The resulting range is

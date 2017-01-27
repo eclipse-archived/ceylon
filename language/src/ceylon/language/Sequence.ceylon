@@ -67,7 +67,10 @@ shared sealed interface Sequence<out Element=Anything>
             => 0..lastIndex;
     
     "This nonempty sequence."
-    shared default actual [Element+] sequence() => this;
+    shared actual default [Element+] sequence() {
+        assert(is [Element+] r=this);
+        return r;
+    }
     
     "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;
