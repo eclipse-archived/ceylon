@@ -313,7 +313,9 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
         checkInit();
         final ceylon.language.meta.declaration.Declaration ctor = ((ClassDeclarationImpl)declaration).getConstructorDeclaration(name);
         if (ctor instanceof CallableConstructorDeclaration) {
-            if (((CallableConstructorDeclarationImpl)ctor).declaration.isShared()) {
+            if (ctor instanceof CallableConstructorDeclarationImpl && 
+                    ((CallableConstructorDeclarationImpl)ctor).declaration.isShared()
+                    || ctor instanceof ClassWithInitializerDeclarationConstructor) {
                 return getDeclaredConstructor($reified$Arguments, name); 
             } else {
                 return null;
