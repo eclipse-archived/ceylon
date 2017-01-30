@@ -18,8 +18,8 @@ shared void bug708() {
     assert(!constructor2.container exists);
     
     MemberClassCallableConstructor<Bug708, Bug708.Member, []> mconstructor1 = `Bug708.Member.nnew`;
-    assert(`Bug708` == mconstructor1.container);
+    assert(`Bug708.Member` == mconstructor1.container);
     
     MemberClassValueConstructor<Bug708, Bug708.Member> mconstructor2 = `Bug708.Member.val`;
-    assert(`Bug708` == mconstructor2.container);
+    assert(`Bug708.Member` == mconstructor2.container);
 }

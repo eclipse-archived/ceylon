@@ -549,8 +549,8 @@ shared class ValueConstructors {
             assert(nsc.declaration == `new ValueConstructors.Member.nonSharedCtor`);
             
             // container
-            assert(sc.container== `ValueConstructors`);
-            assert(nsc.container == `ValueConstructors`);
+            assert(sc.container== `ValueConstructors.Member`);
+            assert(nsc.container == `ValueConstructors.Member`);
             
             // get
             //assert(sc.memberGet() == Member.sharedCtor);
@@ -665,9 +665,9 @@ shared class Constructors<T> {
         assert(member.nonSharedDecl == memberNonShared.declaration);
         
         //containers
-        assert(type(this) == memberMember.container);
-        assert(type(this) == memberOther.container);
-        assert(type(this) == memberNonShared.container);
+        assert(type(member) == memberMember.container);
+        assert(type(member) == memberOther.container);
+        assert(type(member) == memberNonShared.container);
         
         
         // call
