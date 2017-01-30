@@ -353,15 +353,7 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
             }
             CallableConstructorDeclarationImpl callableCtor = (CallableConstructorDeclarationImpl)ctor;
             com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
-            // anonymous classes don't have parameter lists
-            //TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)callableCtor.constructor, this.producedType);
-    
-            // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
-            // implementation types to the user, such as AppliedMemberClass
-            //Metamodel.checkReifiedTypeArgument("getConstructor", "Constructor<$1,$2>",
-            //        // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
-            //        Variance.OUT, this.producedType, $reifiedType,
-            //        Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reifiedArguments);
+
             //return new AppliedConstructor<Type,Args>(this.$reifiedType, actualReifiedArguments, this, constructorType, ctor, this.instance);
             //Reference reference = ((Function)callableCtor.declaration).getReference();
             Reference reference;
@@ -374,6 +366,16 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
             } else {
                 throw Metamodel.newModelError("Unexpect declaration " +callableCtor.declaration);
             }
+            // anonymous classes don't have parameter lists
+            TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)callableCtor.declaration, reference);
+            // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
+            // implementation types to the user, such as AppliedMemberClass
+            Metamodel.checkReifiedTypeArgument("getConstructor", "Constructor<$1,$2>",
+                    // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
+                    Variance.OUT, this.producedType, $reifiedType,
+                    Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reified$Arguments);
+
+            
             CallableConstructorImpl<Type, Sequential<? extends Object>> appliedConstructor = new CallableConstructorImpl<Type,Sequential<? extends java.lang.Object>>(
                     this.$reifiedType, 
                     $reified$Arguments,
