@@ -4369,7 +4369,10 @@ public abstract class AbstractTransformer implements Transformation {
                 jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
             } else if (typeFact().isJavaIterableType(expr.getTypeModel())) {
                 // need to convert j.l.Iterable to a c.l.Iterable
-                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, expr.getTypeModel());
+                if (willEraseToObject(expr.getTypeModel())) {
+                    jcExpression = make().TypeCast(make().Type(syms().iterableType), jcExpression);
+                }
                 Type iteratedType = typeFact().getJavaIteratedType(expr.getTypeModel());
                 jcExpression = utilInvocation().toIterable(
                         makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
