@@ -512,7 +512,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 classGen().transformMplBody(functionArg.getParameterLists(), model, body));
         
         callableBuilder.checkForFunctionalInterface(expectedType);
-        callableBuilder.setSamClassName(model.getName());
+        
         JCExpression result = callableBuilder.build();
         result = applyErasureAndBoxing(result, callableType, true, BoxingStrategy.BOXED, expectedType);
         return result;
