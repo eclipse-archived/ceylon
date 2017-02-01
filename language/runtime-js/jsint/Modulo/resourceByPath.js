@@ -18,10 +18,10 @@ function(_path) {
     }
     path += '/' + _path;
   }
+  var sep = operatingSystem().fileSeparator;
+  path = mpath + (isdefmod?'/':'/'+this.version+'/') + path;
+  path = path.replace(/\\/g,sep);
   if (runtime().name==='node.js') {
-    var sep = operatingSystem().fileSeparator;
-    path = mpath + (isdefmod?'/':'/'+this.version+'/') + path;
-    path = path.replace(/\\/g,sep);
     var _fr=require;//this is so that requirejs leaves us alone
     var pm=_fr('path');
     var mods=process.env.NODE_PATH.split(operatingSystem().pathSeparator);
@@ -37,7 +37,7 @@ function(_path) {
     }
     return null;
   } else if (runtime().name==='Browser') {
-    return JsResource$jsint(require.toUrl(mpath));
+    return JsResource$jsint(require.toUrl(path));
   } else {
     throw AssertionError("resources loading not yet supported in this environment: " + runtime().name);
   }
