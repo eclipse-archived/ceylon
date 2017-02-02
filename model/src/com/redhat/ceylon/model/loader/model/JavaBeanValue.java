@@ -1,6 +1,5 @@
 package com.redhat.ceylon.model.loader.model;
 
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ACTUAL;
 import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ValueFlags.VARIABLE;
 
 import java.util.HashMap;
@@ -72,7 +71,7 @@ public class JavaBeanValue extends Value implements LocalDeclarationContainer {
     
     @Override
     public boolean isVariable() {
-        if (actualCompleter != null) {
+        if ((flags&VARIABLE)==0 && actualCompleter != null) {
             completeActual();
         }
         return (flags&VARIABLE)!=0;
