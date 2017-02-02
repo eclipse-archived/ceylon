@@ -179,10 +179,10 @@ public class ValueConstructorImpl<Get>
                         && (!Modifier.isStatic(m.getModifiers()))) {
                     getter = getter.bindTo(instance);
                 }
-                if(!ModelUtil.getConstructedClass(decl).isMember()) {
+                //if(!ModelUtil.getConstructedClass(decl).isMember()) {
                 // we need to cast to Object because this is what comes out when calling it in $call
                 getter = getter.asType(MethodType.methodType(Object.class));
-                }
+                //}
             }else
                 throw new StorageException("Attribute "+decl.getName()+" is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
         
