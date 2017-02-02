@@ -4263,8 +4263,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
         }
+        
+        completeVariable(decl);
     }
     
+    private void completeVariable(Declaration value) {
+        if (value instanceof JavaBeanValue) {
+            Declaration refined = value != null ? value.getRefinedDeclaration() : null;
+            if (refined instanceof Value 
+                    && ((Value)refined).isVariable()
+                    && value instanceof Value
+                    && !((Value)value).isVariable()) {
+                ((Value)value).setVariable(true);
+            }
+        }
+    }
     private void setValueTransientLateFlags(Value decl, MethodMirror methodMirror, boolean isCeylon) {
         if(isCeylon)
             decl.setTransient(methodMirror.getAnnotation(CEYLON_TRANSIENT_ANNOTATION) != null);

@@ -1,5 +1,8 @@
 package com.redhat.ceylon.model.loader.model;
 
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ACTUAL;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ValueFlags.VARIABLE;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,5 +68,13 @@ public class JavaBeanValue extends Value implements LocalDeclarationContainer {
         while(container != null && container instanceof Declaration == false)
             container = container.getContainer();
         return container != null ? ((Declaration) container).isJava() : false;
+    }
+    
+    @Override
+    public boolean isVariable() {
+        if (actualCompleter != null) {
+            completeActual();
+        }
+        return (flags&VARIABLE)!=0;
     }
 }
