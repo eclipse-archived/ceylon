@@ -120,7 +120,7 @@ public class Variable {
         });
     }
 
-    public static PatternValidator moduleVersionValidator = new PatternValidator("[a-zA-Z0-9.]+");
+    public static PatternValidator moduleVersionValidator = new PatternValidator("[\\S]+");
 
     public static Variable moduleVersion(String key, String defaultValue) {
         return new Variable(key, moduleVersionValidator, 
