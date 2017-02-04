@@ -182,7 +182,10 @@ public abstract class DeclarationVisitor extends Visitor {
     private static boolean setModelName(Node that, 
             Declaration model,
             Tree.Identifier id) {
-        if (id==null || id.isMissingToken()) {
+        if (that instanceof Tree.MissingDeclaration) {
+            return false;
+        }
+        else if (id==null || id.isMissingToken()) {
             if (that instanceof Tree.Constructor) {
                 return true;                
             }
@@ -1549,6 +1552,7 @@ public abstract class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.MissingDeclaration that) {
+        that.addError("missing keyword or type annotation");
         Value value = new Value();
         that.setDeclarationModel(value);
         visitDeclaration(that, value);
