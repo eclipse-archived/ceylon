@@ -57,7 +57,8 @@ shared void numbers() {
     check(12.string=="12", "natural string 12");
     check((-12).string=="-12", "integer string -12");
     check((-5.5).string=="-5.5", "float string -5.5");
-    check((1.0).string in {"1", "1.0"}, "float string 1.0");
+    check((1.0).string=="1.0", "float string 1.0");
+    check((1.0e21).string.lowercased in { "1.0e21", "1.0e+21" }, "float string 1.0e21"); // #6908
     
     check(1.unit, "natural unit");
     check(!2.unit, "natural unit");
