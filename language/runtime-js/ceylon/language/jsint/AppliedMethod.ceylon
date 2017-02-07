@@ -12,7 +12,7 @@ shared native class AppliedMethod<in Container, out Type=Anything, in Arguments=
     given Arguments satisfies Anything[] {
 
   shared actual native ClosedType<Anything>[] parameterTypes;
-  shared actual native Function<Type, Arguments> bind(Object container);
+  shared actual native Function<Type, Arguments> bind(Anything container);
 
   shared actual native FunctionDeclaration declaration;
   shared actual native ClosedType<Type> type;
