@@ -10,7 +10,7 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
         var rv=tipo.bind(x);
         rv.$crtmm$=tipo.$crtmm$;
         var nt={t:tipo};
-        if (x.$$targs$$) {
+        if (x && x.$$targs$$) {
           nt.a={};
           for (var nta in x.$$targs$$)nt.a[nta]=x.$$targs$$[nta];
         }
