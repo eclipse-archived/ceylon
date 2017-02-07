@@ -44,7 +44,7 @@ public class ReflectionType implements TypeMirror {
         if(type instanceof TypeVariable)
             return ((TypeVariable<?>)type).getName();
         if (type instanceof GenericArrayType) {
-            return ((GenericArrayType)type).getTypeName();
+            return ((GenericArrayType)type).toString();
         }
         Class<?> klass = (Class<?>)type;
         return klass.getName();
