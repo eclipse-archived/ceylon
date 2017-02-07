@@ -72,4 +72,8 @@ shared native class OpenClassWithInitializer(pkg, meta) satisfies ClassWithIniti
     shared native actual ValueDeclaration? objectValue;
     shared actual String string=>"class ``qualifiedName``";
     shared actual Integer hash =>string.hash;
+
+    shared actual native Class<Type, Arguments> staticClassApply<Type=Anything, Arguments=Nothing>
+            (AppliedType<Object> containerType, AppliedType<>* typeArguments)
+            given Arguments satisfies Anything[];
 }

@@ -77,4 +77,8 @@ shared native class OpenClassWithConstructors(pkg, meta) satisfies ClassWithCons
     shared native actual ConstructorDeclaration[] constructorDeclarations();
     shared native actual ConstructorDeclaration[] annotatedConstructorDeclarations<Annotation>()
             given Annotation satisfies AnnotationType;
+
+    shared native actual Class<Type, Arguments> staticClassApply<Type=Anything, Arguments=Nothing>
+            (AppliedType<Object> containerType, AppliedType<>* typeArguments)
+            given Arguments satisfies Anything[];
 }
