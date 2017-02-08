@@ -1158,7 +1158,7 @@ public class GenerateJsVisitor extends Visitor {
             out(names.self(type), ".", names.name(c), "=", names.name(c), ";");
         }
         if (d.isStatic()) {
-            out(names.name(type), ".$st$.", names.name(c));
+            out(names.name(type), ".$st$.", names.name(d));
         } else {
             out(names.self(type), ".", names.name(c));
         }
