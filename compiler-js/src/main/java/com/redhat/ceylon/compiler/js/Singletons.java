@@ -40,7 +40,7 @@ public class Singletons {
         final boolean addToPrototype = gen.opts.isOptimize() && d != null && d.isClassOrInterfaceMember();
         final boolean isObjExpr = that instanceof Tree.ObjectExpression;
         final TypeDeclaration _td = isObjExpr ? ((Tree.ObjectExpression)that).getAnonymousClass() : d.getTypeDeclaration();
-        final Class c = (Class)(_td instanceof Constructor ? ((Constructor)_td).getContainer() : _td);
+        final Class c = (Class)(_td instanceof Constructor ? _td.getContainer() : _td);
         final String className = gen.getNames().name(c);
         final String objectName = gen.getNames().name(d);
         final String selfName = gen.getNames().self(c);
@@ -68,7 +68,7 @@ public class Singletons {
             stmts = body.getStatements();
         }
 
-        Map<TypeParameter, Type> targs=new HashMap<TypeParameter, Type>();
+        Map<TypeParameter, Type> targs=new HashMap<>();
         if (sats != null) {
             for (Type st : sats) {
                 Map<TypeParameter, Type> stargs = st.getTypeArguments();
@@ -87,7 +87,7 @@ public class Singletons {
                 gen.endLine(true);
             }
         } else {
-            if (c.isMember()) {
+            if (c.isMember() && !d.isStatic()) {
                 gen.initSelf(that);
             }
             gen.instantiateSelf(c);
@@ -97,7 +97,7 @@ public class Singletons {
         //TODO should we generate all this code for native headers?
         //Really we should merge the body of the header with that of the impl
         //It's the only way to make this shit work in lexical scope mode
-        final List<Declaration> superDecs = new ArrayList<Declaration>();
+        final List<Declaration> superDecs = new ArrayList<>();
         if (!gen.opts.isOptimize()) {
             final SuperVisitor superv = new SuperVisitor(superDecs);
             for (Tree.Statement st : stmts) {
