@@ -108,6 +108,9 @@ public class MetamodelHelper {
                         constrName = gen.getNames().name(d);
                     }
                 }
+                if (gen.isImported(that.getUnit().getPackage(), actualClass)) {
+                    gen.out(gen.getNames().moduleAlias(actualClass.getUnit().getPackage().getModule()), ".");
+                }
                 if (actualClass.isMember()) {
                     outputPathToDeclaration(that, actualClass, gen);
                 }
@@ -120,7 +123,11 @@ public class MetamodelHelper {
         }
         if (d instanceof Value || d.isParameter()) {
             if (!d.isMember()) gen.qualify(that, d);
-            gen.out(gen.getNames().getter(d, true), ")");
+            if (d.isStatic() && d instanceof Value && ((Value)d).getType().getDeclaration().isAnonymous()) {
+                gen.out(gen.getNames().name(d), ")");
+            } else {
+                gen.out(gen.getNames().getter(d, true), ")");
+            }
         } else {
             if (d.isAnonymous()) {
                 final String oname = gen.getNames().objectName(d);

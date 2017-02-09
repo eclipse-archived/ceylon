@@ -512,7 +512,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 classGen().transformMplBody(functionArg.getParameterLists(), model, body));
         
         callableBuilder.checkForFunctionalInterface(expectedType);
-        callableBuilder.setSamClassName(model.getName());
+        
         JCExpression result = callableBuilder.build();
         result = applyErasureAndBoxing(result, callableType, true, BoxingStrategy.BOXED, expectedType);
         return result;
@@ -3677,6 +3677,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                                         makeReifiedTypeArgument(elementType),
                                         exprAndType.expression);
                             }
+                            exprAndType = new ExpressionAndType(
+                                    make().Apply(null,
+                                    makeSelect(iterable, "sequence"),
+                                    List.<JCExpression>nil()),
+                                    makeJavaType(argType));
+                        } else if (typeFact().isJavaIterableType(argType)) {
+                            exprAndType = transformArgument(invocation, argIndex,
+                                    boxingStrategy);
+                            Type elementType = typeFact().getJavaIteratedType(argType);
+                            JCExpression iterable = utilInvocation().toIterable(
+                                    makeJavaType(elementType, JT_TYPE_ARGUMENT),
+                                    makeReifiedTypeArgument(elementType),
+                                    exprAndType.expression);
                             exprAndType = new ExpressionAndType(
                                     make().Apply(null,
                                     makeSelect(iterable, "sequence"),
@@ -8165,7 +8178,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         // use the op model for the variable, not expected type, because expected type may be optional, where op
         // says not optional (even in case of java interop which may return null), so we allow null values in j.l.String (unboxed)
         // because the caller will insert the null check if the expected type is optional 
-        JCExpression vartype = makeJavaType(op.getTypeModel(), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
+        Type typeModel = op.getTypeModel();
+        if (willEraseToObject(typeModel)) {
+            typeModel = typeFact().denotableType(typeModel);
+        }
+        JCExpression vartype = makeJavaType(typeModel, CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), statements, makeUnquotedIdent(tmpVar));
     }
 

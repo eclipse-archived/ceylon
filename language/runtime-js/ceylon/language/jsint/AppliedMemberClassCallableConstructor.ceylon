@@ -14,7 +14,7 @@ shared native class AppliedMemberClassCallableConstructor<in Container=Nothing, 
   shared native actual CallableConstructorDeclaration declaration;
   shared native actual MemberClass<Container, Type> type;
   shared native actual ClassModel<Type> container;
-  shared native actual CallableConstructor<Type, Arguments> bind(Object container);
+  shared native actual CallableConstructor<Type, Arguments> bind(Anything container);
   //Generic
   shared native actual Map<TypeParameter, ClosedType<>> typeArguments;
   shared native actual ClosedType<Anything>[] typeArgumentList;

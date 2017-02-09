@@ -14,6 +14,8 @@ import ceylon.language.meta.declaration.SetterDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration$impl;
 
+import com.redhat.ceylon.common.NonNull;
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -302,5 +304,13 @@ public class ValueConstructorDeclarationImpl
         return setter;
     }
     
-    
+    @Nullable
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public Object staticGet(
+            @NonNull
+            @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Object>")
+            ceylon.language.meta.model.Type<?> containerType) {
+        throw new ceylon.language.meta.model.TypeApplicationException("Cannot staticGet a value constructor, use get"); 
+    }
 }

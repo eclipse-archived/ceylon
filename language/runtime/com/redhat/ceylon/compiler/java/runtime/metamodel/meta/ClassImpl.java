@@ -313,7 +313,9 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
         checkInit();
         final ceylon.language.meta.declaration.Declaration ctor = ((ClassDeclarationImpl)declaration).getConstructorDeclaration(name);
         if (ctor instanceof CallableConstructorDeclaration) {
-            if (((CallableConstructorDeclarationImpl)ctor).declaration.isShared()) {
+            if (ctor instanceof CallableConstructorDeclarationImpl && 
+                    ((CallableConstructorDeclarationImpl)ctor).declaration.isShared()
+                    || ctor instanceof ClassWithInitializerDeclarationConstructor) {
                 return getDeclaredConstructor($reified$Arguments, name); 
             } else {
                 return null;
@@ -343,19 +345,17 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
             return null;
         if (ctor instanceof CallableConstructorDeclaration) {
             if (ctor instanceof ClassWithInitializerDeclarationConstructor) {
-                return new ClassInitializerConstructor<>(this);
+                TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)((ClassWithInitializerDeclarationConstructor)ctor).declaration, this.producedType);
+                Metamodel.checkReifiedTypeArgument("getDeclaredConstructor", "CallableConstructor<$1,$2>",
+                        //        // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
+                                Variance.OUT, this.producedType, $reifiedType,
+                                Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reified$Arguments);
+                ClassInitializerConstructor c = new ClassInitializerConstructor<>(this);
+                return c;
             }
             CallableConstructorDeclarationImpl callableCtor = (CallableConstructorDeclarationImpl)ctor;
             com.redhat.ceylon.model.typechecker.model.Type constructorType = callableCtor.constructor.appliedType(this.producedType, Collections.<com.redhat.ceylon.model.typechecker.model.Type>emptyList());
-            // anonymous classes don't have parameter lists
-            //TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)callableCtor.constructor, this.producedType);
-    
-            // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
-            // implementation types to the user, such as AppliedMemberClass
-            //Metamodel.checkReifiedTypeArgument("getConstructor", "Constructor<$1,$2>",
-            //        // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
-            //        Variance.OUT, this.producedType, $reifiedType,
-            //        Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reifiedArguments);
+
             //return new AppliedConstructor<Type,Args>(this.$reifiedType, actualReifiedArguments, this, constructorType, ctor, this.instance);
             //Reference reference = ((Function)callableCtor.declaration).getReference();
             Reference reference;
@@ -368,12 +368,22 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
             } else {
                 throw Metamodel.newModelError("Unexpect declaration " +callableCtor.declaration);
             }
+            // anonymous classes don't have parameter lists
+            TypeDescriptor actualReifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.declaration.getUnit(), (Functional)callableCtor.declaration, reference);
+            // This is all very ugly but we're trying to make it cheaper and friendlier than just checking the full type and showing
+            // implementation types to the user, such as AppliedMemberClass
+            Metamodel.checkReifiedTypeArgument("getConstructor", "Constructor<$1,$2>",
+                    // this line is bullshit since it's always true, but otherwise we can't substitute the error message above :(
+                    Variance.OUT, this.producedType, $reifiedType,
+                    Variance.IN, Metamodel.getProducedType(actualReifiedArguments), $reified$Arguments);
+
+            
             CallableConstructorImpl<Type, Sequential<? extends Object>> appliedConstructor = new CallableConstructorImpl<Type,Sequential<? extends java.lang.Object>>(
                     this.$reifiedType, 
                     $reified$Arguments,
                     reference, 
                     callableCtor, 
-                    this, null);
+                    this, instance);
             Metamodel.checkReifiedTypeArgument("apply", "CallableConstructor<$1,$2>", 
                     Variance.OUT, producedType, $reifiedType, 
                     Variance.IN, Metamodel.getProducedTypeForArguments(
@@ -387,7 +397,7 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
             return new ValueConstructorImpl<Type>(
                     this.$reifiedType,
                     callableCtor, val.getTypedReference(),
-                    this, null);
+                    this, instance);
         } else {
             throw new AssertionError("Constructor neither CallableConstructorDeclaration nor ValueConstructorDeclaration");
         }

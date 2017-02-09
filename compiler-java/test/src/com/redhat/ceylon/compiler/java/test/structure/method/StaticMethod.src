@@ -1,12 +1,26 @@
 package com.redhat.ceylon.compiler.java.test.structure.method;
 
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "S",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class StaticMethod<S> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S;
     
-    private static final <S>.java.lang.String nonSharedStat$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S) {
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.com.redhat.ceylon.common.NonNull
+    private static final <S>.java.lang.String nonSharedStat$priv$(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S) {
         return "I\'m static";
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final <S, T>.java.lang.String sharedStat(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return (
             let
@@ -18,10 +32,12 @@ class StaticMethod<S> implements .com.redhat.ceylon.compiler.java.runtime.model.
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final <S, T>.java.lang.String sharedStat$s(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return "";
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final <S, T>.java.lang.String sharedStat(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s) {
         return (
             let
@@ -32,27 +48,53 @@ class StaticMethod<S> implements .com.redhat.ceylon.compiler.java.runtime.model.
         );
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final <S, T>T sharedStat$t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s) {
         return null;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static <S, T>.java.lang.String sharedStat$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s, final T t) {
         return "I\'m static";
     }
     
-    public static final <S, T>.java.lang.String sharedStat(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s, final T t) {
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.com.redhat.ceylon.common.NonNull
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public static final <S, T>.java.lang.String sharedStat(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.common.NonNull
+    final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T?")
+    final T t) {
         return <S, T>sharedStat$canonical$($reified$S, $reified$T, s, t);
     }
     
-    public static final <S>S generic(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S) {
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("S")
+    public static final <S>S generic(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S) {
         return (S)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
-    public StaticMethod(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S) {
+    @.ceylon.language.SharedAnnotation$annotation$
+    public StaticMethod(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S) {
         this.$reified$S = $reified$S;
     }
     
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.class, $reified$S);
     }

@@ -62,7 +62,7 @@ public class MemberClassValueConstructorImpl<Container, Get>
     
     @Override
     public ceylon.language.meta.model.ClassModel<Get, ?> getContainer() {
-        return Util.assertExists((ceylon.language.meta.model.ClassModel)clazz.getContainer());
+        return clazz;
     }
     
     public ValueConstructorDeclaration getDeclaration() {

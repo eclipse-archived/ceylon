@@ -235,8 +235,12 @@ atr$(JSNum$proto, 'string', function(){
   if (s.indexOf('.')<0 && nflt$(this)
       && this != Infinity 
       && this != -Infinity 
-      && !isNaN(this))
-      s+='.0';
+      && !isNaN(this)) {
+      if (s.indexOf('e')>0)
+          s=s.replace('e','.0e');
+      else
+          s+='.0';
+  }
   return s;
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:$_Object,d:['$','Object','$at','string']};});
 $specialiseForNumber$(Integer, 'string', function(){return {mod:$CCMM$,$t:{t:$_String},pa:67,$cont:Integer,d:['$','Integer','$at','string']};})

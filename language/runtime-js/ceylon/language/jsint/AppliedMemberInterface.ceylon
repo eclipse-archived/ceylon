@@ -9,7 +9,7 @@ import ceylon.language.meta.declaration {
 
 shared native class AppliedMemberInterface<in Container, out Type=Anything>()
         satisfies MemberInterface<Container,Type> {
-  shared actual native Interface<Type> bind(Object container);
+  shared actual native Interface<Type> bind(Anything container);
   shared actual native ClosedType<Anything> declaringType;
   shared actual native InterfaceDeclaration declaration;
   shared actual native Map<TypeParameter, ClosedType<>> typeArguments;

@@ -88,7 +88,7 @@ public class MemberClassCallableConstructorImpl<Container, Type, Arguments exten
     
     @Override
     public ClassModel<Type, ?> getContainer() {
-        return Util.assertExists((ClassModel)clazz.getContainer());
+        return clazz;
     }
     
     @Override

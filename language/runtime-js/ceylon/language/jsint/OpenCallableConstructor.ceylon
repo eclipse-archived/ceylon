@@ -3,7 +3,8 @@ import ceylon.language.meta.declaration {
   ClassDeclaration, Module, OpenType, TypeParameter
 }
 import ceylon.language.meta.model {
-  CallableConstructor, MemberClassCallableConstructor, Type
+  CallableConstructor, MemberClassCallableConstructor, Type,
+  FunctionModel, Applicable
 }
 import ceylon.language { AnnotationType=Annotation }
 
@@ -17,11 +18,16 @@ shared native class OpenCallableConstructor(containingPackage, shared Anything m
             given Arguments satisfies Anything[];
   shared actual native MemberClassCallableConstructor<Container,Result,Arguments> memberApply<Container=Nothing,Result=Object,Arguments=Nothing>(Type<Object> containerType, Type<>* typeArguments)
             given Arguments satisfies Anything[];
+  shared actual native FunctionModel<Return, Arguments>& Applicable<Return, Arguments>
+         staticApply<Return=Anything, Arguments=Nothing>(
+     Type<Object> containerType, Type<>* typeArguments)
+         given Arguments satisfies Anything[];
 
   shared actual native Boolean shared;
   shared actual native Boolean formal;
   shared actual native Boolean default;
   shared actual native Boolean actual;
+  shared actual native Boolean static;
   //FunctionalDeclaration
   annotation=false;
   shared actual native FunctionOrValueDeclaration[] parameterDeclarations;

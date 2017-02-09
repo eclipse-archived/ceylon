@@ -171,9 +171,9 @@ public class AttributeDefinitionBuilder {
                 .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable());
             if (attrType.isStatic()) {
                 for (TypeParameter tp : Strategy.getEffectiveTypeParameters(attrType)) {
-                    getterBuilder.typeParameter(tp);
+                    getterBuilder.typeParameter(owner.makeTypeParameter(tp, null), null);
                     getterBuilder.reifiedTypeParameter(tp);
-                    setterBuilder.typeParameter(tp);
+                    setterBuilder.typeParameter(owner.makeTypeParameter(tp, null), null);
                     setterBuilder.reifiedTypeParameter(tp);
                 }
             }

@@ -1,4 +1,4 @@
-@noanno
+
 class StaticMethod<S> {
     
     static String nonSharedStat()=>"I'm static";

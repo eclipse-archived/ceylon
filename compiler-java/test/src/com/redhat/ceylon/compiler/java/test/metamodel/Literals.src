@@ -1067,6 +1067,112 @@ final class constructors_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
         minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.MemberClass.class)})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+class StaticMembers<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.com.redhat.ceylon.common.NonNull
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static final <T>.java.lang.String getAttribute(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return "";
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    public static final <T>T method(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T t) {
+        return t;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.class,
+            isStatic = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public static class MemberClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public MemberClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+        final T t) {
+            this.$reified$T = $reified$T;
+        }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+        @.com.redhat.ceylon.compiler.java.metadata.Transient
+        public final T getAttribute() {
+            return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+        public final T method(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+        final T t) {
+            return t;
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.class, .com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.MemberClass.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.MemberClass.class));
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public StaticMembers(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.class, $reified$T);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class statics_ {
+    
+    private statics_() {
+    }
+    
+    static void statics() {
+        final .ceylon.language.meta.declaration.ValueDeclaration staticAttr = ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "attribute");
+        final .ceylon.language.meta.declaration.FunctionDeclaration staticMeth = ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.class)).<.ceylon.language.meta.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, "method");
+        final .ceylon.language.meta.declaration.ClassWithInitializerDeclaration staticClass = (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.MemberClass.class);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Name("litValue")
 final class litValue_ {

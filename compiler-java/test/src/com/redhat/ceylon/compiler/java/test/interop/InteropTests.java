@@ -1025,4 +1025,10 @@ public class InteropTests extends CompilerTests {
         //compile("ClassLiteral.ceylon");
         run("com.redhat.ceylon.compiler.java.test.interop.classLiteral_run");
     }
+    
+    @Test
+    public void testIopBug6899() {
+        compile("Bug6899.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.interop.bug6899");
+    }
 }

@@ -26,5 +26,5 @@ shared sealed interface Method<in Container=Nothing, out Type=Anything, in Argum
     "This function's declaration."
     shared formal actual FunctionDeclaration declaration;
 
-    shared actual formal Function<Type, Arguments> bind(Object container);
+    shared actual formal Function<Type, Arguments> bind(Anything container);
 }

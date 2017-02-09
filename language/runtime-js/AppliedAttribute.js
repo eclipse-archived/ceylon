@@ -33,7 +33,7 @@ function AppliedAttribute(pname, atr,$$targs$$,that){
     return OpenValue$jsint(pkg, atr);
   },undefined,function(){return{mod:$CCMM$,$t:{t:ValueDeclaration$meta$declaration},$cont:AppliedAttribute,an:function(){return[shared(),actual()];},d:['ceylon.language.meta.model','Attribute','$at','declaration']};});
   that.$_bind=function(cont){
-    return AppliedValue$jsint(cont,atr,{Get$AppliedValue:$$targs$$.Get$AppliedAttribute,
+    return AppliedValue$jsint(cont==null?1:cont,atr,{Get$AppliedValue:$$targs$$.Get$AppliedAttribute,
       Set$AppliedValue:$$targs$$.Set$AppliedAttribute,
       Container$AppliedValue:$$targs$$.Container$AppliedAttribute});
   }

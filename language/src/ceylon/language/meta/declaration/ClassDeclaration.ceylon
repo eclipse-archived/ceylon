@@ -117,6 +117,18 @@ shared sealed interface ClassDeclaration
             (AppliedType<>* typeArguments)
                 given Arguments satisfies Anything[];
 
+    "Applies the given closed type arguments to this `static` member class declaration 
+     in order to obtain a class model."
+    throws(`class IncompatibleTypeException`, 
+        "If the specified `Type` or `Arguments` type arguments are not 
+         compatible with the actual result.")
+    throws(`class TypeApplicationException`, 
+            "If the specified closed type argument values are not compatible 
+             with the actual result's type parameters.")
+    shared formal Class<Type, Arguments> staticClassApply<Type=Anything, Arguments=Nothing>
+            (AppliedType<Object> containerType, AppliedType<>* typeArguments)
+            given Arguments satisfies Anything[];
+
     "Applies the given closed container type and type arguments to this member class declaration in order to obtain a member class model. 
      See [this code sample](#member-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, 
@@ -139,6 +151,11 @@ shared sealed interface ClassDeclaration
          and a default constructor.")
     shared default Object instantiate(AppliedType<>[] typeArguments = [], Anything* arguments)
         => classApply<Object, Nothing>(*typeArguments).apply(*arguments);
+    
+    "Creates a new instance of this `static` member class, 
+     by applying the specified type arguments and value arguments."
+    shared default Object staticInstantiate(AppliedType<Object> containerType, AppliedType<>[] typeArguments = [], Anything* arguments)
+            => staticClassApply<Object, Nothing>(containerType, *typeArguments).apply(*arguments);
     
     "Creates a new instance of this member class, by applying the specified 
      type arguments and value arguments."

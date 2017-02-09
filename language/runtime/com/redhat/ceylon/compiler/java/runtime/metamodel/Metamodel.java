@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.RuntimeResolver;
@@ -121,10 +122,12 @@ import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.ClassOrInterface;
+import ceylon.language.meta.model.Declared;
 import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.Generic;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
+import ceylon.language.meta.model.Member;
 import ceylon.language.meta.model.TypeApplicationException;
 import ceylon.language.meta.model.ValueModel;
 
@@ -641,8 +644,9 @@ public class Metamodel {
                 reifiedArguments = TypeDescriptor.NothingType;
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
 
-            if(declaration.isToplevel() || isLocalType(declaration))
-                return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, pt, null, null);
+            if(declaration.isToplevel() 
+                    || isLocalType(declaration))
+                return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, pt, Metamodel.getAppliedMetamodel(pt.getQualifyingType()), null);
             
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
             return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl(reifiedContainer, reifiedType, reifiedArguments, pt);
@@ -657,7 +661,8 @@ public class Metamodel {
                 reifiedArguments = TypeDescriptor.NothingType;
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
 
-            if(declaration.isToplevel() || isLocalType(declaration))
+            if(declaration.isToplevel() 
+                    || isLocalType(declaration))
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, pt, null, null);
             
             // Workaround for old binaries where static members could have some qualified TDs
@@ -1848,12 +1853,19 @@ public class Metamodel {
         return Util.apply(function, arguments, variadicElementType);
     }
     
+    
     public static <K,C>K bind(ceylon.language.meta.model.Qualified<K,C> member, Type containerType, Object container){
-        if(container == null)
+        if (container == null
+                && (!(member instanceof Declared
+                    && (((Declared)member).getDeclaration() instanceof NestableDeclaration)
+                    && ((NestableDeclaration)((Declared)member).getDeclaration()).getStatic()))) {
             throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got ceylon.language::Null");
-        Type argumentType = Metamodel.getProducedType(container);
-        if(!argumentType.isSubtypeOf(containerType))
-            throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got "+argumentType);
+        } 
+        if(container != null) {
+            Type argumentType = Metamodel.getProducedType(container);
+            if(!argumentType.isSubtypeOf(containerType))
+                throw new IncompatibleTypeException("Invalid container "+container+", expected type "+containerType+" but got "+argumentType);
+        }
         return member.$call$(container);
     }
 
@@ -1945,9 +1957,40 @@ public class Metamodel {
         return (Sequential)(sequence != null ? sequence : empty_.get_());
     }
 
+    /**
+     * Delegated to by all the instances of {@code Annotated.annotated<Annotation>()}
+     */
     public static boolean isAnnotated(TypeDescriptor reifed$AnnotationType,
             AnnotationBearing annotated) {
-        return annotated.$isAnnotated$(getJavaAnnotationClass((Class)((TypeDescriptor.Class)reifed$AnnotationType).getKlass()));
+        Class<?> klass = reifed$AnnotationType instanceof TypeDescriptor.Class ? ((TypeDescriptor.Class)reifed$AnnotationType).getKlass() : null; 
+        if (klass == ceylon.language.Annotation.class) {
+            // annotated with anything at all (Celyon or Java)
+            Annotation[] ja = annotated.$getJavaAnnotations$();
+            return ja != null && ja.length > 0;
+        } else if (klass == ceylon.language.OptionalAnnotation.class
+                    || klass == ceylon.language.SequencedAnnotation.class
+                    || klass == ceylon.language.ConstrainedAnnotation.class) {
+                TypeDescriptor typeArgument = ((TypeDescriptor.Class)reifed$AnnotationType).getTypeArgument(0);
+            if (typeArgument.equals(TypeDescriptor.NothingType)) {
+                Annotation[] ja = annotated.$getJavaAnnotations$();
+                if (ja != null) {
+                    for (Annotation j : ja) {
+                        if (j.annotationType().isAnnotationPresent(Ceylon.class)
+                                && (klass == ceylon.language.ConstrainedAnnotation.class || j.annotationType().getName().endsWith(
+                                        klass == ceylon.language.OptionalAnnotation.class ? 
+                                                "$annotation$" : "$annotations$"))) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            } else {
+                klass = ((TypeDescriptor.Class)typeArgument).getKlass();
+                return annotated.$isAnnotated$(getJavaAnnotationClass((Class)klass));
+            }
+        } else {
+            return annotated.$isAnnotated$(getJavaAnnotationClass((Class)klass));
+        }
     }
 
     public static ceylon.language.meta.declaration.Variance getModelVariance(TypeParameter declaration) {

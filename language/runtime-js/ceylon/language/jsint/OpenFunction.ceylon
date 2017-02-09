@@ -2,7 +2,9 @@ import ceylon.language.meta.declaration {
   FunctionDeclaration, Package, OpenType, Module,
   NestableDeclaration, FunctionOrValueDeclaration, TypeParameter
 }
-import ceylon.language.meta.model { Type, Method, Function }
+import ceylon.language.meta.model {
+  Type, Method, Function, FunctionModel, Applicable
+}
 import ceylon.language{AnnotationType = Annotation}
 
 shared native class OpenFunction(pkg, meta) satisfies FunctionDeclaration {
@@ -21,6 +23,7 @@ shared native class OpenFunction(pkg, meta) satisfies FunctionDeclaration {
   shared actual native Boolean default;
   shared actual native Boolean shared;
   shared actual native Boolean toplevel;
+  shared actual native Boolean static;
   shared actual native String qualifiedName;
   shared actual native String name;
   shared actual native TypeParameter[] typeParameterDeclarations;
@@ -30,6 +33,10 @@ shared native class OpenFunction(pkg, meta) satisfies FunctionDeclaration {
   shared actual native Method<Container, Return, Arguments> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(
       Type<Object> containerType, Type<Anything>* typeArguments)
     given Arguments satisfies Anything[];
+  shared actual native FunctionModel<Return, Arguments>& Applicable<Return, Arguments>
+          staticApply<Return=Anything, Arguments=Nothing>(
+      Type<Object> containerType, Type<>* typeArguments)
+          given Arguments satisfies Anything[];
   shared actual native FunctionOrValueDeclaration? getParameterDeclaration(String name);
   shared actual native TypeParameter? getTypeParameterDeclaration(String name);
   shared actual native Annotation[] annotations<out Annotation>()

@@ -296,6 +296,9 @@ public class BmeGenerator {
         ClassOrInterface coi = (ClassOrInterface)(orig == null ? d : orig).getContainer();
         gen.qualify(n, coi);
         gen.out(gen.getNames().name(coi), ".$st$.", gen.getNames().name(d));
+        if (d instanceof Value && ((Value)d).getType().getDeclaration().isAnonymous()) {
+            gen.out("()");
+        }
     }
 
 }

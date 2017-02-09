@@ -38,6 +38,7 @@ import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.StatusPrinter;
+import com.redhat.ceylon.compiler.java.codegen.AnnotationDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationModelVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingVisitor;
@@ -638,6 +639,7 @@ public class CeylonEnter extends Enter {
         SmallDeclarationVisitor smallDeclarationVisitor = new SmallDeclarationVisitor();
         SmallVisitor smallVisitor = new SmallVisitor();
         DeferredVisitor deferredVisitor = new DeferredVisitor();
+        AnnotationDeclarationVisitor adv = new AnnotationDeclarationVisitor(gen);
         AnnotationModelVisitor amv = new AnnotationModelVisitor(gen);
         DefiniteAssignmentVisitor dav = new DefiniteAssignmentVisitor();
         TypeParameterCaptureVisitor tpCaptureVisitor = new TypeParameterCaptureVisitor();
@@ -652,6 +654,7 @@ public class CeylonEnter extends Enter {
                 progressPreparation(2, i++, size, pu);
             pu.getCompilationUnit().visit(eeVisitor);
             pu.getCompilationUnit().visit(uv);
+            pu.getCompilationUnit().visit(adv);
         }
         i=1;
         for (PhasedUnit pu : listOfUnits) {
@@ -659,6 +662,8 @@ public class CeylonEnter extends Enter {
                 progressPreparation(3, i++, size, pu);
             pu.getCompilationUnit().visit(boxingDeclarationVisitor);
             pu.getCompilationUnit().visit(smallDeclarationVisitor);
+            pu.getCompilationUnit().visit(amv);
+            
         }
         i=1;
         // the others can run at the same time
@@ -670,7 +675,6 @@ public class CeylonEnter extends Enter {
             compilationUnit.visit(boxingVisitor);
             compilationUnit.visit(smallVisitor);
             compilationUnit.visit(deferredVisitor);
-            compilationUnit.visit(amv);
             compilationUnit.visit(dav);
             compilationUnit.visit(tpCaptureVisitor);
             compilationUnit.visit(localInterfaceVisitor);
