@@ -474,7 +474,8 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `redundantIteration`,
      `missingImportPrefix`,
      `uncheckedTypeArguments`,
-     `inferredNotNull`."
+     `inferredNotNull`,
+     `implicitNarrowing`."
     String* warnings) 
         => SuppressWarningsAnnotation(*warnings);
 

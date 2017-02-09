@@ -804,9 +804,16 @@ public class AnalyzerUtil {
         }
         else if (!type.isSubtypeOf(supertype1)
                 && !type.isSubtypeOf(supertype2)) {
-            node.addError(message + 
-                    notAssignableMessage(type, supertype1, node), 
-                    code);
+            if (supertype1.isUnion() && supertype1.covers(type)) {
+                node.addUsageWarning(Warning.implicitNarrowing,
+                        message + 
+                        notAssignableMessage(type, supertype1, node));
+            }
+            else {
+                node.addError(message + 
+                        notAssignableMessage(type, supertype1, node), 
+                        code);
+            }
         }
     }
 
@@ -889,9 +896,16 @@ public class AnalyzerUtil {
             addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-            node.addError(message + 
-                    notAssignableMessage(type, supertype, node), 
-                    code);
+            if (supertype.isUnion() && supertype.covers(type)) {
+                node.addUsageWarning(Warning.implicitNarrowing,
+                        message + 
+                        notAssignableMessage(type, supertype, node));
+            }
+            else {
+                node.addError(message + 
+                        notAssignableMessage(type, supertype, node), 
+                        code);
+            }
         }
     }
 
