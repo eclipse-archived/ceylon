@@ -280,20 +280,15 @@ shared interface Iterable<out Element=Anything,
     //                then []
     //                else ArraySequence(array);
     
-    
     shared default [Element+] | []&Iterable<Element,Absent> sequence() {
         value array = Array(this);
-        value sequence = if (array.empty)
-        then []
-        else ArraySequence(array);
-        if (nonempty sequence) {
-            return sequence;
+        if (array.empty) {
+            "nonempty stream has no elements"
+            assert (is Iterable<Element,Absent> empty = []);
+            return empty;
         }
         else {
-            if (is Iterable<Element,Absent> empty = []) {
-                return empty;
-            } 
-            throw AssertionError("Assertion failed: Sequence expected");
+            return ArraySequence(array);
         }
     }
     
