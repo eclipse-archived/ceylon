@@ -10,7 +10,7 @@
  
      { \"1.23\", \"foo\", \"5.67\", \"-1\", \"\" }
              .map(parseFloat)
-             .flatMap(emptyOrSingleton<Float?>)
+             .flatMap(emptyOrSingleton)
  
  produces the stream:
   
