@@ -4,6 +4,9 @@ import java.util{ArrayList}
 String[] javaIterableInSpreadArgumentFunc(Iterable<String> s) {
     return s.sequence();
 }
+Anything[] bug6912(Anything* args) {
+    return args;
+}
 void javaIterableInSpreadArgument() {
     value al = ArrayList<String>();
     al.add("a");al.add("b");al.add("c");
@@ -20,4 +23,6 @@ void javaIterableInSpreadArgument() {
     // tuple instantiation
     assert([*it] == ["a", "b", "c"]);
     assert(["z", *it] == ["z", "a", "b", "c"]);
+    
+    assert(bug6912(*al)==["a","b","c"]);
 }
