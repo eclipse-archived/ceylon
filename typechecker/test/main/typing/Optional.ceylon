@@ -87,7 +87,7 @@ class Optional() {
     
     @type:"Sequence<Null|String|Integer|Sequence<Object>|Sequential<String>|Float>" 
     value xyz1 = [ foobar1, foobar2 ].sequence();
-    @type:"Sequential<Null|String|Integer|Sequence<Object>|Sequential<String>|Float>" 
+    @type:"Sequence<Null|String|Integer|Sequence<Object>|Sequential<String>|Float>" 
     value xyz2 = { foobar1, foobar2 }.sequence();
     
     //TODO: I think the type parameter X does
