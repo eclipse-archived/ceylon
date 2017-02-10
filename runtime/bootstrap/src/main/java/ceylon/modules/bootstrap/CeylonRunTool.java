@@ -16,6 +16,7 @@
 
 package ceylon.modules.bootstrap;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -23,12 +24,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.impl.AssemblyRepositoryBuilder;
+import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -81,6 +86,7 @@ public class CeylonRunTool extends RepoUsingTool {
     private static volatile Module runtimeModule;
 
     private String moduleNameOptVersion;
+    private File assembly;
     /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
     private String run;
     private String compileFlags;
@@ -109,6 +115,12 @@ public class CeylonRunTool extends RepoUsingTool {
     @Rest
     public void setArgs(List<String> args) {
         this.args = args;
+    }
+
+    @OptionArgument
+    @Description("Specifies the path to a Ceylon Assembly file that should be executed")
+    public void setAssembly(File assembly) {
+        this.assembly = assembly;
     }
 
     @Option(longName="auto-export-maven-dependencies")
@@ -173,6 +185,57 @@ public class CeylonRunTool extends RepoUsingTool {
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         super.initialize(mainTool);
+        
+        if (assembly != null) {
+            // The --compile flag makes no sense in combination with --assembly
+            compileFlags = COMPILE_NEVER;
+            
+            JarFile jar = JarUtils.validJar(assembly);
+            if (jar != null) {
+                Manifest manifest = jar.getManifest();
+                if (manifest != null) {
+                    // Add the assembly to the repositories
+                    if (repos == null) {
+                        repos = new ArrayList<URI>(1);
+                    }
+                    repos.add(0, new URI("assembly:" + assembly.getPath()));
+                    
+                    // Determine which module to execute
+                    String mfMainMod = manifest.getMainAttributes().getValue(Constants.ATTR_ASSEMBLY_MAIN_MODULE);
+                    if (mfMainMod == null) {
+                        throw new IllegalArgumentException("Assembly manifest is missing required attribute '" + Constants.ATTR_ASSEMBLY_MAIN_MODULE + "'");
+                    }
+                    if (moduleNameOptVersion != null) {
+                        // This is a bit of a hack, but when we use the --assembly
+                        // argument we can't specify a module name/version anymore,
+                        // but we can still specify arguments, so if a module name
+                        // was specified on the CLI it must be an argument and we
+                        // add it to the beginning of the list of arguments
+                        args.add(0, moduleNameOptVersion);
+                    }
+                    moduleNameOptVersion = mfMainMod;
+                    
+                    // See if there is an overrides file
+                    String mfOverrides = manifest.getMainAttributes().getValue(Constants.ATTR_ASSEMBLY_OVERRIDES);
+                    if (mfOverrides != null) {
+                        // At this point we need to pre-unpack the assembly
+                        File assemblyFolder = AssemblyRepositoryBuilder.registerAssembly(assembly);
+                        File ovrFile = new File(assemblyFolder, mfOverrides);
+                        overrides = ovrFile.getPath();
+                    }
+                    
+                    // See if we need to execute a specific toplevel
+                    String mfRun = manifest.getMainAttributes().getValue(Constants.ATTR_ASSEMBLY_RUN);
+                    if (mfRun != null) {
+                        run = mfRun;
+                    }
+                } else {
+                    throw new IllegalArgumentException("The Assembly does not have a manifest");
+                }
+            } else {
+                throw new IllegalArgumentException("The file specified by '--assembly' is not a valid Ceylon Assembly");
+            }
+        }
         
         if (moduleNameOptVersion == null) {
             moduleNameOptVersion = DefaultToolOptions.getRunToolModule(com.redhat.ceylon.common.Backend.Java);
