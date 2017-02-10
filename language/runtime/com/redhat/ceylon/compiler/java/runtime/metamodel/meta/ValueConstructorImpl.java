@@ -96,6 +96,7 @@ public class ValueConstructorImpl<Get>
      * Gets the getter {@code java.lang.reflect.Method} for the
      * given value constructor.
      */
+    @Ignore
     public static Method getJavaMethod(ValueConstructorDeclarationImpl declaration) {
         com.redhat.ceylon.model.typechecker.model.Value decl = (com.redhat.ceylon.model.typechecker.model.Value) declaration.declaration;
         String getterName = "";

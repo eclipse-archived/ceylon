@@ -5466,7 +5466,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(typeParameters != null) {
             setTypeParametersFromAnnotations(method, params, methodMirror, typeParameters, methodMirror.getTypeParameters());
         } else {
-            setTypeParameters(method, params, methodMirror.getTypeParameters(), isCeylon);
+            List<TypeParameterMirror> jtp = methodMirror.getTypeParameters();
+            if (method.isStatic() && (methodMirror.isPublic() || methodMirror.isProtected() || methodMirror.isDefaultAccess()) && isCeylon) {
+                jtp = jtp.subList(((ClassOrInterface)method.getContainer()).getTypeParameters().size(), jtp.size());
+            }
+            setTypeParameters(method, params, jtp, isCeylon);
         }
     }
 

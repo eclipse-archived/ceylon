@@ -88,11 +88,13 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
     }
 
     @Override
+    @Ignore
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AbstractCallable.class, $reifiedReturn, $reifiedArguments);
     }
 
     @Override
+    @Ignore
     public short $getVariadicParameterIndex$() {
         return variadicParameterIndex;
     }
@@ -136,6 +138,7 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
      *     make up the rest of the elements in the returned sequential.
      */
     @SuppressWarnings("rawtypes")
+    @Ignore
     public static Sequential $spreadVarargs$(TypeDescriptor $reifiedElement, 
             int start, Object[] argsAndVarargs) {
         Sequential<?> callsiteVarargs = (Sequential<?>)argsAndVarargs[argsAndVarargs.length-1];
@@ -153,6 +156,7 @@ public abstract class AbstractCallable<Return> implements Callable<Return>, Reif
      *     make up the rest of the elements in the returned sequential.
      */
     @SuppressWarnings("rawtypes")
+    @Ignore
     public static Sequential $spreadVarargs$(TypeDescriptor $reifiedElement, 
             int start, int length, Object[] initial, Sequential<?> rest) {
         return Util.sequentialCopy($reifiedElement, 

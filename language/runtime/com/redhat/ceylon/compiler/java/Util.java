@@ -2426,9 +2426,9 @@ public class Util {
     }
     
     @SuppressWarnings("unchecked")
-    public static <T,WTF> T[] unwrapObjectArray(
+    public static <T> T[] unwrapObjectArray(
             @SuppressWarnings("unused") TypeDescriptor $reified$T, 
-            @SuppressWarnings("unused") TypeDescriptor $reified$WTF, Array<T> array) {
+            Array<T> array) {
         Object a = array.toArray();
         if (a instanceof Object[]) {
             return (T[])a;
