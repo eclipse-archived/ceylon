@@ -50,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -5853,17 +5854,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     container = (Class)typeDecl.getContainer();
                 }else{
                     // find the import
-                    Import foundImport = null;
-                    for(Import imp : expr.getUnit().getImports()){
-                        if(!imp.isAmbiguous()
-                                && imp.getTypeDeclaration() != null
-                                && imp.getDeclaration().equals(decl)){
-                            foundImport = imp;
-                            break;
-                        }
-                    }
-                    if(foundImport == null)
-                        throw new BugException(expr, decl.getQualifiedNameString() + " was not found as an import");
+                    Import foundImport = statementGen().findImport(expr, decl);
                     container = (Class) foundImport.getTypeDeclaration();
                 }
                 Value value = (Value)((Package)container.getContainer()).getMember(container.getName(), null, false);
