@@ -52,20 +52,4 @@ public class StaticTests extends CompilerTests {
     public void testStaticLate() {
         compareWithJavaSource("attribute/StaticLate");
     }
-    @Test
-    public void testStatik() {
-        compileAndReflect("klass/Statik.ceylon", "com.redhat.ceylon.compiler.java.test.structure.klass.StaticMembers", new ReflectionCallback() {
-            
-            @Override
-            public void reflect(Class c) {
-                for (Class<?> member : c.getClasses()) {
-                    System.out.println(member);
-                    for (Constructor<?> ctor : member.getDeclaredConstructors()) {
-                        System.out.println(Arrays.toString(ctor.getParameterTypes()));
-                        System.out.println(Arrays.toString(ctor.getParameters()));
-                    }
-                }
-            }
-        });
-    }
 }
