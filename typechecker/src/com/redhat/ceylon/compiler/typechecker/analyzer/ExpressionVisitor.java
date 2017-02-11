@@ -1748,7 +1748,7 @@ public class ExpressionVisitor extends Visitor {
                                 + "' declared by '" + ci.getName() 
                                 + "' is different to type of corresponding parameter " 
                                 + message(refinedMethod, refinedParameter));
-                        /*if (refinedParameter.isSequenced() && !parameter.isSequenced()) {
+                        if (refinedParameter.isSequenced() && !parameter.isSequenced()) {
                             param.addError("parameter must be variadic: parameter " 
                                     + message(refinedMethod, refinedParameter)
                                     + " is variadic");
@@ -1757,7 +1757,7 @@ public class ExpressionVisitor extends Visitor {
                             param.addError("parameter may not be variadic: parameter " 
                                     + message(refinedMethod, refinedParameter)
                                     + " is not variadic");
-                        }*/
+                        }
                     }
                 }
             }

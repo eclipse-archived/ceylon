@@ -1634,7 +1634,7 @@ public class RefinementVisitor extends Visitor {
                             + param.getName() + "' is not '" + rparam.getName() + "' for "
                             + message(refinedMember.getDeclaration()));
                 }
-                /*if (rparam.isSequenced() && !param.isSequenced()) {
+                if (rparam.isSequenced() && !param.isSequenced()) {
                     parameter.addError("parameter must be variadic: parameter '" 
                             + rparam.getName()
                             + "' of "
@@ -1649,7 +1649,7 @@ public class RefinementVisitor extends Visitor {
                             + (forNative ? "native header " : "refined member ")
                             + message(refinedMember.getDeclaration()) 
                             + " is not variadic");
-                }*/
+                }
                 Type refinedParameterType = 
                         refinedMember.getTypedParameter(rparam)
                                 .getFullType();
