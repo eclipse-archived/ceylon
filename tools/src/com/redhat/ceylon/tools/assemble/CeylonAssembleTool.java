@@ -3,6 +3,7 @@ package com.redhat.ceylon.tools.assemble;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -51,6 +52,7 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
     /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
     private String run;
     private boolean includeLanguage;
+    private boolean includeRuntime;
     
     public static final String CEYLON_ASSEMBLY_SUFFIX = ".cas";
 
@@ -109,15 +111,28 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
     }
 
     @Option
-    @Description("Include the language module and its dependencies to the assembly."
-            + " Using this option ensures that the assembly can be run stand-alone"
-            + " using Java without having Ceylon installed")
+    @Description("Include the language module and its dependencies in the assembly."
+            + " to ensures that the assembly can be run stand-alone using Java without"
+            + " having Ceylon installed. This option does NOT support module isolation!")
     public void setIncludeLanguage(boolean includeLanguage) {
         this.includeLanguage = includeLanguage;
     }
 
+    @Option
+    @Description("Include enough of the Ceylon runtime in the assembly to ensure"
+            + " that the assembly can be run stand-alone using Java without having"
+            + " Ceylon installed. This option supports full module isolation.")
+    public void setIncludeRuntime(boolean includeRuntime) {
+        this.includeRuntime = includeRuntime;
+    }
+
     @Override
     public void run() throws Exception {
+        if (includeRuntime) {
+            // includeRuntime implies includeLanguage
+            includeLanguage = true;
+        }
+        
         String firstModuleName = null, firstModuleVersion = null;
         for (ModuleSpec module : modules) {
             String moduleName = module.getName();
@@ -138,6 +153,9 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
             loadModule(null, moduleName, version);
             if(!force)
                 errorOnConflictingModule(moduleName, version);
+        }
+        if (includeRuntime) {
+            loadModule(null, "ceylon.runtime", Versions.CEYLON_VERSION_NUMBER);
         }
         loader.resolve();
         String versionSuffix = firstModuleVersion != null && !firstModuleVersion.isEmpty()
@@ -210,16 +228,31 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
                                     append(file.getAbsolutePath());
                                     newline();
                                 }
-                                try (InputStream is = new FileInputStream(file)) {
-                                    String name = "modules/" + ModuleUtil.moduleToPath(module.name) + "/" + module.version + "/" + file.getName();
-                                    zipFile.putNextEntry(new ZipEntry(name));
-                                    IOUtils.copyStream(is, zipFile, true, false);
+                                String name = "modules/" + ModuleUtil.moduleToPath(module.name) + "/" + module.version + "/" + file.getName();
+                                addEntry(zipFile, file, name);
+                                // See if there are any module files to copy as well
+                                File mfile = new File(file.getParentFile(), "module.xml");
+                                if (mfile.isFile()) {
+                                    name = "modules/" + ModuleUtil.moduleToPath(module.name) + "/" + module.version + "/" + mfile.getName();
+                                    addEntry(zipFile, mfile, name);
+                                }
+                                mfile = new File(file.getParentFile(), "module.properties");
+                                if (mfile.isFile()) {
+                                    name = "modules/" + ModuleUtil.moduleToPath(module.name) + "/" + module.version + "/" + mfile.getName();
+                                    addEntry(zipFile, mfile, name);
                                 }
                             }
                         }catch(IOException x){
                             // lame
                             throw new RuntimeException(x);
                         }
+                    }
+                }
+
+                private void addEntry(ZipOutputStream zipFile, File file, String name) throws IOException {
+                    try (InputStream is = new FileInputStream(file)) {
+                        zipFile.putNextEntry(new ZipEntry(name));
+                        IOUtils.copyStream(is, zipFile, true, false);
                     }
                 }
             });

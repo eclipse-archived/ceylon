@@ -27,59 +27,139 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.JarURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.Attributes;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import com.redhat.ceylon.common.Constants;
 
 /**
  * @author Tako Schotanus (tako@ceylon-lang.org)
  */
 public class CeylonAssemblyRunner {
     
-    public static final String ATTR_ASSEMBLY_MAIN_CLASS = "X-Ceylon-Assembly-Main-Class";
-    
     public static void main(String[] args) throws Exception {
-        invokeMain(getAssemblyMainClass(), args);
+        try (CeylonAssemblyClassLoader loader = new CeylonAssemblyClassLoader(
+                Thread.currentThread().getContextClassLoader())) {
+            if (runtimeExists(loader)) {
+                invokeRuntime(loader, args);
+            } else {
+                invokeMain(loader, args);
+            }
+        }
     }
 
-    public static String getAssemblyMainClass() throws IOException {
+    private static Attributes getAssemblyManifestAttributes() throws IOException {
         ProtectionDomain protectionDomain = CeylonAssemblyRunner.class.getProtectionDomain();
         CodeSource codeSource = protectionDomain.getCodeSource();
         if (codeSource != null) {
             URL srcUrl = codeSource.getLocation();
             URL assemblyUrl = new URL("jar", "", srcUrl + "!/");
             JarURLConnection uc = (JarURLConnection)assemblyUrl.openConnection();
-            Attributes attrs = uc.getMainAttributes();
-            if (attrs != null) {
-                return attrs.getValue(ATTR_ASSEMBLY_MAIN_CLASS);
-            }
+            return uc.getMainAttributes();
         }
         return null;
     }
 
-    public static void invokeMain(String className, String[] args) throws Exception {
-        try (CeylonAssemblyClassLoader loader = new CeylonAssemblyClassLoader(
-                Thread.currentThread().getContextClassLoader())) {
-            Class<?> clazz = loader.loadClass(className);
-            Method method = clazz.getMethod("main", new Class[] { args.getClass() });
-            method.setAccessible(true);
-            int mods = method.getModifiers();
-            if (method.getReturnType() != void.class || !Modifier.isStatic(mods)
-                    || !Modifier.isPublic(mods)) {
-                throw new NoSuchMethodException("'main' in class '" + className + "'");
+    private static String getMainClassName() {
+        Attributes attrs;
+        try {
+            attrs = getAssemblyManifestAttributes();
+            if (attrs != null) {
+                return attrs.getValue(Constants.ATTR_ASSEMBLY_MAIN_CLASS);
             }
-            method.invoke(null, new Object[] { args });
+        } catch (IOException e) {
+        }
+        return null;
+    }
+    
+    private static void invokeMain(ClassLoader loader, String[] args) throws Exception {
+        String className = getMainClassName();
+        if (className == null) {
+            throw new IllegalArgumentException("Missing " + Constants.ATTR_ASSEMBLY_MAIN_CLASS + " attribute in assembly manifest");
+        }
+        Class<?> clazz = loader.loadClass(className);
+        Method method = clazz.getMethod("main", new Class[] { args.getClass() });
+        method.setAccessible(true);
+        int mods = method.getModifiers();
+        if (method.getReturnType() != void.class || !Modifier.isStatic(mods)
+                || !Modifier.isPublic(mods)) {
+            throw new NoSuchMethodException("'main' in class '" + className + "'");
+        }
+        method.invoke(null, new Object[] { args });
+    }
+
+    private static boolean runtimeExists(ClassLoader loader) {
+        try {
+            Class<?> clazz = loader.loadClass("ceylon.modules.bootstrap.CeylonRunTool");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
         }
     }
 
-    public static class CeylonAssemblyClassLoader extends URLClassLoader {
+    private static void invokeRuntime(CeylonAssemblyClassLoader loader, String[] args) throws Exception {
+        Class<?> clazz = loader.loadClass("ceylon.modules.bootstrap.CeylonRunTool");
+        Object runtool = clazz.newInstance();
 
+        Attributes attrs = getAssemblyManifestAttributes();
+        
+        String mainModule = attrs.getValue(Constants.ATTR_ASSEMBLY_MAIN_MODULE);
+        if (mainModule == null) {
+            throw new IllegalArgumentException("Missing " + Constants.ATTR_ASSEMBLY_MAIN_MODULE + " attribute in assembly manifest");
+        }
+        Method moduleSetter = clazz.getMethod("setModule", String.class);
+        moduleSetter.invoke(runtool, mainModule);
+        
+        File repoFolder = loader.getAssemblyFolder();
+        String repo = attrs.getValue(Constants.ATTR_ASSEMBLY_REPOSITORY);
+        if (repo != null) {
+            repoFolder = new File(repoFolder, repo);
+        }
+        Method sysrepSetter = clazz.getMethod("setSystemRepository", String.class);
+        sysrepSetter.invoke(runtool, repoFolder.getPath());
+//        List<URI> repos = new ArrayList<URI>(1);
+//        repos.add(repoFolder.toURI());
+//        Method repoSetter = clazz.getMethod("setRepository", List.class);
+//        repoSetter.invoke(runtool, repos);
+        
+        List<String> argList = Arrays.asList(args);
+        Method argsSetter = clazz.getMethod("setArgs", List.class);
+        argsSetter.invoke(runtool, argList);
+        
+        String runDecl = attrs.getValue(Constants.ATTR_ASSEMBLY_RUN);
+        if (runDecl != null) {
+            Method runSetter = clazz.getMethod("setRun", String.class);
+            runSetter.invoke(runtool, runDecl);
+        }
+        
+        String overrides = attrs.getValue(Constants.ATTR_ASSEMBLY_OVERRIDES);
+        if (overrides != null) {
+            Method overridesSetter = clazz.getMethod("setOverrides", String.class);
+            overridesSetter.invoke(runtool, overrides);
+        }
+        
+        Method run = clazz.getMethod("run");
+        run.invoke(runtool);
+    }
+
+    public static class CeylonAssemblyClassLoader extends URLClassLoader {
+        private File tmpAssemblyFolder = null;
+        
+        public File getAssemblyFolder() {
+            return tmpAssemblyFolder;
+        }
+        
         public CeylonAssemblyClassLoader(ClassLoader parent) {
             super(new URL[] {}, parent);
             ProtectionDomain protectionDomain = getClass().getProtectionDomain();
@@ -87,7 +167,6 @@ public class CeylonAssemblyRunner {
             if (codeSource != null) {
                 File assembly = new File(codeSource.getLocation().getPath());
                 // Create a temp folder to extract our assembly into
-                File tmpAssemblyFolder = null;
                 try {
                     tmpAssemblyFolder = Files.createTempDirectory("ceylon-assembly-").toFile();
                     extractArchive(assembly, tmpAssemblyFolder);
@@ -127,7 +206,9 @@ public class CeylonAssemblyRunner {
             entryName = entryName.toLowerCase();
             return !entryName.isEmpty() &&
                     (entryName.endsWith(".jar")
-                            || entryName.endsWith(".car"));
+                            || entryName.endsWith(".car")
+                            || entryName.endsWith("/module.xml")
+                            || entryName.endsWith("/module.properties"));
         }
 
         private static File mkdirs(File dir) {
