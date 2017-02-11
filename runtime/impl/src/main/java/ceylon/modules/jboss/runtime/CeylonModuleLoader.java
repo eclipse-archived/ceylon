@@ -106,6 +106,7 @@ public class CeylonModuleLoader extends ModuleLoader
 
     private static final String CEYLON_RUNTIME_PATH;
     private static final Set<ModuleIdentifier> BOOTSTRAP;
+    private static final Set<ModuleIdentifier> BOOTSTRAP_OPTIONAL;
 
     private static final DependencySpec JDK_DEPENDENCY;
     private static final Set<String> JDK_MODULE_NAMES;
@@ -171,27 +172,29 @@ public class CeylonModuleLoader extends ModuleLoader
         BOOTSTRAP.add(ANTLR_RUNTIME);
         BOOTSTRAP.add(ANTLR_ANTLR);
         BOOTSTRAP.add(ANTLR_STRINGTEMPLATE);
-        BOOTSTRAP.add(MARKDOWN_PAPERS);
+        
+        BOOTSTRAP_OPTIONAL = new HashSet<>();
+        BOOTSTRAP_OPTIONAL.add(MARKDOWN_PAPERS);
         // Maven support
-        BOOTSTRAP.add(AETHER_API);
-        BOOTSTRAP.add(AETHER_SPI);
-        BOOTSTRAP.add(AETHER_UTIL);
-        BOOTSTRAP.add(AETHER_IMPL);
-        BOOTSTRAP.add(AETHER_CONNECTOR_BASIC);
-        BOOTSTRAP.add(AETHER_TRANSPORT_FILE);
-        BOOTSTRAP.add(AETHER_TRANSPORT_HTTP);
-        BOOTSTRAP.add(GUAVA);
-        BOOTSTRAP.add(COMMONS_LANG3);
-        BOOTSTRAP.add(MAVEN_ARTIFACT);
-        BOOTSTRAP.add(MAVEN_MODEL);
-        BOOTSTRAP.add(MAVEN_MODEL_BUILDER);
-        BOOTSTRAP.add(MAVEN_REPOSITORY_METADATA);
-        BOOTSTRAP.add(MAVEN_BUILDER_SUPPORT);
-        BOOTSTRAP.add(MAVEN_SETTINGS);
-        BOOTSTRAP.add(MAVEN_SETTINGS_BUILDER);
-        BOOTSTRAP.add(MAVEN_AETHER_PROVIDER);
-        BOOTSTRAP.add(PLEXUS_INTERPOLATION);
-        BOOTSTRAP.add(PLEXUS_UTILS);
+        BOOTSTRAP_OPTIONAL.add(AETHER_API);
+        BOOTSTRAP_OPTIONAL.add(AETHER_SPI);
+        BOOTSTRAP_OPTIONAL.add(AETHER_UTIL);
+        BOOTSTRAP_OPTIONAL.add(AETHER_IMPL);
+        BOOTSTRAP_OPTIONAL.add(AETHER_CONNECTOR_BASIC);
+        BOOTSTRAP_OPTIONAL.add(AETHER_TRANSPORT_FILE);
+        BOOTSTRAP_OPTIONAL.add(AETHER_TRANSPORT_HTTP);
+        BOOTSTRAP_OPTIONAL.add(GUAVA);
+        BOOTSTRAP_OPTIONAL.add(COMMONS_LANG3);
+        BOOTSTRAP_OPTIONAL.add(MAVEN_ARTIFACT);
+        BOOTSTRAP_OPTIONAL.add(MAVEN_MODEL);
+        BOOTSTRAP_OPTIONAL.add(MAVEN_MODEL_BUILDER);
+        BOOTSTRAP_OPTIONAL.add(MAVEN_REPOSITORY_METADATA);
+        BOOTSTRAP_OPTIONAL.add(MAVEN_BUILDER_SUPPORT);
+        BOOTSTRAP_OPTIONAL.add(MAVEN_SETTINGS);
+        BOOTSTRAP_OPTIONAL.add(MAVEN_SETTINGS_BUILDER);
+        BOOTSTRAP_OPTIONAL.add(MAVEN_AETHER_PROVIDER);
+        BOOTSTRAP_OPTIONAL.add(PLEXUS_INTERPOLATION);
+        BOOTSTRAP_OPTIONAL.add(PLEXUS_UTILS);
         
 
         Set<String> jdkPaths = new HashSet<>();
@@ -243,6 +246,15 @@ public class CeylonModuleLoader extends ModuleLoader
             org.jboss.modules.Module module = bootModuleLoader.loadModule(initialModule);
             ArtifactResult moduleArtifactResult = findArtifact(initialModule);
             UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module), false);
+        }
+        for (ModuleIdentifier initialModule : BOOTSTRAP_OPTIONAL) {
+            try {
+                org.jboss.modules.Module module = bootModuleLoader.loadModule(initialModule);
+                ArtifactResult moduleArtifactResult = findArtifact(initialModule);
+                UtilRegistryTransformer.registerModule(initialModule.getName(), initialModule.getSlot(), moduleArtifactResult, SecurityActions.getClassLoader(module), false);
+            } catch (Exception ex) {
+                // HACK: These are optional modules, just continue
+            }
         }
     }
 
@@ -299,7 +311,7 @@ public class CeylonModuleLoader extends ModuleLoader
     @Override
     protected org.jboss.modules.Module preloadModule(ModuleIdentifier mi) throws ModuleLoadException {
         mi = findOverride(mi);
-        if (BOOTSTRAP.contains(mi)) {
+        if (BOOTSTRAP.contains(mi) || BOOTSTRAP_OPTIONAL.contains(mi)) {
             return org.jboss.modules.Module.getBootModuleLoader().loadModule(mi);
         }
         return super.preloadModule(mi);
