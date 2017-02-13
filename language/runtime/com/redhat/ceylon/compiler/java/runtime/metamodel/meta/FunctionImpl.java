@@ -212,6 +212,8 @@ public class FunctionImpl<Type, Arguments extends Sequential<? extends Object>>
                         method = MethodHandleUtil.getJavaArraySetterMethodHandle(javaClass);
                     else if(foundMethod.getName().equals("copyTo")){
                         foundMethod = MethodHandleUtil.getJavaArrayCopyToMethod(javaClass, foundMethod);
+                    } else if (foundMethod.getName().equals("from")){
+                        foundMethod = MethodHandleUtil.getJavaArrayFromMethod(javaClass, foundMethod);
                     }
                 }
                 if(method == null){

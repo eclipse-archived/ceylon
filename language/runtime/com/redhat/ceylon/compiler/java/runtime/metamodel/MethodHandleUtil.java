@@ -563,6 +563,34 @@ public class MethodHandleUtil {
         return arrayType;
     }
 
+    public static Method getJavaArrayFromMethod(Class<?> arrayClass, Method found) {
+        //Class<?> arrayType = getJavaArrayType(arrayClass);
+        try{
+            if (arrayClass == LongArray.class) {
+                return Util.class.getDeclaredMethod("unwrapLongArray", Object.class);
+            } else if (arrayClass == IntArray.class) {
+                return Util.class.getDeclaredMethod("unwrapIntArray", Object.class);
+            } else if (arrayClass == ShortArray.class) {
+                return Util.class.getDeclaredMethod("unwrapShortArray", ceylon.language.Array.class);
+            } else if (arrayClass == BooleanArray.class) {
+                return Util.class.getDeclaredMethod("unwrapBooleanArray", Object.class);
+            } else if (arrayClass == ByteArray.class) {
+                return Util.class.getDeclaredMethod("unwrapByteArray", Object.class);
+            } else if (arrayClass == FloatArray.class) {
+                return Util.class.getDeclaredMethod("unwrapFloatArray", ceylon.language.Array.class);
+            } else if (arrayClass == DoubleArray.class) {
+                return Util.class.getDeclaredMethod("unwrapDoubleArray", Object.class);
+            } else if (arrayClass == CharArray.class) {
+                return Util.class.getDeclaredMethod("unwrapCharArray", Object.class);
+            } else if (arrayClass == ObjectArray.class) {
+                return Util.class.getDeclaredMethod("unwrapObjectArray", TypeDescriptor.class, ceylon.language.Array.class);
+            }
+            throw Metamodel.newModelError("Unhandled array " + arrayClass);
+        } catch (NoSuchMethodException | SecurityException e) {
+            throw Metamodel.newModelError("Missing static method 'from'", e);
+        }
+    }
+    
     public static Method getJavaArrayCopyToMethod(Class<?> arrayClass, Method found) {
         Class<?> arrayType = getJavaArrayType(arrayClass);
         try{
