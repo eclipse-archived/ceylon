@@ -30,12 +30,16 @@ void iterableSequence<Element>() {
     IterableSequence<Element,Nothing> defNonempty = nothing;
     IterableSequence<Nothing,Nothing> defEmpty1 = nothing;
     IterableSequence<Nothing,Null> defEmpty2 = nothing;
+    IterableSequence<String|Integer,Nothing> bug6914 = nothing;
+    Iterable<String|Integer,Nothing> bug6914_2 = nothing;
     
     // positional args call sites
     []|[Element+] x1 = possEmpty.sequence();
     [Element+] x2 = defNonempty.sequence();
     [] x3 = defEmpty1.sequence();
     [] x4 = defEmpty2.sequence();
+    [String|Integer+] bug6914seq = bug6914.sequence();
+    [String|Integer+] bug6914_2seq = bug6914_2.sequence();
     
     // name args call sites
     []|[Element+] y1 = possEmpty.sequence{};

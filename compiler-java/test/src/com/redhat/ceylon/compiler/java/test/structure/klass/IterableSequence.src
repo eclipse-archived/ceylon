@@ -26,7 +26,8 @@ interface IterableSequence<Element, Absent> {
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "[Element+]|[]&ceylon.language::Iterable<Element,Absent>",
-            erased = true)
+            erased = true,
+            untrusted = true)
     public .ceylon.language.Sequential<? extends Element> sequence();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -237,14 +238,18 @@ final class iterableSequence_ {
         final .com.redhat.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object> defNonempty = (.com.redhat.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .com.redhat.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object> defEmpty1 = (.com.redhat.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .com.redhat.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object> defEmpty2 = (.com.redhat.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.IterableSequence bug6914 = (.com.redhat.ceylon.compiler.java.test.structure.klass.IterableSequence)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .ceylon.language.Iterable bug6914_2 = (.ceylon.language.Iterable)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .java.lang.Object x1 = possEmpty.sequence();
         final .ceylon.language.Sequence<? extends Element> x2 = (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)defNonempty.sequence();
         final .ceylon.language.Empty x3 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty1.sequence();
-        final .ceylon.language.Empty x4 = (.ceylon.language.Empty)defEmpty2.sequence();
+        final .ceylon.language.Empty x4 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty2.sequence();
+        final .ceylon.language.Sequence bug6914seq = (.ceylon.language.Sequence<? extends .java.lang.Object>)bug6914.sequence();
+        final .ceylon.language.Sequence bug6914_2seq = (.ceylon.language.Sequence<? extends .java.lang.Object>)bug6914_2.sequence();
         final .java.lang.Object y1 = possEmpty.sequence();
         final .ceylon.language.Sequence<? extends Element> y2 = (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)defNonempty.sequence();
         final .ceylon.language.Empty y3 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty1.sequence();
-        final .ceylon.language.Empty y4 = (.ceylon.language.Empty)defEmpty2.sequence();
+        final .ceylon.language.Empty y4 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty2.sequence();
         final .ceylon.language.Callable z1 = (.ceylon.language.Callable)(
             let
             {
