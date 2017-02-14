@@ -46,7 +46,7 @@ function jsc$2(f$,parms,targs) {
   }
   if (f$.$flattened$||f$.$unflattened$)return f$;
   var f=function c2(){
-    return f$.apply(undefined,dre$$Arguments(arguments,targs));
+    return f$.apply(undefined,dre$$Arguments(arguments,parms));
   };
   if (targs) {
     f.$$targs$$=targs;
@@ -92,13 +92,13 @@ function jsc$3(o,f,targs) {
   var f2;
   if (targs) {
     f2=function c5() {
-      var a=[].slice.call(arguments,0);
+      var a=[].slice.call(dre$$Arguments(arguments,f.$crtmm$().ps),0);
       a.push(targs);
       return f.apply(o, a);
     };
   } else {
     f2=function c6() {
-      return f.apply(o, arguments);
+      return f.apply(o, dre$$Arguments(arguments,f.$crtmm$().ps));
     };
   }
   f2.c2$=f;
@@ -266,36 +266,19 @@ function mkseq$(t,seq) {
   return t;
 }
 
-function dre$$Arguments(args, targs) {
-    var tupleArgumentsType = targs.Arguments$Callable;
-    if (tupleArgumentsType.t !== 'T') {
-        if (tupleArgumentsType.t === Tuple) {
-            tupleArgumentsType = detpl$(tupleArgumentsType);
-        } else {
-            console.log(tupleArgumentsType);
-            throw new Error("TODO non-tuple arguments type not implemented!");
-        }
-    }
+function dre$$Arguments(args, parms) {
     var oldArguments = [].slice.call(args);
     var newArguments = [];
-    for (argumentType of tupleArgumentsType.l) {
-        if (!(argumentType.seq > 0)) {
-            var argument = oldArguments.pop();
-            dre$$(argument, argumentType);
-            newArguments.push(argument);
-        } else {
-            if (argumentType.seq === 2) {
-                asrt$(oldArguments.length > 0, "nonempty varargs must have argument");
-            }
-            var variadicArguments = [];
-            while (oldArguments.length > 0) {
-                var argument = oldArguments.pop();
-                dre$$(argument, asrt$(false, "TODO what type belongs here?"));
-                variadicArguments.push(argument);
-            }
-            newArguments.push(tpl$(variadicArguments));
-            break;
-        }
+    for (parameter of parms) {
+      var parameterType = parameter.$t;
+      // TODO assuming no variadics for now
+      var argument = oldArguments.pop();
+      dre$$(argument, parameterType);
+      newArguments.push(argument);
+    }
+    for (remainingArgument of oldArguments) {
+      console.log("TODO arguments after parameters? copying them over for now");
+      newArguments.push(remainingArgument);
     }
     return newArguments;
 }
