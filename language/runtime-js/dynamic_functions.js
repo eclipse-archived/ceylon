@@ -14,6 +14,12 @@ function dre$$(object, type, loc, stack) {
     if (loc===false)return object;
     throw new Error("Cannot add Ceylon type information to a frozen object");
   }
+  //Hack: If it's a union of Null and some other type, reduce to just the other type
+  if (type.t === 'u') {
+    if (type.l.length === 2 && type.l[0].t === Null) return dre$$(object, type.l[1], loc, stack);
+    if (type.l.length === 2 && type.l[1].t === Null) return dre$$(object, type.l[0], loc, stack);
+    throw new Error("union types in dre$$ not supported");
+  }
   //If it's a TypeScript enum, accept number values and nothing else
   if (type.t.$$.$tsenum) {
     if (typeof(object)==='number') {
