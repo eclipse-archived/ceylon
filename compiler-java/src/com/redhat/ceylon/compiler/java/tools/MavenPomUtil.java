@@ -89,34 +89,34 @@ public class MavenPomUtil {
             out.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             out.writeAttribute("xsi:schemaLocation", "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd");
             
-            out.writeCharacters("\n ");
+            out.writeCharacters("\n  ");
             out.writeStartElement("modelVersion");
             out.writeCharacters("4.0.0");
             out.writeEndElement();
 
-            out.writeCharacters("\n ");
+            out.writeCharacters("\n  ");
             out.writeStartElement("groupId");
             out.writeCharacters(groupId);
             out.writeEndElement();
 
-            out.writeCharacters("\n ");
+            out.writeCharacters("\n  ");
             out.writeStartElement("artifactId");
             out.writeCharacters(artifactId);
             out.writeEndElement();
 
-            out.writeCharacters("\n ");
+            out.writeCharacters("\n  ");
             out.writeStartElement("version");
             out.writeCharacters(module.getVersion());
             out.writeEndElement();
 
-            out.writeCharacters("\n ");
+            out.writeCharacters("\n  ");
             out.writeStartElement("name");
             out.writeCharacters(module.getNameAsString());
             out.writeEndElement();
 
             List<ModuleImport> imports = module.getImports();
             if(!imports.isEmpty()){
-                out.writeCharacters("\n ");
+                out.writeCharacters("\n  ");
                 out.writeStartElement("dependencies");
 
                 for(ModuleImport dep : imports){
@@ -146,36 +146,36 @@ public class MavenPomUtil {
                         depArtifactId = mavenCoordinates[1];
                     }
 
-                    out.writeCharacters("\n  ");
+                    out.writeCharacters("\n    ");
                     out.writeStartElement("dependency");
                     
-                    out.writeCharacters("\n    ");
+                    out.writeCharacters("\n      ");
                     out.writeStartElement("groupId");
                     out.writeCharacters(depGroupId);
                     out.writeEndElement();
 
-                    out.writeCharacters("\n    ");
+                    out.writeCharacters("\n      ");
                     out.writeStartElement("artifactId");
                     out.writeCharacters(depArtifactId);
                     out.writeEndElement();
 
-                    out.writeCharacters("\n    ");
+                    out.writeCharacters("\n      ");
                     out.writeStartElement("version");
                     out.writeCharacters(moduleDependency.getVersion());
                     out.writeEndElement();
                     
                     if(dep.isOptional()){
-                        out.writeCharacters("\n    ");
+                        out.writeCharacters("\n      ");
                         out.writeStartElement("optional");
                         out.writeCharacters("true");
                         out.writeEndElement();
                     }
                     
-                    out.writeCharacters("\n  ");
+                    out.writeCharacters("\n    ");
                     out.writeEndElement();
                 }
 
-                out.writeCharacters("\n ");
+                out.writeCharacters("\n  ");
                 out.writeEndElement();
             }
 
