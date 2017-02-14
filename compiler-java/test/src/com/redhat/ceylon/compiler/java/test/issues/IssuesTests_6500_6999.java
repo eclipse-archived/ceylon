@@ -31,6 +31,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.TreeSet;
@@ -41,6 +42,7 @@ import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.IOUtil;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -234,9 +236,33 @@ public class IssuesTests_6500_6999 extends CompilerTests {
         File pomDst = new File(mavenRepoTarget, "a-1.pom");
         Files.copy(pomSrc.toPath(), pomDst.toPath(), StandardCopyOption.REPLACE_EXISTING);
         
-        compile(Arrays.asList("-rep", "aether:"+getPackagePath()+"/bug67xx/dyn/b/settings.xml"), 
-                "bug67xx/dyn/b/B.ceylon");
-        
+        File settingsFile = File.createTempFile("settings", ".xml");
+        Files.write(settingsFile.toPath(), ("<settings xmlns=\"http://maven.apache.org/SETTINGS/1.0.0\"\n"+
+                "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"+
+                "  xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.0.0\n"+
+                "                      http://maven.apache.org/xsd/settings-1.0.0.xsd\">\n"+
+                " <profiles>\n"+
+                "  <profile>\n"+
+                "   <id>myprofile</id>\n"+
+                "   <repositories>\n"+
+                "    <repository>\n"+
+                "     <id>nb-maven-repo</id>\n"+
+                "     <name>Maven Repository for NetBeans Modules</name>\n"+
+                "     <url>file://"+mavenRepoFolder.getAbsolutePath()+"</url>\n"+
+                "    </repository>\n"+
+                "   </repositories>\n"+
+                "  </profile>\n"+
+                " </profiles>\n"+
+                " <activeProfiles>\n"+
+                "  <activeProfile>myprofile</activeProfile>\n"+
+                " </activeProfiles>\n"+
+                "</settings>\n").getBytes("UTF-8"));
+        try{
+            compile(Arrays.asList("-rep", "aether:"+settingsFile.getAbsolutePath()), 
+                    "bug67xx/dyn/b/B.ceylon");
+        }finally{
+            settingsFile.delete();
+        }
         File carFile = new File(destDir+"/"+moduleName.replace('.', '/')+"/bug67xx/dyn/b/1/"+moduleName+".bug67xx.dyn.b-1.car");
 
         cleanCars(classesOutputFolder.getPath());
