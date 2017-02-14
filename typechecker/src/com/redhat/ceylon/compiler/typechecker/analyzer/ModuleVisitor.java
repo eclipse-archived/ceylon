@@ -228,6 +228,12 @@ public class ModuleVisitor extends Visitor {
                         buildAnnotations(that.getAnnotationList(), 
                                 mainModule.getAnnotations());
                         mainModule.setNativeBackends(moduleBackends);
+                        if(that.getArtifact() != null)
+                            mainModule.setArtifactId(getNameString(that.getArtifact()));
+                        if(that.getGroupImportPath() != null)
+                            mainModule.setGroupId(formatPath(that.getGroupImportPath().getIdentifiers()));
+                        else if(that.getGroupQuotedLiteral() != null)
+                            mainModule.setGroupId(getNameString(that.getGroupQuotedLiteral()));
                     }
                 }
             }

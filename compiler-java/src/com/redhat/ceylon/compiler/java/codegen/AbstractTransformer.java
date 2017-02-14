@@ -3180,6 +3180,10 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression nativeBackendsAnnotationValue = makeNativeBackendsAnnotationValue(module.getNativeBackends());
         if(nativeBackendsAnnotationValue != null)
             annotationArgs.add(nativeBackendsAnnotationValue);
+        if(module.getGroupId() != null)
+            annotationArgs.add(make().Assign(naming.makeUnquotedIdent("group"), make().Literal(module.getGroupId())));
+        if(module.getArtifactId() != null)
+            annotationArgs.add(make().Assign(naming.makeUnquotedIdent("artifact"), make().Literal(module.getArtifactId())));
         return makeModelAnnotation(syms().ceylonAtModuleType, annotationArgs.toList());
     }
 

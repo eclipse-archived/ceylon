@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.js.loader.JsonModule;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import org.antlr.runtime.CommonToken;
 
+import com.redhat.ceylon.cmr.impl.NpmRepository;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.util.ContinueBreakVisitor;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
@@ -281,7 +282,9 @@ public class GenerateJsVisitor extends Visitor {
         root = that;
         if (!that.getModuleDescriptors().isEmpty()) {
             final Tree.ModuleDescriptor md = that.getModuleDescriptors().get(0);
-            if (md.getNamespace() != null && md.getGroupQuotedLiteral() != null) {
+            if (md.getNamespace() != null
+                    && NpmRepository.NAMESPACE.equals(md.getNamespace().getText())
+                    && md.getGroupQuotedLiteral() != null) {
                 String npmName = md.getGroupQuotedLiteral().getText();
                 if (npmName.charAt(0)=='"' && npmName.charAt(npmName.length()-1) == '"') {
                     npmName = npmName.substring(1, npmName.length()-1);

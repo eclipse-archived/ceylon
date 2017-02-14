@@ -29,7 +29,6 @@
 by ("Gavin King", "Tom Bentley", "Tako Schotanus",
    "Stephane Epardaud", "Enrique Zamudio")
 license ("http://www.apache.org/licenses/LICENSE-2.0.html")
-artifact { group = "org.ceylon-lang"; }
-module ceylon.language "1.3.2-SNAPSHOT" {
+module ceylon.language maven:"org.ceylon-lang" "1.3.2-SNAPSHOT" {
     native("jvm") import java.base "7";
 }
