@@ -53,9 +53,19 @@ public class MavenPomUtil {
     public static void writeMavenManifest2(File outputFolder, Module module,  
     		JdkProvider jdkProvider) {
         String moduleName = module.getNameAsString();
-        String[] mavenCoordinates = getMavenCoordinates(moduleName);
-        String groupId = mavenCoordinates[0];
-        String artifactId = mavenCoordinates[1];
+        String groupId;
+        String artifactId;
+        if(module.getGroupId() != null){
+            groupId = module.getGroupId();
+            if(module.getArtifactId() != null)
+                artifactId = module.getArtifactId();
+            else
+                artifactId = module.getNameAsString();
+        }else{
+            String[] mavenCoordinates = getMavenCoordinates(moduleName);
+            groupId = mavenCoordinates[0];
+            artifactId = mavenCoordinates[1];
+        }
         String path = "META-INF/maven/"+groupId+"/"+artifactId+"/";
         File destinationPath = new File(outputFolder, path);
         FileUtil.mkdirs(destinationPath);
@@ -122,18 +132,31 @@ public class MavenPomUtil {
                             || jdkProvider.isJDKModule(dependencyName))
                         continue;
                     
-                    String[] mavenCoordinates = getMavenCoordinates(moduleDependency.getNameAsString());
+                    String depGroupId;
+                    String depArtifactId;
+                    if(moduleDependency.getGroupId() != null){
+                        depGroupId = moduleDependency.getGroupId();
+                        if(moduleDependency.getArtifactId() != null)
+                            depArtifactId = moduleDependency.getArtifactId();
+                        else
+                            depArtifactId = moduleDependency.getNameAsString();
+                    }else{
+                        String[] mavenCoordinates = getMavenCoordinates(moduleDependency.getNameAsString());
+                        depGroupId = mavenCoordinates[0];
+                        depArtifactId = mavenCoordinates[1];
+                    }
+
                     out.writeCharacters("\n  ");
                     out.writeStartElement("dependency");
                     
                     out.writeCharacters("\n    ");
                     out.writeStartElement("groupId");
-                    out.writeCharacters(mavenCoordinates[0]);
+                    out.writeCharacters(depGroupId);
                     out.writeEndElement();
 
                     out.writeCharacters("\n    ");
                     out.writeStartElement("artifactId");
-                    out.writeCharacters(mavenCoordinates[1]);
+                    out.writeCharacters(depArtifactId);
                     out.writeEndElement();
 
                     out.writeCharacters("\n    ");
