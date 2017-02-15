@@ -324,4 +324,19 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     public void testBug6910() throws Throwable {
         compareWithJavaSource("bug69xx/Bug6910");
     }
+    
+    @Test
+    public void testBug6916() throws Throwable {
+        assertErrors("bug69xx/bug6916/Bug6916", 
+                Arrays.asList("-flat-classpath"),
+                null,
+                new CompilerError(5, "Failed to determine if getConverter is overriding a super method: class file for org.apache.wicket.util.convert.IConverter not found"),
+                new CompilerError(5, "formal member 'canCallListenerInterfaceAfterExpiry' of 'IRequestableComponent' not implemented for concrete class 'HelloWorld': 'HelloWorld' neither directly implements nor inherits a concrete implementation of 'canCallListenerInterfaceAfterExpiry'"),
+                new CompilerError(5, "formal member 'equals' of 'Object' not implemented for concrete class 'HelloWorld': 'HelloWorld' neither directly implements nor inherits a concrete implementation of 'equals'"),
+                new CompilerError(5, "formal member 'getBehaviorById' of 'IRequestableComponent' not implemented for concrete class 'HelloWorld': 'HelloWorld' neither directly implements nor inherits a concrete implementation of 'getBehaviorById'"),
+                new CompilerError(5, "formal member 'getBehaviorId' of 'IRequestableComponent' not implemented for concrete class 'HelloWorld': 'HelloWorld' neither directly implements nor inherits a concrete implementation of 'getBehaviorId'"),
+                new CompilerError(5, "formal member 'hash' of 'Object' not implemented for concrete class 'HelloWorld': 'HelloWorld' neither directly implements nor inherits a concrete implementation of 'hash'")
+                );
+        compile(Arrays.asList("-fully-export-maven-dependencies"), "bug69xx/bug6916/Bug6916.ceylon");
+    }
 }
