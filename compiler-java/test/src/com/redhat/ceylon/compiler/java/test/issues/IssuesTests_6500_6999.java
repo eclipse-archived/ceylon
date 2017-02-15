@@ -285,10 +285,12 @@ public class IssuesTests_6500_6999 extends CompilerTests {
                 jarCSrc.toURL(),
         }, getClass().getClassLoader());
         synchronized(RUN_LOCK){
+            Metamodel.resetModuleManager();
             Class<?> klass = Class.forName(moduleName+".bug67xx.dyn.c.C", true, cl);
             Method method = klass.getMethod("main", String[].class);
             Metamodel.getModuleManager().getModelLoader().setDefaultClassLoader(cl);
             method.invoke(null, (Object)new String[]{});
+            Metamodel.getModuleManager().getModelLoader().setDefaultClassLoader(null);
         }
     }
 

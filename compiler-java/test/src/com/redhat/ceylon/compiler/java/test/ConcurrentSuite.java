@@ -29,4 +29,18 @@ public class ConcurrentSuite extends Suite {
         super(clase, builder);
         setScheduler(new ConcurrentScheduler());
     }
+
+    /* Uncomment this if you want to stop your entire suite if you have one test that fails in parallel */
+//    @Override
+//    public void run(final RunNotifier runNotifier) {
+//        runNotifier.addListener(new RunListener(){
+//            @Override
+//            public void testFailure(Failure failure) throws Exception {
+//                if(failure.getDescription().getMethodName().equals("testDynamicMetamodel"))
+//                    runNotifier.pleaseStop();
+//                super.testFailure(failure);
+//            }
+//        });
+//        super.run(runNotifier);
+//    }
 }
