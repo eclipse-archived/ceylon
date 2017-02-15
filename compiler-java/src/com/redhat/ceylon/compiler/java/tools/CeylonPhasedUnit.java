@@ -24,9 +24,11 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
+import com.redhat.ceylon.model.loader.ModelResolutionException;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
@@ -56,5 +58,15 @@ public class CeylonPhasedUnit extends PhasedUnit {
 
     public LineMap getLineMap() {
         return lineMap;
+    }
+    
+    @Override
+    public boolean handleException(Exception e, Node that) {
+        // this is better than pretending it's a visitor crash, since we don't lose the node
+        if(e instanceof ModelResolutionException){
+            that.addError(e.getMessage());
+            return true;
+        }
+        return super.handleException(e, that);
     }
 }
