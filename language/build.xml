@@ -509,14 +509,10 @@
                 <include name="ceylon/language/AssertionError.java"/>
                 <exclude name="ceylon/language/Exception.ceylon"/>
                 <include name="ceylon/language/Exception.java"/>
-                <exclude name="ceylon/language/suppressedExceptions.ceylon"/>
-                <include name="ceylon/language/suppressedExceptions_.java"/>
                 <exclude name="ceylon/language/Float.ceylon"/>
                 <include name="ceylon/language/Float.java"/>
                 <exclude name="ceylon/language/Integer.ceylon"/>
                 <include name="ceylon/language/Integer.java"/>
-                <exclude name="ceylon/language/process.ceylon"/>
-                <include name="ceylon/language/process_.java"/>
                 <exclude name="ceylon/language/printStackTrace.ceylon"/>
                 <include name="ceylon/language/printStackTrace_.java"/>
                 <exclude name="ceylon/language/String.ceylon"/>
