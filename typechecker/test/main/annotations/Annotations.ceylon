@@ -93,3 +93,8 @@ final annotation class Broken1(@error String foo()) {}
 @error final annotation class Broken2(foo) {
     String foo();
 }
+
+@error "doc1"
+doc ("doc2")
+void dupeDocumentation() {}
+

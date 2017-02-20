@@ -14,6 +14,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotationSequenceArgument;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnonymousAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
@@ -2477,6 +2478,11 @@ public abstract class DeclarationVisitor extends Visitor {
                 that.addError("class is abstract, and may not be annotated 'service'",
                         1601);
             }
+        }
+        if (hasAnnotation(al, "doc", unit)
+                && hasAnonymousAnnotation(al)) {
+            getAnnotation(al, "doc", unit)
+                .addError("documentation already specified");
         }
         buildAnnotations(al, model.getAnnotations());
     }
