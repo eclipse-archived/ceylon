@@ -953,9 +953,9 @@ public class InheritanceVisitor extends Visitor {
             if (caseValues!=null 
                     && !caseValues.contains(v) && 
                     !cl.isAbstract()) {
-                that.addError("value constructor does not occur in of clause of non-abstract enumerated class: '" +
+                that.addError("value constructor is not a case of enumerated class: '" +
                         v.getName() + 
-                        "' is not listed in the of clause of '" + 
+                        "' is not listed in the 'of' clause of '" + 
                         cl.getName() + "'");
             }
         }
@@ -974,7 +974,9 @@ public class InheritanceVisitor extends Visitor {
             if (caseValues!=null && 
                     !c.isAbstract() &&
                     !cl.isAbstract()) {
-                that.addError("non-abstract enumerated class may not have non-partial callable constructor");
+                that.addError("concrete enumerated class may not have non-partial callable constructor: enumerated class '" +
+                        cl.getName() + "' is not abstract and constructor '" +
+                        c.getName() + "' is not partial");
             }
         }
     }
