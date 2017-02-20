@@ -124,6 +124,11 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             LazyModule lazyModule = (LazyModule) module;
 
             if(!module.isDefaultModule()){
+                if(artifact.groupId() != null)
+                    module.setGroupId(artifact.groupId());
+                if(artifact.artifactId() != null)
+                    module.setArtifactId(artifact.artifactId());
+
                 if(!modelLoader.loadCompiledModule(module)){
                     setupJavaModule(moduleImport, lazyModule, modelLoader, moduleManager, artifact);
                 }else{
@@ -183,10 +188,6 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         module.setNativeBackends(Backend.Java.asSet());
         
         modelLoader.loadJava9Module(module, artifact.artifact());
-        if(artifact.groupId() != null)
-            module.setGroupId(artifact.groupId());
-        if(artifact.artifactId() != null)
-            module.setArtifactId(artifact.artifactId());
         
         List<ArtifactResult> deps = artifact.dependencies();
         boolean forceExport = ModuleUtil.isMavenModule(module.getNameAsString())
