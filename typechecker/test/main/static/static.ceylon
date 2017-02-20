@@ -238,3 +238,8 @@ void testBaz<T>() {
     value inner = Baz<T>.Inner();
     @error Baz<String>.Inner inn0 = inner;
 }
+
+object objectWithStaticMembers {
+    @error static String bar = "";
+    @error static void baz() {}
+}

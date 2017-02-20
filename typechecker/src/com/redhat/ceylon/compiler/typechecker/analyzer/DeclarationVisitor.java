@@ -23,6 +23,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAnonymousClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
@@ -2270,6 +2271,9 @@ public abstract class DeclarationVisitor extends Visitor {
                 model.setStatic(true);
                 if (model.isInterfaceMember()) {
                     that.addUnsupportedError("static members of interfaces are not yet supported");
+                }
+                if (isAnonymousClass(model.getContainer())) {
+                    that.addError("member of anonymous class may not be annotated 'static'");
                 }
             }
             else {
