@@ -139,7 +139,12 @@ shared native final class String
              grouped eagerly and not be treated as 
              single-character tokens. If `false` each 
              separator token will be of size `1`."
-            Boolean groupSeparators = true);
+            Boolean groupSeparators = true,
+            "Specifies the maximum number of splits, with a 
+             negative argument indicating no limit. If `0`,
+             a stream containing this string will be 
+             returned."
+            Integer limit = -1);
     
     "The first character in the string."
     shared actual native Character? first;

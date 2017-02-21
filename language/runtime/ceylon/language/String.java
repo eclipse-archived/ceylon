@@ -1895,12 +1895,41 @@ public final class String
             boolean discardSeparators,
             @Defaulted
             @Name("groupSeparators") 
-            boolean groupSeparators) {
-        if (value.isEmpty()) {
+            boolean groupSeparators,
+            @Defaulted
+            @Name("limit")
+            long limit) {
+        if (value.isEmpty() || limit==0) {
             return new Singleton<String>(String.$TypeDescriptor$, this);
         }
         return new StringTokens(value, splitting, 
-                !discardSeparators, groupSeparators);
+                !discardSeparators, groupSeparators,
+                limit);
+    }
+
+    @Ignore
+    public static Iterable<? extends String, ?> 
+    split(java.lang.String value,
+            Callable<? extends Boolean> splitting,
+            boolean discardSeparators,
+            boolean groupSeparators,
+            long limit) {
+        if (value.isEmpty() || limit==0) {
+            return new Singleton<String>(String.$TypeDescriptor$, 
+                    instance(value));
+        }
+        return new StringTokens(value, splitting, 
+                !discardSeparators, groupSeparators,
+                limit);
+    }
+
+    @Ignore
+    public Iterable<? extends String, ?> 
+    split(Callable<? extends Boolean> splitting,
+            boolean discardSeparators,
+            boolean groupSeparators) {
+        return split(splitting, discardSeparators, groupSeparators,
+                split$limit(splitting, discardSeparators, groupSeparators));
     }
 
     @Ignore
@@ -1909,12 +1938,9 @@ public final class String
             Callable<? extends Boolean> splitting,
             boolean discardSeparators,
             boolean groupSeparators) {
-        if (value.isEmpty()) {
-            return new Singleton<String>(String.$TypeDescriptor$, 
-                    instance(value));
-        }
-        return new StringTokens(value, splitting, 
-                !discardSeparators, groupSeparators);
+        return split(value, splitting, discardSeparators, 
+                groupSeparators,
+                split$limit(splitting, discardSeparators, groupSeparators));
     }
 
     @Ignore
@@ -1922,7 +1948,9 @@ public final class String
     split(Callable<? extends Boolean> splitting,
             boolean discardSeparators) {
         return split(splitting, discardSeparators, 
-                split$groupSeparators(splitting, discardSeparators));
+                split$groupSeparators(splitting, discardSeparators),
+                split$limit(splitting, discardSeparators, 
+                        split$groupSeparators(splitting, discardSeparators)));
     }
 
     @Ignore
@@ -1931,7 +1959,9 @@ public final class String
             Callable<? extends Boolean> splitting,
             boolean discardSeparators) {
         return split(value, splitting, discardSeparators, 
-                split$groupSeparators(splitting, discardSeparators));
+                split$groupSeparators(splitting, discardSeparators),
+                split$limit(splitting, discardSeparators, 
+                        split$groupSeparators(splitting, discardSeparators)));
     }
 
     @Ignore
@@ -1972,6 +2002,12 @@ public final class String
     public static boolean split$groupSeparators(java.lang.Object separator, 
             boolean discardSeparators) {
         return true;
+    }
+    
+    @Ignore
+    public static long split$limit(java.lang.Object separator, 
+            boolean discardSeparators, boolean groupSeparators) {
+        return -1l;
     }
     
     @SuppressWarnings("rawtypes")
