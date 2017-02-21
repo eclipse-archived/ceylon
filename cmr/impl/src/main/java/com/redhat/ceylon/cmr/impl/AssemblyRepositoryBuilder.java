@@ -35,13 +35,13 @@ import com.redhat.ceylon.cmr.util.JarUtils;
  * Assemblies in their simplest form are just zipped module repositories.
  * The token for building repositories of this type is:
  * 
- *     assembly:path/to/assembly[#repositoryfolder]
+ *     assembly:path/to/assembly[!repositoryfolder]
  *     
  * Where the "path/to/assembly" can refer to either a Zip file or a Jar file.
  * There's also an optional repository folder element, separated from the
- * assembly path by a hash (#) that indicates where in the assembly file the
- * modules are located (if it's not present by default the modules will be
- * assumed to be in the root).
+ * assembly path by an exclamation mark (!) that indicates where in the assembly
+ * file the modules are located (if it's not present by default the modules will
+ * be assumed to be in the root).
  * 
  * If the assembly contains a META-INF/MANIFEST.MF file then in the absence
  * of a repository folder element in the token the system will also check for
@@ -52,12 +52,14 @@ import com.redhat.ceylon.cmr.util.JarUtils;
  */
 public class AssemblyRepositoryBuilder implements RepositoryBuilder {
     
+    private static char SEPARATOR = '!';
+    
     @Override
     public String absolute(File cwd, String token) {
         if (token.startsWith("assembly:")) {
             token = token.substring(9);
             String repoFolder = null;
-            int p = token.indexOf('#');
+            int p = token.indexOf(SEPARATOR);
             if (p > 0) {
                 repoFolder = token.substring(p + 1);
                 token = token.substring(0, p);
@@ -66,7 +68,7 @@ public class AssemblyRepositoryBuilder implements RepositoryBuilder {
             token = f.getAbsolutePath();
             String absToken = "assembly:" + token;
             if (repoFolder != null) {
-                absToken += "#" + repoFolder;
+                absToken += SEPARATOR + repoFolder;
             }
             return absToken;
         } else {
@@ -85,7 +87,7 @@ public class AssemblyRepositoryBuilder implements RepositoryBuilder {
             token = token.substring(9);
             // Check if the token has a repo folder element
             String repoFolder = null;
-            int p = token.indexOf('#');
+            int p = token.indexOf(SEPARATOR);
             if (p > 0) {
                 repoFolder = token.substring(p + 1);
                 token = token.substring(0, p);
