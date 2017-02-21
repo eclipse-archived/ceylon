@@ -765,10 +765,24 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 </listitem>
             </itemizedlist>
             
-            <para>As an exception to this, if the expression or type expression begins
-            with the qualifier keyword <literal>package</literal>, then there must be a
-            toplevel declaration with the given name defined in the package to which the
-            compilation unit belongs.</para> 
+            <para>There are two exceptions to the above rules.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>If the expression or type expression begins with the qualifier 
+                    keyword <literal>package</literal>, then there must be a toplevel 
+                    declaration with the given name defined in the package to which the 
+                    compilation unit belongs.</para>
+                </listitem>
+                <listitem>
+                    <para>If the expression or type expression occurs in an annotation 
+                    list, as defined by <xref linkend="annotationlists"/>, then there 
+                    must be a toplevel declaration with the given name defined in the 
+                    package to which the compilation unit belongs, or imported by a
+                    toplevel <literal>import</literal> statement of the compilation 
+                    unit.</para>
+                </listitem>
+            </itemizedlist> 
             
             <para>Then the reference is to this unique unhidden declaration, and:</para>
             
@@ -787,9 +801,9 @@ Integer f(Integer n) => n+package.n;</programlisting>
             </itemizedlist>
             
             <para>As a special exception to the above, if there is no declaration with the 
-            given name or imported name in scope at the program element and the program element 
-            occurs inside a <literal>dynamic</literal> block, then the unqualified reference 
-            does not refer to any statically typed declaration.</para>
+            given name or imported name in scope at the program element and the program 
+            element occurs inside a <literal>dynamic</literal> block, then the unqualified 
+            reference does not refer to any statically typed declaration.</para>
             
             <para>If an unqualified reference refers to a member declaration of a type, then
             there is a unique <emphasis>inheriting or declaring class or interface</emphasis> 
