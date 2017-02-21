@@ -1,13 +1,14 @@
 package com.redhat.ceylon.tools.assemble;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.zip.ZipOutputStream;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
@@ -228,18 +230,35 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
                                     append(file.getAbsolutePath());
                                     newline();
                                 }
-                                String name = "modules/" + ModuleUtil.moduleToPath(module.name) + "/" + module.version + "/" + file.getName();
-                                addEntry(zipFile, file, name);
-                                // See if there are any module files to copy as well
-                                File mfile = new File(file.getParentFile(), "module.xml");
-                                if (mfile.isFile()) {
-                                    name = "modules/" + ModuleUtil.moduleToPath(module.name) + "/" + module.version + "/" + mfile.getName();
-                                    addEntry(zipFile, mfile, name);
-                                }
-                                mfile = new File(file.getParentFile(), "module.properties");
-                                if (mfile.isFile()) {
-                                    name = "modules/" + ModuleUtil.moduleToPath(module.name) + "/" + module.version + "/" + mfile.getName();
-                                    addEntry(zipFile, mfile, name);
+                                if (module.artifact.namespace() == null) {
+                                    String name = "modules/" + moduleToPath(module.name) + "/" + module.version + "/" + file.getName();
+                                    addEntry(zipFile, file, name);
+                                    // See if there are any module files to copy as well
+                                    File mfile = new File(file.getParentFile(), "module.xml");
+                                    if (mfile.isFile()) {
+                                        name = "modules/" + moduleToPath(module.name) + "/" + module.version + "/" + mfile.getName();
+                                        addEntry(zipFile, mfile, name);
+                                    }
+                                    mfile = new File(file.getParentFile(), "module.properties");
+                                    if (mfile.isFile()) {
+                                        name = "modules/" + moduleToPath(module.name) + "/" + module.version + "/" + mfile.getName();
+                                        addEntry(zipFile, mfile, name);
+                                    }
+                                } else if (module.artifact.namespace().equals("maven")) {
+                                    String name = "modules/" + moduleToPath(module.name) + "/" + module.version + "/" + module.name.replace(':', '.') + "-" + module.version + ".jar";
+                                    addEntry(zipFile, file, name);
+                                    if (!module.dependencies.isEmpty()) {
+                                        // This Maven module has dependencies, so let's create a module.properties file for it
+                                        StringBuffer props = new StringBuffer();
+                                        for (Module dep : module.dependencies) {
+                                            props.append("+" + dep.name.replace(':', '.') + "=" + dep.version + "\n");
+                                        }
+                                        try (InputStream is = new ByteArrayInputStream(props.toString().getBytes(StandardCharsets.UTF_8))) {
+                                            name = "modules/" + moduleToPath(module.name) + "/" + module.version + "/module.properties";
+                                            zipFile.putNextEntry(new ZipEntry(name));
+                                            IOUtils.copyStream(is, zipFile, true, false);
+                                        }
+                                    }
                                 }
                             }
                         }catch(IOException x){
@@ -247,6 +266,10 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
                             throw new RuntimeException(x);
                         }
                     }
+                }
+
+                private String moduleToPath(String name) {
+                    return ModuleUtil.moduleToPath(name).getPath().replace(':', File.separatorChar);
                 }
 
                 private void addEntry(ZipOutputStream zipFile, File file, String name) throws IOException {
