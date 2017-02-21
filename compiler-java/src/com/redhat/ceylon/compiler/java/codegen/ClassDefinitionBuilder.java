@@ -371,11 +371,6 @@ public class ClassDefinitionBuilder
                 addModelAnnotation);
     }
     
-    public ClassDefinitionBuilder typeParameter(Tree.TypeParameterDeclaration param) {
-        gen.at(param);
-        return typeParameter(param.getDeclarationModel());
-    }
-
     public ClassDefinitionBuilder extending(Type thisType, Type extendingType) {
         if (!isAlias) {
             this.thisType = thisType;

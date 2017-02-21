@@ -91,5 +91,13 @@ void literalsRuntime2<T>(){
     assert(`new LitParameterisedClassWithConstructors`.name == ""); 
     assert(`new LitParameterisedClassWithConstructors.other`.name == "other");
     
+    // statics
+    assert(`value StaticMembers.attribute`.name == "attribute");
+    assert(`value StaticMembers.attribute`.static);
+    assert(`function StaticMembers.method`.name == "method");
+    assert(`function StaticMembers.method`.static);
+    assert(`class StaticMembers.MemberClass`.name == "MemberClass");
+    assert(`class StaticMembers.MemberClass`.static);
+    
 }
 

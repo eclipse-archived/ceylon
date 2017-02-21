@@ -1970,7 +1970,7 @@ public final class Array<Element>
     
     @SuppressWarnings("unchecked")
     @Override 
-    @TypeInfo("ceylon.language::Sequential<Element>")
+    @TypeInfo("ceylon.language::Sequence<Element>|ceylon.language::Empty")
     public Sequential<? extends Element> sequence() {
         if (getEmpty()) {
             return (Sequential<? extends Element>) empty_.get_();

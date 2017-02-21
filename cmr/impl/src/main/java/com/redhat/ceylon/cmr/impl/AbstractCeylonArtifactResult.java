@@ -125,22 +125,28 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     
     @Override
     public String artifactId() {
-        String groupId = resolve().getGroupId();
-        String artifactId = resolve().getArtifactId();
-        if(groupId != null && !groupId.isEmpty()){
-            if(artifactId != null && !artifactId.isEmpty())
-                return artifactId;
-            // if we have a group but not artifact, default to the entire name
-            return name();
+        ModuleInfo info = resolve();
+        if(info != null){
+            String groupId = info.getGroupId();
+            String artifactId = info.getArtifactId();
+            if(groupId != null && !groupId.isEmpty()){
+                if(artifactId != null && !artifactId.isEmpty())
+                    return artifactId;
+                // if we have a group but not artifact, default to the entire name
+                return name();
+            }
         }
         return ModuleUtil.getMavenCoordinates(name())[1];
     }
     
     @Override
     public String groupId() {
-        String groupId = resolve().getGroupId();
-        if(groupId != null && !groupId.isEmpty()){
-            return groupId;
+        ModuleInfo info = resolve();
+        if(info != null){
+            String groupId = info.getGroupId();
+            if(groupId != null && !groupId.isEmpty()){
+                return groupId;
+            }
         }
         return ModuleUtil.getMavenCoordinates(name())[0];
     }

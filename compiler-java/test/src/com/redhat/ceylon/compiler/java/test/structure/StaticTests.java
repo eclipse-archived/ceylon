@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure;
 
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
@@ -49,5 +52,4 @@ public class StaticTests extends CompilerTests {
     public void testStaticLate() {
         compareWithJavaSource("attribute/StaticLate");
     }
-    
 }

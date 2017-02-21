@@ -31,6 +31,7 @@ import java.util.List;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeSpecifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Cancellable;
@@ -1447,13 +1448,25 @@ public class TypeVisitor extends Visitor {
                     ClassOrInterface ci = 
                             (ClassOrInterface) scope;
                     if (!ci.isAbstract()) {
-                        cts.get(0)
-                           .addError("non-abstract class parameterized by self type: " + 
-                                "self type '" + first.getName() + 
-                                "' of '" + td.getName() + 
-                                "' is declared by non-abstract class '" + ci.getName() + 
-                                "' (make '" + ci.getName() + "' abstract)", 
-                                905);
+                        StaticType ct = cts.get(0);
+                        if (ci.equals(td)) {
+                            ct.addError("concrete class parameterized by self type: '" 
+                                    + ci.getName() 
+                                    + "' is not abstract but has the self type '" 
+                                    + first.getName() + 
+                                    "' (make '" + ci.getName() + "' abstract)",
+                                    905);
+                        }
+                        else {
+                            //type family
+                            ct.addError("concrete class parameterized by self type: '"
+                                    + ci.getName() 
+                                    + "' is not abstract but declares the self type '" 
+                                    + first.getName() 
+                                    + "' of '" + td.getName() 
+                                    + "' (make '" + ci.getName() + "' abstract)",
+                                    905);
+                        }
                     }
                 }
             }
@@ -1464,7 +1477,7 @@ public class TypeVisitor extends Visitor {
                     if (!ci.isAbstract()) {
                         Class c = (Class) ci;
                         if (!c.hasEnumerated()) {
-                            that.addError("non-abstract class has enumerated subtypes: " + 
+                            that.addError("concrete class has enumerated subtypes: " + 
                                     "enumerated class '" + ci.getName() + "' is not abstract" +
                                     " (make '" + ci.getName() + "' abstract)",
                                     905);

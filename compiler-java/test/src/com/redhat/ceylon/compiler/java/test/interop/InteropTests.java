@@ -999,7 +999,6 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
-    @Ignore
     public void testIopArrayFrom() {
         //compareWithJavaSource("ArrayFrom");
         compile("ArrayFrom.ceylon");

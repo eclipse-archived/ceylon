@@ -25,7 +25,7 @@ shared interface Sequential<out Element=Anything>
     shared actual default Integer[] keys => 0:size;
     
     "This sequence."
-    shared actual default Element[] sequence() => this;
+    shared actual default [Element+]|[] sequence() => this of [Element+]|[];
     
     "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;

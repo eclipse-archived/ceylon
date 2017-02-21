@@ -30,5 +30,5 @@ shared sealed interface Attribute<in Container=Nothing, out Get=Anything, in Set
     "Binds this attribute to the given container instance. The instance type is checked at runtime."
     throws(`class StorageException`,
         "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
-    shared actual formal Value<Get,Set> bind(Object container);
+    shared actual formal Value<Get,Set> bind(Anything container);
 }

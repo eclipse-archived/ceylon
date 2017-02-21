@@ -480,6 +480,11 @@ public class StructureTests extends CompilerTests {
         compareWithJavaSource("klass/Bug6157");
     }
     
+    @Test
+    public void testKlsIterableSequence(){
+        compareWithJavaSource("klass/IterableSequence");
+    }
+    
     //
     // Methods
     

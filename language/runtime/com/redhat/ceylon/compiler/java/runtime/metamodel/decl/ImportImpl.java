@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel.decl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -49,6 +50,7 @@ public class ImportImpl
         return Metamodel.isAnnotated(reifed$AnnotationType, this);
     }
 
+    @Nullable
     private Field getField() {
         Class<?> javaClass = Metamodel.getJavaClass(this.module.declaration);
         String fieldName = getName().replace('.', '$');
@@ -57,7 +59,7 @@ public class ImportImpl
             field = javaClass.getField(fieldName);
             field.setAccessible(true);
         } catch (NoSuchFieldException e) {
-            throw Metamodel.newModelError("No such field: " + fieldName);
+            return null;
         }
         return field;
     }

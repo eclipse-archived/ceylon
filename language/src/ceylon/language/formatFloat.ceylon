@@ -131,13 +131,11 @@ shared String formatFloat(
 
     if (minDecimalPlaces > fractionalPartDigits) {
         // we have fewer fractional digits than we need
-        if (fractionalPartDigits > 0) {
-            result.append("0".repeat(
-                minDecimalPlaces - fractionalPartDigits));
-        } else {
-            result.append("0".repeat(minDecimalPlaces));
-        }
-        emittedFractional = true;
+        value emitZeros = if (fractionalPartDigits > 0) 
+            then minDecimalPlaces - fractionalPartDigits
+            else minDecimalPlaces;
+        result.append("0".repeat(emitZeros));
+        emittedFractional = emitZeros > 0;
     }
     while (fractionalPartDigits > maxDecimalPlaces) {
         // we have more fractional digits than we need

@@ -753,14 +753,14 @@ public class RefinementVisitor extends Visitor {
             Class c = (Class) type;
             if (!c.isAbstract() && !c.isFormal()) {
                 if (c.isClassOrInterfaceMember()) {
-                    that.addError("formal member belongs to non-abstract, non-formal nested class: '" 
+                    that.addError("formal member belongs to concrete nested class: '" 
                             + member.getName() 
                             + "' is a member of class '" 
                             + c.getName()
                             + "' which is neither 'abstract' nor 'formal'", 1100);
                 }
                 else {
-                    that.addError("formal member belongs to non-abstract class: '" 
+                    that.addError("formal member belongs to concrete class: '" 
                             + member.getName() 
                             + "' is a member of class '" 
                             + c.getName()
@@ -1634,7 +1634,7 @@ public class RefinementVisitor extends Visitor {
                             + param.getName() + "' is not '" + rparam.getName() + "' for "
                             + message(refinedMember.getDeclaration()));
                 }
-                /*if (rparam.isSequenced() && !param.isSequenced()) {
+                if (rparam.isSequenced() && !param.isSequenced()) {
                     parameter.addError("parameter must be variadic: parameter '" 
                             + rparam.getName()
                             + "' of "
@@ -1649,7 +1649,7 @@ public class RefinementVisitor extends Visitor {
                             + (forNative ? "native header " : "refined member ")
                             + message(refinedMember.getDeclaration()) 
                             + " is not variadic");
-                }*/
+                }
                 Type refinedParameterType = 
                         refinedMember.getTypedParameter(rparam)
                                 .getFullType();

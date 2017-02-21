@@ -60,7 +60,7 @@ class Is() {
     Correspondence<Integer,String> d = nothing;
     if (is Sized&Container<Anything> d) {
         String? s = d[0];
-        @error Object? f1 = d.first;
+        Object? f1 = d.first;
         Anything f2 = d.first;
         @error Integer size = e.size;
         @error Boolean empty = e.empty;

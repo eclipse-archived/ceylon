@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.js.loader.JsonModule;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import org.antlr.runtime.CommonToken;
 
+import com.redhat.ceylon.cmr.impl.NpmRepository;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.util.ContinueBreakVisitor;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
@@ -281,7 +282,9 @@ public class GenerateJsVisitor extends Visitor {
         root = that;
         if (!that.getModuleDescriptors().isEmpty()) {
             final Tree.ModuleDescriptor md = that.getModuleDescriptors().get(0);
-            if (md.getNamespace() != null && md.getGroupQuotedLiteral() != null) {
+            if (md.getNamespace() != null
+                    && NpmRepository.NAMESPACE.equals(md.getNamespace().getText())
+                    && md.getGroupQuotedLiteral() != null) {
                 String npmName = md.getGroupQuotedLiteral().getText();
                 if (npmName.charAt(0)=='"' && npmName.charAt(npmName.length()-1) == '"') {
                     npmName = npmName.substring(1, npmName.length()-1);
@@ -939,7 +942,11 @@ public class GenerateJsVisitor extends Visitor {
             if (coi != null) {
                 out(names.self(d), ".outer$");
                 if (d.isClassOrInterfaceMember()) {
-                    out("=this");
+                    if (d.isStatic()) {
+                        out("=", names.name(coi));
+                    } else {
+                        out("=this");
+                    }
                 } else {
                     out("=", names.self(coi));
                 }
@@ -1127,7 +1134,11 @@ public class GenerateJsVisitor extends Visitor {
     void instantiateSelf(ClassOrInterface d) {
         out("var ", names.self(d), "=new ");
         if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
-            out("this.");
+            if (d.isStatic()) {
+                out(names.name(ModelUtil.getContainingClassOrInterface(d.getContainer())), ".$st$.");
+            } else {
+                out("this.");
+            }
         }
         out(names.name(d), ".$$;");
     }
@@ -1139,8 +1150,22 @@ public class GenerateJsVisitor extends Visitor {
         Singletons.objectDefinition(objDef, this, initDeferrer);
         Value d = objDef.getDeclarationModel();
         Class c = (Class) d.getTypeDeclaration();
-        out(names.self(type), ".", names.name(c), "=", names.name(c), ";",
-                names.self(type), ".", names.name(c), ".$crtmm$=");
+        if (d.isStatic()) {
+            out(names.name(type), ".$st$.", names.name(d),
+                    "=function(){if(", names.name(type), ".$st$.$INIT$",
+                    names.name(d), "===undefined)", names.name(type), ".$st$.$INIT$",
+                    names.name(d), "=$init$", names.name(d), "()();return ",
+                    names.name(type), ".$st$.$INIT$", names.name(d), "};");
+            out(names.name(type), ".$st$.", names.name(c), "=", names.name(c), ";");
+        } else {
+            out(names.self(type), ".", names.name(c), "=", names.name(c), ";");
+        }
+        if (d.isStatic()) {
+            out(names.name(type), ".$st$.", names.name(d));
+        } else {
+            out(names.self(type), ".", names.name(c));
+        }
+        out(".$crtmm$=");
         TypeUtils.encodeForRuntime(objDef, d, this);
         endLine(true);
     }
@@ -1166,6 +1191,8 @@ public class GenerateJsVisitor extends Visitor {
             //Don't even bother with nodes that have errors
             if (errVisitor.hasErrors(that))return;
             Class c = (Class) d.getTypeDeclaration();
+            //Skip static objects
+            if (d.isStatic())return;
             comment(that);
             outerSelf(d);
             out(".", names.privateName(d), "=");

@@ -226,10 +226,10 @@ public class AnnotationsTests extends CompilerTests {
     }
     
     @Test
-    @Ignore("M6: #1246, pending decision about how to handle this case")
     public void testRecursiveConstructors(){
-        // 1246
-        compareWithJavaSource("RecursiveConstructors");
+        // 1246, 6787
+        compile("RecursiveConstructors.ceylon");
+        compile("RecursiveConstructors2.ceylon");
     }
     
     @Test

@@ -194,7 +194,7 @@ public class AnnotationLoader {
                 acp.setDefaultArgument(
                         loadAnnotationConstructorDefaultedParameter(method, meth, ctorParam, acp));
             }
-            ai.getConstructorParameters().add(acp);
+            ai.addConstructorParameter(acp);
         }
     }
     private AnnotationTerm loadAnnotationConstructorDefaultedParameter(
@@ -502,9 +502,9 @@ public class AnnotationLoader {
             AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
             acp.setParameter(ctorParam);
             if(isValue)
-                ai.getConstructorParameters().add(0, acp);
+                ai.addConstructorParameter(0, acp);
             else
-                ai.getConstructorParameters().add(acp);
+                ai.addConstructorParameter(acp);
 
             annotationArgs.add(argument);
         }

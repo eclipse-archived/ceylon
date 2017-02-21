@@ -114,8 +114,6 @@ public final class ObjectArray<T> implements ReifiedType {
     @ceylon.language.StaticAnnotation$annotation$
     @com.redhat.ceylon.common.NonNull
     @com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.language::ObjectArray<T>")
-    @com.redhat.ceylon.compiler.java.metadata.TypeParameters({@com.redhat.ceylon.compiler.java.metadata.TypeParameter(
-            value = "T")})
     public static final <T>ObjectArray<T> from(
             @com.redhat.ceylon.compiler.java.metadata.Ignore
             final TypeDescriptor $reified$T, 

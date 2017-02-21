@@ -102,7 +102,7 @@ class Array<Element>
     shared actual native Boolean defines(Integer index);
     shared actual native Iterator<Element> iterator();
     shared actual native Boolean contains(Object element);
-    shared actual native Element[] sequence();
+    shared actual native [Element+]|[] sequence();
     shared actual native {Element&Object*} coalesced;
     
     "A new array with the same elements as this array."

@@ -12,7 +12,7 @@ import ceylon.language.meta.declaration {
 shared native class AppliedMemberClass<in Container, out Type=Anything, in Arguments=Nothing>()
         satisfies MemberClass<Container,Type,Arguments>
         given Arguments satisfies Anything[] {
-  shared actual native Class<Type,Arguments> bind(Object container);
+  shared actual native Class<Type,Arguments> bind(Anything container);
   shared actual native MemberClassCallableConstructor<Container, Type, Arguments>? defaultConstructor;
   shared actual native MemberClassCallableConstructor<Container,Type,Arguments>|MemberClassValueConstructor<Container,Type>? getConstructor<Arguments>(String name)
         given Arguments satisfies Anything[];

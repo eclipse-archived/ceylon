@@ -80,16 +80,13 @@ public class ParameterAnnotationTerm extends AnnotationTerm implements Annotatio
             }
         }
         
-        if (ai.getConstructorParameters() != null) {
-            for (AnnotationConstructorParameter p : ai.getConstructorParameters()) {
-                if (p.getParameter().equals(getSourceParameter())) {
-                    defaultArgument = p.getDefaultArgument();
-                    if (defaultArgument != null) {
-                        return defaultArgument.makeAnnotationArgumentValue(exprGen, ai, com.redhat.ceylon.langtools.tools.javac.util.List.<AnnotationFieldName>of(this));
-                    } else if (Strategy.hasEmptyDefaultArgument(p.getParameter())) {
-                        return exprGen.make().NewArray(null, null, com.redhat.ceylon.langtools.tools.javac.util.List.<JCExpression>nil());
-                    }
-                }
+        AnnotationConstructorParameter p = ai.findConstructorParameter(getSourceParameter());
+        if (p != null) {
+            defaultArgument = p.getDefaultArgument();
+            if (defaultArgument != null) {
+                return defaultArgument.makeAnnotationArgumentValue(exprGen, ai, com.redhat.ceylon.langtools.tools.javac.util.List.<AnnotationFieldName>of(this));
+            } else if (Strategy.hasEmptyDefaultArgument(p.getParameter())) {
+                return exprGen.make().NewArray(null, null, com.redhat.ceylon.langtools.tools.javac.util.List.<JCExpression>nil());
             }
         }
         return exprGen.makeErroneous(null, "compiler bug: not implemented yet");

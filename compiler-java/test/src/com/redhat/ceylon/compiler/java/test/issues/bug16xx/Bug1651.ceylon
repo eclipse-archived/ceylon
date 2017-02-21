@@ -29,6 +29,6 @@ shared void bug1651() {
     try {
         bug1651func<String>(*Bug1651Hollow<String>());
     } catch (AssertionError e) {
-        assert("Assertion failed: Sequence expected" == e.message);
+        assert(e.message.contains("Assertion failed: nonempty stream has no elements"));
     }
 }

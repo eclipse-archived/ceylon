@@ -1437,23 +1437,23 @@ public class CMRTests extends CompilerTests {
         String pomContents = read(car, pomFile);
         assertEquals("<?xml version=\"1.0\" ?>\n"
                 +"<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">\n"
-                +" <modelVersion>4.0.0</modelVersion>\n"
-                +" <groupId>com.redhat.ceylon.compiler.java.test.cmr.modules.pom</groupId>\n"
-                +" <artifactId>b</artifactId>\n"
-                +" <version>1</version>\n"
-                +" <name>com.redhat.ceylon.compiler.java.test.cmr.modules.pom.b</name>\n"
-                +" <dependencies>\n"
-                +"  <dependency>\n"
-                +"    <groupId>com.redhat.ceylon.compiler.java.test.cmr.modules.pom</groupId>\n"
-                +"    <artifactId>a</artifactId>\n"
-                +"    <version>1</version>\n"
-                +"  </dependency>\n"
-                +"  <dependency>\n"
-                +"    <groupId>javax.ws.rs</groupId>\n"
-                +"    <artifactId>jsr311-api</artifactId>\n"
-                +"    <version>1.1.1</version>\n"
-                +"  </dependency>\n"
-                +" </dependencies>\n"
+                +"  <modelVersion>4.0.0</modelVersion>\n"
+                +"  <groupId>com.redhat.ceylon.compiler.java.test.cmr.modules.pom</groupId>\n"
+                +"  <artifactId>b</artifactId>\n"
+                +"  <version>1</version>\n"
+                +"  <name>com.redhat.ceylon.compiler.java.test.cmr.modules.pom.b</name>\n"
+                +"  <dependencies>\n"
+                +"    <dependency>\n"
+                +"      <groupId>com.redhat.ceylon.compiler.java.test.cmr.modules.pom</groupId>\n"
+                +"      <artifactId>a</artifactId>\n"
+                +"      <version>1</version>\n"
+                +"    </dependency>\n"
+                +"    <dependency>\n"
+                +"      <groupId>javax.ws.rs</groupId>\n"
+                +"      <artifactId>jsr311-api</artifactId>\n"
+                +"      <version>1.1.1</version>\n"
+                +"    </dependency>\n"
+                +"  </dependencies>\n"
                 +"</project>\n",
                 pomContents);
         
@@ -1466,6 +1466,147 @@ public class CMRTests extends CompilerTests {
                 +"version=1\n"
                 +"groupId=com.redhat.ceylon.compiler.java.test.cmr.modules.pom\n"
                 +"artifactId=b\n", propertiesContents);
+        car.close();
+    }
+
+    @Test
+    public void testMdlPomManifestGroupSet() throws IOException {
+        compile("modules/pom/agroup/module.ceylon",
+                "modules/pom/bgroup/module.ceylon");
+
+        final String moduleName = "com.redhat.ceylon.compiler.java.test.cmr.modules.pom.bgroup";
+        final String moduleVersion = "1";
+        
+        File carFile = getModuleArchive(moduleName, moduleVersion);
+        assertTrue(carFile.exists());
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry pomFile = car.getEntry("META-INF/maven/mygroup/com.redhat.ceylon.compiler.java.test.cmr.modules.pom.bgroup/pom.xml");
+        assertNotNull(pomFile);
+        String pomContents = read(car, pomFile);
+        assertEquals("<?xml version=\"1.0\" ?>\n"
+                +"<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">\n"
+                +"  <modelVersion>4.0.0</modelVersion>\n"
+                +"  <groupId>mygroup</groupId>\n"
+                +"  <artifactId>com.redhat.ceylon.compiler.java.test.cmr.modules.pom.bgroup</artifactId>\n"
+                +"  <version>1</version>\n"
+                +"  <name>com.redhat.ceylon.compiler.java.test.cmr.modules.pom.bgroup</name>\n"
+                +"  <dependencies>\n"
+                +"    <dependency>\n"
+                +"      <groupId>mygroup</groupId>\n"
+                +"      <artifactId>com.redhat.ceylon.compiler.java.test.cmr.modules.pom.agroup</artifactId>\n"
+                +"      <version>1</version>\n"
+                +"    </dependency>\n"
+                +"    <dependency>\n"
+                +"      <groupId>javax.ws.rs</groupId>\n"
+                +"      <artifactId>jsr311-api</artifactId>\n"
+                +"      <version>1.1.1</version>\n"
+                +"    </dependency>\n"
+                +"  </dependencies>\n"
+                +"</project>\n",
+                pomContents);
+        
+        ZipEntry propertiesFile = car.getEntry("META-INF/maven/mygroup/com.redhat.ceylon.compiler.java.test.cmr.modules.pom.bgroup/pom.properties");
+        assertNotNull(propertiesFile);
+        String propertiesContents = read(car, propertiesFile);
+        // remove the date comment
+        propertiesContents = propertiesContents.replaceFirst("^(#Generated by Ceylon\n)#[^\n]+\n", "$1");
+        assertEquals("#Generated by Ceylon\n"
+                +"version=1\n"
+                +"groupId=mygroup\n"
+                +"artifactId=com.redhat.ceylon.compiler.java.test.cmr.modules.pom.bgroup\n", propertiesContents);
+        car.close();
+    }
+
+    @Test
+    public void testMdlPomManifestGroupArtifactSet() throws IOException {
+        compile("modules/pom/agroupartifact/module.ceylon",
+                "modules/pom/bgroupartifact/module.ceylon");
+
+        final String moduleName = "com.redhat.ceylon.compiler.java.test.cmr.modules.pom.bgroupartifact";
+        final String moduleVersion = "1";
+        
+        File carFile = getModuleArchive(moduleName, moduleVersion);
+        assertTrue(carFile.exists());
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry pomFile = car.getEntry("META-INF/maven/my-group/artifactb/pom.xml");
+        assertNotNull(pomFile);
+        String pomContents = read(car, pomFile);
+        assertEquals("<?xml version=\"1.0\" ?>\n"
+                +"<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">\n"
+                +"  <modelVersion>4.0.0</modelVersion>\n"
+                +"  <groupId>my-group</groupId>\n"
+                +"  <artifactId>artifactb</artifactId>\n"
+                +"  <version>1</version>\n"
+                +"  <name>com.redhat.ceylon.compiler.java.test.cmr.modules.pom.bgroupartifact</name>\n"
+                +"  <dependencies>\n"
+                +"    <dependency>\n"
+                +"      <groupId>my-group</groupId>\n"
+                +"      <artifactId>artifacta</artifactId>\n"
+                +"      <version>1</version>\n"
+                +"    </dependency>\n"
+                +"    <dependency>\n"
+                +"      <groupId>javax.ws.rs</groupId>\n"
+                +"      <artifactId>jsr311-api</artifactId>\n"
+                +"      <version>1.1.1</version>\n"
+                +"    </dependency>\n"
+                +"  </dependencies>\n"
+                +"</project>\n",
+                pomContents);
+        
+        ZipEntry propertiesFile = car.getEntry("META-INF/maven/my-group/artifactb/pom.properties");
+        assertNotNull(propertiesFile);
+        String propertiesContents = read(car, propertiesFile);
+        // remove the date comment
+        propertiesContents = propertiesContents.replaceFirst("^(#Generated by Ceylon\n)#[^\n]+\n", "$1");
+        assertEquals("#Generated by Ceylon\n"
+                +"version=1\n"
+                +"groupId=my-group\n"
+                +"artifactId=artifactb\n", propertiesContents);
+        car.close();
+    }
+
+    @Test
+    public void testMdlPomManifestLanguage() throws IOException {
+        File carFile = new File(LANGUAGE_MODULE_CAR);
+        assertTrue(carFile.exists());
+        JarFile car = new JarFile(carFile);
+
+        ZipEntry pomFile = car.getEntry("META-INF/maven/org.ceylon-lang/ceylon.language/pom.xml");
+        assertNotNull(pomFile);
+        String pomContents = read(car, pomFile);
+        assertEquals("<?xml version=\"1.0\" ?>\n"
+                +"<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd\">\n"
+                +"  <modelVersion>4.0.0</modelVersion>\n"
+                +"  <groupId>org.ceylon-lang</groupId>\n"
+                +"  <artifactId>ceylon.language</artifactId>\n"
+                +"  <version>"+Versions.CEYLON_VERSION_NUMBER+"</version>\n"
+                +"  <name>ceylon.language</name>\n"
+                +"  <dependencies>\n"
+                +"    <dependency>\n"
+                +"      <groupId>org.ceylon-lang</groupId>\n"
+                +"      <artifactId>com.redhat.ceylon.common</artifactId>\n"
+                +"      <version>"+Versions.CEYLON_VERSION_NUMBER+"</version>\n"
+                +"    </dependency>\n"
+                +"    <dependency>\n"
+                +"      <groupId>org.ceylon-lang</groupId>\n"
+                +"      <artifactId>com.redhat.ceylon.model</artifactId>\n"
+                +"      <version>"+Versions.CEYLON_VERSION_NUMBER+"</version>\n"
+                +"    </dependency>\n"
+                +"  </dependencies>\n"
+                +"</project>\n",
+                pomContents);
+        
+        ZipEntry propertiesFile = car.getEntry("META-INF/maven/org.ceylon-lang/ceylon.language/pom.properties");
+        assertNotNull(propertiesFile);
+        String propertiesContents = read(car, propertiesFile);
+        // remove the date comment
+        propertiesContents = propertiesContents.replaceFirst("^(#Generated by Ceylon\n)#[^\n]+\n", "$1");
+        assertEquals("#Generated by Ceylon\n"
+                +"version="+Versions.CEYLON_VERSION_NUMBER+"\n"
+                +"groupId=org.ceylon-lang\n"
+                +"artifactId=ceylon.language\n", propertiesContents);
         car.close();
     }
 

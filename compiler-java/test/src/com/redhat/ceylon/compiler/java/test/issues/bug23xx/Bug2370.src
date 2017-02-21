@@ -286,8 +286,8 @@ class Bug2370C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I> sequence() {
-        return $ceylon$language$Iterable$this$.sequence();
+    public .ceylon.language.Sequential sequence() {
+        return (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.sequence();
     }
     
     @.java.lang.Override

@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.NonNull;
@@ -92,6 +93,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.ConditionScope;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -99,6 +101,7 @@ import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -172,6 +175,7 @@ public class StatementTransformer extends AbstractTransformer {
             v.defs = new ListBuffer<JCTree>();
             v.inInitializer = false;
             v.classBuilder = current();
+            pushBlockImports(block);
             java.util.Iterator<Statement> statements = block.getStatements().iterator();
             while (statements.hasNext()) {
                 Tree.Statement stmt = statements.next();
@@ -194,6 +198,7 @@ public class StatementTransformer extends AbstractTransformer {
                     returnTransformer(returnTransformer);
                 }
             }
+            popBlockImports(block);
             result = (List<JCStatement>)v.getResult().toList();
             Runnable r = onEndBlock.get(block);
             if (r != null) {
@@ -212,6 +217,78 @@ public class StatementTransformer extends AbstractTransformer {
             currentBlock = oldBlock;
         }
         return result;
+    }
+    
+    private java.util.List<Tree.ImportList> blockImports = new ArrayList();
+    
+    private void pushBlockImports(Tree.Block block) {
+        Tree.ImportList importList = block.getImportList();
+        if (importList != null) {
+            blockImports.add(importList);
+        }
+    }
+    
+    private void popBlockImports(Tree.Block block) {
+        Tree.ImportList importList = block.getImportList();
+        if (importList != null) {
+            blockImports.remove(blockImports.size()-1);
+        }
+    }
+    
+    /**
+     * Lookup the import of the given declaration, including in block local imports
+     * @param node The node where the lookup is required.
+     * @param decl The declaration to look up
+     * @return The import
+     */
+    @NonNull
+    public Import findImport(Node node, Declaration decl) {
+        Import foundImport = null;
+        // Try local imports first
+        for (int ii = blockImports.size()-1; ii >= 0; ii--) {
+            Tree.ImportList il = blockImports.get(ii);
+            for (Tree.Import i : il.getImports()) {
+                for (Tree.ImportMemberOrType importMemberOrType : i.getImportMemberOrTypeList().getImportMemberOrTypes()) {
+                    foundImport = findImport(decl, importMemberOrType);
+                    if (foundImport != null) {
+                        break;
+                    }
+                }
+            }
+        }
+        // Try the unit imports
+        if (foundImport == null) {
+            for(Import imp : node.getUnit().getImports()){
+                if(!imp.isAmbiguous()
+                        && imp.getTypeDeclaration() != null
+                        && imp.getDeclaration().equals(decl)){
+                    foundImport = imp;
+                    break;
+                }
+            }
+        }
+        if(foundImport == null)
+            throw new BugException(node, decl.getQualifiedNameString() + " was not found as an import");
+        return foundImport;
+    }
+
+    private Import findImport(Declaration decl, Tree.ImportMemberOrType importMemberOrType) {
+        Import foundImport = null;
+        Import imp = importMemberOrType.getImportModel();
+        if(!imp.isAmbiguous()
+                && imp.getTypeDeclaration() != null
+                && imp.getDeclaration().equals(decl)){
+            foundImport = imp;
+        }
+        if (foundImport == null) {
+            for (Tree.ImportMemberOrType nestedImport : importMemberOrType.getImportMemberOrTypeList().getImportMemberOrTypes()) {
+                foundImport = findImport(decl, nestedImport);
+                if (foundImport != null) {
+                    break;
+                }
+            }
+        }
+        return foundImport;
     }
     
     abstract class CondList {

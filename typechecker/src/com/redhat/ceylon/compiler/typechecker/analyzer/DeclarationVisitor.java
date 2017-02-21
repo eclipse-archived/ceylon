@@ -14,6 +14,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotationSequenceArgument;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnonymousAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
@@ -22,6 +23,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAnonymousClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
@@ -182,7 +184,10 @@ public abstract class DeclarationVisitor extends Visitor {
     private static boolean setModelName(Node that, 
             Declaration model,
             Tree.Identifier id) {
-        if (id==null || id.isMissingToken()) {
+        if (that instanceof Tree.MissingDeclaration) {
+            return false;
+        }
+        else if (id==null || id.isMissingToken()) {
             if (that instanceof Tree.Constructor) {
                 return true;                
             }
@@ -1549,6 +1554,7 @@ public abstract class DeclarationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.MissingDeclaration that) {
+        that.addError("missing keyword or type annotation");
         Value value = new Value();
         that.setDeclarationModel(value);
         visitDeclaration(that, value);
@@ -2266,6 +2272,9 @@ public abstract class DeclarationVisitor extends Visitor {
                 if (model.isInterfaceMember()) {
                     that.addUnsupportedError("static members of interfaces are not yet supported");
                 }
+                if (isAnonymousClass(model.getContainer())) {
+                    that.addError("member of anonymous class may not be annotated 'static'");
+                }
             }
             else {
                 that.addError("declaration may not be annotated 'static'");
@@ -2473,6 +2482,11 @@ public abstract class DeclarationVisitor extends Visitor {
                 that.addError("class is abstract, and may not be annotated 'service'",
                         1601);
             }
+        }
+        if (hasAnnotation(al, "doc", unit)
+                && hasAnonymousAnnotation(al)) {
+            getAnnotation(al, "doc", unit)
+                .addError("documentation already specified");
         }
         buildAnnotations(al, model.getAnnotations());
     }

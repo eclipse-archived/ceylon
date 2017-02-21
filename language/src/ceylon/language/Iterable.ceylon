@@ -272,13 +272,27 @@ shared interface Iterable<out Element=Anything,
     "A [[sequence|Sequential]] containing all the elements 
      of this stream, in the same order they occur in this
      stream. This operation eagerly evaluates and collects 
-     every element of the stream."
+     every element of the stream.
+     
+     If this stream is known to be nonempty, that is, if it 
+     is an instance of `{Anything+}`, then this operation
+     has a nonempty return type, that is, a subtype of
+     `[Anything+]`. For example:
+     
+         [String+] bits = \"hello world\".split().sequence();"
     since("1.1.0")
-    shared default Element[] sequence()
-            => let (array = Array(this)) 
-                if (array.empty)
-                    then []
-                    else ArraySequence(array);
+    shared default 
+    [Element+] | []&Iterable<Element,Absent> sequence() {
+        value array = Array(this);
+        if (array.empty) {
+            "nonempty stream has no elements"
+            assert (is Iterable<Element,Absent> empty = []);
+            return empty;
+        }
+        else {
+            return ArraySequence(array);
+        }
+    }
     
     "A [[Range]] containing all indexes of this stream, or 
      `[]` if this list is empty. The resulting range is

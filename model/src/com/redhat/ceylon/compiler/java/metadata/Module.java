@@ -27,4 +27,8 @@ public @interface Module {
     public Import[] dependencies() default {};
     /** The module native backends. */
     public String[] nativeBackends() default {};
+    /** The module group */
+    public String group() default "";
+    /** The module artifact */
+    public String artifact() default "";
 }

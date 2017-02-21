@@ -50,6 +50,7 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
@@ -3682,6 +3683,19 @@ public class ExpressionTransformer extends AbstractTransformer {
                                     makeSelect(iterable, "sequence"),
                                     List.<JCExpression>nil()),
                                     makeJavaType(argType));
+                        } else if (typeFact().isJavaIterableType(argType)) {
+                            exprAndType = transformArgument(invocation, argIndex,
+                                    boxingStrategy);
+                            Type elementType = typeFact().getJavaIteratedType(argType);
+                            JCExpression iterable = utilInvocation().toIterable(
+                                    makeJavaType(elementType, JT_TYPE_ARGUMENT),
+                                    makeReifiedTypeArgument(elementType),
+                                    exprAndType.expression);
+                            exprAndType = new ExpressionAndType(
+                                    make().Apply(null,
+                                    makeSelect(iterable, "sequence"),
+                                    List.<JCExpression>nil()),
+                                    makeJavaType(argType));
                         } else {
                             exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"), makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"));
                         }
@@ -5840,17 +5854,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     container = (Class)typeDecl.getContainer();
                 }else{
                     // find the import
-                    Import foundImport = null;
-                    for(Import imp : expr.getUnit().getImports()){
-                        if(!imp.isAmbiguous()
-                                && imp.getTypeDeclaration() != null
-                                && imp.getDeclaration().equals(decl)){
-                            foundImport = imp;
-                            break;
-                        }
-                    }
-                    if(foundImport == null)
-                        throw new BugException(expr, decl.getQualifiedNameString() + " was not found as an import");
+                    Import foundImport = statementGen().findImport(expr, decl);
                     container = (Class) foundImport.getTypeDeclaration();
                 }
                 Value value = (Value)((Package)container.getContainer()).getMember(container.getName(), null, false);
@@ -8165,7 +8169,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         // use the op model for the variable, not expected type, because expected type may be optional, where op
         // says not optional (even in case of java interop which may return null), so we allow null values in j.l.String (unboxed)
         // because the caller will insert the null check if the expected type is optional 
-        JCExpression vartype = makeJavaType(op.getTypeModel(), CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
+        Type typeModel = op.getTypeModel();
+        if (willEraseToObject(typeModel)) {
+            typeModel = typeFact().denotableType(typeModel);
+        }
+        JCExpression vartype = makeJavaType(typeModel, CodegenUtil.getBoxingStrategy(op) == BoxingStrategy.UNBOXED ? 0 : JT_NO_PRIMITIVES);
         return make().LetExpr(make().VarDef(make().Modifiers(0), names().fromString(tmpVar), vartype , null), statements, makeUnquotedIdent(tmpVar));
     }
 

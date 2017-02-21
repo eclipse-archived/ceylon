@@ -15,81 +15,81 @@ class ArrayWith implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             .java.lang.Object sel$0 = array;
             if (sel$0 instanceof long[]) {
                 final long[] array$25 = (long[])sel$0;
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> s = .com.redhat.ceylon.compiler.java.language.LongArray.getIterable(array$25).sequence();
+                final .java.lang.Object s = .com.redhat.ceylon.compiler.java.language.LongArray.getIterable(array$25).sequence();
                 .ceylon.language.List<? extends E> lhs$26 = expected;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> rhs$27 = s;
+                .java.lang.Object rhs$27 = s;
                 if (lhs$26.equals(rhs$27)) {
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == s") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$26, rhs$27));
                 }
             } else if (sel$0 instanceof int[]) {
                 final int[] array$22 = (int[])sel$0;
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> s = .com.redhat.ceylon.compiler.java.language.IntArray.getIterable(array$22).sequence();
+                final .java.lang.Object s = .com.redhat.ceylon.compiler.java.language.IntArray.getIterable(array$22).sequence();
                 .ceylon.language.List<? extends E> lhs$23 = expected;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> rhs$24 = s;
+                .java.lang.Object rhs$24 = s;
                 if (lhs$23.equals(rhs$24)) {
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == s") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$23, rhs$24));
                 }
             } else if (sel$0 instanceof short[]) {
                 final short[] array$19 = (short[])sel$0;
-                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> s = .com.redhat.ceylon.compiler.java.language.ShortArray.getIterable(array$19).sequence();
+                final .java.lang.Object s = .com.redhat.ceylon.compiler.java.language.ShortArray.getIterable(array$19).sequence();
                 .ceylon.language.List<? extends E> lhs$20 = expected;
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> rhs$21 = s;
+                .java.lang.Object rhs$21 = s;
                 if (lhs$20.equals(rhs$21)) {
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == s") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$20, rhs$21));
                 }
             } else if (sel$0 instanceof byte[]) {
                 final byte[] array$16 = (byte[])sel$0;
-                final .ceylon.language.Sequential<? extends .ceylon.language.Byte> s = .com.redhat.ceylon.compiler.java.language.ByteArray.getIterable(array$16).sequence();
+                final .java.lang.Object s = .com.redhat.ceylon.compiler.java.language.ByteArray.getIterable(array$16).sequence();
                 .ceylon.language.List<? extends E> lhs$17 = expected;
-                .ceylon.language.Sequential<? extends .ceylon.language.Byte> rhs$18 = s;
+                .java.lang.Object rhs$18 = s;
                 if (lhs$17.equals(rhs$18)) {
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == s") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$17, rhs$18));
                 }
             } else if (sel$0 instanceof boolean[]) {
                 final boolean[] array$13 = (boolean[])sel$0;
-                final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> s = .com.redhat.ceylon.compiler.java.language.BooleanArray.getIterable(array$13).sequence();
+                final .java.lang.Object s = .com.redhat.ceylon.compiler.java.language.BooleanArray.getIterable(array$13).sequence();
                 .ceylon.language.List<? extends E> lhs$14 = expected;
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> rhs$15 = s;
+                .java.lang.Object rhs$15 = s;
                 if (lhs$14.equals(rhs$15)) {
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == s") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$14, rhs$15));
                 }
             } else if (sel$0 instanceof char[]) {
                 final char[] array$10 = (char[])sel$0;
-                final .ceylon.language.Sequential<? extends .ceylon.language.Character> s = .com.redhat.ceylon.compiler.java.language.CharArray.getIterable(array$10).sequence();
+                final .java.lang.Object s = .com.redhat.ceylon.compiler.java.language.CharArray.getIterable(array$10).sequence();
                 .ceylon.language.List<? extends E> lhs$11 = expected;
-                .ceylon.language.Sequential<? extends .ceylon.language.Character> rhs$12 = s;
+                .java.lang.Object rhs$12 = s;
                 if (lhs$11.equals(rhs$12)) {
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == s") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$11, rhs$12));
                 }
             } else if (sel$0 instanceof float[]) {
                 final float[] array$7 = (float[])sel$0;
-                final .ceylon.language.Sequential<? extends .ceylon.language.Float> s = .com.redhat.ceylon.compiler.java.language.FloatArray.getIterable(array$7).sequence();
+                final .java.lang.Object s = .com.redhat.ceylon.compiler.java.language.FloatArray.getIterable(array$7).sequence();
                 .ceylon.language.List<? extends E> lhs$8 = expected;
-                .ceylon.language.Sequential<? extends .ceylon.language.Float> rhs$9 = s;
+                .java.lang.Object rhs$9 = s;
                 if (lhs$8.equals(rhs$9)) {
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == s") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$8, rhs$9));
                 }
             } else if (sel$0 instanceof double[]) {
                 final double[] array$4 = (double[])sel$0;
-                final .ceylon.language.Sequential<? extends .ceylon.language.Float> s = .com.redhat.ceylon.compiler.java.language.DoubleArray.getIterable(array$4).sequence();
+                final .java.lang.Object s = .com.redhat.ceylon.compiler.java.language.DoubleArray.getIterable(array$4).sequence();
                 .ceylon.language.List<? extends E> lhs$5 = expected;
-                .ceylon.language.Sequential<? extends .ceylon.language.Float> rhs$6 = s;
+                .java.lang.Object rhs$6 = s;
                 if (lhs$5.equals(rhs$6)) {
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == s") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$5, rhs$6));
                 }
             } else if (sel$0 instanceof .java.lang.Object[]) {
                 final E[] array$1 = (E[])sel$0;
-                final .ceylon.language.Sequential<? extends E> s = .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends E>.getIterable(array$1).sequence();
+                final .java.lang.Object s = .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends E>.getIterable(array$1).sequence();
                 .ceylon.language.List<? extends E> lhs$2 = expected;
-                .ceylon.language.Sequential<? extends E> rhs$3 = s;
+                .java.lang.Object rhs$3 = s;
                 if (lhs$2.equals(rhs$3)) {
                 } else {
                     throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == s") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
@@ -125,7 +125,7 @@ class ArrayWith implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 }
             }
         });
-        <.ceylon.language.Byte>check$priv$(.ceylon.language.Byte.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Byte, .java.lang.Object>(.ceylon.language.Byte.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+        <.ceylon.language.Byte>check$priv$(.ceylon.language.Byte.$TypeDescriptor$, (.ceylon.language.List<? extends .ceylon.language.Byte>)(.ceylon.language.List)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Byte, .java.lang.Object>(.ceylon.language.Byte.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {

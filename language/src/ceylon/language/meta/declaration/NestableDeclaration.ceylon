@@ -20,7 +20,10 @@ shared sealed interface NestableDeclaration of
 
     "True if this declaration is annotated with [[shared|ceylon.language::shared]]."
     shared formal Boolean shared;
-
+    
+    "True if this declaration is annotated with [[static|ceylon.language::static]]."
+    shared formal Boolean static;
+    
     "This declaration's package container."
     shared formal Package containingPackage;
     
@@ -33,4 +36,5 @@ shared sealed interface NestableDeclaration of
     
     "True if this declaration is a toplevel declaration."
     shared formal Boolean toplevel;
+    
 }

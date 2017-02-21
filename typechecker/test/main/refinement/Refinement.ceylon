@@ -217,12 +217,12 @@ class Qux() {
 
 class QuxQux() extends Qux() {
     actual shared default 
-    void print(String[] strings) {
+    void print(@error String[] strings) {
         for (string in strings) {
             pr(string);
         }
     }
-    shared actual void print2(String* strings) {
+    shared actual void print2(@error String* strings) {
         for (string in strings) {
             pr(string);
         }

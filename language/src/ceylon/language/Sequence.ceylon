@@ -67,7 +67,7 @@ shared sealed interface Sequence<out Element=Anything>
             => 0..lastIndex;
     
     "This nonempty sequence."
-    shared default actual [Element+] sequence() => this;
+    shared actual default [Element+] sequence() => this;
     
     "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;
@@ -311,6 +311,9 @@ by ("Gavin")
 see (`function Iterable.sequence`)
 tagged("Sequences")
 since("1.1.0")
+deprecated("Since 1.3.2, [[Iterable.sequence]] has a more
+            precise return type, and so this function is no 
+            longer useful.")
 shared [Element+]|Absent sequence<Element,Absent=Null>
         (Iterable<Element, Absent> elements)
         given Absent satisfies Null {

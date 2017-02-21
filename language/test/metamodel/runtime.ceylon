@@ -2306,6 +2306,7 @@ void runTests() {
     sandbox(bugM12test);
     
     sandbox(servicesTest);
+    sandbox(staticTest);
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
     print(pass==total then "Metamodel tests OK (``total`` total)" else "Metamodel tests ``pass``/``total``");

@@ -124,6 +124,11 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             LazyModule lazyModule = (LazyModule) module;
 
             if(!module.isDefaultModule()){
+                if(artifact.groupId() != null)
+                    module.setGroupId(artifact.groupId());
+                if(artifact.artifactId() != null)
+                    module.setArtifactId(artifact.artifactId());
+
                 if(!modelLoader.loadCompiledModule(module)){
                     setupJavaModule(moduleImport, lazyModule, modelLoader, moduleManager, artifact);
                 }else{

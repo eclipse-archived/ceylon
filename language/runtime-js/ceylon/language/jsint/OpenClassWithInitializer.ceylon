@@ -37,6 +37,7 @@ shared native class OpenClassWithInitializer(pkg, meta) satisfies ClassWithIniti
     shared native actual Boolean formal;
     shared native actual Boolean default;
     shared native actual Boolean actual;
+    shared native actual Boolean static;
     shared native actual Boolean isAlias => false;
     shared native actual Kind? getMemberDeclaration<Kind>(String name) 
         given Kind satisfies NestableDeclaration;
@@ -71,4 +72,8 @@ shared native class OpenClassWithInitializer(pkg, meta) satisfies ClassWithIniti
     shared native actual ValueDeclaration? objectValue;
     shared actual String string=>"class ``qualifiedName``";
     shared actual Integer hash =>string.hash;
+
+    shared actual native Class<Type, Arguments> staticClassApply<Type=Anything, Arguments=Nothing>
+            (AppliedType<Object> containerType, AppliedType<>* typeArguments)
+            given Arguments satisfies Anything[];
 }

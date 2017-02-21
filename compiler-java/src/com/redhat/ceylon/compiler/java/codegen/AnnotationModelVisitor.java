@@ -86,6 +86,27 @@ public class AnnotationModelVisitor extends Visitor {
                 && declarationModel.isAnnotation();
     }
     
+    /*protected void checkForCycle(Node node, final Declaration decl, final AnnotationInvocation invocation, Set<Declaration> s) {
+        Declaration d = decl;
+        while (d instanceof Function) {
+            if (!s.add(d)) {
+                node.addError("recursive annotation constructor: '"+decl.getName()+"' invokes itself");
+                break;
+            }
+            d = ((AnnotationInvocation)((Function)d).getAnnotationConstructor()).getPrimary();
+        }
+        for (AnnotationConstructorParameter param : invocation.getConstructorParameters()) {
+            if (param.getDefaultArgument() instanceof InvocationAnnotationTerm) {
+                InvocationAnnotationTerm t = (InvocationAnnotationTerm)param.getDefaultArgument();
+                /*if (!s.add(t.getInstantiation().getPrimary())) {
+                    node.addError("recursive annotation constructor: '"+decl.getName()+"' invokes itself");
+                    break;
+                }* /
+                checkForCycle(node, t.getInstantiation().getPrimary(), t.getInstantiation(), s);
+            }
+        }
+    }*/
+    
     @Override
     public void visit(Tree.MethodDefinition d) {
         if (errors.hasAnyError(d)) {
@@ -93,9 +114,8 @@ public class AnnotationModelVisitor extends Visitor {
         }
         if (isAnnotationConstructor(d)) {
             annotationConstructor = d;
-            instantiation = new AnnotationInvocation();
-            instantiation.setConstructorDeclaration(d.getDeclarationModel());
-            d.getDeclarationModel().setAnnotationConstructor(instantiation);
+            instantiation = (AnnotationInvocation)d.getDeclarationModel().getAnnotationConstructor();
+            
         }
         super.visit(d);
         if (isAnnotationConstructor(d)) {
@@ -112,9 +132,7 @@ public class AnnotationModelVisitor extends Visitor {
         if (isAnnotationConstructor(d)
                 && d.getSpecifierExpression() != null) {
             annotationConstructor = d;
-            instantiation = new AnnotationInvocation();
-            instantiation.setConstructorDeclaration(d.getDeclarationModel());
-            d.getDeclarationModel().setAnnotationConstructor(instantiation);
+            instantiation = (AnnotationInvocation)d.getDeclarationModel().getAnnotationConstructor();
         }
         super.visit(d);
         if (isAnnotationConstructor(d)
@@ -147,9 +165,8 @@ public class AnnotationModelVisitor extends Visitor {
     public void visit(Tree.Parameter p) {
         
         if (annotationConstructor != null) {
-            AnnotationConstructorParameter acp = new AnnotationConstructorParameter();
-            acp.setParameter(p.getParameterModel());
-            instantiation.getConstructorParameters().add(acp);
+            // Find the ACP for this parameter
+            AnnotationConstructorParameter acp = instantiation.findConstructorParameter(p.getParameterModel());
             push(acp);
             //super.visit(p);
             Tree.SpecifierOrInitializerExpression defaultArgument = Decl.getDefaultArgument(p);
@@ -182,13 +199,16 @@ public class AnnotationModelVisitor extends Visitor {
                     if (isAnnotationConstructor( ((Tree.BaseMemberOrTypeExpression)primary).getDeclaration())) {
                         Function constructor = (Function)((Tree.BaseMemberOrTypeExpression)primary).getDeclaration();
                         instantiation.setConstructorDeclaration(constructor);
-                        instantiation.getConstructorParameters().addAll(((AnnotationInvocation)constructor.getAnnotationConstructor()).getConstructorParameters());
+                        for (AnnotationConstructorParameter x : ((AnnotationInvocation)constructor.getAnnotationConstructor()).getConstructorParameters()) {
+                            instantiation.addConstructorParameter(x);
+                        }
                     }
                     checkingDefaults = true;
                     
                     super.visit(d);
                     
                     annotationConstructorParameter.setDefaultArgument(this.term);
+                    
                     this.term = null;
                     checkingDefaults = false;
                     this.instantiation = prevInstantiation;
@@ -279,6 +299,7 @@ public class AnnotationModelVisitor extends Visitor {
         this.checkingArguments = prevCheckingArguments;
     }
     
+    @Override
     public void visit(Tree.StringLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -288,6 +309,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.CharLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -297,6 +319,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.FloatLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -310,6 +333,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.NaturalLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -323,6 +347,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.NegativeOp op) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -341,6 +366,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.MetaLiteral literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -350,6 +376,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.Tuple literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -361,6 +388,7 @@ public class AnnotationModelVisitor extends Visitor {
         }
     }
     
+    @Override
     public void visit(Tree.SequenceEnumeration literal) {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
@@ -429,8 +457,11 @@ public class AnnotationModelVisitor extends Visitor {
                     && isAnnotationConstructor(bme.getDeclaration())) {
                 Function ctor = (Function)bme.getDeclaration();
                 instantiation.setPrimary(ctor);
-                if (ctor.getAnnotationConstructor() != null) {
-                    instantiation.getConstructorParameters().addAll(((AnnotationInvocation)ctor.getAnnotationConstructor()).getConstructorParameters());
+                if (ctor.getAnnotationConstructor() != null
+                        && ctor.getAnnotationConstructor() != instantiation) {
+                    for (AnnotationConstructorParameter p : ((AnnotationInvocation)ctor.getAnnotationConstructor()).getConstructorParameters()) {
+                        instantiation.addConstructorParameter(p);
+                    }
                 }
             } else if (checkingArguments || checkingDefaults) {
                 if (declaration instanceof Value && ((Value)declaration).isParameter()) {
@@ -568,6 +599,6 @@ public class AnnotationModelVisitor extends Visitor {
         } else {
             super.visit(argument);
         }
-    }   
+    }
 }
 

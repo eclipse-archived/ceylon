@@ -1023,7 +1023,11 @@ public class TypeUtils {
                         gen.out("/*TODO callable constructor*/");
                     }
                 } else if (std.isAnonymous()) {
-                    gen.out(gen.getNames().getter(std, true));
+                    if (std.isStatic()) {
+                        gen.out(gen.getNames().name(ModelUtil.getContainingDeclaration(std)), ".$st$.", gen.getNames().objectName(std));
+                    } else {
+                        gen.out(gen.getNames().getter(std, true));
+                    }
                 } else {
                     metamodelTypeNameOrList(false, that, d.getUnit().getPackage(), st, null, gen);
                 }

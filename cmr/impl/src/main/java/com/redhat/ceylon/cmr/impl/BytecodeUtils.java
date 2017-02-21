@@ -64,7 +64,6 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
     private static final String CEYLON_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ceylon";
     private static final String IGNORE_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Ignore";
     private static final String LOCAL_CONTAINER_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.LocalContainer";
-    private static final String ARTIFACT_ANNOTATION = "ceylon.language.ArtifactAnnotation$annotation$";
 
     @Override
     public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
@@ -109,17 +108,16 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         if(version == null)
             return null;
         
-        Annotation artifactAnnotation = ClassFileUtil.findAnnotation(moduleInfo, ARTIFACT_ANNOTATION);
         String groupId, artifactId;
-        if(artifactAnnotation != null){
-            groupId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "group");
-            artifactId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "artifact");
-            if(artifactId == null || artifactId.isEmpty())
-                artifactId = moduleName;
-        }else{
+        groupId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "group");
+        if(groupId == null || groupId.isEmpty()){
             String[] coordinates = ModuleUtil.getMavenCoordinates(moduleName);
             groupId = coordinates[0];
             artifactId = coordinates[1];
+        }else{
+            artifactId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "artifact");
+            if(artifactId == null || artifactId.isEmpty())
+                artifactId = moduleName;
         }
 
         final Object[] dependencies = (Object[]) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "dependencies");
@@ -215,7 +213,6 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
     	Annotation moduleAnnotation = ClassFileUtil.findAnnotation(moduleInfo, MODULE_ANNOTATION);
         if (moduleAnnotation == null)
             return null;
-        Annotation artifactAnnotation = ClassFileUtil.findAnnotation(moduleInfo, ARTIFACT_ANNOTATION);
         
         String doc = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "doc");
         String license = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "license");
@@ -225,15 +222,15 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         
         int[] binver = getBinaryVersions(moduleInfo);
         String groupId, artifactId;
-        if(artifactAnnotation != null){
-            groupId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "group");
-            artifactId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "artifact");
-            if(artifactId == null || artifactId.isEmpty())
-                artifactId = moduleName;
-        }else{
+        groupId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "group");
+        if(groupId == null || groupId.isEmpty()){
             String[] coordinates = ModuleUtil.getMavenCoordinates(moduleName);
             groupId = coordinates[0];
             artifactId = coordinates[1];
+        }else{
+            artifactId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "artifact");
+            if(artifactId == null || artifactId.isEmpty())
+                artifactId = moduleName;
         }
 
         ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, 
@@ -397,17 +394,16 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         if (moduleAnnotation == null)
             return false;
 
-        Annotation artifactAnnotation = ClassFileUtil.findAnnotation(moduleInfo, ARTIFACT_ANNOTATION);
         String groupId, artifactId;
-        if(artifactAnnotation != null){
-            groupId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "group");
-            artifactId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, artifactAnnotation, "artifact");
-            if(artifactId == null || artifactId.isEmpty())
-                artifactId = moduleName;
-        }else{
+        groupId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "group");
+        if(groupId == null || groupId.isEmpty()){
             String[] coordinates = ModuleUtil.getMavenCoordinates(moduleName);
             groupId = coordinates[0];
             artifactId = coordinates[1];
+        }else{
+            artifactId = (String) ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "artifact");
+            if(artifactId == null || artifactId.isEmpty())
+                artifactId = moduleName;
         }
 
         String version = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "version");

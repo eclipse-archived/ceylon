@@ -383,7 +383,7 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
                     $reified$Arguments,
                     reference, 
                     callableCtor, 
-                    this, null);
+                    this, instance);
             Metamodel.checkReifiedTypeArgument("apply", "CallableConstructor<$1,$2>", 
                     Variance.OUT, producedType, $reifiedType, 
                     Variance.IN, Metamodel.getProducedTypeForArguments(
@@ -397,7 +397,7 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
             return new ValueConstructorImpl<Type>(
                     this.$reifiedType,
                     callableCtor, val.getTypedReference(),
-                    this, null);
+                    this, instance);
         } else {
             throw new AssertionError("Constructor neither CallableConstructorDeclaration nor ValueConstructorDeclaration");
         }

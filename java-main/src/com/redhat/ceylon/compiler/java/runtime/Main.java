@@ -54,8 +54,8 @@ import com.redhat.ceylon.langtools.classfile.RuntimeAnnotations_attribute;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
-import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.loader.ClassFileUtil;
@@ -720,8 +720,6 @@ public class Main {
                 if(moduleAnnotation == null)
                     throw new IOException("Missing module annotation");
 
-                Annotation artifactAnnotation = ClassFileUtil.findAnnotation(classFile, annotationsAttribute, ceylon.language.ArtifactAnnotation$annotation$.class);
-
                 Object moduleName = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "name");
                 Object moduleVersion = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "version");
                 if(moduleName instanceof String == false 
@@ -736,9 +734,9 @@ public class Main {
                 version = (String)moduleVersion;
 
                 String groupId, artifactId;
-                if(artifactAnnotation != null){
-                    groupId = (String) ClassFileUtil.getAnnotationValue(classFile, artifactAnnotation, "group");
-                    artifactId = (String) ClassFileUtil.getAnnotationValue(classFile, artifactAnnotation, "artifact");
+                groupId = (String) ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "group");
+                if(groupId != null){
+                    artifactId = (String) ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "artifact");
                     if(artifactId == null || artifactId.isEmpty())
                         artifactId = name;
                 }else{

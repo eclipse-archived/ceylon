@@ -34,7 +34,9 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     protected String version;
     protected String compileFlags;
     protected String tap;
+    protected String reportsDir;
     protected boolean report;
+    protected boolean xmlJUnitReport;
     private final Type type;
     private final Integer jvmBinaryMajor;
     private final Integer jvmBinaryMinor;
@@ -99,10 +101,22 @@ public abstract class AbstractTestTool extends RepoUsingTool {
         this.tap = tap;
     }
 
+    @OptionArgument(longName = "out", argumentName = "file")
+    @Description("Sets the folder to use for reports. Defalts to `reports/{test|test-js}`.")
+    public void setOut(String out) {
+        this.reportsDir = out;
+    }
+
     @Option(longName = "report")
-    @Description("Generates the test results report into HTML format, output directory is `reports/test` (experimental).")
+    @Description("Generates the test results report into HTML format, output directory is set with `--out` (experimental).")
     public void setReport(boolean report) {
         this.report = report;
+    }
+
+    @Option(longName = "xml-junit-report")
+    @Description("Generates the test results report into JUnit XML format, output directory is set with `--out` (experimental).")
+    public void setXmlJUnitReport(boolean xmlJUnitReport) {
+        this.xmlJUnitReport = xmlJUnitReport;
     }
 
     @Rest
@@ -165,6 +179,13 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     protected void processReportOption(List<String> args) {
         if (report) {
             args.add("--report");
+        }
+        if (xmlJUnitReport) {
+            args.add("--xml-junit-report");
+        }
+        if (reportsDir != null) {
+            args.add("--reports-dir");
+            args.add(reportsDir);
         }
     }
 

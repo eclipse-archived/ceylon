@@ -47,6 +47,8 @@ public class Module
     private List<ModuleImport> overridenImports = null;
     private Backends nativeBackends = Backends.ANY;
     private Map<ClassOrInterface, Set<Class>> services = null;
+    private String groupId;
+    private String artifactId;
 
     private LanguageModuleCache languageModuleCache = null;
 
@@ -535,22 +537,18 @@ public class Module
     }
 
     public String getGroupId() {
-        for (Annotation annotation : getAnnotations()) {
-            if(annotation.getName().equals("artifact")){
-                return annotation.getNamedArguments().get("group");
-            }
-        }
-        return ModuleUtil.getMavenCoordinates(getNameAsString())[0];
+        return groupId;
     }
 
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+    
     public String getArtifactId() {
-        for (Annotation annotation : getAnnotations()) {
-            if(annotation.getName().equals("artifact")){
-                String artifact = annotation.getNamedArguments().get("artifact");
-                if(artifact == null || artifact.isEmpty())
-                    return getNameAsString();
-            }
-        }
-        return ModuleUtil.getMavenCoordinates(getNameAsString())[1];
+        return artifactId;
+    }
+    
+    public void setArtifactId(String artifactId) {
+        this.artifactId = artifactId;
     }
 }

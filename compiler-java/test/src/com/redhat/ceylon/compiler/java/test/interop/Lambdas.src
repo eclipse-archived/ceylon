@@ -136,120 +136,96 @@ final class lambdas_ {
     
     static void lambdas() {
         final .com.redhat.ceylon.compiler.java.test.interop.LambdasJava j = new .com.redhat.ceylon.compiler.java.test.interop.LambdasJava();
-        j.<.ceylon.language.Boolean>consumer((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#0$sam implements .java.util.function.Consumer<.ceylon.language.Boolean>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b));
-                            }
-                            returning null;
-                        );
+        j.<.ceylon.language.Boolean>consumer(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Consumer<.ceylon.language.Boolean>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b));
                     }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .ceylon.language.Boolean arg0) {
-                        $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
-                    }
-                }
+                    returning null;
+                );
             }
-            returning new anonymous#0$sam();
-        ), .ceylon.language.Boolean.instance(true));
-        j.<.ceylon.language.Boolean>consumerStatic((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#1$sam implements .java.util.function.Consumer<.ceylon.language.Boolean>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b));
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .ceylon.language.Boolean arg0) {
-                        $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
-                    }
-                }
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Boolean arg0) {
+                $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
             }
-            returning new anonymous#1$sam();
-        ), .ceylon.language.Boolean.instance(true));
-        .com.redhat.ceylon.compiler.java.test.interop.LambdasJava.<.ceylon.language.Boolean>consumerStatic((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#2")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#2$sam implements .java.util.function.Consumer<.ceylon.language.Boolean>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b));
-                            }
-                            returning null;
-                        );
+        }, .ceylon.language.Boolean.instance(true));
+        j.<.ceylon.language.Boolean>consumerStatic(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Consumer<.ceylon.language.Boolean>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b));
                     }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .ceylon.language.Boolean arg0) {
-                        $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
-                    }
-                }
+                    returning null;
+                );
             }
-            returning new anonymous#2$sam();
-        ), .ceylon.language.Boolean.instance(true));
-        j.<.ceylon.language.Boolean, .ceylon.language.Boolean>function((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#3$sam implements .java.util.function.Function<.ceylon.language.Boolean, .ceylon.language.Boolean>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
-                        final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
-                        return .ceylon.language.Boolean.instance(b);
-                    }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.Boolean apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .ceylon.language.Boolean arg0) {
-                        return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
-                    }
-                }
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Boolean arg0) {
+                $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
             }
-            returning new anonymous#3$sam();
-        ), .ceylon.language.Boolean.instance(true));
+        }, .ceylon.language.Boolean.instance(true));
+        .com.redhat.ceylon.compiler.java.test.interop.LambdasJava.<.ceylon.language.Boolean>consumerStatic(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#2") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Consumer<.ceylon.language.Boolean>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#2")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Boolean.instance(b));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Boolean arg0) {
+                $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        }, .ceylon.language.Boolean.instance(true));
+        j.<.ceylon.language.Boolean, .ceylon.language.Boolean>function(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Function<.ceylon.language.Boolean, .ceylon.language.Boolean>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final boolean b = ((.ceylon.language.Boolean)$param$0).booleanValue();
+                return .ceylon.language.Boolean.instance(b);
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Boolean apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Boolean arg0) {
+                return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        }, .ceylon.language.Boolean.instance(true));
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
                 major = 8,
@@ -274,27 +250,20 @@ final class lambdas_ {
             }
         }
         final f_ f = new f_();
-        j.intConsumer((
-            let
-            {
-                
-                class f$sam implements .java.util.function.IntConsumer, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
-                        return f.f($ceylontmp$i);
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return f.f($ceylontmp$i);
             }
-            returning new f$sam();
-        ));
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
         final .ceylon.language.Callable<? extends .java.lang.Object> fval = new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#4") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1)
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
         @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#4")
@@ -314,75 +283,54 @@ final class lambdas_ {
                 );
             }
         };
-        j.intConsumer((
-            let
-            {
-                
-                class fval$sam implements .java.util.function.IntConsumer, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Integer $ceylontmp$arg0 = (.ceylon.language.Integer)$param$0;
-                        return fval.$call$($ceylontmp$arg0);
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer $ceylontmp$arg0 = (.ceylon.language.Integer)$param$0;
+                return fval.$call$($ceylontmp$arg0);
             }
-            returning new fval$sam();
-        ));
-        j.intConsumer((
-            let
-            {
-                
-                class Integer$sam implements .java.util.function.IntConsumer, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                        final long $ceylontmp$integer = ((.ceylon.language.Integer)$param$0).longValue();
-                        return new .ceylon.language.Integer($ceylontmp$integer);
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
             }
-            returning new Integer$sam();
-        ));
-        j.intConsumer((
-            let
-            {
-                
-                class takeInt$sam implements .java.util.function.IntConsumer, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final int arg0 = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
-                        return (
-                            let
-                            {
-                                .com.redhat.ceylon.compiler.java.test.interop.LambdasJava.takeInt(arg0);
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+        });
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$integer = ((.ceylon.language.Integer)$param$0).longValue();
+                return new .ceylon.language.Integer($ceylontmp$integer);
             }
-            returning new takeInt$sam();
-        ));
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final int arg0 = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.interop.LambdasJava.takeInt(arg0);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
         fval.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
         final .ceylon.language.Callable<? extends .java.lang.Object> refToIntMethod = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
             
@@ -401,438 +349,394 @@ final class lambdas_ {
         };
         final .java.util.function.IntConsumer fvalNothing = (.java.util.function.IntConsumer)(.java.lang.Object).ceylon.language.nothing_.get_();
         j.intConsumer(fvalNothing);
-        j.overloadedFunction((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#5")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#5$sam implements .com.redhat.ceylon.compiler.java.test.interop.OverloadedFunction, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print(.ceylon.language.String.instance("yes"));
-                            }
-                            returning null;
-                        );
+        j.overloadedFunction(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#5") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.OverloadedFunction()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#5")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.String.instance("yes"));
                     }
-                    
-                    @.java.lang.Override
-                    public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+                    returning null;
+                );
             }
-            returning new anonymous#5$sam();
-        ));
-        j.overloadedFunction2((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#6")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#6$sam implements .com.redhat.ceylon.compiler.java.test.interop.OverloadedFunction2B, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print(.ceylon.language.String.instance("yes"));
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+            
+            @.java.lang.Override
+            public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
             }
-            returning new anonymous#6$sam();
-        ));
-        j.variadicFunction((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#7")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#7$sam implements .com.redhat.ceylon.compiler.java.test.interop.VariadicFunction, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        return $calltyped$(args$variadic$);
+        });
+        j.overloadedFunction2(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#6") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.OverloadedFunction2B()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#6")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.String.instance("yes"));
                     }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
-                        return $calltyped$(args);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
-                        return $calltyped$(args$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                                $param$0,
-                                $param$1}, .ceylon.language.empty_.get_());
-                        return $calltyped$(args$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
-                                (.ceylon.language.Integer)$param$0,
-                                (.ceylon.language.Integer)$param$1}, $param$2));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                                $param$0,
-                                $param$1,
-                                $param$2}, .ceylon.language.empty_.get_());
-                        return $calltyped$(args$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
-                                (.ceylon.language.Integer)$param$0,
-                                (.ceylon.language.Integer)$param$1,
-                                (.ceylon.language.Integer)$param$2}, $param$3));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object... $param$0) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
-                    }
-                    
-                    private .java.lang.Object $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print(.ceylon.language.String.instance("ok"));
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int... arg0) {
-                        $callvariadic$(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxedForInteger(arg0));
-                    }
-                }
+                    returning null;
+                );
             }
-            returning new anonymous#7$sam();
-        ));
-        j.intSupplier((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#8")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#8$sam implements .java.util.function.IntSupplier, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        return $calltyped$(args$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
-                        return $calltyped$(args);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
-                        return $calltyped$(args$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                                $param$0,
-                                $param$1}, .ceylon.language.empty_.get_());
-                        return $calltyped$(args$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
-                                (.ceylon.language.Integer)$param$0,
-                                (.ceylon.language.Integer)$param$1}, $param$2));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                                $param$0,
-                                $param$1,
-                                $param$2}, .ceylon.language.empty_.get_());
-                        return $calltyped$(args$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
-                                (.ceylon.language.Integer)$param$0,
-                                (.ceylon.language.Integer)$param$1,
-                                (.ceylon.language.Integer)$param$2}, $param$3));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object... $param$0) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object... $param$0) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
-                    }
-                    
-                    private .ceylon.language.Integer $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
-                        return .ceylon.language.Integer.instance(1L);
-                    }
-                    
-                    @.java.lang.Override
-                    public int getAsInt() {
-                        return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
-                    }
-                }
+            
+            @.java.lang.Override
+            public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
             }
-            returning new anonymous#8$sam();
-        ));
-        j.variadicFunction((
-            let
-            {
-                
-                class toplevelVariadic$sam implements .com.redhat.ceylon.compiler.java.test.interop.VariadicFunction, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        return $calltyped$(i$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
-                        return $calltyped$(i);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
-                        return $calltyped$(i$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                                $param$0,
-                                $param$1}, .ceylon.language.empty_.get_());
-                        return $calltyped$(i$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
-                                (.ceylon.language.Integer)$param$0,
-                                (.ceylon.language.Integer)$param$1}, $param$2));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                                $param$0,
-                                $param$1,
-                                $param$2}, .ceylon.language.empty_.get_());
-                        return $calltyped$(i$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
-                                (.ceylon.language.Integer)$param$0,
-                                (.ceylon.language.Integer)$param$1,
-                                (.ceylon.language.Integer)$param$2}, $param$3));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object... $param$0) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object... $param$0) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
-                    }
-                    
-                    private .ceylon.language.Integer $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
-                        return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.interop.toplevelVariadic_.toplevelVariadic(i));
-                    }
-                    
-                    @.java.lang.Override
-                    public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int... arg0) {
-                        $callvariadic$(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxedForInteger(arg0));
-                    }
-                }
+        });
+        j.variadicFunction(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#7") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.VariadicFunction()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#7")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(args$variadic$);
             }
-            returning new toplevelVariadic$sam();
-        ));
-        j.intSupplier((
-            let
-            {
-                
-                class toplevelVariadic$sam implements .java.util.function.IntSupplier, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$() {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                        return $calltyped$(i$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
-                        return $calltyped$(i);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
-                        return $calltyped$(i$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                                $param$0,
-                                $param$1}, .ceylon.language.empty_.get_());
-                        return $calltyped$(i$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
-                                (.ceylon.language.Integer)$param$0,
-                                (.ceylon.language.Integer)$param$1}, $param$2));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
-                                $param$0,
-                                $param$1,
-                                $param$2}, .ceylon.language.empty_.get_());
-                        return $calltyped$(i$variadic$);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
-                                (.ceylon.language.Integer)$param$0,
-                                (.ceylon.language.Integer)$param$1,
-                                (.ceylon.language.Integer)$param$2}, $param$3));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object... $param$0) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $callvariadic$(final .java.lang.Object... $param$0) {
-                        return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
-                    }
-                    
-                    private .ceylon.language.Integer $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
-                        return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.interop.toplevelVariadic_.toplevelVariadic(i));
-                    }
-                    
-                    @.java.lang.Override
-                    public int getAsInt() {
-                        return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
-                    }
-                }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(args);
             }
-            returning new toplevelVariadic$sam();
-        ));
-        j.consumeTwoIntegers((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#9")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#9$sam implements .com.redhat.ceylon.compiler.java.test.interop.ConsumeTwoIntegers, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final long a = ((.ceylon.language.Integer)$param$0).longValue();
-                        final long b = ((.ceylon.language.Integer)$param$1).longValue();
-                        return .ceylon.language.Integer.instance(a + b);
-                    }
-                    
-                    @.java.lang.Override
-                    public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0, @.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
-                    final int arg1) {
-                        $call$(.ceylon.language.Integer.instance(arg0), .ceylon.language.Integer.instance(arg1));
-                    }
-                }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
             }
-            returning new anonymous#9$sam();
-        ));
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1}, $param$2));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1,
+                        (.ceylon.language.Integer)$param$2}, $param$3));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
+            }
+            
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.String.instance("ok"));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int... arg0) {
+                $callvariadic$(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxedForInteger(arg0));
+            }
+        });
+        j.intSupplier(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#8") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.IntSupplier()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#8")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(args);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1}, $param$2));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, .ceylon.language.empty_.get_());
+                return $calltyped$(args$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1,
+                        (.ceylon.language.Integer)$param$2}, $param$3));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
+            }
+            
+            private .ceylon.language.Integer $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> args) {
+                return .ceylon.language.Integer.instance(1L);
+            }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        });
+        j.variadicFunction(new .com.redhat.ceylon.compiler.java.test.interop.VariadicFunction(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(i);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1}, $param$2));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1,
+                        (.ceylon.language.Integer)$param$2}, $param$3));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
+            }
+            
+            private .ceylon.language.Integer $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.interop.toplevelVariadic_.toplevelVariadic(i));
+            }
+            
+            @.java.lang.Override
+            public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int... arg0) {
+                $callvariadic$(.com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxedForInteger(arg0));
+            }
+        });
+        j.intSupplier(new .java.util.function.IntSupplier(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(i);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 1, new .java.lang.Object[]{(.ceylon.language.Integer)$param$0}, $param$1));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1}, $param$2));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, .ceylon.language.empty_.get_());
+                return $calltyped$(i$variadic$);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.Integer)$param$0,
+                        (.ceylon.language.Integer)$param$1,
+                        (.ceylon.language.Integer)$param$2}, $param$3));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$(.com.redhat.ceylon.compiler.java.language.AbstractCallable.$spreadVarargs$(.ceylon.language.Integer.$TypeDescriptor$, 0, $param$0));
+            }
+            
+            private .ceylon.language.Integer $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.interop.toplevelVariadic_.toplevelVariadic(i));
+            }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        });
+        j.consumeTwoIntegers(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#9") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.ConsumeTwoIntegers()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#9")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long a = ((.ceylon.language.Integer)$param$0).longValue();
+                final long b = ((.ceylon.language.Integer)$param$1).longValue();
+                return .ceylon.language.Integer.instance(a + b);
+            }
+            
+            @.java.lang.Override
+            public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0, @.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
+            final int arg1) {
+                $call$(.ceylon.language.Integer.instance(arg0), .ceylon.language.Integer.instance(arg1));
+            }
+        });
         final .ceylon.language.Callable<? extends .ceylon.language.Integer> f1 = .ceylon.language.uncurry_.<.ceylon.language.Integer, .java.lang.Object, .ceylon.language.Integer, .ceylon.language.Sequence<? extends .ceylon.language.Integer>>uncurry(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)(Integer)", (short)-1){
             
             @.java.lang.Override
@@ -883,79 +787,58 @@ final class lambdas_ {
             }
         }
         final f2_ f2 = new f2_();
-        j.consumeTwoIntegers((
-            let
-            {
-                
-                class f1$sam implements .com.redhat.ceylon.compiler.java.test.interop.ConsumeTwoIntegers, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final .ceylon.language.Integer $ceylontmp$arg0 = (.ceylon.language.Integer)$param$0;
-                        final .ceylon.language.Integer $ceylontmp$arg1 = (.ceylon.language.Integer)$param$1;
-                        return f1.$call$($ceylontmp$arg0, $ceylontmp$arg1);
-                    }
-                    
-                    @.java.lang.Override
-                    public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0, @.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
-                    final int arg1) {
-                        $call$(.ceylon.language.Integer.instance(arg0), .ceylon.language.Integer.instance(arg1));
-                    }
-                }
+        j.consumeTwoIntegers(new .com.redhat.ceylon.compiler.java.test.interop.ConsumeTwoIntegers(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Integer $ceylontmp$arg0 = (.ceylon.language.Integer)$param$0;
+                final .ceylon.language.Integer $ceylontmp$arg1 = (.ceylon.language.Integer)$param$1;
+                return f1.$call$($ceylontmp$arg0, $ceylontmp$arg1);
             }
-            returning new f1$sam();
-        ));
+            
+            @.java.lang.Override
+            public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0, @.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
+            final int arg1) {
+                $call$(.ceylon.language.Integer.instance(arg0), .ceylon.language.Integer.instance(arg1));
+            }
+        });
         j.consumeTwoIntegers((
             let
             {
                 final .ceylon.language.Callable<? extends .ceylon.language.Integer> $instance$ = f2.f2();
             }
-            returning (
-                let
-                {
-                    
-                    class $ceylontmp$2$sam implements .com.redhat.ceylon.compiler.java.test.interop.ConsumeTwoIntegers, .java.io.Serializable {
-                        
-                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                        public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                            final .ceylon.language.Integer $ceylontmp$arg0 = (.ceylon.language.Integer)$param$0;
-                            final .ceylon.language.Integer $ceylontmp$arg1 = (.ceylon.language.Integer)$param$1;
-                            return $instance$.$call$($ceylontmp$arg0, $ceylontmp$arg1);
-                        }
-                        
-                        @.java.lang.Override
-                        public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                        final int arg0, @.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
-                        final int arg1) {
-                            $call$(.ceylon.language.Integer.instance(arg0), .ceylon.language.Integer.instance(arg1));
-                        }
-                    }
-                }
-                returning new $ceylontmp$2$sam();
-            );
-        ));
-        new .com.redhat.ceylon.compiler.java.test.interop.LambdasJava((
-            let
-            {
+            returning new .com.redhat.ceylon.compiler.java.test.interop.ConsumeTwoIntegers(){
                 
-                class f$sam implements .java.util.function.IntConsumer, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
-                        return f.f($ceylontmp$i);
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                    final .ceylon.language.Integer $ceylontmp$arg0 = (.ceylon.language.Integer)$param$0;
+                    final .ceylon.language.Integer $ceylontmp$arg1 = (.ceylon.language.Integer)$param$1;
+                    return $instance$.$call$($ceylontmp$arg0, $ceylontmp$arg1);
                 }
-            }
-            returning new f$sam();
+                
+                @.java.lang.Override
+                public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+                final int arg0, @.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
+                final int arg1) {
+                    $call$(.ceylon.language.Integer.instance(arg0), .ceylon.language.Integer.instance(arg1));
+                }
+            };
         ));
+        new .com.redhat.ceylon.compiler.java.test.interop.LambdasJava(new .java.util.function.IntConsumer(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return f.f($ceylontmp$i);
+            }
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
         final .java.lang.String s1 = .com.redhat.ceylon.compiler.java.Util.checkNull(j.getStr());
         final .java.lang.String s2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(j.getCharSequence()).toString());
         final .java.lang.CharSequence cs2 = .com.redhat.ceylon.compiler.java.Util.checkNull(j.getCharSequence());
@@ -997,237 +880,187 @@ final class lambdas_ {
         j.klassMethod(.com.redhat.ceylon.compiler.java.Util.javaClassForModel(klass));
         j.intConsumer(null);
         new .com.redhat.ceylon.compiler.java.test.interop.LambdasJava(null);
-        j.intConsumer((
-            let
-            {
-                
-                class toplevel$sam implements .java.util.function.IntConsumer, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
-                        return (
-                            let
-                            {
-                                .com.redhat.ceylon.compiler.java.test.interop.toplevel_.toplevel($ceylontmp$i);
-                            }
-                            returning null;
-                        );
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.interop.toplevel_.toplevel($ceylontmp$i);
                     }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+                    returning null;
+                );
             }
-            returning new toplevel$sam();
-        ));
-        j.intConsumer((
-            let
-            {
-                
-                class toplevelSmall$sam implements .java.util.function.IntConsumer, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final int $ceylontmp$i = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
-                        return (
-                            let
-                            {
-                                .com.redhat.ceylon.compiler.java.test.interop.toplevelSmall_.toplevelSmall($ceylontmp$i);
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
             }
-            returning new toplevelSmall$sam();
-        ));
-        j.intConsumer((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#10")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#10$sam implements .java.util.function.IntConsumer, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
-                            }
-                            returning null;
-                        );
+        });
+        j.intConsumer(new .java.util.function.IntConsumer(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final int $ceylontmp$i = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$0).longValue());
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.interop.toplevelSmall_.toplevelSmall($ceylontmp$i);
                     }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+                    returning null;
+                );
             }
-            returning new anonymous#10$sam();
-        ));
-        j.intConsumer((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#11")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#11$sam implements .java.util.function.IntConsumer, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    private final long $default$i() {
-                        return 2L;
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    private final long $default$j(final long i) {
-                        return 3L;
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$() {
-                        final long i = $default$i();
-                        final long j = $default$j(i);
-                        return $calltyped$(i, j);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                        final long j = $default$j(i);
-                        return $calltyped$(i, j);
-                    }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                        final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                        final long j = ((.ceylon.language.Integer)$param$1).longValue();
-                        return $calltyped$(i, j);
-                    }
-                    
-                    private .java.lang.Object $calltyped$(final long i, final long j) {
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final int arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
             }
-            returning new anonymous#11$sam();
-        ));
-        j.intSupplier((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#12")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#12$sam implements .java.util.function.IntSupplier, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$() {
-                        return .ceylon.language.Integer.instance(1L);
+        });
+        j.intConsumer(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#10") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.IntConsumer()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#10")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
                     }
-                    
-                    @.java.lang.Override
-                    public int getAsInt() {
-                        return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
-                    }
-                }
+                    returning null;
+                );
             }
-            returning new anonymous#12$sam();
-        ));
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.intConsumer(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#11") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.IntConsumer()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#11")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final long $default$i() {
+                return 2L;
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            private final long $default$j(final long i) {
+                return 3L;
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                final long i = $default$i();
+                final long j = $default$j(i);
+                return $calltyped$(i, j);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                final long j = $default$j(i);
+                return $calltyped$(i, j);
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                final long j = ((.ceylon.language.Integer)$param$1).longValue();
+                return $calltyped$(i, j);
+            }
+            
+            private .java.lang.Object $calltyped$(final long i, final long j) {
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(.ceylon.language.Integer.instance(i));
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final int arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        j.intSupplier(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#12") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.IntSupplier()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#12")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(1L);
+            }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        });
         j.intSuppliers();
-        j.intSuppliers((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#13")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#13$sam implements .java.util.function.IntSupplier, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$() {
-                        return .ceylon.language.Integer.instance(1L);
-                    }
-                    
-                    @.java.lang.Override
-                    public int getAsInt() {
-                        return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
-                    }
-                }
+        j.intSuppliers(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#13") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.IntSupplier()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#13")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(1L);
             }
-            returning new anonymous#13$sam();
-        ));
-        j.intSuppliers((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#14")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#14$sam implements .java.util.function.IntSupplier, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$() {
-                        return .ceylon.language.Integer.instance(1L);
-                    }
-                    
-                    @.java.lang.Override
-                    public int getAsInt() {
-                        return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
-                    }
-                }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
             }
-            returning new anonymous#14$sam();
-        ), (
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#15")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#15$sam implements .java.util.function.IntSupplier, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$() {
-                        return .ceylon.language.Integer.instance(2L);
-                    }
-                    
-                    @.java.lang.Override
-                    public int getAsInt() {
-                        return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
-                    }
-                }
+        });
+        j.intSuppliers(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#14") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.IntSupplier()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#14")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(1L);
             }
-            returning new anonymous#15$sam();
-        ));
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        }, new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#15") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.IntSupplier()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#15")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(2L);
+            }
+            
+            @.java.lang.Override
+            public int getAsInt() {
+                return .com.redhat.ceylon.compiler.java.Util.toInt($call$().longValue());
+            }
+        });
         final .ceylon.language.Callable<? extends .java.lang.Object> tlref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
             
             @.java.lang.Override
@@ -1302,338 +1135,257 @@ final class lambdas_ {
             }
         };
         final .java.util.ArrayList<.ceylon.language.Integer> l = new .java.util.ArrayList<.ceylon.language.Integer>();
-        final long s = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(l.stream()).filter((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#16")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#16$sam implements .java.util.function.Predicate<.ceylon.language.Integer>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
-                        final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                        return .ceylon.language.Boolean.instance(.ceylon.language.Integer.getPositive(i));
-                    }
-                    
-                    @.java.lang.Override
-                    public boolean test(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .ceylon.language.Integer arg0) {
-                        return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)).booleanValue();
-                    }
-                }
+        final long s = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(l.stream()).filter(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#16") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Predicate<.ceylon.language.Integer>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#16")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Boolean.instance(.ceylon.language.Integer.getPositive(i));
             }
-            returning new anonymous#16$sam();
-        ))).mapToInt((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#17")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#17$sam implements .java.util.function.ToIntFunction<.ceylon.language.Integer>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                        final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                        return .ceylon.language.Integer.instance(i);
-                    }
-                    
-                    @.java.lang.Override
-                    public int applyAsInt(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .ceylon.language.Integer arg0) {
-                        return .com.redhat.ceylon.compiler.java.Util.toInt($call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)).longValue());
-                    }
-                }
+            
+            @.java.lang.Override
+            public boolean test(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Integer arg0) {
+                return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)).booleanValue();
             }
-            returning new anonymous#17$sam();
-        ))).sum();
+        })).mapToInt(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#17") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.ToIntFunction<.ceylon.language.Integer>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#17")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Integer.instance(i);
+            }
+            
+            @.java.lang.Override
+            public int applyAsInt(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.Integer arg0) {
+                return .com.redhat.ceylon.compiler.java.Util.toInt($call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)).longValue());
+            }
+        })).sum();
         final .java.util.concurrent.ExecutorService mes = (.java.util.concurrent.ExecutorService)(.java.lang.Object).ceylon.language.nothing_.get_();
-        .java.util.concurrent.CompletableFuture.<.ceylon.language.Integer>supplyAsync((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#18")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#18$sam implements .java.util.function.Supplier<.ceylon.language.Integer>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$() {
-                        return .ceylon.language.Integer.instance(2L);
-                    }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.Integer get() {
-                        return $call$();
-                    }
-                }
+        .java.util.concurrent.CompletableFuture.<.ceylon.language.Integer>supplyAsync(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#18") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Supplier<.ceylon.language.Integer>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#18")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(2L);
             }
-            returning new anonymous#18$sam();
-        ), (
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer get() {
+                return $call$();
+            }
+        }, (
             let
             {
                 final .java.util.concurrent.Executor $instance$ = mes;
             }
-            returning (
-                let
-                {
-                    
-                    class execute$sam implements .java.util.concurrent.Executor, .java.io.Serializable {
-                        
-                        @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                        public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                            final .java.lang.Runnable $ceylontmp$arg0 = (.java.lang.Runnable)$param$0;
-                            return (
-                                let
-                                {
-                                    $instance$.execute($ceylontmp$arg0);
-                                }
-                                returning null;
-                            );
+            returning new .java.util.concurrent.Executor(){
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Runnable $ceylontmp$arg0 = (.java.lang.Runnable)$param$0;
+                    return (
+                        let
+                        {
+                            $instance$.execute($ceylontmp$arg0);
                         }
-                        
-                        @.java.lang.Override
-                        public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                        final .java.lang.Runnable arg0) {
-                            $call$(arg0);
-                        }
-                    }
+                        returning null;
+                    );
                 }
-                returning new execute$sam();
-            );
+                
+                @.java.lang.Override
+                public void execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+                final .java.lang.Runnable arg0) {
+                    $call$(arg0);
+                }
+            };
         ));
-        .java.util.concurrent.CompletableFuture.<.ceylon.language.Integer>supplyAsync((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#19")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#19$sam implements .java.util.function.Supplier<.ceylon.language.Integer>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.Integer $call$() {
-                        return .ceylon.language.Integer.instance(2L);
-                    }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.Integer get() {
-                        return $call$();
-                    }
-                }
+        .java.util.concurrent.CompletableFuture.<.ceylon.language.Integer>supplyAsync(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#19") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Supplier<.ceylon.language.Integer>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#19")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(2L);
             }
-            returning new anonymous#19$sam();
-        ));
-        .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.concurrent.CompletableFuture.<.ceylon.language.String>supplyAsync((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#20")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#20$sam implements .java.util.function.Supplier<.ceylon.language.String>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.String $call$() {
-                        return .ceylon.language.String.instance("Hello");
-                    }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.String get() {
-                        return $call$();
-                    }
-                }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer get() {
+                return $call$();
             }
-            returning new anonymous#20$sam();
-        ))).<.ceylon.language.String>thenApply((
-            let
-            {
-                
-                class uppercased$sam implements .java.util.function.Function<.ceylon.language.String, .ceylon.language.String>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.String $instance$ = (.ceylon.language.String)$param$0;
-                        return .ceylon.language.String.instance($instance$.getUppercased());
-                    }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.String apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .ceylon.language.String arg0) {
-                        return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
-                    }
-                }
+        });
+        .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.concurrent.CompletableFuture.<.ceylon.language.String>supplyAsync(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#20") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Supplier<.ceylon.language.String>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#20")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance("Hello");
             }
-            returning new uppercased$sam();
-        ))).thenAccept((
-            let
-            {
-                
-                class print$sam implements .java.util.function.Consumer<.ceylon.language.String>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmp$val = $param$0;
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print($ceylontmp$val);
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .ceylon.language.String arg0) {
-                        $call$(arg0);
-                    }
-                }
+            
+            @.java.lang.Override
+            public .ceylon.language.String get() {
+                return $call$();
             }
-            returning new print$sam();
-        ));
-        j.stringFunction((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#21")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#21$sam implements .com.redhat.ceylon.compiler.java.test.interop.StringFunction, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
-                        return .ceylon.language.String.instance(s);
-                    }
-                    
-                    @.java.lang.Override
-                    public .java.lang.String execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .java.lang.String arg0) {
-                        return $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0))).toString();
-                    }
-                }
+        })).<.ceylon.language.String>thenApply(new .java.util.function.Function<.ceylon.language.String, .ceylon.language.String>(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.String $instance$ = (.ceylon.language.String)$param$0;
+                return .ceylon.language.String.instance($instance$.getUppercased());
             }
-            returning new anonymous#21$sam();
-        ));
-        j.stringFunction((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#22")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#22$sam implements .com.redhat.ceylon.compiler.java.test.interop.StringFunction, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.String s = (.ceylon.language.String)$param$0;
-                        return s;
-                    }
-                    
-                    @.java.lang.Override
-                    public .java.lang.String execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .java.lang.String arg0) {
-                        return (
-                            let
-                            {
-                                .ceylon.language.String $ceylontmp$3 = $call$(.ceylon.language.String.instance(arg0));
-                            }
-                            returning $ceylontmp$3 != null ? $ceylontmp$3.toString() : null;
-                        );
-                    }
-                }
+            
+            @.java.lang.Override
+            public .ceylon.language.String apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.String arg0) {
+                return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
             }
-            returning new anonymous#22$sam();
-        ));
-        j.stringFunction((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#23")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#23$sam implements .com.redhat.ceylon.compiler.java.test.interop.StringFunction, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
-                        return .ceylon.language.String.instance(s);
+        })).thenAccept(new .java.util.function.Consumer<.ceylon.language.String>(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
                     }
-                    
-                    @.java.lang.Override
-                    public .java.lang.String execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .java.lang.String arg0) {
-                        return (
-                            let
-                            {
-                                .ceylon.language.String $ceylontmp$4 = $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)));
-                            }
-                            returning $ceylontmp$4 != null ? $ceylontmp$4.toString() : null;
-                        );
-                    }
-                }
+                    returning null;
+                );
             }
-            returning new anonymous#23$sam();
-        ));
+            
+            @.java.lang.Override
+            public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .ceylon.language.String arg0) {
+                $call$(arg0);
+            }
+        });
+        j.stringFunction(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#21") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.StringFunction()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#21")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(s);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0))).toString();
+            }
+        });
+        j.stringFunction(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#22") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.StringFunction()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#22")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.String s = (.ceylon.language.String)$param$0;
+                return s;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$2 = $call$(.ceylon.language.String.instance(arg0));
+                    }
+                    returning $ceylontmp$2 != null ? $ceylontmp$2.toString() : null;
+                );
+            }
+        });
+        j.stringFunction(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#23") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.StringFunction()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#23")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(s);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$3 = $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)));
+                    }
+                    returning $ceylontmp$3 != null ? $ceylontmp$3.toString() : null;
+                );
+            }
+        });
         final .java.lang.String capturedString = "";
-        j.stringFunction2((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#24")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#24$sam implements .java.util.function.Function<.java.lang.String, .java.lang.String>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
-                        return .ceylon.language.String.instance(capturedString);
-                    }
-                    
-                    @.java.lang.Override
-                    public .java.lang.String apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .java.lang.String arg0) {
-                        return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)).toString();
-                    }
-                }
+        j.stringFunction2(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#24") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Function<.java.lang.String, .java.lang.String>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#24")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(capturedString);
             }
-            returning new anonymous#24$sam();
-        ));
+            
+            @.java.lang.Override
+            public .java.lang.String apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)).toString();
+            }
+        });
         final .ceylon.language.String capturedString2 = .ceylon.language.String.instance("");
-        j.stringFunction2((
-            let
-            {
-                
-                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
-                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#25")
-                @.com.redhat.ceylon.compiler.java.metadata.Method
-                class anonymous#25$sam implements .java.util.function.Function<.java.lang.String, .java.lang.String>, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
-                        return capturedString2;
-                    }
-                    
-                    @.java.lang.Override
-                    public .java.lang.String apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
-                    final .java.lang.String arg0) {
-                        return (
-                            let
-                            {
-                                .ceylon.language.String $ceylontmp$5 = $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
-                            }
-                            returning $ceylontmp$5 != null ? $ceylontmp$5.toString() : null;
-                        );
-                    }
-                }
+        j.stringFunction2(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#25") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Function<.java.lang.String, .java.lang.String>()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#25")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return capturedString2;
             }
-            returning new anonymous#25$sam();
-        ));
+            
+            @.java.lang.Override
+            public .java.lang.String apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$4 = $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
+                    }
+                    returning $ceylontmp$4 != null ? $ceylontmp$4.toString() : null;
+                );
+            }
+        });
         final .ceylon.language.Callable<? extends .java.lang.Object> xf = (
             let
             {
@@ -1699,98 +1451,70 @@ public final class bug6634_ {
             }
         }
         final .com.redhat.ceylon.compiler.java.language.Getter<.java.util.stream.LongStream> longStream$getter$_ = new longStream$getter$_();
-        .com.redhat.ceylon.compiler.java.Util.checkNull(longStream$getter$_.get_().map((
-            let
-            {
-                
-                class anonymous#26$sam implements .java.util.function.LongUnaryOperator, .java.io.Serializable {
-                    
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                        final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                        return .ceylon.language.Integer.instance(i);
-                    }
-                    
-                    @.java.lang.Override
-                    public long applyAsLong(final long arg0) {
-                        return $call$(.ceylon.language.Integer.instance(arg0)).longValue();
-                    }
-                }
+        .com.redhat.ceylon.compiler.java.Util.checkNull(longStream$getter$_.get_().map(new .java.util.function.LongUnaryOperator(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Integer.instance(i);
             }
-            returning new anonymous#26$sam();
-        ))).forEach((
-            let
-            {
-                
-                class print$sam implements .java.util.function.LongConsumer, .java.io.Serializable {
-                    
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmp$val = $param$0;
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print($ceylontmp$val);
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(final long arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+            
+            @.java.lang.Override
+            public long applyAsLong(final long arg0) {
+                return $call$(.ceylon.language.Integer.instance(arg0)).longValue();
             }
-            returning new print$sam();
-        ));
-        .com.redhat.ceylon.compiler.java.Util.checkNull(longStream$getter$_.get_().map((
-            let
-            {
-                
-                class anonymous#27$sam implements .java.util.function.LongUnaryOperator, .java.io.Serializable {
-                    
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
-                        return (
-                            let
-                            {
-                                .ceylon.language.Integer $ceylontmp$6 = i;
-                            }
-                            returning $ceylontmp$6 != null ? $ceylontmp$6 : .ceylon.language.Integer.instance(0L);
-                        );
+        })).forEach(new .java.util.function.LongConsumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
                     }
-                    
-                    @.java.lang.Override
-                    public long applyAsLong(final long arg0) {
-                        return $call$(.ceylon.language.Integer.instance(arg0)).longValue();
-                    }
-                }
+                    returning null;
+                );
             }
-            returning new anonymous#27$sam();
-        ))).forEach((
-            let
-            {
-                
-                class print$sam implements .java.util.function.LongConsumer, .java.io.Serializable {
-                    
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmp$val = $param$0;
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print($ceylontmp$val);
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(final long arg0) {
-                        $call$(.ceylon.language.Integer.instance(arg0));
-                    }
-                }
+            
+            @.java.lang.Override
+            public void accept(final long arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
             }
-            returning new print$sam();
-        ));
+        });
+        .com.redhat.ceylon.compiler.java.Util.checkNull(longStream$getter$_.get_().map(new .java.util.function.LongUnaryOperator(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.Integer $ceylontmp$5 = i;
+                    }
+                    returning $ceylontmp$5 != null ? $ceylontmp$5 : .ceylon.language.Integer.instance(0L);
+                );
+            }
+            
+            @.java.lang.Override
+            public long applyAsLong(final long arg0) {
+                return $call$(.ceylon.language.Integer.instance(arg0)).longValue();
+            }
+        })).forEach(new .java.util.function.LongConsumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final long arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
         
         final class integerStream$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.util.stream.Stream<.ceylon.language.Integer>> {
             
@@ -1802,141 +1526,99 @@ public final class bug6634_ {
             }
         }
         final .com.redhat.ceylon.compiler.java.language.Getter<.java.util.stream.Stream<.ceylon.language.Integer>> integerStream$getter$_ = new integerStream$getter$_();
-        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map((
-            let
-            {
-                
-                class anonymous#28$sam implements .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>, .java.io.Serializable {
-                    
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
-                        return (
-                            let
-                            {
-                                .ceylon.language.Integer $ceylontmp$7 = i;
-                            }
-                            returning $ceylontmp$7 != null ? $ceylontmp$7 : .ceylon.language.Integer.instance(0L);
-                        );
+        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.Integer $ceylontmp$6 = i;
                     }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
-                        return $call$(arg0);
-                    }
-                }
+                    returning $ceylontmp$6 != null ? $ceylontmp$6 : .ceylon.language.Integer.instance(0L);
+                );
             }
-            returning new anonymous#28$sam();
-        ))).forEach((
-            let
-            {
-                
-                class print$sam implements .java.util.function.Consumer<.ceylon.language.Integer>, .java.io.Serializable {
-                    
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmp$val = $param$0;
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print($ceylontmp$val);
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(final .ceylon.language.Integer arg0) {
-                        $call$(arg0);
-                    }
-                }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                return $call$(arg0);
             }
-            returning new print$sam();
-        ));
-        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map((
-            let
-            {
-                
-                class anonymous#29$sam implements .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>, .java.io.Serializable {
-                    
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
-                        return i;
+        })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
                     }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
-                        return $call$(arg0);
-                    }
-                }
+                    returning null;
+                );
             }
-            returning new anonymous#29$sam();
-        ))).forEach((
-            let
-            {
-                
-                class print$sam implements .java.util.function.Consumer<.ceylon.language.Integer>, .java.io.Serializable {
-                    
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmp$val = $param$0;
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print($ceylontmp$val);
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(final .ceylon.language.Integer arg0) {
-                        $call$(arg0);
-                    }
-                }
+            
+            @.java.lang.Override
+            public void accept(final .ceylon.language.Integer arg0) {
+                $call$(arg0);
             }
-            returning new print$sam();
-        ));
-        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.java.lang.Object>map((
-            let
-            {
-                
-                class anonymous#30$sam implements .java.util.function.Function, .java.io.Serializable {
-                    
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
-                        return null;
-                    }
-                    
-                    @.java.lang.Override
-                    public .java.lang.Object apply(final .java.lang.Object arg0) {
-                        return $call$(arg0);
-                    }
-                }
+        });
+        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return i;
             }
-            returning new anonymous#30$sam();
-        ))).forEach((
-            let
-            {
-                
-                class print$sam implements .java.util.function.Consumer, .java.io.Serializable {
-                    
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmp$val = $param$0;
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print($ceylontmp$val);
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(final .java.lang.Object arg0) {
-                        $call$(arg0);
-                    }
-                }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                return $call$(arg0);
             }
-            returning new print$sam();
-        ));
+        })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .ceylon.language.Integer arg0) {
+                $call$(arg0);
+            }
+        });
+        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.java.lang.Object>map(new .java.util.function.Function(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return null;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object apply(final .java.lang.Object arg0) {
+                return $call$(arg0);
+            }
+        })).forEach(new .java.util.function.Consumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .java.lang.Object arg0) {
+                $call$(arg0);
+            }
+        });
         final .java.util.function.Function<.ceylon.language.Integer, .java.lang.Object> f = (
             let
             {
@@ -1959,93 +1641,65 @@ public final class bug6634_ {
             }
             returning new anonymous_31_();
         );
-        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map((
-            let
-            {
-                
-                class anonymous#32$sam implements .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>, .java.io.Serializable {
-                    
-                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
-                        return (.ceylon.language.Integer)null;
-                    }
-                    
-                    @.java.lang.Override
-                    public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
-                        return $call$(arg0);
-                    }
-                }
+        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return (.ceylon.language.Integer)null;
             }
-            returning new anonymous#32$sam();
-        ))).forEach((
-            let
-            {
-                
-                class print$sam implements .java.util.function.Consumer<.ceylon.language.Integer>, .java.io.Serializable {
-                    
-                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                        final .java.lang.Object $ceylontmp$val = $param$0;
-                        return (
-                            let
-                            {
-                                .ceylon.language.print_.print($ceylontmp$val);
-                            }
-                            returning null;
-                        );
-                    }
-                    
-                    @.java.lang.Override
-                    public void accept(final .ceylon.language.Integer arg0) {
-                        $call$(arg0);
-                    }
-                }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                return $call$(arg0);
             }
-            returning new print$sam();
-        ));
+        })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .ceylon.language.Integer arg0) {
+                $call$(arg0);
+            }
+        });
         try {
-            .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map((
-                let
-                {
-                    
-                    class anonymous#33$sam implements .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>, .java.io.Serializable {
-                        
-                        public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
-                            final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                            return .ceylon.language.Integer.instance(i);
-                        }
-                        
-                        @.java.lang.Override
-                        public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
-                            return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
-                        }
-                    }
+            .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+                
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                    final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(i);
                 }
-                returning new anonymous#33$sam();
-            ))).forEach((
-                let
-                {
-                    
-                    class print$sam implements .java.util.function.Consumer<.ceylon.language.Integer>, .java.io.Serializable {
-                        
-                        public .java.lang.Object $call$(final .java.lang.Object $param$0) {
-                            final .java.lang.Object $ceylontmp$val = $param$0;
-                            return (
-                                let
-                                {
-                                    .ceylon.language.print_.print($ceylontmp$val);
-                                }
-                                returning null;
-                            );
-                        }
-                        
-                        @.java.lang.Override
-                        public void accept(final .ceylon.language.Integer arg0) {
-                            $call$(arg0);
-                        }
-                    }
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                    return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
                 }
-                returning new print$sam();
-            ));
+            })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+                
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Object $ceylontmp$val = $param$0;
+                    return (
+                        let
+                        {
+                            .ceylon.language.print_.print($ceylontmp$val);
+                        }
+                        returning null;
+                    );
+                }
+                
+                @.java.lang.Override
+                public void accept(final .ceylon.language.Integer arg0) {
+                    $call$(arg0);
+                }
+            });
         } catch (final .ceylon.language.AssertionError e) {
             .ceylon.language.print_.print(.ceylon.language.String.instance("good"));
         }
@@ -2082,25 +1736,18 @@ class Sub extends .com.redhat.ceylon.compiler.java.test.interop.LambdasJava impl
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
     final .ceylon.language.Callable<? extends .java.lang.Object> action) {
-        synchronizedRun((
-            let
-            {
-                
-                class action$sam implements .java.lang.Runnable, .java.io.Serializable {
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    public .java.lang.Object $call$() {
-                        return action.$call$();
-                    }
-                    
-                    @.java.lang.Override
-                    public void run() {
-                        $call$();
-                    }
-                }
+        synchronizedRun(new .java.lang.Runnable(){
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                return action.$call$();
             }
-            returning new action$sam();
-        ));
+            
+            @.java.lang.Override
+            public void run() {
+                $call$();
+            }
+        });
     }
     
     @.java.lang.Override

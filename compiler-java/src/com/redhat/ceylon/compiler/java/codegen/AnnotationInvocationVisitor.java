@@ -232,7 +232,7 @@ class AnnotationInvocationVisitor extends Visitor {
         // The class parameter's we've not yet figured out the value for
         ArrayList<Parameter> unbound = new ArrayList<Parameter>(classParameters);
         for (Parameter classParameter : classParameters) {
-            for (AnnotationArgument argument : ai.findAnnotationArgumentForClassParameter(classParameter)) {
+            for (AnnotationArgument argument : ai.findAnnotationArgumentForClassParameter(invocation, new HashSet<Function>(), classParameter)) {
                 JCExpression expr = transformConstructorArgument(exprGen, invocation, classParameter, argument, fieldPath);
                 appendArgument(args, classParameter, expr);
                 unbound.remove(classParameter);
@@ -395,13 +395,7 @@ class AnnotationInvocationVisitor extends Visitor {
     
     private void makeDefaultExpr(Tree.InvocationExpression invocation,
             ParameterAnnotationTerm parameterArgument, Parameter sp) {
-        AnnotationConstructorParameter defaultedCtorParam = null;
-        for (AnnotationConstructorParameter ctorParam : anno.getConstructorParameters()) {
-            if (ctorParam.getParameter().equals(parameterArgument.getSourceParameter())) {
-                defaultedCtorParam = ctorParam;
-                break;
-            }
-        }
+        AnnotationConstructorParameter defaultedCtorParam = anno.findConstructorParameter(parameterArgument.getSourceParameter());
         if (defaultedCtorParam == null) {
             append(exprGen.makeErroneous(invocation, "compiler bug: defaulted parameter " + anno.getConstructorDeclaration().getName() + " could not be found"));
             return;

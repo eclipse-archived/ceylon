@@ -221,6 +221,10 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             }
         }
         decl.setTypeErased(erased);
+        if ("com.redhat.ceylon.compiler.java.test.structure.klass::IterableSequence.sequence".equals(decl.getQualifiedNameString())
+                || "ceylon.language::Iterable.sequence".equals(decl.getQualifiedNameString())) {
+            untrusted = true;
+        }
         decl.setUntrustedType(untrusted);
     }
 

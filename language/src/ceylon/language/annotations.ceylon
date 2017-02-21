@@ -474,7 +474,8 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `redundantIteration`,
      `missingImportPrefix`,
      `uncheckedTypeArguments`,
-     `inferredNotNull`."
+     `inferredNotNull`,
+     `implicitNarrowing`."
     String* warnings) 
         => SuppressWarningsAnnotation(*warnings);
 
@@ -549,37 +550,3 @@ shared annotation ServiceAnnotation service(
      provides."
     ClassOrInterfaceDeclaration contract) 
         => ServiceAnnotation(contract);
-
-
-"The annotation class for the [[artifact]] annotation. This lets
- you describe the `groupId` and `artifactId` artifact specifiers
- for the annotated module under the Maven system. If this
- annotation is not specified for the module, the module name
- will be split on the last dot component, where the `groupId`
- will be the first part and the `artifactId` will be the last
- part."
-since("1.3.2")
-shared final sealed annotation class ArtifactAnnotation(
-    "The group id."
-    shared String group,
-    "The artifact id. If not specified, the entire module name will be used."
-    shared String artifact = "")
-        satisfies OptionalAnnotation<ArtifactAnnotation, Module> {}
-
-"""Annotation to describe the `groupId` and `artifactId` artifact specifiers
-   for the annotated module under the Maven system. If this
-   annotation is not specified for the module, the module name
-   will be split on the last dot component, where the `groupId`
-   will be the first part and the `artifactId` will be the last
-   part.
-   
-       artifact (group = "com.example", artifact = "example-core")
-       module com.example.core "1" {}
- """
-since("1.3.2")
-shared annotation ArtifactAnnotation artifact(
-    "The group id."
-    String group,
-    "The artifact id. If not specified, the entire module name will be used."
-    String artifact = "")
-        => ArtifactAnnotation(group, artifact);

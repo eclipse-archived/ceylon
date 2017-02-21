@@ -1404,6 +1404,12 @@ public abstract class AbstractTransformer implements Transformation {
             // the innermost Callable.
             return getReturnTypeOfCallable(pr.getFullType());
         }
+        if (willEraseToObject(pr.getType())) {
+            Type pt = getPinnedType(declaration);
+            if (pt != null) {
+                return pt;
+            }
+        }
         return pr.getType();
     }
 
@@ -1797,8 +1803,13 @@ public abstract class AbstractTransformer implements Transformation {
             }
             return makeJavaType(typeFact().getCallableType(pt), flags);
         } else {
+            Type pt = getPinnedType(typeDecl.getTypedReference());
+            if (pt != null) {
+                type = pt;
+            } 
             boolean usePrimitives = CodegenUtil.isUnBoxed(typeDecl);
             return makeJavaType(type, flags | (usePrimitives ? 0 : AbstractTransformer.JT_NO_PRIMITIVES));
+            
         }
     }
 
@@ -1888,7 +1899,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             
-            if (ta.isNothing()
+            if (ta.isExactlyNothing()
                     // if we're in a type argument, extends or satisfies already, union and intersection types should 
                     // use the same erasure rules as bottom: prefer wildcards
                     || ((flags & (__JT_FULL_TYPE | JT_EXTENDS | JT_SATISFIES)) != 0
@@ -2539,7 +2550,8 @@ public abstract class AbstractTransformer implements Transformation {
                     // - The Ceylon type Foo<Bottom> or Foo<erased_type> appearing in an instantiation
                     //   clause results in the Java raw type Foo
                     // A bit ugly, but we need to escape from the loop and create a raw type, no generics
-                    if ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0) throw new BugException("rawSupertype() should prevent this method going raw when JT_EXTENDS | JT_SATISFIES");
+                    if ((flags & (JT_EXTENDS | JT_SATISFIES)) != 0) 
+                        throw new BugException("rawSupertype() should prevent this method going raw when JT_EXTENDS | JT_SATISFIES");
                     typeArgs = null;
                     break;
                 } else {
@@ -3168,6 +3180,10 @@ public abstract class AbstractTransformer implements Transformation {
         JCExpression nativeBackendsAnnotationValue = makeNativeBackendsAnnotationValue(module.getNativeBackends());
         if(nativeBackendsAnnotationValue != null)
             annotationArgs.add(nativeBackendsAnnotationValue);
+        if(module.getGroupId() != null)
+            annotationArgs.add(make().Assign(naming.makeUnquotedIdent("group"), make().Literal(module.getGroupId())));
+        if(module.getArtifactId() != null)
+            annotationArgs.add(make().Assign(naming.makeUnquotedIdent("artifact"), make().Literal(module.getArtifactId())));
         return makeModelAnnotation(syms().ceylonAtModuleType, annotationArgs.toList());
     }
 
@@ -5404,11 +5420,6 @@ public abstract class AbstractTransformer implements Transformation {
                 declarationModel.getDefaultTypeArgument());
     }
     
-    JCAnnotation makeAtTypeParameter(Tree.TypeParameterDeclaration param) {
-        at(param);
-        return makeAtTypeParameter(param.getDeclarationModel());
-    }
-    
     final List<JCExpression> typeArguments(Functional method) {
         if (method instanceof Generic) {
             Map<TypeParameter, Type> l = new java.util.HashMap();
@@ -6309,6 +6320,20 @@ public abstract class AbstractTransformer implements Transformation {
     
     public boolean isJavaStrictfp(Declaration d) {
         return getEeVisitor().isJavaStrictfp(d);
+    }
+    
+    public Type getPinnedType(TypedReference ref) {
+        TypedDeclaration decl = ref.getDeclaration();
+        String name = decl.getRefinedDeclaration().getQualifiedNameString();
+        if ("com.redhat.ceylon.compiler.java.test.structure.klass::IterableSequence.sequence".equals(name)
+                ||"ceylon.language::Iterable.sequence".equals(name)) {
+            Type t = ref.getType().getSupertype(typeFact().getSequenceDeclaration());
+            if (t != null) {
+                return t;
+            }
+            return ref.getType().getSupertype(typeFact().getSequentialDeclaration());
+        }
+        return null;
     }
     
     JCExpression makeUnwrapArray(final Declaration methodOrClass) {

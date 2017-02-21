@@ -1814,4 +1814,10 @@ public class ModelLoaderTests extends CompilerTests {
             }
         });
     }
+    
+    @Test
+    public void bug6803(){
+        compile("Bug6803.java");
+        compile("bug6803test.ceylon");
+    }
 }

@@ -31,6 +31,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.TreeSet;
@@ -41,6 +42,7 @@ import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.IOUtil;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -184,6 +186,12 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     }
     
     @Test
+    public void testBug6719() {
+        compareWithJavaSource("bug67xx/Bug6719");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6719");
+    }
+    
+    @Test
     public void testBug6741() {
         compareWithJavaSource("bug67xx/Bug6741");
         run("com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6741");
@@ -228,9 +236,33 @@ public class IssuesTests_6500_6999 extends CompilerTests {
         File pomDst = new File(mavenRepoTarget, "a-1.pom");
         Files.copy(pomSrc.toPath(), pomDst.toPath(), StandardCopyOption.REPLACE_EXISTING);
         
-        compile(Arrays.asList("-rep", "aether:"+getPackagePath()+"/bug67xx/dyn/b/settings.xml"), 
-                "bug67xx/dyn/b/B.ceylon");
-        
+        File settingsFile = File.createTempFile("settings", ".xml");
+        Files.write(settingsFile.toPath(), ("<settings xmlns=\"http://maven.apache.org/SETTINGS/1.0.0\"\n"+
+                "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"+
+                "  xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.0.0\n"+
+                "                      http://maven.apache.org/xsd/settings-1.0.0.xsd\">\n"+
+                " <profiles>\n"+
+                "  <profile>\n"+
+                "   <id>myprofile</id>\n"+
+                "   <repositories>\n"+
+                "    <repository>\n"+
+                "     <id>nb-maven-repo</id>\n"+
+                "     <name>Maven Repository for NetBeans Modules</name>\n"+
+                "     <url>file://"+mavenRepoFolder.getAbsolutePath()+"</url>\n"+
+                "    </repository>\n"+
+                "   </repositories>\n"+
+                "  </profile>\n"+
+                " </profiles>\n"+
+                " <activeProfiles>\n"+
+                "  <activeProfile>myprofile</activeProfile>\n"+
+                " </activeProfiles>\n"+
+                "</settings>\n").getBytes("UTF-8"));
+        try{
+            compile(Arrays.asList("-rep", "aether:"+settingsFile.getAbsolutePath()), 
+                    "bug67xx/dyn/b/B.ceylon");
+        }finally{
+            settingsFile.delete();
+        }
         File carFile = new File(destDir+"/"+moduleName.replace('.', '/')+"/bug67xx/dyn/b/1/"+moduleName+".bug67xx.dyn.b-1.car");
 
         cleanCars(classesOutputFolder.getPath());
@@ -253,10 +285,12 @@ public class IssuesTests_6500_6999 extends CompilerTests {
                 jarCSrc.toURL(),
         }, getClass().getClassLoader());
         synchronized(RUN_LOCK){
+            Metamodel.resetModuleManager();
             Class<?> klass = Class.forName(moduleName+".bug67xx.dyn.c.C", true, cl);
             Method method = klass.getMethod("main", String[].class);
             Metamodel.getModuleManager().getModelLoader().setDefaultClassLoader(cl);
             method.invoke(null, (Object)new String[]{});
+            Metamodel.getModuleManager().getModelLoader().setDefaultClassLoader(null);
         }
     }
 
@@ -278,5 +312,31 @@ public class IssuesTests_6500_6999 extends CompilerTests {
         compile("bug68xx/Bug6855Java.java");
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug68xx.bug6855",
                 "bug68xx/Bug6855.ceylon");
+    }
+    
+    @Test
+    public void testBug6909() throws Throwable {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug69xx.bug6909",
+                "bug69xx/Bug6909.ceylon");
+    }
+    
+    @Test
+    public void testBug6910() throws Throwable {
+        compareWithJavaSource("bug69xx/Bug6910");
+    }
+    
+    @Test
+    public void testBug6916() throws Throwable {
+        assertErrors("bug69xx/bug6916/Bug6916", 
+                Arrays.asList("-flat-classpath"),
+                null,
+                new CompilerError(5, "Failed to determine if getConverter is overriding a super method: class file for org.apache.wicket.util.convert.IConverter not found"),
+                new CompilerError(5, "formal member 'canCallListenerInterfaceAfterExpiry' of 'IRequestableComponent' not implemented for concrete class 'HelloWorld': 'HelloWorld' neither directly implements nor inherits a concrete implementation of 'canCallListenerInterfaceAfterExpiry'"),
+                new CompilerError(5, "formal member 'equals' of 'Object' not implemented for concrete class 'HelloWorld': 'HelloWorld' neither directly implements nor inherits a concrete implementation of 'equals'"),
+                new CompilerError(5, "formal member 'getBehaviorById' of 'IRequestableComponent' not implemented for concrete class 'HelloWorld': 'HelloWorld' neither directly implements nor inherits a concrete implementation of 'getBehaviorById'"),
+                new CompilerError(5, "formal member 'getBehaviorId' of 'IRequestableComponent' not implemented for concrete class 'HelloWorld': 'HelloWorld' neither directly implements nor inherits a concrete implementation of 'getBehaviorId'"),
+                new CompilerError(5, "formal member 'hash' of 'Object' not implemented for concrete class 'HelloWorld': 'HelloWorld' neither directly implements nor inherits a concrete implementation of 'hash'")
+                );
+        compile(Arrays.asList("-fully-export-maven-dependencies"), "bug69xx/bug6916/Bug6916.ceylon");
     }
 }

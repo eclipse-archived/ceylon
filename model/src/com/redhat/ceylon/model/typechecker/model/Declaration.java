@@ -36,7 +36,7 @@ public abstract class Declaration
     private String qualifiedNameAsStringCache;
 	private Backends nativeBackends = Backends.ANY;
 	private boolean otherInstanceAccess;
-    private DeclarationCompleter actualCompleter;
+    protected DeclarationCompleter actualCompleter;
     private List<String> aliases;
     private int memoizedHash;
 
@@ -276,7 +276,7 @@ public abstract class Declaration
 		return refinedDeclaration;
 	}
     
-    private void completeActual() {
+    protected void completeActual() {
         DeclarationCompleter completer = actualCompleter;
         actualCompleter = null;
         completer.completeActual(this);

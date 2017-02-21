@@ -33,6 +33,10 @@ public class TreeUtil {
         }
     }
 
+    public static boolean hasAnonymousAnnotation(Tree.AnnotationList al) {
+        return al!=null && al.getAnonymousAnnotation()!=null;
+    }
+
     public static boolean hasAnnotation(Tree.AnnotationList al, 
             String name, Unit unit) {
         return getAnnotation(al, name, unit) != null;

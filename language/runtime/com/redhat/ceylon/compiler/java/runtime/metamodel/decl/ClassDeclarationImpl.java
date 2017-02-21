@@ -35,6 +35,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 
 @Ceylon(major = 8)
@@ -157,6 +158,54 @@ public abstract class ClassDeclarationImpl
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Ignore
     @Override
+    public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Class<Type, Arguments> 
+    staticClassApply(TypeDescriptor $reifiedType,
+            TypeDescriptor $reifiedArguments,
+            ceylon.language.meta.model.Type<? extends Object> containerType){
+        return staticClassApply($reifiedType, $reifiedArguments, containerType, (Sequential)empty_.get_());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @TypeInfo("ceylon.language.meta.model::Class<Type,Arguments>")
+    @TypeParameters({
+        @TypeParameter("Type"),
+        @TypeParameter(value = "Arguments", satisfies = "ceylon.language::Sequential<ceylon.language::Anything>")
+    })
+    public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Class<Type, Arguments> 
+    staticClassApply(@Ignore TypeDescriptor $reifiedType,
+            @Ignore TypeDescriptor $reifiedArguments,
+            @Name("containerType") @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
+            ceylon.language.meta.model.Type<? extends Object> containerType,
+            @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
+        if(!getStatic()) {
+            throw new ceylon.language.meta.model.TypeApplicationException("Cannot staticClassApply a non-static declaration: use " + (getToplevel() ? "apply" : "memberClassApply"));
+        }
+        List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        if (getStatic()) {
+            producedTypes.addAll(0, Metamodel.getModel(containerType).getTypeArgumentList());
+        }
+        Metamodel.checkTypeArguments(null, declaration, producedTypes);
+        com.redhat.ceylon.model.typechecker.model.Type ct = Metamodel.getProducedType(Metamodel.getTypeDescriptor(containerType));
+        com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.appliedReference(ct, producedTypes);
+        //MemberClassImpl<Object, Type, Arguments> ret = (MemberClassImpl<Object, Type, Arguments>) Metamodel.getAppliedMetamodel(appliedType.getType());
+        //Metamodel.checkReifiedTypeArgument("staticClassApply", "Class<$1,$2>", Variance.OUT, appliedType.getType(), $reifiedType, 
+        //        Variance.IN, Metamodel.getProducedType(ret.$reifiedArguments), $reifiedArguments);
+        //return (ClassImpl)ret.$call$();
+        TypeDescriptor reifiedArguments;
+        if(!declaration.isAnonymous())
+            reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional)declaration, appliedType.getType());
+        else
+            reifiedArguments = TypeDescriptor.NothingType;
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForProducedType(appliedType.getType());
+
+        return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, appliedType.getType(), null, null);
+        
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Ignore
+    @Override
     public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Class<Type, Arguments> classApply(TypeDescriptor $reifiedType,
             TypeDescriptor $reifiedArguments){
         return classApply($reifiedType, $reifiedArguments, (Sequential)empty_.get_());
@@ -172,8 +221,15 @@ public abstract class ClassDeclarationImpl
     public <Type, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Class<Type, Arguments> classApply(@Ignore TypeDescriptor $reifiedType,
             @Ignore TypeDescriptor $reifiedArguments,
             @Name("typeArguments") @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
-        if(!getToplevel())
-            throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
+        if(!getToplevel()) {
+            String msg;
+            if (getStatic()) {
+                msg = "Cannot apply a static declaration with no container type: use staticApply";
+            } else {
+                msg = "Cannot apply a member declaration with no container type: use memberApply"; 
+            }
+            throw new ceylon.language.meta.model.TypeApplicationException(msg);
+        }
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.appliedReference(null, producedTypes);
@@ -188,8 +244,15 @@ public abstract class ClassDeclarationImpl
             TypeDescriptor $reifiedArguments,
             Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments,
             com.redhat.ceylon.model.typechecker.model.Reference appliedType){
-        if(!getToplevel())
-            throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
+        if(!getToplevel()) {
+            String msg;
+            if (getStatic()) {
+                msg = "Cannot apply a static declaration with no container type: use staticApply";
+            } else {
+                msg = "Cannot apply a member declaration with no container type: use memberApply";
+            }
+            throw new ceylon.language.meta.model.TypeApplicationException(msg);
+        }
         List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
         Metamodel.checkTypeArguments(null, declaration, producedTypes);
         //com.redhat.ceylon.model.typechecker.model.Reference appliedType = declaration.appliedReference(null, producedTypes);
@@ -279,6 +342,44 @@ public abstract class ClassDeclarationImpl
             @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
             ceylon.language.Sequential<?> arguments){
         return classApply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Ignore
+    @Override
+    public ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> 
+        staticInstantiate$typeArguments(ceylon.language.meta.model.Type<? extends Object> containerType){
+        return (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_();
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Ignore
+    @Override
+    public java.lang.Object staticInstantiate(
+            ceylon.language.meta.model.Type<? extends Object> containerType){
+        return staticInstantiate(containerType, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_());
+    }
+
+    @Ignore
+    @Override
+    public java.lang.Object staticInstantiate(
+            ceylon.language.meta.model.Type<? extends Object> containerType,
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
+        return staticInstantiate(containerType, typeArguments, empty_.get_());
+    }
+
+    @TypeInfo("ceylon.language::Object")
+    @Override
+    public java.lang.Object staticInstantiate(
+            @Name("containerType") @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Anything>")
+            ceylon.language.meta.model.Type<? extends Object> containerType,
+            @Name("typeArguments") @Defaulted 
+            @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments,
+            @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
+            ceylon.language.Sequential<?> arguments){
+        return staticClassApply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, containerType, typeArguments)
+                    .apply(arguments);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -24,13 +24,17 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.NestableDeclaratio
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ValueDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
+import ceylon.language.Anything;
 import ceylon.language.Array;
+import ceylon.language.AssertionError;
 import ceylon.language.Iterator;
 import ceylon.language.Map;
 import ceylon.language.Sequence;
@@ -39,8 +43,11 @@ import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
+import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
+import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.InterfaceDeclaration;
+import ceylon.language.meta.declaration.NestableDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.meta.model.Attribute;
 import ceylon.language.meta.model.IncompatibleTypeException;
@@ -1208,10 +1215,32 @@ public abstract class ClassOrInterfaceImpl<Type>
             ceylon.language.meta.declaration.ClassDeclaration caseClass = caseClassType.getDeclaration();
             if(!caseClass.getAnonymous())
                 continue;
-            ValueDeclaration valueDeclaration = caseClass.getContainingPackage().getValue(caseClass.getName());
-            ceylon.language.meta.model.Value<? extends Type,? super Object> valueModel = 
-                    valueDeclaration.<Type,Object>apply($reifiedType, TypeDescriptor.NothingType);
-            Type value = valueModel.get();
+            Type value = null;
+            Object container = caseClass.getContainer();
+            while (true) {
+                if (container instanceof ceylon.language.meta.declaration.Package) {
+                    ValueDeclaration valueDeclaration = ((ceylon.language.meta.declaration.Package)container).getValue(caseClass.getName());
+                    ceylon.language.meta.model.Value<? extends Type,? super Object> valueModel = 
+                            valueDeclaration.<Type,Object>apply($reifiedType, TypeDescriptor.NothingType);
+                    value = valueModel.get();
+                    break;
+                } else {
+                    if (container instanceof ClassOrInterfaceDeclaration) {
+                        ValueDeclaration valueDeclaration = ((ClassOrInterfaceDeclaration)container).getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, caseClass.getName());
+                        Attribute a = valueDeclaration.memberApply($reifiedType, $reifiedType, Nothing.NothingType, this);
+                        value = (Type)a.bind(null).get();
+                    }
+                    // other nestable decls can't contain members, so keep looking up scopes
+                    container = ((NestableDeclaration)container).getContainer();
+                }
+                if (value != null) {
+                    break;
+                }
+            }
+            if (value == null) {
+                throw new AssertionError("case " + caseClassType + " of "+ this + " not found");
+            }
+            
             ret.set(count++, value);
         }
         return ret.take(count).sequence();

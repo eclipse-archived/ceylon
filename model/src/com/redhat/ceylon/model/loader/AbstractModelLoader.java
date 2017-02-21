@@ -3773,12 +3773,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private boolean isNonGenericMethod(MethodMirror methodMirror){
-        return !methodMirror.isConstructor() 
+        return !methodMirror.isConstructor()
                 && methodMirror.getTypeParameters().isEmpty();
     }
     
+    private boolean allReifiedTypeParameters(List<VariableMirror> list) {
+        for (VariableMirror v : list) {
+            if ("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor".equals(v.getType().getQualifiedName())) {
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     private boolean isGetter(MethodMirror methodMirror) {
-        if(!isNonGenericMethod(methodMirror))
+        if(!isNonGenericMethod(methodMirror) && !methodMirror.isStatic())
             return false;
         String name = methodMirror.getName();
         boolean matchesGet = name.length() > 3 && name.startsWith("get") 
@@ -3787,7 +3798,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         boolean matchesIs = name.length() > 2 && name.startsWith("is") 
                 && isStartOfJavaBeanPropertyName(name.codePointAt(2)) 
                 && !"isString".equals(name) && !"isHash".equals(name) && !"isEquals".equals(name);
-        boolean hasNoParams = methodMirror.getParameters().size() == 0;
+        boolean hasNoParams = methodMirror.getParameters().size() == 0 || 
+                (methodMirror.isStatic() && allReifiedTypeParameters(methodMirror.getParameters()));
         boolean hasNonVoidReturn = (methodMirror.getReturnType().getKind() != TypeKind.VOID);
         boolean hasBooleanReturn = (methodMirror.getReturnType().getKind() == TypeKind.BOOLEAN);
         return (matchesGet && hasNonVoidReturn || matchesIs && hasBooleanReturn) && hasNoParams;
@@ -4263,8 +4275,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
         }
+        
+        completeVariable(decl);
     }
     
+    private void completeVariable(Declaration value) {
+        if (value instanceof JavaBeanValue) {
+            Declaration refined = value != null ? value.getRefinedDeclaration() : null;
+            if (refined instanceof Value 
+                    && ((Value)refined).isVariable()
+                    && value instanceof Value
+                    && !((Value)value).isVariable()) {
+                ((Value)value).setVariable(true);
+            }
+        }
+    }
     private void setValueTransientLateFlags(Value decl, MethodMirror methodMirror, boolean isCeylon) {
         if(isCeylon)
             decl.setTransient(methodMirror.getAnnotation(CEYLON_TRANSIENT_ANNOTATION) != null);
@@ -4824,7 +4849,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private void markUntrustedType(TypedDeclaration decl, AnnotatedMirror typedMirror, TypeMirror type) {
-        decl.setUntrustedType(BooleanUtil.isTrue(getAnnotationBooleanValue(typedMirror, CEYLON_TYPE_INFO_ANNOTATION, "untrusted")));
+        boolean untrusted = BooleanUtil.isTrue(getAnnotationBooleanValue(typedMirror, CEYLON_TYPE_INFO_ANNOTATION, "untrusted"));
+        if ("com.redhat.ceylon.compiler.java.test.structure.klass::IterableSequence.sequence".equals(decl.getQualifiedNameString())
+                || "ceylon.language::Iterable.sequence".equals(decl.getQualifiedNameString())) {
+            untrusted = true;
+        }
+        decl.setUntrustedType(untrusted);
     }
     
     private void markDeclaredVoid(Function decl, MethodMirror methodMirror) {
@@ -5441,7 +5471,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(typeParameters != null) {
             setTypeParametersFromAnnotations(method, params, methodMirror, typeParameters, methodMirror.getTypeParameters());
         } else {
-            setTypeParameters(method, params, methodMirror.getTypeParameters(), isCeylon);
+            List<TypeParameterMirror> jtp = methodMirror.getTypeParameters();
+            if (method.isStatic() && (methodMirror.isPublic() || methodMirror.isProtected() || methodMirror.isDefaultAccess()) && isCeylon) {
+                jtp = jtp.subList(((ClassOrInterface)method.getContainer()).getTypeParameters().size(), jtp.size());
+            }
+            setTypeParameters(method, params, jtp, isCeylon);
         }
     }
 

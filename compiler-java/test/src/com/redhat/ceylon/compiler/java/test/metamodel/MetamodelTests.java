@@ -138,15 +138,45 @@ public class MetamodelTests extends CompilerTests {
     }
     
     @Test
+    public void testBug6871() {
+        compile("Bug6871.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.metamodel.bug6871");
+    }
+    
+    @Test
     public void testBug6895() {
         compile("Bug6895.ceylon");
         run("com.redhat.ceylon.compiler.java.test.metamodel.bug6895");
     }
     
     @Test
+    public void testBug6897() {
+        compile("Bug6897.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.metamodel.bug6897");
+    }
+    
+    @Test
     public void testBug6898() {
         compile("Bug6898.ceylon");
         run("com.redhat.ceylon.compiler.java.test.metamodel.bug6898");
+    }
+    
+    @Test
+    public void testBug6902() {
+        compile("Bug6902.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.metamodel.bug6902");
+    }
+    
+    @Test
+    public void testStaticMetamodel() {
+        compile("StaticMetamodel.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.metamodel.staticMetamodel");
+    }
+    
+    @Test
+    public void testBug6882() {
+        compile("Bug6882.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.metamodel.bug6882");
     }
 }
 

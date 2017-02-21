@@ -1,3 +1,4 @@
+import ceylon.language.meta.model{Method}
 import java.lang{
     ShortArray,
     IntArray,
@@ -177,15 +178,38 @@ class ArrayFrom() {
     
     shared void meta() {
         // TODO fix this when we've implemented the metamodel for statics
-        /*Function longRef = `LongArray.from`;
-        check(1..3, longRef(Array<Integer>(1,2,3)));
-        check(1..3, longRef(Array<JLong>(JLong(1), JLonh(2), JLong(3))));
-        / *
-        value shortRef = `ShortArray.from`;
-        check(1..3, shortRef(1..3));
+        Method<Null,LongArray,[Array<JLong>|Array<Integer>]> longRef = `LongArray.from`;
+        check(1..3, longRef(null)(Array<Integer>{1,2,3}));
+        check(1..3, longRef(null)(Array<JLong>{JLong(1), JLong(2), JLong(3)}));
         
-        value integerRef = `ObjectArray<Integer>.from`;
-        integerRef(1..3);*/
+        value intRef = `IntArray.from`;
+        check(1..3, intRef(null)(Array<JInteger>{JInteger(1),JInteger(2),JInteger(3)}));
+        check([97,98,99], intRef(null)(Array<Character>{'a','b','c'}));
+        
+        value shortRef = `ShortArray.from`;
+        check(1..3, shortRef(null)(Array<JShort>{JShort(1),JShort(2),JShort(3)}));
+        
+        Method<Null,DoubleArray,[Array<JDouble>|Array<Float>]> doubleRef = `DoubleArray.from`;
+        check([1.0,2.0,3.0], doubleRef(null)(Array<Float>{1.0,2.0,3.0}));
+        check([1.0,2.0,3.0], doubleRef(null)(Array<JDouble>{JDouble(1.0), JDouble(2.0), JDouble(3.0)}));
+        
+        value floatRef = `FloatArray.from`;
+        check([1.0,2.0,3.0], floatRef(null)(Array<JFloat>{JFloat(1.0),JFloat(2.0),JFloat(3.0)}));
+        
+        
+        value booleanRef = `BooleanArray.from`;
+        check([true,false,true], booleanRef(null)(Array<JBoolean>{JBoolean(true),JBoolean(false),JBoolean(true)}));
+        check([true,false,true], booleanRef(null)(Array<Boolean>{true,false,true}));
+        
+        value byteRef = `ByteArray.from`;
+        check([1.byte,2.byte,3.byte], byteRef(null)(Array<JByte>{JByte(1.byte),JByte(2.byte),JByte(3.byte)}));
+        check([1.byte,2.byte,3.byte], byteRef(null)(Array<Byte>{1.byte,2.byte,3.byte}));
+        
+        value charRef = `CharArray.from`;
+        check(['a','b','c'], charRef(null)(Array<JCharacter>{JCharacter('a'),JCharacter('b'),JCharacter('c')}));
+        
+        value objRef = `ObjectArray<Integer>.from`;
+        check(1..3, objRef(null)(Array<Integer?>{1,2,3}));
     }
     
 }
