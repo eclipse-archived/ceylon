@@ -10,6 +10,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
 import ceylon.language.Character;
+import ceylon.language.Integer;
 import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.String;
@@ -27,13 +28,15 @@ extends BaseIterable<String,java.lang.Object> {
     private final Callable<? extends Boolean> separator;
     private final boolean keepSeparators;
     private final boolean groupSeparators;
-    private final long limit;
+    private final Integer limit;
 
     public StringTokens(java.lang.String str, 
-            @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             Callable<? extends Boolean> separator,
-            boolean keepSeparators, boolean groupSeparators, 
-            long limit) {
+            boolean keepSeparators, 
+            boolean groupSeparators,
+            @TypeInfo("ceylon.language::Integer?")
+            Integer limit) {
         super(String.$TypeDescriptor$, Null.$TypeDescriptor$);
         this.str = str;
         this.separator = separator;
@@ -43,7 +46,7 @@ extends BaseIterable<String,java.lang.Object> {
     }
 
     // this one is just here to satisfy the runtime Declaration otherwise the type of separator is lost
-    @TypeInfo("ceylon.language::Callable<ceylon.language::Boolean,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
+    @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
     private final Callable<? extends Boolean> getSeparator$priv() {
         return separator;
     }
@@ -64,13 +67,10 @@ extends BaseIterable<String,java.lang.Object> {
         public java.lang.Object next() {
             if (!eof()) {
                 int start = index;
-                if (limit>=0 && count==limit) {
-                    index = str.length();
-                    count++;
-                    return String.instance(str.substring(start));
-                }
-                // if we start with a separator, or if we returned a separator the last time
-                // and we are still looking at a separator: return an empty token once
+                // if we start with a separator, or if  
+                // we returned a separator the last time
+                // and we are still looking at a separator,  
+                // return an empty token once
                 if (((first && start == 0) || lastTokenWasSeparator)
                         && peekSeparator()) {
                     first = false;
@@ -81,13 +81,13 @@ extends BaseIterable<String,java.lang.Object> {
                 // are we looking at a separator
                 if (eatSeparator()) {
                     if (groupSeparators) {
-                        // eat them all in one go if we group them
+                        // eat them all in one go if we 
+                        // group them
                         do {} while(eatSeparator());
                     }
                     // do we return them?
                     if (keepSeparators) {
                         lastTokenWasSeparator = true;
-                        count++;
                         return String.instance(str.substring(start, index));
                     }
                     // keep going and eat the next word
@@ -99,6 +99,9 @@ extends BaseIterable<String,java.lang.Object> {
                 }
                 lastTokenWasSeparator = false;
                 count++;
+                if (limit!=null && count>limit.longValue()) {
+                    index = str.length();
+                }
                 return String.instance(str.substring(start, index));
             }
             else if (lastTokenWasSeparator) {

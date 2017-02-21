@@ -140,11 +140,15 @@ shared native final class String
              single-character tokens. If `false` each 
              separator token will be of size `1`."
             Boolean groupSeparators = true,
-            "Specifies the maximum number of splits, with a 
-             negative argument indicating no limit. If `0`,
-             a stream containing this string will be 
-             returned."
-            Integer limit = -1);
+            "Specifies the maximum number of non-separator 
+             tokens, with a `null` argument indicating no 
+             limit. If this string contains more 
+             non-separator tokens than the given limit, the
+             remaining part of the string will be returned
+             as a single token at the very end of the stream. 
+             If the limit is not strictly positive, a stream
+             containing this string will be returned."
+            Integer? limit = null);
     
     "The first character in the string."
     shared actual native Character? first;

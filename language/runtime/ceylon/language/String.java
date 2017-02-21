@@ -1885,7 +1885,7 @@ public final class String
 
     @TypeInfo("{ceylon.language::String+}")
     public Iterable<? extends String, ?> split(
-            @TypeInfo(value="ceylon.language::Boolean(ceylon.language::Character)")
+            @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             @Defaulted
             @Name("splitting") 
             @FunctionalParameter("(ch)") 
@@ -1898,9 +1898,11 @@ public final class String
             boolean groupSeparators,
             @Defaulted
             @Name("limit")
-            long limit) {
-        if (value.isEmpty() || limit==0) {
-            return new Singleton<String>(String.$TypeDescriptor$, this);
+            @TypeInfo("ceylon.language::Integer?")
+            Integer limit) {
+        if (value.isEmpty() || 
+                limit!=null && !limit.getPositive()) {
+            return new Singleton<String>($TypeDescriptor$, this);
         }
         return new StringTokens(value, splitting, 
                 !discardSeparators, groupSeparators,
@@ -1913,9 +1915,10 @@ public final class String
             Callable<? extends Boolean> splitting,
             boolean discardSeparators,
             boolean groupSeparators,
-            long limit) {
-        if (value.isEmpty() || limit==0) {
-            return new Singleton<String>(String.$TypeDescriptor$, 
+            Integer limit) {
+        if (value.isEmpty() || 
+                limit!=null && !limit.getPositive()) {
+            return new Singleton<String>($TypeDescriptor$, 
                     instance(value));
         }
         return new StringTokens(value, splitting, 
@@ -2005,9 +2008,9 @@ public final class String
     }
     
     @Ignore
-    public static long split$limit(java.lang.Object separator, 
+    public static Integer split$limit(java.lang.Object separator, 
             boolean discardSeparators, boolean groupSeparators) {
-        return -1l;
+        return null;
     }
     
     @SuppressWarnings("rawtypes")
