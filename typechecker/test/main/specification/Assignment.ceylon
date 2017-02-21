@@ -160,3 +160,34 @@ void testBrokenAssignmentInSwitchExpression2(Boolean flag) {
     value result = switch (flag) case (true) "A" else (name="B");
     @error print(name);
 }
+
+
+void f1() {
+    variable String s;
+    noop({s=""});
+    @error print(s);
+}
+
+void f2() {
+    variable String s;
+    noop(() { s=""; });
+    @error print(s);
+}
+
+void f3() {
+    variable String s;
+    noop(() => s="");
+    @error print(s);
+}
+
+void f4() {
+    variable String s;
+    noop(for (i in 0:0) s="");
+    @error print(s);
+}
+
+void f5() {
+    variable String s;
+    set { (s="") };
+    @error print(s);
+}

@@ -466,10 +466,32 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.SequenceEnumeration that) {
+        boolean odefinitely = definitely;
+        super.visit(that);
+        definitely = odefinitely;
+    }
+    
+    @Override
+    public void visit(Tree.NamedArgumentList that) {
+        for (Tree.NamedArgument na: that.getNamedArguments()) {
+            na.visit(this);
+        }
+        Tree.SequencedArgument sa = that.getSequencedArgument();
+        if (sa!=null) {
+            boolean odefinitely = definitely;
+            sa.visit(this);
+            definitely = odefinitely;
+        }
+    }
+    
+    @Override
     public void visit(Tree.Comprehension that) {
+        boolean odefinitely = definitely;
         boolean oicoaf = inAnonFunctionOrComprehension;
         inAnonFunctionOrComprehension = declared&&inExtends;
         super.visit(that);
+        definitely = odefinitely;
         inAnonFunctionOrComprehension = oicoaf;
     }
     
