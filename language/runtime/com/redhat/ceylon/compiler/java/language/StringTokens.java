@@ -70,16 +70,14 @@ extends BaseIterable<String,java.lang.Object> {
         public java.lang.Object next() {
             if (!eof()) {
                 int start = index;
-                // if we start with a separator, or if  
-                // we returned a separator the last time
-                // and we are still looking at a separator,  
-                // return an empty token once
                 if ((first || lastTokenWasSeparator)
                         && isSeparator()) {
-                    first = false;
-                    lastTokenWasSeparator = false;
-                    count++;
-                    return String.instance("");
+                    // if we start with a separator, 
+                    // or if we returned a separator 
+                    // the last time and we are still 
+                    // looking at a separator, return 
+                    // an empty token once
+                    return emptyToken();
                 }
                 
                 // are we looking at a separator
@@ -92,14 +90,15 @@ extends BaseIterable<String,java.lang.Object> {
                             advance();
                         }
                     }
-                    // do we return them?
                     if (keepSeparators) {
-                        lastTokenWasSeparator = true;
-                        first = false;
-                        return String.instance(str.substring(start, index));
+                        // return it
+                        return token(start, true);
                     }
-                    // keep going and eat the next word
-                    start = index;
+                    else {
+                        // discard it, keep going 
+                        // and eat the next word
+                        start = index;
+                    }
                 }
                 
                 if (limit!=null && count>=limit.longValue()) {
@@ -111,23 +110,31 @@ extends BaseIterable<String,java.lang.Object> {
                         advance();
                     }
                 }
-                first = false;
-                lastTokenWasSeparator = false;
-                count++;
-                return String.instance(str.substring(start, index));
+                return token(start, false);
             }
             else if (lastTokenWasSeparator) {
                 // we're missing a last empty token before 
                 // the EOF because the string ended with a 
                 // returned separator
-                first = false;
-                lastTokenWasSeparator = false;
-                count++;
-                return String.instance("");
+                return emptyToken();
             }
             else {
                 return finished_.get_();
             }
+        }
+
+        private String token(int start, boolean separator) {
+            if (!separator) count++;
+            first = false;
+            lastTokenWasSeparator = separator;
+            return String.instance(str.substring(start, index));
+        }
+
+        private String emptyToken() {
+            count++;
+            first = false;
+            lastTokenWasSeparator = false;
+            return String.instance("");
         }
 
         private void advanceToEnd() {
