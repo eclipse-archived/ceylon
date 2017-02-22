@@ -20,6 +20,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.DependencyContext;
@@ -27,6 +30,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Read module info from module.xml.
@@ -49,7 +53,7 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
             final InputStream descriptor = IOUtils.findDescriptor(result, descriptorPath);
             if (descriptor != null) {
                 try {
-                    return resolveFromInputStream(descriptor, result.name(), result.version(), overrides);
+                    return augment(result, resolveFromInputStream(descriptor, result.name(), result.version(), overrides));
                 } finally {
                     IOUtils.safeClose(descriptor);
                 }
@@ -65,9 +69,41 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
                 String qualifiedDescriptorName = getQualifiedToplevelDescriptorName(result.name(), result.version());
                 mp = new File(artifact.getParent(), qualifiedDescriptorName);
             }
-            return resolveFromFile(mp, result.name(), result.version(), overrides);
+            return augment(result, resolveFromFile(mp, result.name(), result.version(), overrides));
         }
 
+        return null;
+    }
+
+    private ModuleInfo augment(ArtifactResult result, ModuleInfo ret) {
+        if(ret == null)
+            return null;
+        if(ret.getGroupId() != null)
+            return ret;
+        // see if we have a Maven descriptor in there
+        if(result.artifact() != null){
+            try(ZipFile zf = new ZipFile(result.artifact())){
+                Enumeration<? extends ZipEntry> entries = zf.entries();
+                while(entries.hasMoreElements()){
+                    ZipEntry entry = entries.nextElement();
+                    String path = entry.getName();
+                    if(path.startsWith("META-INF/maven/")
+                            && path.endsWith("/pom.xml")){
+                        String part = path.substring(15, path.length()-8);
+                        int sep = part.indexOf('/');
+                        if(sep != -1){
+                            String groupId = part.substring(0, sep);
+                            String artifactId = part.substring(sep+1);
+                            return new ModuleInfo(ret.getName(), ret.getVersion(), 
+                                    groupId, artifactId,
+                                    ret.getFilter(), ret.getDependencies());
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                // not a zip file
+            }
+        }
         return null;
     }
 
