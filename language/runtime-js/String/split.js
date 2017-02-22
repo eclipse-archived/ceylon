@@ -1,4 +1,4 @@
-function(sep, discard, group) {
+function(sep, discard, group, limit) {
 
     //TODO: return a stream
     var tokens = [];
@@ -12,6 +12,7 @@ function(sep, discard, group) {
     if (sep === undefined) {sep = function(c){return c.value in Character.WS$;}}
     if (discard === undefined) {discard = true}
     if (group === undefined) {group = true}
+    if (limit <= 0) return Singleton(this,{Element$Singleton:{t:$_String}});
 
     var tokenBegin = 0;
     var tokenBeginCount = 0;
@@ -20,7 +21,9 @@ function(sep, discard, group) {
     var separator = true;
 
     function pushToken(tokenEnd) {
-        tokens.push($_String(value.substring(tokenBegin, tokenEnd)));
+        if (limit>0 && tokens.length>=limit)return;
+        tokens.push(value.substring(tokenBegin, tokenEnd));
+        if (limit>0 && tokens.length===limit)tokens.push(value.substring(tokenEnd+1));
     }
     
     for (var i=0; i<this.length; ++count) {
@@ -36,7 +39,7 @@ function(sep, discard, group) {
                 pushToken(j);
                 if (!discard) {
                     // store separator as token
-                    tokens.push($_String(this.substring(j, i)));
+                    tokens.push(this.substring(j, i));
                 }
                 // next token begins after this character
                 tokenBegin = i;
