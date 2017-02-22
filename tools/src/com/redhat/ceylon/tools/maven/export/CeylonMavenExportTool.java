@@ -13,8 +13,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -85,6 +90,7 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
 	private File out;
     private final List<String> excludedModules = new ArrayList<>();
     private boolean forImport;
+    private boolean forSdkImport;
 
     @Argument(order = 1, argumentName="module", multiplicity="+")
     public void setModules(List<String> modules) {
@@ -105,6 +111,12 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
     @Description("Special set up to create a set of folders to import the distrib.")
     public void setForImport(boolean forImport) {
         this.forImport = forImport;
+    }
+
+    @Option(longName="for-sdk-import")
+    @Description("Special set up to create a set of folders to import the Ceylon SDK.")
+    public void setForSdkImport(boolean forSdkImport) {
+        this.forSdkImport = forSdkImport;
     }
 
     @OptionArgument(argumentName="moduleOrFile", shortName='x')
@@ -131,7 +143,7 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
 
     @Override
     public void run() throws Exception {
-        String firstModuleName = null, firstModuleVersion = null;
+        String firstModuleName = null;
         for (ModuleSpec module : modules) {
             String moduleName = module.getName();
             String version = checkModuleVersionsOrShowSuggestions(
@@ -146,8 +158,8 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
                 return;
             if(firstModuleName == null){
                 firstModuleName = moduleName;
-                firstModuleVersion = version;
             }
+            System.err.println("Doing "+module);
             loadModule(null, moduleName, version);
         }
         // FIXME: we probably want to allow exporting of multiple versions
@@ -163,38 +175,57 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
         }
         final List<ArtifactResult> writtenModules = new LinkedList<>();
         final List<ArtifactResult> externalDependencies = new LinkedList<>();
+        final Set<String> directImports = new HashSet<>();
         loader.visitModules(new ModuleGraph.Visitor() {
             @Override
             public void visit(ModuleGraph.Module module) {
                 if(module.artifact == null || module.artifact.artifact() == null)
                     return;
                 // FIXME: skip Maven modules?
-                if(forImport){
-                    if(!module.artifact.groupId().equals("org.ceylon-lang")){
+                if(forImport || forSdkImport){
+                    if(forImport && !module.artifact.groupId().equals("org.ceylon-lang")){
                         externalDependencies.add(module.artifact);
                         return;
                     }
-                    makeMavenImportFolder(module, outputFolder);
+                    if(forSdkImport && !directlyListed(module.artifact.name())){
+                        if(!module.artifact.groupId().equals("org.ceylon-lang")){
+                            externalDependencies.add(module.artifact);
+                        }
+                        return;
+                    }
+                    makeMavenImportFolder(module, outputFolder, directImports);
                     writtenModules.add(module.artifact);
                 }else
-                    makeMavenModule(module, outputFolder);
+                    makeMavenModule(module, outputFolder, directImports);
             }
         });
-        if(forImport){
-            makeMavenImportSpecialFolders(writtenModules, externalDependencies, outputFolder);
+        if(forImport || forSdkImport){
+            makeMavenImportSpecialFolders(writtenModules, externalDependencies, outputFolder, directImports);
         }
         flush();
     }
 
-    private void makeMavenImportSpecialFolders(List<ArtifactResult> writtenModules, List<ArtifactResult> externalDependencies, File outputFolder) {
-        File pomAllFile = makePomFile(outputFolder, "ceylon-all");
-        generatePomForAll(pomAllFile, writtenModules);
+    private void makeMavenImportSpecialFolders(List<ArtifactResult> writtenModules, 
+            List<ArtifactResult> externalDependencies, File outputFolder, Set<String> directImports) {
+        if(forImport){
+            File pomAllFile = makePomFile(outputFolder, "ceylon-all");
+            generatePomForAll(pomAllFile, writtenModules, directImports);
 
-        File pomSystemFile = makePomFile(outputFolder, "ceylon-system");
-        generatePomForSystem(pomSystemFile, writtenModules);
-    
-        File pomCompleteFile = makePomFile(outputFolder, "ceylon-complete");
-        generatePomForComplete(pomCompleteFile, writtenModules, externalDependencies);
+            File pomSystemFile = makePomFile(outputFolder, "ceylon-system");
+            generatePomForSystem(pomSystemFile, writtenModules, directImports);
+
+            File pomCompleteFile = makePomFile(outputFolder, "ceylon-complete");
+            generatePomForComplete(pomCompleteFile, writtenModules, externalDependencies);
+
+            File pomPartsFile = new File(outputFolder, "pom-parts-distrib.xml");
+            generatePomParts(pomPartsFile, writtenModules, externalDependencies, directImports);
+        }else if(forSdkImport){
+            File pomSdkFile = makePomFile(outputFolder, "ceylon-sdk");
+            generatePomForSdk(pomSdkFile, writtenModules, directImports);
+
+            File pomPartsFile = new File(outputFolder, "pom-parts-sdk.xml");
+            generatePomParts(pomPartsFile, writtenModules, externalDependencies, directImports);
+        }
     }
 
     private File makePomFile(File outputFolder, String allArtifactId) {
@@ -203,7 +234,8 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
         return new File(folder, "pom.xml");
     }
 
-    private void generatePomForAll(File pomFile, List<ArtifactResult> writtenModules) {
+    private void generatePomForAll(File pomFile, List<ArtifactResult> writtenModules,
+            Set<String> directImports) {
         try (OutputStream os = new FileOutputStream(pomFile)){
             XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
                     new OutputStreamWriter(os, "utf-8"));
@@ -218,7 +250,7 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
             writeNewline(out);
             writeElement(out, "name", "ceylon-all");
 
-            writePomDependencies(out, writtenModules);
+            writePomDependencies(out, writtenModules, directImports);
 
             writePomFooter(out);
         }
@@ -227,7 +259,33 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
         }
     }
 
-    private void generatePomForSystem(File pomFile, List<ArtifactResult> writtenModules) {
+    private void generatePomForSdk(File pomFile, List<ArtifactResult> writtenModules,
+            Set<String> directImports) {
+        try (OutputStream os = new FileOutputStream(pomFile)){
+            XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
+                    new OutputStreamWriter(os, "utf-8"));
+
+            // FIXME: what to do with the default module?
+            
+            writePomHeader(out);
+
+            writePomParent(out, writtenModules.get(0));
+
+            writeElement(out, "artifactId", "ceylon-sdk");
+            writeNewline(out);
+            writeElement(out, "name", "ceylon-sdk");
+
+            writePomDependencies(out, writtenModules, directImports);
+
+            writePomFooter(out);
+        }
+        catch (IOException | XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void generatePomForSystem(File pomFile, List<ArtifactResult> writtenModules,
+            Set<String> directImports) {
         try (OutputStream os = new FileOutputStream(pomFile)){
             XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
                     new OutputStreamWriter(os, "utf-8"));
@@ -244,7 +302,7 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
             writeNewline(out);
             writeElement(out, "packaging", "pom");
 
-            writePomDependencies(out, writtenModules);
+            writePomDependencies(out, writtenModules, directImports);
 
             writePomFooter(out);
         }
@@ -379,12 +437,78 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
         }
     }
 
-    protected void makeMavenImportFolder(Module module, File outputFolder) {
-        File pomFile = makePomFile(outputFolder, module.artifact.artifactId());
-        generatePomFromModule(pomFile, module.artifact);
+    private void generatePomParts(File pomFile, List<ArtifactResult> writtenModules, 
+            List<ArtifactResult> externalDependencies, Set<String> directImports) {
+        try (OutputStream os = new FileOutputStream(pomFile)){
+            XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
+                    new OutputStreamWriter(os, "utf-8"));
+
+            // FIXME: what to do with the default module?
+            
+            writePomHeader(out);
+
+            writePomParent(out, writtenModules.get(0));
+
+            writeElement(out, "artifactId", "ceylon-parts");
+            writeNewline(out);
+            writeElement(out, "name", "ceylon-parts");
+            writeNewline(out);
+
+            writeOpen(out, "properties");
+            {
+                SortedMap<String, String> props = new TreeMap<>();
+                for (ArtifactResult dep : externalDependencies) {
+                    String name = getDependencyPropertyName(dep.name());
+                    if(directImports.contains(name))
+                        props.put(name, dep.version());
+                }
+                for (Entry<String, String> entry : props.entrySet()) {
+                    writeElement(out, entry.getKey(), entry.getValue());
+                }
+            }
+            writeClose(out);
+            writeNewline(out);
+            
+            writeOpen(out, "modules");
+            {
+                List<ArtifactResult> sortedImports = new ArrayList<>(writtenModules);
+                Collections.sort(sortedImports, ImportComparator);
+                for(ArtifactResult dep : sortedImports){
+                    String dependencyName = dep.name();
+                    writeElement(out, "module", dependencyName);
+                }
+                if(forImport){
+                    writeElement(out, "module", "ceylon-all");
+                    writeElement(out, "module", "ceylon-complete");
+                    writeElement(out, "module", "ceylon-system");
+                }else{
+                    writeElement(out, "module", "ceylon-sdk");
+                }
+            }
+            writeClose(out);
+            writeNewline(out);
+
+            writeOpen(out, "dependencyManagement");
+            {
+                writePomDependencies(out, writtenModules, directImports, true);
+            }
+            writeClose(out);
+            
+            writeNewline(out);
+
+            writePomFooter(out);
+        }
+        catch (IOException | XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    protected void makeMavenModule(Module module, File outputFolder) {
+    protected void makeMavenImportFolder(Module module, File outputFolder, Set<String> directImports) {
+        File pomFile = makePomFile(outputFolder, module.artifact.artifactId());
+        generatePomFromModule(pomFile, module.artifact, directImports);
+    }
+
+    protected void makeMavenModule(Module module, File outputFolder, Set<String> directImports) {
         String groupId = module.artifact.groupId();
         String artifactId = module.artifact.artifactId();
         String path = groupId.replace('.', '/') + "/" + artifactId + "/" + module.version;
@@ -405,7 +529,7 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
                                 StandardCopyOption.REPLACE_EXISTING);
                     }
                 }else{
-                    generatePomFromModule(pomFile, module.artifact);
+                    generatePomFromModule(pomFile, module.artifact, directImports);
                 }
             }
             // now sha1 them
@@ -417,7 +541,8 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
         }
     }
 
-    private void generatePomFromModule(File pomFile, ArtifactResult artifact) {
+    private void generatePomFromModule(File pomFile, ArtifactResult artifact,
+            Set<String> directImports) {
         try (OutputStream os = new FileOutputStream(pomFile)){
             XMLStreamWriter out = XMLOutputFactory.newInstance().createXMLStreamWriter(
                     new OutputStreamWriter(os, "utf-8"));
@@ -426,7 +551,7 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
             
             writePomHeader(out);
 
-            if(forImport){
+            if(forImport || forSdkImport){
                 writePomParent(out, artifact);
             }else{
                 writeElement(out, "groupId", artifact.groupId());
@@ -437,17 +562,20 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
             writeElement(out, "name", artifact.name());
 
 
-            if(forImport){
+            if(forImport || forSdkImport){
                 writeElement(out, "packaging", "jar");
                 writeNewline(out);
                 
                 writeOpen(out, "properties");
                 {
-                    writeElement(out, "jarFile", "${ceylon.home}/repo/"+artifact.name().replace('.', '/')
+                    String root = forImport 
+                            ? "${ceylon.home}/repo/"
+                            : "${ceylon.sdk}/";
+                    writeElement(out, "jarFile", root+artifact.name().replace('.', '/')
                             +"/${ceylon.version}/"+artifact.name()+"-${ceylon.version}."
                             +(artifact.artifact().getName().endsWith(".jar") ? "jar" : "car"));
 
-                    writeElement(out, "sourcesFile", "${ceylon.home}/repo/"+artifact.name().replace('.', '/')
+                    writeElement(out, "sourcesFile", root+artifact.name().replace('.', '/')
                             +"/${ceylon.version}/"+artifact.name()+"-${ceylon.version}.src");
                 }
                 writeClose(out);
@@ -456,9 +584,9 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
             }
 
             List<ArtifactResult> imports = artifact.dependencies();
-            writePomDependencies(out, imports);
+            writePomDependencies(out, imports, directImports);
 
-            if(forImport){
+            if(forImport || forSdkImport){
                 writeNewline(out);
                 writeOpen(out, "build");
                 {
@@ -499,7 +627,22 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
         out.flush();
     }
 
-    private void writePomDependencies(XMLStreamWriter out, List<ArtifactResult> imports) throws XMLStreamException {
+    private boolean directlyListed(String name){
+        for (ModuleSpec spec : modules) {
+            if(spec.getName().equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void writePomDependencies(XMLStreamWriter out, List<ArtifactResult> imports,
+            Set<String> directImports) throws XMLStreamException {
+        writePomDependencies(out, imports, directImports, false);
+    }
+    
+    private void writePomDependencies(XMLStreamWriter out, List<ArtifactResult> imports, 
+            Set<String> directImports, boolean forceVersion) throws XMLStreamException {
         if(!imports.isEmpty()){
             writeNewline(out);
             writeOpen(out, "dependencies");
@@ -526,17 +669,16 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
                         writeElement(out, "groupId", mavenCoordinates[0]);
                         writeElement(out, "artifactId", mavenCoordinates[1]);
 
-                        if(!forImport || !mavenCoordinates[0].equals("org.ceylon-lang")){
+                        if(forceVersion
+                                || !(forImport || forSdkImport) 
+                                || !mavenCoordinates[0].equals("org.ceylon-lang")){
                             String version;
-                            if(forImport){
+                            if(forceVersion){
+                                version = "${ceylon.version}";
+                            }else if(forImport || forSdkImport){
                                 version = "${";
-                                String name;
-                                if(dep.name().startsWith("org.apache.maven."))
-                                    name = "org.apache.maven";
-                                else if(dep.name().startsWith("org.eclipse.aether."))
-                                    name = "org.eclipse.aether";
-                                else
-                                    name = dep.name();
+                                String name = getDependencyPropertyName(dep.name());
+                                directImports.add(name);
                                 version += name;
                                 version += "}";
                             }else
@@ -553,6 +695,15 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
             }
             writeClose(out);
         }
+    }
+
+    private String getDependencyPropertyName(String name) {
+        if(name.startsWith("org.apache.maven."))
+            return "org.apache.maven";
+        else if(name.startsWith("org.eclipse.aether."))
+            return "org.eclipse.aether";
+        else
+            return name.replace(':', '.');
     }
 
     private void writePomParent(XMLStreamWriter out, ArtifactResult artifact) throws XMLStreamException {
