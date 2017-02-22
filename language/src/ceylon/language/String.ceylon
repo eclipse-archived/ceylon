@@ -186,7 +186,10 @@ shared native final class String
              positive, a stream containing this string 
              will be returned."
             since("1.3.2")
-            Integer? limit = null);
+            Integer? limit = null)
+            => StringTokens(this, splitting, 
+                discardSeparators, groupSeparators, 
+                limit);
     
     "The first character in the string."
     shared actual native Character? first;
