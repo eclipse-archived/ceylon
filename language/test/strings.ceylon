@@ -362,6 +362,14 @@ shared void strings() {
     check("hello world".split('l'.equals, false, true).sequence()=={"he","ll","o wor", "l", "d"}.sequence(), "string split including [6]");
     //With strings
     check("hello world".split("eo".contains).sequence() == "hello world".split({'e','o'}.contains).sequence(), "string split chars [1]");
+    value longSplitSeq = "hello world good to see you".split(" ".contains, true, true, 2).sequence();
+    check(longSplitSeq.size == 3, "String.split with limit 2");
+    if (exists lastSplitSeq = longSplitSeq.last) {
+        check(lastSplitSeq == "good to see you", "String.split should be 'good to see you'");
+    } else {
+        fail("String.split limit 2 is empty?");
+    }
+    check("hello world".split(" ".contains, true, true, 0).first == "hello world", "String.split with limit 0");
     variable value count=0;
     for (tok in "hello world goodbye".split()) {
         count++;
