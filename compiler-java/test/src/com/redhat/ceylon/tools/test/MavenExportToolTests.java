@@ -206,4 +206,67 @@ public class MavenExportToolTests extends AbstractToolTests {
         assertFileContainsLine(completePomFile, "                  <include>org.ceylon-lang:*</include>");
         assertFileContainsLine(completePomFile, "                  <include>org.apache.httpcomponents:httpclient</include>");
     }
+
+    @Test
+    public void testExportDistribForSdkImport() throws Exception {
+        ToolModel<CeylonMavenExportTool> model = pluginLoader.loadToolModel("maven-export");
+        Assert.assertNotNull(model);
+        CeylonMavenExportTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                toolOptions("--for-sdk-import",
+                        "--rep", "../../ceylon-sdk/modules",
+                        "ceylon.test/"+Versions.CEYLON_VERSION_NUMBER,
+                        "ceylon.transaction/"+Versions.CEYLON_VERSION_NUMBER,
+                        "ceylon.collection/"+Versions.CEYLON_VERSION_NUMBER,
+                        "ceylon.file/"+Versions.CEYLON_VERSION_NUMBER,
+                        "ceylon.http.server/"+Versions.CEYLON_VERSION_NUMBER));
+        tool.run();
+        
+        File testPomFile = new File(destDir, "ceylon.test/pom.xml");
+        Assert.assertTrue(testPomFile.exists());
+
+        // declare
+        assertFileContainsLine(testPomFile, "    <groupId>org.ceylon-lang</groupId>");
+        assertFileContainsLine(testPomFile, "    <version>"+Versions.CEYLON_VERSION_NUMBER+"</version>");
+        assertFileContainsLine(testPomFile, "  <artifactId>ceylon.test</artifactId>");
+
+        // depends
+        assertFileContainsLine(testPomFile, "      <groupId>org.ceylon-lang</groupId>");
+        assertFileContainsLine(testPomFile, "      <artifactId>jboss-modules</artifactId>");
+        assertFileContainsLine(testPomFile, "      <artifactId>ceylon.language</artifactId>");
+
+        // transaction
+        File transactionPomFile = new File(destDir, "ceylon.transaction/pom.xml");
+        Assert.assertTrue(transactionPomFile.exists());
+
+        // depends
+        assertFileContainsLine(transactionPomFile, "      <groupId>org.jboss.narayana.jta</groupId>");
+        assertFileContainsLine(transactionPomFile, "      <artifactId>narayana-jta</artifactId>");
+
+        // http server
+        File httpServerPomFile = new File(destDir, "ceylon.http.server/pom.xml");
+        Assert.assertTrue(httpServerPomFile.exists());
+
+        // depends
+        assertFileContainsLine(httpServerPomFile, "      <groupId>io.undertow</groupId>");
+        assertFileContainsLine(httpServerPomFile, "      <artifactId>undertow-core</artifactId>");
+        assertFileContainsLine(httpServerPomFile, "      <groupId>org.jboss.xnio</groupId>");
+        assertFileContainsLine(httpServerPomFile, "      <artifactId>xnio-nio</artifactId>");
+
+        // sdk
+        File sdkPomFile = new File(destDir, "ceylon-sdk/pom.xml");
+        Assert.assertTrue(sdkPomFile.exists());
+
+        // declare
+        assertFileContainsLine(sdkPomFile, "    <groupId>org.ceylon-lang</groupId>");
+        assertFileContainsLine(sdkPomFile, "    <version>"+Versions.CEYLON_VERSION_NUMBER+"</version>");
+        assertFileContainsLine(sdkPomFile, "  <artifactId>ceylon-sdk</artifactId>");
+
+        // depends
+        assertFileContainsLine(sdkPomFile, "      <groupId>org.ceylon-lang</groupId>");
+        assertNotFileContainsLine(sdkPomFile, "      <artifactId>com.redhat.ceylon.model</artifactId>");
+        assertNotFileContainsLine(sdkPomFile, "      <artifactId>ceylon.language</artifactId>");
+        assertFileContainsLine(sdkPomFile, "      <artifactId>ceylon.test</artifactId>");
+        assertFileContainsLine(sdkPomFile, "      <artifactId>ceylon.collection</artifactId>");
+        assertFileContainsLine(sdkPomFile, "      <artifactId>ceylon.file</artifactId>");
+    }
 }

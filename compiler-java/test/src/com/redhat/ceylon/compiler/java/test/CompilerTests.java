@@ -1352,6 +1352,14 @@ public abstract class CompilerTests {
     }
     
     protected void assertFileContainsLine(File err, String expectedLine) throws IOException, FileNotFoundException {
+        assertFileContainsLine(err, expectedLine, true);
+    }
+
+    protected void assertNotFileContainsLine(File err, String expectedLine) throws IOException, FileNotFoundException {
+        assertFileContainsLine(err, expectedLine, false);
+    }
+
+    private void assertFileContainsLine(File err, String expectedLine, boolean mustFind) throws IOException, FileNotFoundException {
         boolean found = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(err))) {
             String line = reader.readLine();
@@ -1363,8 +1371,11 @@ public abstract class CompilerTests {
                 }
                 line = reader.readLine();
             }
-            if (!found) {
-                Assert.fail("missing expected line: \"" + expectedLine + "\"");
+            if (mustFind != found) {
+                if(mustFind)
+                    Assert.fail("missing expected line: \"" + expectedLine + "\"");
+                else
+                    Assert.fail("found unwanted line: \"" + expectedLine + "\"");
             }
         }
     }
