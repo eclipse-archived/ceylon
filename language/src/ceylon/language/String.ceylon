@@ -109,23 +109,42 @@ shared native final class String
     
     "Split the string into tokens, using the given 
      [[predicate function|splitting]] to determine which 
-     characters are separator characters.
+     characters are _separator characters_ delimiting token 
+     boundaries.
      
          value pathElements = path.split('/'.equals);
      
      The flags [[discardSeparators]] and [[groupSeparators]]
-     determine how separator characters should occur in the
-     resulting stream.
+     determine how separator characters occur in the
+     resulting stream. 
+     
+     - If `discardSeparators` is enabled, the stream 
+       contains only _regular tokens_ containing adjacent
+       non-separator characters, and the separator 
+       characters are simply discarded.
+     - If `discardSeparators` is disabled, the string is 
+       broken into regular tokens and _separator tokens_
+       containing the separator characters. If 
+       `groupSeparators` is disabled, the separator tokens
+       each contain a single character. If `groupSeparators` 
+       is enabled, adjacent separator characters are grouped
+       into a single token.
      
      The [[limit]] determines the maximum number of 
      non-separator tokens that are returned in the stream. 
      If the limit is exceeded, the remainder of the string 
-     is returned as a separate token at the end of the 
+     is returned as a single token at the end of the 
      resulting stream. For example,
      
          \"foo bar baz fum\".split { limit = 2; }
      
      produces the stream `{ \"foo\", \"bar\", \"baz fum\" }`.
+     
+     If the first character in this string is a separator 
+     character, the stream will begin with an empty token.
+     Likewise, if the last character in this string is a 
+     separator character, and the `limit` is not reached, 
+     the stream will end with an empty token.
      
      Note that for the case of the empty string, `split()` 
      always produces a stream containing a single empty 
@@ -140,19 +159,19 @@ shared native final class String
              to split at any 
              [[whitespace|Character.whitespace]] character."
             Boolean splitting(Character ch) => ch.whitespace,
-            "Specifies that the separator characters
-             occurring in the string should be discarded. If 
-             `false`, they will be included in the resulting 
-             iterator."
+            "Specifies that separator characters occurring 
+             in the string should be discarded. If `false`, 
+             the resulting stream will have separator tokens
+             containing the separator characters."
             Boolean discardSeparators = true,
-            "Specifies that the separator tokens should be 
-             grouped eagerly and not be treated as 
-             single-character tokens. If `false` each 
-             separator token will be of size `1`."
+            "Specifies that adjacent separator characters
+             should be grouped into a single separator 
+             token. If `false` each separator token will
+             contain a single character."
             Boolean groupSeparators = true,
             "Specifies the maximum number of non-separator 
              tokens, with a `null` argument indicating no 
-             limit. If this string contains more 
+             upper limit. If this string contains more 
              non-separator tokens than the given limit, the
              remaining part of the string will be returned
              as a single token at the very end of the stream. 
