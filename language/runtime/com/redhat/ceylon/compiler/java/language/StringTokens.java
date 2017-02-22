@@ -143,15 +143,15 @@ extends BaseIterable<String,java.lang.Object> {
         }
 
         private boolean isRegular() {
-//            if (eof()) return false;
-            int charCodePoint = java.lang.Character.codePointAt(str, index);
-            return !separator.$call$(Character.instance(charCodePoint)).booleanValue();
+            if (eof()) return false;
+            int codePoint = java.lang.Character.codePointAt(str, index);
+            return !separator.$call$(Character.instance(codePoint)).booleanValue();
         }
 
         private boolean isSeparator() {
-//            if (eof()) return false;
-            int charCodePoint = java.lang.Character.codePointAt(str, index);
-            return separator.$call$(Character.instance(charCodePoint)).booleanValue();
+            if (eof()) return false;
+            int codePoint = java.lang.Character.codePointAt(str, index);
+            return separator.$call$(Character.instance(codePoint)).booleanValue();
         }
 
         @Override
