@@ -20,9 +20,11 @@ import ceylon.language.impl.BaseIterator;
 
 @Ceylon(major = 8)
 @Class(extendsType="ceylon.language::Object", basic=false, identifiable=false)
-@SatisfiedTypes("ceylon.language::Iterable<ceylon.language::String,ceylon.language::Null>")
+@SatisfiedTypes("{ceylon.language::String+}")
 public class StringTokens 
 extends BaseIterable<String,java.lang.Object> {
+    
+    private static final long serialVersionUID = -8391084560840739585L;
     
     private final java.lang.String str;
     private final Callable<? extends Boolean> separator;
@@ -51,8 +53,9 @@ extends BaseIterable<String,java.lang.Object> {
         return separator;
     }
     
-    abstract class TokenIterator 
-    extends BaseIterator<String> {
+    private class TokenIterator extends BaseIterator<String> {
+
+        private static final long serialVersionUID = 3972342354562630763L;
 
         public TokenIterator() {
             super(String.$TypeDescriptor$);
@@ -62,7 +65,7 @@ extends BaseIterable<String,java.lang.Object> {
         private boolean first = true;
         private boolean lastTokenWasSeparator = false;
         private int count = 0;
-
+               
         @Override
         public java.lang.Object next() {
             if (!eof()) {
@@ -71,43 +74,53 @@ extends BaseIterable<String,java.lang.Object> {
                 // we returned a separator the last time
                 // and we are still looking at a separator,  
                 // return an empty token once
-                if (((first && start == 0) || lastTokenWasSeparator)
-                        && peekSeparator()) {
+                if ((first || lastTokenWasSeparator)
+                        && isSeparator()) {
                     first = false;
                     lastTokenWasSeparator = false;
                     count++;
                     return String.instance("");
                 }
+                
                 // are we looking at a separator
-                if (eatSeparator()) {
+                if (isSeparator()) {
+                    advance();
                     if (groupSeparators) {
-                        // eat them all in one go if we 
-                        // group them
-                        do {} while(eatSeparator());
+                        // eat them all in one go  
+                        // if we group them
+                        while (isSeparator()) {
+                            advance();
+                        }
                     }
                     // do we return them?
                     if (keepSeparators) {
                         lastTokenWasSeparator = true;
+                        first = false;
                         return String.instance(str.substring(start, index));
                     }
                     // keep going and eat the next word
                     start = index;
                 }
-                // eat until the next separator
-                while(!eof() && !peekSeparator()) {
-                    eatChar();
+                
+                if (limit!=null && count>=limit.longValue()) {
+                    advanceToEnd();
                 }
+                else {
+                    // eat until the next separator
+                    while (isRegular()) {
+                        advance();
+                    }
+                }
+                first = false;
                 lastTokenWasSeparator = false;
                 count++;
-                if (limit!=null && count>limit.longValue()) {
-                    index = str.length();
-                }
                 return String.instance(str.substring(start, index));
             }
             else if (lastTokenWasSeparator) {
                 // we're missing a last empty token before 
                 // the EOF because the string ended with a 
                 // returned separator
+                first = false;
                 lastTokenWasSeparator = false;
                 count++;
                 return String.instance("");
@@ -116,27 +129,30 @@ extends BaseIterable<String,java.lang.Object> {
                 return finished_.get_();
             }
         }
+
+        private void advanceToEnd() {
+            index = str.length();
+        }
         
-        protected boolean eof() {
+        private void advance() {
+            index += java.lang.Character.charCount(str.codePointAt(index));
+        }
+
+        private boolean eof() {
             return index >= str.length();
         }
 
-        private boolean eatSeparator() {
-            boolean ret = peekSeparator();
-            if (ret) eatChar();
-            return ret;
+        private boolean isRegular() {
+//            if (eof()) return false;
+            int charCodePoint = java.lang.Character.codePointAt(str, index);
+            return !separator.$call$(Character.instance(charCodePoint)).booleanValue();
         }
 
-        private void eatChar() {
-            if (java.lang.Character.isHighSurrogate(str.charAt(index))) {
-                index += 2;
-            }
-            else {
-                index++;
-            }
+        private boolean isSeparator() {
+//            if (eof()) return false;
+            int charCodePoint = java.lang.Character.codePointAt(str, index);
+            return separator.$call$(Character.instance(charCodePoint)).booleanValue();
         }
-
-        protected abstract boolean peekSeparator();
 
         @Override
         @Ignore
@@ -147,20 +163,12 @@ extends BaseIterable<String,java.lang.Object> {
 
     @Override
     public Iterator<? extends String> iterator() {
-
-        return new TokenIterator() {
-            protected final boolean peekSeparator() {
-                if (eof()) return false;
-                int charCodePoint = java.lang.Character.codePointAt(str, index);
-                return separator.$call$(Character.instance(charCodePoint)).booleanValue();
-            }
-        };
-
+        return new TokenIterator();
     }
 
     @Override
     public boolean getEmpty() {
-        return iterator().next() == finished_.get_();
+        return false;
     }
     
     @Override
