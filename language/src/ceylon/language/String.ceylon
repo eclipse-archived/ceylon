@@ -117,6 +117,16 @@ shared native final class String
      determine how separator characters should occur in the
      resulting stream.
      
+     The [[limit]] determines the maximum number of 
+     non-separator tokens that are returned in the stream. 
+     If the limit is exceeded, the remainder of the string 
+     is returned as a separate token at the end of the 
+     resulting stream. For example,
+     
+         \"foo bar baz fum\".split { limit = 2; }
+     
+     produces the stream `{ \"foo\", \"bar\", \"baz fum\" }`.
+     
      Note that for the case of the empty string, `split()` 
      always produces a stream containing a single empty 
      token. For example:
