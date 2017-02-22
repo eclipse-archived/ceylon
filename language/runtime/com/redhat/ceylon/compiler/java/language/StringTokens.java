@@ -69,7 +69,6 @@ extends BaseIterable<String,java.lang.Object> {
         @Override
         public java.lang.Object next() {
             if (!eof()) {
-                int start = index;
                 if ((first || lastTokenWasSeparator)
                         && isSeparator()) {
                     // if we start with a separator, 
@@ -82,6 +81,7 @@ extends BaseIterable<String,java.lang.Object> {
                 
                 // are we looking at a separator
                 if (isSeparator()) {
+                    int start = index;
                     advance();
                     if (groupSeparators) {
                         // eat them all in one go  
@@ -94,13 +94,9 @@ extends BaseIterable<String,java.lang.Object> {
                         // return it
                         return token(start, true);
                     }
-                    else {
-                        // discard it, keep going 
-                        // and eat the next word
-                        start = index;
-                    }
                 }
                 
+                int start = index;
                 if (limit!=null && count>=limit.longValue()) {
                     advanceToEnd();
                 }
