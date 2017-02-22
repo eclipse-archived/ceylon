@@ -115,7 +115,7 @@ public class Decl {
      * @return true if the declaration is a getter
      */
     public static boolean isGetter(Declaration decl) {
-        return (decl instanceof Value) 
+        return decl instanceof Value
                 && !((Value)decl).isParameter() 
                 && ((Value)decl).isTransient();
     }
@@ -1153,7 +1153,9 @@ public class Decl {
         if (ctor.isClassMember() && "with".equals(ctor.getName())) {
             Unit unit = ctor.getUnit();
             Scope cls = ctor.getContainer();
-            return unit.getJavaObjectArrayDeclaration().equals(cls);
+            if (cls instanceof Class) {
+                return cls.equals(unit.getJavaObjectArrayDeclaration());
+            }
         }
         return false;
     }
@@ -1162,15 +1164,17 @@ public class Decl {
         if (decl.isClassMember() && "from".equals(decl.getName())) {
             Unit unit = decl.getUnit();
             Scope cls = decl.getContainer();
-            return unit.getJavaObjectArrayDeclaration().equals(cls)
-                || unit.getJavaIntArrayDeclaration().equals(cls)
-                || unit.getJavaLongArrayDeclaration().equals(cls)
-                || unit.getJavaShortArrayDeclaration().equals(cls)
-                || unit.getJavaDoubleArrayDeclaration().equals(cls)
-                || unit.getJavaFloatArrayDeclaration().equals(cls)
-                || unit.getJavaCharArrayDeclaration().equals(cls)
-                || unit.getJavaByteArrayDeclaration().equals(cls)
-                || unit.getJavaBooleanArrayDeclaration().equals(cls);
+            if (cls instanceof Class) {
+                return cls.equals(unit.getJavaObjectArrayDeclaration())
+                    || cls.equals(unit.getJavaIntArrayDeclaration())
+                    || cls.equals(unit.getJavaLongArrayDeclaration())
+                    || cls.equals(unit.getJavaShortArrayDeclaration())
+                    || cls.equals(unit.getJavaDoubleArrayDeclaration())
+                    || cls.equals(unit.getJavaFloatArrayDeclaration())
+                    || cls.equals(unit.getJavaCharArrayDeclaration())
+                    || cls.equals(unit.getJavaByteArrayDeclaration())
+                    || cls.equals(unit.getJavaBooleanArrayDeclaration());
+            }
         }
         return false;
     }
