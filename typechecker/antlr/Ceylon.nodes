@@ -923,7 +923,8 @@
 ^(ANNOTATION:INVOCATION_EXPRESSION)
 "An abbreviated doc annotation."
 ^(ANONYMOUS_ANNOTATION
-    STRING_LITERAL)
+    STRING_LITERAL?
+    STRING_TEMPLATE?)
 
 "A list of annotations of a program element."
 ^(ANNOTATION_LIST 

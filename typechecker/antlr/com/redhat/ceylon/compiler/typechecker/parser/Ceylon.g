@@ -967,10 +967,10 @@ aliasDeclaration returns [TypeAliasDeclaration declaration]
     ;
 
 assertion returns [Assertion assertion]
-    : annotations
+    : assertMessage
       ASSERT
       { $assertion = new Assertion($ASSERT); 
-        $assertion.setAnnotationList($annotations.annotationList); }
+        $assertion.setAnnotationList($assertMessage.annotationList); }
       conditions
       { $assertion.setConditionList($conditions.conditionList); }
       { expecting=SEMICOLON; }
@@ -1582,7 +1582,7 @@ annotatedDeclarationStart
     ;
 
 annotatedAssertionStart
-    : stringLiteral? annotation* ASSERT
+    : stringExpression? ASSERT
     ;
 
 //special rule for syntactic predicates
@@ -3678,14 +3678,14 @@ memberNameWithArguments returns [Identifier identifier,
 annotations returns [AnnotationList annotationList]
     : { $annotationList = new AnnotationList(null); }
       (
-          stringLiteral
-          { if ($stringLiteral.stringLiteral.getToken().getType()==VERBATIM_STRING)
-                $stringLiteral.stringLiteral.getToken().setType(AVERBATIM_STRING);
-            else
-                $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL);
-            AnonymousAnnotation aa = new AnonymousAnnotation(null);
-            aa.setStringLiteral($stringLiteral.stringLiteral);
-            $annotationList.setAnonymousAnnotation(aa); }
+        stringLiteral
+        { if ($stringLiteral.stringLiteral.getToken().getType()==VERBATIM_STRING)
+              $stringLiteral.stringLiteral.getToken().setType(AVERBATIM_STRING);
+          else
+              $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL);
+          AnonymousAnnotation aa = new AnonymousAnnotation(null);
+          aa.setStringLiteral($stringLiteral.stringLiteral);
+          $annotationList.setAnonymousAnnotation(aa); }
       )?
       (
         annotation 
@@ -3716,6 +3716,24 @@ annotation returns [Annotation annotation]
       { $annotation.setNamedArgumentList($namedArguments.namedArgumentList); }
     | { $annotation.setPositionalArgumentList(new PositionalArgumentList(null)); }
     )
+    ;
+
+assertMessage returns [AnnotationList annotationList]
+    : { $annotationList = new AnnotationList(null); }
+      (
+        (stringLiteral) => stringLiteral
+        { if ($stringLiteral.stringLiteral.getToken().getType()==VERBATIM_STRING)
+              $stringLiteral.stringLiteral.getToken().setType(AVERBATIM_STRING);
+          else
+              $stringLiteral.stringLiteral.getToken().setType(ASTRING_LITERAL);
+          AnonymousAnnotation aa = new AnonymousAnnotation(null);
+          aa.setStringLiteral($stringLiteral.stringLiteral);
+          $annotationList.setAnonymousAnnotation(aa); }
+      | stringExpression
+        { AnonymousAnnotation aa = new AnonymousAnnotation(null);
+          aa.setStringTemplate((StringTemplate) $stringExpression.atom);
+          $annotationList.setAnonymousAnnotation(aa); }
+      )?
     ;
 
 prefixOperatorStart
