@@ -173,15 +173,13 @@ native("jvm") class StringTokens
         
         value separator
                 => !eof
-                && outer.separator(string.codePointAt(index)
-            .character);
+                && outer.separator(string.codePointAt(index).character);
         
         value regular
                 => !eof
-                && !outer.separator(string.codePointAt(index)
-            .character);
+                && !outer.separator(string.codePointAt(index).character);
         
-        function token(Integer start, Boolean separator) {
+        String token(Integer start, Boolean separator) {
             if (!separator) {
                 count ++;
             }
@@ -190,7 +188,7 @@ native("jvm") class StringTokens
             return string.substring(start, index);
         }
         
-        function emptyToken() {
+        String emptyToken() {
             count ++;
             first = false;
             lastTokenWasSeparator = false;
