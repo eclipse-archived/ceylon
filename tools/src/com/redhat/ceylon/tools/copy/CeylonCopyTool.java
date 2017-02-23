@@ -46,6 +46,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     
     private Boolean jvm;
     private Boolean js;
+    private Boolean dart;
     private Boolean docs;
     private Boolean src;
     private Boolean scripts;
@@ -113,6 +114,12 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     }
 
     @Option
+    @Description("Include artifacts compiled for Dart (`.dart` and `-dartmodel.json`) (default: `true`)")
+    public void setDart(boolean dart) {
+        this.dart = dart;
+    }
+
+    @Option
     @Description("Include documentation (default: `false`)")
     public void setDocs(boolean docs) {
         this.docs = docs;
@@ -170,6 +177,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         Set<String> artifacts = new LinkedHashSet<String>();
         boolean defaults = js == null 
                 && jvm == null
+                && dart == null
                 && src == null
                 && scripts == null
                 && docs == null
@@ -197,6 +205,15 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             artifacts.remove(ArtifactContext.JAR);
             artifacts.remove(ArtifactContext.MODULE_PROPERTIES);
             artifacts.remove(ArtifactContext.MODULE_XML);
+        }
+        if (BooleanUtil.isTrue(dart) || defaults) {
+            artifacts.add(ArtifactContext.DART);
+            artifacts.add(ArtifactContext.DART_MODEL);
+            artifacts.add(ArtifactContext.RESOURCES);
+        } else if (BooleanUtil.isFalse(dart)) {
+            artifacts.remove(ArtifactContext.DART);
+            artifacts.remove(ArtifactContext.DART_MODEL);
+            artifacts.remove(ArtifactContext.RESOURCES);
         }
         if (BooleanUtil.isTrue(src)) {
             artifacts.add(ArtifactContext.SRC);

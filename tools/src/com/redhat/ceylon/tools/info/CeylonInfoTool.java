@@ -173,7 +173,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     @OptionArgument(argumentName = "type")
     @Description("The artifact types to show information for. " +
-            "Allowed values include: `all`, `jvm`, `car`, `jar`, `js`, `src`, `code`, `ceylon` (default is `all`).")
+            "Allowed values include: `all`, `jvm`, `car`, `jar`, `js`, `dart`, `src`, `code`, `ceylon` (default is `all`).")
     public void setShowType(String showType) {
         this.showType = showType;
     }
@@ -243,6 +243,8 @@ public class CeylonInfoTool extends RepoUsingTool {
                 queryType = ModuleQuery.Type.JVM;
             } else if ("js".equalsIgnoreCase(showType)) {
                 queryType = ModuleQuery.Type.JS;
+            } else if ("dart".equalsIgnoreCase(showType)) {
+                queryType = ModuleQuery.Type.DART;
             } else if ("src".equalsIgnoreCase(showType)) {
                 queryType = ModuleQuery.Type.SRC;
             } else if ("all".equalsIgnoreCase(showType)) {
@@ -701,8 +703,10 @@ public class CeylonInfoTool extends RepoUsingTool {
                     }
                     append(")");
                     js = true;
+                } else if (suffix.equalsIgnoreCase(ArtifactContext.DART)) {
+                    append("Dart");
                 } else if (suffix.equalsIgnoreCase(ArtifactContext.RESOURCES)) {
-                    append("JS Resources");
+                    append("non-JVM Resources");
                 } else if (suffix.equalsIgnoreCase(ArtifactContext.DOCS)) {
                     if (docs) {
                         skipComma = true;
