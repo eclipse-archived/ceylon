@@ -7,6 +7,11 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,9 +22,11 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
 import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
@@ -33,6 +40,7 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 /**
@@ -52,6 +60,9 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
     private String run;
     private boolean includeLanguage;
     private boolean includeRuntime;
+    private Boolean jvm;
+    private Boolean js;
+    private Boolean dart;
     
     public static final String CEYLON_ASSEMBLY_SUFFIX = ".cas";
 
@@ -125,8 +136,54 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
         this.includeRuntime = includeRuntime;
     }
 
+    @Option
+    @Description("Include artifacts compiled for the JVM (`.car` and `.jar`) (default: `true`)")
+    public void setJvm(boolean jvm) {
+        this.jvm = jvm;
+    }
+
+    @Option
+    @Description("Include artifacts compiled for JavaScript (`.js` and `-model.js`) (default: `false`)")
+    public void setJs(boolean js) {
+        this.js = js;
+    }
+
+    @Option
+    @Description("Include artifacts compiled for Dart (`.dart` and `-dartmodel.json`) (default: `true`)")
+    public void setDart(boolean dart) {
+        this.dart = dart;
+    }
+
     @Override
     public void run() throws Exception {
+        // Determine the artifacts we'll include in the assembly
+        ModuleQuery.Type mqt = ModuleQuery.Type.JVM;
+        ArrayList<String> sfx = new ArrayList<String>();
+        boolean defaults = js == null 
+                && jvm == null
+                && dart == null;
+        if (BooleanUtil.isTrue(dart) || defaults) {
+            sfx.add(ArtifactContext.DART);
+            sfx.add(ArtifactContext.DART_MODEL);
+            sfx.add(ArtifactContext.RESOURCES);
+            mqt = ModuleQuery.Type.DART;
+        }
+        if (BooleanUtil.isTrue(js) || defaults) {
+            sfx.add(ArtifactContext.JS);
+            sfx.add(ArtifactContext.JS_MODEL);
+            sfx.add(ArtifactContext.RESOURCES);
+            mqt = ModuleQuery.Type.JS;
+        }
+        if (BooleanUtil.isTrue(jvm) || defaults) {
+            // put the CAR first since its presence will shortcut the other three
+            sfx.add(ArtifactContext.CAR);
+            sfx.add(ArtifactContext.JAR);
+            sfx.add(ArtifactContext.MODULE_PROPERTIES);
+            sfx.add(ArtifactContext.MODULE_XML);
+            mqt = ModuleQuery.Type.JVM;
+        }
+        final String[] assemblySuffixes = sfx.toArray(new String[] {});
+        
         if (includeRuntime) {
             // includeRuntime implies includeLanguage
             includeLanguage = true;
@@ -138,10 +195,11 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
             String version = checkModuleVersionsOrShowSuggestions(
                     moduleName,
                     module.isVersioned() ? module.getVersion() : null,
-                    ModuleQuery.Type.JVM,
+                    mqt,
                     Versions.JVM_BINARY_MAJOR_VERSION,
                     Versions.JVM_BINARY_MINOR_VERSION,
-                    null, null, // JS binary but don't care since JVM
+                    Versions.JS_BINARY_MAJOR_VERSION,
+                    Versions.JS_BINARY_MINOR_VERSION,
                     null);
             if(version == null)
                 return;
@@ -169,6 +227,7 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
         }
         final Set<String> added = new HashSet<>();
 
+        // Create a MANIFEST.MF and add it to the assembly
         Manifest manifest = new Manifest();
         Attributes mainAttributes = manifest.getMainAttributes();
         mainAttributes.putValue("Manifest-Version", "1.0");
@@ -216,6 +275,7 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
                 }
             }
             
+            // Visit the module and all its dependencies
             loader.visitModules(new ModuleGraph.Visitor() {
                 @Override
                 public void visit(ModuleGraph.Module module) {
@@ -228,18 +288,12 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
                                     newline();
                                 }
                                 if (module.artifact.namespace() == null) {
-                                    String name = "modules/" + moduleToPath(module.name) + "/" + module.version + "/" + file.getName();
-                                    addEntry(zipFile, file, name);
-                                    // See if there are any module files to copy as well
-                                    File mfile = new File(file.getParentFile(), "module.xml");
-                                    if (mfile.isFile()) {
-                                        name = "modules/" + moduleToPath(module.name) + "/" + module.version + "/" + mfile.getName();
-                                        addEntry(zipFile, mfile, name);
-                                    }
-                                    mfile = new File(file.getParentFile(), "module.properties");
-                                    if (mfile.isFile()) {
-                                        name = "modules/" + moduleToPath(module.name) + "/" + module.version + "/" + mfile.getName();
-                                        addEntry(zipFile, mfile, name);
+                                    // Copy all the "interesting" artifacts to the assembly, not just the JVM one
+                                    ArtifactContext ac = new ArtifactContext(module.artifact.namespace(), module.artifact.name(), module.artifact.version(), assemblySuffixes);
+                                    List<ArtifactResult> artifacts = getRepositoryManager().getArtifactResults(ac);
+                                    for (ArtifactResult ar : artifacts) {
+                                        String name = "modules/" + moduleToPath(module.name) + "/" + module.version + "/" + ar.artifact().getName();
+                                        addEntry(zipFile, ar.artifact(), name);
                                     }
                                 } else if (module.artifact.namespace().equals("maven")) {
                                     String name = "maven/" + moduleToPath(module.name) + "/" + module.version + "/" + file.getName();
@@ -264,7 +318,27 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
                     return ModuleUtil.moduleToPath(name).getPath().replace(':', File.separatorChar);
                 }
 
-                private void addEntry(ZipOutputStream zipFile, File file, String name) throws IOException {
+                private void addEntry(final ZipOutputStream zipFile, final File file, final String name) throws IOException {
+                    if (file.isFile()) {
+                        addFileEntry(zipFile, file, name);
+                    } else if (file.isDirectory()) {
+                        Files.walkFileTree(file.toPath(), new SimpleFileVisitor<Path>() {
+                            @Override
+                            public FileVisitResult visitFile(Path path,
+                                    BasicFileAttributes attrs)
+                                    throws IOException {
+                                if (path.toFile().isFile()) {
+                                    Path relPath = file.toPath().relativize(path);
+                                    String newName = name + "/" + relPath;
+                                    addFileEntry(zipFile, path.toFile(), newName);
+                                }
+                                return super.visitFile(path, attrs);
+                            }
+                        });
+                    }
+                }
+
+                private void addFileEntry(ZipOutputStream zipFile, File file, String name) throws IOException {
                     try (InputStream is = new FileInputStream(file)) {
                         zipFile.putNextEntry(new ZipEntry(name));
                         IOUtils.copyStream(is, zipFile, true, false);
