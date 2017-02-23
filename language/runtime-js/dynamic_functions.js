@@ -120,7 +120,7 @@ function dre$$(object, type, loc, stack) {
             } else {
               var _t=proptype.$t;
               if (typeof(_t)==='string') {
-                if (object.$$targs$$[_t]) {
+                if (object.$$targs$$ && object.$$targs$$[_t]) {
                   _t=object.$$targs$$[_t];
                 } else {
                   var mm=getrtmm$$(type.t);
@@ -181,7 +181,7 @@ function ndnc$(n,t,loc) {
 ex$.ndnc$=ndnc$;
 //Check if an object if really of a certain type
 function ndtc$(o,t,loc) {
-  if (is$(o,t))return o;
+  if (t==='$U' || is$(o,t))return o;
   if (loc===false)return false;
   throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
 }
