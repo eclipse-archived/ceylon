@@ -406,13 +406,13 @@ public class CeylonRunJsTool extends RepoUsingTool {
         super.initialize(mainTool);
         
         if (module == null) {
-            module = DefaultToolOptions.getRunToolModule(com.redhat.ceylon.common.Backend.Java);
+            module = DefaultToolOptions.getRunToolModule(com.redhat.ceylon.common.Backend.JavaScript);
             if (module != null) {
                 if (func == null) {
-                    func = DefaultToolOptions.getRunToolRun(com.redhat.ceylon.common.Backend.Java);
+                    func = DefaultToolOptions.getRunToolRun(com.redhat.ceylon.common.Backend.JavaScript);
                 }
                 if (args == null || args.isEmpty()) {
-                    args = DefaultToolOptions.getRunToolArgs(com.redhat.ceylon.common.Backend.Java);
+                    args = DefaultToolOptions.getRunToolArgs(com.redhat.ceylon.common.Backend.JavaScript);
                 }
             } else {
                 throw new IllegalArgumentException("Missing required argument 'module' to command 'run'");
