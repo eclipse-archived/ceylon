@@ -62,7 +62,8 @@ public class DefaultToolOptions {
     public final static String SECTION_TESTTOOL = "testtool";
     
     public final static String TESTTOOL_COMPILE = "testtool.compile";
-    
+
+    public final static String KEY_COMPILE = "compile";
     public final static String KEY_MODULE = "module";
     public final static String KEY_ARG = "arg";
     public final static String KEY_RUN = "run";
@@ -401,12 +402,14 @@ public class DefaultToolOptions {
         return values != null ? Arrays.asList(values) : null;
     }
     
-    public static String getRunToolCompileFlags() {
-        return getRunToolCompileFlags(CeylonConfig.get());
+    public static String getRunToolCompileFlags(Backend backend) {
+        return getRunToolCompileFlags(CeylonConfig.get(), backend);
     }
 
-    public static String getRunToolCompileFlags(CeylonConfig config) {
-        return config.getOption(RUNTOOL_COMPILE, Constants.DEFAULT_RUNTOOL_COMPILATION_FLAGS);
+    public static String getRunToolCompileFlags(CeylonConfig config, Backend backend) {
+        return config.getOption(key(SECTION_RUNTOOL, KEY_COMPILE, backend),
+                config.getOption(key(SECTION_RUNTOOL, KEY_COMPILE),
+                        Constants.DEFAULT_RUNTOOL_COMPILATION_FLAGS));
     }
     
     public static String getRunToolModule(Backend backend) {
@@ -443,14 +446,16 @@ public class DefaultToolOptions {
         }
     }
     
-    public static String getTestToolCompileFlags() {
-        return getTestToolCompileFlags(CeylonConfig.get());
+    public static String getTestToolCompileFlags(Backend backend) {
+        return getTestToolCompileFlags(CeylonConfig.get(), backend);
     }
 
-    public static String getTestToolCompileFlags(CeylonConfig config) {
-        return config.getOption(TESTTOOL_COMPILE, Constants.DEFAULT_TESTTOOL_COMPILATION_FLAGS);
+    public static String getTestToolCompileFlags(CeylonConfig config, Backend backend) {
+        return config.getOption(key(SECTION_TESTTOOL, KEY_COMPILE, backend),
+                config.getOption(key(SECTION_TESTTOOL, KEY_COMPILE),
+                        Constants.DEFAULT_TESTTOOL_COMPILATION_FLAGS));
     }
-    
+
     private static String key(String section, String key) {
         return key(section, key, null);
     }

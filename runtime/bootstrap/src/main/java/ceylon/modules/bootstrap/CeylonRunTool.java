@@ -254,7 +254,7 @@ public class CeylonRunTool extends RepoUsingTool {
 
     @Override
     public void run() throws IOException {
-        compileFlags = processCompileFlags(compileFlags, DefaultToolOptions.getRunToolCompileFlags());
+        compileFlags = processCompileFlags(compileFlags, DefaultToolOptions.getRunToolCompileFlags(com.redhat.ceylon.common.Backend.Java));
         
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(
