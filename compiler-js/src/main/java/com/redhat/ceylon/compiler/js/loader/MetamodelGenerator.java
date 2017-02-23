@@ -617,7 +617,7 @@ public class MetamodelGenerator {
             return null;
         }
         m.put(KEY_NAME, d.getName());
-        m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
+        m.put(KEY_METATYPE, (d instanceof Value && d.isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
         m.put(KEY_TYPE, typeMap(d.getType(), d));
         if (d.isDynamic()) {
             m.put(KEY_DYNAMIC, 1);

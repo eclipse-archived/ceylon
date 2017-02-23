@@ -1109,7 +1109,8 @@ public class TypeUtils {
             Type pt, SiteVariance useSiteVariance, GenerateJsVisitor gen) {
         if (pt == null) {
             //In dynamic blocks we sometimes get a null producedType
-            pt = node.getUnit().getAnythingType();
+            gen.out("'$U'");
+            return;
         }
         if (!outputMetamodelTypeList(resolveTargsFromScope, node, pkg, pt, gen)) {
             TypeDeclaration type = pt.getDeclaration();

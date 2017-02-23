@@ -214,7 +214,7 @@ public class AttributeGenerator {
     static void addGetterAndSetterToPrototype(final TypeDeclaration outer, final Tree.AttributeDeclaration that,
             final GenerateJsVisitor gen, final boolean verboseStitcher) {
         final Value d = that.getDeclarationModel();
-        if (!gen.opts.isOptimize()||d.isToplevel()||d.getTypeDeclaration()==null) return;
+        if (!gen.opts.isOptimize()||d.isToplevel()) return;
         gen.comment(that);
         final String atname = gen.getNames().valueName(d);
         final String outerName = d.isStatic() ? gen.getNames().name(outer) + ".$st$" : gen.getNames().self(outer);
