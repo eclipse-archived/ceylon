@@ -57,12 +57,12 @@ public class MavenRepositoryBuilder implements RepositoryBuilder {
     }
 
     @Override
-    public CmrRepository buildRepository(String token) throws Exception {
+    public CmrRepository[] buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
     @Override
-    public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
+    public CmrRepository[] buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.equals("aether") || token.equals("aether:") || token.equals("aether:/#")
                 || token.equals("mvn") || token.equals("mvn:") || token.equals("mvn:/#")
                 || token.equals("maven") || token.equals("maven:") || token.equals("maven:/#")) {
@@ -78,7 +78,7 @@ public class MavenRepositoryBuilder implements RepositoryBuilder {
         }
     }
 
-    private CmrRepository createMavenRepository(String token, String prefix, RepositoryBuilderConfig config) throws Exception {
+    private CmrRepository[] createMavenRepository(String token, String prefix, RepositoryBuilderConfig config) throws Exception {
         String settingsXml = null;
         if (prefix != null) {
             String settings = token.substring(prefix.length());
@@ -92,6 +92,7 @@ public class MavenRepositoryBuilder implements RepositoryBuilder {
         }
         Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
         Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class, String.class);
-        return (CmrRepository) createRepository.invoke(null, config.log, settingsXml, config.offline, config.timeout, config.currentDirectory);
+        CmrRepository repo = (CmrRepository)createRepository.invoke(null, config.log, settingsXml, config.offline, config.timeout, config.currentDirectory);
+        return new CmrRepository[] { repo };
     }
 }

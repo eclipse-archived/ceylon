@@ -43,14 +43,14 @@ public class FlatRepositoryBuilder implements RepositoryBuilder {
     }
 
     @Override
-    public CmrRepository buildRepository(String token) throws Exception {
+    public CmrRepository[] buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
     @Override
-    public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
+    public CmrRepository[] buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.startsWith("flat:")) {
-            return createFlatRepository(token);
+            return new CmrRepository[] { createFlatRepository(token) };
         } else {
             return null;
         }

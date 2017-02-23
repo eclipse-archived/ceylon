@@ -39,14 +39,14 @@ public class JDKRepositoryBuilder implements RepositoryBuilder {
     }
 
     @Override
-    public CmrRepository buildRepository(String token) throws Exception {
+    public CmrRepository[] buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
     @Override
-    public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
+    public CmrRepository[] buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.equals("jdk") || token.equals("jdk:") || token.equals("jdk:/#")) {
-            return new JDKRepository();
+            return new CmrRepository[] { new JDKRepository() };
         } else {
             return null;
         }

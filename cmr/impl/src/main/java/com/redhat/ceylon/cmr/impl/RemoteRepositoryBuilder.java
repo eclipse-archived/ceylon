@@ -39,15 +39,15 @@ public class RemoteRepositoryBuilder implements RepositoryBuilder {
     }
 
     @Override
-    public CmrRepository buildRepository(String token) throws Exception {
+    public CmrRepository[] buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
     @Override
-    public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
+    public CmrRepository[] buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.startsWith("http:") || token.startsWith("https:")) {
             RemoteContentStore cs = new RemoteContentStore(token, config.log, config.offline, config.timeout, config.proxy);
-            return new DefaultRepository(cs.createRoot());
+            return new CmrRepository[] { new DefaultRepository(cs.createRoot()) };
         } else {
             return null;
         }

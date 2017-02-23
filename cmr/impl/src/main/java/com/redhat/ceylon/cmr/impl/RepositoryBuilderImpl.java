@@ -50,11 +50,11 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         localBuilder = new LocalRepositoryBuilder();
     }
     
-    public CmrRepository buildRepository(String token) throws Exception {
+    public CmrRepository[] buildRepository(String token) throws Exception {
         return buildRepository(token, defaultConfig);
     }
 
-    public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
+    public CmrRepository[] buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token == null)
             throw new IllegalArgumentException("Null repository");
 
@@ -64,9 +64,9 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
             token = temp;
 
         for (RepositoryBuilder builder : builders) {
-            CmrRepository repo = builder.buildRepository(token, config);
-            if (repo != null) {
-                return repo;
+            CmrRepository[] repos = builder.buildRepository(token, config);
+            if (repos != null) {
+                return repos;
             }
         }
         

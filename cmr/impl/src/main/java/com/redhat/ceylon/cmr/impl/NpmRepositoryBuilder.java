@@ -46,12 +46,12 @@ public class NpmRepositoryBuilder implements RepositoryBuilder {
     }
 
     @Override
-    public CmrRepository buildRepository(String token) throws Exception {
+    public CmrRepository[] buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
     @Override
-    public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
+    public CmrRepository[] buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.equals("npm:") || token.equals("npm:/#")) {
             return createNpmRepository("npm:", config.log, config.offline, config.currentDirectory);
         } else if (token.startsWith("npm:")) {
@@ -61,7 +61,7 @@ public class NpmRepositoryBuilder implements RepositoryBuilder {
         }
     }
     
-    private CmrRepository createNpmRepository(String token, Logger log, boolean offline, String currentDirectory) {
+    private CmrRepository[] createNpmRepository(String token, Logger log, boolean offline, String currentDirectory) {
         File local = new File(currentDirectory, "node_modules");
         
         String nodePath = token.substring(4);
@@ -86,6 +86,6 @@ public class NpmRepositoryBuilder implements RepositoryBuilder {
         }
         
         NpmContentStore cs = new NpmContentStore(roots, out, log, offline);
-        return new NpmRepository(cs.createRoot());
+        return new CmrRepository[] { new NpmRepository(cs.createRoot()) };
     }
 }

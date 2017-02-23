@@ -77,12 +77,12 @@ public class AssemblyRepositoryBuilder implements RepositoryBuilder {
     }
 
     @Override
-    public CmrRepository buildRepository(String token) throws Exception {
+    public CmrRepository[] buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
     @Override
-    public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
+    public CmrRepository[] buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.startsWith("assembly:")) {
             token = token.substring(9);
             // Check if the token has a repo folder element
@@ -108,16 +108,17 @@ public class AssemblyRepositoryBuilder implements RepositoryBuilder {
             }
             
             // The modules might be an a sub-folder of the assembly, not in the root
+            File modulesFolder = tmpAssemblyFolder;
             if (repoFolder != null && !repoFolder.isEmpty()) {
-                tmpAssemblyFolder = new File(tmpAssemblyFolder, repoFolder);
-                if (!tmpAssemblyFolder.isDirectory()) {
+                modulesFolder = new File(modulesFolder, repoFolder);
+                if (!modulesFolder.isDirectory()) {
                     throw new IllegalArgumentException("No such repository folder within the assembly: " + repoFolder);
                 }
             }
             
             // New return a common file content store from the unpacked assembly
             FileContentStore cs = new FileContentStore(tmpAssemblyFolder);
-            return new DefaultRepository(cs.createRoot());
+                return new CmrRepository[] { defRepo };
         } else {
             return null;
         }

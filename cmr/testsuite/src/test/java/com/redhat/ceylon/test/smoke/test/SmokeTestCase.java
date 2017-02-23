@@ -87,8 +87,10 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testGetMultiple() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
-        CmrRepository externalRepo = builder.repositoryBuilder().buildRepository(Constants.REPO_URL_CEYLON);
-        builder.addRepository(externalRepo);
+        CmrRepository[] externalRepos = builder.repositoryBuilder().buildRepository(Constants.REPO_URL_CEYLON);
+        for (CmrRepository repo : externalRepos) {
+            builder.addRepository(repo);
+        }
         RepositoryManager manager = builder.buildRepository();
 
         ArtifactContext artifact = new ArtifactContext(null, "ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.JS);
@@ -103,8 +105,10 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testGetMultipleCached() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
-        CmrRepository externalRepo = builder.repositoryBuilder().buildRepository(Constants.REPO_URL_CEYLON);
-        builder.addRepository(externalRepo);
+        CmrRepository[] externalRepos = builder.repositoryBuilder().buildRepository(Constants.REPO_URL_CEYLON);
+        for (CmrRepository repo : externalRepos) {
+            builder.addRepository(repo);
+        }
         RepositoryManager manager = builder.buildRepository();
 
         ArtifactContext artifact1 = new ArtifactContext(null, "ceylon.json", "1.0.0", ArtifactContext.CAR, ArtifactContext.SCRIPTS_ZIPPED, ArtifactContext.JS);
@@ -501,8 +505,10 @@ public class SmokeTestCase extends AbstractTest {
     public void testPropertiesGet() throws Exception {
         RepositoryManagerBuilder builder = getRepositoryManagerBuilder(false, 60000, java.net.Proxy.NO_PROXY);
         RepositoryBuilder rb = builder.repositoryBuilder();
-        CmrRepository repository = rb.buildRepository(Constants.REPO_URL_CEYLON);
-        builder.addRepository(repository);
+        CmrRepository[] repositories = rb.buildRepository(Constants.REPO_URL_CEYLON);
+        for (CmrRepository repo : repositories) {
+            builder.addRepository(repo);
+        }
         RepositoryManager manager = builder.buildRepository();
 
         ArtifactContext context = new ArtifactContext(null, "io.undertow.core", "1.0.0.Alpha1-9fdfd5f766", ArtifactContext.JAR);

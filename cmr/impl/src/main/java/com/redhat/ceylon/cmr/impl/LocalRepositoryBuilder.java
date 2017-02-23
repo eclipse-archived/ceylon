@@ -40,12 +40,12 @@ public class LocalRepositoryBuilder implements RepositoryBuilder {
     }
 
     @Override
-    public CmrRepository buildRepository(String token) throws Exception {
+    public CmrRepository[] buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
     @Override
-    public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
+    public CmrRepository[] buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
         if (file.exists() == false)
             throw new IllegalArgumentException("Directory does not exist: " + token);
@@ -53,6 +53,6 @@ public class LocalRepositoryBuilder implements RepositoryBuilder {
             throw new IllegalArgumentException("Repository exists but is not a directory: " + token);
 
         FileContentStore cs = new FileContentStore(file);
-        return new DefaultRepository(cs.createRoot());
+        return new CmrRepository[] { new DefaultRepository(cs.createRoot()) };
     }
 }

@@ -73,7 +73,7 @@ public interface RepositoryBuilder {
      * @return repository or null if this builder doesn't support the given token
      * @throws Exception for any error
      */
-    CmrRepository buildRepository(String token) throws Exception;
+    CmrRepository[] buildRepository(String token) throws Exception;
     
     /**
      * Build repository.
@@ -83,5 +83,5 @@ public interface RepositoryBuilder {
      * @return repository or null if this builder doesn't support the given token
      * @throws Exception for any error
      */
-    CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception;
+    CmrRepository[] buildRepository(String token, RepositoryBuilderConfig config) throws Exception;
 }
