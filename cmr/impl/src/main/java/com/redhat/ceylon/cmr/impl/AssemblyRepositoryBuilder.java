@@ -116,9 +116,28 @@ public class AssemblyRepositoryBuilder implements RepositoryBuilder {
                 }
             }
             
-            // New return a common file content store from the unpacked assembly
-            FileContentStore cs = new FileContentStore(tmpAssemblyFolder);
+            // Now create a common file content store using the unpacked assembly
+            FileContentStore cs = new FileContentStore(modulesFolder);
+            CmrRepository defRepo =  new DefaultRepository(cs.createRoot());
+            
+            // Not satisfied with the following heuristics yet, but if we
+            // have a specific "modules" folder (so the modules are not in
+            // the root of the assembly) then we also check to see if there
+            // is a "maven" folder and if so we add a MavenRepository for it
+            CmrRepository mvnRepo = null;
+            if (repoFolder != null && !repoFolder.isEmpty()) {
+                File mavenFolder = new File(tmpAssemblyFolder, "maven");
+                if (modulesFolder.isDirectory()) {
+                    // Now create a Maven content store using the unpacked assembly
+                    mvnRepo =  MavenRepositoryHelper.getMavenRepository(mavenFolder);
+                }
+            }
+
+            if (mvnRepo == null) {
                 return new CmrRepository[] { defRepo };
+            } else {
+                return new CmrRepository[] { defRepo, mvnRepo };
+            }
         } else {
             return null;
         }
