@@ -19,9 +19,11 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -123,6 +125,7 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
         }
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public ModuleVersionDetails readModuleInfo(String moduleName, String moduleVersion, File moduleArchive, boolean includeMembers, Overrides overrides) {
         Map<String, Object> model = loadJsonModel(moduleArchive);
@@ -151,15 +154,31 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, major, minor));
         mvd.getDependencies().addAll(dependencies);
 
-        Map<String,Object> annotations = (Map<String, Object>) metaModelProperty(model, "$mod-anns");
+        Object anns = metaModelProperty(model, "$mod-anns");
+        List<Map<String,Object>> annotations = null;
+        if (anns instanceof Map) {
+            // Pre-9.2 style annotations
+            annotations = new ArrayList<Map<String,Object>>(1);
+            annotations.add((Map<String,Object>)anns);
+        } else if (anns instanceof List) {
+            // 9.2+ style annotations
+            annotations = (List<Map<String,Object>>)anns;
+        }
         if(annotations != null){
-            
-            mvd.setDoc(asString(annotations.get("doc")));
-            mvd.setLicense(asString(annotations.get("license")));
-            Iterable<String> by = (Iterable<String>) annotations.get("by");
-            if(by != null){
-                for(String author : by){
-                    mvd.getAuthors().add(author);
+            for (Map<String,Object> annot : annotations) {
+                if (annot.containsKey("doc")) {
+                    mvd.setDoc(asString(annot.get("doc")));
+                }
+                if (annot.containsKey("license")) {
+                    mvd.setLicense(asString(annot.get("license")));
+                }
+                if (annot.containsKey("by")) {
+                    Iterable<String> by = (Iterable<String>) annot.get("by");
+                    if(by != null){
+                        for(String author : by){
+                            mvd.getAuthors().add(author);
+                        }
+                    }
                 }
             }
         }
