@@ -50,7 +50,6 @@ import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;

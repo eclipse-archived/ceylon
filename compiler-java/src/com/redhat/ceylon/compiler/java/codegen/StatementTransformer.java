@@ -2216,7 +2216,7 @@ public class StatementTransformer extends AbstractTransformer {
                         stepCheck(stepName),
                         new AssertionBuilder(StatementTransformer.this, step)
                             .appendViolatedCondition("step > 0")
-                            .assertionDoc("step size must be greater than zero")
+                            .assertionDoc(expressionGen().ceylonLiteral("step size must be greater than zero"))
                             .violatedBinOp(expressionGen().boxType(stepName.makeIdent(), typeFact().getIntegerType()), 
                                     expressionGen().boxType(make().Literal(0), typeFact().getIntegerType()))
                             .buildThrow(),
@@ -3589,7 +3589,7 @@ public class StatementTransformer extends AbstractTransformer {
                     make().Binary(JCTree.Tag.LE, stepName.makeIdent(), make().Literal(0)),
                     new AssertionBuilder(StatementTransformer.this, step)
                         .appendViolatedCondition("step > 0")
-                        .assertionDoc("step size must be greater than zero")
+                        .assertionDoc(expressionGen().ceylonLiteral("step size must be greater than zero"))
                         .violatedBinOp(expressionGen().boxType(stepName.makeIdent(), typeFact().getIntegerType()), 
                                 expressionGen().boxType(make().Literal(0), typeFact().getIntegerType()))
                         .buildThrow(),
