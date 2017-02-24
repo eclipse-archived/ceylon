@@ -71,8 +71,13 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
             return null;
         }
 
-        final ArtifactResult result = context.result();
-        return readModuleInformation(result.name(), result.artifact(), overrides);
+        ArtifactResult result = context.result();
+        File mod = result.artifact();
+        if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.CAR)) {
+            return readModuleInformation(result.name(), result.artifact(), overrides);
+        } else {
+            return null;
+        }
     }
 
     @Override

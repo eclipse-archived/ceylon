@@ -25,12 +25,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * Read module info from module.xml.
@@ -47,31 +47,32 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
     @Override
     public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
         final ArtifactResult result = context.result();
-
-        if (context.ignoreInner() == false) {
-            String descriptorPath = getQualifiedMetaInfDescriptorName(result.name(), result.version());
-            final InputStream descriptor = IOUtils.findDescriptor(result, descriptorPath);
-            if (descriptor != null) {
-                try {
-                    return augment(result, resolveFromInputStream(descriptor, result.name(), result.version(), overrides));
-                } finally {
-                    IOUtils.safeClose(descriptor);
+        File mod = result.artifact();
+        if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JAR)) {
+            if (context.ignoreInner() == false) {
+                String descriptorPath = getQualifiedMetaInfDescriptorName(result.name(), result.version());
+                final InputStream descriptor = IOUtils.findDescriptor(result, descriptorPath);
+                if (descriptor != null) {
+                    try {
+                        return augment(result, resolveFromInputStream(descriptor, result.name(), result.version(), overrides));
+                    } finally {
+                        IOUtils.safeClose(descriptor);
+                    }
                 }
             }
-        }
-
-        if (context.ignoreExternal() == false) {
-            final File artifact = result.artifact();
-            File mp = new File(artifact.getParent(), descriptorName);
-            if(!mp.exists()){
-                // if we don't have module.xml, look for module.name-version-module.xml
-                // FIXME: go through the repository so we can find it in other repos?
-                String qualifiedDescriptorName = getQualifiedToplevelDescriptorName(result.name(), result.version());
-                mp = new File(artifact.getParent(), qualifiedDescriptorName);
+    
+            if (context.ignoreExternal() == false) {
+                final File artifact = result.artifact();
+                File mp = new File(artifact.getParent(), descriptorName);
+                if(!mp.exists()){
+                    // if we don't have module.xml, look for module.name-version-module.xml
+                    // FIXME: go through the repository so we can find it in other repos?
+                    String qualifiedDescriptorName = getQualifiedToplevelDescriptorName(result.name(), result.version());
+                    mp = new File(artifact.getParent(), qualifiedDescriptorName);
+                }
+                return augment(result, resolveFromFile(mp, result.name(), result.version(), overrides));
             }
-            return augment(result, resolveFromFile(mp, result.name(), result.version(), overrides));
         }
-
         return null;
     }
 

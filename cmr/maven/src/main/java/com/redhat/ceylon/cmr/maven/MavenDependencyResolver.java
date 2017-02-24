@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
@@ -50,24 +51,27 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
     public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
         if (context.ignoreInner() == false) {
             ArtifactResult result = context.result();
-            String name = result.name();
-            int p = name.indexOf(':');
-            if (p < 0) {
-                p = name.lastIndexOf('.');
-            }
-            if (p < 0) {
-                // not a Maven artifact
-                return null;
-            }
-            String groupId = name.substring(0, p);
-            String artifactId = name.substring(p + 1);
-            String descriptorPath = String.format("META-INF/maven/%s/%s/pom.xml", groupId, artifactId);
-            InputStream inputStream = IOUtils.findDescriptor(result, descriptorPath);
-            if (inputStream != null) {
-                try {
-                    return resolveFromInputStream(inputStream, name, result.version(), overrides);
-                } finally {
-                    IOUtils.safeClose(inputStream);
+            File mod = result.artifact();
+            if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JAR)) {
+                String name = result.name();
+                int p = name.indexOf(':');
+                if (p < 0) {
+                    p = name.lastIndexOf('.');
+                }
+                if (p < 0) {
+                    // not a Maven artifact
+                    return null;
+                }
+                String groupId = name.substring(0, p);
+                String artifactId = name.substring(p + 1);
+                String descriptorPath = String.format("META-INF/maven/%s/%s/pom.xml", groupId, artifactId);
+                InputStream inputStream = IOUtils.findDescriptor(result, descriptorPath);
+                if (inputStream != null) {
+                    try {
+                        return resolveFromInputStream(inputStream, name, result.version(), overrides);
+                    } finally {
+                        IOUtils.safeClose(inputStream);
+                    }
                 }
             }
         }

@@ -29,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -37,6 +38,7 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
@@ -48,12 +50,16 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
     @Override
     public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
         if (context.ignoreInner() == false) {
-            InputStream stream = IOUtils.findDescriptor(context.result(), JarFile.MANIFEST_NAME);
-            if (stream != null) {
-                try {
-                    return resolveFromInputStream(stream, context.result().name(), context.result().version(), overrides);
-                } finally {
-                    IOUtils.safeClose(stream);
+            ArtifactResult result = context.result();
+            File mod = result.artifact();
+            if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JAR)) {
+                InputStream stream = IOUtils.findDescriptor(result, JarFile.MANIFEST_NAME);
+                if (stream != null) {
+                    try {
+                        return resolveFromInputStream(stream, result.name(), result.version(), overrides);
+                    } finally {
+                        IOUtils.safeClose(stream);
+                    }
                 }
             }
         }
