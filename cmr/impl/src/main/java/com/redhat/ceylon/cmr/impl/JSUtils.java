@@ -19,13 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -164,8 +158,8 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
             // 9.2+ style annotations
             annotations = (List<Map<String,Object>>)anns;
         }
-        if(annotations != null){
-            for (Map<String,Object> annot : annotations) {
+        if(annotations != null) {
+            for (Map<String, Object> annot : annotations) {
                 if (annot.containsKey("doc")) {
                     mvd.setDoc(asString(annot.get("doc")));
                 }
@@ -174,15 +168,14 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
                 }
                 if (annot.containsKey("by")) {
                     Iterable<String> by = (Iterable<String>) annot.get("by");
-                    if(by != null){
-                        for(String author : by){
+                    if (by != null) {
+                        for (String author : by) {
                             mvd.getAuthors().add(author);
                         }
                     }
                 }
             }
         }
-
         if (includeMembers) {
             mvd.setMembers(getMembers(moduleName, moduleArchive));
         }
