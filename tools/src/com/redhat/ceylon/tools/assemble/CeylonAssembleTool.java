@@ -40,6 +40,7 @@ import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
+import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
@@ -63,6 +64,9 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
     private Boolean jvm;
     private Boolean js;
     private Boolean dart;
+    
+    private String[] assemblySuffixes;
+    private ModuleQuery.Type mqt;
     
     public static final String CEYLON_ASSEMBLY_SUFFIX = ".cas";
 
@@ -155,9 +159,14 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
     }
 
     @Override
-    public void run() throws Exception {
+    protected String[] getLoaderSuffixes() {
+        return assemblySuffixes;
+    }
+    
+    @Override
+    public void initialize(CeylonTool mainTool) throws Exception {
         // Determine the artifacts we'll include in the assembly
-        ModuleQuery.Type mqt = ModuleQuery.Type.JVM;
+        mqt = ModuleQuery.Type.JVM;
         ArrayList<String> sfx = new ArrayList<String>();
         boolean defaults = js == null 
                 && jvm == null
@@ -182,8 +191,13 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
             sfx.add(ArtifactContext.MODULE_XML);
             mqt = ModuleQuery.Type.JVM;
         }
-        final String[] assemblySuffixes = sfx.toArray(new String[] {});
+        assemblySuffixes = sfx.toArray(new String[] {});
         
+        super.initialize(mainTool);
+    }
+
+    @Override
+    public void run() throws Exception {
         if (includeRuntime) {
             // includeRuntime implies includeLanguage
             includeLanguage = true;
@@ -305,6 +319,13 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
                                         name = "maven/" + moduleToPath(module.name) + "/" + module.version + "/" + mfile.getName();
                                         addEntry(zipFile, mfile, name);
                                     }
+                                } else if (module.artifact.namespace().equals("npm")) {
+                                    File parent = module.artifact.artifact().getParentFile().getCanonicalFile();
+                                    while (parent != null && !(new File(parent, "package.json")).exists()) {
+                                        parent = parent.getParentFile();
+                                    }
+                                    String name = "node_modules/" + parent.getName();
+                                    addEntry(zipFile, parent, name);
                                 }
                             }
                         }catch(IOException x){
