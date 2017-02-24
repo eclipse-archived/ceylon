@@ -17,12 +17,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import com.redhat.ceylon.compiler.js.loader.JsonModule;
-import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.cmr.impl.NpmRepository;
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.js.loader.JsonModule;
 import com.redhat.ceylon.compiler.js.util.ContinueBreakVisitor;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
@@ -32,6 +31,7 @@ import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.js.util.TypeUtils.RuntimeMetamodelAnnotationGenerator;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree.GuardedVariable;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -1804,17 +1804,17 @@ public class GenerateJsVisitor extends Visitor {
             Tree.StringLiteral literal = literals.get(i);
             boolean skip = (i==0 || i==literals.size()-1) && literal.getText().isEmpty();
             if (i>0 && !skip) {
-                out(".plus(");
+                out("+");
             }
             if (!skip) {
                 literal.visit(this);
             }
-            if (i>0 && !skip) {
-                out(")");
-            }
+//            if (i>0 && !skip) {
+//                out(")");
+//            }
             if (i < exprs.size()) {
                 if (!skip) {
-                    out(".plus(");
+                    out("+(");
                 }
                 final Expression expr = exprs.get(i);
                 final Type t = expr.getTypeModel();
@@ -3634,37 +3634,58 @@ public class GenerateJsVisitor extends Visitor {
             location(that);
             endLine();
         }
-        String custom = "Assertion failed";
+        
         //Scan for a "doc" annotation with custom message
         Tree.AnnotationList annotationList = that.getAnnotationList();
+        Tree.ConditionList conditionList = that.getConditionList();
+        if (conditionList!=null) {
+            conds.specialConditionsAndBlock(conditionList, null, getClAlias()+ConditionGenerator.ASSERTFUNC, true);
+            //escape
+            out(",");
+            out("\"Assertion failed: \"+");
+            String custom = docText(annotationList);
+            if (custom==null) {
+                out("(");
+                visit(annotationList.getAnonymousAnnotation().getStringTemplate());
+                out(")+");
+            }
+            StringBuilder sb = new StringBuilder();
+            if (custom!=null) {
+                sb.append(JsUtils.escapeStringLiteral(custom));
+            }
+            sb.append("\\n\\tviolated ");
+            for (int i = conditionList.getToken().getTokenIndex()+1;
+                    i < conditionList.getEndToken().getTokenIndex(); i++) {
+                sb.append(JsUtils.escapeStringLiteral(tokens.get(i).getText()));
+            }
+            sb.append("\\n\\tat ").append(that.getUnit().getFilename())
+                .append(" (").append(conditionList.getLocation()).append(")");
+            out("\"", sb.toString(), "\",'", that.getLocation(), "','",
+                    that.getUnit().getFilename(), "');");
+        }
+        endLine();
+    }
+
+    private String docText(Tree.AnnotationList annotationList) {
         if (annotationList!=null) {
-            if (annotationList != null && annotationList.getAnonymousAnnotation() != null) {
-                custom = annotationList.getAnonymousAnnotation().getStringLiteral().getText();
+            if (annotationList.getAnonymousAnnotation() != null) {
+                Tree.StringLiteral lit = annotationList.getAnonymousAnnotation().getStringLiteral();
+                if (lit == null) {
+                    return null;
+                } else {
+                    return lit.getText();
+                }
             } else {
                 for (Tree.Annotation ann : annotationList.getAnnotations()) {
                     BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
                     if ("doc".equals(bme.getDeclaration().getName())) {
-                        custom = ((Tree.ListedArgument)ann.getPositionalArgumentList().getPositionalArguments().get(0))
-                                .getExpression().getTerm().getText();
+                        Tree.ListedArgument arg = (Tree.ListedArgument) ann.getPositionalArgumentList().getPositionalArguments().get(0);
+                        return arg.getExpression().getTerm().getText();
                     }
                 }
             }
         }
-        StringBuilder sb = new StringBuilder(custom).append(": '");
-        Tree.ConditionList conditionList = that.getConditionList();
-        if (conditionList!=null) {
-            for (int i = conditionList.getToken().getTokenIndex()+1;
-                    i < conditionList.getEndToken().getTokenIndex(); i++) {
-                sb.append(tokens.get(i).getText());
-            }
-            sb.append("' at ").append(that.getUnit().getFilename()).append(" (").append(
-                    conditionList.getLocation()).append(")");
-            conds.specialConditionsAndBlock(conditionList, null, getClAlias()+ConditionGenerator.ASSERTFUNC, true);
-            //escape
-            out(",\"", JsUtils.escapeStringLiteral(sb.toString()), "\",'",that.getLocation(), "','",
-                    that.getUnit().getFilename(), "');");
-        }
-        endLine();
+        return "";
     }
 
     @Override
