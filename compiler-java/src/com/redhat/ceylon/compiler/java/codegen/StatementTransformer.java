@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.NonNull;
@@ -101,7 +100,6 @@ import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -2218,7 +2216,7 @@ public class StatementTransformer extends AbstractTransformer {
                         stepCheck(stepName),
                         new AssertionBuilder(StatementTransformer.this, step)
                             .appendViolatedCondition("step > 0")
-                            .assertionDoc("step size must be greater than zero")
+                            .assertionDoc(expressionGen().ceylonLiteral("step size must be greater than zero"))
                             .violatedBinOp(expressionGen().boxType(stepName.makeIdent(), typeFact().getIntegerType()), 
                                     expressionGen().boxType(make().Literal(0), typeFact().getIntegerType()))
                             .buildThrow(),
@@ -3591,7 +3589,7 @@ public class StatementTransformer extends AbstractTransformer {
                     make().Binary(JCTree.Tag.LE, stepName.makeIdent(), make().Literal(0)),
                     new AssertionBuilder(StatementTransformer.this, step)
                         .appendViolatedCondition("step > 0")
-                        .assertionDoc("step size must be greater than zero")
+                        .assertionDoc(expressionGen().ceylonLiteral("step size must be greater than zero"))
                         .violatedBinOp(expressionGen().boxType(stepName.makeIdent(), typeFact().getIntegerType()), 
                                 expressionGen().boxType(make().Literal(0), typeFact().getIntegerType()))
                         .buildThrow(),

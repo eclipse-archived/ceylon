@@ -1,12 +1,13 @@
 void assertions() {
     Anything name = "gavin";
-    doc ("name is required") 
+    "name is required" 
     assert (exists o = name);
     assert (o=="gavin");
     "name must be a string"
     assert (is String n = name);
     print(n.uppercased);
     assert (is String name);
+    "illegal arguments: ``process.arguments``"
     assert (exists arg = process.arguments[0], 
             arg=="gavin");
     @error assert ();

@@ -382,9 +382,12 @@ public class TreeUtil {
             if (aa!=null) {
                 Annotation ann = new Annotation();
                 ann.setName("doc");
-                String text = aa.getStringLiteral().getText();
-                ann.addPositionalArgument(text);
-                annotations.add(ann);
+                Tree.StringLiteral lit = aa.getStringLiteral();
+                if (lit!=null) {
+                    String text = lit.getText();
+                    ann.addPositionalArgument(text);
+                    annotations.add(ann);
+                }
             }
             for (Tree.Annotation a: al.getAnnotations()) {
                 Annotation ann = new Annotation();

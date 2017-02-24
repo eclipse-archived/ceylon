@@ -19,7 +19,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Log;
  */
 class AssertionBuilder {
     
-    private String docText;
+    private JCExpression docText;
     private JCExpression fragment = null;
     private ListBuffer<ConditionDescription> conditions = new ListBuffer<ConditionDescription>();
     private Node node;
@@ -59,8 +59,7 @@ class AssertionBuilder {
         return null;
     }
     
-    private String getDocAnnotationText(Tree.Assertion ass) {
-        String docText = null;
+    private JCExpression getDocAnnotationText(Tree.Assertion ass) {
         Tree.Annotation doc = getAnnotation(ass.getAnnotationList(), "doc");
         if (doc != null) {
             Tree.Expression expression = null;
@@ -77,20 +76,26 @@ class AssertionBuilder {
                 // Impossible on a well-formed tree
                 return null;
             }
-            Tree.Literal literal = (Tree.Literal)expression.getTerm();
-            docText = literal.getText();
-        } else if (ass.getAnnotationList() != null
-                && ass.getAnnotationList().getAnonymousAnnotation() != null) {
-            docText = ass.getAnnotationList().getAnonymousAnnotation().getStringLiteral().getText();
+            if (expression.getTerm() instanceof Tree.StringLiteral) {
+                return gen.expressionGen().transform((Tree.StringLiteral) expression.getTerm());
+            }
+        } else if (ass.getAnnotationList() != null) {
+            Tree.AnonymousAnnotation aa = ass.getAnnotationList().getAnonymousAnnotation();
+            if (aa != null) {
+                Tree.StringLiteral lit = aa.getStringLiteral();
+                if (lit!=null) return gen.expressionGen().transform(lit);
+                Tree.StringTemplate tem = aa.getStringTemplate();
+                return gen.expressionGen().transformStringExpression(tem);
+            }
         }
-        return docText;
+        return null;
     }
     
     public AssertionBuilder assertionDoc(Tree.Assertion ass) {
         return assertionDoc(getDocAnnotationText(ass));
     }
     
-    public AssertionBuilder assertionDoc(String docText) {
+    public AssertionBuilder assertionDoc(JCExpression docText) {
         this.docText = docText;
         return this;
     }
@@ -175,7 +180,8 @@ class AssertionBuilder {
     public JCExpression buildMessage() {
         JCExpression result = gen.make().Literal("Assertion failed");
         if (docText != null) {
-            result = gen.at(node).Binary(JCTree.Tag.PLUS, result, gen.make().Literal(": " + docText));
+            result = gen.at(node).Binary(JCTree.Tag.PLUS, result, gen.make().Literal(": "));
+            result = gen.at(node).Binary(JCTree.Tag.PLUS, result, docText);
         }
         result = gen.at(node).Binary(JCTree.Tag.PLUS, result, buildPart());
         if (violatedIs != null) {
