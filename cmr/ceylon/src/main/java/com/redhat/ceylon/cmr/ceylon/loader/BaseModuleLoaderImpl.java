@@ -103,8 +103,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                 public void visit(ModuleGraph.Module module) {
                     if(module.artifact != null){
                         ArtifactContext artifactContext = new ArtifactContext(module.artifact.namespace(), 
-                                module.name, module.version, 
-                                ArtifactContext.CAR, ArtifactContext.JAR);
+                                module.name, module.version, getArtifactSuffixes());
                         ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
                         module.artifact = result;
                     }
@@ -112,6 +111,8 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             });
         }
         
+        abstract protected String[] getArtifactSuffixes();
+
         public void fillOverrides(final Overrides overrides){
             moduleGraph.visit(new ModuleGraph.Visitor(){
                 @Override
@@ -148,7 +149,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         		throws IOException, ModuleNotFoundException  {
         	if(isExcluded(name, version))
         	    return false;
-            ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
+            ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, getArtifactSuffixes());
             Overrides overrides = repositoryManager.getOverrides();
             if(overrides != null){
                 if(overrides.isRemoved(artifactContext))

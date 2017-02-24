@@ -2,6 +2,7 @@ package com.redhat.ceylon.module.loader;
 
 import java.util.Map;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.OverridesRuntimeResolver;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -16,6 +17,13 @@ public abstract class BaseRuntimeModuleLoaderImpl extends BaseModuleLoaderImpl {
 
     protected abstract class RuntimeModuleLoaderContext extends BaseModuleLoaderImpl.ModuleLoaderContext {
         
+        private final String[] artifactSuffixes = new String[] { ArtifactContext.CAR, ArtifactContext.JAR };
+        
+        @Override
+        protected String[] getArtifactSuffixes() {
+            return artifactSuffixes;
+        }
+
         protected RuntimeModuleLoaderContext(String module, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
             super(module, version, lookupScope);
         }

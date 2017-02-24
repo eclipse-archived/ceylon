@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
@@ -133,10 +134,14 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         errorMsg("module.duplicate.error", name, err, versions.last());
     }
     
+    protected String[] getLoaderSuffixes() {
+        return new String[] { ArtifactContext.CAR, ArtifactContext.JAR };
+    }
+
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
     	super.initialize(mainTool);
-    	loader = new ToolModuleLoader(this, getRepositoryManager());
+    	loader = new ToolModuleLoader(this, getRepositoryManager(), getLoaderSuffixes());
     	if(jdkProviderModule != null){
     		ModuleSpec moduleSpec = ModuleSpec.parse(jdkProviderModule);
 			if(!internalLoadModule(null, moduleSpec.getName(), moduleSpec.getVersion())){

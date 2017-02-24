@@ -3,8 +3,6 @@ package com.redhat.ceylon.compiler.java.loader;
 import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.DependencyOverride;
-import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.loader.BaseModuleLoaderImpl;
@@ -17,7 +15,6 @@ import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.StatusPrinterAptProgressListener;
 import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 
 public class CompilerModuleLoader extends BaseModuleLoaderImpl {
@@ -42,6 +39,8 @@ public class CompilerModuleLoader extends BaseModuleLoaderImpl {
 
         private StatusPrinterAptProgressListener progressListener;
 
+        private final String[] artifactSuffixes = new String[] { ArtifactContext.CAR, ArtifactContext.JAR };
+        
         CompilerModuleLoaderContext(String module, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
             super(module, version, lookupScope);
             if(statusPrinter != null){
@@ -57,6 +56,11 @@ public class CompilerModuleLoader extends BaseModuleLoaderImpl {
         @Override
         protected void initialise() throws ModuleNotFoundException {
             preloadModules();
+        }
+
+        @Override
+        protected String[] getArtifactSuffixes() {
+            return artifactSuffixes;
         }
 
         @Override

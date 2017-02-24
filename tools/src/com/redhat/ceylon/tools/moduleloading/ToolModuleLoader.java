@@ -29,6 +29,11 @@ public class ToolModuleLoader extends BaseModuleLoaderImpl {
             // don't do anything, rely on loadModule calls
         }
         
+        @Override
+        protected String[] getArtifactSuffixes() {
+            return artifactSuffixes;
+        }
+
         public boolean loadModule(String module, String version) throws ModuleNotFoundException{
             try {
                 return loadModule(ModuleUtil.getNamespaceFromUri(module), 
@@ -106,10 +111,12 @@ public class ToolModuleLoader extends BaseModuleLoaderImpl {
 
     private ModuleLoadingTool tool;
     private ToolModuleLoaderContext context;
-
-    public ToolModuleLoader(ModuleLoadingTool tool, RepositoryManager repoManager) {
+    private String[] artifactSuffixes;
+    
+    public ToolModuleLoader(ModuleLoadingTool tool, RepositoryManager repoManager, String[] artifactSuffixes) {
         super(repoManager, null);
         this.tool = tool;
+        this.artifactSuffixes = artifactSuffixes;
         try {
             this.context = new ToolModuleLoaderContext(ModuleScope.RUNTIME);
         } catch (ModuleNotFoundException e) {
