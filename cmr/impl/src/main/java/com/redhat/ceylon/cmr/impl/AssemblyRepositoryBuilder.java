@@ -20,6 +20,7 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -123,21 +124,34 @@ public class AssemblyRepositoryBuilder implements RepositoryBuilder {
             // Not satisfied with the following heuristics yet, but if we
             // have a specific "modules" folder (so the modules are not in
             // the root of the assembly) then we also check to see if there
-            // is a "maven" folder and if so we add a MavenRepository for it
+            // is a "maven" folder and if so we add a MavenRepository for it.
+            // We do the same for "node_modules" and the NpmRepository.
             CmrRepository mvnRepo = null;
+            CmrRepository npmRepo = null;
             if (repoFolder != null && !repoFolder.isEmpty()) {
                 File mavenFolder = new File(tmpAssemblyFolder, "maven");
-                if (modulesFolder.isDirectory()) {
-                    // Now create a Maven content store using the unpacked assembly
+                if (mavenFolder.isDirectory()) {
+                    // Now create a Maven repository on top of the unpacked assembly
                     mvnRepo =  MavenRepositoryHelper.getMavenRepository(mavenFolder);
+                }
+                
+                File npmFolder = new File(tmpAssemblyFolder, "node_modules");
+                if (npmFolder.isDirectory()) {
+                    // Now create a NPM repository on top of the unpacked assembly
+                    String npmtoken = "npm:" + npmFolder.getAbsolutePath();
+                    npmRepo = NpmRepositoryBuilder.createNpmRepository(npmtoken, config.log, config.offline, config.currentDirectory);
                 }
             }
 
-            if (mvnRepo == null) {
-                return new CmrRepository[] { defRepo };
-            } else {
-                return new CmrRepository[] { defRepo, mvnRepo };
+            ArrayList<CmrRepository> repos = new ArrayList<CmrRepository>(3);
+            repos.add(defRepo);
+            if (mvnRepo != null) {
+                repos.add(mvnRepo);
             }
+            if (npmRepo != null) {
+                repos.add(npmRepo);
+            }
+            return repos.toArray(new CmrRepository[] {});
         } else {
             return null;
         }
