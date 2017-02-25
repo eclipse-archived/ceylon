@@ -348,6 +348,7 @@ public class ModuleVisitor extends Visitor {
             Tree.QuotedLiteral artifact = 
                     that.getArtifact();
             if (artifact!=null) {
+                name = new ArrayList<String>(name);
                 String nameString = getNameString(artifact);
                 name.add("");
                 name.addAll(asList(nameString.split("\\.")));
@@ -356,7 +357,8 @@ public class ModuleVisitor extends Visitor {
         if (phase==Phase.SRC_MODULE){
             String path = formatPath(name);
             that.setName(path);
-        }else if (phase==Phase.REMAINING) {
+        }
+        else if (phase==Phase.REMAINING) {
             // set in previous phase
             String path = that.getName();
 
