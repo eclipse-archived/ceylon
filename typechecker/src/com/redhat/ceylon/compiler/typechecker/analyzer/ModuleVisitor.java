@@ -336,7 +336,7 @@ public class ModuleVisitor extends Visitor {
         else if (quotedLiteral!=null) {
             String nameString = 
                     getNameString(quotedLiteral);
-            name = asList(nameString.split("\\."));
+            name = new ArrayList<String>(asList(nameString.split("\\.")));
             node = quotedLiteral;
         }
         else {
