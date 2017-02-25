@@ -678,8 +678,7 @@ String result = middleObject.string;</programlisting>
                     <para>the text of the Ceylon code of the condition that failed,</para>
                 </listitem>
                 <listitem>
-                    <para>the message specified by the <literal>doc</literal> annotation of the
-                    assertion, if any.</para>
+                    <para>the failure message, if any.</para>
                 </listitem>
             </itemizedlist>
             

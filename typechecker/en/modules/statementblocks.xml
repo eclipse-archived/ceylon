@@ -2744,12 +2744,15 @@ catch (NotFoundException|DeletedException e) {
             <title>Assertions</title>
             
             <para>An assertion has an asserted condition list and, optionally, 
-            an annotation list.</para>
+            a failure message.</para>
             
-            <synopsis>Assertion: Annotations "assert" ConditionList ";"</synopsis>
+            <synopsis>Assertion: AssertionMessage? "assert" ConditionList ";"</synopsis>
+            
+            <synopsis>AssertionMessage: StringLiteral | VerbatimStringLiteral | StringTemplate</synopsis>
             
             <para>The message carried by the assertion failure may be specified
-            using a <literal>doc</literal> annotation.</para>
+            using a string literal or interpolated string template, as defined 
+            in <xref linkend="stringtemplates"/>.</para>
             
             <programlisting>"total must be less than well-defined bound"
 assert (exists bound, total&lt;bound);</programlisting>
