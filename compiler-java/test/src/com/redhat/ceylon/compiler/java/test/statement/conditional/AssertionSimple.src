@@ -10,14 +10,14 @@ final class assertionSimple_ {
         long rhs$1 = 4L;
         if (lhs$0 == rhs$1) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + ": should be 4" + (.java.lang.System.lineSeparator() + "\tviolated " + "2+2==4") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
+            throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "should be 4" + (.java.lang.System.lineSeparator() + "\tviolated " + "2+2==4") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
         }
         final long i = 5L;
         long lhs$2 = i;
         long rhs$3 = 10L;
         if (lhs$2 < rhs$3) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + ": must be less than 10" + (.java.lang.System.lineSeparator() + "\tviolated " + "i<10") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$2), .ceylon.language.Integer.instance(rhs$3)));
+            throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "must be less than 10" + (.java.lang.System.lineSeparator() + "\tviolated " + "i<10") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$2), .ceylon.language.Integer.instance(rhs$3)));
         }
         long lhs$4 = i;
         long rhs$5 = 10L;

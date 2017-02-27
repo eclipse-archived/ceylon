@@ -348,7 +348,7 @@ final class compareMeasureIntegerBy2130_ {
             final long start$74 = start;
             final long length$75 = length;
             final long step$73 = by;
-            if (length$75 > 0 && step$73 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$73), .ceylon.language.Integer.instance(0)));
+            if (length$75 > 0 && step$73 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$73), .ceylon.language.Integer.instance(0)));
             loop_3: for (long i$76 = 0; i$76 < length$75; i$76 = step$73 == 1L ? i$76 + 1L : .ceylon.language.Integer.neighbour(i$76, step$73)) {
                 final long i = step$73 == 1L ? i$76 + start$74 : .ceylon.language.Integer.neighbour(start$74, i$76);
                 (
@@ -758,7 +758,7 @@ final class compareMeasureCharacterBy2130_ {
             final int start$177 = start;
             final long length$178 = length;
             final long step$176 = by;
-            if (length$178 > 0 && step$176 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$176), .ceylon.language.Integer.instance(0)));
+            if (length$178 > 0 && step$176 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$176), .ceylon.language.Integer.instance(0)));
             loop_7: for (long i$179 = 0; i$179 < length$178; i$179 = step$176 == 1L ? i$179 + 1L : .ceylon.language.Integer.neighbour(i$179, step$176)) {
                 final int i = step$176 == 1L ? .ceylon.language.Character.codepoint(i$179 + start$177) : .ceylon.language.Character.neighbour(start$177, i$179);
                 (

@@ -16,7 +16,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     private final void arrayOfIntsBy$priv$(final int[] array) {
         final int[] array$6 = array;
         final int step$5 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
-        if (step$5 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$5), .ceylon.language.Integer.instance(0)));
+        if (step$5 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$5), .ceylon.language.Integer.instance(0)));
         loop_1: for (int i$8 = 0; i$8 < array$6.length; i$8 += step$5) {
             final long element = array$6[i$8];
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
@@ -49,7 +49,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     private final void arrayOfCharsBy$priv$(final char[] array) {
         final char[] array$21 = array;
         final int step$20 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
-        if (step$20 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$20), .ceylon.language.Integer.instance(0)));
+        if (step$20 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$20), .ceylon.language.Integer.instance(0)));
         loop_5: for (int i$23 = 0; i$23 < array$21.length; i$23 += step$20) {
             final int element = array$21[i$23];
             .ceylon.language.print_.print(.ceylon.language.Character.instance(element));
@@ -67,7 +67,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     private final void arrayOfBytesBy$priv$(final byte[] array) {
         final byte[] array$30 = array;
         final int step$29 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
-        if (step$29 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$29), .ceylon.language.Integer.instance(0)));
+        if (step$29 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$29), .ceylon.language.Integer.instance(0)));
         loop_7: for (int i$32 = 0; i$32 < array$30.length; i$32 += step$29) {
             final byte element = array$30[i$32];
             .ceylon.language.print_.print(.ceylon.language.Byte.instance(element));
@@ -85,7 +85,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     private final void arrayOfShortsBy$priv$(final short[] array) {
         final short[] array$39 = array;
         final int step$38 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
-        if (step$38 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$38), .ceylon.language.Integer.instance(0)));
+        if (step$38 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$38), .ceylon.language.Integer.instance(0)));
         loop_9: for (int i$41 = 0; i$41 < array$39.length; i$41 += step$38) {
             final long element = array$39[i$41];
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element));
@@ -103,7 +103,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     private final void arrayOfLongsBy$priv$(final long[] array) {
         final long[] array$48 = array;
         final int step$47 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
-        if (step$47 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$47), .ceylon.language.Integer.instance(0)));
+        if (step$47 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$47), .ceylon.language.Integer.instance(0)));
         loop_11: for (int i$50 = 0; i$50 < array$48.length; i$50 += step$47) {
             final long element = array$48[i$50];
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element));
@@ -121,7 +121,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     private final void arrayOfBooleansBy$priv$(final boolean[] array) {
         final boolean[] array$57 = array;
         final int step$56 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
-        if (step$56 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$56), .ceylon.language.Integer.instance(0)));
+        if (step$56 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$56), .ceylon.language.Integer.instance(0)));
         loop_13: for (int i$59 = 0; i$59 < array$57.length; i$59 += step$56) {
             final boolean element = array$57[i$59];
             .ceylon.language.print_.print(.ceylon.language.Boolean.instance(element));
@@ -139,7 +139,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     private final void arrayOfFloatsBy$priv$(final float[] array) {
         final float[] array$66 = array;
         final int step$65 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
-        if (step$65 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$65), .ceylon.language.Integer.instance(0)));
+        if (step$65 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$65), .ceylon.language.Integer.instance(0)));
         loop_15: for (int i$68 = 0; i$68 < array$66.length; i$68 += step$65) {
             final double element = array$66[i$68];
             .ceylon.language.print_.print(.ceylon.language.Float.instance(element));
@@ -157,7 +157,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
     private final void arrayOfDoublesBy$priv$(final double[] array) {
         final double[] array$75 = array;
         final int step$74 = .com.redhat.ceylon.compiler.java.Util.toInt(2L);
-        if (step$74 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$74), .ceylon.language.Integer.instance(0)));
+        if (step$74 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$74), .ceylon.language.Integer.instance(0)));
         loop_17: for (int i$77 = 0; i$77 < array$75.length; i$77 += step$74) {
             final double element = array$75[i$77];
             .ceylon.language.print_.print(.ceylon.language.Float.instance(element));

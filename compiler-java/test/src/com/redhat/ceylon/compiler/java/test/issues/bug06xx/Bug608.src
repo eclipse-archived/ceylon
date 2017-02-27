@@ -19,8 +19,9 @@ final class bug608_ {
                 boolean arg$0$1 = true;
                 .ceylon.language.Callable arg$0$0 = .ceylon.language.String.instance(arg$0$argthis$).split$splitting();
                 boolean arg$0$2 = .ceylon.language.String.instance(arg$0$argthis$).split$groupSeparators(arg$0$0, arg$0$1);
+                .ceylon.language.Integer arg$0$3 = .ceylon.language.String.instance(arg$0$argthis$).split$limit(arg$0$0, arg$0$1, arg$0$2);
             }
-            returning .ceylon.language.String.split(arg$0$callable$, arg$0$0, arg$0$1, arg$0$2);
+            returning .ceylon.language.String.split(arg$0$callable$, arg$0$0, arg$0$1, arg$0$2, arg$0$3);
         );
         final .java.lang.ProcessBuilder builder = new .java.lang.ProcessBuilder(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)commandWithArgs.sequence()));
         builder.command(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)commandWithArgs.sequence()));

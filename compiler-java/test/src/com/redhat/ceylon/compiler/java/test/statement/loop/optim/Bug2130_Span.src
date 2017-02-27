@@ -358,7 +358,7 @@ final class compareSpanIntegerBy2130_ {
         .java.lang.Throwable t2 = null;
         try {
             final long $ceylontmp$step$82 = by;
-            if ($ceylontmp$step$82 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$82), .ceylon.language.Integer.instance(0)));
+            if ($ceylontmp$step$82 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$82), .ceylon.language.Integer.instance(0)));
             final long $ceylontmp$first$75 = start;
             final long $ceylontmp$last$76 = end;
             final boolean $ceylontmp$increasing$77 = $ceylontmp$step$82 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$76, $ceylontmp$first$75) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$76, $ceylontmp$first$75) >= 0;
@@ -801,7 +801,7 @@ final class compareSpanCharacterBy2130_ {
         .java.lang.Throwable t2 = null;
         try {
             final long $ceylontmp$step$200 = by;
-            if ($ceylontmp$step$200 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$200), .ceylon.language.Integer.instance(0)));
+            if ($ceylontmp$step$200 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$200), .ceylon.language.Integer.instance(0)));
             final int $ceylontmp$first$193 = start;
             final int $ceylontmp$last$194 = end;
             final boolean $ceylontmp$increasing$195 = $ceylontmp$step$200 == 1 ? .ceylon.language.Character.offset($ceylontmp$last$194, $ceylontmp$first$193) >= 0 : .ceylon.language.Character.offsetSign($ceylontmp$last$194, $ceylontmp$first$193) >= 0;

@@ -46,7 +46,7 @@ final class bug1671_ {
             {
                 final .java.lang.String $instance$ = "";
             }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Character.$TypeDescriptor$)), .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), "{String+}(Boolean(Character)=, Boolean=, Boolean=)", (short)-1){
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Character.$TypeDescriptor$)), .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)), "{String+}(Boolean(Character)=, Boolean=, Boolean=, Integer?=)", (short)-1){
                 
                 @.java.lang.Override
                 public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$() {
@@ -72,6 +72,15 @@ final class bug1671_ {
                     final boolean $ceylontmp$discardSeparators = ((.ceylon.language.Boolean)$param$1).booleanValue();
                     final boolean $ceylontmp$groupSeparators = ((.ceylon.language.Boolean)$param$2).booleanValue();
                     return .ceylon.language.String.split($instance$, $ceylontmp$splitting, $ceylontmp$discardSeparators, $ceylontmp$groupSeparators);
+                }
+                
+                @.java.lang.Override
+                public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $call$(final .java.lang.Object... $param$0) {
+                    final .ceylon.language.Callable $ceylontmp$splitting = $param$0.length > 0 ? (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.ceylon.language.Callable)$param$0[0] : .ceylon.language.String.instance("").split$splitting();
+                    final boolean $ceylontmp$discardSeparators = $param$0.length > 1 ? ((.ceylon.language.Boolean)$param$0[1]).booleanValue() : .ceylon.language.String.instance("").split$discardSeparators($ceylontmp$splitting);
+                    final boolean $ceylontmp$groupSeparators = $param$0.length > 2 ? ((.ceylon.language.Boolean)$param$0[2]).booleanValue() : .ceylon.language.String.instance("").split$groupSeparators($ceylontmp$splitting, $ceylontmp$discardSeparators);
+                    final .ceylon.language.Integer $ceylontmp$limit = $param$0.length > 3 ? (.ceylon.language.Integer)$param$0[3] : .ceylon.language.String.instance("").split$limit($ceylontmp$splitting, $ceylontmp$discardSeparators, $ceylontmp$groupSeparators);
+                    return .ceylon.language.String.split($instance$, $ceylontmp$splitting, $ceylontmp$discardSeparators, $ceylontmp$groupSeparators, $ceylontmp$limit);
                 }
             };
         );

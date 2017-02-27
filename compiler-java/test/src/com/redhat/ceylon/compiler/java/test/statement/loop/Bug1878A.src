@@ -35,7 +35,7 @@ final class bug1878A2_ {
     
     static boolean bug1878A2() {
         final long $ceylontmp$step$18 = 2L;
-        if ($ceylontmp$step$18 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$18), .ceylon.language.Integer.instance(0)));
+        if ($ceylontmp$step$18 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance($ceylontmp$step$18), .ceylon.language.Integer.instance(0)));
         final long $ceylontmp$first$11 = 1L;
         final long $ceylontmp$last$12 = 1L;
         final boolean $ceylontmp$increasing$13 = $ceylontmp$step$18 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$12, $ceylontmp$first$11) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$12, $ceylontmp$first$11) >= 0;

@@ -18,7 +18,7 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
         final .java.lang.Object array$6 = array.toArray();
         final int length$7 = .com.redhat.ceylon.compiler.java.Util.arrayLength(array$6);
         final int step$5 = .com.redhat.ceylon.compiler.java.Util.toInt(5L);
-        if (step$5 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$5), .ceylon.language.Integer.instance(0)));
+        if (step$5 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": " + "step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(step$5), .ceylon.language.Integer.instance(0)));
         loop_1: for (int i$8 = 0; i$8 < length$7; i$8 += step$5) {
             final long element = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$6, i$8);
             .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
