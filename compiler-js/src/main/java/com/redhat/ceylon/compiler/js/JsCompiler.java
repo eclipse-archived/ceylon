@@ -27,7 +27,6 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.js.loader.JsModuleSourceMapper;
-import com.redhat.ceylon.compiler.js.loader.JsonModule;
 import com.redhat.ceylon.compiler.js.loader.NpmAware;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsLogger;
@@ -252,7 +251,6 @@ public class JsCompiler {
             
             //Output all the require calls for any imports
             final Visitor importVisitor = new Visitor() {
-                private final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION + ".";
                 public void visit(Tree.Import that) {
                     ImportableScope scope =
                             that.getImportMemberOrTypeList().getImportList().getImportedScope();
@@ -275,14 +273,16 @@ public class JsCompiler {
                     if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module) {
                         Module m = (Module)that.getImportPath().getModel();
                         //Binary version check goes here now
-                        String binVersion = m.getJsMajor() + ".";
+                        int binMajorVersion = m.getJsMajor();
+                        int binMinorVersion = m.getJsMinor();
                         if (m.getJsMajor() == 0) {
                             //Check if it's something we're compiling
                             for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
                                 if (pu.getPackage() != null && pu.getPackage().getModule() == m) {
                                     m.setJsMajor(Versions.JS_BINARY_MAJOR_VERSION);
                                     m.setJsMinor(Versions.JS_BINARY_MINOR_VERSION);
-                                    binVersion = BIN_VERSION;
+                                    binMajorVersion = Versions.JS_BINARY_MAJOR_VERSION;
+                                    binMinorVersion = Versions.JS_BINARY_MINOR_VERSION;
                                     break;
                                 }
                             }
@@ -299,17 +299,19 @@ public class JsCompiler {
                                 File js = ar.artifact();
                                 if (js != null) {
                                     Map<String,Object> json = JsModuleSourceMapper.loadJsonModel(js);
-                                    binVersion = json.get("$mod-bin").toString();
-                                    binVersion = binVersion.substring(0, binVersion.indexOf('.') + 1);
+                                    String binVersion = json.get("$mod-bin").toString();
+                                    int p = binVersion.indexOf('.');
+                                    binMajorVersion = Integer.valueOf(binVersion.substring(0, p));
+                                    binMinorVersion = Integer.valueOf(binVersion.substring(p + 1));
                                 }
                             }
                         }
-                        if (!BIN_VERSION.startsWith(binVersion)) {
+                        if (!Versions.isJsBinaryVersionSupported(binMajorVersion, binMinorVersion)) {
                             that.addError(
                                     "version '"+ m.getVersion() + "' of module '" + m.getNameAsString() + 
                                     "' was compiled by an incompatible version of the compiler (binary version " +
-                                    binVersion + " of module is not compatible with binary version " + 
-                                    BIN_VERSION + " of this compiler)");
+                                    binMajorVersion + "." + binMinorVersion + " of module is not compatible with binary version " + 
+                                    Versions.JS_BINARY_MAJOR_VERSION + "." + Versions.JS_BINARY_MINOR_VERSION + " of this compiler)");
                         }
                     }
                 }

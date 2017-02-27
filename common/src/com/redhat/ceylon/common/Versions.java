@@ -81,12 +81,12 @@ public class Versions {
      * 1.2.1, 1.2.2 is 8.0 for JVM, 9.0 for JS
      * 1.3.0 up to 1.3.2-SNAPSHOT is 8.1 for JVM
      * 1.3.0 up to 1.3.1 is 9.1 for JS
-     * 1.3.2-SNAPSHOT is 9.2 for JS (support for sequenced annotations in the model)
+     * 1.3.2-SNAPSHOT is 10.0 for JS (support for sequenced annotations in the model)
      */
     public static final int JVM_BINARY_MAJOR_VERSION = 8;
     public static final int JVM_BINARY_MINOR_VERSION = 1;
-    public static final int JS_BINARY_MAJOR_VERSION = 9;
-    public static final int JS_BINARY_MINOR_VERSION = 2;
+    public static final int JS_BINARY_MAJOR_VERSION = 10;
+    public static final int JS_BINARY_MINOR_VERSION = 0;
     
     public static final int M1_BINARY_MAJOR_VERSION = 0;
     public static final int M1_BINARY_MINOR_VERSION = 0;
@@ -166,7 +166,7 @@ public class Versions {
      * @return true if the current version of ceylon can consume the given binary version
      */
     public static boolean isJsBinaryVersionSupported(int major, int minor){
-        return major == JS_BINARY_MAJOR_VERSION;
+        return major == JS_BINARY_MAJOR_VERSION || major == V1_3_0_JS_BINARY_MAJOR_VERSION;
     }
 
     /**

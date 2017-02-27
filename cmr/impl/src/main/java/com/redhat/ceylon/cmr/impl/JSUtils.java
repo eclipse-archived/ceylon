@@ -19,7 +19,13 @@ package com.redhat.ceylon.cmr.impl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -151,11 +157,11 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
         Object anns = metaModelProperty(model, "$mod-anns");
         List<Map<String,Object>> annotations = null;
         if (anns instanceof Map) {
-            // Pre-9.2 style annotations
+            // Pre-10.0 style annotations
             annotations = new ArrayList<Map<String,Object>>(1);
             annotations.add((Map<String,Object>)anns);
         } else if (anns instanceof List) {
-            // 9.2+ style annotations
+            // 10.0+ style annotations
             annotations = (List<Map<String,Object>>)anns;
         }
         if(annotations != null) {
