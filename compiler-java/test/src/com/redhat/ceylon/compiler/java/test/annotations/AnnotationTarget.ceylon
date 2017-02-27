@@ -29,7 +29,7 @@ class AnnotationTargetClass(annotationTarget String parameter) {
     
     annotationTarget
     void method(annotationTarget String parameter) {
-        annotationTarget
+        //annotationTarget
         assert(true);
         
         annotationTarget
