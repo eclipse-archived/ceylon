@@ -2333,12 +2333,14 @@ public abstract class DeclarationVisitor extends Visitor {
                 for (int i=0; i<cnt; i++) {
                     String be = getAnnotationArgument(na, i);
                     Backend backend = Backend.fromAnnotation(be);
-                    if (!backend.isRegistered()) {
-                        na.addError("illegal native backend name: '\"" +
-                                backend.nativeAnnotation +
-                                "\"' (must be either '\"jvm\"' or '\"js\"')");
+                    if (backend != null) {
+                        if (!backend.isRegistered()) {
+                            na.addError("illegal native backend name: '\"" +
+                                    backend.nativeAnnotation +
+                                    "\"' (must be either '\"jvm\"' or '\"js\"')");
+                        }
+                        backends = backends.merged(backend);
                     }
-                    backends = backends.merged(backend);
                 }
             }
         }

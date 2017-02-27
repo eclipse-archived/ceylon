@@ -157,7 +157,9 @@ public class TreeUtil {
             } else {
                 for (int i=0; i<cnt; i++) {
                     String be = getAnnotationArgument(ann, i);
-                    backends = backends.merged(Backend.fromAnnotation(be));
+                    if (be != null) {
+                        backends = backends.merged(Backend.fromAnnotation(be));
+                    }
                 }
             }
         }
