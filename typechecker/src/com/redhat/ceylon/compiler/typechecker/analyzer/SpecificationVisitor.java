@@ -283,7 +283,7 @@ public class SpecificationVisitor extends Visitor {
                 }
                 else if (!metamodel &&
                         !isNativeHeader(declaration) &&
-                        (!isLate() || !isForwardReferenceable())) {
+                        !isLate()) {
                     String message = 
                             "not definitely "
                             + (isVariable() ? 

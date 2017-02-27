@@ -7,7 +7,8 @@ interface Late1 {
 
 class Child() {
     shared late Parent parent;
-    @error print(parent);
+    //@error 
+    print(parent);
     shared Parent getParent() => parent;
     shared void setParent(Parent p) => parent = p;
 }
@@ -28,7 +29,8 @@ interface Late2 {
 
 class Child() {
     shared late Parent parent;
-    @error print(parent);
+    //@error 
+    print(parent);
     shared Parent getParent() {
         return parent;
     }
