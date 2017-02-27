@@ -722,12 +722,26 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         }
     }
 
+    public Interface getJavaSerializableDeclaration() {
+        Package io = getJavaIoPackage();
+        if (io==null) {
+            return null;
+        }
+        else {
+            return (Interface) io.getMember("Serializable", null, false);
+        }
+    }
+
     protected Package getJavaLangPackage() {
         return getPackage().getModule().getPackage("java.lang");
     }
     
     protected Package getJavaUtilPackage() {
         return getPackage().getModule().getPackage("java.util");
+    }
+    
+    protected Package getJavaIoPackage() {
+        return getPackage().getModule().getPackage("java.io");
     }
     
     @Override

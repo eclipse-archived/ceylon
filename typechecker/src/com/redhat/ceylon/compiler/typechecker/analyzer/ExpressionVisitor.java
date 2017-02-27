@@ -9475,13 +9475,25 @@ public class ExpressionVisitor extends Visitor {
         if (argType==null) {
             return null;
         }
-        else if (argType.isTypeConstructor()) {
-            return argType.getDeclaration()
-                .appliedType(null, 
-                    param.getType()
-                        .getTypeArgumentList());
-        }
         else {
+            TypeDeclaration dec = argType.getDeclaration();
+            if (argType.isTypeConstructor()) {
+                return dec.appliedType(null, 
+                        param.getType()
+                             .getTypeArgumentList());
+            }
+            else if (argType.isClass() && !dec.isJava()) {
+                //ceylon classes are implicitly Serializable
+                Unit unit = param.getUnit();
+                Interface sd = 
+                        unit.getJavaSerializableDeclaration();
+                if (sd!=null
+                        && param.inherits(sd)
+                        && !dec.inherits(sd)) {
+                    return intersectionType(argType, 
+                            sd.getType(), unit);
+                }
+            }
             return argType;
         }
     }
