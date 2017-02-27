@@ -1526,8 +1526,13 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     }
     
     public boolean isNonemptyIterableType(Type type) {
-        Type ft = getAbsentType(type);
-        return ft!=null && ft.isExactlyNothing();
+        if (type==null) {
+            return false;
+        }
+        else {
+            Type ft = getAbsentType(type);
+            return ft!=null && ft.isExactlyNothing();
+        }
     }
 
     public Type getSetElementType(Type type) {
