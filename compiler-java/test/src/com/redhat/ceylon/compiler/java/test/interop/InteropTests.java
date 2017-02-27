@@ -878,6 +878,7 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    @Ignore("Missing 1.3.2")
     public void testSerializableLambdas() {
         compile("SerializableLambdas.java", "SerializableLambdas.ceylon");
         run("com.redhat.ceylon.compiler.java.test.interop.serializableLambdas");
