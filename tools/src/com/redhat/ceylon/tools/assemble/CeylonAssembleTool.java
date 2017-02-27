@@ -47,8 +47,8 @@ import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 /**
  * @author Tako Schotanus (tako@ceylon-lang.org)
  */
-@Summary("Generate a Ceylon assemble for a given module")
-@Description("Generate an executable _assemble_ which contains the given module and all its run-time"
+@Summary("Generate a Ceylon assembly for a given module")
+@Description("Generate an executable _assembly_ which contains the given module and all its run-time"
         + " dependencies, including the Ceylon run-time, which makes that jar self-sufficient and"
         + " executable by `java` as if the Ceylon module was run by `ceylon run`."
 )
@@ -87,7 +87,7 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
         this.run = run;
     }
 
-    @Description("Target assemble file (defaults to `{name}-{version}.jar`).")
+    @Description("Target assembly file (defaults to `{name}-{version}.jar`).")
     @OptionArgument(shortName = 'o', argumentName="file")
     public void setOut(File out) {
         this.out = out;
@@ -96,7 +96,7 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
     @OptionArgument(argumentName="moduleOrFile", shortName='x')
     @Description("Excludes modules from the resulting far jat. Can be a module name or " + 
             "a file containing module names. Can be specified multiple times. Note that "+
-            "this excludes the module from the resulting assemble, but if your modules require that "+
+            "this excludes the module from the resulting assembly, but if your modules require that "+
             "module to be present at runtime it will still be required and may cause your "+
             "application to fail to start if it is not provided at runtime.")
     public void setExcludeModule(List<String> exclusions) {
