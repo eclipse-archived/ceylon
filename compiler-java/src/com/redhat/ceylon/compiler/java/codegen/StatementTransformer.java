@@ -2978,9 +2978,16 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.Expression specifierExpression = forIterator.getSpecifierExpression().getExpression();
             Type sequenceElementType = typeFact().getIteratedType(specifierExpression.getTypeModel());
             Type sequenceType = specifierExpression.getTypeModel().getSupertype(typeFact().getIterableDeclaration());
-            Type expectedIterableType = typeFact().isNonemptyIterableType(sequenceType)
-                    ? typeFact().getNonemptyIterableType(sequenceElementType)
-                    : typeFact().getIterableType(sequenceElementType);
+            Type expectedIterableType = null;
+            if (sequenceType != null) {
+                expectedIterableType = typeFact().isNonemptyIterableType(sequenceType)
+                        ? typeFact().getNonemptyIterableType(sequenceElementType)
+                                : typeFact().getIterableType(sequenceElementType);
+            } else {
+                expectedIterableType = typeFact().getIterableType(typeFact().getNothingType());
+                sequenceElementType = typeFact().getNothingType();
+            }
+            
             Type iterableType = forIterator.getSpecifierExpression().getExpression().getTypeModel();
             Type iteratorElementType = sequenceElementType;
             boolean optForArray = !isOptimizationDisabled(stmt, Optimization.ArrayIterationDynamic) && typeFact().getArrayType(sequenceElementType).isSubtypeOf(iterableType);
@@ -3000,7 +3007,8 @@ public class StatementTransformer extends AbstractTransformer {
                 JCExpression expr = elem_name.makeIdent();
                 if (expr != null) {
                     Type type;
-                    if (variable.getDeclarationModel().getType().getDeclaration().isAnonymous()) {
+                    if (variable.getDeclarationModel().getType() != null 
+                            && variable.getDeclarationModel().getType().getDeclaration().isAnonymous()) {
                         type = variable.getDeclarationModel().getType();
                     } else {
                         type = simplifyType(typeFact().denotableType(variable.getDeclarationModel().getType()));
@@ -5282,7 +5290,11 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         private Type model() {
-            return var.getDeclarationModel().getType();//Type().getTypeModel();
+            Type result = var.getDeclarationModel().getType();//Type().getTypeModel();
+            if (result == null) {
+                result = gen.typeFact().getNothingType();
+            }
+            return result;
         }
         
         private SyntheticName name() {
