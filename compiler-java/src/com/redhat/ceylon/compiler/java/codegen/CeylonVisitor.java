@@ -298,7 +298,14 @@ public class CeylonVisitor extends Visitor {
                             gen.makeNull())), null), BoxingStrategy.BOXED);
             classBuilder.defs(adb.build());
         } else if (clz.isClassMember()){
-            adb.modifiers(singletonModel.isShared() ? 0 : PRIVATE);
+            int mods = 0;
+            if (!singletonModel.isShared()) {
+                mods |= PRIVATE;
+            }
+            if (clz.isClassOrInterfaceMember() && clz.isStatic()) {
+                mods |= STATIC;
+            }
+            adb.modifiers(mods);
             // lazy
             adb.initialValue(gen.makeNull(), BoxingStrategy.BOXED);
             List<JCStatement> l = List.<JCStatement>of(
@@ -313,7 +320,11 @@ public class CeylonVisitor extends Visitor {
                     null),
             gen.make().Return(field.makeIdent()));
             adb.getterBlock(gen.make().Block(0, l));
-            classBuilder.getContainingClassBuilder().defs(gen.makeVar(PRIVATE | TRANSIENT, field, gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), gen.makeNull()));
+            long mods2 = PRIVATE | TRANSIENT;
+            if (clz.isStatic()) {
+                mods2 |= STATIC;
+            }
+            classBuilder.getContainingClassBuilder().defs(gen.makeVar(mods2, field, gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), gen.makeNull()));
             classBuilder.getContainingClassBuilder().defs(adb.build());
         } else {
             // LOCAL

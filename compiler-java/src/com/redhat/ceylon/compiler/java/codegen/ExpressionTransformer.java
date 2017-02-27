@@ -4820,8 +4820,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     CallBuilder callBuilder = CallBuilder.instance(this);
                     JCExpression qualExpr;
                     Class class1 = (Class) member.getContainer();
-                    if (class1.isToplevel()) {
-                        qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
+                    if (class1.isToplevel() || class1.isStatic()) {
+                        qualExpr = naming.makeTypeDeclarationExpression(null, class1.isStatic() ? (TypeDeclaration)class1.getContainer() : class1, DeclNameFlag.QUALIFIED);
                         callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
                     } else if (class1.isMember()){
                         // Stef: this is fugly but I couldn't find better. This makes sure that Outer.Inner.enumeratedConstructor
