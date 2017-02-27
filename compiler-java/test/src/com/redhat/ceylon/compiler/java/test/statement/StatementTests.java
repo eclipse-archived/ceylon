@@ -753,4 +753,9 @@ public class StatementTests extends CompilerTests {
         compareWithJavaSource("loop/Bug6070");
     }
     
+    @Test
+    public void testBug6939() {
+        compareWithJavaSource("loop/Bug6939");
+    }
+    
 }
