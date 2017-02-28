@@ -105,7 +105,7 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
                 // not a zip file
             }
         }
-        return null;
+        return ret;
     }
 
     public String getQualifiedMetaInfDescriptorName(String module, String version) {
