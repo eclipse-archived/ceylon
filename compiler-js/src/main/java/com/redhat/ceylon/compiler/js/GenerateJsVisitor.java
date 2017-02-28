@@ -1771,7 +1771,13 @@ public class GenerateJsVisitor extends Visitor {
             out("throw ", getClAlias(),
                     "InitializationError('Attempt to read uninitialized attribute \\u00ab", pubname, "\\u00bb');");
         } else {
-            out("{",privname,"=");
+            if (new NeedsThisVisitor(expr).needsThisReference()) {
+                out("{");
+                initSelf(expr);
+                out(privname, "=");
+            } else {
+                out("{",privname,"=");
+            }
             expr.visit(this);
             out(";}");
         }
