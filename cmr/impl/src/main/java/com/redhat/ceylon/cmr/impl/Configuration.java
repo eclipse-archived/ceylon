@@ -32,9 +32,11 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 public class Configuration {
     private static DependencyResolver mavenResolver;
     private static AbstractDependencyResolverAndModuleInfoReader jsResolver;
+    private static AbstractDependencyResolverAndModuleInfoReader npmResolver;
 
     public static final String MAVEN_RESOLVER_CLASS = "com.redhat.ceylon.cmr.maven.MavenDependencyResolver";
     public static final String JS_RESOLVER_CLASS = "com.redhat.ceylon.cmr.impl.JSUtils";
+    public static final String NPM_RESOLVER_CLASS = "com.redhat.ceylon.cmr.impl.NpmUtils";
     
     public static DependencyResolver getMavenResolver(){
         if (mavenResolver == null) {
@@ -48,6 +50,13 @@ public class Configuration {
             jsResolver = (AbstractDependencyResolverAndModuleInfoReader) getResolver(JS_RESOLVER_CLASS);
         }
         return jsResolver;
+    }
+
+    public static AbstractDependencyResolverAndModuleInfoReader getNpmResolver(){
+        if (npmResolver == null) {
+            npmResolver = (AbstractDependencyResolverAndModuleInfoReader) getResolver(NPM_RESOLVER_CLASS);
+        }
+        return npmResolver;
     }
 
     public static DependencyResolvers getResolvers(RepositoryManager manager) {
@@ -65,6 +74,10 @@ public class Configuration {
             if (mavenResolver != null) {
                 resolvers.addResolver(mavenResolver);
             }
+        }
+        DependencyResolver npmResolver = getNpmResolver();
+        if (npmResolver != null) {
+            resolvers.addResolver(npmResolver);
         }
         return resolvers;
     }
