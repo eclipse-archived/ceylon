@@ -141,13 +141,6 @@ public class JsIdentifierNames {
         return JsUtils.escapeStringLiteral(name);
     }
 
-    public String privateName(Parameter param) {
-        if (param == null) { return null; }
-        FunctionOrValue decl = param.getModel();
-        String name = uniquePrivateName(decl, false);
-        return JsUtils.escapeStringLiteral(name);
-    }
-
     public String valueName(FunctionOrValue d) {
         return d.isShared() && !d.isActual() ? name(d) + "_" : privateName(d);
     }
@@ -289,10 +282,10 @@ public class JsIdentifierNames {
         }
     }
 
-    private Map<Module, Long> moduleUIDs = new HashMap<Module, Long>();
-    private Map<Declaration, Long> uniqueVarIDs = new HashMap<Declaration, Long>();
+    private Map<Module, Long> moduleUIDs = new HashMap<>();
+    private Map<Declaration, Long> uniqueVarIDs = new HashMap<>();
     private Map<Declaration, String> uniqueVarNames =
-            new HashMap<Declaration, String>();
+            new HashMap<>();
 
     private String getName(Declaration decl, boolean forGetterSetter, boolean priv) {
         if (decl == null) { return null; }
