@@ -133,7 +133,7 @@ function is$(obj,type,containers){
               return false;
             }
           } else if (iance === 'in') {
-            if (!extendsType(cmptype, tmpobj.$$targs$$[i],true)) {
+            if (!extendsType(cmptype, tmpobj.$$targs$$[i],true) && (!tmpobj.$$targs$$[i] || tmpobj.$$targs$$[i].t!==Nothing)) {
               return false;
             }
           } else if (iance === undefined) {
