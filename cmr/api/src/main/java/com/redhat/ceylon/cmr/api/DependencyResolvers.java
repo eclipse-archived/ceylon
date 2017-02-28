@@ -44,19 +44,23 @@ public class DependencyResolvers {
 
     public ModuleInfo resolve(ArtifactResult result, Overrides overrides) {
         for (DependencyResolver dr : resolvers) {
-            ModuleInfo info = dr.resolve(result, overrides);
-            if (info != null) {
-                return info;
-            }
+            try {
+                ModuleInfo info = dr.resolve(result, overrides);
+                if (info != null) {
+                    return info;
+                }
+            } catch (Exception ex) {}
         }
         return null;
     }
 
     public Node descriptor(Node artifact) {
         for (DependencyResolver dr : resolvers) {
-            Node descriptor = dr.descriptor(artifact);
-            if (descriptor != null)
-                return descriptor;
+            try {
+                Node descriptor = dr.descriptor(artifact);
+                if (descriptor != null)
+                    return descriptor;
+            } catch (Exception ex) {}
         }
         return null;
     }
