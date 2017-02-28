@@ -65,14 +65,14 @@ shared void test() {
         assert(2+2==5);
         fail("check assert [1]");
     } catch (AssertionError ex) {
-        check("Assertion failed: '2+2==5'" in ex.message, "Assertion message");
+        check("violated 2+2==5" in ex.message, "Assertion message: [``ex.message``]");
     }
     try {
         "ms is a looong String"
         assert(is String ms, ms[1100] exists);
         fail("check assert [2]");
     } catch (AssertionError ex) {
-        check("ms is a looong String: 'is String ms, ms[1100] exists'" in ex.message, "custom assert message was ``ex.message``");
+        check("violated ms[1100] exists" in ex.message, "custom assert message was [``ex.message``]");
     }
     try {
         value length = "hello world".size;
@@ -80,7 +80,7 @@ shared void test() {
         assert (length < 10);
         fail("check assert [3]");
     } catch (AssertionError ex) {
-        check("length must be less than 10: 'length < 10'" in ex.message, "custom assert message with implicit doc ``ex.message``");
+        check("violated length < 10" in ex.message, "custom assert message with implicit doc [``ex.message``]");
     }
     check(ms2==ms3, "assertion values");
     results();
