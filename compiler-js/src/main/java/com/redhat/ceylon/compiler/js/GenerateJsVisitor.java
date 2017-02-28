@@ -2357,6 +2357,14 @@ public class GenerateJsVisitor extends Visitor {
                 out(smte.getIdentifier().getText());
             } else {
                 term.visit(this);
+                if (term instanceof BaseMemberExpression &&
+                        ((BaseMemberExpression)term).getDeclaration() instanceof Value) {
+                    Value v = (Value)((BaseMemberExpression)term).getDeclaration();
+                    if (v.isMember()) {
+                        //Assignment to dynamic member
+                        out("_");
+                    }
+                }
             }
             out("=");
             int box = boxUnboxStart(expr, term);
