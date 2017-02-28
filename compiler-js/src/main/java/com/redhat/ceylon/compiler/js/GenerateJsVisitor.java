@@ -2407,7 +2407,7 @@ public class GenerateJsVisitor extends Visitor {
             else if (bmeDecl instanceof FunctionOrValue) {
                 // "attr = expr;" in an initializer or method
                 final FunctionOrValue moval = (FunctionOrValue)bmeDecl;
-                if (moval.isVariable()) {
+                if (moval.isVariable() || moval.isLate()) {
                     // simple assignment to a variable attribute
                     BmeGenerator.generateMemberAccess(smte, new GenerateCallback() {
                         @Override public void generateValue() {
