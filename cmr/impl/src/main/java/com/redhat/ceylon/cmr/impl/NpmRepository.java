@@ -7,8 +7,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -88,10 +92,15 @@ public class NpmRepository extends AbstractRepository {
     }
     
     private static class NpmArtifactResult extends AbstractArtifactResult {
+        private RepositoryManager manager;
         private Node node;
 
+        private ModuleInfo infos;
+        private boolean resolved = false;
+        
         private NpmArtifactResult(CmrRepository repository, RepositoryManager manager, String name, String version, Node node) {
             super(repository, NAMESPACE, name, version);
+            this.manager = manager;
             this.node = node;
         }
 
@@ -109,10 +118,48 @@ public class NpmRepository extends AbstractRepository {
             }
         }
 
+        protected ModuleInfo resolve(){
+            if(!resolved){
+                Overrides overrides = ((CmrRepository)repository()).getRoot().getService(Overrides.class);
+                this.infos = Configuration.getResolvers(manager).resolve(this, overrides);
+                resolved = true;
+            }
+            return infos;
+        }
+
         @Override
         public List<ArtifactResult> dependencies() throws RepositoryException {
-            //Get the package.json file
-            return Collections.emptyList(); // dunno how to grab deps
+            ModuleInfo infos = resolve();
+            // TODO -- perhaps null is not valid?
+            if (infos == null || infos.getDependencies().isEmpty())
+                return Collections.emptyList();
+
+            final List<ArtifactResult> results = new ArrayList<ArtifactResult>();
+            for (ModuleDependencyInfo mi : getOrderedDependencies(infos)) {
+                results.add(new LazyArtifactResult(manager,
+                        mi.getNamespace(),
+                        mi.getName(),
+                        mi.getVersion(),
+                        mi.isExport(),
+                        mi.isOptional(),
+                        mi.getModuleScope()));
+            }
+            return results;
+        }
+
+        private List<ModuleDependencyInfo> getOrderedDependencies(ModuleInfo infos) {
+            List<ModuleDependencyInfo> dependencies = new ArrayList<ModuleDependencyInfo>(infos.getDependencies());
+            for (int index = 0; index < dependencies.size(); index++) {
+                ModuleDependencyInfo dep = dependencies.get(index);
+                if ("ceylon.language".equals(dep.getName())) {
+                    if (index != 0) {
+                        dependencies.remove(index);
+                        dependencies.add(0, dep);
+                    }
+                    break;
+                }
+            }
+            return dependencies;
         }
         
         @Override

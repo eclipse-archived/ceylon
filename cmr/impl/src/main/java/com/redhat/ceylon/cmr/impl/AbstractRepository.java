@@ -822,11 +822,15 @@ public abstract class AbstractRepository implements CmrRepository {
         String artifactName = getArtifactName(moduleName, version, ArtifactContext.CAR);
         Node artifact = versionNode.getChild(artifactName);
         if (artifact == null) {
-            artifactName = getArtifactName(moduleName, version, ArtifactContext.JS);
+            artifactName = getArtifactName(moduleName, version, ArtifactContext.NPM_DESCRIPTOR);
             artifact = versionNode.getChild(artifactName);
             if (artifact == null) {
-                artifactName = getArtifactName(moduleName, version, ArtifactContext.JAR);
+                artifactName = getArtifactName(moduleName, version, ArtifactContext.JS);
                 artifact = versionNode.getChild(artifactName);
+                if (artifact == null) {
+                    artifactName = getArtifactName(moduleName, version, ArtifactContext.JAR);
+                    artifact = versionNode.getChild(artifactName);
+                }
             }
         }
         return artifact;
@@ -844,6 +848,8 @@ public abstract class AbstractRepository implements CmrRepository {
             return JarUtils.INSTANCE;
         } else if (ArtifactContext.JS.equalsIgnoreCase(suffix) || ArtifactContext.JS_MODEL.equalsIgnoreCase(suffix)) {
             return Configuration.getJavaScriptResolver();
+        } else if (ArtifactContext.NPM_DESCRIPTOR.equalsIgnoreCase(suffix)) {
+            return Configuration.getNpmResolver();
         } else {
             return null;
         }
