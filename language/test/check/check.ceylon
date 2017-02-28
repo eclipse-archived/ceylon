@@ -72,7 +72,7 @@ shared void test() {
         assert(is String ms, ms[1100] exists);
         fail("check assert [2]");
     } catch (AssertionError ex) {
-        check("violated ms[1100] exists" in ex.message, "custom assert message was [``ex.message``]");
+        check("ms[1100] exists" in ex.message && "violated" in ex.message, "custom assert message was [``ex.message``]");
     }
     try {
         value length = "hello world".size;
