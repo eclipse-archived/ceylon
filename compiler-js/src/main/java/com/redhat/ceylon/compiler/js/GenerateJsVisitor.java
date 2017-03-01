@@ -3652,30 +3652,34 @@ public class GenerateJsVisitor extends Visitor {
         //Scan for a "doc" annotation with custom message
         Tree.AnnotationList annotationList = that.getAnnotationList();
         Tree.ConditionList conditionList = that.getConditionList();
-        if (conditionList!=null) {
-            conds.specialConditionsAndBlock(conditionList, null, getClAlias()+ConditionGenerator.ASSERTFUNC, true);
-            //escape
-            out(",");
-            out("\"Assertion failed: \"+");
+        if (conditionList != null) {
+            Iterator<ConditionGenerator.VarHolder> ivars = conds.gatherVariables(
+                    conditionList, true, true).iterator();
+            out(getClAlias(), "asrt$2(");
             String custom = docText(annotationList);
             if (custom==null) {
-                out("(");
                 visit(annotationList.getAnonymousAnnotation().getStringTemplate());
-                out(")+");
+            } else {
+                out("\"", JsUtils.escapeStringLiteral(custom), "\"");
             }
-            StringBuilder sb = new StringBuilder();
-            if (custom!=null) {
-                sb.append(JsUtils.escapeStringLiteral(custom));
+            out(",'", that.getLocation(), "','",
+                                that.getUnit().getFilename(), "'");
+            for (Tree.Condition cond : conditionList.getConditions()) {
+                out(",[");
+                if (cond instanceof Tree.BooleanCondition) {
+                    cond.visit(this);
+                } else {
+                    conds.specialCondition(ivars.next(), cond, true);
+                }
+                out(",'");
+                for (int i = cond.getToken().getTokenIndex();
+                        i <= cond.getEndToken().getTokenIndex(); i++) {
+                    out(JsUtils.escapeStringLiteral(tokens.get(i).getText()));
+                }
+                out("']");
             }
-            sb.append("\\n\\tviolated ");
-            for (int i = conditionList.getToken().getTokenIndex()+1;
-                    i < conditionList.getEndToken().getTokenIndex(); i++) {
-                sb.append(JsUtils.escapeStringLiteral(tokens.get(i).getText()));
-            }
-            sb.append("\\n\\tat ").append(that.getUnit().getFilename())
-                .append(" (").append(conditionList.getLocation()).append(")");
-            out("\"", sb.toString(), "\",'", that.getLocation(), "','",
-                    that.getUnit().getFilename(), "');");
+            out(");");
+            //conds.specialConditionsAndBlock(conditionList, null, getClAlias()+"asrt$2", true);
         }
         endLine();
     }
