@@ -194,7 +194,8 @@ public class VisibilityVisitor extends Visitor {
                                     + td.getName() 
                                     + "' that is visible outside this module comes from an imported module that is not re-exported: '" 
                                     + st.asString(that.getUnit()) 
-                                    + "' involves an unexported type declaration", 
+                                    + "' involves an unexported type declaration"
+                                    + exportHint(), 
                                     714);
                         }
                     }
