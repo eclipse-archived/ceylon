@@ -163,7 +163,6 @@ public class VisibilityVisitor extends Visitor {
                             + "' involves an unshared type declaration", 
                             713);
                 }
-                modules.clear();
                 if (!checkModuleVisibility(td, at, modules)) {
                     that.addError("aliased type of type alias '" 
                             + td.getName() 
@@ -190,7 +189,6 @@ public class VisibilityVisitor extends Visitor {
                                     + "' involves an unshared type declaration", 
                                     713);
                         }
-                        modules.clear();
                         if (!checkModuleVisibility(td, st, modules)) {
                             that.addError("supertype of type '" 
                                     + td.getName() 
@@ -256,7 +254,8 @@ public class VisibilityVisitor extends Visitor {
         }
         else {
             if (!isVisibleFromOtherModules(member, 
-                    thisModule, pt.getDeclaration())) {
+                    thisModule, pt.getDeclaration(),
+                    modules)) {
                 return false;
             }
             for (Type at: pt.getTypeArgumentList()) {
@@ -333,8 +332,9 @@ public class VisibilityVisitor extends Visitor {
         }
     }
     
-    private static boolean isVisibleFromOtherModules(Declaration member, 
-            Module thisModule, TypeDeclaration type) {
+    private static boolean isVisibleFromOtherModules(
+            Declaration member, Module thisModule, 
+            TypeDeclaration type, List<Module> modules) {
         // type parameters are OK
         if (type instanceof TypeParameter) {
             return true;
@@ -342,7 +342,7 @@ public class VisibilityVisitor extends Visitor {
         
         Module typeModule = getModule(type);
         if (typeModule!=null && thisModule!=null && 
-                thisModule!=typeModule) {
+                !thisModule.equals(typeModule)) {
             // find the module import, but only in exported 
             // imports, otherwise it's an error anyways
 
@@ -371,6 +371,7 @@ public class VisibilityVisitor extends Visitor {
                     return true;
                 }
             }
+            modules.add(typeModule);
             // couldn't find it
             return false;
         }
