@@ -4,6 +4,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPa
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeErrorNode;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isCompletelyVisible;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,32 @@ import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
  *
  */
 public class VisibilityVisitor extends Visitor {
+    
+    private List<Module> modules = new ArrayList<Module>(1);
+    
+    private String exportHint() {
+        StringBuilder hint = new StringBuilder(" (mark module import");
+        if (modules.size()>1) {
+            hint.append("s");
+        }
+        hint.append(" 'shared' for ");
+        boolean first = true;
+        for (Module m: modules) {
+            if (first) {
+                first = false;
+            }
+            else {
+                hint.append(", ");
+            }
+            hint.append("'")
+                .append(m.getNameAsString())
+                .append("'");
+        }
+        hint.append(")");
+        modules.clear();
+        return hint.toString();
+        
+    }
     
     @Override public void visit(Tree.TypedDeclaration that) {
         checkVisibility(that, that.getDeclarationModel());
@@ -130,18 +157,20 @@ public class VisibilityVisitor extends Visitor {
             Type at = td.getExtendedType();
             if (at!=null) {
                 if (!isCompletelyVisible(td, at)) {
-                    that.addError("aliased type is not visible everywhere type alias '" + 
-                            td.getName() + "' is visible: '" + 
-                            at.asString(that.getUnit()) +
-                            "' involves an unshared type declaration", 
+                    that.addError("aliased type is not visible everywhere type alias '" 
+                            + td.getName() + "' is visible: '" 
+                            + at.asString(that.getUnit()) 
+                            + "' involves an unshared type declaration", 
                             713);
                 }
-                if (!checkModuleVisibility(td, at)) {
-                    that.addError("aliased type of type alias '" + 
-                            td.getName() + 
-                            "' that is visible outside this module comes from an imported module that is not re-exported: '" +
-                            at.asString(that.getUnit()) +
-                            "' involves an unexported type declaration", 
+                modules.clear();
+                if (!checkModuleVisibility(td, at, modules)) {
+                    that.addError("aliased type of type alias '" 
+                            + td.getName() 
+                            + "' that is visible outside this module comes from an imported module that is not re-exported: '" 
+                            + at.asString(that.getUnit()) 
+                            + "' involves an unexported type declaration"
+                            + exportHint(), 
                             714);
                 }
             }
@@ -154,19 +183,20 @@ public class VisibilityVisitor extends Visitor {
                     if (that instanceof Tree.Declaration) {
                         if (!isCompletelyVisible(td, st)) {
                             // temporarily disable error for https://github.com/ceylon/ceylon/issues/5882
-                            that.addError("supertype is not visible everywhere type '" + 
-                                    td.getName() + 
-                                    "' is visible: '" + 
-                                    st.asString(that.getUnit()) +
-                                    "' involves an unshared type declaration", 
+                            that.addError("supertype is not visible everywhere type '" 
+                                    + td.getName() 
+                                    + "' is visible: '" 
+                                    + st.asString(that.getUnit()) 
+                                    + "' involves an unshared type declaration", 
                                     713);
                         }
-                        if (!checkModuleVisibility(td, st)) {
-                            that.addError("supertype of type '" + 
-                                    td.getName() + 
-                                    "' that is visible outside this module comes from an imported module that is not re-exported: '" +
-                                    st.asString(that.getUnit()) +
-                                    "' involves an unexported type declaration", 
+                        modules.clear();
+                        if (!checkModuleVisibility(td, st, modules)) {
+                            that.addError("supertype of type '" 
+                                    + td.getName() 
+                                    + "' that is visible outside this module comes from an imported module that is not re-exported: '" 
+                                    + st.asString(that.getUnit()) 
+                                    + "' involves an unexported type declaration", 
                                     714);
                         }
                     }
@@ -178,12 +208,14 @@ public class VisibilityVisitor extends Visitor {
 
 
     private static boolean checkModuleVisibility(
-            Declaration member, Type pt) {
+            Declaration member, Type pt, 
+            List<Module> modules) {
         if (inExportedScope(member)) {
             Module declarationModule = getModule(member);
             if (declarationModule!=null) {
                 return isCompletelyVisibleFromOtherModules(
-                        member,pt,declarationModule);
+                        member, pt, declarationModule, 
+                        modules);
             }
         }
         return true;
@@ -201,12 +233,12 @@ public class VisibilityVisitor extends Visitor {
 
     static boolean isCompletelyVisibleFromOtherModules(
             Declaration member, Type pt, 
-            Module thisModule) {
+            Module thisModule, List<Module> modules) {
         if (pt.isUnion()) {
             for (Type ct: pt.getCaseTypes()) {
                 if (!isCompletelyVisibleFromOtherModules(
                         member, ct.substitute(pt), 
-                        thisModule)) {
+                        thisModule, modules)) {
                     return false;
                 }
             }
@@ -216,7 +248,7 @@ public class VisibilityVisitor extends Visitor {
             for (Type st: pt.getSatisfiedTypes()) {
                 if (!isCompletelyVisibleFromOtherModules(
                         member, st.substitute(pt), 
-                        thisModule)) {
+                        thisModule, modules)) {
                     return false;
                 }
             }
@@ -230,7 +262,8 @@ public class VisibilityVisitor extends Visitor {
             for (Type at: pt.getTypeArgumentList()) {
                 if (at!=null && 
                         !isCompletelyVisibleFromOtherModules(
-                                member, at, thisModule)) {
+                                member, at, 
+                                thisModule, modules)) {
                     return false;
                 }
             }
@@ -247,51 +280,53 @@ public class VisibilityVisitor extends Visitor {
         }
     }
 
-    private static void checkVisibility(Node that, 
+    private void checkVisibility(Node that, 
             TypedDeclaration td) {
         Type type = td.getType();
         if (type!=null) {
             Node typeNode = getTypeErrorNode(that);
             if (!isCompletelyVisible(td, type)) {
-                typeNode.addError("type of declaration " + 
-                        getName(td) +
-                        " is not visible everywhere declaration is visible: '" + 
-                        type.asString(that.getUnit()) +
-                        "' involves an unshared type declaration", 
+                typeNode.addError("type of declaration " 
+                        + getName(td) 
+                        + " is not visible everywhere declaration is visible: '" 
+                        + type.asString(that.getUnit()) 
+                        + "' involves an unshared type declaration", 
                         711);
             }
-            if (!checkModuleVisibility(td, type)) {
-                typeNode.addError("type of declaration " + 
-                        getName(td) + 
-                        " that is visible outside this module comes from an imported module that is not re-exported: '" + 
-                        type.asString(that.getUnit()) +
-                        "' involves an unexported type declaration", 
+            if (!checkModuleVisibility(td, type, modules)) {
+                typeNode.addError("type of declaration " 
+                        + getName(td) 
+                        + " that is visible outside this module comes from an imported module that is not re-exported: '" 
+                        + type.asString(that.getUnit()) 
+                        + "' involves an unexported type declaration"
+                        + exportHint(), 
                         712);
             }
         }
     }
 
-    private static void checkParameterVisibility(
+    private void checkParameterVisibility(
             Tree.Parameter tp, Declaration td, Parameter p) {
         if (p.getModel()!=null) {
             Type pt = p.getType();
             if (pt!=null) {
                 if (!isCompletelyVisible(td, pt)) {
                     getParameterTypeErrorNode(tp)
-                        .addError("type of parameter '" + 
-                                p.getName() + "' of " + getName(td) +
-                            " is not visible everywhere declaration is visible: '" + 
-                            pt.asString(tp.getUnit()) +
-                            "' involves an unshared type declaration", 
+                        .addError("type of parameter '" 
+                                + p.getName() + "' of " + getName(td) 
+                                + " is not visible everywhere declaration is visible: '" 
+                                + pt.asString(tp.getUnit()) 
+                                + "' involves an unshared type declaration", 
                             710);
                 }
-                if (!checkModuleVisibility(td, pt)) {
+                if (!checkModuleVisibility(td, pt, modules)) {
                     getParameterTypeErrorNode(tp)
-                        .addError("type of parameter '" + 
-                                p.getName() + "' of " + getName(td) + 
-                            " that is visible outside this module comes from an imported module that is not re-exported: '" +
-                            pt.asString(tp.getUnit()) +
-                            "' involves an unexported type declaration", 
+                        .addError("type of parameter '" 
+                                + p.getName() + "' of " + getName(td) 
+                                + " that is visible outside this module comes from an imported module that is not re-exported: '" 
+                                + pt.asString(tp.getUnit()) 
+                                + "' involves an unexported type declaration"
+                                + exportHint(), 
                             714);
                 }
             }
