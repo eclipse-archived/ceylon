@@ -34,6 +34,9 @@ import com.redhat.ceylon.compiler.java.runtime.Main.ClassPath.ModuleNotFoundExce
 
 public class MainTest {
 
+    public static final String LANGUAGE_MODULE_CAR = "../language/ide-dist/ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car";
+    public static final String MODEL_MODULE_CAR = "../dist/dist/repo/com/redhat/ceylon/model/"+Versions.CEYLON_VERSION_NUMBER+"/com.redhat.ceylon.model-"+Versions.CEYLON_VERSION_NUMBER+".jar";
+
     public static String getCurrentPackagePath() {
         return "test/"+getCurrentPackagePathPart();
     }
@@ -83,7 +86,7 @@ public class MainTest {
         FileUtil.delete(destDir);
         destDir.mkdirs();
         CompilationTask task = compiler.getTask(null, null, null, Arrays.asList("-d", destDir.getPath(), 
-                "-cp", "build/classes"+File.pathSeparator+"../language/ide-dist/ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"), null, units);
+                "-cp", "build/classes"+File.pathSeparator+LANGUAGE_MODULE_CAR+File.pathSeparator+MODEL_MODULE_CAR), null, units);
         Boolean result = task.call();
         assertTrue(result != null && result.booleanValue());
 
