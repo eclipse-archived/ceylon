@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Module 
@@ -418,8 +417,8 @@ public class Module
         if (cmp != 0) {
             return cmp;
         }
-        // we don't care about how versions are compared, we 
-        // just care that the order is consistent
+        // we don't care about how versions are compared,  
+        // we just care that the order is consistent
         String version = this.getVersion();
         String otherVersion = other.getVersion();
         return version.compareTo(otherVersion);
@@ -434,7 +433,8 @@ public class Module
         if (cache != null){
             cache.clearForDeclaration(declaration);
         }
-        // FIXME: propagate to modules that import this module transitively
+        // FIXME: propagate to modules that import this 
+        // module transitively 
         // Done in the IDE JDTModule
     }
     

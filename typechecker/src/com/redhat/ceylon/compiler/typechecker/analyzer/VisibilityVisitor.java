@@ -308,16 +308,18 @@ public class VisibilityVisitor extends Visitor {
         Module typeModule = getModule(type);
         if (typeModule!=null && thisModule!=null && 
                 thisModule!=typeModule) {
-            // find the module import, but only in exported imports, otherwise it's an error anyways
+            // find the module import, but only in exported 
+            // imports, otherwise it's an error anyways
 
-            // language module stuff is automagically exported
-            if (typeModule == thisModule.getLanguageModule()) {
+            // language module stuff is implicitly exported
+            if (typeModule.isLanguageModule()) {
                 return true;
             }
             // try to find a direct import first
             for (ModuleImport imp: thisModule.getImports()) {
                 if (imp.isExport() && 
-                        imp.getModule() == typeModule) {
+                        imp.getModule()
+                           .equals(typeModule)) {
                     // found it
                     return true;
                 }
@@ -337,7 +339,8 @@ public class VisibilityVisitor extends Visitor {
             // couldn't find it
             return false;
         }
-        // no module or it does not belong to a module? more likely an error was already reported
+        // no module or it does not belong to a module? 
+        // more likely an error was already reported
         return true;
     }
 
@@ -345,10 +348,10 @@ public class VisibilityVisitor extends Visitor {
             Module targetModule, Set<Module> visited) {
         // don't visit them twice
         if (visited.add(importedModule)) {
-            for (ModuleImport imp: importedModule.getImports()){
+            for (ModuleImport imp: importedModule.getImports()) {
                 // only consider modules it exported back to us
                 if (imp.isExport()
-                        && (imp.getModule() == targetModule
+                        && (imp.getModule().equals(targetModule)
                         || includedImplicitly(imp.getModule(), 
                                 targetModule, visited))) {
                     return true;
