@@ -13,11 +13,11 @@ How to do a release of Ceylon.
   - Integration tests
   - CeylonDoc tests
 4. Make a test distribution
-  -  $ cd ceylon
-  -  ceylon$ ant clean-all dist sdk eclipse
+  - $ cd ceylon
+  - ceylon$ ant clean-all dist sdk eclipse
 5. Run the language tests
-  -  $ cd ceylon.language
-  -  ceylon.language$ ant test-quick
+  - $ cd ceylon.language
+  - ceylon.language$ ant test-quick
 6. Check that external sample code (in particular https://github.com/ceylon/ceylon-examples) compiles and runs OK.
 
 # The release
@@ -28,30 +28,42 @@ How to do a release of Ceylon.
   - $ git checkout -b version-${RELVER}
   - $ git push --set-upstream origin version-${RELVER}
 2. Reversion the new branch
-  -  $ ./dist/reversion.sh ${RELVER}-SNAPSHOT ${RELVER}
-  -  $ ./dist/reversion.sh ${RELVER}.osgi-4 ${RELVER}.osgi-5
+  - $ ./dist/reversion.sh ${RELVER}-SNAPSHOT ${RELVER}
+  - $ ./dist/reversion.sh ${RELVER}.osgi-4 ${RELVER}.osgi-5
   - Update `common/com/redhat/ceylon/common/Versions.java` (the `CEYLON_VERSION_QUALIFIER`)
   - Change `versionQualifier` in `language/src/ceylon/language/language.ceylon` from `"SNAPSHOT"` to `""`
   - Commit and push
 3. Reversion master
-  -  $ ./dist/reversion.sh ${RELVER}-SNAPSHOT **NEW_VERSION**-SNAPSHOT
-  -  $ ./dist/reversion.sh ${RELVER}.osgi-4 **NEW_VERSION**.osgi-4
+  - $ git checkout master
+  - $ ./dist/reversion.sh ${RELVER}-SNAPSHOT **NEW_VERSION**-SNAPSHOT
+  - $ ./dist/reversion.sh ${RELVER}.osgi-4 **NEW_VERSION**.osgi-4
   - [Choose a new release name](https://en.wikipedia.org/wiki/List_of_spacecraft_in_the_Culture_series)
-  -  $ ./dist/reversion.sh "**The Old Release Name**" "**The New Release Name**"
+  - $ ./dist/reversion.sh "**The Old Release Name**" "**The New Release Name**"
   - Update `common/com/redhat/ceylon/common/Versions.java` (the `VERSION_*` and `V*_VERSION` constants and the `VersionDetails` arrays)
   - Commit and push
 4. Tag every project
-  -  $ git tag ${RELVER}
-  -  $ git push origin ${RELVER}
+  - $ git tag ${RELVER}
+  - $ git push origin ${RELVER}
 5. Do the release zip
-  -  $ mkdir /tmp/ceylon
-  -  $ docker pull ceylon/ceylon-build
-  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build ${RELVER}
+  - $ mkdir /tmp/ceylon
+  - $ docker pull ceylon/ceylon-build
+  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build ${RELVER}
 6. Copy the zip to downloads.ceylon-lang.org:
-  -  $ scp /tmp/ceylon/ceylon-${RELVER}.zip **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+  - $ scp /tmp/ceylon/ceylon-${RELVER}.zip **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+7. Do the same for the SDK
+  - Go into the SDK folder
+  - $ git checkout -b version-${RELVER}
+  - $ git push --set-upstream origin version-${RELVER}
+  - $ ../ceylon/dist/reversion.sh ${RELVER}-SNAPSHOT ${RELVER}
+  - Commit and push
+  - $ git tag ${RELVER}
+  - $ git push origin ${RELVER}
+  - $ git checkout master
+  - $ ../ceylon/dist/reversion.sh ${RELVER}-SNAPSHOT **NEW_VERSION**-SNAPSHOT
+  - Commit and push
 7. Do the SDK release
-  -  $ docker pull ceylon/ceylon-build-sdk
-  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build-sdk ${RELVER}
+  - $ docker pull ceylon/ceylon-build-sdk
+  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build-sdk ${RELVER}
 
 # Build the Debian file
 
