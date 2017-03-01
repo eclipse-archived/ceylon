@@ -83,6 +83,7 @@ public class ConditionGenerator {
                         gen.out(",");
                     }
                     gen.out(varName);
+                    directAccess.add(variable.getDeclarationModel());
                 }
                 vars.add(new VarHolder(variable, variableRHS, varName, member));
             } else if (destruct != null) {
@@ -150,6 +151,22 @@ public class ConditionGenerator {
         return vars;
     }
 
+    void specialCondition(VarHolder varHolder, Tree.Condition condition, boolean forAssert) {
+        if (varHolder.destr == null) {
+            if (varHolder.member) {
+                String cname = gen.getNames().self(((ClassOrInterface)ModelUtil.getRealScope(
+                        varHolder.var.getDeclarationModel().getContainer())));
+                specialConditionCheck(condition, varHolder.term, cname + "." + varHolder.name, forAssert);
+            } else {
+                specialConditionCheck(condition, varHolder.term, varHolder.name, forAssert);
+                directAccess.add(varHolder.var.getDeclarationModel());
+            }
+        } else {
+            destructureCondition(condition, varHolder, forAssert);
+        }
+
+    }
+
     /** Handles the "is", "exists" and "nonempty" conditions, with a pre-generated
      * list of the variables from the conditions. */
     void specialConditions(final List<VarHolder> vars, Tree.ConditionList conditions, String keyword,
@@ -170,19 +187,7 @@ public class ConditionGenerator {
             if (cond instanceof Tree.BooleanCondition) {
                 cond.visit(gen);
             } else {
-                VarHolder vh = ivars.next();
-                if (vh.destr == null) {
-                    if (vh.member) {
-                        String cname = gen.getNames().self(((ClassOrInterface)ModelUtil.getRealScope(
-                                vh.var.getDeclarationModel().getContainer())));
-                        specialConditionCheck(cond, vh.term, cname + "." + vh.name, forAssert);
-                    } else {
-                        specialConditionCheck(cond, vh.term, vh.name, forAssert);
-                        directAccess.add(vh.var.getDeclarationModel());
-                    }
-                } else {
-                    destructureCondition(cond, vh, forAssert);
-                }
+                specialCondition(ivars.next(), cond, forAssert);
             }
         }
         if (!keyword.isEmpty()) {
