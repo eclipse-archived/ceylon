@@ -40,7 +40,7 @@ import com.redhat.ceylon.launcher.CeylonClassLoader;
       + "<!-- lang: xml -->\n"
       + "    <target name=\"descriptor\" depends=\"ceylon-ant-taskdefs\">\n"
       + "      <ceylon-osgi-version\n"
-      + "            ceylonVersion=\"1.3.2-SNAPSHOT\"\n"
+      + "            ceylonVersion=\"1.3.2\"\n"
       + "            addTimeStamp=\"true\"\n"
       + "      />\n"
       + "      <echo message=\"Osgi Version: ${ceylonOsgiVersion}\" />\n"

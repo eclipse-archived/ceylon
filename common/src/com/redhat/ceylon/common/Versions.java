@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 1.3.2-SNAPSHOT "Smile Tolerantly"
+    // The current version is Ceylon 1.3.2 "Smile Tolerantly"
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
@@ -46,9 +46,9 @@ public class Versions {
      */
     public static final int CEYLON_VERSION_RELEASE = 2;
     
-    public static final String CEYLON_VERSION_QUALIFIER = "SNAPSHOT";
-    // private static final String _CEYLON_VERSION_QUALIFIER = ""; // If previous constant is an empty string use this line
-    private static final String _CEYLON_VERSION_QUALIFIER = "-" + CEYLON_VERSION_QUALIFIER; // Otherwise use this one
+    public static final String CEYLON_VERSION_QUALIFIER = "";
+    private static final String _CEYLON_VERSION_QUALIFIER = ""; // If previous constant is an empty string use this line
+    //private static final String _CEYLON_VERSION_QUALIFIER = "-" + CEYLON_VERSION_QUALIFIER; // Otherwise use this one
     
     // SHA1 of current HEAD at moment of compilation
     public static final String CURRENT_COMMIT_ID = "@commit@";
@@ -79,9 +79,9 @@ public class Versions {
      * 1.1 is 7.0
      * 1.2.0 is 8.0
      * 1.2.1, 1.2.2 is 8.0 for JVM, 9.0 for JS
-     * 1.3.0 up to 1.3.2-SNAPSHOT is 8.1 for JVM
+     * 1.3.0 up to 1.3.2 is 8.1 for JVM
      * 1.3.0 up to 1.3.1 is 9.1 for JS
-     * 1.3.2-SNAPSHOT is 10.0 for JS (support for sequenced annotations in the model)
+     * 1.3.2 is 10.0 for JS (support for sequenced annotations in the model)
      */
     public static final int JVM_BINARY_MAJOR_VERSION = 8;
     public static final int JVM_BINARY_MINOR_VERSION = 1;
