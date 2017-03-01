@@ -22,33 +22,36 @@ How to do a release of Ceylon.
 
 # The release
 
+0. Set the version in the shells you're going to use to execute all the necessary commands for the release. Take good care with each of the commands you copy and paste, especially to adjust the parts marked in bold.
+  - $ export RELVER=**THE_VERSION_TO_RELEASE**
 1. Create a release branch
-  - $ git checkout -b version-**1.2.1**
-  - $ git push --set-upstream origin version-**1.2.1**
+  - $ git checkout -b version-${RELVER}
+  - $ git push --set-upstream origin version-${RELVER}
 2. Reversion the new branch
-  -  $ ./dist/reversion.sh **1.2.1**-SNAPSHOT **1.2.1**
-  -  $ ./dist/reversion.sh **1.2.1**.osgi-4 **1.2.1**.osgi-5
-  - Update common/com/redhat/ceylon/common/Versions.java
+  -  $ ./dist/reversion.sh ${RELVER}-SNAPSHOT ${RELVER}
+  -  $ ./dist/reversion.sh ${RELVER}.osgi-4 ${RELVER}.osgi-5
+  - Update `common/com/redhat/ceylon/common/Versions.java` (the `CEYLON_VERSION_QUALIFIER`)
+  - Change `versionQualifier` in `language/src/ceylon/language/language.ceylon` from `"SNAPSHOT"` to `""`
   - Commit and push
 3. Reversion master
-  -  $ ./dist/reversion.sh **1.2.1**-SNAPSHOT **1.2.2**-SNAPSHOT
-  -  $ ./dist/reversion.sh **1.2.1**.osgi-4 **1.2.2**.osgi-4
+  -  $ ./dist/reversion.sh ${RELVER}-SNAPSHOT **NEW_VERSION**-SNAPSHOT
+  -  $ ./dist/reversion.sh ${RELVER}.osgi-4 **NEW_VERSION**.osgi-4
   - [Choose a new release name](https://en.wikipedia.org/wiki/List_of_spacecraft_in_the_Culture_series)
-  -  $ ./dist/reversion.sh "The Old Release Name" "The New Release Name"
-  - Update common/com/redhat/ceylon/common/Versions.java
+  -  $ ./dist/reversion.sh "**The Old Release Name**" "**The New Release Name**"
+  - Update `common/com/redhat/ceylon/common/Versions.java` (the `VERSION_*` and `V*_VERSION` constants and the `VersionDetails` arrays)
   - Commit and push
 4. Tag every project
-  -  $ git tag **1.2.1**
-  -  $ git push origin **1.2.1**
+  -  $ git tag ${RELVER}
+  -  $ git push origin ${RELVER}
 5. Do the release zip
   -  $ mkdir /tmp/ceylon
   -  $ docker pull ceylon/ceylon-build
-  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build **1.2.1**
+  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build ${RELVER}
 6. Copy the zip to downloads.ceylon-lang.org:
-  -  $ scp /tmp/ceylon/ceylon-**1.2.1**.zip **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+  -  $ scp /tmp/ceylon/ceylon-${RELVER}.zip **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 7. Do the SDK release
   -  $ docker pull ceylon/ceylon-build-sdk
-  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build-sdk **1.2.1**
+  -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build-sdk ${RELVER}
 
 # Build the Debian file
 
@@ -63,12 +66,12 @@ How to do a release of Ceylon.
 5. Commit, push the new branch and merge it into master
 6. Package it
   - $ docker pull ceylon/ceylon-package-deb
-  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb **1.2.1**
+  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb ${RELVER}
 7. Copy the zip to downloads.ceylon-lang.org:
-  - $ scp /tmp/ceylon/ceylon-**1.2.1_1.2.1**_all.deb **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+  - $ scp /tmp/ceylon/ceylon-${RELVER}_${RELVER}_all.deb **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 8. Build the Debian repo at ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
   - $ docker pull ceylon/ceylon-repo-deb
-  - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-deb **1.2.1**
+  - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-deb ${RELVER}
 9. Copy the packages to downloads.ceylon-lang.org:
   - $ rsync -rv --dry-run /tmp/ceylon/{db,dists,pool} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
 
@@ -78,18 +81,18 @@ NB: To be able to sign packages the user running the docker command for generati
 
 1. Check out the [`ceylon-rpm-repo`](https://github.com/ceylon/ceylon-rpm-repo) repository
 2. Create a new branch:
-  - $ git checkout -b **1.2.1**
+  - $ git checkout -b ${RELVER}
 3. Edit the `dist-pkg/ceylon.spec` file
 4. Make sure the [repo build file](https://github.com/ceylon/ceylon-rpm-repo/blob/master/repo/build.sh) is up to date
 5. Commit, push the new branch and merge it into master
 6. Build it
   - $ docker pull ceylon/ceylon-package-rpm
-  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-rpm **1.2.1**
+  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-rpm ${RELVER}
 7. Copy the rpm to downloads.ceylon-lang.org:
-  - $ scp /tmp/ceylon/ceylon-**1.2.1-1.2.1-0**.noarch.rpm **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
+  - $ scp /tmp/ceylon/ceylon-${RELVER}-${RELVER}-0.noarch.rpm **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 8. Rebuild the RPM repo at ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
   - $ docker pull ceylon/ceylon-repo-rpm
-  - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm **1.2.1**
+  - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm ${RELVER}
 9. Copy the packages to downloads.ceylon-lang.org:
   - $ rsync -rv --dry-run /tmp/ceylon/{\*.noarch.rpm,repodata} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
 
@@ -136,7 +139,7 @@ NB: To be able to sign packages the user running the docker command for generati
 1. First create an Upload on the server
 2. Publish the official distribution and SDK to it
   - $ docker pull ceylon/ceylon-publish
-  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-publish **1.2.1** https://modules.ceylon-lang.org/uploads/**XXX**/repo/ **user** **password**
+  - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-publish ${RELVER} https://modules.ceylon-lang.org/uploads/**XXX**/repo/ **user** **password**
 
 # Update the web site
 
