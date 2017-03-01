@@ -228,9 +228,11 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             for (File child : children) {
                 if (child.isDirectory()) {
                     File[] modfiles = child.listFiles();
-                    for (File f : modfiles) {
-                        if (isScript(f) || isPlugin(f)) {
-                            scripts.add(scriptName(f) + " (from " + location + " module '" + getModuleNameVersion(f) + "')");
+                    if (modfiles != null) {
+                        for (File f : modfiles) {
+                            if (isScript(f) || isPlugin(f)) {
+                                scripts.add(scriptName(f) + " (from " + location + " module '" + getModuleNameVersion(f) + "')");
+                            }
                         }
                     }
                 } else if (isScript(child) || isPlugin(child)) {
@@ -355,7 +357,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
                     return f.isDirectory() && f.getName().startsWith(modPrefix);
                 }
             });
-            return files.length > 0;
+            return files != null && files.length > 0;
         }
         return false;
     }
@@ -378,11 +380,13 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
                     return f.isDirectory() && f.getName().startsWith(modPrefix);
                 }
             });
-            for (File f : files) {
-                FileUtil.delete(f);
-                msg("success.uninstalled", module.getName(), f);
-                newline();
-                deleted = true;
+            if (files != null) {
+                for (File f : files) {
+                    FileUtil.delete(f);
+                    msg("success.uninstalled", module.getName(), f);
+                    newline();
+                    deleted = true;
+                }
             }
         }
         if (!deleted && errorIfMissing) {
