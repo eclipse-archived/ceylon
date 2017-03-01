@@ -1,4 +1,4 @@
 ; Plugin definition for the "ceylon format" tool
 summary=Formats Ceylon source code
-module=ceylon.formatter/1.3.2-SNAPSHOT
+module=ceylon.formatter/1.3.3-SNAPSHOT
 class=ceylon.formatter.CeylonFormatTool

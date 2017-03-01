@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon 1.3.2-SNAPSHOT "Smile Tolerantly"
+    // The current version is Ceylon 1.3.3-SNAPSHOT "Contents May Differ"
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
@@ -44,7 +44,7 @@ public class Versions {
      * <em>Beware</em> javac will inline this at compile time at use-sites,
      * use {@link #getCeylonVersionRelease()} to avoid that.
      */
-    public static final int CEYLON_VERSION_RELEASE = 2;
+    public static final int CEYLON_VERSION_RELEASE = 3;
     
     public static final String CEYLON_VERSION_QUALIFIER = "SNAPSHOT";
     // private static final String _CEYLON_VERSION_QUALIFIER = ""; // If previous constant is an empty string use this line
@@ -61,7 +61,7 @@ public class Versions {
     /**
      * The release code name.
      */
-    public static final String CEYLON_VERSION_NAME = "Smile Tolerantly";
+    public static final String CEYLON_VERSION_NAME = "Contents May Differ";
     
     /**
      * The version number + code name description string.
@@ -79,9 +79,9 @@ public class Versions {
      * 1.1 is 7.0
      * 1.2.0 is 8.0
      * 1.2.1, 1.2.2 is 8.0 for JVM, 9.0 for JS
-     * 1.3.0 up to 1.3.2-SNAPSHOT is 8.1 for JVM
+     * 1.3.0 up to 1.3.3-SNAPSHOT is 8.1 for JVM
      * 1.3.0 up to 1.3.1 is 9.1 for JS
-     * 1.3.2-SNAPSHOT is 10.0 for JS (support for sequenced annotations in the model)
+     * 1.3.3-SNAPSHOT is 10.0 for JS (support for sequenced annotations in the model)
      */
     public static final int JVM_BINARY_MAJOR_VERSION = 8;
     public static final int JVM_BINARY_MINOR_VERSION = 1;
@@ -141,6 +141,12 @@ public class Versions {
 
     public static final int V1_3_1_JS_BINARY_MAJOR_VERSION = 9;
     public static final int V1_3_1_JS_BINARY_MINOR_VERSION = 1;
+
+    public static final int V1_3_2_JVM_BINARY_MAJOR_VERSION = 8;
+    public static final int V1_3_2_JVM_BINARY_MINOR_VERSION = 1;
+
+    public static final int V1_3_2_JS_BINARY_MAJOR_VERSION = 10;
+    public static final int V1_3_2_JS_BINARY_MINOR_VERSION = 0;
 
     // Dependencies that end up in code
     public static final String DEPENDENCY_JBOSS_MODULES_VERSION = "1.4.4.Final";
@@ -279,6 +285,7 @@ public class Versions {
             new VersionDetails("1.2.2", V1_2_2_JVM_BINARY_MAJOR_VERSION, V1_2_2_JVM_BINARY_MINOR_VERSION),
             new VersionDetails("1.3.0", V1_3_0_JVM_BINARY_MAJOR_VERSION, V1_3_0_JVM_BINARY_MINOR_VERSION),
             new VersionDetails("1.3.1", V1_3_1_JVM_BINARY_MAJOR_VERSION, V1_3_1_JVM_BINARY_MINOR_VERSION),
+            new VersionDetails("1.3.2", V1_3_2_JVM_BINARY_MAJOR_VERSION, V1_3_2_JVM_BINARY_MINOR_VERSION),
             new VersionDetails(CEYLON_VERSION_NUMBER, JVM_BINARY_MAJOR_VERSION, JVM_BINARY_MINOR_VERSION),
     };
     
@@ -297,6 +304,7 @@ public class Versions {
             new VersionDetails("1.2.2", V1_2_2_JS_BINARY_MAJOR_VERSION, V1_2_2_JS_BINARY_MINOR_VERSION),
             new VersionDetails("1.3.0", V1_3_0_JS_BINARY_MAJOR_VERSION, V1_3_0_JS_BINARY_MINOR_VERSION),
             new VersionDetails("1.3.1", V1_3_1_JS_BINARY_MAJOR_VERSION, V1_3_1_JS_BINARY_MINOR_VERSION),
+            new VersionDetails("1.3.2", V1_3_2_JS_BINARY_MAJOR_VERSION, V1_3_2_JS_BINARY_MINOR_VERSION),
             new VersionDetails(CEYLON_VERSION_NUMBER, JS_BINARY_MAJOR_VERSION, JS_BINARY_MINOR_VERSION),
     };
     
