@@ -74,7 +74,7 @@ How to do a release of Ceylon.
   - $ ./new-version.sh ${RELVER} **X0Y0Z0**
 5. Edit the `dist-pkg/debian/changelog` file by hand or use:
   - $ dch -i
-6. Commit and, push the new branch
+6. Commit and push the new branch
 7. Package it
   - $ docker pull ceylon/ceylon-package-deb
   - $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb ${RELVER}
@@ -84,7 +84,7 @@ How to do a release of Ceylon.
   - $ docker pull ceylon/ceylon-repo-deb
   - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-deb ${RELVER}
 10. Copy the packages to downloads.ceylon-lang.org:
-  - $ rsync -rv --dry-run /tmp/ceylon/{db,dists,pool} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
+  - $ rsync -rv **--dry-run** /tmp/ceylon/{db,dists,pool} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/apt/
 
 NB: To be able to sign packages the user running the docker command for generating the repo must have the "Ceylon Debian Archive Signing Key" (59935387) imported into their local key ring.
 
@@ -105,7 +105,7 @@ NB: To be able to sign packages the user running the docker command for generati
   - $ docker pull ceylon/ceylon-repo-rpm
   - $ docker run -ti --rm -v /tmp/ceylon:/output -v ~/.gnupg:/gnupg ceylon/ceylon-repo-rpm ${RELVER}
 9. Copy the packages to downloads.ceylon-lang.org:
-  - $ rsync -rv --dry-run /tmp/ceylon/{\*.noarch.rpm,repodata} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
+  - $ rsync -rv **--dry-run** /tmp/ceylon/{\*.noarch.rpm,repodata} **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/rpm/
 
 NB: To be able to sign packages the user running the docker command for generating the repo must have the "Ceylon RPM Archive Signing Key" (E024C8B2) imported into their local key ring.
 
