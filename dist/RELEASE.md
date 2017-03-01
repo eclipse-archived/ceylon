@@ -170,14 +170,14 @@ NB: To be able to sign packages the user running the docker command for generati
 
 This is done via simple `curl` commands, but requires a key and token that will not be posted here for security reasons.
 
-1. First, release the candidate with `curl -X POST -H "consumer_key: KKKKKKK" -H "consumer_token: TTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","version":"<release version>","url":"https://downloads.ceylon-lang.org/cli/ceylon-<release version>.zip"}' https://vendors.sdkman.io/release`. This should return something like `{"status":201,"id":"XXXXX","message":"released ceylon version: <release version>"}`
-2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://vendors.sdkman.io/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
+1. First, release the candidate with `curl -X POST -H "consumer_key: KKKKKKK" -H "consumer_token: TTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","version":"${RELVER}>","url":"https://downloads.ceylon-lang.org/cli/ceylon-${RELVER}.zip"}' https://vendors.sdkman.io/release`. This should return something like `{"status":201,"id":"XXXXX","message":"released ceylon version: <release version>"}`
+2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"${RELVER}"}' https://vendors.sdkman.io/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
 3. Finally, to broadcast an announcement of the new release: `curl -X POST -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate": "ceylon", "version": "<release version>", "hashtag": "ceylonlang"}' https://vendors.sdkman.io/announce/struct`
 
 You can now also use the `dist/sdkman.sh` script ot do the same:
 
-1. `sdkman candidate 1.2.1 KKKKK TTTTTT` will do the same as first two steps above: register a new version and set it as the default
-1. `sdkman announce 1.2.1 KKKKK TTTTTT` will do the same as the last step: announce the new version
+1. `sdkman candidate ${RELVER} KKKKK TTTTTT` will do the same as first two steps above: register a new version and set it as the default
+1. `sdkman announce ${RELVER} KKKKK TTTTTT` will do the same as the last step: announce the new version
 
 # ArchLinux
 
