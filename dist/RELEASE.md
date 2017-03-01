@@ -20,11 +20,6 @@ How to do a release of Ceylon.
   -  ceylon.language$ ant test-quick
 6. Check that external sample code (in particular https://github.com/ceylon/ceylon-examples) compiles and runs OK.
 
-# Before (packaging)
-
-1. Make sure the RedHat packaging is up-to-date by following the steps in the [`ceylon/ceylon-rpm-repo/README`](https://github.com/ceylon/ceylon-rpm-repo/blob/master/README.md) file
-2. Do the same for the Debian packaging by reading [`ceylon/ceylon-debian-repo/README`](https://github.com/ceylon/ceylon-debian-repo/blob/master/README.md)
-
 # The release
 
 1. Create a release branch
