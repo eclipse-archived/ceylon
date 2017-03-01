@@ -328,12 +328,30 @@ function eorl$(comp) {
 function asrt$(cond,msg,loc,file) {
   if (!cond)throw wrapexc(AssertionError(msg),loc,file);
 }
+//newer, cooler assert
+function asrt$2(msg,loc,file) {
+  for (var i=3; i<arguments.length;i++) {
+    if (!arguments[i][0]) {
+      //Generate message
+      var m='Assertion failed: ' + msg;
+      for (var j=3;j<i;j++) {
+        m+='\n\tunviolated ' + arguments[j][1];
+      }
+      m+='\n\tviolated ' + arguments[i][1];
+      for (j=i+1;j<arguments.length;j++) {
+        m+='\n\tuntested ' + arguments[j][1];
+      }
+      throw wrapexc(AssertionError(m),loc,file);
+    }
+  }
+}
 ex$.set_type_args=set_type_args;
 ex$.add_type_arg=add_type_arg;
 ex$.throwexc=throwexc;
 ex$.wrapexc=wrapexc;
 ex$.eorl$=eorl$;
 ex$.asrt$=asrt$;
+ex$.asrt$2=asrt$2;
 var INIT$={a:1};
 ex$.INIT$=INIT$;
 
