@@ -26,15 +26,15 @@ How to do a release of Ceylon.
   - $ git checkout -b version-**1.2.1**
   - $ git push --set-upstream origin version-**1.2.1**
 2. Reversion the new branch
-  -  $ ./dist/reversion **1.2.1**-SNAPSHOT **1.2.1**
-  -  $ ./dist/reversion **1.2.1**.osgi-4 **1.2.1**.osgi-5
+  -  $ ./dist/reversion.sh **1.2.1**-SNAPSHOT **1.2.1**
+  -  $ ./dist/reversion.sh **1.2.1**.osgi-4 **1.2.1**.osgi-5
   - Update common/com/redhat/ceylon/common/Versions.java
   - Commit and push
 3. Reversion master
-  -  $ ./dist/reversion **1.2.1**-SNAPSHOT **1.2.2**-SNAPSHOT
-  -  $ ./dist/reversion **1.2.1**.osgi-4 **1.2.2**.osgi-4
+  -  $ ./dist/reversion.sh **1.2.1**-SNAPSHOT **1.2.2**-SNAPSHOT
+  -  $ ./dist/reversion.sh **1.2.1**.osgi-4 **1.2.2**.osgi-4
   - [Choose a new release name](https://en.wikipedia.org/wiki/List_of_spacecraft_in_the_Culture_series)
-  -  $ ./dist/reversion "The Old Release Name" "The New Release Name"
+  -  $ ./dist/reversion.sh "The Old Release Name" "The New Release Name"
   - Update common/com/redhat/ceylon/common/Versions.java
   - Commit and push
 4. Tag every project
