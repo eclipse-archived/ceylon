@@ -3,7 +3,11 @@ function unflatten(ff, $$$mptypes) {
   if (ff.jsc$)ff=ff.jsc$;
   var mm=getrtmm$$(ff);
   if (mm && mm.ps) {
-    if (mm.ps.length===0)return ff;
+    if (mm.ps.length===0) {
+      var ru=function(){ return ff();}  
+      ru.$crtmm$={$t:mm.$t,ps:[{$t:{t:Empty},nm:'unf0',mt:'prm'}]};
+      return ru;
+    }
     var last=mm.ps[mm.ps.length-1];
     var iadic=last.seq;
     if (is$(last,{t:Tuple}))iadic=0;
