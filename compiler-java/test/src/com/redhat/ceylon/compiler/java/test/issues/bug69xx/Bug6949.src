@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug69xx;
+
+class Bug6949 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug6949() {
+        (
+            let
+            {
+                .ceylon.language.String arg$0$0 = .ceylon.language.String.instance("");
+                .java.lang.Throwable arg$0$1 = null;
+            }
+            returning new .ceylon.language.Exception(arg$0$0, arg$0$1);
+        );
+        (
+            let
+            {
+                .java.lang.String arg$1$0 = "";
+                .java.lang.Throwable arg$1$1 = .ceylon.language.AssertionError.$default$cause(arg$1$0);
+            }
+            returning new .ceylon.language.AssertionError(arg$1$0, arg$1$1);
+        );
+        new .ceylon.language.AssertionError("");
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6949.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6949.class);
+}
