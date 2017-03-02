@@ -1835,6 +1835,9 @@ class NamedArgumentInvocation extends Invocation {
                             && gen.isJavaArray(((Class)getPrimaryDeclaration()).getType())){
                         // default values are hard-coded to Java default values, and are actually ignored
                         continue;
+                    }else if(gen.typeFact().getExceptionDeclaration().equals(getPrimaryDeclaration())){
+                        // erasure means there's no default value method, but we know it's null
+                        argExpr = gen.makeNull();
                     }else if(getQmePrimary() != null 
                              && gen.isJavaArray(getQmePrimary().getTypeModel())){
                         // we support array methods with optional parameters
