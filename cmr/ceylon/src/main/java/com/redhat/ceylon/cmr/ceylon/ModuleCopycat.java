@@ -140,6 +140,7 @@ public class ModuleCopycat {
      * @throws Exception
      */
     public void copyModules(List<ArtifactContext> contexts) throws Exception {
+        init();
         count = 0;
         maxCount = contexts.size();
         for (ArtifactContext context : contexts) {
@@ -157,13 +158,16 @@ public class ModuleCopycat {
      * in the "feedback" callback interface
      */
     public void copyModule(ArtifactContext context) throws Exception {
-        if (!includeLanguage) {
-            excludeModules.add("ceylon.language");
-        }
-        
+        init();
         count = 0;
         maxCount = 1;
         copyModuleInternal(context);
+    }
+    
+    private void init() {
+        if (!includeLanguage) {
+            excludeModules.add("ceylon.language");
+        }
     }
     
     private void copyModuleInternal(ArtifactContext context) throws Exception {
