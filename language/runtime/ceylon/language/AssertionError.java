@@ -84,7 +84,7 @@ public class AssertionError extends java.lang.Error implements ReifiedType {
         return null;
     }
     @Ignore
-    public static java.lang.Throwable $default$cause(String description){
+    public static java.lang.Throwable $default$cause(java.lang.String description){
         return null;
     }
 
