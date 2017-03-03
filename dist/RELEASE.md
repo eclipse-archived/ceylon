@@ -32,6 +32,7 @@ How to do a release of Ceylon.
   - $ ./dist/reversion.sh ${RELVER}.osgi-4 ${RELVER}.osgi-5
   - Update `common/com/redhat/ceylon/common/Versions.java` (the `CEYLON_VERSION_QUALIFIER`)
   - Change `versionQualifier` in `language/src/ceylon/language/language.ceylon` from `"SNAPSHOT"` to `""`
+  - Make sure `compiler-js/.../JsModuleSourceMapper.java#loadModuleFromMap()` has been updated!
   - Commit and push
 3. Reversion master
   - $ git checkout master
