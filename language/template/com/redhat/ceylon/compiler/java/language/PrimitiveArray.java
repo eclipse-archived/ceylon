@@ -532,13 +532,13 @@ extends BaseIterable<@BoxedType@, ceylon.language.Null> {
     
     @Override
     public @BoxedType@ getFirst() {
-        return this.getEmpty() ? null : @BoxedType@.instance(this.array[this.start]);
+        return getEmpty() ? null : @BoxedType@.instance(this.array[this.start]);
     }
     
     
     @Override
     public @BoxedType@ getLast() {
-        return this.getEmpty() ? null : @BoxedType@.instance(this.array[this.end-1]);
+        return getEmpty() ? null : @BoxedType@.instance(this.array[this.end-1]);
     }
     
     @Override
@@ -578,12 +578,12 @@ extends BaseIterable<@BoxedType@, ceylon.language.Null> {
     
     @Override
     public boolean longerThan(long length) {
-        return this.getSize() > length;
+        return getSize() > length;
     }
     
     @Override
     public boolean shorterThan(long length) {
-        return this.getSize() < length;
+        return getSize() < length;
     }
     
     @Override
@@ -607,7 +607,10 @@ extends BaseIterable<@BoxedType@, ceylon.language.Null> {
     
     @Override
     public @Classname@Iterable take(long take) {
-        if (take >= this.getSize()) {
+        if (take < 0) {
+            take = 0;
+        }
+        if (take >= getSize()) {
             return this;
         }
         return new @Classname@Iterable(this.array, 
