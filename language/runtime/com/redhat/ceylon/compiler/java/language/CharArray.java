@@ -532,13 +532,13 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     
     @Override
     public ceylon.language.Character getFirst() {
-        return this.getEmpty() ? null : ceylon.language.Character.instance(this.array[this.start]);
+        return getEmpty() ? null : ceylon.language.Character.instance(this.array[this.start]);
     }
     
     
     @Override
     public ceylon.language.Character getLast() {
-        return this.getEmpty() ? null : ceylon.language.Character.instance(this.array[this.end-1]);
+        return getEmpty() ? null : ceylon.language.Character.instance(this.array[this.end-1]);
     }
     
     @Override
@@ -578,12 +578,12 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     
     @Override
     public boolean longerThan(long length) {
-        return this.getSize() > length;
+        return getSize() > length;
     }
     
     @Override
     public boolean shorterThan(long length) {
-        return this.getSize() < length;
+        return getSize() < length;
     }
     
     @Override
@@ -607,7 +607,10 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     
     @Override
     public CharArrayIterable take(long take) {
-        if (take >= this.getSize()) {
+        if (take < 0) {
+            take = 0;
+        }
+        if (take >= getSize()) {
             return this;
         }
         return new CharArrayIterable(this.array, 
