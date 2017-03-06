@@ -614,28 +614,31 @@ shared package org.hibernate.query;</programlisting>
             for a runnable module specifies an <emphasis>entry point</emphasis>, a 
             toplevel method or class with no parameters.</para-->
             
-            <synopsis>ModuleDescriptor: Annotations "module" ModuleName Version ModuleBody</synopsis>
+            <synopsis>ModuleDescriptor: Annotations "module" ModuleName ModuleSpecifier? Version ModuleBody</synopsis>
             <synopsis>ModuleName: FullPackageName</synopsis>
-            <synopsis>Version: StringLiteral</synopsis>
             
-            <para>The literal string after the module name specifies the version of the
+            <para>A literal string after the module name specifies the version of the
             module.</para>
             
-            <para>A module may import other modules.</para>
+            <synopsis>Version: StringLiteral</synopsis>
             
-            <synopsis>ModuleBody: "{" ModuleImport* "}"</synopsis>
-            <synopsis>ModuleImport: Annotations "import" Repository? Module Artifact? Version ";"</synopsis>
-            <synopsis>Repository: LIdentifier ":"</synopsis>
-            <synopsis>Module: ModuleName | StringLiteral</synopsis>
-            <synopsis>Artifact: ":" StringLiteral</synopsis>
+            <para>The optional <emphasis>module specifier</emphasis> defines a mapping
+            to a foreign module system to which the module will be exported.</para>
             
-            <para>The optional repository type identifier selects a foreign module 
-            repository system, for example, <literal>maven</literal>, or <literal>npm</literal>, 
+            <synopsis>ModuleSpecifier: Repository Module Artifact?</synopsis>
+            
+            <para>The repository type identifier selects a foreign module repository 
+            system, for example, <literal>maven</literal>, or <literal>npm</literal>, 
             in which the module resides. This specification does not define the semantics 
             of this identifier.</para>
             
-            <para>The name of the imported module may be specified using the usual syntax
-            for a module name, or as a literal string.</para>
+            <synopsis>Repository: LIdentifier ":"</synopsis>
+            
+            <para>The name of the module in the foreign module repository may be 
+            specified using the usual syntax for a module name, or as a literal string.
+            </para>
+            
+            <synopsis>Module: ModuleName | StringLiteral</synopsis>
             
             <comment><para>Note: quoted module names enable interoperation with foreign
             module repository systems whose module identifiers do not comply with the 
@@ -645,12 +648,27 @@ shared package org.hibernate.query;</programlisting>
             repository system such as Maven. This specification does not define the 
             semantics of this identifier.</para>
             
-            <comment><para>Note: in Ceylon 1.0 it is illegal to explicitly import the
+            <synopsis>Artifact: ":" StringLiteral</synopsis>
+            
+            <para>A module may import other modules.</para>
+            
+            <synopsis>ModuleBody: "{" ModuleImport* "}"</synopsis>
+            
+            <para>A module import statement specifies an imported module and its version.
+            </para>
+            
+            <synopsis>ModuleImport: Annotations "import" (ModuleName | ModuleSpecifier) Version ";"</synopsis>
+            
+            <para>The name of an imported module may be specified using the usual syntax
+            for a module name, or, if the imported module resides in a foreign module
+            repository, as a module specifier.</para>
+            
+            <comment><para>Note: it is currently illegal to explicitly import the
             module <literal>ceylon.language</literal>. The language module is always
             implicitly imported.</para></comment>
             
-            <para>The string literal after the imported module name specifies the version 
-            of the imported module.</para>
+            <para>The string literal after the imported module name or module specifier 
+            gives the version of the imported module.</para>
             
             <para>An imported module may be annotated <literal>optional</literal> and/or
             <literal>shared</literal>.</para>
