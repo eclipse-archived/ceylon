@@ -626,10 +626,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
 
     protected boolean shouldRecompile(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type, boolean checkTime) throws IOException {
-        File artifile = getModuleArtifact(repoMgr, name, version, type);
-        if (artifile == null) {
+        ArtifactResult art = getModuleArtifact(repoMgr, name, version, type);
+        if (art == null) {
             return true;
         }
+        File artifile = art.artifact();
         // Check if it has META-INF/errors.txt
         Properties errors = getMetaInfErrors(artifile);
         if (errors != null && !errors.isEmpty()) {
@@ -641,11 +642,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return false;
     }
 
-    protected File getModuleArtifact(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) {
+    protected ArtifactResult getModuleArtifact(RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) {
         ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
         ac.setIgnoreDependencies(true);
         ac.setThrowErrorIfMissing(false);
-        return repoMgr.getArtifact(ac);
+        return repoMgr.getArtifactResult(ac);
     }
 
     protected Properties getMetaInfErrors(File carFile) {

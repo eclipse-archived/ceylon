@@ -45,6 +45,7 @@ import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -71,6 +72,7 @@ import com.redhat.ceylon.langtools.tools.javac.main.Main.Result;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 @Summary("Compiles Ceylon and Java source code and directly produces module " +
 		"and source archives in a module repository.")
@@ -732,13 +734,25 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         }
         
         if (incremental) {
+            next_module:
             for (String module : sar.getModules()) {
                 // Determine module version from source
                 ModuleVersionDetails mvd = getModuleVersionReader().fromSource(module);
                 if (mvd != null) {
                     // Find the module's CAR file
-                    File carFile = getModuleArtifact(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM);
-                    if (carFile != null) {
+                    ArtifactResult artifact = getModuleArtifact(getOfflineRepositoryManager(), mvd.getModule(), mvd.getVersion(), ModuleQuery.Type.JVM);
+                    if (artifact != null) {
+                        // Check the language module version
+                        for (ArtifactResult dep : artifact.dependencies()) {
+                            if ("ceylon.language".equals(dep.name())) {
+                                if (!Versions.CEYLON_VERSION_NUMBER.equals(dep.version())) {
+                                    // Skip handling of --incremental on this module
+                                    continue next_module;
+                                }
+                                break;
+                            }
+                        }
+                        File carFile = artifact.artifact();
                         // Check if it has META-INF/errors.txt
                         Properties errors = getMetaInfErrors(carFile);
                         if (errors != null && !errors.isEmpty()) {
