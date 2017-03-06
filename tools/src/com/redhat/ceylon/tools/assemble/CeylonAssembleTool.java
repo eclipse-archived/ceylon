@@ -65,6 +65,7 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
     private Boolean js;
     private Boolean dart;
     
+    private String[] loaderSuffixes;
     private String[] assemblySuffixes;
     private ModuleQuery.Type mqt;
     
@@ -160,38 +161,46 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
 
     @Override
     protected String[] getLoaderSuffixes() {
-        return assemblySuffixes;
+        return loaderSuffixes;
     }
     
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         // Determine the artifacts we'll include in the assembly
         mqt = ModuleQuery.Type.JVM;
-        ArrayList<String> sfx = new ArrayList<String>();
+        ArrayList<String> ldrsfx = new ArrayList<String>();
+        ArrayList<String> allsfx = new ArrayList<String>();
         boolean defaults = js == null 
                 && jvm == null
                 && dart == null;
         if (BooleanUtil.isTrue(dart) || defaults) {
-            sfx.add(ArtifactContext.DART);
-            sfx.add(ArtifactContext.DART_MODEL);
-            sfx.add(ArtifactContext.RESOURCES);
+            ldrsfx.add(ArtifactContext.DART);
+            ldrsfx.add(ArtifactContext.DART_MODEL);
+            allsfx.add(ArtifactContext.DART);
+            allsfx.add(ArtifactContext.DART_MODEL);
+            allsfx.add(ArtifactContext.RESOURCES);
             mqt = ModuleQuery.Type.DART;
         }
         if (BooleanUtil.isTrue(js) || defaults) {
-            sfx.add(ArtifactContext.JS);
-            sfx.add(ArtifactContext.JS_MODEL);
-            sfx.add(ArtifactContext.RESOURCES);
+            ldrsfx.add(ArtifactContext.JS);
+            ldrsfx.add(ArtifactContext.JS_MODEL);
+            allsfx.add(ArtifactContext.JS);
+            allsfx.add(ArtifactContext.JS_MODEL);
+            allsfx.add(ArtifactContext.RESOURCES);
             mqt = ModuleQuery.Type.JS;
         }
         if (BooleanUtil.isTrue(jvm) || defaults) {
-            // put the CAR first since its presence will shortcut the other three
-            sfx.add(ArtifactContext.CAR);
-            sfx.add(ArtifactContext.JAR);
-            sfx.add(ArtifactContext.MODULE_PROPERTIES);
-            sfx.add(ArtifactContext.MODULE_XML);
+            // put the CAR first since its presence will shortcut the others
+            ldrsfx.add(ArtifactContext.CAR);
+            ldrsfx.add(ArtifactContext.JAR);
+            allsfx.add(ArtifactContext.CAR);
+            allsfx.add(ArtifactContext.JAR);
+            allsfx.add(ArtifactContext.MODULE_PROPERTIES);
+            allsfx.add(ArtifactContext.MODULE_XML);
             mqt = ModuleQuery.Type.JVM;
         }
-        assemblySuffixes = sfx.toArray(new String[] {});
+        loaderSuffixes = ldrsfx.toArray(new String[] {});
+        assemblySuffixes = allsfx.toArray(new String[] {});
         
         super.initialize(mainTool);
     }
