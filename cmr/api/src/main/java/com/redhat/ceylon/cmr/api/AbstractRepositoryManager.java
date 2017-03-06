@@ -138,16 +138,23 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
                 
                 // TODO this shouldn't be hard-coded here but is to prevent
                 // unnecessary queries to remote repositories
+                boolean isLangMod = "ceylon.language".equals(context.getName());
                 if (suffix.equals(ArtifactContext.CAR)) {
-                    // if we found a car we can skip the jar and module descriptors
+                    // If we found a car we can skip the jar and module descriptors.
+                    // But we make an exception for the language module because it's
+                    // the only .car file that also has a module.xml descriptor
                     suffixes.remove(ArtifactContext.JAR);
                     suffixes.remove(ArtifactContext.MODULE_PROPERTIES);
-                    suffixes.remove(ArtifactContext.MODULE_XML);
+                    if (!isLangMod) {
+                        suffixes.remove(ArtifactContext.MODULE_XML);
+                    }
                 } else if (suffix.equals(ArtifactContext.JAR)
                         || suffix.equals(ArtifactContext.MODULE_PROPERTIES)
                         || suffix.equals(ArtifactContext.MODULE_XML)) {
-                    // or the exact opposite
-                    suffixes.remove(ArtifactContext.CAR);
+                    // or the exact opposite (and again an exception is made for the language module)
+                    if (!isLangMod) {
+                        suffixes.remove(ArtifactContext.CAR);
+                    }
                 }
             } else {
                 // We didn't find anything (this time),
