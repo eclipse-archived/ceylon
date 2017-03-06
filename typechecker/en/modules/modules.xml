@@ -645,7 +645,7 @@ shared package org.hibernate.query;</programlisting>
             repository system such as Maven. This specification does not define the 
             semantics of this identifier.</para>
             
-            <comment><para>Note: in Ceylon 1.0 it is illegal to explicitly import the
+            <comment><para>Note: currently, it is illegal to explicitly import the
             module <literal>ceylon.language</literal>. The language module is always
             implicitly imported.</para></comment>
             
