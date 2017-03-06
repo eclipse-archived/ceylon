@@ -167,44 +167,56 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         // Determine the artifacts we'll include in the assembly
-        mqt = ModuleQuery.Type.JVM;
-        ArrayList<String> ldrsfx = new ArrayList<String>();
-        ArrayList<String> allsfx = new ArrayList<String>();
         boolean defaults = js == null 
                 && jvm == null
                 && dart == null;
-        if (BooleanUtil.isTrue(dart) || defaults) {
-            ldrsfx.add(ArtifactContext.DART);
-            ldrsfx.add(ArtifactContext.DART_MODEL);
-            allsfx.add(ArtifactContext.DART);
-            allsfx.add(ArtifactContext.DART_MODEL);
-            allsfx.add(ArtifactContext.RESOURCES);
+        mqt = ModuleQuery.Type.JVM;
+        if (BooleanUtil.isTrue(dart)) {
             mqt = ModuleQuery.Type.DART;
         }
-        if (BooleanUtil.isTrue(js) || defaults) {
-            ldrsfx.add(ArtifactContext.JS);
-            ldrsfx.add(ArtifactContext.JS_MODEL);
-            allsfx.add(ArtifactContext.JS);
-            allsfx.add(ArtifactContext.JS_MODEL);
-            allsfx.add(ArtifactContext.RESOURCES);
+        if (BooleanUtil.isTrue(js)) {
             mqt = ModuleQuery.Type.JS;
         }
         if (BooleanUtil.isTrue(jvm) || defaults) {
-            // put the CAR first since its presence will shortcut the others
-            ldrsfx.add(ArtifactContext.CAR);
-            ldrsfx.add(ArtifactContext.JAR);
-            allsfx.add(ArtifactContext.CAR);
-            allsfx.add(ArtifactContext.JAR);
-            allsfx.add(ArtifactContext.MODULE_PROPERTIES);
-            allsfx.add(ArtifactContext.MODULE_XML);
             mqt = ModuleQuery.Type.JVM;
         }
-        loaderSuffixes = ldrsfx.toArray(new String[] {});
-        assemblySuffixes = allsfx.toArray(new String[] {});
+        loaderSuffixes = listSuffixes(true);
+        assemblySuffixes = listSuffixes(false);
         
         super.initialize(mainTool);
     }
 
+    private String[] listSuffixes(boolean codeOnly) {
+        ArrayList<String> sfx = new ArrayList<String>();
+        boolean defaults = js == null 
+                && jvm == null
+                && dart == null;
+        if (BooleanUtil.isTrue(jvm) || defaults) {
+            // put the CAR first since its presence will shortcut the others
+            sfx.add(ArtifactContext.CAR);
+            sfx.add(ArtifactContext.JAR);
+            if (!codeOnly) {
+                sfx.add(ArtifactContext.MODULE_PROPERTIES);
+                sfx.add(ArtifactContext.MODULE_XML);
+            }
+        }
+        if (BooleanUtil.isTrue(js) || defaults) {
+            sfx.add(ArtifactContext.JS);
+            sfx.add(ArtifactContext.JS_MODEL);
+            if (!codeOnly) {
+                sfx.add(ArtifactContext.RESOURCES);
+            }
+        }
+        if (BooleanUtil.isTrue(dart) || defaults) {
+            sfx.add(ArtifactContext.DART);
+            sfx.add(ArtifactContext.DART_MODEL);
+            if (!codeOnly) {
+                sfx.add(ArtifactContext.RESOURCES);
+            }
+        }
+        return sfx.toArray(new String[] {});
+    }
+    
     @Override
     public void run() throws Exception {
         if (includeRuntime) {
