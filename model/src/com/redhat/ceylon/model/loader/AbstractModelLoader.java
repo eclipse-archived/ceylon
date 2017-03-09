@@ -5833,6 +5833,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             try{
                                 producedTypeArgument = obtainTypeParameterBound(moduleScope, bound, declaration, rawDeclarationsSeen);
                                 siteVariance = SiteVariance.OUT;
+                                // make sure we record that the type is not what it seems it is, so we can implement
+                                // the method with proper raw type args and not substituted bounds
+                                isRaw = true;
                             }catch(RecursiveTypeParameterBoundException x){
                                 // damnit, go for Object later
                             }
