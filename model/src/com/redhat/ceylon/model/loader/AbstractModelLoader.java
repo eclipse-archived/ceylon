@@ -695,7 +695,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         ClassMirror classMirror = type.getDeclaredClass();
         Module module = findModuleForClassMirror(classMirror);
-        if(isImported(moduleScope, module)){
+        if(module != null && isImported(moduleScope, module)){
             return convertToDeclaration(module, typeName, declarationType);
         }else{
             if(module != null && isFlatClasspath() && isMavenModule(moduleScope))
