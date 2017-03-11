@@ -197,6 +197,7 @@ Alex Szczuczko (aszczucz _AHT_ redhat _DOWT_ com).
 # Update the Web IDE
 
  - [ceylon-web-ide-backend](https://github.com/ceylon/ceylon-web-ide-backend)
+ - DOn't forget to update the Ceylon Bootstrap files! (`ceylon bootstrap --force`)
 
 # Update Maven support
 
