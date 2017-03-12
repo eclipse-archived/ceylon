@@ -147,11 +147,14 @@ public class SelfReferenceVisitor extends Visitor {
                 resolveTypeAliases(that.getDeclaration());
         if (member!=null
                 && !member.isStatic()
-                && isInherited(that.getScope(), member)) {
+                && isInherited(that.getScope(), member)
+                && !member.isJava()) {
             Declaration container = 
                     (Declaration) 
                         member.getContainer();
-            if (inExtends) {
+            if (inExtends) { //TODO: this condition is not quite right 
+                             //      consider access to class member 
+                             //      inside extends clause of inner class
                 that.addError("inherited member may not be used in extends clause of '" +
                         typeDeclaration.getName() + 
                         "': '" + member.getName() + 
@@ -160,7 +163,7 @@ public class SelfReferenceVisitor extends Visitor {
                         "' from '" + 
                         container.getName() + "'");
             }
-            else if (!member.isJava()) {
+            else {
                 that.addError("inherited member may not be used in initializer of '" +
                         typeDeclaration.getName() + 
                         "': '" + member.getName() + 
