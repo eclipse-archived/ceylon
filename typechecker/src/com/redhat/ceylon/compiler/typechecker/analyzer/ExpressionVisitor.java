@@ -8525,29 +8525,64 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else if (term instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) term;
+            Declaration ref = mte.getDeclaration();
             TypeDeclaration dec = type.getDeclaration();
-            boolean isToplevelInstance = 
-                    dec.isObjectClass() && 
-                    (dec.isToplevel() || dec.isStatic());
-            boolean isToplevelClassInstance = 
-                    dec.isValueConstructor() &&
-                    (dec.getContainer().isToplevel() || dec.isStatic());
-            if (!isToplevelInstance && 
-                !isToplevelClassInstance) {
+            if (!isConstantCase(ref) &&
+                !isToplevelObjectCase(dec) && 
+                !isToplevelValueConstructorCase(dec)) {
                 e.addError("case must refer to a toplevel or static object declaration, a value constructor for a toplevel class, or a literal value");
             }
             else {
-                Type ut = unionType(
-                        unit.getNullType(), 
-                        unit.getIdentifiableType(), 
-                        unit);
-                checkAssignable(type, ut, e, 
-                        "case must be identifiable or null");
+                if (isConstantCase(ref)) {
+                    e.addUsageWarning(Warning.caseNotDisjoint,
+                            "case refers to a constant value: '" +
+                            ref.getName(unit) + 
+                            "' is not provably disjoint");
+                }
+                //we don't have a guaranteed well-defined disjoint
+                //equality unless it is a String, Integer, Character, 
+                //null, or an Identifiable
+                //TODO: change this to a warning?
+                if (!dec.isString() && 
+                    !dec.isInteger() & 
+                    !dec.isCharacter()) {
+                    Type ut = unionType(
+                            unit.getNullType(), 
+                            unit.getIdentifiableType(), 
+                            unit);
+                    checkAssignable(type, ut, e, 
+                            "case must be identifiable or null");
+                }
             }
         }
         else if (term!=null) {
             e.addError("case must be a literal value or refer to a toplevel or static object declaration or a value constructor for a toplevel class");
         }
+    }
+
+    private static boolean isConstantCase(Declaration ref) {
+        if (ref instanceof Value) {
+            Value val = (Value) ref;
+            return !ModelUtil.isObject(val)
+                    && !ModelUtil.isConstructor(val)
+                    && (ref.isToplevel() || ref.isStatic()) 
+                    && !val.isVariable();
+        }
+        else {
+            return false;
+        }
+    }
+
+    private static boolean isToplevelValueConstructorCase(TypeDeclaration dec) {
+        return dec.isValueConstructor() 
+                && (dec.getContainer().isToplevel() || dec.isStatic());
+    }
+
+    private static boolean isToplevelObjectCase(TypeDeclaration dec) {
+        return dec.isObjectClass() 
+                && (dec.isToplevel() || dec.isStatic());
     }
 
     @Override
@@ -9120,9 +9155,7 @@ public class ExpressionVisitor extends Visitor {
             for (Tree.Expression e: es) {
                 if (e.getTypeModel()!=null) {
                     Tree.Term term = e.getTerm();
-                    if (!(term instanceof Tree.Literal ||
-                          term instanceof Tree.Tuple ||
-                          term instanceof Tree.NegativeOp)) {
+                    if (!isLiteralCase(term)) {
                         addToUnion(list, e.getTypeModel());
                     }
                 }
@@ -9131,6 +9164,19 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             return null;
+        }
+    }
+
+    private boolean isLiteralCase(Tree.Term term) {
+        if (term instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) term;
+            return isConstantCase(mte.getDeclaration());
+        }
+        else {
+            return term instanceof Tree.Literal ||
+                  term instanceof Tree.Tuple ||
+                  term instanceof Tree.NegativeOp;
         }
     }
     

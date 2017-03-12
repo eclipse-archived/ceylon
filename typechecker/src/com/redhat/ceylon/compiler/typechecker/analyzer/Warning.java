@@ -34,7 +34,8 @@ public enum Warning {
     inferredNotNull("Inferred not null types"),
     zeroFloatLiteral("Literal so small it is indistinguishable from zero"), 
     hidesLanguageModifier("Import hides a language modifier"), 
-    implicitNarrowing("Implicit narrowing to covering type");
+    implicitNarrowing("Implicit narrowing to covering type"), 
+    caseNotDisjoint("Case not provably disjoint");
     /*
      * Don't forget to update the documentation
      * of the suppressWarnings annotation in
