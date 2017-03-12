@@ -1443,7 +1443,8 @@ public class AnalyzerUtil {
                     intersectionType(type.resolveAliases(), 
                             other.resolveAliases(), unit);
             if (!it.isNothing()) {
-                node.addError("cases are not disjoint: '" + 
+                node.addUsageWarning(Warning.caseNotDisjoint,
+                        "cases are not disjoint: '" + 
                         type.asString(unit) + "' and '" + 
                         other.asString(unit) + "'");
             }

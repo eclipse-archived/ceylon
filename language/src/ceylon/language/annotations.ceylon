@@ -472,6 +472,7 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `disjointContainment`,
      `redundantNarrowing`,
      `redundantIteration`,
+     `caseNotDisjoint`
      `missingImportPrefix`,
      `uncheckedTypeArguments`,
      `inferredNotNull`,

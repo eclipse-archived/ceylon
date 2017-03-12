@@ -217,12 +217,14 @@ class Union() {
     case (is X) {}
     case (is Y) {}
     
-    @error switch (h)
+    @warn:"caseNotDisjoint"
+    switch (h)
     case (is X) {}
     case (is Hello) {}
     
     Sized|Category sc = "hello";
-    @error switch (sc)
+    @warn:"caseNotDisjoint"
+    switch (sc)
     case (is Sized) {}
     case (is Category) {}
     
@@ -234,14 +236,16 @@ class Union() {
     //@error 
     switch (maybe)
     case (is Object) {
-        @type:"String" value ms = maybe;
+        @type:"String"
+        value ms = maybe;
     }
     case (is Null) {}
     
     switch (maybe)
     case (is String|Null) {}
     
-    @error switch (maybe)
+    @warn:"caseNotDisjoint"
+    switch (maybe)
     case (is String) {}
     case (is String|Null) {}
     

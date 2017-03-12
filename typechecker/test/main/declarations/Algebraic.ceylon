@@ -63,8 +63,10 @@ void testEnumConstraints() {
 interface I {}
 interface J {}
 
-void ij<T>(T k) @error given T of I|J {
-    @error switch (k)
+void ij<T>(T k) 
+        @warn:"caseNotDisjoint" 
+        given T of I|J {
+    @warn:"caseNotDisjoint" switch (k)
     case (is I) {}
     case (is J) {}
     @error switch (k)
@@ -333,11 +335,13 @@ void switchUnion2(Class1|String val) {
     case (is Class3) {}
     case (object1) {}
     case (is String) {}
-    @error switch (val)
+    @warn:"caseNotDisjoint" 
+    switch (val)
     case (is Class1) {}
     case (object1) {}
     case (is String) {}
-    @error switch (val)
+    @warn:"caseNotDisjoint" 
+    switch (val)
     case (is Class1) {}
     case (is Class3) {}
     case (is String) {}
@@ -348,11 +352,13 @@ void switchUnion2var(Class1|String val) {
     case (is Class3) {}
     case (object1) {}
     case (is String) {}
-    @error switch (v=val)
+    @warn:"caseNotDisjoint" 
+    switch (v=val)
     case (is Class1) {}
     case (object1) {}
     case (is String) {}
-    @error switch (v=val)
+    @warn:"caseNotDisjoint" 
+    switch (v=val)
     case (is Class1) {}
     case (is Class3) {}
     case (is String) {}

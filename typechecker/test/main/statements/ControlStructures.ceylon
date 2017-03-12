@@ -242,11 +242,13 @@ class ControlStructures() {
     switch (v)
     case (is Object|Null) {}
 
-    @error switch (v)
+    @warn:"caseNotDisjoint"
+    switch (v)
     case (is Object|Null) {}
     case (null) {}
 
-    @error switch (v)
+    @warn:"caseNotDisjoint"
+    switch (v)
     case (is Object|Null) {}
     case (is Null) {}
 
@@ -290,7 +292,8 @@ class ControlStructures() {
     case (is String) {}
     case (null) {}
     
-    @error switch (s)
+    @warn:"caseNotDisjoint"
+    switch (s)
     case (is Null) {}
     case (is String) {}
     case (null) {}

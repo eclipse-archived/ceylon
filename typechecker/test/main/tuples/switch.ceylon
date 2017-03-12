@@ -31,11 +31,13 @@ void testTupleSwitch([Integer,String] pair, Object any) {
     case ([0,"",'x']) {}
     else {}
     
-    @error switch (pair)
+    @warn:"caseNotDisjoint"
+    switch (pair)
     case ([0,""]) {}
     case ([Integer i, String s]) {}
     
-    @error switch (pair)
+    @warn:"caseNotDisjoint"
+    switch (pair)
     case ([0,""]) {}
     case (is [Integer, String]) {}
     
@@ -93,7 +95,8 @@ void testPatterns(
     case ([Integer i, String s]) {}
     case ([String s, Integer i]) {}
     
-    @error switch (pair)
+    @warn:"caseNotDisjoint"
+    switch (pair)
     case ([Integer i, String s]) {}
     case ([Integer i, String s]) {}
     
@@ -124,12 +127,14 @@ void testPatterns(
     }
     case (null) {}
 
-    @error switch (entry)
+    @warn:"caseNotDisjoint"
+    switch (entry)
     case (String key->Object item) {}
     case (is String->Object) {}
     case (null) {}
     
-    @error switch (entry)
+    @warn:"caseNotDisjoint"
+    switch (entry)
     case (is String->Object) {}
     case (String key->Object item) {}
     case (null) {}
