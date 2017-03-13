@@ -722,11 +722,21 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression applyJavaCoercions(JCExpression ret, Type exprType, Type expectedType) {
         if(expectedType == null)
             return ret;
+        Type nonSimpleExprType = exprType;
         exprType = simplifyType(exprType);
         expectedType = simplifyType(expectedType);
         if(isCeylonString(exprType) && isJavaCharSequence(expectedType)){
             // FIXME: only do this if boxed, or rather, do not box in the first place
-            return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
+            if(isOptional(nonSimpleExprType)){
+                Naming.SyntheticName varName = naming.temp();
+                JCExpression test = make().Binary(JCTree.Tag.NE, varName.makeIdent(), makeNull());
+                JCExpression convert = make().Apply(null, makeQualIdent(varName.makeIdent(), "toString"), List.<JCTree.JCExpression>nil());
+                JCExpression cond = make().Conditional(test, convert, makeNull());
+                JCExpression typeExpr = makeJavaType(typeFact().getObjectType(), 0);
+                return makeLetExpr(varName, null, typeExpr, ret, cond);
+            }else{
+                return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
+            }
         }
         if(isJavaCharSequence(exprType) && expectedType.isExactly(typeFact().getStringDeclaration().getType())){
             return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
