@@ -657,11 +657,11 @@ shared package org.hibernate.query;</programlisting>
             <para>A module import statement specifies an imported module and its version.
             </para>
             
-            <synopsis>ModuleImport: Annotations "import" (ModuleName | ModuleSpecifier) Version ";"</synopsis>
+            <synopsis>ModuleImport: Annotations "import" (Module | ModuleSpecifier) Version ";"</synopsis>
             
             <para>The name of an imported module may be specified using the usual syntax
-            for a module name, or, if the imported module resides in a foreign module
-            repository, as a module specifier.</para>
+            for a module name, as a literal string, or, if the imported module resides in 
+            a foreign module repository, as a module specifier.</para>
             
             <comment><para>Note: it is currently illegal to explicitly import the
             module <literal>ceylon.language</literal>. The language module is always
