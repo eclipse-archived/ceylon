@@ -181,7 +181,8 @@ public class CeylonTransformer extends AbstractTransformer {
 
             private JCTree makeClassDef(Tree.Declaration decl, long flags, String name, WantedDeclaration wantedDeclaration,
                     ListBuffer<JCTree> toplevelDeclarations, Stack<Tree.Declaration> ancestors) {
-                if (TreeUtil.hasAnnotation(decl.getAnnotationList(), "static", null)) {
+                if (decl instanceof Tree.AnyInterface == false
+                        && TreeUtil.hasAnnotation(decl.getAnnotationList(), "static", null)) {
                     flags |= Flags.STATIC;
                 }
                 ListBuffer<JCTree.JCTypeParameter> typarams = new ListBuffer<JCTree.JCTypeParameter>();
