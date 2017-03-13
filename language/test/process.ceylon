@@ -31,7 +31,7 @@ shared void testProcess() {
     check(language.version=="1.3.3-SNAPSHOT", "language.version");
     check(language.majorVersion==1, "language.majorVersion");
     check(language.minorVersion==3, "language.minorVersion");
-    check(language.releaseVersion==2, "language.releaseVersion");
+    check(language.releaseVersion==3, "language.releaseVersion");
     check(!language.versionName.empty, "language.versionName");
     check(language.majorVersionBinary==8, "language.majorVersionBinary");
     check(language.minorVersionBinary==1, "language.minorVersionBinary");
