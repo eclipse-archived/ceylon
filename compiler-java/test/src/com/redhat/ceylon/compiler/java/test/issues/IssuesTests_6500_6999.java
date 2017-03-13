@@ -352,6 +352,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     }
 
     @Test
+    public void testBug6970() throws Throwable {
+        compile("bug69xx/Bug6970.ceylon", "bug69xx/Bug6970Java.java");
+    }
+
+    @Test
     public void testBug6971() throws Throwable {
         compile("bug69xx/Bug6971Java.java");
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug69xx.bug6971", 
