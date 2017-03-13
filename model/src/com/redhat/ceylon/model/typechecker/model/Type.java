@@ -2952,6 +2952,7 @@ public class Type extends Reference {
             }
 
             newType.setUnderlyingType(oldType.getUnderlyingType());
+            newType.setRaw(oldType.isRaw());
             return newType;
         }
 
@@ -3119,6 +3120,7 @@ public class Type extends Reference {
                     type.getVarianceOverrides());
             result.setUnderlyingType(
                     type.getUnderlyingType());
+            result.setRaw(type.isRaw());
             return result;
         }
 
@@ -4389,6 +4391,7 @@ public class Type extends Reference {
                 result = result.clone();
             }
             result.setUnderlyingType(type.getUnderlyingType());
+            result.setRaw(type.isRaw());
             return result;
         }
     }

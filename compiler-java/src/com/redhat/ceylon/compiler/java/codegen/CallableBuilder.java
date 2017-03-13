@@ -1175,7 +1175,8 @@ public class CallableBuilder {
                     paramType = gen.typeFact().getObjectType();
                 }
                 long flags = Flags.FINAL;
-                JCExpression javaType = gen.makeJavaType(paramType, 0);
+                // that looks fishy, perhaps we need to call non-widening rules instead
+                JCExpression javaType = gen.makeJavaType(paramType, paramType.isRaw() ? AbstractTransformer.JT_RAW : 0);
                 if(param.isSequenced()){
                     flags |= Flags.VARARGS;
                     javaType = gen.make().TypeArray(javaType);

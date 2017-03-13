@@ -4489,7 +4489,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 type = type.clone();
             }
             
-            type.setRaw(isRaw(ModelUtil.getModuleContainer(container), typeMirror));
+            if(!type.isRaw())
+                type.setRaw(isRaw(ModelUtil.getModuleContainer(container), typeMirror));
             
             FunctionOrValue value = null;
             boolean lookedup = false;
@@ -4666,6 +4667,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             optionalType = optionalType.clone();
         }
         optionalType.setUnderlyingType(type.getUnderlyingType());
+        optionalType.setRaw(type.isRaw());
         return optionalType;
     }
 
