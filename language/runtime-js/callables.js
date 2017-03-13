@@ -220,7 +220,7 @@ function spread$2(f) {
       if (params[i].seq>0) {
         a.push(e);
         j++;
-      } else if (is$(e,pt)) {
+      } else if (is$(e,pt) || (pt.t===Callable && is$(e,{t:Callable,a:{Return$Callable:pt.a.Return$Callable}}))) {
         a.push(e);
         j++;
       } else if (is$(e.first,pt)) {
