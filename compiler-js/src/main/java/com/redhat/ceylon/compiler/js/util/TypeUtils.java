@@ -268,6 +268,7 @@ public class TypeUtils {
                 gen.out("}");
                 return true;
             }
+            final int tupleMinLength = pt.getDeclaration().getUnit().getTupleMinimumLength(pt);
             if (!lastType.isEmpty()) {
                 if (lastType.isSequential()) {
                     seq = 1;
@@ -283,13 +284,23 @@ public class TypeUtils {
                 subs.add(utail);
             }
             gen.out(gen.getClAlias(), "mtt$([");
+            if (tupleMinLength < (subs.size() - (seq>0?1:0))) {
+                int limit = subs.size();
+                if (seq > 0) {
+                    limit--;
+                }
+                for (int i = tupleMinLength; i < limit; i++) {
+                    subs.set(i, ModelUtil.unionType(d.getUnit().getEmptyType(), subs.get(i), node.getUnit()));
+                }
+            }
         } else {
             return false;
         }
-        boolean first = true;
+        final Type lastSub = subs.isEmpty() ? null : subs.get(subs.size()-1);
+        int index = 0;
         for (Type t : subs) {
-            if (!first) gen.out(",");
-            if (t==subs.get(subs.size()-1) && seq>0 && t.getCaseTypes() != null) {
+            if (index>0) gen.out(",");
+            if (t==lastSub && seq>0 && t.getCaseTypes() != null) {
                 //The non-empty, non-tuple tail
                 gen.out("{t:'u',l:[");
                 typeNameOrList(node, t.getCaseTypes().get(0), gen, skipSelfDecl);
@@ -299,7 +310,7 @@ public class TypeUtils {
             } else {
                 typeNameOrList(node, t, gen, skipSelfDecl);
             }
-            first = false;
+            index++;
         }
         gen.out("])");
         return true;
@@ -691,8 +702,9 @@ public class TypeUtils {
             Type _tuple, boolean nameAndMetatype, GenerateJsVisitor gen) {
         gen.out("[");
         int pos = 1;
+        int minTuple = node.getUnit().getTupleMinimumLength(_tuple);
         final Type empty = node.getUnit().getEmptyType();
-        while (_tuple != null && !(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
+        while (_tuple != null && !(_tuple.isExactly(empty) || _tuple.isTypeParameter())) {
             if (pos > 1) gen.out(",");
             pos++;
             if (nameAndMetatype) {
@@ -701,19 +713,13 @@ public class TypeUtils {
                 gen.out(MetamodelGenerator.KEY_TYPE, ":");
             }
             if (isTuple(_tuple)) {
-                if (_tuple.isUnion()) {
+                if (_tuple.isUnion() && _tuple.getCaseTypes().contains(node.getUnit().getEmptyType())) {
                     //Handle union types for defaulted parameters
-                    for (Type mt : _tuple.getCaseTypes()) {
-                        if (mt.isTuple()) {
-                            metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
-                                    mt.getTypeArgumentList().get(1), null, gen);
-                            _tuple = mt.getTypeArgumentList().get(2);
-                            break;
-                        }
-                    }
+                    metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, null, gen);
                     if (nameAndMetatype) {
                         gen.out(",", MetamodelGenerator.KEY_DEFAULT,":1");
                     }
+                    _tuple = null;
                 } else {
                     metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(),
                             _tuple.getTypeArgumentList().get(1), null, gen);
@@ -1235,7 +1241,6 @@ public class TypeUtils {
 
     /** Outputs a function that returns the specified annotations, so that they can be loaded lazily.
      * @param annotations The annotations to be output.
-     * @param d The declaration to which the annotations belong.
      * @param gen The generator to use for output. */
     public static void outputAnnotationsFunction(final Tree.AnnotationList annotations,
             final AnnotationFunctionHelper helper, final GenerateJsVisitor gen) {
@@ -1409,8 +1414,6 @@ public class TypeUtils {
     }
 
     /** Generates the right type arguments for operators that are sugar for method calls.
-     * @param left The left term of the operator
-     * @param right The right term of the operator
      * @param methodName The name of the method that is to be invoked
      * @param rightTpName The name of the type argument on the right term
      * @param leftTpName The name of the type parameter on the method
