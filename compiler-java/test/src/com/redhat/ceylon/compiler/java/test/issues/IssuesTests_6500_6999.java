@@ -350,4 +350,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
         compile("bug69xx/Bug6963Java.java");
         compareWithJavaSource("bug69xx/Bug6963");
     }
+
+    @Test
+    public void testBug6971() throws Throwable {
+        compile("bug69xx/Bug6971Java.java");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug69xx.bug6971", 
+                "bug69xx/Bug6971.ceylon");
+    }
 }
