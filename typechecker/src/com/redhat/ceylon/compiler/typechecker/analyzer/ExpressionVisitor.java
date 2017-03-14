@@ -8568,7 +8568,8 @@ public class ExpressionVisitor extends Visitor {
             return !ModelUtil.isObject(val)
                     && !ModelUtil.isConstructor(val)
                     && (ref.isToplevel() || ref.isStatic()) 
-                    && !val.isVariable();
+                    && !val.isVariable()
+                    && !val.isTransient();
         }
         else {
             return false;
