@@ -39,7 +39,10 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
+import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Break;
@@ -4799,13 +4802,18 @@ public class StatementTransformer extends AbstractTransformer {
 
         @Override
         protected java.util.List<Tree.CaseClause> getCaseClauses(Tree.SwitchClause switchClause, Tree.SwitchCaseList caseList) {
+            java.util.List<CaseClause> list = super.getCaseClauses(switchClause, caseList);
+            
+            if (hasNonDisjointCase(caseList)) {
+                return list;
+            }
+            
             // If all the cases are "case (is ...)" we can try to avoid 
             // the expense of testing reified is by putting all the cheap tests first
             // We respect the relative order of all the cheap cases and all 
             // the expensive cases though on the basis that that might be a 
             // hint
             // about which are more common
-            java.util.List<CaseClause> list = super.getCaseClauses(switchClause, caseList);
             java.util.ArrayList<CaseClause> cheap = new ArrayList<CaseClause>(list.size());
             int lastCheap = 0;
             // The dummy isn't actually used for anything, it just has to be non-null
@@ -4843,6 +4851,31 @@ public class StatementTransformer extends AbstractTransformer {
                 cheap.add(0, containsNull);
             }
             return cheap;
+        }
+
+        private boolean hasNonDisjointCase(Tree.SwitchCaseList caseList) {
+            class WarningVisitor extends Visitor {
+                boolean found = false;
+                @Override
+                public void visit(Tree.Body that) {}
+                @Override
+                public void visitAny(Node that) {
+                    for (Message m: that.getErrors()) {
+                        if (m instanceof UsageWarning) {
+                            UsageWarning w = (UsageWarning) m;
+                            if (Warning.caseNotDisjoint.name()
+                                    .equals(w.getWarningName())){
+                                found = true;
+                                return;
+                            }
+                        }
+                    }
+                    super.visitAny(that);
+                }
+            }
+            WarningVisitor wv = new WarningVisitor();
+            wv.visit(caseList);
+            return wv.found;
         }
         
         @Override
