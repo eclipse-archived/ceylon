@@ -265,7 +265,7 @@ public class ModelUtil {
                     for (int i=size; i<sigSize; i++) {
                         if (variadic && i==sigSize-1) {
                             Type sdt = signature.get(i);
-                            Type isdt = 
+                            Type isdt = sdt==null ? null :
                                     unit.getIteratedType(sdt);
                             if (!matches(isdt, ipdt, unit)) {
                                 return false;
