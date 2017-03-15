@@ -1701,12 +1701,12 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonBasicType(Type type) {
-        return (isCeylonString(type)
-                || isCeylonBoolean(type)
-                || isCeylonInteger(type)
-                || isCeylonFloat(type)
-                || isCeylonCharacter(type)
-                || isCeylonByte(type));
+        return isCeylonString(type)
+            || isCeylonBoolean(type)
+            || isCeylonInteger(type)
+            || isCeylonFloat(type)
+            || isCeylonCharacter(type)
+            || isCeylonByte(type);
     }
     
     boolean isCeylonCallable(Type type) {
