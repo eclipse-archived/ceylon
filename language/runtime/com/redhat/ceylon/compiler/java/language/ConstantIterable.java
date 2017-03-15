@@ -58,8 +58,8 @@ public final class ConstantIterable<Element, Absent>
     
     @Override
     public boolean getEmpty() {
-        return initial == null || initial.length == 0
-                && rest == null || rest.getEmpty();
+        return (initial == null || initial.length == 0)
+                && (rest == null || rest.getEmpty());
     }
     
     @Override
