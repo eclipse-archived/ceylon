@@ -216,12 +216,14 @@ public abstract class LazyModule extends Module {
     
     @Override
     protected boolean isJdkModule(String moduleName) {
-        return getModelLoader().getJdkProvider().isJDKModule(moduleName);
+        JdkProvider jdkProvider = getModelLoader().getJdkProvider();
+        return jdkProvider!=null && jdkProvider.isJDKModule(moduleName);
     }
     
     @Override
     protected boolean isJdkPackage(String moduleName, String packageName) {
-        return getModelLoader().getJdkProvider().isJDKPackage(moduleName, packageName);
+        JdkProvider jdkProvider = getModelLoader().getJdkProvider();
+        return jdkProvider!=null && jdkProvider.isJDKPackage(moduleName, packageName);
     }
 
     public void addPackage(Package pkg){
