@@ -143,7 +143,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.codehaus.plexus.plexus-utils", "3.0.22")); // optional
 
         // For the typechecker
-        archives.add(getRepoJar(ceylonRepo, "org.antlr.runtime", "3.4"));
+        archives.add(getRepoJar(ceylonRepo, "org.antlr.runtime", "3.5.2"));
         // For the JS backend
         archives.add(getRepoJar(ceylonRepo, "net.minidev.json-smart", "1.1.1"));
         // For the "doc" tool
