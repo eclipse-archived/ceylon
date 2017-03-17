@@ -1358,7 +1358,7 @@ final class lambdas_ {
             @.java.lang.Override
             public .java.lang.String apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
             final .java.lang.String arg0) {
-                return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)).toString();
+                return $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0))).toString();
             }
         });
         final .ceylon.language.String capturedString2 = .ceylon.language.String.instance("");
@@ -1380,7 +1380,7 @@ final class lambdas_ {
                 return (
                     let
                     {
-                        .ceylon.language.String $ceylontmp$4 = $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
+                        .ceylon.language.String $ceylontmp$4 = $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)));
                     }
                     returning $ceylontmp$4 != null ? $ceylontmp$4.toString() : null;
                 );
@@ -1599,7 +1599,7 @@ public final class bug6634_ {
             
             @.java.lang.Override
             public .java.lang.Object apply(final .java.lang.Object arg0) {
-                return $call$(arg0);
+                return $call$((.ceylon.language.Integer)arg0);
             }
         })).forEach(new .java.util.function.Consumer(){
             
