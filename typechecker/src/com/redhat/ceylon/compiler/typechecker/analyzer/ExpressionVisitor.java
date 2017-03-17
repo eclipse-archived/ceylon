@@ -906,8 +906,14 @@ public class ExpressionVisitor extends Visitor {
             //now recompute the narrowed type!
             it = narrow(type, knownType, that.getNot());
             
-            v.getType().setTypeModel(it);
-            v.getDeclarationModel().setType(it);
+            v.getType()
+             .setTypeModel(it);
+            v.getDeclarationModel()
+             .setType(it);
+            if (!canHaveUncheckedNulls(it)) {
+                v.getDeclarationModel()
+                 .setUncheckedNullType(false);
+            }
         }
     }
 
@@ -8634,6 +8640,10 @@ public class ExpressionVisitor extends Visitor {
                              .setTypeModel(narrowedType);
                             v.getDeclarationModel()
                              .setType(narrowedType);
+                            if (!canHaveUncheckedNulls(narrowedType)) {
+                                v.getDeclarationModel()
+                                 .setUncheckedNullType(false);
+                            }
                         }
 //                        }
                     }
