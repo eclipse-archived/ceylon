@@ -1195,11 +1195,16 @@ public class CallableBuilder {
                             && !targetParam.getModel().hasUncheckedNullType()){
                         arg = gen.utilInvocation().checkNull(arg);
                     }
-                    if(CodegenUtil.isUnBoxed(param.getModel())){
-                        arg = gen.expressionGen().applyErasureAndBoxing(arg, paramType, 
-                                false, BoxingStrategy.BOXED,
-                                argumentType);
-                    }
+                    Type simpleParamType = gen.simplifyType(paramType);
+                    // make unboxed java strings pass for ceylon strings so we can box them
+                    boolean unboxedString = gen.isJavaStringExactly(simpleParamType);
+                    if(unboxedString)
+                        simpleParamType = gen.typeFact().getStringType();
+                    arg = gen.expressionGen().applyErasureAndBoxing(arg, simpleParamType, 
+                            !(CodegenUtil.isUnBoxed(param.getModel())
+                                    || unboxedString), 
+                            BoxingStrategy.BOXED,
+                            argumentType);
                 }
                 args.append(arg);
                 index++;
