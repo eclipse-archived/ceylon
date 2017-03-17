@@ -119,8 +119,7 @@ public final class String
 
     @Ignore
     public static ceylon.language.String instance(java.lang.String s) {
-        if (s==null) return null;
-        return new String(s);
+        return s==null ? null : new String(s);
     }
 
     @Ignore
