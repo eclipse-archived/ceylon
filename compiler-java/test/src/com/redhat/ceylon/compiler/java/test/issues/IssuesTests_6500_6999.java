@@ -362,4 +362,13 @@ public class IssuesTests_6500_6999 extends CompilerTests {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug69xx.bug6971", 
                 "bug69xx/Bug6971.ceylon");
     }
+
+    @Test
+    public void testBug6982() throws Throwable {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile("bug69xx/Bug6982Java.java");
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug69xx.bug6982", 
+                "bug69xx/Bug6982.ceylon");
+    }
 }
