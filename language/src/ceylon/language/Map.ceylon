@@ -392,7 +392,8 @@ shared interface Map<out Key=Object, out Item=Anything>
         
         iterator()
                 => ChainedIterator(other,
-                        outer.filter(not(other.contains)));
+                        outer.filter((key -> _) 
+                            => !other.defines(key)));
         
     };
     
