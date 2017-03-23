@@ -377,6 +377,12 @@ function $cnt$(a,b) {
   return a.contains?a.contains(b):false;
 }
 ex$.$cnt$=$cnt$;
+function $cnt$2(b,a) {
+  if (a===null||a===undefined)return false;
+  if (Array.isArray(a))return $arr$cnt(a,b);
+  return a.contains?a.contains(b):false;
+}
+ex$.$cnt$2=$cnt$2;
 //Check spread destructuring
 function $cksprdstr$(min,t,v,loc,f,s) {
   s=s.sequence();
