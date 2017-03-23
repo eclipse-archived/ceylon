@@ -103,6 +103,7 @@ void test4148Array(){
     }
 }
 
+
 @test
 shared void operators() {
     String? maybe = "hello";
@@ -173,6 +174,16 @@ shared void operators() {
 
     check("hello" in "hello world", "in 1");
     check("world" in "hello world", "in 2");
+
+    //6988
+    variable [String*] order6988 = [];
+    Something track6988<Something>(String side, Something other) {
+        order6988=order6988.withTrailing(side);
+        return other;
+    }
+
+    check(track6988("first", 1) in track6988("second", {1}), "#6988.1");
+    check(order6988 == ["first", "second"], "#6988");
 
     Correspondence<Integer, String> c1 = [];
     check(!c1[0] exists, "empty correspondence");
