@@ -3467,12 +3467,12 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     public void visit(final Tree.InOp that) {
-        out(getClAlias(), "$cnt$(");
-        box(that.getRightTerm());
-        out(",");
+        out(getClAlias(), "$cnt$2(");
         if (!isNaturalLiteral(that.getLeftTerm())) {
             box(that.getLeftTerm());
         }
+        out(",");
+        box(that.getRightTerm());
         out(")");
     }
 
