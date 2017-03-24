@@ -73,7 +73,8 @@ public class ImportVisitor extends Visitor {
             if (ip!=null) {
                 String mp = formatPath(ip.getIdentifiers());
                 if (!set.add(mp)) {
-                    ip.addError("duplicate import: '" + mp + "'");
+                    ip.addError("duplicate import: package '" 
+                            + mp + "' is already imported");
                 }
             }
         }
