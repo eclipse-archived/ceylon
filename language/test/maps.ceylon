@@ -90,7 +90,11 @@ shared void testMaps() {
     value posZeroNeg = (-2..2).group(0.compare);
     check(posZeroNeg==map{smaller->[1, 2], larger->[-2, -1], equal->[0]}, "group");
     check(map { 1->"one", 0->null, 2->"two" }.coalescedMap==map { 1->"one", 2->"two" }, "coalescedMap");
-
+    
+    check(map {1->2}.patch(map {2->3}) == map {2->3, 1->2}, "patch");
+    check(map {1->2}.patch(map {1->3}) == map {1->3}, "patch");
+    check(map {1->2,3->5}.patch(map {2->3,1->3}) == map {2->3,1->3,3->5}, "patch");
+    
     // performant Sequences from inverse(), #6278
     value bigMap = map((1..25k).map((i) => i -> 0));
     assert (exists allItems = bigMap.inverse()[0]);
