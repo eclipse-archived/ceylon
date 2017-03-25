@@ -21,12 +21,12 @@ Rainbow.extend( "ceylon", [
     pattern: /\b(assembly|module|package|import|alias|class|interface|object|given|value|assign|void|function|new|of|extends|satisfies|abstracts|in|out|return|break|continue|throw|assert|dynamic|if|else|switch|case|for|while|try|catch|finally|then|let|this|outer|super|is|exists|nonempty|while)\b/g
   },
   {
-    name: "string",
-    pattern: /"""([^"]|"[^"]|""[^"])*"""|(``|")([^"\\`]|\\.|`[^`"])*(`"|``|")/gm
-  },
-  {
     name: "char",
     pattern: /'([^'\\\n]|\\.)*'/gm
+  },
+  {
+    name: "string",
+    pattern: /"""([^"]|"[^"]|""[^"])*"""|(``|(?:^|[^'])")([^"\\`]|\\.|`[^`"])*(`"|``|")/gm
   },
   {
     name: "constant.numeric",
