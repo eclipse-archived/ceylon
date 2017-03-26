@@ -918,6 +918,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkReified(Tree.Type t, Type type, Type knownType, boolean assertion) {
+        type = type.resolveAliases();
         if (!type.isReified()) {
             t.addError("type is not reified: '" + 
                     type.asString(unit) + 
