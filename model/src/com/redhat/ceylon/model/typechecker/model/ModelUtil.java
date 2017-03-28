@@ -2208,12 +2208,17 @@ public class ModelUtil {
             Declaration d = members.get(i);
             if (isResolvable(d) && isNamed(name, d)) {
                 if (signature==null) {
+                    if (d instanceof Function 
+                            && d.isAnnotation()
+                            && d.isJava()) {
+                        result = d;
+                    }
                     //no argument types: either a type 
                     //declaration, an attribute, or a method 
                     //reference - don't return overloaded
                     //forms of the declaration (instead
                     //return the "abstraction" of them)
-                    if (notOverloaded(d)) {
+                    else if (notOverloaded(d)) {
                         return d;
                     }
                 }
