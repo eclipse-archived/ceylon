@@ -1435,18 +1435,27 @@ public class AnalyzerUtil {
                 .equals(unit.getPackage().getModule());
     }
 
-    static void checkCasesDisjoint(Type type, Type other,
+    static void checkCasesDisjoint(Type later, Type earlier,
             Node node) {
-        if (!isTypeUnknown(type) && !isTypeUnknown(other)) {
+        if (!isTypeUnknown(later) && !isTypeUnknown(earlier)) {
             Unit unit = node.getUnit();
             Type it = 
-                    intersectionType(type.resolveAliases(), 
-                            other.resolveAliases(), unit);
+                    intersectionType(later.resolveAliases(), 
+                            earlier.resolveAliases(), unit);
             if (!it.isNothing()) {
-                node.addUsageWarning(Warning.caseNotDisjoint,
-                        "cases are not disjoint: '" + 
-                        type.asString(unit) + "' and '" + 
-                        other.asString(unit) + "'");
+                if (earlier.isSubtypeOf(later)) {
+                    node.addUsageWarning(Warning.caseNotDisjoint,
+                            "cases are not disjoint: '" + 
+                            later.asString(unit) + "' contains '" + 
+                            earlier.asString(unit) + "'");
+                }
+                else {
+                    node.addError(
+                            "cases are not disjoint: '" + 
+                            later.asString(unit) + "' and '" + 
+                            earlier.asString(unit) + "' have intersection '" +
+                            it.asString(unit) + "'");
+                }
             }
         }
     }
