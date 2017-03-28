@@ -2705,8 +2705,10 @@ caseExpressions returns [SwitchCaseList switchCaseList]
     ;
     
 caseExpression returns [CaseClause caseClause]
-    : CASE_CLAUSE 
-      { $caseClause = new CaseClause($CASE_CLAUSE); }
+    : ELSE_CLAUSE?
+      CASE_CLAUSE 
+      { $caseClause = new CaseClause($CASE_CLAUSE); 
+        $caseClause.setOverlapping($ELSE_CLAUSE!=null); }
       caseItemList
       { $caseClause.setCaseItem($caseItemList.item); }
       conditionalBranch
@@ -4111,8 +4113,10 @@ cases returns [SwitchCaseList switchCaseList]
     ;
     
 caseBlock returns [CaseClause clause]
-    : CASE_CLAUSE 
-      { $clause = new CaseClause($CASE_CLAUSE); }
+    : ELSE_CLAUSE?
+      CASE_CLAUSE 
+      { $clause = new CaseClause($CASE_CLAUSE); 
+        $clause.setOverlapping($ELSE_CLAUSE!=null); }
       caseItemList
       { $clause.setCaseItem($caseItemList.item); }
       block

@@ -1,6 +1,6 @@
 void printTree<T>(Tree<T> tree) 
         given T satisfies Object {
-    @warn:"caseNotDisjoint" 
+    @error:"case is not disjoint" 
     switch (tree)
     case (is Branch<T>) {
         printTree(tree.left);

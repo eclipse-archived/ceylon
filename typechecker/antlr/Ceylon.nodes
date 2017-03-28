@@ -501,7 +501,8 @@
 ^(CASE_CLAUSE:CONTROL_CLAUSE
     CASE_ITEM
     BLOCK?
-    EXPRESSION?)
+    EXPRESSION?
+    boolean overlapping;)
     
 ^(CASE_ITEM)
 ^(MATCH_CASE:CASE_ITEM

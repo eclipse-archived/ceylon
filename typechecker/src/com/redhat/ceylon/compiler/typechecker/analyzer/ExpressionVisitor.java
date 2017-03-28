@@ -366,7 +366,7 @@ public class ExpressionVisitor extends Visitor {
                 that.getSwitchCaseList();
         Tree.SwitchClause switchClause = 
                 that.getSwitchClause();
-        checkCasesExhaustive(switchClause, switchCaseList);
+        checkSwitch(switchClause, switchCaseList);
         
         if (switchCaseList!=null) {
             List<Type> list = new ArrayList<Type>();
@@ -8542,12 +8542,6 @@ public class ExpressionVisitor extends Visitor {
                 e.addError("case must refer to a toplevel or static object declaration, a value constructor for a toplevel class, or a literal value");
             }
             else {
-                if (isConstantCase(ref)) {
-                    e.addUsageWarning(Warning.caseNotDisjoint,
-                            "case refers to a constant value: '" +
-                            ref.getName(unit) + 
-                            "' is not provably disjoint");
-                }
                 //we don't have a guaranteed well-defined disjoint
                 //equality unless it is a String, Integer, Character, 
                 //null, or an Identifiable
@@ -8569,14 +8563,31 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private static boolean isEnumCase(Tree.Term term) {
+        if (term instanceof Tree.MemberOrTypeExpression) {
+            Type type = term.getTypeModel();
+            if (type==null) {
+                return false;
+            }
+            else {
+                TypeDeclaration dec = type.getDeclaration();
+                return isToplevelObjectCase(dec)
+                    || isToplevelValueConstructorCase(dec);
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
     private static boolean isConstantCase(Declaration ref) {
         if (ref instanceof Value) {
             Value val = (Value) ref;
             return !ModelUtil.isObject(val)
-                    && !ModelUtil.isConstructor(val)
-                    && (ref.isToplevel() || ref.isStatic()) 
-                    && !val.isVariable()
-                    && !val.isTransient();
+                && !ModelUtil.isConstructor(val)
+                && (ref.isToplevel() || ref.isStatic()) 
+                && !val.isVariable()
+                && !val.isTransient();
         }
         else {
             return false;
@@ -8691,14 +8702,14 @@ public class ExpressionVisitor extends Visitor {
         
         super.visit(that);
         
-        checkCasesExhaustive(that.getSwitchClause(), 
+        checkSwitch(that.getSwitchClause(), 
                 that.getSwitchCaseList());
         
         switchStatementOrExpression = oss;
         ifStatementOrExpression = ois;
     }
 
-    private void checkCasesExhaustive(Tree.SwitchClause switchClause,
+    private void checkSwitch(Tree.SwitchClause switchClause,
             Tree.SwitchCaseList switchCaseList) {
         Tree.Switched switched = 
                 switchClause.getSwitched();
@@ -8706,27 +8717,35 @@ public class ExpressionVisitor extends Visitor {
             Type switchExpressionType = 
                     getSwitchedExpressionType(switched);
             if (switchCaseList!=null && 
-                    switchExpressionType!=null) {
-                checkCases(switchCaseList);
-                Tree.ElseClause elseClause = 
-                        switchCaseList.getElseClause();
-                if (!isTypeUnknown(switchExpressionType) 
-                        && elseClause==null) {
-                    Type caseUnionType = 
-                            caseUnionType(switchCaseList);
-                    if (caseUnionType!=null) {
-                        //if the union of the case types covers 
-                        //the switch expression type then the 
-                        //switch is exhaustive
-                        if (!caseUnionType.covers(switchExpressionType)) {
-                            switchClause.addError(
-                                    "case types must cover all cases of the switch type or an else clause must appear: '" +
-                                    caseUnionType.asString(unit) + 
-                                    "' does not cover '" + 
-                                    switchExpressionType.asString(unit) + "'", 
-                                    10000);
-                        }
-                    }
+                switchExpressionType!=null) {
+                checkSwitchCases(switchCaseList);
+                if (switchCaseList.getElseClause()==null) {
+                    checkSwitchExhaustive(
+                            switchClause, switchCaseList, 
+                            switchExpressionType);
+                }
+            }
+        }
+    }
+
+    private void checkSwitchExhaustive(
+            Tree.SwitchClause switchClause, 
+            Tree.SwitchCaseList switchCaseList,
+            Type switchExpressionType) {
+        if (!isTypeUnknown(switchExpressionType)) {
+            Type caseUnionType = 
+                    caseUnionType(switchCaseList);
+            if (caseUnionType!=null) {
+                //if the union of the case types covers 
+                //the switch expression type then the 
+                //switch is exhaustive
+                if (!caseUnionType.covers(switchExpressionType)) {
+                    switchClause.addError(
+                            "case types must cover all cases of the switch type or an else clause must appear: '" +
+                            caseUnionType.asString(unit) + 
+                            "' does not cover '" + 
+                            switchExpressionType.asString(unit) + "'", 
+                            10000);
                 }
             }
         }
@@ -8911,19 +8930,16 @@ public class ExpressionVisitor extends Visitor {
                     unit.getObjectType());
     }
     
-    private void checkCases(Tree.SwitchCaseList switchCaseList) {
+    private void checkSwitchCases(Tree.SwitchCaseList switchCaseList) {
         List<Tree.CaseClause> cases = 
                 switchCaseList.getCaseClauses();
         boolean hasIsCase = false;
         for (Tree.CaseClause cc: cases) {
-            if (cc.getCaseItem() 
-                    instanceof Tree.IsCase) {
+            Tree.CaseItem item = cc.getCaseItem();
+            if (item instanceof Tree.IsCase) {
                 hasIsCase = true;
             }
-            for (Tree.CaseClause occ: cases) {
-                if (occ==cc) break;
-                checkCasesClausesDisjoint(cc, occ);
-            }
+            checkCaseClausesDisjoint(cases, cc);
         }
         if (hasIsCase) {
             if (switchStatementOrExpression!=null) {
@@ -8941,12 +8957,24 @@ public class ExpressionVisitor extends Visitor {
                             checkReferenceIsNonVariable(bme, true);
                         }
                         else if (st!=null) {
-                            st.addError("switch expression must be a value reference in switch with type cases", 3102);
+                            st.addError("switch expression must be a value reference in switch with type cases", 
+                                    3102);
                         }
                     }
                 }
             }
         }   
+    }
+
+    private void checkCaseClausesDisjoint(
+            List<Tree.CaseClause> cases, 
+            Tree.CaseClause cc) {
+        if (!cc.getOverlapping()) {
+            for (Tree.CaseClause occ: cases) {
+                if (occ==cc) break;
+                checkCaseClausesDisjoint(cc, occ);
+            }
+        }
     }
 
     private Type caseUnionType(Tree.SwitchCaseList switchCaseList) {
@@ -8957,7 +8985,7 @@ public class ExpressionVisitor extends Visitor {
                 new ArrayList<Type>
                     (caseClauses.size());
         for (Tree.CaseClause cc: caseClauses) {
-            Type ct = getTypeIgnoringLiterals(cc);
+            Type ct = getTypeIgnoringLiteralsAndConstants(cc);
             if (isTypeUnknown(ct)) {
                 return null; //Note: early exit!
             }
@@ -8968,7 +8996,7 @@ public class ExpressionVisitor extends Visitor {
         return ModelUtil.union(list, unit);
     }
 
-    private void checkCasesClausesDisjoint(
+    private void checkCaseClausesDisjoint(
             Tree.CaseClause cc, 
             Tree.CaseClause occ) {
         Tree.CaseItem cci = cc.getCaseItem();
@@ -9005,7 +9033,7 @@ public class ExpressionVisitor extends Visitor {
                 if (msg!=null) {
                     cci.addError("literal cases must be disjoint: " +
                              msg + " occurs in multiple cases");
-                };
+                }
             }
         }
     }
@@ -9152,13 +9180,15 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private Type getTypeIgnoringLiterals(Tree.CaseClause cc) {
+    private Type getTypeIgnoringLiterals(
+            Tree.CaseClause cc) {
         Tree.CaseItem ci = cc.getCaseItem();
         if (ci instanceof Tree.IsCase) {
             return getType(ci);
         }
         else if (ci instanceof Tree.MatchCase) {
-            Tree.MatchCase mc = (Tree.MatchCase) ci;
+            Tree.MatchCase mc = 
+                    (Tree.MatchCase) ci;
             List<Tree.Expression> es = 
                     mc.getExpressionList()
                         .getExpressions();
@@ -9168,7 +9198,38 @@ public class ExpressionVisitor extends Visitor {
                 if (e.getTypeModel()!=null) {
                     Tree.Term term = e.getTerm();
                     if (!isLiteralCase(term)) {
-                        addToUnion(list, e.getTypeModel());
+                        addToUnion(list, 
+                                e.getTypeModel());
+                    }
+                }
+            }
+            return union(list, unit);
+        }
+        else {
+            return null;
+        }
+    }
+
+    private Type getTypeIgnoringLiteralsAndConstants(
+            Tree.CaseClause cc) {
+        Tree.CaseItem ci = cc.getCaseItem();
+        if (ci instanceof Tree.IsCase) {
+            return getType(ci);
+        }
+        else if (ci instanceof Tree.MatchCase) {
+            Tree.MatchCase mc = 
+                    (Tree.MatchCase) ci;
+            List<Tree.Expression> es = 
+                    mc.getExpressionList()
+                        .getExpressions();
+            List<Type> list = 
+                    new ArrayList<Type>(es.size());
+            for (Tree.Expression e: es) {
+                if (e.getTypeModel()!=null) {
+                    Tree.Term term = e.getTerm();
+                    if (isEnumCase(term)) {
+                        addToUnion(list, 
+                                e.getTypeModel());
                     }
                 }
             }
@@ -9180,16 +9241,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private boolean isLiteralCase(Tree.Term term) {
-        if (term instanceof Tree.MemberOrTypeExpression) {
-            Tree.MemberOrTypeExpression mte = 
-                    (Tree.MemberOrTypeExpression) term;
-            return isConstantCase(mte.getDeclaration());
-        }
-        else {
-            return term instanceof Tree.Literal ||
-                  term instanceof Tree.Tuple ||
-                  term instanceof Tree.NegativeOp;
-        }
+        return term instanceof Tree.Literal ||
+              term instanceof Tree.Tuple ||
+              term instanceof Tree.NegativeOp;
     }
     
     @Override

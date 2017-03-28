@@ -1443,18 +1443,20 @@ public class AnalyzerUtil {
                     intersectionType(later.resolveAliases(), 
                             earlier.resolveAliases(), unit);
             if (!it.isNothing()) {
-                if (earlier.isSubtypeOf(later)) {
-                    node.addUsageWarning(Warning.caseNotDisjoint,
-                            "cases are not disjoint: '" + 
+                if (earlier.isExactly(later)) {
+                    node.addError("case is not disjoint: there is another case of type '" + 
+                            earlier.asString(unit) + "' (use 'else case')");
+                }
+                else if (earlier.isSubtypeOf(later)) {
+                    node.addError("case is not disjoint: '" + 
                             later.asString(unit) + "' contains '" + 
-                            earlier.asString(unit) + "'");
+                            earlier.asString(unit) + "' (use 'else case')");
                 }
                 else {
-                    node.addError(
-                            "cases are not disjoint: '" + 
+                    node.addError("case is not disjoint: '" + 
                             later.asString(unit) + "' and '" + 
                             earlier.asString(unit) + "' have intersection '" +
-                            it.asString(unit) + "'");
+                            it.asString(unit) + "' (use 'else case')");
                 }
             }
         }

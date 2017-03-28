@@ -39,10 +39,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
-import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
-import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
-import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Break;
@@ -4859,18 +4856,10 @@ public class StatementTransformer extends AbstractTransformer {
                 @Override
                 public void visit(Tree.Body that) {}
                 @Override
-                public void visitAny(Node that) {
-                    for (Message m: that.getErrors()) {
-                        if (m instanceof UsageWarning) {
-                            UsageWarning w = (UsageWarning) m;
-                            if (Warning.caseNotDisjoint.name()
-                                    .equals(w.getWarningName())){
-                                found = true;
-                                return;
-                            }
-                        }
+                public void visit(Tree.CaseClause that) {
+                    if (that.getOverlapping()) {
+                        found = true;
                     }
-                    super.visitAny(that);
                 }
             }
             WarningVisitor wv = new WarningVisitor();
