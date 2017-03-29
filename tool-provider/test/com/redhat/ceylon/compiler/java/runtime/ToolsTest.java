@@ -339,8 +339,8 @@ public class ToolsTest {
         Assert.assertEquals(expectedVersion, compiledVersion[0]);
         if(module.endsWith(".errors")){
             Assert.assertEquals(2, errors.size());
-            Assert.assertTrue(errors.contains("test/modules/errors/run.ceylon at 1:8 -> type is not defined: 'Error' might be misspelled or is not imported"));
-            Assert.assertTrue(errors.contains("test/modules/errors/run.ceylon at 1:14 -> does not definitely return: 'run' has branches which do not end in a 'return' statement"));
+            Assert.assertTrue(errors.contains("test"+File.separator+"modules"+File.separator+"errors"+File.separator+"run.ceylon at 1:8 -> type is not defined: 'Error' might be misspelled or is not imported"));
+            Assert.assertTrue(errors.contains("test"+File.separator+"modules"+File.separator+"errors"+File.separator+"run.ceylon at 1:14 -> does not definitely return: 'run' has branches which do not end in a 'return' statement"));
             Assert.assertFalse(ret);
         }else{
             Assert.assertTrue(ret);
