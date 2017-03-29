@@ -1,0 +1,57 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug69xx;
+
+public class Bug6997FirstClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug6997FirstClass() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997FirstClass();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997FirstClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997FirstClass.class);
+}
+public class Bug6997SecondClass extends .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997FirstClass {
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.$delegation$ $delegation$ = null;
+    
+    private static final class $delegation$ {
+        
+        $delegation$() {
+        }
+    }
+    
+    private Bug6997SecondClass(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.$delegation$ $name$) {
+        super();
+    }
+    
+    public Bug6997SecondClass() {
+        this(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.$delegation$);
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.secondConstructor_ secondConstructor_ = null;
+    
+    public static final class secondConstructor_ {
+        
+        secondConstructor_() {
+        }
+    }
+    
+    public Bug6997SecondClass(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.secondConstructor_ $name$) {
+        this(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.$delegation$);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.class);
+}
