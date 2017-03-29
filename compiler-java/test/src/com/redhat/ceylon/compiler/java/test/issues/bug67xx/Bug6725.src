@@ -1,0 +1,114 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug67xx;
+
+final class bug6725_ {
+    
+    private bug6725_() {
+    }
+    
+    static void bug6725() {
+        .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Arrays.<.java.lang.Object>asList(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"), .ceylon.language.String.instance("goodbye"), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(100L)).stream()).filter(new .java.util.function.Predicate(){
+            
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object s = $param$0;
+                return .ceylon.language.Boolean.instance((
+                    let
+                    {
+                        boolean $ceylontmp$ifResult$0;
+                        {
+                            .java.lang.Object sel$1 = .com.redhat.ceylon.compiler.java.Util.checkNull(s);
+                            if (sel$1 instanceof .ceylon.language.String) {
+                                final .ceylon.language.String s$3 = (.ceylon.language.String)sel$1;
+                                $ceylontmp$ifResult$0 = .com.redhat.ceylon.compiler.java.Util.checkNull(s$3).longerThan(2L);
+                            } else if (sel$1 instanceof .ceylon.language.Integer) {
+                                final long s$2 = ((.ceylon.language.Integer)sel$1).longValue();
+                                $ceylontmp$ifResult$0 = s$2 > 10L;
+                            } else {
+                                .com.redhat.ceylon.compiler.java.Util.rethrow(new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive"));
+                                $ceylontmp$ifResult$0 = false;
+                            }
+                        }
+                    }
+                    returning $ceylontmp$ifResult$0;
+                ));
+            }
+            
+            @.java.lang.Override
+            public boolean test(final .java.lang.Object arg0) {
+                return $call$(arg0).booleanValue();
+            }
+        })).forEach(new .java.util.function.Consumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object s = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(s);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .java.lang.Object arg0) {
+                $call$(arg0);
+            }
+        });
+        .java.util.Arrays.<.java.lang.Object>asList((
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$4$0 = .ceylon.language.interleave_.<.java.lang.Object, .java.lang.Object>interleave(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), new .java.lang.Object[]{
+                        (.ceylon.language.Iterable).ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(30L)),
+                        (.ceylon.language.Iterable).ceylon.language.span_.<.ceylon.language.Character>span(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(97), .ceylon.language.Character.instance(122))}, .ceylon.language.empty_.get_())).sequence();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>toArray($ceylontmp$4$0, new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$4$0.getSize())]);
+        )).forEach(new .java.util.function.Consumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object x = $param$0;
+                {
+                    .java.lang.Object sel$5 = .com.redhat.ceylon.compiler.java.Util.checkNull(x);
+                    if (sel$5 instanceof .ceylon.language.Integer) {
+                        final long x$7 = ((.ceylon.language.Integer)sel$5).longValue();
+                        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Integer: ").append(x$7).toString()));
+                    } else if (sel$5 instanceof .ceylon.language.Character) {
+                        final int x$6 = ((.ceylon.language.Character)sel$5).intValue();
+                        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Character: ").appendCodePoint(x$6).append(" ").appendCodePoint(.ceylon.language.Character.getUppercased(x$6)).append(" ").append(.ceylon.language.Character.getInteger(x$6)).toString()));
+                    } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+                }
+                return null;
+            }
+            
+            @.java.lang.Override
+            public void accept(final .java.lang.Object arg0) {
+                $call$(arg0);
+            }
+        });
+        final .java.lang.Object $int = .java.util.Arrays.<.java.lang.Object>asList(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.String.instance("")).get(0);
+        {
+            .java.lang.Object sel$8 = $int;
+            if (sel$8 instanceof .ceylon.language.String) {
+                final .ceylon.language.String int$11 = (.ceylon.language.String)sel$8;
+            } else if (sel$8 instanceof .ceylon.language.Integer) {
+                final long int$10 = ((.ceylon.language.Integer)sel$8).longValue();
+                .ceylon.language.print_.print(.ceylon.language.Integer.instance(int$10));
+            } else {
+                final .java.lang.Object int$9 = (.java.lang.Object)sel$8;
+            }
+        }
+        .java.lang.Object $int$13;
+        if (($int$13 = $int) instanceof .ceylon.language.String) {
+            final .java.lang.String $int$19 = ((.ceylon.language.String)$int$13).toString();
+        } else {
+            final .ceylon.language.Integer $int$14 = (.ceylon.language.Integer)$int$13;
+            .java.lang.Object $int$16;
+            if (($int$16 = $int$14) instanceof .ceylon.language.Integer) {
+                final long $int$18 = ((.ceylon.language.Integer)$int$16).longValue();
+            } else {
+                final .java.lang.Object $int$17 = $int$16;
+                .ceylon.language.print_.print($int$17);
+                final long i = ((.ceylon.language.Integer)(.java.lang.Object).com.redhat.ceylon.compiler.java.Util.checkNull($int$17)).longValue();
+            }
+        }
+    }
+}
