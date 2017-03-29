@@ -71,6 +71,10 @@ shared class LocalDeclarationsClassContainer(shared Object sharedParam = object 
         value inLazyComprehension = {for (aa in {1}) object {}};
         value inLazyIterable = {object {}};
         value inLazyMixComprehension = {object {}, for (aa in {1}) object {}};
+        // objects in tuples
+        value inEagerComprehension = [for (aa in {1}) object {}];
+        value inEagerTuple = [object {}];
+        value inEagerMixComprehension = [object {}, for (aa in {1}) object {}];
     }
     // MPL: two param lists
     shared void m2()(){
