@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1679,10 +1680,11 @@ public class Type extends Reference {
 
     private TypeDeclaration findCommonSuperclass(Criteria c,
             List<Type> types) {
-        TypeDeclaration result = null;
         TypeDeclaration td = 
                 types.get(0)
                     .getDeclaration();
+        List<TypeDeclaration> results
+            = new LinkedList<TypeDeclaration>();
         for (TypeDeclaration std: 
                 td.getSupertypeDeclarations()) {
             if (std instanceof ClassOrInterface && 
@@ -1695,23 +1697,44 @@ public class Type extends Reference {
                     }
                 }
                 if (std!=null) {
-                    if (result==null) {
-                        result = std;
-                    }
-                    else if (std.inherits(result)) {
-                        result = std;
-                    }
-                    else if (result.inherits(std)) {
-                        
+                    if (results.isEmpty()) {
+                        results.add(std);
                     }
                     else {
-                        result = null;
-                        break;
+                        for (int i=results.size()-1; 
+                                i>=0; i--) {
+                            TypeDeclaration result = 
+                                    results.get(i);
+                            if (std.inherits(result)) {
+                                //first supertype 
+                                //encountered, so this 
+                                //is where it belongs 
+                                //in the chain
+                                results.add(i+1, std);
+                                break;
+                            }
+                            else if (result.inherits(std)) {
+                                //keep looking for a 
+                                //supertype further "up"
+                                //the chain, unless...
+                                if (i==0) {
+                                    results.add(0, std);
+                                }
+                            }
+                            else {
+                                //the two types are unrelated
+                                //by inheritance, we need to
+                                //try and find a common 
+                                //supertype
+                                results.remove(i);
+                            }
+                        }
                     }
                 }
             }
         }
-        return result;
+        return results.isEmpty() ? null : 
+            results.get(results.size()-1);
     }
     
     private static ThreadLocal<Integer> depth = 
