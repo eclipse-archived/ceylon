@@ -2432,8 +2432,8 @@ else {
             
             <itemizedlist>
                 <listitem>
-                    <para>a chain of one or more child <literal>case</literal> clauses, 
-                    and,</para>
+                    <para>a chain of one or more child <literal>case</literal> and
+                    <literal>else case</literal> clauses, and,</para>
                 </listitem>
                 <listitem>
                     <para>optionally, a chain of an arbitrary number of child 
@@ -2444,7 +2444,7 @@ else {
                 </listitem>
             </itemizedlist>
             
-            <synopsis>Case: "case" CaseCondition Block</synopsis>
+            <synopsis>Case: "else"? "case" CaseCondition Block</synopsis>
             
             <para>Two <literal>case</literal>s are said to be <emphasis>disjoint</emphasis> 
             if:</para>
@@ -2461,8 +2461,9 @@ else {
                 </listitem>
             </itemizedlist>
               
-            <para>In every <literal>switch</literal> statement, all <literal>case</literal>s 
-            must be mutually disjoint.</para>
+            <para>In every <literal>switch</literal> statement, every pair of 
+            <literal>case</literal>s must be disjoint, unless one is an 
+            <literal>else case</literal>.</para>
             
             <para>A <literal>switch</literal> is <emphasis>exhaustive</emphasis> if there 
             are no literal values in its <literal>case</literal>s, and the union type formed 
