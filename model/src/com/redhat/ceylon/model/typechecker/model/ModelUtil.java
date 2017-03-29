@@ -2208,6 +2208,11 @@ public class ModelUtil {
             Declaration d = members.get(i);
             if (isResolvable(d) && isNamed(name, d)) {
                 if (signature==null) {
+                    //special case that is only needed
+                    //because sometimes the generated 
+                    //annotation constructor for a nested 
+                    //Java annotation collides with another 
+                    //Java member
                     if (d instanceof Function 
                             && d.isAnnotation()
                             && d.isJava()) {
