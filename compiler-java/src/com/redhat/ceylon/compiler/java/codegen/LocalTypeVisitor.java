@@ -29,7 +29,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Tuple;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.compiler.typechecker.tree.Walker;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -390,10 +392,25 @@ public class LocalTypeVisitor extends Visitor {
         super.visit(that);
     }
 
+    /**
+     * Make sure we visit the sequenced argument knowing we're in a tuple, because
+     * those are not lazy
+     */
+    @Override
+    public void visit(Tuple node) {
+        Walker.walkAtom(this, node);
+        if (node.getSequencedArgument()!=null)
+            visit(node.getSequencedArgument(), true);
+    }
+
     @Override
     public void visit(Tree.SequencedArgument that) {
-        if (Strategy.useConstantIterable(that)) {
-            // In this case we use a constant iterable, and that isn't anonymous
+        visit(that, false);
+    }
+
+    private void visit(Tree.SequencedArgument that, boolean inTuple) {
+        if (Strategy.useConstantIterable(that) || inTuple) {
+            // In this case we use a constant iterable or tuple, and those are not anonymous
             super.visit(that);
             return;
         } 
