@@ -3798,10 +3798,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 superConstructor != null 
                 && constructorDelegation != null
                 && constructorDelegation.isSelfDelegation()) {
-            
             result = result.prepend(
-                    new ExpressionAndType(naming.makeNamedConstructorName(superConstructor, concreteDelegation),
-                            naming.makeNamedConstructorType(superConstructor, concreteDelegation)));
+                    new ExpressionAndType(naming.makeNamedConstructorName(constructorDelegation.getExtendingConstructor(), concreteDelegation),
+                            naming.makeNamedConstructorType(constructorDelegation.getExtendingConstructor(), concreteDelegation)));
         } else if (
                 superConstructor != null 
                         && !Decl.isDefaultConstructor(superConstructor)
