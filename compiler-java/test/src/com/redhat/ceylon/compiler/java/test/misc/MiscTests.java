@@ -286,6 +286,8 @@ public class MiscTests extends CompilerTests {
                 "http.common",
                 "http.server",
                 "interop.java",
+                "interop.persistence",
+                "interop.spring",
                 "io",
                 "json",
                 "locale",
