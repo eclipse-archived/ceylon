@@ -3901,9 +3901,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                         methodName = "com.redhat.ceylon.compiler.java.language.ObjectArray.getIterable";
                     }
                     argExpr = make().Apply(null, naming.makeQuotedQualIdentFromString(methodName), List.<JCExpression>of(argExpr));
-                }
-                if(!typeFact().isSequentialType(argType))
                     argExpr = iterableToSequential(argExpr);
+                }else if(typeFact().isSequentialType(argType)){
+                    // we're good
+                }else if(typeFact().isIterableType(argType)){
+                    argExpr = iterableToSequential(argExpr);
+                } else if (typeFact().isJavaIterableType(argType)) {
+                    argExpr = utilInvocation().toIterable(
+                            makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
+                            makeReifiedTypeArgument(iteratedType), argExpr);
+                    argExpr = iterableToSequential(argExpr);
+                }
+
                 x = x.prepend(argExpr);
             }
         }
