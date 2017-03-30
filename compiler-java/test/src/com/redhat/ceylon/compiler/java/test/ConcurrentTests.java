@@ -46,6 +46,7 @@ import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_2000_2499;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_5500_5999;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_6000_6499;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_6500_6999;
+import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_7000_7499;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTests;
 import com.redhat.ceylon.compiler.java.test.language.LanguageSuite;
 import com.redhat.ceylon.compiler.java.test.languagesatisfaction.LanguageSatisfactionSuite;
@@ -90,6 +91,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     IssuesTests_5500_5999.class,
     IssuesTests_6000_6499.class,
     IssuesTests_6500_6999.class,
+    IssuesTests_7000_7499.class,
     MiscTests.class,
     CeylonDocToolTests.class,
     CompilerToolsTests.class,
