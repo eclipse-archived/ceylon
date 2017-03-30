@@ -1685,8 +1685,8 @@ public class Type extends Reference {
                     .getDeclaration();
         List<TypeDeclaration> allSupertypes =
                 td.getSupertypeDeclarations();
-        List<ClassOrInterface> supertypes =
-                new ArrayList<>(allSupertypes.size());
+        List<ClassOrInterface> supertypes = null;
+        ClassOrInterface firstCandidate = null;
         for (TypeDeclaration std: allSupertypes) {
             if (std instanceof ClassOrInterface
                     && c.satisfies(std)) {
@@ -1698,10 +1698,26 @@ public class Type extends Reference {
                     }
                 }
                 if (allInherit) {
-                    supertypes.add((ClassOrInterface)std);
+                    if (supertypes == null && firstCandidate == null) {
+                        firstCandidate = (ClassOrInterface)std;
+                    } else if (supertypes == null) {
+                        supertypes = new ArrayList<>(
+                                allSupertypes.size());
+                        supertypes.add(firstCandidate);
+                        firstCandidate = null;
+                        supertypes.add((ClassOrInterface)std);
+                    } else {
+                        supertypes.add((ClassOrInterface)std);
+                    }
                 }
             }
         }
+
+        //optimized 0 and 1 candidate cases
+        if (supertypes == null) {
+            return firstCandidate;
+        }
+
         List<ClassOrInterface> ambiguousCases =
                 new ArrayList<>(supertypes.size());
         while (!supertypes.isEmpty()) {
