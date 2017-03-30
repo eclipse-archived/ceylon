@@ -555,6 +555,8 @@ class Strategy {
             }
         } else if (decl instanceof TypeAlias) {
             return ((TypeAlias)decl).getTypeParameters();
+        } else if (decl instanceof TypeParameter) {
+            return Collections.emptyList();
         } else {
             throw BugException.unhandledDeclarationCase((Declaration)decl);
         }

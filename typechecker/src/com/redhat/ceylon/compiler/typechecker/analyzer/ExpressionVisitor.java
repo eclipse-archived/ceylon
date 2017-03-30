@@ -296,10 +296,10 @@ public class ExpressionVisitor extends Visitor {
         that.setTypeModel(fullType);
         Tree.TypeParameterList tpl = 
                 that.getTypeParameterList();
-        if (tpl!=null) {
-            checkNotJvm(tpl, 
-                    "type functions are not supported on the JVM: anonymous function is generic (remove type parameters)");
-        }
+//        if (tpl!=null) {
+//            checkNotJvm(tpl, 
+//                    "type functions are not supported on the JVM: anonymous function is generic (remove type parameters)");
+//        }
     }
     
     @Override public void visit(Tree.IfExpression that) {
@@ -1882,12 +1882,12 @@ public class ExpressionVisitor extends Visitor {
                 checkType(type, 
                         that.getSpecifierExpression());
             }
-            if (isGeneric(model)) {
-                checkNotJvm(that,
-                        "type functions are not supported on the JVM: '" + 
-                        model.getName() + 
-                        "' is generic (remove type parameters)");
-            }
+//            if (isGeneric(model)) {
+//                checkNotJvm(that,
+//                        "type functions are not supported on the JVM: '" + 
+//                        model.getName() + 
+//                        "' is generic (remove type parameters)");
+//            }
         }
         else {
             Declaration a = 
@@ -6841,10 +6841,10 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             member, target, unit);
             that.setTypeModel(functionType);
-            checkNotJvm(that, 
-                    "type functions are not supported on the JVM: '" + 
-                    member.getName(unit) + 
-                    "' is generic (specify explicit type arguments)");
+//            checkNotJvm(that, 
+//                    "type functions are not supported on the JVM: '" + 
+//                    member.getName(unit) + 
+//                    "' is generic (specify explicit type arguments)");
         }
     }
 
@@ -6978,10 +6978,10 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             member, target, unit);
             that.setTypeModel(functionType);
-            checkNotJvm(that, 
-                    "type functions are not supported on the JVM: '" + 
-                    member.getName(unit) + 
-                    "' is generic (specify explicit type arguments)");
+//            checkNotJvm(that, 
+//                    "type functions are not supported on the JVM: '" + 
+//                    member.getName(unit) + 
+//                    "' is generic (specify explicit type arguments)");
         }
     }
     
@@ -7066,10 +7066,10 @@ public class ExpressionVisitor extends Visitor {
                                     that.getTarget(),
                                     unit);
                     that.setTypeModel(functionType);
-                    checkNotJvm(that, 
-                            "type functions are not supported on the JVM: '" + 
-                            qtd.getName(unit) + 
-                            "' is generic (specify explicit type arguments)");
+//                    checkNotJvm(that, 
+//                            "type functions are not supported on the JVM: '" + 
+//                            qtd.getName(unit) + 
+//                            "' is generic (specify explicit type arguments)");
                 }
             }
         }
@@ -7544,10 +7544,10 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             type, target, unit);
             that.setTypeModel(functionType);
-            checkNotJvm(that, 
-                    "type functions are not supported on the JVM: '" + 
-                    type.getName(unit) + 
-                    "' is generic (specify explicit type arguments)");
+//            checkNotJvm(that, 
+//                    "type functions are not supported on the JVM: '" + 
+//                    type.getName(unit) + 
+//                    "' is generic (specify explicit type arguments)");
         }
     }
 
@@ -7873,10 +7873,10 @@ public class ExpressionVisitor extends Visitor {
                     genericFunctionType(generic, scope, 
                             type, target, unit);
             that.setTypeModel(functionType);
-            checkNotJvm(that, 
-                    "type functions are not supported on the JVM: '" + 
-                    type.getName(unit) + 
-                    "' is generic (specify explicit type arguments)");
+//            checkNotJvm(that, 
+//                    "type functions are not supported on the JVM: '" + 
+//                    type.getName(unit) + 
+//                    "' is generic (specify explicit type arguments)");
         }
     }
 
@@ -8136,13 +8136,13 @@ public class ExpressionVisitor extends Visitor {
                 acceptsTypeArguments(type, null, 
                         typeArgs, tal, that);
             }
-            if (pt.isTypeConstructor() 
-                    && !that.getMetamodel()) {
-                checkNotJvm(that, 
-                        "type functions are not supported on the JVM: '" + 
-                        type.getName(unit) + 
-                        "' is generic (specify explicit type arguments)");
-            }
+//            if (pt.isTypeConstructor() 
+//                    && !that.getMetamodel()) {
+//                checkNotJvm(that, 
+//                        "type functions are not supported on the JVM: '" + 
+//                        type.getName(unit) + 
+//                        "' is generic (specify explicit type arguments)");
+//            }
         }
     }
     
@@ -9973,34 +9973,34 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.TypeConstructor that) {
         super.visit(that);
-        checkNotJvm(that, 
-                "type functions are not supported on the JVM");
+//        checkNotJvm(that, 
+//                "type functions are not supported on the JVM");
     }
     
     @Override public void visit(Tree.TypeConstraint that) {
         super.visit(that);
-        TypeParameterList typeParams = 
-                that.getTypeParameterList();
-        if (typeParams!=null) {
-            checkNotJvm(typeParams, 
-                    "type functions are not supported on the JVM: type parameter is generic (remove type parameters)");
-        }
+//        TypeParameterList typeParams = 
+//                that.getTypeParameterList();
+//        if (typeParams!=null) {
+//            checkNotJvm(typeParams, 
+//                    "type functions are not supported on the JVM: type parameter is generic (remove type parameters)");
+//        }
     }
     
     @Override
     public void visit(Tree.FunctionalParameterDeclaration that) {
         super.visit(that);
-        Tree.MethodDeclaration md = 
-                (Tree.MethodDeclaration) 
-                    that.getTypedDeclaration();
-        Tree.TypeParameterList tpl = 
-                md.getTypeParameterList();
-        if (tpl!=null) {
-            checkNotJvm(tpl, 
-                    "type functions are not supported on the JVM: '" + 
-                    md.getDeclarationModel().getName() + 
-                    "' is generic (remove type parameters)");
-        }
+//        Tree.MethodDeclaration md = 
+//                (Tree.MethodDeclaration) 
+//                    that.getTypedDeclaration();
+//        Tree.TypeParameterList tpl = 
+//                md.getTypeParameterList();
+//        if (tpl!=null) {
+//            checkNotJvm(tpl, 
+//                    "type functions are not supported on the JVM: '" + 
+//                    md.getDeclarationModel().getName() + 
+//                    "' is generic (remove type parameters)");
+//        }
     }
     
     private Type defaultType() {

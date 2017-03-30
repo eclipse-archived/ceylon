@@ -1571,9 +1571,16 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     private boolean isTurnedToRawResolved(Type type) {
+        if (type.isTypeConstructor())
+            return true;
         // if we don't have type arguments we can't be raw
         if(type.getTypeArguments().isEmpty())
             return false;
+        
+        // FIXME: that one seems just wrong
+        if (type.isTypeParameter())
+            return true;
+
 
         // we only go raw if any type param is an erased union/intersection
         // start with type but consider ever qualifying type
@@ -1585,6 +1592,8 @@ public abstract class AbstractTransformer implements Transformation {
             Map<TypeParameter, Type> typeArguments = singleType.getTypeArguments();
             for(TypeParameter tp : declaration.getTypeParameters()){
                 Type ta = typeArguments.get(tp);
+                if (ta.isTypeConstructor())
+                    return true;
                 // skip invalid input
                 if(tp == null || ta == null)
                     return false;
@@ -1926,7 +1935,12 @@ public abstract class AbstractTransformer implements Transformation {
         Type type = ceylonType;
         if(type == null || type.isUnknown())
             return make().Erroneous();
-        
+
+        if (type.isTypeConstructor() || 
+                type.isTypeParameter() && !type.getTypeArgumentList().isEmpty()) {
+            type = typeFact().getObjectType();
+        }
+
         if (type.getDeclaration() instanceof Constructor) {
             type = type.getExtendedType();
         }
@@ -2479,6 +2493,11 @@ public abstract class AbstractTransformer implements Transformation {
             // record whether we were initially working with Anything, because getNonNullType turns it into Object
             // and we need to treat "in Anything" specially below
             boolean isAnything = isAnything(ta);
+            
+            if (ta.isTypeConstructor()) {
+                typeArgs = null;
+                break;
+            }
             
             // Null will claim to be optional, but if we get its non-null type we will land with Nothing, which is not what
             // we want, so we make sure it's not Null
