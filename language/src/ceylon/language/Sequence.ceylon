@@ -287,8 +287,13 @@ shared sealed interface Sequence<out Element=Anything>
         
         first => outer.first;
         size => outer.size*times;
-        rest => sublistFrom(1).sequence(); //TODO!
-        
+        rest => if (times==1)
+                    then outer.rest
+                    else let (tail = outer.Repeat(times-1))
+                         if (outer.longerThan(1))
+                             then outer.rest.append(tail)
+                             else tail;
+
         getFromFirst(Integer index)
                 => let (size = outer.size)
                     if (index<size*times)
