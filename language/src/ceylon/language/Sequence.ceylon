@@ -295,8 +295,7 @@ shared sealed interface Sequence<out Element=Anything>
         first => outer.first;
         size => outer.size*times;
         
-        rest => JoinedSequence(outer.rest,
-                               outer.repeat(times-1));
+        rest => outer.rest.append(outer.repeat(times-1));
         
         getFromFirst(Integer index)
                 => let (size = outer.size)
