@@ -70,7 +70,8 @@ shared sealed interface Sequence<out Element=Anything>
     shared actual default [Element+] sequence() => this;
     
     "The rest of the sequence, without the first element."
-    shared actual formal Element[] rest;
+    shared actual default Element[] rest 
+            => size == 1 then [] else Rest(1);
     
     "A sequence containing the elements of this sequence in
      reverse order to the order in which they occur in this
@@ -241,11 +242,6 @@ shared sealed interface Sequence<out Element=Anything>
         first => outer.last;
         last => outer.first;
         
-        rest => size == 1 then [] 
-                //TODO: optimize this, it allocates
-                //      by introducing Sequence.Rest
-                else outer[size-2..0];
-        
         reversed => outer;
         
         getFromFirst(Integer index) 
@@ -294,7 +290,7 @@ shared sealed interface Sequence<out Element=Anything>
         first => outer.first;
         size => outer.size*times;
         
-        rest => outer.rest.append(outer.repeat(times-1));
+        //rest => outer.rest.append(outer.repeat(times-1));
         
         getFromFirst(Integer index)
                 => let (size = outer.size)
@@ -303,6 +299,37 @@ shared sealed interface Sequence<out Element=Anything>
                         else null;
         
         iterator() => CycledIterator(outer,times);
+        
+    }
+    
+    class Rest(Integer from)
+            extends Object()
+            satisfies [Element+] {
+        
+        assert (from>=0);
+        
+        shared actual Element first {
+            if (exists first = outer[from]) {
+                return first;
+            }
+            else {
+                assert (is Element null);
+                return null;
+            }
+        }
+        
+        last => outer.last;
+        size => outer.size-from;
+        
+        rest => size == 1 then [] 
+                else outer.Rest(from+1);
+        
+        getFromFirst(Integer index)
+                => if (index>=0)
+                then outer.getFromFirst(index+from)
+                else null;
+        
+        iterator() => outer.skip(from).iterator();
         
     }
     
@@ -343,7 +370,7 @@ class JoinedSequence<Element>
     first => firstSeq.first;
     last => secondSeq.last;
     
-    rest => firstSeq.rest.append(secondSeq);
+    //rest => firstSeq.rest.append(secondSeq);
     
     getFromFirst(Integer index)
             => let (cutover = firstSeq.size) 

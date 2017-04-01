@@ -49,11 +49,6 @@ class ArraySequence<out Element>(array)
         }
     }
     
-    rest => size == 1 then []
-            //TODO: optimize this, it allocates
-            //      by introducing Sequence.Rest
-            else ArraySequence(array[1...]);
-    
     clone() => ArraySequence(array.clone());
     
     each(void step(Element element)) => array.each(step);
