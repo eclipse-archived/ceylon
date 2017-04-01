@@ -1,13 +1,9 @@
-import ceylon.language {
-    seq=sequence
-}
 "A [[Sequence]] backed by an [[Array]]. 
  
  Since [[Array]]s are mutable, this class is private to the
  language module, where we can be sure the `Array` is not
  modified after the `ArraySequence` has been initialized."
 by ("Tom")
-see (`function seq`)
 shared sealed final
 serializable
 tagged("Collections", "Sequences")
