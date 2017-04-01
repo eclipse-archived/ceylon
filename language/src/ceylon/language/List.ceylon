@@ -247,7 +247,11 @@ shared interface List<out Element=Anything>
      
      This is a lazy operation returning a view of this list."
     shared actual default 
-    List<Element> repeat(Integer times) => Repeat(times);
+    List<Element> repeat(Integer times)
+            => switch (times<=>1) 
+            case (smaller) []
+            case (equal) this
+            case (larger) Repeat(times);
     
     shared default actual 
     Element? find(
@@ -698,6 +702,8 @@ shared interface List<out Element=Anything>
         
         assert (from>=0);
         
+        rest => outer.Rest(from+1);
+        
         sublistFrom(Integer from)
                 => if (from>0) 
                 then outer.Rest(from+this.from) 
@@ -794,6 +800,8 @@ shared interface List<out Element=Anything>
     class Repeat(Integer times)
             extends Object()
             satisfies List<Element> {
+        
+        assert (times>1);
         
         size => outer.size*times;
         

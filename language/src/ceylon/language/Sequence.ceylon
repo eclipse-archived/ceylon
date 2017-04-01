@@ -81,7 +81,10 @@ shared sealed interface Sequence<out Element=Anything>
      this sequence the given [[number of times|times]], or
      the [[empty sequence|empty]] if `times<=0`."
     shared default actual Element[] repeat(Integer times) 
-            => times>0 then Repeat(times) else [];
+            => switch (times<=>1) 
+            case (smaller) []
+            case (equal) this
+            case (larger) Repeat(times);
     
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;
@@ -237,7 +240,11 @@ shared sealed interface Sequence<out Element=Anything>
         size => outer.size;
         first => outer.last;
         last => outer.first;
-        rest => size==1 then [] else outer[size-2..0]; //TODO optimize!
+        
+        rest => size == 1 then [] 
+                //TODO: optimize this, it allocates
+                //      by introducing Sequence.Rest
+                else outer[size-2..0];
         
         reversed => outer;
         
@@ -281,19 +288,14 @@ shared sealed interface Sequence<out Element=Anything>
             extends Object()
             satisfies [Element+] {
         
-        assert (times>0);
+        assert (times>1);
         
         last => outer.last;
-        
         first => outer.first;
         size => outer.size*times;
-        rest => if (times==1)
-                    then outer.rest
-                    else let (tail = outer.Repeat(times-1))
-                         if (outer.longerThan(1))
-                             then outer.rest.append(tail)
-                             else tail;
-
+        
+        rest => outer.rest.append(outer.repeat(times-1));
+        
         getFromFirst(Integer index)
                 => let (size = outer.size)
                     if (index<size*times)
