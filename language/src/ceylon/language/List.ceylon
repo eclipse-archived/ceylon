@@ -702,6 +702,8 @@ shared interface List<out Element=Anything>
         
         assert (from>=0);
         
+        rest => outer.Rest(from+1);
+        
         sublistFrom(Integer from)
                 => if (from>0) 
                 then outer.Rest(from+this.from) 
