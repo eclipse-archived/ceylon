@@ -291,7 +291,6 @@ shared sealed interface Sequence<out Element=Anything>
         assert (times>1);
         
         last => outer.last;
-        
         first => outer.first;
         size => outer.size*times;
         
