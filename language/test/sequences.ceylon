@@ -209,6 +209,14 @@ void test_max_min() {
     check((mn4 else 10)==1, "min filtered seq");
 }
 
+
+void test_repeat() {
+    check((0..1).repeat(2).rest=={1, 0, 1}.sequence(),"Repeat + rest")
+    check((0..1).repeat(2).rest.rest=={0, 1}.sequence(),"Repeat + rest until remove original")
+    check((0..1).repeat(2).rest.rest.rest =={1}.sequence(),"Repeat + rest beyond remove original")
+    check({}.repeat(2).rest=={}.sequence(),"Repeat empty + rest")
+}
+
 shared void arraySequence() {
     value abc = sequence {"a", "b", "c"};
     check(3==abc.size, "abc.size");
@@ -527,7 +535,8 @@ shared void sequences() {
     test_zip();
     test_exists_nonempty();
     test_max_min();
-    
+    test_repeat();
+
     check(emptyOrSingleton(1) nonempty, "emptyOrSingleton [1]");
     check(!emptyOrSingleton(null) nonempty, "emptyOrSingleton [2]");
     
