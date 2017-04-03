@@ -70,6 +70,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -8547,7 +8548,7 @@ public class ExpressionVisitor extends Visitor {
                 //null, or an Identifiable
                 //TODO: change this to a warning?
                 if (!dec.isString() && 
-                    !dec.isInteger() & 
+                    !dec.isInteger() &&
                     !dec.isCharacter()) {
                     Type ut = unionType(
                             unit.getNullType(), 
@@ -8555,6 +8556,26 @@ public class ExpressionVisitor extends Visitor {
                             unit);
                     checkAssignable(type, ut, e, 
                             "case must be identifiable or null");
+                    Interface id = unit.getIdentifiableDeclaration();
+                    if (dec.inherits(id) && !dec.isJavaEnum()) {
+                          Declaration eq = 
+                                  dec.getMember("equals", 
+                                      Arrays.asList(unit.getObjectType()), 
+                                      false);
+                          if (eq!=null) {
+                              Scope container = eq.getContainer();
+                              if (container instanceof TypeDeclaration) {
+                                  TypeDeclaration td = 
+                                          (TypeDeclaration) container;
+                                  if (!container.equals(id)) {
+                                      e.addUsageWarning(Warning.valueEqualityIgnored, 
+                                              "value equality defined by type '" +
+                                              td.getName(unit) +
+                                              "' ignored (identity equality is used to match value case)");
+                                  }
+                              }
+                          }
+                    }
                 }
             }
         }

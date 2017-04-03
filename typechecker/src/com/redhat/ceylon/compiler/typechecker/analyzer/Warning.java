@@ -25,6 +25,7 @@ public enum Warning {
     literalNotSmall("Non-'small' literal assignments"),
     disjointEquals("Disjoint 'equals' operands"),
     disjointContainment("Disjoint 'in' operands"),
+    valueEqualityIgnored("Value equality ignored"),
     redundantNarrowing("Redundant narrowing"),
     redundantIteration("Redundant iteration"),
     missingImportPrefix("Missing import prefixes"),
