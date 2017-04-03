@@ -1429,7 +1429,9 @@ alias Y => List<X>;  //error: circular type alias definition]]></programlisting>
             
             <synopsis>CaseTypes: "of" CaseType ("|" CaseType)*</synopsis>
             
-            <synopsis>CaseType: MemberName | PrimaryType</synopsis>
+            <synopsis>CaseType: ValueCase | PrimaryType</synopsis>
+            
+            <synopsis>ValueCase: ("package" ".")? MemberName</synopsis>
             
             <para>A type occurring in the <literal>of</literal> clause may not involve
             variance annotations <literal>in</literal> or <literal>out</literal>, defined 
