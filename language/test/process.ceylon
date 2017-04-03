@@ -28,10 +28,10 @@ shared void testProcess() {
     process.flushError();
     
     //language object
-    check(language.version=="1.3.3-SNAPSHOT", "language.version");
-    check(language.majorVersion==1, "language.majorVersion");
-    check(language.minorVersion==3, "language.minorVersion");
-    check(language.releaseVersion==3, "language.releaseVersion");
+    check(language.version=="1.3.3-SNAPSHOT"/*@CEYLON_VERSION@*/, "language.version");
+    check(language.majorVersion==1/*@CEYLON_VERSION_MAJOR@*/, "language.majorVersion");
+    check(language.minorVersion==3/*@CEYLON_VERSION_MINOR@*/, "language.minorVersion");
+    check(language.releaseVersion==3/*@CEYLON_VERSION_RELEASE@*/, "language.releaseVersion");
     check(!language.versionName.empty, "language.versionName");
     check(language.majorVersionBinary==8, "language.majorVersionBinary");
     check(language.minorVersionBinary==1, "language.minorVersionBinary");

@@ -242,6 +242,8 @@
         <replace module="com.redhat.ceylon.typechecker" version="1.3.2">
             <with module="com.redhat.ceylon.typechecker" version="${uv}" />
         </replace>
+
+        <!-- @NEW_VERSION@ -->
     </dist-upgrade>
 </dist-overrides>
 
