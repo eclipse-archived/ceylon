@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
@@ -514,11 +515,14 @@ public class InheritanceVisitor extends Visitor {
         Unit unit = that.getUnit();
         Set<Declaration> valueSet = 
                 new HashSet<Declaration>();
-        for (Tree.BaseMemberExpression bme: 
+        for (Tree.StaticMemberOrTypeExpression bme: 
                 that.getBaseMemberExpressions()) {
+            String name = name(bme.getIdentifier());
             TypedDeclaration value = 
-                    getTypedDeclaration(bme.getScope(), 
-                            name(bme.getIdentifier()), 
+                    bme instanceof Tree.BaseMemberExpression ?
+                    getTypedDeclaration(bme.getScope(), name, 
+                            null, false, unit) :
+                    getPackageTypedDeclaration(name, 
                             null, false, unit);
             if (value!=null) {
                 if (value!=null && !valueSet.add(value)) {

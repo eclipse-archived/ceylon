@@ -1268,15 +1268,23 @@ caseTypes returns [CaseTypes caseTypes]
       )*
     ;
 
-caseType returns [StaticType type, BaseMemberExpression instance]
+caseType returns [StaticType type, StaticMemberOrTypeExpression instance]
     : t=primaryType 
       { $type=$t.type;}
-    | memberName
-      { $instance = new BaseMemberExpression(null);
-        $instance.setIdentifier($memberName.identifier);
-        $instance.setTypeArguments( new InferredTypeArguments(null) ); }
-    /*| classDeclaration
-    | objectDeclaration*/
+    | m1=memberName
+      { BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setIdentifier($m1.identifier);
+        bme.setTypeArguments(new InferredTypeArguments(null)); 
+        $instance = bme; }
+    | PACKAGE MEMBER_OP m2=memberName
+      { Package p = new Package($PACKAGE);
+        p.setQualifier(true);
+        QualifiedMemberExpression qme = new QualifiedMemberExpression(null);
+        qme.setPrimary(p);
+        qme.setMemberOperator(new MemberOp($MEMBER_OP));
+        qme.setIdentifier($m2.identifier);
+        qme.setTypeArguments(new InferredTypeArguments(null)); 
+        $instance = qme; }
     ;
 
 abstractedType returns [AbstractedType abstractedType]

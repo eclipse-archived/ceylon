@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correctionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
@@ -1349,7 +1350,7 @@ public class TypeVisitor extends Visitor {
         TypeDeclaration td = 
                 (TypeDeclaration) 
                     that.getScope();
-        List<Tree.BaseMemberExpression> bmes = 
+        List<Tree.StaticMemberOrTypeExpression> bmes = 
                 that.getBaseMemberExpressions();
         List<Tree.StaticType> cts = that.getTypes();
         List<TypedDeclaration> caseValues = 
@@ -1364,12 +1365,15 @@ public class TypeVisitor extends Visitor {
             }
         }
         else {
-            for (Tree.BaseMemberExpression bme: bmes) {
+            for (Tree.StaticMemberOrTypeExpression bme: bmes) {
                 //bmes have not yet been resolved
+                String name = name(bme.getIdentifier());
                 TypedDeclaration od = 
-                        getTypedDeclaration(bme.getScope(), 
-                                name(bme.getIdentifier()), 
-                                null, false, bme.getUnit());
+                        bme instanceof Tree.BaseMemberExpression ?
+                        getTypedDeclaration(bme.getScope(), name, 
+                                null, false, unit) :
+                        getPackageTypedDeclaration(name, 
+                                null, false, unit);
                 if (od!=null) {
                     caseValues.add(od);
                     Type type = od.getType();
