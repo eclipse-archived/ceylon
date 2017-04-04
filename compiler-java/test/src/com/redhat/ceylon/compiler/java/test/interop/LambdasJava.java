@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.interop;
 
 import java.lang.annotation.Annotation;
 import java.util.function.*;
+// NOTE: DO NOT REMOVE, apparently we generate a Class type in this damn package
+import java.lang.Class;
 
 @FunctionalInterface
 interface VariadicFunction {
@@ -97,7 +99,7 @@ public class LambdasJava {
 
     public Class<?> getKlass(){ return null; }
     public void setKlass(Class<?> k){}
-    
+
     public void charSequences(CharSequence... cs){
     }
 
