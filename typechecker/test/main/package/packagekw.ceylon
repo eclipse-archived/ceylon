@@ -40,3 +40,12 @@ void run<X>(X x) {
     package.run<String>("hello");
     package.run<X>(x);
 }
+
+object t extends Bool() {}
+object f extends Bool() {}
+abstract class Bool() 
+        of package.t
+         | package.f {
+    shared Boolean t => this==package.t;
+    shared Boolean f => this==package.f;
+}
