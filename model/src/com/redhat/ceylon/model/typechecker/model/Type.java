@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1678,79 +1677,117 @@ public class Type extends Reference {
         return result;
     }
 
-    private TypeDeclaration findCommonSuperclass(Criteria c,
-            List<Type> types) {
-        TypeDeclaration td = 
-                types.get(0)
-                    .getDeclaration();
+    private static TypeDeclaration findCommonSuperclass(
+            Criteria c, List<Type> types) {
+        
+        //collect all the candidate supertypes 
+        //of the given list of types that satisfy 
+        //the given condition
         List<TypeDeclaration> allSupertypes =
-                td.getSupertypeDeclarations();
+                types.get(0)
+                     .getDeclaration()
+                     .getSupertypeDeclarations();
         List<ClassOrInterface> supertypes = null;
         ClassOrInterface firstCandidate = null;
         for (TypeDeclaration std: allSupertypes) {
             if (std instanceof ClassOrInterface
                     && c.satisfies(std)) {
+                //this supertype satisfies the
+                //condition, so check that it
+                //is actually a supertype of
+                //all the given types
+                ClassOrInterface ci = 
+                        (ClassOrInterface) std;
                 boolean allInherit = true;
                 for (Type ct: types) {
-                    if (!ct.getDeclaration().inherits(std)) {
+                    if (!ct.getDeclaration()
+                            .inherits(std)) {
                         allInherit = false;
                         break;
                     }
                 }
                 if (allInherit) {
-                    if (supertypes == null && firstCandidate == null) {
-                        firstCandidate = (ClassOrInterface)std;
-                    } else if (supertypes == null) {
-                        supertypes = new ArrayList<>(
-                                allSupertypes.size());
+                    //optimize for the case where 
+                    //this is the first candidate
+                    if (supertypes == null 
+                            && firstCandidate == null) {
+                        firstCandidate = ci;
+                    }
+                    else if (supertypes == null) {
+                        supertypes =
+                                new ArrayList<ClassOrInterface>
+                                (allSupertypes.size());
                         supertypes.add(firstCandidate);
                         firstCandidate = null;
-                        supertypes.add((ClassOrInterface)std);
-                    } else {
-                        supertypes.add((ClassOrInterface)std);
+                        supertypes.add(ci);
+                    }
+                    else {
+                        supertypes.add(ci);
                     }
                 }
             }
         }
 
-        //optimized 0 and 1 candidate cases
+        //if there are exactly 0 or 1 candidate 
+        //cases return the optimized result
         if (supertypes == null) {
             return firstCandidate;
         }
-
-        List<ClassOrInterface> ambiguousCases =
-                new ArrayList<>(supertypes.size());
+        
+        //otherwise, incrementally prune the
+        //tree until we arrive at exactly one
+        //result
         while (!supertypes.isEmpty()) {
-            //bottom nodes (those not inherited by any other) are our
-            //best candidates, but if more than one, they are ambiguous
-            for (ClassOrInterface st : supertypes) {
+            
+            List<ClassOrInterface> leaves =
+                    new ArrayList<ClassOrInterface>(3);
+            
+            //look for leaf candidates in the
+            //hierarchy of candidate supertypes
+            for (int i = 0; 
+                    i<supertypes.size(); 
+                    i++) {
+                ClassOrInterface st = 
+                        supertypes.get(i);
                 boolean bottom = true;
-                for (ClassOrInterface other : supertypes) {
-                    if (!st.equals(other) && other.inherits(st)) {
+                for (int j = 0; 
+                        j<supertypes.size(); 
+                        j++) {
+                    ClassOrInterface other = 
+                            supertypes.get(j);
+                    if (i!=j && other.inherits(st)) {
                         bottom = false;
                         break;
                     }
                 }
                 if (bottom) {
-                    ambiguousCases.add(st);
+                    leaves.add(st);
                 }
             }
-            if (ambiguousCases.size() == 1) {
-                return ambiguousCases.get(0);
+            
+            //if there is exactly one, return it
+            if (leaves.size() == 1) {
+                return leaves.get(0);
             }
-            //more than one. prune declarations
-            //not inherited by all ambiguousCases
-            for (int i = 0; i < supertypes.size(); i++) {
-                for (ClassOrInterface ac : ambiguousCases) {
-                    if (!ac.inherits(supertypes.get(i))) {
+            
+            //more than one so prune declarations
+            //not inherited by all the leaves
+            for (int i = 0; 
+                    i<supertypes.size(); 
+                    i++) {
+                ClassOrInterface st = 
+                        supertypes.get(i);
+                for (ClassOrInterface ac: 
+                        leaves) {
+                    if (!ac.inherits(st)) {
                         supertypes.remove(i);
                         i -= 1;
                         break;
                     }
                 }
             }
-            ambiguousCases.clear();
         }
+        
         return null;
     }
     
