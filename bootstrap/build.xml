@@ -235,24 +235,6 @@
 
     <target name="test-quick" depends="compile.tests">
         <mkdir dir="${test.reports}" />
-        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed" dir="${basedir}">
-            <classpath refid="test.run.classpath" />
-            <syspropertyset>
-                <propertyref prefix="ceylon.tests." />
-            </syspropertyset>
-
-            <formatter type="xml" />
-            <test
-                name="com.redhat.ceylon.common.tool.AllCliTests"
-                fork="yes"
-                todir="${test.reports}" />
-        </junit>
-        <junitreport todir="${test.reports}">
-            <fileset dir="${test.reports}">
-                <include name="TEST-*.xml" />
-            </fileset>
-            <report format="frames" todir="${test.reports}" />
-        </junitreport>
-        <fail message="Test failure detected, check test results." if="test.failed" />
+    	<echo>No tests (yet)</echo>
     </target>
 </project>
