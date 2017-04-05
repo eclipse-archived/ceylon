@@ -225,7 +225,7 @@ Some super-charged ant tasks:
     </target>
     <target name="test-quick">
         <fail unless="projects.base.dir" />
-        <subant target="test-quick" failonerror="false">
+        <subant target="test-quick" failonerror="true">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
