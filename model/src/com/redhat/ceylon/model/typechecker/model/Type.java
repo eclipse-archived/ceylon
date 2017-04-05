@@ -1683,58 +1683,75 @@ public class Type extends Reference {
         TypeDeclaration td = 
                 types.get(0)
                     .getDeclaration();
-        List<TypeDeclaration> results
-            = new LinkedList<TypeDeclaration>();
-        for (TypeDeclaration std: 
-                td.getSupertypeDeclarations()) {
-            if (std instanceof ClassOrInterface && 
-                    c.satisfies(std)) {
+        List<TypeDeclaration> allSupertypes =
+                td.getSupertypeDeclarations();
+        List<ClassOrInterface> supertypes = null;
+        ClassOrInterface firstCandidate = null;
+        for (TypeDeclaration std: allSupertypes) {
+            if (std instanceof ClassOrInterface
+                    && c.satisfies(std)) {
+                boolean allInherit = true;
                 for (Type ct: types) {
-                    if (!ct.getDeclaration()
-                            .inherits(std)) {
-                        std = null;
+                    if (!ct.getDeclaration().inherits(std)) {
+                        allInherit = false;
                         break;
                     }
                 }
-                if (std!=null) {
-                    if (results.isEmpty()) {
-                        results.add(std);
-                    }
-                    else {
-                        for (int i=results.size()-1; 
-                                i>=0; i--) {
-                            TypeDeclaration result = 
-                                    results.get(i);
-                            if (std.inherits(result)) {
-                                //first supertype 
-                                //encountered, so this 
-                                //is where it belongs 
-                                //in the chain
-                                results.add(i+1, std);
-                                break;
-                            }
-                            else if (result.inherits(std)) {
-                                //keep looking for a 
-                                //supertype further "up"
-                                //the chain, unless...
-                                if (i==0) {
-                                    results.add(0, std);
-                                }
-                            }
-                            else {
-                                //the two types are unrelated
-                                //by inheritance, we need to
-                                //try and find a common 
-                                //supertype
-                                results.remove(i);
-                            }
-                        }
+                if (allInherit) {
+                    if (supertypes == null && firstCandidate == null) {
+                        firstCandidate = (ClassOrInterface)std;
+                    } else if (supertypes == null) {
+                        supertypes = new ArrayList<>(
+                                allSupertypes.size());
+                        supertypes.add(firstCandidate);
+                        firstCandidate = null;
+                        supertypes.add((ClassOrInterface)std);
+                    } else {
+                        supertypes.add((ClassOrInterface)std);
                     }
                 }
             }
         }
-        return results.isEmpty() ? null : 
-            results.get(results.size()-1);
+
+        //optimized 0 and 1 candidate cases
+        if (supertypes == null) {
+            return firstCandidate;
+        }
+
+        List<ClassOrInterface> ambiguousCases =
+                new ArrayList<>(supertypes.size());
+        while (!supertypes.isEmpty()) {
+            //bottom nodes (those not inherited by any other) are our
+            //best candidates, but if more than one, they are ambiguous
+            for (ClassOrInterface st : supertypes) {
+                boolean bottom = true;
+                for (ClassOrInterface other : supertypes) {
+                    if (!st.equals(other) && other.inherits(st)) {
+                        bottom = false;
+                        break;
+                    }
+                }
+                if (bottom) {
+                    ambiguousCases.add(st);
+                }
+            }
+            if (ambiguousCases.size() == 1) {
+                return ambiguousCases.get(0);
+            }
+            //more than one. prune declarations
+            //not inherited by all ambiguousCases
+            for (int i = 0; i < supertypes.size(); i++) {
+                for (ClassOrInterface ac : ambiguousCases) {
+                    if (!ac.inherits(supertypes.get(i))) {
+                        supertypes.remove(i);
+                        i -= 1;
+                        break;
+                    }
+                }
+            }
+            ambiguousCases.clear();
+        }
+        return null;
     }
     
     private static ThreadLocal<Integer> depth = 
