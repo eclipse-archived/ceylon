@@ -45,7 +45,7 @@ replace() {
   perl -pi -e "s|(\")?\d+?(\")?/\*\@CEYLON_VERSION_MINOR\@\*/|\${1}$CEYLON_NEW_VERSION_MINOR\${2}/*\@CEYLON_VERSION_MINOR\@*/|" $1
   perl -pi -e "s|(\")?\d+?(\")?/\*\@CEYLON_VERSION_RELEASE\@\*/|\${1}$CEYLON_NEW_VERSION_RELEASE\${2}/*\@CEYLON_VERSION_RELEASE\@*/|" $1
   perl -pi -e "s|(\")?\w*?(\")?/\*\@CEYLON_VERSION_QUALIFIER\@\*/|\${1}$CEYLON_NEW_VERSION_QUALIFIER\${2}/*\@CEYLON_VERSION_QUALIFIER\@*/|" $1
-  perl -pi -e "s|(\")?\w*?(\")?/\*\@CEYLON_VERSION_PREFIXED_QUALIFIER\@\*/|\${1}$CEYLON_NEW_VERSION_PREFIXED_QUALIFIER\${2}/*\@CEYLON_VERSION_PREFIXED_QUALIFIER\@*/|" $1
+  perl -pi -e "s|(\")?[\w-]*?(\")?/\*\@CEYLON_VERSION_PREFIXED_QUALIFIER\@\*/|\${1}$CEYLON_NEW_VERSION_PREFIXED_QUALIFIER\${2}/*\@CEYLON_VERSION_PREFIXED_QUALIFIER\@*/|" $1
   
   # version name "bla"(/*)?@CEYLON_VERSION_NAME@(*/)? in text or code
   perl -pi -e "s|\"[^\"]+\"((/\*)?\@CEYLON_VERSION_NAME\@(\*/)?)|\"$CEYLON_NEW_VERSION_NAME\"\${1}|" $1
