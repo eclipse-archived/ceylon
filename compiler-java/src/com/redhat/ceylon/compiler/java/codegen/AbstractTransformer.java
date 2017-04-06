@@ -2323,6 +2323,10 @@ public abstract class AbstractTransformer implements Transformation {
         return isJavaArray(type.getDeclaration());
     }
 
+    public static boolean isJavaInterop(TypeDeclaration decl) {
+        return Naming.isJavaInterop(decl);
+    }
+    
     public static boolean isJavaArray(TypeDeclaration decl) {
         return Decl.isJavaArray(decl);
     }

@@ -271,7 +271,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_CHAR_ARRAY = "com.redhat.ceylon.compiler.java.language.CharArray";
     private static final String CEYLON_BOOLEAN_ARRAY = "com.redhat.ceylon.compiler.java.language.BooleanArray";
     private static final String CEYLON_OBJECT_ARRAY = "com.redhat.ceylon.compiler.java.language.ObjectArray";
-
+    
     private static final TypeMirror JAVA_BYTE_ARRAY_TYPE = simpleJDKObjectType("java.lang.ByteArray");
     private static final TypeMirror JAVA_SHORT_ARRAY_TYPE = simpleJDKObjectType("java.lang.ShortArray");
     private static final TypeMirror JAVA_INT_ARRAY_TYPE = simpleJDKObjectType("java.lang.IntArray");
@@ -282,6 +282,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror JAVA_BOOLEAN_ARRAY_TYPE = simpleJDKObjectType("java.lang.BooleanArray");
     private static final TypeMirror JAVA_IO_SERIALIZABLE_TYPE_TYPE = simpleJDKObjectType("java.io.Serializable");
     
+    private static final String CEYLON_INTEROP_UTILS = "com.redhat.ceylon.compiler.java.language.Interop";
+
+    private static final String JAVA_INTEROP_UTILS = "java.lang.Interop";
+
     protected static final String JAVA_LANG_TRANSIENT_ANNOTATION = "java.lang.transient";
     protected static final String JAVA_LANG_VOLATILE_ANNOTATION = "java.lang.volatile";
     protected static final String JAVA_LANG_SYNCHRONIZED_ANNOTATION = "java.lang.synchronized";
@@ -305,6 +309,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_DOUBLE_ARRAY);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_CHAR_ARRAY);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_OBJECT_ARRAY);
+        
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_UTILS);
         
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_NATIVE_ANNOTATION);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_TRANSIENT_ANNOTATION);
@@ -466,6 +472,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             || JAVA_LANG_SYNCHRONIZED_ANNOTATION.equals(name)
                             || JAVA_LANG_NATIVE_ANNOTATION.equals(name)
                             || JAVA_LANG_STRICTFP_ANNOTATION.equals(name)) {
+                        name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
+                        module = getLanguageModule();
+                    }
+                    if (JAVA_INTEROP_UTILS.equals(name)) {
                         name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
                         module = getLanguageModule();
                     }
@@ -6442,6 +6452,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected void loadJavaBaseExtras() {
         loadJavaBaseArrays();
         loadJavaBaseAnnotations();
+        convertToDeclaration(getJDKBaseModule(), JAVA_INTEROP_UTILS, DeclarationType.TYPE);
     }
     
     /**

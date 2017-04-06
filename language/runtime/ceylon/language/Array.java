@@ -750,6 +750,14 @@ public final class Array<Element>
         return new Array<T>(optionalType, array);
     }
     
+    @Ignore
+    public static Array<StackTraceElement> stackTrace(
+            StackTraceElement[] array) {
+        return new Array<StackTraceElement>(
+                TypeDescriptor.klass(StackTraceElement.class), 
+                array);
+    }
+    
     private static final TypeDescriptor CHAR_TYPE = 
             TypeDescriptor.klass(java.lang.Character.class);
     @Ignore

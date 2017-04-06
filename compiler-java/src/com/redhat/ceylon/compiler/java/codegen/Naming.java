@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.JVMModuleUtil;
-import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -429,11 +428,11 @@ public class Naming extends NamingBase implements LocalId {
         Collections.reverse(l);
         
         if (flags.contains(DeclNameFlag.QUALIFIED) && (!decl.isAnonymous() || decl.isNamed())) {
-            final List<String> packageName;
-            if(!AbstractTransformer.isJavaArray(decl))
-                packageName = ((Package) s).getName();
-            else
-                packageName = COM_REDHAT_CEYLON_LANGUAGE_PACKAGE;
+            final List<String> packageName = 
+                    AbstractTransformer.isJavaArray(decl) || 
+                    AbstractTransformer.isJavaInterop(decl) ? 
+                            COM_REDHAT_CEYLON_LANGUAGE_PACKAGE : 
+                                ((Package) s).getName();
             if (packageName.isEmpty() || !packageName.get(0).isEmpty()) {
                 declarationBuilder.select("");
             }
@@ -1083,6 +1082,11 @@ public class Naming extends NamingBase implements LocalId {
         } 
     }
     
+    public static boolean isJavaInterop(Declaration decl) {
+        return decl instanceof Class &&
+                "java.lang::Interop".equals(decl.getQualifiedNameString());
+    }
+    
     private <R> void addNamesForWrapperClass(TypeDeclarationBuilder<R> builder, TypedDeclaration decl, int namingOptions) {
         if ((namingOptions & NA_FQ) != 0) {
             if ((namingOptions & NA_WRAPPER) == 0
@@ -1091,9 +1095,13 @@ public class Naming extends NamingBase implements LocalId {
             }
             List<String> outerNames = null;
             Scope s = decl.getContainer();
+            boolean isInterop = false;
             while (s != null) {
                 if (s instanceof Package) {
-                    final List<String> packageName = ((Package) s).getName();
+                    final List<String> packageName =
+                             isInterop ?
+                                    COM_REDHAT_CEYLON_LANGUAGE_PACKAGE :
+                                    ((Package) s).getName();
                     for (int ii = 0; ii < packageName.size(); ii++) {
                         if (ii == 0 && packageName.get(ii).isEmpty()) {
                             continue;
@@ -1102,10 +1110,12 @@ public class Naming extends NamingBase implements LocalId {
                     }
                     break;
                 } else if (s instanceof ClassOrInterface) {
+                    ClassOrInterface c = (ClassOrInterface) s;
+                    if (isJavaInterop(c)) isInterop = true;
                     if (outerNames == null) {
                         outerNames = new ArrayList<String>(2);
                     }
-                    outerNames.add(getQuotedClassName((ClassOrInterface) s, 0));
+                    outerNames.add(getQuotedClassName(c, 0));
                 } else if (s instanceof TypedDeclaration) {
                     if (outerNames == null) {
                         outerNames = new ArrayList<String>(2);
