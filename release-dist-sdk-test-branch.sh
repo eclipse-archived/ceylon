@@ -8,7 +8,9 @@
 cd ../ceylon
 
 log "Testing distrib"
-ant test-quick  2>&1 >> $LOG_FILE || fail "Testing distrib"
+# For _some_ reason, at least compiler-js does not work with "clean dist test-quick", so
+# call regular test entry
+ant test  2>&1 >> $LOG_FILE || fail "Testing distrib"
 
 log "Testing SDK"
 cd ../ceylon-sdk
