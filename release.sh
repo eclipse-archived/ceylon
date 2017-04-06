@@ -5,14 +5,14 @@
 rm $LOG_FILE
 log "Starting release" 
 
-./release-dist-branch.sh
-./release-sdk-branch.sh
-./release-dist-sdk-test-branch.sh
+./release-dist-branch.sh || exit 1
+./release-sdk-branch.sh || exit 1
+./release-dist-sdk-test-branch.sh || exit 1
 
-./release-dist-master.sh
-./release-sdk-master.sh
+./release-dist-master.sh || exit 1
+./release-sdk-master.sh || exit 1
 
-./release-git-push.sh
+./release-git-push.sh || exit 1
 
-./release-dist-zip.sh
+./release-dist-zip.sh || exit 1
 
