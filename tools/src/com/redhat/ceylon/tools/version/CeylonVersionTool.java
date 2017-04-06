@@ -92,6 +92,8 @@ public class CeylonVersionTool extends CeylonBaseTool {
     private boolean noUpdateDependencies = false;
 
     private Confirm confirm = Confirm.all;
+
+    private boolean updateDistribution;
     
     public void setOut(Appendable out) {
         this.out = out;
@@ -147,6 +149,12 @@ public class CeylonVersionTool extends CeylonBaseTool {
     @Description("Display modules who depend on the given module. Only used when displaying modules, not when setting a new version.")
     public void setDependencies(boolean dependencies) {
         this.dependencies = dependencies;
+    }
+
+    @Option
+    @Description("Also set the version of any dependency to the Ceylon distribution modules")
+    public void setUpdateDistribution(boolean updateDistribution) {
+        this.updateDistribution = updateDistribution;
     }
 
     enum Confirm {
@@ -220,6 +228,25 @@ public class CeylonVersionTool extends CeylonBaseTool {
                     return;
                 }
             }
+        }
+        if(updateDistribution){
+            updatedModuleVersions.put("ceylon.bootstrap", newVersion);
+            updatedModuleVersions.put("ceylon.language", newVersion);
+            updatedModuleVersions.put("ceylon.runtime", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.compiler.java", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.compiler.js", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.typechecker", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.common", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.cli", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.model", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.module-loader", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.module-resolver", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.module-resolver-aether", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.module-resolver-webdav", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.module-resolver-javascript", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.langtools.classfile", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.tool.provider", newVersion);
+            updatedModuleVersions.put("com.redhat.ceylon.tools", newVersion);
         }
         // now do dependencies because we know which modules we did update
         if (newVersion != null && !noUpdateDependencies) {
