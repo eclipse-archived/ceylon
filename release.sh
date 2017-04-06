@@ -82,6 +82,8 @@ perl -pi -e "s/$CEYLON_RELEASE_VERSION_MAJOR\.$CEYLON_RELEASE_VERSION_MINOR\.$CE
 perl -pi -e "s/ceylon version $CEYLON_RELEASE_VERSION_MAJOR\.$CEYLON_RELEASE_VERSION_MINOR\.$CEYLON_RELEASE_VERSION_RELEASE-SNAPSHOT ([0-9a-f]+) \([^\)]+\)/ceylon version $CEYLON_NEW_VERSION \\1 \($CEYLON_NEW_VERSION_NAME\)/" README.md dist/README.md
 perl -pi -e "s/$CEYLON_RELEASE_VERSION_MAJOR\.$CEYLON_RELEASE_VERSION_MINOR\.$CEYLON_RELEASE_VERSION_RELEASE-SNAPSHOT/$CEYLON_NEW_VERSION/" README.md dist/README.md
 
+find compiler-java/test/src/ -name '*.ceylon' -or -name '*.src' -or -name '*.properties' | xargs perl -pi -e 's/${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}-SNAPSHOT/${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}/g'
+
 log "Committing"
 git commit -a -m "Fixed version for release $CEYLON_RELEASE_VERSION" 2>&1 >> $LOG_FILE  || fail "Git commit new release branch"
 log "Pushing"
@@ -231,6 +233,8 @@ EOF
 done < cmr/api/src/main/resources/com/redhat/ceylon/cmr/api/dist-overrides.xml > cmr/api/src/main/resources/com/redhat/ceylon/cmr/api/dist-overrides.xml2  || fail "Replace dist-overrides"
 mv cmr/api/src/main/resources/com/redhat/ceylon/cmr/api/dist-overrides.xml2 cmr/api/src/main/resources/com/redhat/ceylon/cmr/api/dist-overrides.xml  || fail "Move dist-overrides"
 
+find compiler-java/test/src/ -name '*.ceylon' -or -name '*.src' -or -name '*.properties' | xargs perl -pi -e 's/${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}-SNAPSHOT/${CEYLON_NEW_VERSION_MAJOR}.${CEYLON_NEW_VERSION_MINOR}.${CEYLON_NEW_VERSION_RELEASE}/g'
+
 log "Committing"
 git commit -a -m "Updated versions for work on $CEYLON_NEW_VERSION" 2>&1 >> $LOG_FILE  || fail "Git commit on master"
 log "Pushing"
@@ -239,7 +243,11 @@ git push origin 2>&1 >> $LOG_FILE  || fail "Git push master"
 log "Done"
 
 # TODO: sdk
-
+# Go back to version branch
+# build distrib
+# update sdk versions
+# install sdk
+# come back to distrib and test it
 
 
 
