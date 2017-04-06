@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. release-common-sh
+. release-common.sh
 
 CEYLON_NEW_VERSION=$CEYLON_NEXT_VERSION
 CEYLON_NEW_VERSION_MAJOR=$CEYLON_NEXT_VERSION_MAJOR

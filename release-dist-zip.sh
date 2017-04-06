@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. release-common-sh
+. release-common.sh
 
 ##
 ## Really build the distrib zip

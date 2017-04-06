@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. release-common-sh
+. release-common.sh
 
 rm $LOG_FILE
 log "Starting release" 
