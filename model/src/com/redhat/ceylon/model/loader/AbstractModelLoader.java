@@ -282,9 +282,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror JAVA_BOOLEAN_ARRAY_TYPE = simpleJDKObjectType("java.lang.BooleanArray");
     private static final TypeMirror JAVA_IO_SERIALIZABLE_TYPE_TYPE = simpleJDKObjectType("java.io.Serializable");
     
-    private static final String CEYLON_INTEROP_UTILS = "com.redhat.ceylon.compiler.java.language.Interop";
+    private static final String CEYLON_INTEROP_UTILS = "com.redhat.ceylon.compiler.java.language.Types";
 
-    private static final String JAVA_INTEROP_UTILS = "java.lang.Interop";
+    private static final String JAVA_INTEROP_UTILS = "java.lang.Types";
 
     protected static final String JAVA_LANG_TRANSIENT_ANNOTATION = "java.lang.transient";
     protected static final String JAVA_LANG_VOLATILE_ANNOTATION = "java.lang.volatile";

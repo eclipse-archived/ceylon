@@ -16,24 +16,8 @@ import ceylon.language.meta.model.ClassOrInterface;
 
 @Ceylon(major = 8) 
 @com.redhat.ceylon.compiler.java.metadata.Class(constructors=true)
-public final class Interop {
+public final class Types {
 
-    /**
-     * The {@link java.lang.String} underlying the 
-     * given Ceylon <code>String</code>.
-     */
-    @ceylon.language.StaticAnnotation$annotation$
-    @ceylon.language.SharedAnnotation$annotation$
-    @com.redhat.ceylon.common.NonNull
-    @TypeInfo("java.lang::String")
-    public static java.lang.String javaString(
-            @Name("string")
-            @TypeInfo("ceylon.language::String")
-            @com.redhat.ceylon.common.NonNull
-            final java.lang.String string) {
-        return string;
-    }
-    
     /**
      * A {@link java.lang.Class} object representing 
      * the given representing the concrete type of 
@@ -48,7 +32,7 @@ public final class Interop {
             satisfies = "ceylon.language::Object")})
     @SuppressWarnings("unchecked")
     public static <T> java.lang.Class<? extends T> 
-    javaClassForInstance(@Ignore TypeDescriptor $reifiedT,
+    classForInstance(@Ignore TypeDescriptor $reifiedT,
             @Name("instance")
             @com.redhat.ceylon.common.NonNull
             T instance) {
@@ -68,7 +52,7 @@ public final class Interop {
             satisfies = "ceylon.language::Object")})
     @SuppressWarnings("unchecked")
     public static <T> java.lang.Class<T> 
-    javaClass(@Ignore TypeDescriptor $reifiedT) {
+    classForType(@Ignore TypeDescriptor $reifiedT) {
         java.lang.Class<T> result = 
                 (java.lang.Class<T>)
                     Metamodel.getJavaClass($reifiedT);
@@ -94,7 +78,7 @@ public final class Interop {
             satisfies = "ceylon.language::Annotation")})
     @SuppressWarnings("unchecked")
     public static <T extends java.lang.annotation.Annotation> Class<T>
-    javaAnnotationClass(@Ignore TypeDescriptor $reifiedT) {
+    classForAnnotationType(@Ignore TypeDescriptor $reifiedT) {
         if ($reifiedT instanceof TypeDescriptor.Class) {
             TypeDescriptor.Class klass = 
                     (TypeDescriptor.Class) $reifiedT;
@@ -121,7 +105,7 @@ public final class Interop {
     @com.redhat.ceylon.common.NonNull
     @TypeInfo("java.lang::Class<out ceylon.language::Object>")
     public static java.lang.Class<? extends java.lang.Object> 
-    javaClassForDeclaration(
+    classForDeclaration(
             @Name("declaration")
             @com.redhat.ceylon.common.NonNull
             ClassOrInterfaceDeclaration decl) {
@@ -146,7 +130,7 @@ public final class Interop {
             satisfies = "ceylon.language::Object")})
     @SuppressWarnings("unchecked")
     public static <T> java.lang.Class<? extends T> 
-    javaClassForModel(@Ignore TypeDescriptor $reifiedT,
+    classForModel(@Ignore TypeDescriptor $reifiedT,
             @Name("model")
             @com.redhat.ceylon.common.NonNull
             ClassOrInterface<? extends T> model) {
@@ -169,6 +153,22 @@ public final class Interop {
     }
     
     /**
+     * The {@link java.lang.String} underlying the 
+     * given Ceylon <code>String</code>.
+     */
+    @ceylon.language.StaticAnnotation$annotation$
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.common.NonNull
+    @TypeInfo("java.lang::String")
+    public static java.lang.String nativeString(
+            @Name("string")
+            @TypeInfo("ceylon.language::String")
+            @com.redhat.ceylon.common.NonNull
+            final java.lang.String string) {
+        return string;
+    }
+    
+    /**
      * The stack trace information for the given 
      * exception as a Ceylon <code>Array</code> of 
      * {@link StackTraceElement}s, or an empty array 
@@ -181,7 +181,7 @@ public final class Interop {
     @ceylon.language.StaticAnnotation$annotation$
     @ceylon.language.SharedAnnotation$annotation$
     @com.redhat.ceylon.common.NonNull
-    public static Array<StackTraceElement> javaStackTrace(
+    public static Array<StackTraceElement> stackTrace(
             @TypeInfo("ceylon.language::Throwable")
             @Name("throwable")
             @com.redhat.ceylon.common.NonNull

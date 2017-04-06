@@ -1084,7 +1084,7 @@ public class Naming extends NamingBase implements LocalId {
     
     public static boolean isJavaInterop(Declaration decl) {
         return decl instanceof Class &&
-                "java.lang::Interop".equals(decl.getQualifiedNameString());
+                "java.lang::Types".equals(decl.getQualifiedNameString());
     }
     
     private <R> void addNamesForWrapperClass(TypeDeclarationBuilder<R> builder, TypedDeclaration decl, int namingOptions) {
