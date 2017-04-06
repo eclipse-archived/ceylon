@@ -597,6 +597,7 @@ public class ImportJarToolTests extends AbstractToolTests {
     		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
     			if(file.getFileName().toString().endsWith(".jar") 
     					|| file.getFileName().toString().endsWith(".car")){
+    			    System.err.println("Checking file "+file);
     				Path p = repoPath.relativize(file.getParent());
     				String module = p.getParent().toString().replace('/', '.');
     				String version = p.getFileName().toString();

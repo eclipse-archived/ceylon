@@ -232,6 +232,9 @@
                 <exclude name="ceylon/**" />
                 <exclude name="javax/**" />
                 <exclude name="com/redhat/ceylon/compiler/java/test/**" />
+                <exclude name="com/redhat/ceylon/ceylondoc/test/**" />
+                <exclude name="com/redhat/ceylon/itest/**" />
+                <exclude name="com/redhat/ceylon/tools/**" />
                 <exclude name="com/redhat/ceylon/ant/**" />
                 <exclude name="com/redhat/ceylon/common/**" />
                 <exclude name="com/redhat/ceylon/launcher/**" />
