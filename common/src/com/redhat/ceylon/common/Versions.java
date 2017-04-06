@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon "1.3.3-SNAPSHOT"@CEYLON_VERSION@ "Contents May Differ REL"@CEYLON_VERSION_NAME@
+    // The current version is Ceylon "1.3.4-SNAPSHOT"@CEYLON_VERSION@ "Contents May Differ NEW"@CEYLON_VERSION_NAME@
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
@@ -44,7 +44,7 @@ public class Versions {
      * <em>Beware</em> javac will inline this at compile time at use-sites,
      * use {@link #getCeylonVersionRelease()} to avoid that.
      */
-    public static final int CEYLON_VERSION_RELEASE = 3/*@CEYLON_VERSION_RELEASE@*/;
+    public static final int CEYLON_VERSION_RELEASE = 4/*@CEYLON_VERSION_RELEASE@*/;
     
     public static final String CEYLON_VERSION_QUALIFIER = "SNAPSHOT"/*@CEYLON_VERSION_QUALIFIER@*/;
     private static final String _CEYLON_VERSION_QUALIFIER = "-SNAPSHOT"/*@CEYLON_VERSION_PREFIXED_QUALIFIER@*/;
@@ -60,7 +60,7 @@ public class Versions {
     /**
      * The release code name.
      */
-    public static final String CEYLON_VERSION_NAME = "Contents May Differ REL"/*@CEYLON_VERSION_NAME@*/;
+    public static final String CEYLON_VERSION_NAME = "Contents May Differ NEW"/*@CEYLON_VERSION_NAME@*/;
     
     /**
      * The version number + code name description string.
@@ -146,6 +146,12 @@ public class Versions {
 
     public static final int V1_3_2_JS_BINARY_MAJOR_VERSION = 10;
     public static final int V1_3_2_JS_BINARY_MINOR_VERSION = 0;
+
+    public static final int V1_3_3_JVM_BINARY_MAJOR_VERSION = 8;
+    public static final int V1_3_3_JVM_BINARY_MINOR_VERSION = 1;
+
+    public static final int V1_3_3_JS_BINARY_MAJOR_VERSION = 10;
+    public static final int V1_3_3_JS_BINARY_MINOR_VERSION = 0;
 
     /*@NEW_VERSION_BINARY@*/
     
@@ -287,6 +293,7 @@ public class Versions {
             new VersionDetails("1.3.0", V1_3_0_JVM_BINARY_MAJOR_VERSION, V1_3_0_JVM_BINARY_MINOR_VERSION),
             new VersionDetails("1.3.1", V1_3_1_JVM_BINARY_MAJOR_VERSION, V1_3_1_JVM_BINARY_MINOR_VERSION),
             new VersionDetails("1.3.2", V1_3_2_JVM_BINARY_MAJOR_VERSION, V1_3_2_JVM_BINARY_MINOR_VERSION),
+            new VersionDetails("1.3.3", V1_3_3_JVM_BINARY_MAJOR_VERSION, V1_3_3_JVM_BINARY_MINOR_VERSION),
             /*@NEW_VERSION_JVM_VERSIONS@*/
             new VersionDetails(CEYLON_VERSION_NUMBER, JVM_BINARY_MAJOR_VERSION, JVM_BINARY_MINOR_VERSION),
     };
@@ -307,6 +314,7 @@ public class Versions {
             new VersionDetails("1.3.0", V1_3_0_JS_BINARY_MAJOR_VERSION, V1_3_0_JS_BINARY_MINOR_VERSION),
             new VersionDetails("1.3.1", V1_3_1_JS_BINARY_MAJOR_VERSION, V1_3_1_JS_BINARY_MINOR_VERSION),
             new VersionDetails("1.3.2", V1_3_2_JS_BINARY_MAJOR_VERSION, V1_3_2_JS_BINARY_MINOR_VERSION),
+            new VersionDetails("1.3.3", V1_3_3_JS_BINARY_MAJOR_VERSION, V1_3_3_JS_BINARY_MINOR_VERSION),
             /*@NEW_VERSION_JS_VERSIONS@*/
             new VersionDetails(CEYLON_VERSION_NUMBER, JS_BINARY_MAJOR_VERSION, JS_BINARY_MINOR_VERSION),
     };
