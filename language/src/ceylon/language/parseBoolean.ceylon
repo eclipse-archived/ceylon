@@ -6,9 +6,8 @@
 tagged("Basic types")
 deprecated("Use [[Boolean.parse]]")
 see (`function Boolean.parse`)
-shared Boolean? parseBoolean(String string) {
-    switch (string)
-    case ("true") { return true; }
-    case ("false") { return false; }
-    else { return null; }
-}
+shared Boolean? parseBoolean(String string) 
+        => switch (string)
+        case ("true") true
+        case ("false") false
+        else null;
