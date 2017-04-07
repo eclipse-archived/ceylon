@@ -358,7 +358,7 @@ public final class Float
     }
     
     @Ignore
-    public final int format$decimalSeparator(double f, final long minDecimalPlaces, final long maxDecimalPlaces) {
+    public static final int format$decimalSeparator(double f, final long minDecimalPlaces, final long maxDecimalPlaces) {
         return 46;
     }
     
