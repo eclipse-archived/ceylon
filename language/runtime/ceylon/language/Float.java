@@ -368,7 +368,7 @@ public final class Float
     }
     
     @Ignore
-    public final ceylon.language.Character format$thousandsSeparator(double f, final long minDecimalPlaces, final long maxDecimalPlaces, final int decimalSeparator) {
+    public static final ceylon.language.Character format$thousandsSeparator(double f, final long minDecimalPlaces, final long maxDecimalPlaces, final int decimalSeparator) {
         return null;
     }
         
