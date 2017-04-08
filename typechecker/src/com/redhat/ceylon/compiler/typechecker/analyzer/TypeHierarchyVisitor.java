@@ -697,42 +697,54 @@ public class TypeHierarchyVisitor extends Visitor {
             Set<String> errors = new HashSet<String>();
             for (TypeDeclaration std: 
                     td.getSupertypeDeclarations()) {
-                if (td instanceof ClassOrInterface && 
-                        !td.isAbstract() && !td.isAlias()) {
+                if (td instanceof ClassOrInterface 
+                        && !td.isAbstract() 
+                        && !td.isAlias()) {
                     for (Declaration d: std.getMembers()) {
-                        if (d.isShared() && 
-                                !d.isStatic() &&
-                                !isConstructor(d) &&
-                                !isOverloadedVersion(d) && 
-                                isResolvable(d) && 
-                                !errors.contains(d.getName())) {
+                        if (d.isShared() 
+                                && !d.isStatic() 
+                                && !isConstructor(d) 
+                                && !isOverloadedVersion(d) 
+                                && isResolvable(d) 
+                                && !errors.contains(d.getName())) {
                             Declaration r = td.getMember(d.getName(), null, false);
-                            if (r==null || !r.refines(d) && 
-                                    //squash bogus error when there is a dupe declaration
-                                    !r.getContainer().equals(td)) {
-                                //TODO: This seems to dupe some checks that are already 
-                                //      done in TypeHierarchyVisitor, resulting in
-                                //      multiple errors
-                                //TODO: figure out which other declaration causes the
-                                //      problem and display it to the user!
-                                if (r==null) {
-                                    that.addError("member '" + d.getName() +
-                                            "' is inherited ambiguously by '" + td.getName() +
-                                            "' from '" + std.getName() +  
-                                            "' and another unrelated supertype");
-                                }
-                                else if (!((std instanceof Interface 
-                                            || r.isInterfaceMember()) && 
-                                          isDefinedInJava(std) &&
-                                          isDefinedInJava(r))) {
-                                    that.addError("member '" + d.getName() + 
-                                            "' is inherited ambiguously by '" + td.getName() +
-                                            "' from '" + std.getName() +  
-                                            "' and another subtype of '" + 
-                                            ((TypeDeclaration) r.getContainer()).getName() + 
-                                            "' and so must be refined by '" + td.getName() + "'", 
-                                            350);
-                                }
+                            //TODO: This seems to dupe some checks that are already 
+                            //      done in TypeHierarchyVisitor, resulting in
+                            //      multiple errors
+                            //TODO: figure out which other declaration causes the
+                            //      problem and display it to the user!
+                            if (r==null) {
+                                that.addError("member '" 
+                                        + d.getName() 
+                                        + "' is inherited ambiguously by '" 
+                                        + td.getName() 
+                                        + "' from '" 
+                                        + std.getName() 
+                                        + "' and another unrelated supertype");
+                                errors.add(d.getName());
+                            }
+                            else if (!r.refines(d) && 
+                                    //squash bogus error when there 
+                                    //is a dupe declaration
+                                    !r.getContainer().equals(td) &&
+                                    !((std instanceof Interface 
+                                        || r.isInterfaceMember()) && 
+                                      isDefinedInJava(std) &&
+                                      isDefinedInJava(r))) {
+                                TypeDeclaration ctd = 
+                                        (TypeDeclaration) 
+                                            r.getContainer();
+                                that.addError("member '" 
+                                        + d.getName() 
+                                        + "' is inherited ambiguously by '" 
+                                        + td.getName() 
+                                        + "' from '" 
+                                        + std.getName()
+                                        + "' and another subtype of '"
+                                        + ctd.getName() 
+                                        + "' and so must be refined by '" 
+                                        + td.getName() + "'", 
+                                        350);
                                 errors.add(d.getName());
                             }
                             /*else if (!r.getContainer().equals(td)) { //the case where the member is actually declared by the current type is handled by checkRefinedTypeAndParameterTypes()
