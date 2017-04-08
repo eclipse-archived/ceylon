@@ -103,10 +103,9 @@ public class TypeHierarchyVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
+        super.visit(that);
         Value value = that.getDeclarationModel();
         Class anonymousClass = that.getAnonymousClass();
-        validateMemberRefinement(that, anonymousClass);
-        super.visit(that);
         //an object definition is always concrete
         List<Type> orderedTypes = 
                 sortDAGAndBuildMetadata(value.getTypeDeclaration(), that);
@@ -116,13 +115,13 @@ public class TypeHierarchyVisitor extends Visitor {
                 orderedTypes, anonymousClass);
         checkForDoubleMemberInheritanceWoCommonAncestor(that, 
                 orderedTypes, anonymousClass);
+        validateMemberRefinement(that, anonymousClass);
     }
 
     @Override
     public void visit(Tree.ObjectArgument that) {
-        Class anonymousClass = that.getAnonymousClass();
-        validateMemberRefinement(that, anonymousClass);
         super.visit(that);
+        Class anonymousClass = that.getAnonymousClass();
         //an object definition is always concrete
         List<Type> orderedTypes = 
                 sortDAGAndBuildMetadata(anonymousClass, that);
@@ -132,13 +131,13 @@ public class TypeHierarchyVisitor extends Visitor {
                 orderedTypes, anonymousClass);
         checkForDoubleMemberInheritanceWoCommonAncestor(that, 
                 orderedTypes, anonymousClass);
+        validateMemberRefinement(that, anonymousClass);
     }
 
     @Override
     public void visit(Tree.ObjectExpression that) {
-        Class anonymousClass = that.getAnonymousClass();
-        validateMemberRefinement(that, anonymousClass);
         super.visit(that);
+        Class anonymousClass = that.getAnonymousClass();
         //an object definition is always concrete
         List<Type> orderedTypes = 
                 sortDAGAndBuildMetadata(anonymousClass, that);
@@ -148,13 +147,14 @@ public class TypeHierarchyVisitor extends Visitor {
                 orderedTypes, anonymousClass);
         checkForDoubleMemberInheritanceWoCommonAncestor(that, 
                 orderedTypes, anonymousClass);
+        validateMemberRefinement(that, anonymousClass);
     }
 
     @Override
     public void visit(Tree.ClassOrInterface that) {
-        ClassOrInterface classOrInterface = that.getDeclarationModel();
-        validateMemberRefinement(that, classOrInterface);
         super.visit(that);
+        ClassOrInterface classOrInterface = 
+                that.getDeclarationModel();
         if (!classOrInterface.isAlias()) {
             boolean concrete = 
                     !classOrInterface.isAbstract() && 
@@ -170,6 +170,7 @@ public class TypeHierarchyVisitor extends Visitor {
             checkForDoubleMemberInheritanceWoCommonAncestor(that, 
                     orderedTypes, classOrInterface);
         }
+        validateMemberRefinement(that, classOrInterface);
     }
 
     @Override
@@ -238,9 +239,14 @@ public class TypeHierarchyVisitor extends Visitor {
                                     getTypeDeclarationFor(aggregateMembers);
                             if (!mixedInBySupertype(currentType.declaration, 
                                     otherType, classOrInterface)) {
-                                StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name that do not share a common supertype: '");
-                                sb.append(name)
-                                  .append("' is defined by supertypes '")
+                                StringBuilder sb = new StringBuilder();
+                                sb.append("type '")
+                                  .append(classOrInterface.getName())
+                                  .append("' inherits multiple definitions of '")
+                                  .append(name)
+                                  .append("': inherited member '")
+                                  .append(name)
+                                  .append("' is defined by unrelated supertypes '")
                                   .append(currentType.declaration.getName())
                                   .append("' and '")
                                   .append(otherType.getName())
@@ -288,14 +294,23 @@ public class TypeHierarchyVisitor extends Visitor {
                                     getTypeDeclarationFor(aggregateMembers);
                             if (!mixedInBySupertype(currentType.declaration, 
                                     otherType, classOrInterface)) {
-                                StringBuilder sb = new StringBuilder("may not inherit two declarations with the same name unless redefined in subclass: '");
-                                sb.append(name)
+                                StringBuilder sb = new StringBuilder();
+                                sb.append("type '")
+                                  .append(classOrInterface.getName())
+                                  .append("' inherits but does not refine multiple definitions of '")
+                                  .append(name)
+                                  .append("': inherited member '")
+                                  .append(name)
                                   .append("' is defined by supertypes '")
                                   .append(currentType.declaration.getName())
                                   .append("' and '")
                                   .append(otherType.getName())
-                                  .append("'");
-                                that.addError(sb.toString());
+                                  .append("' (refine '")
+                                  .append(name)
+                                  .append("' in '")
+                                  .append(classOrInterface.getName())
+                                  .append("')");
+                                that.addError(sb.toString(), 350);
                             }
                         }
                     }
@@ -693,7 +708,13 @@ public class TypeHierarchyVisitor extends Visitor {
     
     private void validateMemberRefinement(Node that, 
             TypeDeclaration td) {
-        if (!td.isInconsistentType()) {
+        if (!td.isInconsistentType() 
+                //The work here dupes some checks 
+                //that are already done above in 
+                //checkForDoubleMemberInheritance, 
+                //resulting in multiple errors
+                && that.getErrors()
+                        .isEmpty()) {
             Set<String> errors = new HashSet<String>();
             for (TypeDeclaration std: 
                     td.getSupertypeDeclarations()) {
@@ -708,11 +729,9 @@ public class TypeHierarchyVisitor extends Visitor {
                                 && isResolvable(d) 
                                 && !errors.contains(d.getName())) {
                             Declaration r = td.getMember(d.getName(), null, false);
-                            //TODO: This seems to dupe some checks that are already 
-                            //      done in TypeHierarchyVisitor, resulting in
-                            //      multiple errors
-                            //TODO: figure out which other declaration causes the
-                            //      problem and display it to the user!
+                            //TODO: figure out which other declaration 
+                            //      causes the problem and display it 
+                            //      to the user!
                             if (r==null) {
                                 that.addError("member '" 
                                         + d.getName() 
