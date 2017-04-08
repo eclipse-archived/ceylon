@@ -759,11 +759,15 @@ public class TypeHierarchyVisitor extends Visitor {
                                         + td.getName() 
                                         + "' from '" 
                                         + std.getName()
-                                        + "' and another subtype of '"
+                                        + "' and a different generic instantiation of '"
                                         + ctd.getName() 
-                                        + "' and so must be refined by '" 
+                                        + "' and is not refined by '" 
                                         + td.getName() 
-                                        + "'", 
+                                        + "' (refine '"
+                                        + d.getName() 
+                                        + "' to satisfy both instantiations of '"
+                                        + ctd.getName() 
+                                        + "')", 
                                         350);
                                 errors.add(d.getName());
                             }
