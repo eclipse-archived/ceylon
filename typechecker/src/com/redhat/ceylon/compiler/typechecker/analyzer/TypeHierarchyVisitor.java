@@ -743,7 +743,8 @@ public class TypeHierarchyVisitor extends Visitor {
                                         + "' and another subtype of '"
                                         + ctd.getName() 
                                         + "' and so must be refined by '" 
-                                        + td.getName() + "'", 
+                                        + td.getName() 
+                                        + "'", 
                                         350);
                                 errors.add(d.getName());
                             }
