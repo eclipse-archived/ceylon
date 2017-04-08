@@ -732,17 +732,17 @@ public class TypeHierarchyVisitor extends Visitor {
                             //TODO: figure out which other declaration 
                             //      causes the problem and display it 
                             //      to the user!
-                            if (r==null) {
-                                that.addError("member '" 
-                                        + d.getName() 
-                                        + "' is inherited ambiguously by '" 
-                                        + td.getName() 
-                                        + "' from '" 
-                                        + std.getName() 
-                                        + "' and another unrelated supertype");
-                                errors.add(d.getName());
-                            }
-                            else if (!r.refines(d) && 
+//                            if (r==null) {
+//                                that.addError("member '" 
+//                                        + d.getName() 
+//                                        + "' is inherited ambiguously by '" 
+//                                        + td.getName() 
+//                                        + "' from '" 
+//                                        + std.getName() 
+//                                        + "' and another unrelated supertype");
+//                                errors.add(d.getName());
+//                            }
+                            if (r!=null && !r.refines(d) && 
                                     //squash bogus error when there 
                                     //is a dupe declaration
                                     !r.getContainer().equals(td) &&
