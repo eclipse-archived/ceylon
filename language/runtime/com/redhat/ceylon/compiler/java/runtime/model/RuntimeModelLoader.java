@@ -46,6 +46,7 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
 
     public RuntimeModelLoader(ModuleManager moduleManager, Modules modules) {
         super(moduleManager, modules, new LoaderJULLogger());
+        packageDescriptorsNeedLoading = true;
     }
 
     @Override
