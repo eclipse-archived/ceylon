@@ -1708,6 +1708,59 @@ public final class Array<Element>
         return array;
     }
 
+    @Ignore
+    public java.lang.Object[] toObjectArray() {
+        if (stringArray!=null) {
+            java.lang.Object[] arr = 
+                    new java.lang.Object[stringArray.length];
+            for (int i=0; i<stringArray.length; i++) {
+                arr[i] = String.instance(stringArray[i]);
+            }
+            return arr;
+        }
+        if (longArray!=null) {
+            java.lang.Object[] arr = 
+                    new java.lang.Object[longArray.length];
+            for (int i=0; i<longArray.length; i++) {
+                arr[i] = Integer.instance(longArray[i]);
+            }
+            return arr;
+        }
+        if (doubleArray!=null) {
+            java.lang.Object[] arr = 
+                    new java.lang.Object[doubleArray.length];
+            for (int i=0; i<doubleArray.length; i++) {
+                arr[i] = Float.instance(doubleArray[i]);
+            }
+            return arr;
+        }
+        if (intArray!=null) {
+            java.lang.Object[] arr = 
+                    new java.lang.Object[intArray.length];
+            for (int i=0; i<intArray.length; i++) {
+                arr[i] = Character.instance(intArray[i]);
+            }
+            return arr;
+        }
+        if (booleanArray!=null) {
+            java.lang.Object[] arr = 
+                    new java.lang.Object[booleanArray.length];
+            for (int i=0; i<booleanArray.length; i++) {
+                arr[i] = Boolean.instance(booleanArray[i]);
+            }
+            return arr;
+        }
+        if (byteArray!=null) {
+            java.lang.Object[] arr = 
+                    new java.lang.Object[byteArray.length];
+            for (int i=0; i<byteArray.length; i++) {
+                arr[i] = Byte.instance(byteArray[i]);
+            }
+            return arr;
+        }
+        return objectArray;
+    }
+
     @Override
     public boolean contains(@Name("element") 
     @TypeInfo("ceylon.language::Object")

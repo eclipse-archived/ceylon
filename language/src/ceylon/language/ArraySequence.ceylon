@@ -47,6 +47,8 @@ class ArraySequence<out Element>(array)
     
     clone() => ArraySequence(array.clone());
     
+    tuple => arrayToTuple(array);
+    
     each(void step(Element element)) => array.each(step);
     
     count(Boolean selecting(Element element))

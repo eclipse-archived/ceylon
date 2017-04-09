@@ -69,6 +69,10 @@ shared sealed interface Sequence<out Element=Anything>
     "This nonempty sequence."
     shared actual default [Element+] sequence() => this;
     
+    since("1.3.3")
+    shared actual default [Element+] tuple 
+            => arrayToTuple(Array(this));
+    
     "The rest of the sequence, without the first element."
     shared actual default Element[] rest 
             => size == 1 then [] else Rest(1);

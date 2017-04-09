@@ -11,6 +11,7 @@ import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.redhat.ceylon.common.NonNull;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Annotation;
 import com.redhat.ceylon.compiler.java.metadata.Annotations;
@@ -76,7 +77,6 @@ import ceylon.language.serialization.ReachableReference;
 @NativeAnnotation$annotation$(backends={})
 public final class Tuple<Element, First extends Element, 
                 Rest extends Sequential<? extends Element>>
-//        extends BaseSequence<Element>
         implements Sequence<Element>, Serializable, 
                    ReifiedType, java.io.Serializable {
     
@@ -528,6 +528,24 @@ public final class Tuple<Element, First extends Element,
             }
         }
         return type;
+    }
+    
+    @Annotations({
+        @Annotation("shared"),
+        @Annotation("actual")})
+    @Override
+    @NonNull
+    public Tuple<? extends Element, ? extends First, ? extends Rest> clone() {
+        return this;
+    }
+
+    @Annotations({
+        @Annotation("shared"),
+        @Annotation("actual")})
+    @Override
+    @NonNull
+    public Tuple<? extends Element, ? extends First, ? extends Rest> getTuple() {
+        return this;
     }
 
     private TypeDescriptor computeType() {

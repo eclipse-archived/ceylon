@@ -120,6 +120,10 @@ class Tuple<out Element, out First, out Rest = []>
     shared actual native 
     Tuple<Element,First,Rest> clone() => this;
     
+    "This tuple"
+    shared actual native
+    Tuple<Element,First,Rest> tuple => this;
+    
     shared actual native 
     Iterator<Element> iterator() 
             => object
@@ -169,4 +173,15 @@ class Tuple<out Element, out First, out Rest = []>
             "The list of elements to be appended."
             Other[] elements)
             => Tuple(first, rest.append(elements));
+}
+
+"Efficiently repackage the given array as a [[Tuple]]."
+native [Element+] arrayToTuple<Element>(Array<Element> array) {
+    variable Element[] tuple = [];
+    for (element in array.reversed) {
+        tuple = [element, *tuple];
+    }
+    "array must not be empty"
+    assert (nonempty result = tuple);
+    return result;
 }

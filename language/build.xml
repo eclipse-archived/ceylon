@@ -523,6 +523,7 @@
                 <include name="ceylon/language/String.java"/>
                 <exclude name="ceylon/language/Tuple.ceylon"/>
                 <include name="ceylon/language/Tuple.java"/>
+            	<include name="ceylon/language/arrayToTuple_.java"/>
                 <exclude name="ceylon/language/flatten.ceylon"/>
                 <include name="ceylon/language/flatten_.java"/>
                 <exclude name="ceylon/language/unflatten.ceylon"/>
