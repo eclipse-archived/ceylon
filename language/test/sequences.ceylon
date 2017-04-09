@@ -211,10 +211,10 @@ void test_max_min() {
 
 
 void test_repeat() {
-    check((0..1).repeat(2).rest=={1, 0, 1}.sequence(),"Repeat + rest")
-    check((0..1).repeat(2).rest.rest=={0, 1}.sequence(),"Repeat + rest until remove original")
-    check((0..1).repeat(2).rest.rest.rest =={1}.sequence(),"Repeat + rest beyond remove original")
-    check({}.repeat(2).rest=={}.sequence(),"Repeat empty + rest")
+    check((0..1).repeat(2).rest=={1, 0, 1}.sequence(),"Repeat + rest");
+    check((0..1).repeat(2).rest.rest=={0, 1}.sequence(),"Repeat + rest until remove original");
+    check((0..1).repeat(2).rest.rest.rest =={1}.sequence(),"Repeat + rest beyond remove original");
+    check({}.repeat(2).rest=={}.sequence(),"Repeat empty + rest");
 }
 
 shared void arraySequence() {
