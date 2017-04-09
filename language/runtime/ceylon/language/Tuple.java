@@ -544,7 +544,7 @@ public final class Tuple<Element, First extends Element,
         @Annotation("actual")})
     @Override
     @NonNull
-    public Tuple<? extends Element, ? extends First, ? extends Rest> getTuple() {
+    public Tuple<? extends Element, ? extends First, ? extends Rest> tuple() {
         return this;
     }
 

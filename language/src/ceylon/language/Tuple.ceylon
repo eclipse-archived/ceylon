@@ -122,7 +122,7 @@ class Tuple<out Element, out First, out Rest = []>
     
     "This tuple"
     shared actual native
-    Tuple<Element,First,Rest> tuple => this;
+    Tuple<Element,First,Rest> tuple() => this;
     
     shared actual native 
     Iterator<Element> iterator() 

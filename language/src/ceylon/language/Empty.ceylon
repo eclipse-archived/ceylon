@@ -48,7 +48,7 @@ shared interface Empty of package.empty
     
     "Returns `[]`."
     since("1.3.3")
-    shared actual [] tuple => this;
+    shared actual [] tuple() => this;
     
     "Returns a string description of the empty sequence: 
      `[]`."

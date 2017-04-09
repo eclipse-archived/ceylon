@@ -70,7 +70,7 @@ shared sealed interface Sequence<out Element=Anything>
     shared actual default [Element+] sequence() => this;
     
     since("1.3.3")
-    shared actual default [Element+] tuple 
+    shared actual default [Element+] tuple() 
             => arrayToTuple(Array(this));
     
     "The rest of the sequence, without the first element."

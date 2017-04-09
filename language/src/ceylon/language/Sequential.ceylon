@@ -162,7 +162,7 @@ shared interface Sequential<out Element=Anything>
          value [prefix, middle, postfix] = bits;"
     since("1.3.3")
     shared formal
-    Element[] tuple;
+    Element[] tuple();
     
     "A string of form `\"[ x, y, z ]\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 

@@ -47,7 +47,7 @@ class ArraySequence<out Element>(array)
     
     clone() => ArraySequence(array.clone());
     
-    tuple => arrayToTuple(array);
+    tuple() => arrayToTuple(array);
     
     each(void step(Element element)) => array.each(step);
     
