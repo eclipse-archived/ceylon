@@ -23,6 +23,9 @@ final class arrayToTuple_ {
             @Name("array") @NonNull
             @TypeInfo("ceylon.language::Array<Element>")
             Array<Element> array) {
+        if (array.getEmpty()) {
+            throw new AssertionError("array must not be empty");
+        }
         return (Sequence<? extends Element>) 
                 Tuple.instance($reifiedElement, 
                         array.toObjectArray());
