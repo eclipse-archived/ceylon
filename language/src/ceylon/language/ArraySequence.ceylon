@@ -19,7 +19,7 @@ class ArraySequence<out Element>(Array<Element> array)
     
     size => array.size;
     
-    iterator => array.iterator;
+    iterator = array.iterator;
     
     shared actual Element first {
         assert(is Element first = array.first);
@@ -79,7 +79,6 @@ class ArraySequence<out Element>(Array<Element> array)
     shared actual
     ArraySequence<Element>|[] span(Integer from, Integer to) {
         if(from <= to) {
-            return 
             if(to < 0 || from > lastIndex) {
                 return [];
             }
@@ -88,7 +87,6 @@ class ArraySequence<out Element>(Array<Element> array)
             }
         }
         else {
-            return 
             if(from < 0 || to > lastIndex) {
                 return [];
             }
