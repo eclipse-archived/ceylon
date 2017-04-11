@@ -7,11 +7,9 @@ by("Tom")
 shared sealed final
 serializable
 tagged("Collections", "Sequences")
-class ArraySequence<out Element>(array)
+class ArraySequence<out Element>(Array<Element> array)
         extends Object()
         satisfies [Element+] {
-    
-    Array<Element> array;
     
     assert(!array.empty);
     
