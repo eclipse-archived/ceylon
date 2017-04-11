@@ -3,7 +3,7 @@
  Since [[Array]]s are mutable, this class is private to the
  language module, where we can be sure the `Array` is not
  modified after the `ArraySequence` has been initialized."
-by ("Tom")
+by("Tom")
 shared sealed final
 serializable
 tagged("Collections", "Sequences")
@@ -13,117 +13,98 @@ class ArraySequence<out Element>(array)
     
     Array<Element> array;
     
-    assert (!array.empty);
+    assert(!array.empty);
     
-    getFromFirst(Integer index) 
-            => array.getFromFirst(index);
+    getFromFirst = array.getFromFirst;
     
-    contains(Object element) 
-            => array.contains(element);
+    contains = array.contains;
     
     size => array.size;
     
-    iterator() => array.iterator();
+    iterator => array.iterator;
     
     shared actual Element first {
-        if (exists first = array.first) {
-            return first;
-        }
-        else {
-            assert (is Element null);
-            return null;
-        }
+        assert(is Element first = array.first);
+        return first;
     }
     
     shared actual Element last {
-        if (exists last = array.last) {
-            return last;
-        }
-        else {
-            assert (is Element null);
-            return null;
-        }
+        assert(is Element last = array.last);
+        return last;
     }
     
-    clone() => ArraySequence(array.clone());
+    clone() => this;
     
     tuple() => arrayToTuple(array);
     
-    each(void step(Element element)) => array.each(step);
+    each = array.each;
     
-    count(Boolean selecting(Element element))
-            => array.count(selecting);
+    count = array.count;
     
-    every(Boolean selecting(Element element))
-            => array.every(selecting);
+    every = array.every;
     
-    any(Boolean selecting(Element element))
-            => array.any(selecting);
+    any = array.any;
     
-    find(Boolean selecting(Element&Object element))
-            => array.find(selecting);
+    find = array.find;
     
-    findLast(Boolean selecting(Element&Object element))
-            => array.findLast(selecting);
+    findLast = array.findLast;
     
     shared actual 
-    Result|Element reduce<Result>(
-        Result accumulating(Result|Element partial, 
-                            Element element)) {
-        assert (exists result 
-            = array.reduce(accumulating));
+    Result|Element reduce<Result>(accumulating) {
+        Result accumulating(Result|Element partial, Element element);
+        assert(is Element result = array.reduce(accumulating));
         return result;
     }
 
-    shared actual 
-    [Result+] collect<Result>
-            (Result collecting(Element element)) {
-        assert (nonempty sequence 
-            = array.collect(collecting));
+    shared actual [Result+] collect<Result>(collecting) {
+        Result collecting(Element element);
+        assert(nonempty sequence = array.collect(collecting));
         return sequence;
     }
     
-    shared actual 
-    [Element+] sort
-            (Comparison comparing(Element x, Element y)) {
-        assert (nonempty sequence 
-            = array.sort(comparing));
+    shared actual [Element+] sort(comparing) {
+        Comparison comparing(Element x, Element y);
+        assert(nonempty sequence = array.sort(comparing));
         return sequence;
     }
     
-    shared actual 
-    Element[] measure(Integer from, Integer length) {
-        if (from > lastIndex || 
-            length <= 0 || 
-            from + length <= 0) {
+    shared actual
+    ArraySequence<Element>|[] measure(Integer from, Integer length) {
+        if(from > lastIndex || length <= 0 || from + length <= 0) {
             return [];
         }
         else {
-            return ArraySequence(array[from : length]);
+            return ArraySequence(array[from:length]);
         }
     }
     
-    shared actual 
-    Element[] span(Integer from, Integer to) {
-        if (from <= to) {
+    shared actual
+    ArraySequence<Element>|[] span(Integer from, Integer to) {
+        if(from <= to) {
             return 
-                if (to < 0 || from > lastIndex)
-                then [] 
-                else ArraySequence(array[from..to]);
+            if(to < 0 || from > lastIndex) {
+                return [];
+            }
+            else {
+                return ArraySequence(array[from..to]);
+            }
         }
         else {
             return 
-                if (from < 0 || to > lastIndex)
-                then [] 
-                else ArraySequence(array[from..to]);
+            if(from < 0 || to > lastIndex) {
+                return [];
+            }
+            else {
+                return ArraySequence(array[from..to]);
+            }
         }
     }
     
     shared actual ArraySequence<Element>|[] spanFrom(Integer from) {
-        if (from <= 0) {
+        if(from <= 0) {
             return this;
         }
-        else if (from < size) {
+        else if(from < size) {
             return ArraySequence(array[from...]);
         }
         else {
@@ -132,15 +113,14 @@ class ArraySequence<out Element>(array)
     }
     
     shared actual ArraySequence<Element>|[] spanTo(Integer to) {
-        if (to >= lastIndex) {
+        if(to >= lastIndex) {
             return this;
         }
-        else if (to >= 0) {
+        else if(to >= 0) {
             return ArraySequence(array[...to]);
         }
         else {
             return [];
         }
     }
-    
 }
