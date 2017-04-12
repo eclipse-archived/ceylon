@@ -22,12 +22,12 @@ class ArraySequence<out Element>(Array<Element> array)
     iterator = array.iterator;
     
     shared actual Element first {
-        assert(is Element first = array.first);
+        assert(exists first = array.first);
         return first;
     }
     
     shared actual Element last {
-        assert(is Element last = array.last);
+        assert(exists last = array.last);
         return last;
     }
     
