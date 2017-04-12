@@ -320,6 +320,9 @@ shared void arraySequence() {
     check(abc.reversed==["c","b","a"], "abc.reversed");
     check(abc.reversed.first=="c", "abc.reversed.first");
     check(abc.reversed.last=="a", "abc.reversed.last");
+
+    check(abc.reduce((Anything a, Anything b) => null) is Null, "array seq reduce null #1");
+    check({null}.sequence().reduce((Anything a, Anything b) => "") is Null, "array seq reduce null #2");
 }
 
 @test

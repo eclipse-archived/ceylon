@@ -47,10 +47,10 @@ class ArraySequence<out Element>(Array<Element> array)
     
     findLast = array.findLast;
     
-    shared actual 
+    shared actual
     Result|Element reduce<Result>(accumulating) {
         Result accumulating(Result|Element partial, Element element);
-        assert(is Element result = array.reduce(accumulating));
+        assert(exists result = array.reduce(accumulating));
         return result;
     }
 
