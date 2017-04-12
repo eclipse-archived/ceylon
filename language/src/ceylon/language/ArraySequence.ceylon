@@ -70,9 +70,16 @@ class ArraySequence<out Element>(array)
     Result|Element reduce<Result>(
         Result accumulating(Result|Element partial, 
                             Element element)) {
-        assert (exists result 
-            = array.reduce(accumulating));
-        return result;
+        // cannot follow std pattern of narrowing null
+        // https://github.com/ceylon/ceylon/issues/7021
+        value result = array.reduce(accumulating);
+        if (exists result) {
+            return result;
+        }
+        else {
+            assert (is Result|Element result);
+            return result;
+        }
     }
 
     shared actual 
