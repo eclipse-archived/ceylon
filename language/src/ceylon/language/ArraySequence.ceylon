@@ -50,7 +50,7 @@ class ArraySequence<out Element>(Array<Element> array)
     shared actual
     Result|Element reduce<Result>(accumulating) {
         Result accumulating(Result|Element partial, Element element);
-        assert(exists result = array.reduce(accumulating));
+        assert(is Result|Element result = array.reduce(accumulating));
         return result;
     }
 
