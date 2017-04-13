@@ -11,7 +11,7 @@ function AssertionError(msg,cause,that){
     that.string='ceylon.language::AssertionError "'+msg+'"';
     that.printStackTrace=function(){printStackTrace(that);}
     that.addSuppressed=Throwable.$$.prototype.addSuppressed;
-    that.suppressed=$arr$([],{t:Throwable});
+    that.suppressed=empty();
   }
   that.$sm_=msg;
   Throwable(msg,cause,that);
