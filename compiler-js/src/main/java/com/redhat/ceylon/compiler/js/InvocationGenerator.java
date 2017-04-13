@@ -138,7 +138,7 @@ public class InvocationGenerator {
         } else {
             final Tree.PositionalArgument lastArg = argList.getPositionalArguments().isEmpty()?null:argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1);
             boolean hasSpread =  lastArg instanceof Tree.SpreadArgument &&
-                    !TypeUtils.isSequential(lastArg.getTypeModel())
+                    !lastArg.getUnit().isSequentialType(lastArg.getTypeModel())
                     && !typeArgSource.getTypeModel().isUnknown();
             if (hasSpread) {
                 gen.out(gen.getClAlias(), "spread$2(");
@@ -600,7 +600,7 @@ public class InvocationGenerator {
             }
         } else if (pd.isSequenced()) {
             arg.visit(gen);
-            if (!TypeUtils.isSequential(arg.getTypeModel())) {
+            if (!arg.getUnit().isSequentialType(arg.getTypeModel())) {
                 gen.out(".sequence()");
             }
         } else if (!arg.getTypeModel().isEmpty()) {
@@ -610,7 +610,7 @@ public class InvocationGenerator {
             final boolean unknownSpread = arg.getTypeModel().isUnknown();
             final String get0 = unknownSpread ?"[":".$_get(";
             final String get1 = unknownSpread ?"]":")";
-            if (!unknownSpread && !TypeUtils.isSequential(arg.getTypeModel())) {
+            if (!unknownSpread && !arg.getUnit().isSequentialType(arg.getTypeModel())) {
                 gen.out(".sequence()");
             }
             gen.out(",");

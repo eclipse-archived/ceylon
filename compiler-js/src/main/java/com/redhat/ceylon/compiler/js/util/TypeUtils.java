@@ -631,7 +631,8 @@ public class TypeUtils {
     public static List<Parameter> convertTupleToParameters(Type _tuple) {
         final ArrayList<Parameter> rval = new ArrayList<>();
         int pos = 0;
-        final Type empty = getUnit(_tuple).getEmptyType();
+        final Unit unit = getUnit(_tuple);
+        final Type empty = unit.getEmptyType();
         while (_tuple != null && !(_tuple.isSubtypeOf(empty) || _tuple.isTypeParameter())) {
             Parameter _p = null;
             if (isTuple(_tuple)) {
@@ -651,7 +652,7 @@ public class TypeUtils {
                     _p.getModel().setType(_tuple.getTypeArgumentList().get(1));
                     _tuple = _tuple.getTypeArgumentList().get(2);
                 }
-            } else if (isSequential(_tuple)) {
+            } else if (unit.isSequentialType(_tuple)) {
                 //Handle Sequence, for nonempty variadic parameters
                 _p = new Parameter();
                 _p.setModel(new Value());
@@ -688,14 +689,6 @@ public class TypeUtils {
         return false;
     }
 
-    public static boolean isSequential(Type pt) {
-        if (pt == null) {
-            return false;
-        }
-        return pt.isClassOrInterface() && pt.getDeclaration().inherits(
-                pt.getDeclaration().getUnit().getSequentialDeclaration());
-    }
-
     /** This method encodes the type parameters of a Tuple in the same way
      * as a parameter list for runtime. */
     private static void encodeTupleAsParameterListForRuntime(final boolean resolveTargs, final Node node,
@@ -725,7 +718,7 @@ public class TypeUtils {
                             _tuple.getTypeArgumentList().get(1), null, gen);
                     _tuple = _tuple.getTypeArgumentList().get(2);
                 }
-            } else if (isSequential(_tuple)) {
+            } else if (node.getUnit().isSequentialType(_tuple)) {
                 Type _t2 = _tuple.getSupertype(node.getUnit().getSequenceDeclaration());
                 final int seq;
                 if (_t2 == null) {
