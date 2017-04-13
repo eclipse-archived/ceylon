@@ -76,13 +76,8 @@ class ArraySequence<out Element>(array)
         if (exists result) {
             return result;
         }
-        // can't use 'is Result|Element result` because of
-        // https://github.com/ceylon/ceylon/issues/7022
-        else if (is Result result) {
-            return result;
-        }
         else {
-            assert (is Element result);
+            assert (is Result|Element result);
             return result;
         }
     }
