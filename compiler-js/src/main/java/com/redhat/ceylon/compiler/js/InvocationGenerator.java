@@ -438,6 +438,9 @@ public class InvocationGenerator {
                                 seqargs.add(args.get(argpos));
                             }
                             final Tree.PositionalArgument lastArg = seqargs.get(seqargs.size()-1);
+                            if (sequencedType.isTypeParameter()) {
+                                sequencedType = that.getUnit().getIterableType(sequencedType);
+                            }
                             SequenceGenerator.lazyEnumeration(seqargs, that, sequencedType,
                                     lastArg instanceof Tree.SpreadArgument ||
                                             lastArg instanceof Tree.Comprehension, gen);
