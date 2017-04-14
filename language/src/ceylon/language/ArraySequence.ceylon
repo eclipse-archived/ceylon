@@ -53,7 +53,7 @@ class ArraySequence<out Element>(Array<Element> array)
         assert (is Result|Element result = array.reduce(accumulating));
         return result;
     }
-
+    
     shared actual [Result+] collect<Result>(collecting) {
         Result collecting(Element element);
         assert (nonempty sequence = array.collect(collecting));

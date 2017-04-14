@@ -1,2 +1,1 @@
-//TODO
-throw new Error("Paquete.shared not implemented");
+return (this._pkg['$pkg-pa'] && 1) == 1;
