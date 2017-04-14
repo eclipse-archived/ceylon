@@ -11,7 +11,7 @@ class ArraySequence<out Element>(Array<Element> array)
         extends Object()
         satisfies [Element+] {
     
-    assert(!array.empty);
+    assert (!array.empty);
     
     getFromFirst = array.getFromFirst;
     
@@ -22,12 +22,12 @@ class ArraySequence<out Element>(Array<Element> array)
     iterator = array.iterator;
     
     shared actual Element first {
-        assert(is Element first = array.first);
+        assert (is Element first = array.first);
         return first;
     }
     
     shared actual Element last {
-        assert(is Element last = array.last);
+        assert (is Element last = array.last);
         return last;
     }
     
@@ -50,25 +50,25 @@ class ArraySequence<out Element>(Array<Element> array)
     shared actual
     Result|Element reduce<Result>(accumulating) {
         Result accumulating(Result|Element partial, Element element);
-        assert(is Result|Element result = array.reduce(accumulating));
+        assert (is Result|Element result = array.reduce(accumulating));
         return result;
     }
 
     shared actual [Result+] collect<Result>(collecting) {
         Result collecting(Element element);
-        assert(nonempty sequence = array.collect(collecting));
+        assert (nonempty sequence = array.collect(collecting));
         return sequence;
     }
     
     shared actual [Element+] sort(comparing) {
         Comparison comparing(Element x, Element y);
-        assert(nonempty sequence = array.sort(comparing));
+        assert (nonempty sequence = array.sort(comparing));
         return sequence;
     }
     
     shared actual
     ArraySequence<Element>|[] measure(Integer from, Integer length) {
-        if(from > lastIndex || length <= 0 || from + length <= 0) {
+        if (from > lastIndex || length <= 0 || from + length <= 0) {
             return [];
         }
         else {
@@ -78,8 +78,8 @@ class ArraySequence<out Element>(Array<Element> array)
     
     shared actual
     ArraySequence<Element>|[] span(Integer from, Integer to) {
-        if(from <= to) {
-            if(to < 0 || from > lastIndex) {
+        if (from <= to) {
+            if (to < 0 || from > lastIndex) {
                 return [];
             }
             else {
@@ -87,7 +87,7 @@ class ArraySequence<out Element>(Array<Element> array)
             }
         }
         else {
-            if(from < 0 || to > lastIndex) {
+            if (from < 0 || to > lastIndex) {
                 return [];
             }
             else {
@@ -97,10 +97,10 @@ class ArraySequence<out Element>(Array<Element> array)
     }
     
     shared actual ArraySequence<Element>|[] spanFrom(Integer from) {
-        if(from <= 0) {
+        if (from <= 0) {
             return this;
         }
-        else if(from < size) {
+        else if (from < size) {
             return ArraySequence(array[from...]);
         }
         else {
@@ -109,10 +109,10 @@ class ArraySequence<out Element>(Array<Element> array)
     }
     
     shared actual ArraySequence<Element>|[] spanTo(Integer to) {
-        if(to >= lastIndex) {
+        if (to >= lastIndex) {
             return this;
         }
-        else if(to >= 0) {
+        else if (to >= 0) {
             return ArraySequence(array[...to]);
         }
         else {
