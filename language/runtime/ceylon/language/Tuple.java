@@ -545,7 +545,20 @@ public final class Tuple<Element, First extends Element,
     @Override
     @NonNull
     public Tuple<? extends Element, ? extends First, ? extends Rest> tuple() {
-        return this;
+        if (rest instanceof Empty) {
+            return this;
+        }
+        else {
+            int offset = array.length;
+            int size = (int) rest.getSize();
+            java.lang.Object[] arr = new java.lang.Object[offset + size];
+            System.arraycopy(array, 0, arr, 0, offset);
+            for (int i=0; i<size; i++) {
+                arr[i + offset] = rest.getFromFirst(i);
+            }
+            return (Tuple<? extends Element, ? extends First, ? extends Rest>) 
+                    instance($reifiedElement, arr);
+        }
     }
 
     private TypeDescriptor computeType() {

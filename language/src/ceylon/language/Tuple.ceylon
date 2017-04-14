@@ -120,8 +120,7 @@ class Tuple<out Element, out First, out Rest = []>
     shared actual native 
     Tuple<Element,First,Rest> clone() => this;
     
-    "This tuple"
-    shared actual native
+    shared actual native 
     Tuple<Element,First,Rest> tuple() => this;
     
     shared actual native 
