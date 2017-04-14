@@ -918,7 +918,7 @@ shared interface Iterable<out Element=Anything,
          it.collect(f) == [*it.map(f)]"
     see (`function map`)
     shared default 
-    Result[] collect<Result>(
+    [Result+] | []&Iterable<Result,Absent> collect<Result>(
         "The transformation applied to the elements."
         Result collecting(Element element)) 
             => map(collecting).sequence();

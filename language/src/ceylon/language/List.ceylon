@@ -639,7 +639,7 @@ shared interface List<out Element=Anything>
     "A sequence containing the results of applying the given 
      mapping to the elements of this list."
     shared default actual 
-    Result[] collect<Result>(
+    [Result+]|[] collect<Result>(
         "The transformation applied to the elements."
         Result collecting(Element element)) {
         if (empty) {

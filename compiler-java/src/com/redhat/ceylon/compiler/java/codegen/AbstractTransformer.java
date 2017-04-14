@@ -6330,7 +6330,8 @@ public abstract class AbstractTransformer implements Transformation {
         TypedDeclaration decl = ref.getDeclaration();
         String name = decl.getRefinedDeclaration().getQualifiedNameString();
         if ("com.redhat.ceylon.compiler.java.test.structure.klass::IterableSequence.sequence".equals(name)
-                ||"ceylon.language::Iterable.sequence".equals(name)) {
+                ||"ceylon.language::Iterable.sequence".equals(name)
+                ||"ceylon.language::Iterable.collect".equals(name)) {
             Type t = ref.getType().getSupertype(typeFact().getSequenceDeclaration());
             if (t != null) {
                 return t;
