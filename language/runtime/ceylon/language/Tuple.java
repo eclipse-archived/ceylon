@@ -544,7 +544,7 @@ public final class Tuple<Element, First extends Element,
         @Annotation("actual")})
     @Override
     @NonNull
-    public Tuple<? extends Element, ? extends First, ? extends Rest> tuple() {
+    public Sequence<? extends Element> tuple() {
         if (rest instanceof Empty) {
             return this;
         }
@@ -556,8 +556,7 @@ public final class Tuple<Element, First extends Element,
             for (int i=0; i<size; i++) {
                 arr[i + offset] = rest.getFromFirst(i);
             }
-            return (Tuple<? extends Element, ? extends First, ? extends Rest>) 
-                    instance($reifiedElement, arr);
+            return instance($reifiedElement, arr);
         }
     }
 
