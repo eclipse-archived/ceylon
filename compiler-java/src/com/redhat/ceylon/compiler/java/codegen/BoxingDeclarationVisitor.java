@@ -224,7 +224,8 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         String name = decl.getQualifiedNameString();
         if ("com.redhat.ceylon.compiler.java.test.structure.klass::IterableSequence.sequence".equals(name)
                 || "ceylon.language::Iterable.sequence".equals(name)
-                || "ceylon.language::Iterable.collect".equals(name)) {
+                || "ceylon.language::Iterable.collect".equals(name)
+                ||"ceylon.language::Iterable.sort".equals(name)) {
             untrusted = true;
         }
         decl.setUntrustedType(untrusted);

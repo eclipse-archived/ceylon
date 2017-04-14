@@ -556,7 +556,8 @@ public final class Tuple<Element, First extends Element,
             for (int i=0; i<size; i++) {
                 arr[i + offset] = rest.getFromFirst(i);
             }
-            return instance($reifiedElement, arr);
+            return (Sequence<? extends Element>) 
+                    instance($reifiedElement, arr);
         }
     }
 

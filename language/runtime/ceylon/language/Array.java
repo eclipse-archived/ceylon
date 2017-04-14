@@ -1960,7 +1960,7 @@ public final class Array<Element>
     
     @SuppressWarnings("unchecked")
     @Override
-    @TypeInfo("ceylon.language::Sequential<Element>")
+    @TypeInfo("ceylon.language::Sequence<Element>|ceylon.language::Empty")
     public Sequential<? extends Element> 
     sort(@Name("comparing") @FunctionalParameter("(x,y)")
     @TypeInfo("ceylon.language::Comparison(Element,Element)") 
