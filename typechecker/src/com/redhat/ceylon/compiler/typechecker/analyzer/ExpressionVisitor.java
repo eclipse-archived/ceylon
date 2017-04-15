@@ -1902,7 +1902,7 @@ public class ExpressionVisitor extends Visitor {
                             "parameter is not declared explicitly, and its type cannot be inferred" :
                             "parameter is not declared")
                         +": '" + p.getName() + 
-                        "' (specify the parameter type explicitly)");
+                        "' is not declared anywhere (specify the parameter type explicitly)");
             }
         }
     }
@@ -8557,48 +8557,59 @@ public class ExpressionVisitor extends Visitor {
             if (!isConstantCase(ref) &&
                 !isToplevelObjectCase(dec) && 
                 !isToplevelValueConstructorCase(dec)) {
-                e.addError("case must refer to a toplevel or static object declaration, a value constructor for a toplevel class, or a literal value");
+                e.addError("value case must be a toplevel or static object, a value constructor for a toplevel class, or a literal value");
             }
-            else {
-                //we don't have a guaranteed well-defined disjoint
-                //equality unless it is a String, Integer, Character, 
-                //null, or an Identifiable
-                //TODO: change this to a warning?
-                if (!dec.isString() && 
-                    !dec.isInteger() &&
-                    !dec.isCharacter()) {
-                    Type ut = unionType(
-                            unit.getNullType(), 
-                            unit.getIdentifiableType(), 
-                            unit);
-                    checkAssignable(type, ut, e, 
-                            "case must be identifiable or null");
-                    Interface id = unit.getIdentifiableDeclaration();
-                    if (dec.inherits(id) && !dec.isJavaEnum()) {
-                          Declaration eq = 
-                                  dec.getMember("equals", 
-                                      Arrays.asList(unit.getObjectType()), 
-                                      false);
-                          if (eq!=null) {
-                              Scope container = eq.getContainer();
-                              if (container instanceof TypeDeclaration) {
-                                  TypeDeclaration td = 
-                                          (TypeDeclaration) container;
-                                  if (!container.equals(id)) {
-                                      e.addUsageWarning(Warning.valueEqualityIgnored, 
-                                              "value equality defined by type '" +
-                                              td.getName(unit) +
-                                              "' ignored (identity equality is used to match value case)");
-                                  }
-                              }
-                          }
-                    }
+            else if (isToplevelObjectCase(dec)) {
+                warnIfCustomEquals(e, dec);
+            }
+            else if (!isPrimitiveCase(dec) && !dec.isJavaEnum()) {
+                Interface id = unit.getIdentifiableDeclaration();
+                if (dec.inherits(id)) {
+                    warnIfCustomEquals(e, dec);
+                }
+                else {
+                    //we don't have a guaranteed well-defined disjoint
+                    //equality unless it is a String, Integer, Character, 
+                    //a unit type (toplevel object), or an Identifiable
+                    //TODO: change this to a warning?
+                    e.addError("value case must be identifiable, a toplevel or static object, or a 'String', 'Integer', or 'Character': '"
+                            + dec.getName(unit) 
+                            + "' does not inherit 'Identifiable'");
                 }
             }
         }
         else if (term!=null) {
             e.addError("case must be a literal value or refer to a toplevel or static object declaration or a value constructor for a toplevel class");
         }
+    }
+
+    private static boolean isPrimitiveCase(TypeDeclaration dec) {
+        return dec.isString() 
+            || dec.isInteger()
+            || dec.isCharacter();
+    }
+
+    private void warnIfCustomEquals(Node node, 
+            TypeDeclaration dec) {
+        Declaration eq =
+                  dec.getMember("equals", 
+                      Arrays.asList(unit.getObjectType()), 
+                      false);
+          if (eq!=null) {
+              Scope container = eq.getContainer();
+              if (container instanceof TypeDeclaration) {
+                  TypeDeclaration td = 
+                          (TypeDeclaration) 
+                              container;
+                  Interface id = unit.getIdentifiableDeclaration();
+                  if (!container.equals(id)) {
+                      node.addUsageWarning(Warning.valueEqualityIgnored, 
+                              "value equality defined by type '" +
+                              td.getName(unit) +
+                              "' ignored (identity equality is used to match value case)");
+                  }
+              }
+          }
     }
 
     private static boolean isEnumCase(Tree.Term term) {
@@ -8612,6 +8623,10 @@ public class ExpressionVisitor extends Visitor {
                 return isToplevelObjectCase(dec)
                     || isToplevelValueConstructorCase(dec);
             }
+        }
+        else if (term instanceof Tree.Tuple) {
+            Tree.Tuple tup = (Tree.Tuple) term;
+            return tup.getSequencedArgument()==null;
         }
         else {
             return false;
