@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.isPinnedType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -221,11 +223,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             }
         }
         decl.setTypeErased(erased);
-        String name = decl.getQualifiedNameString();
-        if ("com.redhat.ceylon.compiler.java.test.structure.klass::IterableSequence.sequence".equals(name)
-                || "ceylon.language::Iterable.sequence".equals(name)
-                || "ceylon.language::Iterable.collect".equals(name)
-                ||"ceylon.language::Iterable.sort".equals(name)) {
+        if (isPinnedType(decl)) {
             untrusted = true;
         }
         decl.setUntrustedType(untrusted);

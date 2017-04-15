@@ -1404,13 +1404,7 @@ public abstract class AbstractTransformer implements Transformation {
             // the innermost Callable.
             return getReturnTypeOfCallable(pr.getFullType());
         }
-        if (willEraseToObject(pr.getType())) {
-            Type pt = getPinnedType(declaration);
-            if (pt != null) {
-                return pt;
-            }
-        }
-        return pr.getType();
+        return getPinnedType(declaration, pr.getType());
     }
 
     private Type javacCeylonTypeToProducedType(com.redhat.ceylon.langtools.tools.javac.code.Type t) {
@@ -1795,7 +1789,7 @@ public abstract class AbstractTransformer implements Transformation {
      */
     JCExpression makeJavaType(TypedDeclaration typeDecl, Type type, int flags) {
         if (typeDecl instanceof Function
-                && ((Function)typeDecl).isParameter()) {
+                && typeDecl.isParameter()) {
             Function p = (Function)typeDecl;
             Type pt = type;
             for (int ii = 1; ii < p.getParameterLists().size(); ii++) {
@@ -1803,13 +1797,9 @@ public abstract class AbstractTransformer implements Transformation {
             }
             return makeJavaType(typeFact().getCallableType(pt), flags);
         } else {
-            Type pt = getPinnedType(typeDecl.getTypedReference());
-            if (pt != null) {
-                type = pt;
-            } 
             boolean usePrimitives = CodegenUtil.isUnBoxed(typeDecl);
-            return makeJavaType(type, flags | (usePrimitives ? 0 : AbstractTransformer.JT_NO_PRIMITIVES));
-            
+            return makeJavaType(getPinnedType(typeDecl.getTypedReference(), type), 
+                    flags | (usePrimitives ? 0 : AbstractTransformer.JT_NO_PRIMITIVES));
         }
     }
 
@@ -6326,20 +6316,36 @@ public abstract class AbstractTransformer implements Transformation {
         return getEeVisitor().isJavaStrictfp(d);
     }
     
-    public Type getPinnedType(TypedReference ref) {
-        TypedDeclaration decl = ref.getDeclaration();
-        String name = decl.getRefinedDeclaration().getQualifiedNameString();
-        if ("com.redhat.ceylon.compiler.java.test.structure.klass::IterableSequence.sequence".equals(name)
-                ||"ceylon.language::Iterable.sequence".equals(name)
-                ||"ceylon.language::Iterable.collect".equals(name)
-                ||"ceylon.language::Iterable.sort".equals(name)) {
-            Type t = ref.getType().getSupertype(typeFact().getSequenceDeclaration());
-            if (t != null) {
-                return t;
+    private Type getPinnedType(TypedReference ref, Type type) {
+        if (isPinnedType(ref.getDeclaration().getRefinedDeclaration())
+                && willEraseToObject(type)) {
+            Type rt = ref.getType();
+            Type st = rt.getSupertype(typeFact().getSequenceDeclaration());
+            if (st != null) {
+                return st;
             }
-            return ref.getType().getSupertype(typeFact().getSequentialDeclaration());
+            return rt.getSupertype(typeFact().getSequentialDeclaration());
         }
-        return null;
+        else {
+            return type;
+        }
+    }
+    
+    /**
+     * Backward compatibility for certain language module
+     * declarations whose type has changed.
+     * 
+     * TODO: when we break BC, just do this for *every*
+     *       member which erases to type Object, but is
+     *       a subtype of Sequential!
+     */
+    static boolean isPinnedType(Declaration decl) {
+        String name = decl.getQualifiedNameString();
+        return "com.redhat.ceylon.compiler.java.test.structure.klass::IterableSequence.sequence".equals(name)
+            || "ceylon.language::Iterable.sequence".equals(name)
+            || "ceylon.language::Iterable.collect".equals(name)
+            || "ceylon.language::Iterable.sort".equals(name)
+            || "ceylon.language::List.collect".equals(name);
     }
     
     JCExpression makeUnwrapArray(final Declaration methodOrClass) {
