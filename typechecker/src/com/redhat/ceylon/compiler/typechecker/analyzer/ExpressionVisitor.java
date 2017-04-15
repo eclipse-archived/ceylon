@@ -1291,7 +1291,7 @@ public class ExpressionVisitor extends Visitor {
             if (type instanceof Tree.LocalModifier &&
                     !isNativeForWrongBackend(
                             dec.getScopedBackends())) {
-                if (dec.isParameter()) {
+                if (dec.isParameter() && !dec.isInferred()) {
                     type.addError(
                             "parameter may not have inferred type: '" + 
                             dec.getName() + 
@@ -3522,15 +3522,11 @@ public class ExpressionVisitor extends Visitor {
                     j<aps.size(); 
                     j++) {
                 Tree.Parameter ap = aps.get(j);
-                if (ap instanceof Tree.InitializerParameter) {
-                    Parameter parameter = 
-                            ap.getParameterModel();
-                    if (parameter.getModel()==null) {
-                        createInferredParameter(anon,
-                                declaration, ap,
-                                parameter,
-                                types.get(j));
-                    }
+                if (isInferrableParameter(ap)) {
+                    createInferredParameter(anon,
+                            declaration, ap,
+                            ap.getParameterModel(),
+                            types.get(j));
                 }
             }
         }
@@ -3556,18 +3552,29 @@ public class ExpressionVisitor extends Visitor {
                     j++) {
                 Parameter fp = fps.get(j);
                 Tree.Parameter ap = aps.get(j);
-                if (ap instanceof Tree.InitializerParameter) {
-                    Parameter parameter = 
-                            ap.getParameterModel();
-                    if (parameter.getModel()==null) {
-                        createInferredParameter(anon,
-                                declaration, ap,
-                                parameter,
-                                pr.getTypedParameter(fp)
-                                    .getType());
-                    }
+                if (isInferrableParameter(ap)) {
+                    createInferredParameter(anon,
+                            declaration, ap,
+                            ap.getParameterModel(),
+                            pr.getTypedParameter(fp)
+                                .getType());
                 }
             }
+        }
+    }
+
+    private static boolean isInferrableParameter(Tree.Parameter p) {
+        if (p instanceof Tree.ValueParameterDeclaration) {
+            Tree.ValueParameterDeclaration vpd =
+                    (Tree.ValueParameterDeclaration) p;
+            return vpd.getTypedDeclaration().getType()
+                    instanceof Tree.ValueModifier;
+        }
+        else if (p instanceof Tree.InitializerParameter) {
+            return p.getParameterModel().getModel() == null;
+        }
+        else {
+            return false;
         }
     }
     
@@ -3581,23 +3588,31 @@ public class ExpressionVisitor extends Visitor {
         if (isTypeUnknown(type)) {
             type = unit.getUnknownType();
             if (!dynamic) {
-                ap.addError("could not infer parameter type: '" +
-                        parameter.getName() + 
-                        "' would have unknown type");
+                ap.addError("could not infer parameter type: '" 
+                        + parameter.getName() 
+                        + "' would have unknown type");
             }
         }
         else if (involvesTypeParams(declaration, type)) {
-            ap.addError("could not infer parameter type: '" +
-                    parameter.getName() + 
-                    "' would have type '" + 
-                    type.asString(unit) + 
-                    "' involving type parameters");
+            ap.addError("could not infer parameter type: '" 
+                    + parameter.getName() 
+                    + "' would have type '" 
+                    + type.asString(unit) 
+                    + "' involving type parameters");
             type = unit.getUnknownType();
         }
-        Value model = new Value();
-        model.setUnit(unit);
+        Value model = (Value) parameter.getModel(); 
+        if (model==null) {
+            model = new Value();
+            model.setUnit(unit);
+            model.setName(parameter.getName());
+            parameter.setModel(model);
+            Function m = anon.getDeclarationModel();
+            model.setContainer(m);
+            model.setScope(m);
+            m.addMember(model);
+        }
         model.setType(type);
-        model.setName(parameter.getName());
         model.setInferred(true);
         if (declaration!=null && type!=null
                 && declaration.isJava()
@@ -3606,12 +3621,14 @@ public class ExpressionVisitor extends Visitor {
                 && canHaveUncheckedNulls(type)) {
             model.setUncheckedNullType(true);
         }
-        parameter.setModel(model);
         model.setInitializerParameter(parameter);
-        Function m = anon.getDeclarationModel();
-        model.setContainer(m);
-        model.setScope(m);
-        m.addMember(model);
+        if (ap instanceof Tree.ValueParameterDeclaration) {
+            Tree.ValueParameterDeclaration vpd =
+                (Tree.ValueParameterDeclaration) ap;
+            vpd.getTypedDeclaration()
+                .getType()
+                .setTypeModel(type);
+        }
     }
     
     private void visitInvocationPositionalArgs(
