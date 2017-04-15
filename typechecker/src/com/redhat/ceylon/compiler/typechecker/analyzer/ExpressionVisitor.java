@@ -8554,15 +8554,22 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.MemberOrTypeExpression) term;
             Declaration ref = mte.getDeclaration();
             TypeDeclaration dec = type.getDeclaration();
-            if (!isConstantCase(ref) &&
-                !isToplevelObjectCase(dec) && 
-                !isToplevelValueConstructorCase(dec)) {
-                e.addError("value case must be a toplevel or static object, a value constructor for a toplevel class, or a literal value");
+            if (isConstantCase(ref) && isPrimitiveCase(dec) 
+                    || dec.isJavaEnum()) {
+                //nothing to do, we know these have
+                //reasonable definitions of equals()
             }
             else if (isToplevelObjectCase(dec)) {
+                //no need to check for Identifiable
+                //because the anonymous type check
+                //itself is sufficient
                 warnIfCustomEquals(e, dec);
             }
-            else if (!isPrimitiveCase(dec) && !dec.isJavaEnum()) {
+            else if (isToplevelValueConstructorCase(dec)
+                    || isConstantCase(ref)) {
+                //TODO: actually we don't need to do this check
+                //      if the toplevel value constructor is
+                //      the only constructor of its type
                 Interface id = unit.getIdentifiableDeclaration();
                 if (dec.inherits(id)) {
                     warnIfCustomEquals(e, dec);
@@ -8572,14 +8579,17 @@ public class ExpressionVisitor extends Visitor {
                     //equality unless it is a String, Integer, Character, 
                     //a unit type (toplevel object), or an Identifiable
                     //TODO: change this to a warning?
-                    e.addError("value case must be identifiable, a toplevel or static object, or a 'String', 'Integer', or 'Character': '"
+                    e.addError("value case must be identifiable, a toplevel or static object, or a constant 'String', 'Integer', or 'Character': '"
                             + dec.getName(unit) 
                             + "' does not inherit 'Identifiable'");
                 }
             }
+            else {
+                e.addError("value case must be a toplevel or static object, a value constructor for a toplevel class, or a literal 'String', 'Integer', or 'Character'");
+            }
         }
         else if (term!=null) {
-            e.addError("case must be a literal value or refer to a toplevel or static object declaration or a value constructor for a toplevel class");
+            e.addError("value case must be a toplevel or static object, a value constructor for a toplevel class, or a literal 'String', 'Integer', or 'Character'");
         }
     }
 
