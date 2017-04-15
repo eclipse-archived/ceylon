@@ -8554,12 +8554,7 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.MemberOrTypeExpression) term;
             Declaration ref = mte.getDeclaration();
             TypeDeclaration dec = type.getDeclaration();
-            if (isConstantCase(ref) && isPrimitiveCase(dec) 
-                    || dec.isJavaEnum()) {
-                //nothing to do, we know these have
-                //reasonable definitions of equals()
-            }
-            else if (isToplevelObjectCase(dec)) {
+            if (isToplevelObjectCase(dec)) {
                 //no need to check for Identifiable
                 //because the anonymous type check
                 //itself is sufficient
@@ -8567,21 +8562,28 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (isToplevelValueConstructorCase(dec)
                     || isConstantCase(ref)) {
-                //TODO: actually we don't need to do this check
-                //      if the toplevel value constructor is
-                //      the only constructor of its type
-                Interface id = unit.getIdentifiableDeclaration();
-                if (dec.inherits(id)) {
-                    warnIfCustomEquals(e, dec);
-                }
-                else {
-                    //we don't have a guaranteed well-defined disjoint
-                    //equality unless it is a String, Integer, Character, 
-                    //a unit type (toplevel object), or an Identifiable
-                    //TODO: change this to a warning?
-                    e.addError("value case must be identifiable, a toplevel or static object, or a constant 'String', 'Integer', or 'Character': '"
-                            + dec.getName(unit) 
-                            + "' does not inherit 'Identifiable'");
+                //we already know that String, Integer, 
+                //Character have reasonable definitions 
+                //of value equality that the backend 
+                //uses to compare them instead of using
+                //identity equality
+                if (!isPrimitiveCase(dec)) {
+                    //TODO: actually we don't need to do this check
+                    //      if the toplevel value constructor is
+                    //      the only constructor of its type
+                    Interface id = unit.getIdentifiableDeclaration();
+                    if (dec.inherits(id)) {
+                        warnIfCustomEquals(e, dec);
+                    }
+                    else {
+                        //we don't have a guaranteed well-defined disjoint
+                        //equality unless it is a String, Integer, Character, 
+                        //a unit type (toplevel object), or an Identifiable
+                        //TODO: change this to a warning?
+                        e.addError("value case must be identifiable, a toplevel or static object, or a constant 'String', 'Integer', or 'Character': '"
+                                + dec.getName(unit) 
+                                + "' does not inherit 'Identifiable'");
+                    }
                 }
             }
             else {
@@ -8601,25 +8603,29 @@ public class ExpressionVisitor extends Visitor {
 
     private void warnIfCustomEquals(Node node, 
             TypeDeclaration dec) {
-        Declaration eq =
-                  dec.getMember("equals", 
-                      Arrays.asList(unit.getObjectType()), 
-                      false);
-          if (eq!=null) {
-              Scope container = eq.getContainer();
-              if (container instanceof TypeDeclaration) {
-                  TypeDeclaration td = 
-                          (TypeDeclaration) 
-                              container;
-                  Interface id = unit.getIdentifiableDeclaration();
-                  if (!container.equals(id)) {
-                      node.addUsageWarning(Warning.valueEqualityIgnored, 
-                              "value equality defined by type '" +
-                              td.getName(unit) +
-                              "' ignored (identity equality is used to match value case)");
-                  }
-              }
-          }
+        //assume that Java enums all have
+        //reasonable definitions of equality
+        if (!dec.isJavaEnum()) {
+            Declaration eq =
+                    dec.getMember("equals", 
+                            Arrays.asList(unit.getObjectType()), 
+                            false);
+            if (eq!=null) {
+                Scope container = eq.getContainer();
+                if (container instanceof TypeDeclaration) {
+                    TypeDeclaration td = 
+                            (TypeDeclaration) 
+                                container;
+                    Interface id = unit.getIdentifiableDeclaration();
+                    if (!container.equals(id)) {
+                        node.addUsageWarning(Warning.valueEqualityIgnored, 
+                                "value equality defined by type '" 
+                                + td.getName(unit) 
+                                + "' ignored (identity equality is used to match value case)");
+                    }
+                }
+            }
+        }
     }
 
     private static boolean isEnumCase(Tree.Term term) {
