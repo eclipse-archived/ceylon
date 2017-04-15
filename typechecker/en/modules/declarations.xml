@@ -651,11 +651,18 @@ TypeConstraints?
             
             <synopsis>ValueParameter: Annotations ValueParameterPrefix MemberName</synopsis>
             
-            <synopsis>ValueParameterPrefix: Type | "dynamic"</synopsis>
+            <synopsis>ValueParameterPrefix: Type | "value" | "dynamic"</synopsis>
             
             <para>A value parameter may be declared using the keyword <literal>dynamic</literal> 
             in place of the parameter type, indicating that it is a partially typed declaration.
             Such a parameter has no type.</para>
+            
+            <para>In general, a value parameter must have an explicit type declaration, 
+            and may not be declared with the keyword <literal>value</literal>.</para>
+            
+            <para>As a special exception, if a parameter of an anonymous function is declared 
+            with the keyword <literal>value</literal>, then the type of the parameter must be 
+            inferable, according to <xref linkend="parametertypeinference"/>.</para>
             
             <para>If a value parameter <literal>x</literal> has type <literal>X</literal>, 
             and a parameter list has type <literal>P</literal> with the principal instantiation 
