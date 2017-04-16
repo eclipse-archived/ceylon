@@ -1,22 +1,3 @@
-class ParseFloatState of
-        start | afterPlusMinus | digitsBeforeDecimal |
-        afterJustDecimal | afterDecimal |
-        digitsAfterDecimal | afterE | exponentDigits |
-        afterEPlusMinus | afterSuffix | invalid {
-
-    shared new start {}
-    shared new afterPlusMinus {}
-    shared new digitsBeforeDecimal {}
-    shared new afterJustDecimal {}
-    shared new afterDecimal {}
-    shared new digitsAfterDecimal {}
-    shared new afterE {}
-    shared new exponentDigits {}
-    shared new afterEPlusMinus {}
-    shared new afterSuffix {}
-    shared new invalid {}
-}
-
 "The [[Float]] value of the given 
  [[string representation|string]] of a decimal floating 
  point number, or `null` if the string does not represent a 
@@ -50,6 +31,32 @@ shared Float? parseFloat(String string)
                 = parseFloatInternal(string))
         then result
         else null;
+
+class ParseFloatState 
+        of start 
+         | afterPlusMinus 
+         | digitsBeforeDecimal 
+         | afterJustDecimal 
+         | afterDecimal 
+         | digitsAfterDecimal 
+         | afterE 
+         | exponentDigits 
+         | afterEPlusMinus 
+         | afterSuffix 
+         | invalid {
+    
+    shared new start {}
+    shared new afterPlusMinus {}
+    shared new digitsBeforeDecimal {}
+    shared new afterJustDecimal {}
+    shared new afterDecimal {}
+    shared new digitsAfterDecimal {}
+    shared new afterE {}
+    shared new exponentDigits {}
+    shared new afterEPlusMinus {}
+    shared new afterSuffix {}
+    shared new invalid {}
+}
 
 Float|ParseException parseFloatInternal(String string) {
 

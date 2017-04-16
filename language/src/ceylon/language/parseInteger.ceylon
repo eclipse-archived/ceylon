@@ -1,6 +1,3 @@
-Integer minRadix = 2;
-Integer maxRadix = 36;
-
 "The [[Integer]] value of the given 
  [[string representation|string]] of an integer value in the 
  base given by [[radix]], or `null` if the string does not 
@@ -53,6 +50,9 @@ shared Integer? parseInteger(
                 = parseIntegerInternal(string, radix))
         then result 
         else null;
+
+Integer minRadix = 2;
+Integer maxRadix = 36;
 
 Integer|ParseException parseIntegerInternal(
     String string, Integer radix = 10) {
