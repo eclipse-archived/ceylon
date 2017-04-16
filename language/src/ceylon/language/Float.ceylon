@@ -201,8 +201,7 @@ shared native final class Float
     tagged("Numbers", "Basic types")
     since("1.3.1")
     shared static Float|ParseException parse(String string)
-            => package.parseFloat(string)
-            else ParseException("illegal format for Float");
+            => parseFloatInternal(string);
     
     "The string decimal representation of the given 
      [[floating point number|float]]. If the given number is 
