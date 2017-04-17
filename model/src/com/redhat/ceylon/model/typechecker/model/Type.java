@@ -212,10 +212,6 @@ public class Type extends Reference {
         }
     }
     
-    boolean isAlias() {
-        return getDeclaration().isAlias();
-    }
-    
     /**
      * Is this type exactly the same type as the
      * given type? 
