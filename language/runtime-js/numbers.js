@@ -36,8 +36,7 @@ Integer.$st$={
   },
   parse:function(s,r) {
     if (r===undefined)r=10;
-    var x = parseInteger(s,r);
-    return x===null?ParseException("illegal format for Integer"):x;
+    return parseIntegerInternal(s,r);
   },
   sum:function(i) {
     var s=0;
@@ -137,8 +136,7 @@ Float.$st$={
     return formatFloat(n,min,max,ds,ts);
   },
   parse:function(s) {
-    var x=$_parseFloat(s);
-    return x===null?ParseException("illegal format for Float"):x;
+    return parseFloatInternal(s);
   },
   sum:function(f) {
     var s=0;
