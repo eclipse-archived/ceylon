@@ -313,6 +313,20 @@ public class Type extends Reference {
             }
         }
         
+        if (isTypeParameter() 
+                && type.isTypeParameter()) {
+            TypeDeclaration dec = 
+                    getDeclaration();
+            TypeDeclaration otherDec = 
+                    type.getDeclaration();
+            if (!otherDec.equals(dec)) {
+                return false;
+            }
+            if (isNotGeneric(dec)) {
+                return true;
+            }
+        }
+        
         //otherwise we need to resolve aliases
         //and canonicalize the types
         return type!=null && 
@@ -720,6 +734,16 @@ public class Type extends Reference {
         //and canonicalize, which can result
         //in an overflow
         if (type.isClassOrInterface()) {
+            if (isTypeParameter()) {
+                TypeDeclaration dec = 
+                        eliminateAlias(type.getDeclaration());
+                if (!getDeclaration().inherits(dec)) {
+                    return false;
+                }
+                if (isNotGeneric(dec)) {
+                    return true;
+                }
+            }
             if (type.isExactlyNothing()) {
                 return isExactlyNothing();
             }
@@ -783,6 +807,20 @@ public class Type extends Reference {
                     eliminateAlias(getDeclaration());
             TypeDeclaration otherDec = 
                     eliminateAlias(type.getDeclaration());
+            if (!dec.inherits(otherDec)) {
+                return false;
+            }
+            if (isNotGeneric(otherDec)) {
+                return true;
+            }
+        }
+        
+        if (isTypeParameter() 
+                && type.isTypeParameter()) {
+            TypeDeclaration dec = 
+                    getDeclaration();
+            TypeDeclaration otherDec = 
+                    type.getDeclaration();
             if (!dec.inherits(otherDec)) {
                 return false;
             }
