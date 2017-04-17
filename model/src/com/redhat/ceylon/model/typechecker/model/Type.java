@@ -320,7 +320,10 @@ public class Type extends Reference {
             return false;
         }
         if (dec.isClassOrInterfaceMember()) {
-            return isNotGeneric((TypeDeclaration) dec.getContainer());
+            TypeDeclaration outer = 
+                    (TypeDeclaration) 
+                        dec.getContainer();
+            return isNotGeneric(outer);
         }
         return true;
     }
