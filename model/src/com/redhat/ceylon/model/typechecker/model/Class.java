@@ -487,7 +487,8 @@ public class Class extends ClassOrInterface implements Functional {
         else if (dec.isFinal() &&
                 //take into account constructors 
                 //of final Java classes
-                !dec.isAbstraction()) {
+                !dec.isAbstraction() &&
+                !isJavaEnum()) {
             //cannot possibly be true, 
             //since dec is nonequal
             return false;
