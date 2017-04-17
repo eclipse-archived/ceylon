@@ -299,8 +299,7 @@ public class Type extends Reference {
             }
             if (dec.getTypeParameters()
                     .isEmpty()
-                && !dec
-                    .isClassOrInterfaceMember()) {
+                && !dec.isClassOrInterfaceMember()) {
                 return true;
             }
         }
@@ -739,8 +738,7 @@ public class Type extends Reference {
             }
             if (otherDec.getTypeParameters()
                     .isEmpty()
-                && !otherDec
-                    .isClassOrInterfaceMember()) {
+                && !otherDec.isClassOrInterfaceMember()) {
                 return true;
             }
         }
