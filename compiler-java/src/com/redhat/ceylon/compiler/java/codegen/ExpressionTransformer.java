@@ -5212,7 +5212,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             Tree.Primary primary = expr.getPrimary();
             if (Decl.isConstructor(expr.getDeclaration())) {
-                Constructor ctor = Decl.getConstructor(expr.getDeclaration());
+//                Constructor ctor = Decl.getConstructor(expr.getDeclaration());
                 if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
                     // foo.Class.Ctor => foo
                     primary = ((Tree.QualifiedMemberOrTypeExpression)primary).getPrimary();

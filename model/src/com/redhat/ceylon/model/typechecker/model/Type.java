@@ -218,6 +218,10 @@ public class Type extends Reference {
      */
     public boolean isExactly(Type type) {
         
+        if (type==null) {
+            return false;
+        }
+        
         TypeDeclaration dec = 
                 eliminateAlias(getDeclaration());
         TypeDeclaration otherDec = 
@@ -725,6 +729,10 @@ public class Type extends Reference {
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(Type type) {
+        
+        if (type==null) {
+            return false;
+        }
         
         TypeDeclaration dec = 
                 eliminateAlias(getDeclaration());
@@ -4369,6 +4377,10 @@ public class Type extends Reference {
     
     public boolean isInterface() {
         return getDeclaration() instanceof Interface;
+    }
+    
+    public boolean isConstructor() {
+        return getDeclaration() instanceof Constructor;
     }
     
     public boolean isTypeParameter() {

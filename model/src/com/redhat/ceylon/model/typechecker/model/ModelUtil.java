@@ -3435,7 +3435,8 @@ public class ModelUtil {
     public static boolean isEnumeratedConstructor(Value value) {
         return value != null
                 && value.getType() != null
-                && value.getType().getDeclaration() instanceof Constructor;
+                && value.getType().isConstructor()
+                && !value.getTypeDeclaration().isJavaEnum();
     }
 
     /** 
