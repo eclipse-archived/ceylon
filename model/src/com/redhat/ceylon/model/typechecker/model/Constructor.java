@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.JAVA_ENUM;
 import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ConstructorFlags.*;
 import static com.redhat.ceylon.model.typechecker.model.DeclarationKind.CONSTRUCTOR;
 import static java.util.Collections.emptyList;
@@ -22,6 +23,19 @@ public class Constructor extends TypeDeclaration implements Functional {
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
     
     private String typescriptEnum = null;
+    
+    public boolean isJavaEnum() {
+        return (flags&JAVA_ENUM)!=0;
+    }
+
+    public void setJavaEnum(boolean javaEnum) {
+        if (javaEnum) {
+            flags|=JAVA_ENUM;
+        }
+        else {
+            flags&=(~JAVA_ENUM);
+        }
+    }
     
     public boolean isValueConstructor() {
         return parameterList==null;

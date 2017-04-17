@@ -68,20 +68,6 @@ public class Class extends ClassOrInterface implements Functional {
     }
     
     @Override
-    public boolean isValueConstructor() {
-        return (flags&VALUE_CONSTRUCTOR)!=0;
-    }
-    
-    public void setValueConstructor(boolean valueConstructor) {
-        if (valueConstructor) {
-            flags|=VALUE_CONSTRUCTOR;
-        }
-        else {
-            flags&=(~VALUE_CONSTRUCTOR);
-        }
-    }
-    
-    @Override
     public boolean isAnonymous() {
         return (flags&ANONYMOUS)!=0;
     }
@@ -536,19 +522,6 @@ public class Class extends ClassOrInterface implements Functional {
         }
     }
 
-    public boolean isJavaEnum() {
-        return (flags&JAVA_ENUM)!=0;
-    }
-
-    public void setJavaEnum(boolean javaEnum) {
-        if (javaEnum) {
-            flags|=JAVA_ENUM;
-        }
-        else {
-            flags&=(~JAVA_ENUM);
-        }
-    }
-    
     @Override
     public boolean isEmptyType() {
         return isEmptyValue();

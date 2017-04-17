@@ -1769,7 +1769,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                               || (!classMirror.isInnerClass() && !classMirror.isLocalClass() && classMirror.isAbstract()));
             
         else
-            klass.setAbstract(classMirror.isAbstract());
+            klass.setAbstract(classMirror.isAbstract() && !classMirror.isEnum());
         klass.setFormal(classMirror.getAnnotation(CEYLON_LANGUAGE_FORMAL_ANNOTATION) != null);
         klass.setDefault(classMirror.getAnnotation(CEYLON_LANGUAGE_DEFAULT_ANNOTATION) != null);
         klass.setSerializable(classMirror.getAnnotation(CEYLON_LANGUAGE_SERIALIZABLE_ANNOTATION) != null
@@ -3989,17 +3989,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
         
         if (value.isEnumValue()) {
-            Class enumValueType = new Class();
-            enumValueType.setValueConstructor(true);
+            Constructor enumValueType = new Constructor();
             enumValueType.setJavaEnum(true);
-            enumValueType.setAnonymous(true);
             enumValueType.setExtendedType(type);
             Scope scope = value.getContainer();
             enumValueType.setContainer(scope);
             enumValueType.setScope(scope);
             enumValueType.setDeprecated(value.isDeprecated());
             enumValueType.setName(value.getName());
-            enumValueType.setFinal(true);
             enumValueType.setUnit(value.getUnit());
             enumValueType.setStatic(value.isStatic());
             value.setType(enumValueType.getType());
