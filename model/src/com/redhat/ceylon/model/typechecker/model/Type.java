@@ -251,7 +251,7 @@ public class Type extends Reference {
                         return false;
                     }
                 }
-                if (isNotGeneric(type.getDeclaration())) {
+                if (result || isNotGeneric(type.getDeclaration())) {
                     return result;
                 }
             }
@@ -286,7 +286,7 @@ public class Type extends Reference {
                         return false;
                     }
                 }
-                if (isNotGeneric(getDeclaration())) {
+                if (result || isNotGeneric(getDeclaration())) {
                     return result;
                 }
             }
