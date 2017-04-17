@@ -212,11 +212,99 @@ public class Type extends Reference {
         }
     }
     
+    boolean isAlias() {
+        return getDeclaration().isAlias();
+    }
+    
     /**
      * Is this type exactly the same type as the
      * given type? 
      */
     public boolean isExactly(Type type) {
+        
+        //shortcircuit certain simple cases
+        //to avoid having to resolve aliases
+        //and canonicalize, which can result
+        //in an overflow
+        if (type.isClassOrInterface()) {
+            if (isUnion()) {
+                boolean result = false;
+                for (Type ct: getCaseTypes()) {
+                    if (ct.isExactly(type)) {
+                        result = true;
+                    }
+                    else if (!ct.isSubtypeOf(type)) {
+                        return false;
+                    }
+                }
+                return result;
+            }
+            if (isIntersection()) {
+                boolean result = false;
+                for (Type st: getSatisfiedTypes()) {
+                    if (st.isExactly(type)) {
+                        result = true;
+                    }
+                    else if (!st.isSupertypeOf(type)) {
+                        return false;
+                    }
+                }
+                return result;
+            }
+        }
+        
+        if (isClassOrInterface()) {
+            if (type.isUnion()) {
+                boolean result = false;
+                for (Type ct: type.getCaseTypes()) {
+                    if (isExactly(ct)) {
+                        result = true;
+                    }
+                    else if (!isSubtypeOf(ct)) {
+                        return false;
+                    }
+                }
+                return result;
+            }
+            if (type.isIntersection()) {
+                boolean result = false;
+                for (Type st: type.getSatisfiedTypes()) {
+                    if (isExactly(st)) {
+                        result = true;
+                    }
+                    else if (!isSupertypeOf(st)) {
+                        return false;
+                    }
+                }
+                return result;
+            }
+        }
+        
+        if (isClassOrInterface() 
+                && type.isClassOrInterface()) {
+            if (isExactlyNothing()) {
+                return type.isExactlyNothing();
+            }
+            if (type.isExactlyNothing()) {
+                return isExactlyNothing();
+            }
+            TypeDeclaration dec = 
+                    eliminateAlias(getDeclaration());
+            TypeDeclaration otherDec = 
+                    eliminateAlias(type.getDeclaration());
+            if (!otherDec.equals(dec)) {
+                return false;
+            }
+            if (dec.getTypeParameters()
+                    .isEmpty()
+                && !dec
+                    .isClassOrInterfaceMember()) {
+                return true;
+            }
+        }
+        
+        //otherwise we need to resolve aliases
+        //and canonicalize the types
         return type!=null && 
                 resolveAliases()
                     .isExactlyInternal(
@@ -603,10 +691,72 @@ public class Type extends Reference {
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(Type type) {
+        
+        //shortcircuit certain simple cases
+        //to avoid having to resolve aliases
+        //and canonicalize, which can result
+        //in an overflow
+        if (isUnion() && type.isClassOrInterface()) {
+            for (Type ct: getCaseTypes()) {
+                if (!ct.isSubtypeOf(type)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        if (isClassOrInterface() && type.isUnion()) {
+            for (Type ct: type.getCaseTypes()) {
+                if (isSubtypeOf(ct)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        if (isClassOrInterface() 
+                && type.isClassOrInterface()) {
+            if (isExactlyNothing()) {
+                return true;
+            }
+            if (type.isExactlyNothing()) {
+                return isExactlyNothing();
+            }
+            TypeDeclaration dec = 
+                    eliminateAlias(getDeclaration());
+            TypeDeclaration otherDec = 
+                    eliminateAlias(type.getDeclaration());
+            if (!dec.inherits(otherDec)) {
+                return false;
+            }
+            if (otherDec.getTypeParameters()
+                    .isEmpty()
+                && !otherDec
+                    .isClassOrInterfaceMember()) {
+                return true;
+            }
+        }
+        
+        //otherwise we need to resolve aliases
+        //and canonicalize the types
         return type!=null && 
                 resolveAliases()
                     .isSubtypeOfInternal(
                             type.resolveAliases());
+    }
+
+    private static TypeDeclaration eliminateAlias(
+            TypeDeclaration dec) {
+        while (dec.isAlias()) {
+            Type et = dec.getExtendedType();
+            if (et==null) {
+                break;
+            }
+            else {
+                dec = et.getDeclaration();
+            }
+        }
+        return dec;
     }
 
     /**

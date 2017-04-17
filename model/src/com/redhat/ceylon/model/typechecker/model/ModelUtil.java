@@ -1840,6 +1840,10 @@ public class ModelUtil {
         set.addAll(pstds); 
         set.retainAll(qstds);
         for (TypeDeclaration std: set) {
+            if (std.getName().equals("Inv")) {
+                p.getSupertype(std);
+                q.getSupertype(std);
+            }
             Type pst = null;
             Type qst = null;
             for (TypeParameter tp: std.getTypeParameters()) {
