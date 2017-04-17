@@ -248,7 +248,9 @@ public class Type extends Reference {
                         return false;
                     }
                 }
-                return result;
+                if (isNotGeneric(type.getDeclaration())) {
+                    return result;
+                }
             }
         }
         
@@ -278,18 +280,21 @@ public class Type extends Reference {
                         return false;
                     }
                 }
-                return result;
+                if (isNotGeneric(getDeclaration())) {
+                    return result;
+                }
             }
         }
         
         if (isClassOrInterface() 
                 && type.isClassOrInterface()) {
-            if (isExactlyNothing()) {
+            //already handled above!
+            /*if (isExactlyNothing()) {
                 return type.isExactlyNothing();
             }
             if (type.isExactlyNothing()) {
                 return isExactlyNothing();
-            }
+            }*/
             TypeDeclaration dec = 
                     eliminateAlias(getDeclaration());
             TypeDeclaration otherDec = 
@@ -297,9 +302,7 @@ public class Type extends Reference {
             if (!otherDec.equals(dec)) {
                 return false;
             }
-            if (dec.getTypeParameters()
-                    .isEmpty()
-                && !dec.isClassOrInterfaceMember()) {
+            if (isNotGeneric(dec)) {
                 return true;
             }
         }
@@ -310,6 +313,16 @@ public class Type extends Reference {
                 resolveAliases()
                     .isExactlyInternal(
                             type.resolveAliases());
+    }
+
+    private static boolean isNotGeneric(TypeDeclaration dec) {
+        if (!dec.getTypeParameters().isEmpty()) {
+            return false;
+        }
+        if (dec.isClassOrInterfaceMember()) {
+            return isNotGeneric((TypeDeclaration) dec.getContainer());
+        }
+        return true;
     }
     
     private boolean isExactlyInternal(Type type) {
@@ -697,38 +710,63 @@ public class Type extends Reference {
         //to avoid having to resolve aliases
         //and canonicalize, which can result
         //in an overflow
-        if (isUnion() && type.isClassOrInterface()) {
+        if (type.isClassOrInterface()) {
             if (type.isExactlyNothing()) {
                 return isExactlyNothing();
             }
-            for (Type ct: getCaseTypes()) {
-                if (!ct.isSubtypeOf(type)) {
+            if (isUnion()) {
+                for (Type ct: getCaseTypes()) {
+                    if (!ct.isSubtypeOf(type)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (isIntersection()) {
+                for (Type st: getSatisfiedTypes()) {
+                    if (st.isSubtypeOf(type)) {
+                        return true;
+                    }
+                }
+                if (isNotGeneric(type.getDeclaration())) {
                     return false;
                 }
             }
-            return true;
         }
         
-        if (isClassOrInterface() && type.isUnion()) {
+        if (isClassOrInterface()) {
             if (isExactlyNothing()) {
-                return type.isExactlyNothing();
+                return true;
             }
-            for (Type ct: type.getCaseTypes()) {
-                if (isSubtypeOf(ct)) {
+            if (type.isUnion()) {
+                for (Type ct: type.getCaseTypes()) {
+                    if (isSubtypeOf(ct)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            if (type.isIntersection()) {
+                for (Type st: type.getSatisfiedTypes()) {
+                    if (!isSubtypeOf(st)) {
+                        return false;
+                    }
+                }
+                if (isNotGeneric(getDeclaration())) {
                     return true;
                 }
             }
-            return false;
         }
         
         if (isClassOrInterface() 
                 && type.isClassOrInterface()) {
-            if (isExactlyNothing()) {
+            //already handled above!
+            /*if (isExactlyNothing()) {
                 return true;
             }
             if (type.isExactlyNothing()) {
                 return isExactlyNothing();
-            }
+            }*/
             TypeDeclaration dec = 
                     eliminateAlias(getDeclaration());
             TypeDeclaration otherDec = 
@@ -736,9 +774,7 @@ public class Type extends Reference {
             if (!dec.inherits(otherDec)) {
                 return false;
             }
-            if (otherDec.getTypeParameters()
-                    .isEmpty()
-                && !otherDec.isClassOrInterfaceMember()) {
+            if (isNotGeneric(otherDec)) {
                 return true;
             }
         }
