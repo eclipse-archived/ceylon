@@ -218,18 +218,23 @@ public class Type extends Reference {
      */
     public boolean isExactly(Type type) {
         
+        TypeDeclaration dec = 
+                eliminateAlias(getDeclaration());
+        TypeDeclaration otherDec = 
+                eliminateAlias(type.getDeclaration());
+        
         //shortcircuit certain simple cases
         //to avoid having to resolve aliases
         //and canonicalize, which can result
         //in an overflow
-        if (type.isClassOrInterface()) {
-            if (isTypeParameter()) {
+        if (otherDec instanceof ClassOrInterface) {
+            if (dec instanceof TypeParameter) {
                 return false;
             }
             if (type.isExactlyNothing()) {
                 return isExactlyNothing();
             }
-            if (isUnion()) {
+            if (dec instanceof UnionType) {
                 boolean result = false;
                 for (Type ct: getCaseTypes()) {
                     if (ct.isExactly(type)) {
@@ -241,7 +246,7 @@ public class Type extends Reference {
                 }
                 return result;
             }
-            if (isIntersection()) {
+            if (dec instanceof IntersectionType) {
                 boolean result = false;
                 for (Type st: getSatisfiedTypes()) {
                     if (st.isExactly(type)) {
@@ -251,20 +256,20 @@ public class Type extends Reference {
                         return false;
                     }
                 }
-                if (result || isNotGeneric(type.getDeclaration())) {
+                if (result || isNotGeneric(otherDec)) {
                     return result;
                 }
             }
         }
         
-        if (isClassOrInterface()) {
-            if (type.isTypeParameter()) {
+        if (dec instanceof ClassOrInterface) {
+            if (otherDec instanceof TypeParameter) {
                 return false;
             }
             if (isExactlyNothing()) {
                 return type.isExactlyNothing();
             }
-            if (type.isUnion()) {
+            if (otherDec instanceof UnionType) {
                 boolean result = false;
                 for (Type ct: type.getCaseTypes()) {
                     if (isExactly(ct)) {
@@ -276,7 +281,7 @@ public class Type extends Reference {
                 }
                 return result;
             }
-            if (type.isIntersection()) {
+            if (otherDec instanceof IntersectionType) {
                 boolean result = false;
                 for (Type st: type.getSatisfiedTypes()) {
                     if (isExactly(st)) {
@@ -286,14 +291,14 @@ public class Type extends Reference {
                         return false;
                     }
                 }
-                if (result || isNotGeneric(getDeclaration())) {
+                if (result || isNotGeneric(dec)) {
                     return result;
                 }
             }
         }
         
-        if (isClassOrInterface() 
-                && type.isClassOrInterface()) {
+        if (dec instanceof ClassOrInterface 
+            && otherDec instanceof ClassOrInterface) {
             //already handled above!
             /*if (isExactlyNothing()) {
                 return type.isExactlyNothing();
@@ -301,10 +306,6 @@ public class Type extends Reference {
             if (type.isExactlyNothing()) {
                 return isExactlyNothing();
             }*/
-            TypeDeclaration dec = 
-                    eliminateAlias(getDeclaration());
-            TypeDeclaration otherDec = 
-                    eliminateAlias(type.getDeclaration());
             if (!otherDec.equals(dec)) {
                 return false;
             }
@@ -313,12 +314,8 @@ public class Type extends Reference {
             }
         }
         
-        if (isTypeParameter() 
-                && type.isTypeParameter()) {
-            TypeDeclaration dec = 
-                    getDeclaration();
-            TypeDeclaration otherDec = 
-                    type.getDeclaration();
+        if (dec instanceof TypeParameter 
+            && otherDec instanceof TypeParameter) {
             if (!otherDec.equals(dec)) {
                 return false;
             }
@@ -729,15 +726,18 @@ public class Type extends Reference {
      */
     public boolean isSubtypeOf(Type type) {
         
+        TypeDeclaration dec = 
+                eliminateAlias(getDeclaration());
+        TypeDeclaration otherDec = 
+                eliminateAlias(type.getDeclaration());
+        
         //shortcircuit certain simple cases
         //to avoid having to resolve aliases
         //and canonicalize, which can result
         //in an overflow
-        if (type.isClassOrInterface()) {
-            if (isTypeParameter()) {
-                TypeDeclaration dec = 
-                        eliminateAlias(type.getDeclaration());
-                if (!getDeclaration().inherits(dec)) {
+        if (otherDec instanceof ClassOrInterface) {
+            if (dec instanceof TypeParameter) {
+                if (!dec.inherits(otherDec)) {
                     return false;
                 }
                 if (isNotGeneric(dec)) {
@@ -747,7 +747,7 @@ public class Type extends Reference {
             if (type.isExactlyNothing()) {
                 return isExactlyNothing();
             }
-            if (isUnion()) {
+            if (dec instanceof UnionType) {
                 for (Type ct: getCaseTypes()) {
                     if (!ct.isSubtypeOf(type)) {
                         return false;
@@ -755,26 +755,26 @@ public class Type extends Reference {
                 }
                 return true;
             }
-            if (isIntersection()) {
+            if (dec instanceof IntersectionType) {
                 for (Type st: getSatisfiedTypes()) {
                     if (st.isSubtypeOf(type)) {
                         return true;
                     }
                 }
-                if (isNotGeneric(type.getDeclaration())) {
+                if (isNotGeneric(otherDec)) {
                     return false;
                 }
             }
         }
         
-        if (isClassOrInterface()) {
-            if (type.isTypeParameter()) {
+        if (dec instanceof ClassOrInterface) {
+            if (otherDec instanceof TypeParameter) {
                 return false;
             }
             if (isExactlyNothing()) {
                 return true;
             }
-            if (type.isUnion()) {
+            if (otherDec instanceof UnionType) {
                 for (Type ct: type.getCaseTypes()) {
                     if (isSubtypeOf(ct)) {
                         return true;
@@ -782,20 +782,20 @@ public class Type extends Reference {
                 }
                 return false;
             }
-            if (type.isIntersection()) {
+            if (otherDec instanceof IntersectionType) {
                 for (Type st: type.getSatisfiedTypes()) {
                     if (!isSubtypeOf(st)) {
                         return false;
                     }
                 }
-                if (isNotGeneric(getDeclaration())) {
+                if (isNotGeneric(dec)) {
                     return true;
                 }
             }
         }
         
-        if (isClassOrInterface() 
-                && type.isClassOrInterface()) {
+        if (dec instanceof ClassOrInterface 
+            && otherDec instanceof ClassOrInterface) {
             //already handled above!
             /*if (isExactlyNothing()) {
                 return true;
@@ -803,10 +803,6 @@ public class Type extends Reference {
             if (type.isExactlyNothing()) {
                 return isExactlyNothing();
             }*/
-            TypeDeclaration dec = 
-                    eliminateAlias(getDeclaration());
-            TypeDeclaration otherDec = 
-                    eliminateAlias(type.getDeclaration());
             if (!dec.inherits(otherDec)) {
                 return false;
             }
@@ -815,12 +811,8 @@ public class Type extends Reference {
             }
         }
         
-        if (isTypeParameter() 
-                && type.isTypeParameter()) {
-            TypeDeclaration dec = 
-                    getDeclaration();
-            TypeDeclaration otherDec = 
-                    type.getDeclaration();
+        if (dec instanceof TypeParameter 
+            && otherDec instanceof TypeParameter) {
             if (!dec.inherits(otherDec)) {
                 return false;
             }
@@ -839,6 +831,10 @@ public class Type extends Reference {
 
     private static TypeDeclaration eliminateAlias(
             TypeDeclaration dec) {
+        if (dec instanceof TypeAlias) {
+            //not handled here
+            return dec;
+        }
         while (dec.isAlias()) {
             Type et = dec.getExtendedType();
             if (et==null) {
@@ -3703,8 +3699,8 @@ public class Type extends Reference {
      *         arguments satisfy the upper bounds
      */
     Type narrowToUpperBounds() {
-        if (isClassOrInterface()) {
-            TypeDeclaration declaration = getDeclaration();
+        TypeDeclaration declaration = getDeclaration();
+        if (declaration instanceof ClassOrInterface) {
             List<TypeParameter> params = 
                     declaration.getTypeParameters();
             if (!params.isEmpty()) {
@@ -3957,16 +3953,17 @@ public class Type extends Reference {
     private Type resolveAliasesInternal() {
         TypeDeclaration dec = getDeclaration();
         Unit unit = dec.getUnit();
-        if (isClassOrInterface() &&
+        if (dec instanceof ClassOrInterface &&
                 getQualifyingType()==null &&
                 !dec.isAlias() &&
-                dec.getTypeParameters().isEmpty()) {
+                dec.getTypeParameters()
+                    .isEmpty()) {
             return this;
         }
         else if (isTypeConstructor()) {
             return this;
         }
-        else if (isUnion()) {
+        else if (dec instanceof UnionType) {
             List<Type> caseTypes = 
                     getCaseTypes();
             List<Type> list = 
@@ -3978,7 +3975,7 @@ public class Type extends Reference {
             }
             return union(list, unit);
         }
-        else if (isIntersection()) {
+        else if (dec instanceof IntersectionType) {
             List<Type> satisfiedTypes = 
                     getSatisfiedTypes();
             List<Type> list = 
