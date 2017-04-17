@@ -830,7 +830,7 @@ public abstract class AbstractTransformer implements Transformation {
             type = typeFact().getBooleanType();
         else if(containsJavaEnumInUnion(type))
             type = typeFact().denotableType(type);
-        if (type.getDeclaration() instanceof Constructor) {
+        if (type.isConstructor()) {
             type = type.getExtendedType();
         }
         return type;
@@ -840,8 +840,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(!type.isUnion())
             return false;
         for(Type caseType : type.getCaseTypes()){
-            if(caseType.isClass()
-                    && caseType.getDeclaration().isJavaEnum())
+            if(caseType.getDeclaration().isJavaEnum())
                 return true;
         }
         return false;
@@ -1917,7 +1916,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(type == null || type.isUnknown())
             return make().Erroneous();
         
-        if (type.getDeclaration() instanceof Constructor) {
+        if (type.isConstructor()) {
             type = type.getExtendedType();
         }
         
@@ -1944,9 +1943,6 @@ public abstract class AbstractTransformer implements Transformation {
                     break;
                 }
             }
-        }
-        if(type.getDeclaration().isJavaEnum()){
-            type = type.getExtendedType();
         }
         
         if (type.isTypeConstructor()) {
@@ -5649,10 +5645,6 @@ public abstract class AbstractTransformer implements Transformation {
             declaration = pt.getDeclaration();
         }
         if(pt.isClassOrInterface()){
-            if(declaration.isJavaEnum()){
-                pt = pt.getExtendedType();
-                declaration = pt.getDeclaration();
-            }
             // see if we have an alias for it
             if(supportsReifiedAlias((ClassOrInterface) declaration)){
                 JCExpression qualifier = naming.makeDeclarationName(declaration, DeclNameFlag.QUALIFIED);
@@ -5716,7 +5708,7 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
             if (qualifyingType != null && 
-                    qualifyingType.getDeclaration() instanceof Constructor) {
+                    qualifyingType.isConstructor()) {
                 qualifyingType = qualifyingType.getQualifyingType();
             }
             if(qualifyingType != null){

@@ -1,7 +1,6 @@
 package com.redhat.ceylon.model.loader;
 
 import com.redhat.ceylon.common.JVMModuleUtil;
-import com.redhat.ceylon.model.loader.NamingBase.Prefix;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.OutputElement;
@@ -395,9 +394,7 @@ public class NamingBase {
         if (clz.isToplevel()) {
             return JVMModuleUtil.quoteIfJavaKeyword(singletonModel.getName());
         }
-        else if (clz.isClassMember()){
-            return prefixName(Prefix.$instance$, clz.getName(), singletonModel.getName());
-        } else {
+        else {
             return prefixName(Prefix.$instance$, clz.getName(), singletonModel.getName());
         }
     }

@@ -75,7 +75,6 @@ public class DeclarationFlags {
         public static final long SERIALIZABLE      = 1L << DeclarationFlags.LAST + 5;
         public static final long ANONYMOUS         = 1L << DeclarationFlags.LAST + 6;
         public static final long JAVA_ENUM         = 1L << DeclarationFlags.LAST + 7;
-        public static final long VALUE_CONSTRUCTOR = 1L << DeclarationFlags.LAST + 8;
         public static final long OVERLOADED        = 1L << DeclarationFlags.LAST + 9;
         public static final long ABSTRACTION       = 1L << DeclarationFlags.LAST + 10;
         public static final long NO_NAME           = 1L << DeclarationFlags.LAST + 11;

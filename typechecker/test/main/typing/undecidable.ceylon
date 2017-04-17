@@ -18,7 +18,9 @@ void undecidable() {
     
     interface Invar<P> {}
     interface G satisfies Invar<H> {}
-    @error interface H satisfies Invar<G&H> {}
+    interface H satisfies Invar<G&H> {}
+    interface K satisfies Invar<K> {}
+    interface L satisfies Invar<K&L> {}
     
     interface Sub satisfies In<E> {}
     interface SubList satisfies List<E> {}
@@ -76,7 +78,7 @@ void evenmore() {
     @error interface A satisfies Inv<B|Inv<B>> {}
     interface B satisfies A {}
     
-    @error interface AA satisfies Inv<BB&CC> {}
+    interface AA satisfies Inv<BB&CC> {}
     interface BB satisfies Inv<AA> {}
     interface CC satisfies AA {}
 }
