@@ -339,8 +339,7 @@ public class Type extends Reference {
         if (!dec.getTypeParameters().isEmpty()) {
             return false;
         }
-        if (dec.isClassOrInterfaceMember()
-                && !dec.isStatic()) {
+        if (dec.isClassOrInterfaceMember()) {
             TypeDeclaration outer = 
                     (TypeDeclaration) 
                         dec.getContainer();
