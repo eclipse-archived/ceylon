@@ -223,6 +223,9 @@ public class Type extends Reference {
         //and canonicalize, which can result
         //in an overflow
         if (type.isClassOrInterface()) {
+            if (isTypeParameter()) {
+                return false;
+            }
             if (type.isExactlyNothing()) {
                 return isExactlyNothing();
             }
@@ -255,6 +258,9 @@ public class Type extends Reference {
         }
         
         if (isClassOrInterface()) {
+            if (type.isTypeParameter()) {
+                return false;
+            }
             if (isExactlyNothing()) {
                 return type.isExactlyNothing();
             }
@@ -738,6 +744,9 @@ public class Type extends Reference {
         }
         
         if (isClassOrInterface()) {
+            if (type.isTypeParameter()) {
+                return false;
+            }
             if (isExactlyNothing()) {
                 return true;
             }
