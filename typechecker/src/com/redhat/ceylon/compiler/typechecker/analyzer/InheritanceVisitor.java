@@ -5,7 +5,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeDescription;
@@ -385,7 +384,7 @@ public class InheritanceVisitor extends Visitor {
                                     "' is declared final");
                         }
                         if (etd.isSealed() && 
-                                !inSameModule(etd, unit)) {
+                                !unit.inSameModule(etd)) {
                             String moduleName = 
                                     etd.getUnit()
                                         .getPackage()
@@ -451,7 +450,7 @@ public class InheritanceVisitor extends Visitor {
                     TypeDeclaration std = 
                             dec;
                     if (std.isSealed() && 
-                            !inSameModule(std, unit)) {
+                            !unit.inSameModule(std)) {
                         String moduleName = 
                                 std.getUnit()
                                     .getPackage()

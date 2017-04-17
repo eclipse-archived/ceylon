@@ -399,6 +399,9 @@ void meta() {
     @error value cd14 = `new Foo`;
     
     @error value broke = `Map<Anything,Anything>`;
+    
+    @type:"Class<ArraySequence<Integer>,Nothing>" 
+    value sealed = `ArraySequence<Integer>`;
 }
 
 void testPackagesModules() {

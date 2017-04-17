@@ -2581,9 +2581,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         boolean variable = declaration.isVariable();
         Type getType;
         Type setType = getNothingType();
-        Type qualifyingType = declaration.isStatic() ?
-                getNullType() :
-                reference.getQualifyingType();
+        Type qualifyingType = 
+                declaration.isStatic() ?
+                    getNullType() :
+                    reference.getQualifyingType();
         if (declaration.getTypeDeclaration() 
                 instanceof Constructor) {
             getType = denotableType(reference.getType());
@@ -2614,7 +2615,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     }
     
     public Type getFunctionMetatype(TypedReference reference) {
-        TypedDeclaration declaration = reference.getDeclaration();
+        TypedDeclaration declaration = 
+                reference.getDeclaration();
         Functional fun = (Functional) declaration;
         if (fun.getParameterLists().isEmpty()) {
             return null;
@@ -2630,9 +2632,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             return null;
         }
         else {
-            Type qualifyingType = declaration.isStatic() ?
-                    getNullType() :
-                    reference.getQualifyingType();
+            Type qualifyingType = 
+                    declaration.isStatic() ?
+                        getNullType() :
+                        reference.getQualifyingType();
             if (qualifyingType!=null) {
                 TypeDeclaration md = 
                         getLanguageModuleModelTypeDeclaration(
@@ -2757,7 +2760,9 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         if ((declaration.isClassOrInterfaceMember() 
                 || declaration.isToplevel()) 
             && parameterList!=null
-            && !declaration.isAbstraction()) {
+            && !declaration.isAbstraction()
+            && (!declaration.isSealed() 
+                    || inSameModule(declaration))) {
             List<Parameter> params = 
                     parameterList.getParameters();
             parameterTuple = 
@@ -2766,9 +2771,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         else {
             parameterTuple = getNothingType();
         }
-        Type qualifyingType = declaration.isStatic() ?
-                getNullType() :
-                type.getQualifyingType();
+        Type qualifyingType = 
+                declaration.isStatic() ?
+                    getNullType() :
+                    type.getQualifyingType();
         if (qualifyingType!=null) {
             TypeDeclaration mcd = 
                     getLanguageModuleModelTypeDeclaration(
@@ -2784,13 +2790,23 @@ public class Unit implements LanguageModuleProvider, ImportScope {
                     parameterTuple);
         }
     }
-    
+
+    public boolean inSameModule(Declaration declaration) {
+        Module module = 
+                getPackage().getModule();
+        Module otherModule = 
+                declaration.getUnit()
+                    .getPackage().getModule();
+        return module.equals(otherModule);
+    }
+
     public Type getInterfaceMetatype(Type type) {
         Interface declaration = 
                 (Interface) type.getDeclaration();
-        Type qualifyingType = declaration.isStatic() ?
-                getNullType() :
-                type.getQualifyingType();
+        Type qualifyingType = 
+                declaration.isStatic() ?
+                    getNullType() :
+                    type.getQualifyingType();
         if (qualifyingType!=null) {
             TypeDeclaration mid = 
                     getLanguageModuleModelTypeDeclaration(

@@ -1430,11 +1430,6 @@ public class AnalyzerUtil {
         }
     }
 
-    static boolean inSameModule(TypeDeclaration etd, Unit unit) {
-        return etd.getUnit().getPackage().getModule()
-                .equals(unit.getPackage().getModule());
-    }
-
     static void checkCasesDisjoint(Type later, Type earlier,
             Node node) {
         if (!isTypeUnknown(later) && !isTypeUnknown(earlier)) {

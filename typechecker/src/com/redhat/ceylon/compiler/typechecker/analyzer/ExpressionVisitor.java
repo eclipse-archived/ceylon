@@ -22,7 +22,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getUnspecifiedParameter;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackage;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
@@ -7707,7 +7706,7 @@ public class ExpressionVisitor extends Visitor {
     private boolean checkSealedReference(TypeDeclaration type,
             Tree.MemberOrTypeExpression that) {
         if (type.isSealed() && 
-                !inSameModule(type, unit) &&
+                !unit.inSameModule(type) &&
                 !that.getStaticMethodReferencePrimary()) {
             String moduleName = 
                     type.getUnit()
