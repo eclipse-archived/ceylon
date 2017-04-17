@@ -223,6 +223,9 @@ public class Type extends Reference {
         //and canonicalize, which can result
         //in an overflow
         if (type.isClassOrInterface()) {
+            if (type.isExactlyNothing()) {
+                return isExactlyNothing();
+            }
             if (isUnion()) {
                 boolean result = false;
                 for (Type ct: getCaseTypes()) {
@@ -250,6 +253,9 @@ public class Type extends Reference {
         }
         
         if (isClassOrInterface()) {
+            if (isExactlyNothing()) {
+                return type.isExactlyNothing();
+            }
             if (type.isUnion()) {
                 boolean result = false;
                 for (Type ct: type.getCaseTypes()) {
@@ -693,6 +699,9 @@ public class Type extends Reference {
         //and canonicalize, which can result
         //in an overflow
         if (isUnion() && type.isClassOrInterface()) {
+            if (type.isExactlyNothing()) {
+                return isExactlyNothing();
+            }
             for (Type ct: getCaseTypes()) {
                 if (!ct.isSubtypeOf(type)) {
                     return false;
@@ -702,6 +711,9 @@ public class Type extends Reference {
         }
         
         if (isClassOrInterface() && type.isUnion()) {
+            if (isExactlyNothing()) {
+                return type.isExactlyNothing();
+            }
             for (Type ct: type.getCaseTypes()) {
                 if (isSubtypeOf(ct)) {
                     return true;
