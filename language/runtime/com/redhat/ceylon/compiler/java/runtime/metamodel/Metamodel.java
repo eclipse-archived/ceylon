@@ -704,7 +704,7 @@ public class Metamodel {
     }
 
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.model.typechecker.model.Module module) {
-        if (module.isJava()) {
+        if (module.isJava() || module.isDefaultModule()) {
             //Java modules don't have module descriptor classes 
             for (com.redhat.ceylon.model.typechecker.model.Package p: module.getPackages()) {
                 for (Declaration d: p.getMembers()) {
