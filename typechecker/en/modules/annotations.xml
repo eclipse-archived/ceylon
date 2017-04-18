@@ -426,6 +426,10 @@ shared deprecated</programlisting>
                     serializable.</para>
                 </listitem>
                 <listitem>
+                    <para><literal>service</literal> specifies that a class implements
+                    a given service type.</para>
+                </listitem>
+                <listitem>
                     <para><literal>optional</literal> specifies that a module 
                     dependency is optional at runtime, as defined in 
                     <xref linkend="moduledescriptors"/>.</para>
