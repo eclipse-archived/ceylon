@@ -343,13 +343,15 @@ shared deprecated</programlisting>
                 <listitem>
                     <para><literal>shared</literal> specifies that a 
                     declaration is visible outside of the package or body in 
-                    which it occurs, or that a package is visible outside the
-                    module it belongs to.</para>
+                    which it occurs, as specified in <xref linkend="visibility"/>, 
+                    or that a package is visible outside the module it belongs 
+                    to, as specified in <xref linkend="imports"/>.</para>
                 </listitem>
                 <listitem>
                     <para><literal>abstract</literal> specifies that a class
                     cannot be instantiated, or that a constructor is a 
-                    partial constructor.</para>
+                    partial constructor, as specified in 
+                    <xref linkend="abstractandformalclasses"/>.</para>
                 </listitem>
                  <listitem>
                     <para><literal>formal</literal> specifies that a member 
@@ -367,7 +369,8 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>variable</literal> specifies that a value 
-                    may be assigned multiple times.</para>
+                    may be assigned multiple times, as specified in
+                    <xref linkend="references"/>.</para>
                 </listitem>
                 <listitem>
                     <para><literal>late</literal> disables definite 
@@ -375,7 +378,8 @@ shared deprecated</programlisting>
                     reference to omit initialization in its declaration, or a
                     reference which is an attribute of a class to be left
                     unassigned by the initializer of the class, and allows the 
-                    value to be assigned by any other code.</para>
+                    value to be assigned by any other code, as specified by
+                    <xref linkend="references"/>.</para>
                 </listitem>
                 <listitem>
                     <para><literal>native</literal> specifies that a program
@@ -398,20 +402,33 @@ shared deprecated</programlisting>
                 <listitem>
                     <para><literal>final</literal> specifies that a class may not 
                     be extended, and may not declare <literal>default</literal>
-                    members.</para>
+                    members, as specified in 
+                    <xref linkend="abstractandformalclasses"/>.</para>
                 </listitem>
                 <listitem>
                     <para><literal>sealed</literal> specifies that a class may not 
                     be extended or instantiated outside the module in which it is
-                    defined, that an interface may not be satisfied by a class or 
-                    interface outside the module in which it is defined, or that
-                    a constructor may not be invoked outside the module in which 
-                    it is defined.</para>
+                    defined, as specified in <xref linkend="abstractandformalclasses"/>, 
+                    that an interface may not be satisfied by a class or interface 
+                    outside the module in which it is defined, as specified in
+                    <xref linkend="sealedinterfaces"/>, or that a constructor may 
+                    not be invoked outside the module in which it is defined,
+                    as specified in <xref linkend="constructors"/>.</para>
                 </listitem>
                 <listitem>
                     <para><literal>annotation</literal> specifies that a class is
                     an annotation type, or that a toplevel function is an annotation
-                    constructor.</para>
+                    constructor, as specified in 
+                    <xref linkend="annotationdefinition"/>.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>serializable</literal> specifies that a class is
+                    serializable.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>optional</literal> specifies that a module 
+                    dependency is optional at runtime, as defined in 
+                    <xref linkend="moduledescriptors"/>.</para>
                 </listitem>
                 <listitem>
                     <para><literal>suppressWarnings</literal> hides compilation
@@ -467,6 +484,10 @@ shared deprecated</programlisting>
                 <listitem>
                     <para><literal>throws</literal> specifies a thrown exception
                     type.</para>
+                </listitem>
+                <listitem>
+                    <para><literal>aliased</literal> specifies aliases that tools
+                    use to offer suggestions.</para>
                 </listitem>
                 <listitem>
                     <para><literal>tagged</literal> specifies classifying named 
