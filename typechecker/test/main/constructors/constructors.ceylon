@@ -278,7 +278,7 @@ class WithDupeDefaultConstructor {
 }
 
 class WithUnsharedDefaultConstructor {
-    @error new () {}
+    new () {}
     shared new create() {}
 }
 
