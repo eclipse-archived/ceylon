@@ -370,7 +370,6 @@ memberNameDeclaration returns [Identifier identifier]
     | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input), 5001); }
       typeName { $identifier = $typeName.identifier; }
-      
     ;
 
 typeNameDeclaration returns [Identifier identifier]
@@ -1535,12 +1534,10 @@ declarationOrStatement returns [Statement statement]
       (
         (destructureStart) => destructure
         { $statement=$destructure.destructure; }
-      | (annotatedDeclarationStart) => d1=declaration
-        { $statement=$d1.declaration; }
       | (annotatedAssertionStart) => assertion
         { $statement = $assertion.assertion; }
-      | (annotationListStart) => d2=declaration
-        { $statement=$d2.declaration; }
+      | (annotatedDeclarationStart) => declaration
+        { $statement = $declaration.declaration; }
       | s=statement
         { $statement=$s.statement; }
       )
@@ -1585,8 +1582,14 @@ declaration returns [Declaration declaration]
     ;
 
 annotatedDeclarationStart
-    : stringLiteral? annotation* 
-      ((unambiguousType) => unambiguousType | declarationStart)
+    : stringLiteral? 
+    ( 
+      annotation (annotation | (unambiguousType) => unambiguousType | declarationStart)
+    |
+      (unambiguousType) => unambiguousType 
+    | 
+      declarationStart
+    )
     ;
 
 annotatedAssertionStart
