@@ -643,8 +643,8 @@ variadicVariable returns [Variable variable]
           $variable.setType(st); }*/
       )
       (
-        memberName
-        { $variable.setIdentifier($memberName.identifier); }
+        memberNameDeclaration
+        { $variable.setIdentifier($memberNameDeclaration.identifier); }
       )?
     ;
 
@@ -1359,9 +1359,9 @@ parameterDeclaration returns [TypedDeclaration declaration]
       | VALUE_MODIFIER
         { a.setType(new ValueModifier($VALUE_MODIFIER)); }
       )
-      memberName
-      { a.setIdentifier($memberName.identifier);
-        m.setIdentifier($memberName.identifier); }
+      memberNameDeclaration
+      { a.setIdentifier($memberNameDeclaration.identifier);
+        m.setIdentifier($memberNameDeclaration.identifier); }
       (
         (
           specifier
@@ -3762,8 +3762,8 @@ compilerAnnotations returns [List<CompilerAnnotation> annotations]
     ;
     
 compilerAnnotation returns [CompilerAnnotation annotation]
-    : COMPILER_ANNOTATION 
-      { $annotation=new CompilerAnnotation($COMPILER_ANNOTATION); }
+    : ca=COMPILER_ANNOTATION COMPILER_ANNOTATION
+      { $annotation=new CompilerAnnotation($ca); }
       annotationName 
       { $annotation.setIdentifier($annotationName.identifier); }
       ( 
@@ -3886,8 +3886,8 @@ isCondition returns [IsCondition condition]
 isConditionVariable returns [Variable variable]
     @init { $variable = new Variable(null);
             $variable.setType(new ValueModifier(null));  }
-    : memberName
-      { $variable.setIdentifier($memberName.identifier); }
+    : memberNameDeclaration
+      { $variable.setIdentifier($memberNameDeclaration.identifier); }
       specifier
       { $variable.setSpecifierExpression($specifier.specifierExpression); }
     ;
@@ -4386,7 +4386,7 @@ var returns [Variable variable]
         VALUE_MODIFIER
         { $variable.setType(new ValueModifier($VALUE_MODIFIER)); }
       )
-      mn1=memberName 
+      mn1=memberNameDeclaration
       { $variable.setIdentifier($mn1.identifier); }
       ( 
         p1=parameters
