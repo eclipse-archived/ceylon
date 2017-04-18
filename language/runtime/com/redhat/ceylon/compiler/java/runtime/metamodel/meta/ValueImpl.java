@@ -77,21 +77,23 @@ public class ValueImpl<Get, Set>
 
     private void initField(Object instance, Type valueType) {
         com.redhat.ceylon.model.typechecker.model.Value decl = (com.redhat.ceylon.model.typechecker.model.Value) declaration.declaration;
+        String name = decl.getName();
         if(decl instanceof JavaBeanValue){
             java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
             if(javaClass == ceylon.language.Object.class
                     || javaClass == ceylon.language.Basic.class
                     || javaClass == ceylon.language.Identifiable.class){
-                if("string".equals(decl.getName())
-                        || "hash".equals(decl.getName())){
+                if("string".equals(name)
+                        || "hash".equals(name)){
                     // look it up on j.l.Object, getterName should work
                     javaClass = java.lang.Object.class;
                 }else{
-                    throw Metamodel.newModelError("Object/Basic/Identifiable member not supported: "+decl.getName());
+                    throw Metamodel.newModelError("Object/Basic/Identifiable member not supported: "+name);
                 }
             } else if (javaClass == ceylon.language.Throwable.class) {
-                if("cause".equals(decl.getName())
-                        || "message".equals(decl.getName())){
+                if("cause".equals(name)
+                        || "message".equals(name)
+                        || "suppressed".equals(name)){
                     javaClass = instance.getClass();
                 }
             }
@@ -213,7 +215,7 @@ public class ValueImpl<Get, Set>
                 throw Metamodel.newModelError("Failed to find getter method "+getterName+" for: "+decl, e);
             }
         }else
-            throw new StorageException("Attribute "+decl.getName()+" is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
+            throw new StorageException("Attribute "+name+" is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
     }
 
     private void initSetter(com.redhat.ceylon.model.typechecker.model.Value decl, java.lang.Class<?> javaClass, 

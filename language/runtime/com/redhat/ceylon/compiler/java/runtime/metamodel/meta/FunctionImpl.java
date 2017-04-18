@@ -122,13 +122,22 @@ public class FunctionImpl<Type, Arguments extends Sequential<? extends Object>>
                 throw Metamodel.newModelError("Object/Basic/Identifiable member not supported: "+decl.getName());
             }
         } else if (javaClass == ceylon.language.Throwable.class) {
-            if("printStackTrace".equals(decl.getName())){
+            if("printStackTrace".equals(name)){
                 try {
                     found = java.lang.Throwable.class.getDeclaredMethod("printStackTrace");
                 } catch (NoSuchMethodException e) {
                     throw Metamodel.newModelError("Missing printStackTrace method in ceylon.language::Throwable");
                 } catch (SecurityException e) {
                     throw Metamodel.newModelError("Security exception getting printStackTrace method in ceylon.language::Throwable");
+                }
+            }
+            if("addSuppressed".equals(name)) {
+                try {
+                    found = java.lang.Throwable.class.getDeclaredMethod("addSuppressed", java.lang.Throwable.class);
+                } catch (NoSuchMethodException e) {
+                    throw Metamodel.newModelError("Missing addSuppressed method in ceylon.language::Throwable");
+                } catch (SecurityException e) {
+                    throw Metamodel.newModelError("Security exception getting addSuppressed method in ceylon.language::Throwable");
                 }
             }
         } else{
@@ -183,7 +192,7 @@ public class FunctionImpl<Type, Arguments extends Sequential<? extends Object>>
         }
     }
 
-    private MethodHandle reflectionToMethodHandle(Method found, java.lang.Class<?> javaClass, Object instance, 
+    private MethodHandle reflectionToMethodHandle(Method foundMethod, java.lang.Class<?> javaClass, Object instance, 
                                                   Reference appliedFunction, 
                                                   List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes,
                                                   boolean variadic, boolean bindVariadicParameterToEmptyArray) {
@@ -196,43 +205,38 @@ public class FunctionImpl<Type, Arguments extends Sequential<? extends Object>>
         int typeParametersCount;
         int skipParameters = 0;
         List<com.redhat.ceylon.model.typechecker.model.TypeParameter> reifiedTypeParameters;
-        if (found instanceof java.lang.reflect.Method) {
-            com.redhat.ceylon.model.typechecker.model.Function functionModel = (com.redhat.ceylon.model.typechecker.model.Function)appliedFunction.getDeclaration();
-            java.lang.reflect.Method foundMethod = (java.lang.reflect.Method)found;
-            parameterTypes = foundMethod.getParameterTypes();
-            returnType = foundMethod.getReturnType();
-            mods = foundMethod.getModifiers();
-            isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
-            typeParametersCount = foundMethod.getTypeParameters().length;
-            try {
-                if(isJavaArray){
-                    if(foundMethod.getName().equals("get"))
-                        method = MethodHandleUtil.getJavaArrayGetterMethodHandle(javaClass);
-                    else if(foundMethod.getName().equals("set"))
-                        method = MethodHandleUtil.getJavaArraySetterMethodHandle(javaClass);
-                    else if(foundMethod.getName().equals("copyTo")){
-                        foundMethod = MethodHandleUtil.getJavaArrayCopyToMethod(javaClass, foundMethod);
-                    } else if (foundMethod.getName().equals("from")){
-                        foundMethod = MethodHandleUtil.getJavaArrayFromMethod(javaClass, foundMethod);
-                    }
+        com.redhat.ceylon.model.typechecker.model.Function functionModel = (com.redhat.ceylon.model.typechecker.model.Function)appliedFunction.getDeclaration();
+        parameterTypes = foundMethod.getParameterTypes();
+        returnType = foundMethod.getReturnType();
+        mods = foundMethod.getModifiers();
+        isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
+        typeParametersCount = foundMethod.getTypeParameters().length;
+        try {
+            if(isJavaArray){
+                if(foundMethod.getName().equals("get"))
+                    method = MethodHandleUtil.getJavaArrayGetterMethodHandle(javaClass);
+                else if(foundMethod.getName().equals("set"))
+                    method = MethodHandleUtil.getJavaArraySetterMethodHandle(javaClass);
+                else if(foundMethod.getName().equals("copyTo")){
+                    foundMethod = MethodHandleUtil.getJavaArrayCopyToMethod(javaClass, foundMethod);
+                } else if (foundMethod.getName().equals("from")){
+                    foundMethod = MethodHandleUtil.getJavaArrayFromMethod(javaClass, foundMethod);
                 }
-                if(method == null){
-                    foundMethod.setAccessible(true);
-                    method = MethodHandles.lookup().unreflect(foundMethod);
-                }
-            } catch (IllegalAccessException e) {
-                throw Metamodel.newModelError("Problem getting a MH for constructor for: "+javaClass, e);
             }
-            reifiedTypeParameters = functionModel.getTypeParameters();
-            if (functionModel.isStatic()) {
-                reifiedTypeParameters = new ArrayList<com.redhat.ceylon.model.typechecker.model.TypeParameter>();
-                reifiedTypeParameters.addAll(((ClassOrInterface)functionModel.getContainer()).getTypeParameters());
-                reifiedTypeParameters.addAll(functionModel.getTypeParameters());
-            } else {
-                reifiedTypeParameters = functionModel.getTypeParameters();
+            if(method == null){
+                foundMethod.setAccessible(true);
+                method = MethodHandles.lookup().unreflect(foundMethod);
             }
+        } catch (IllegalAccessException e) {
+            throw Metamodel.newModelError("Problem getting a MH for constructor for: "+javaClass, e);
+        }
+        reifiedTypeParameters = functionModel.getTypeParameters();
+        if (functionModel.isStatic()) {
+            reifiedTypeParameters = new ArrayList<com.redhat.ceylon.model.typechecker.model.TypeParameter>();
+            reifiedTypeParameters.addAll(((ClassOrInterface)functionModel.getContainer()).getTypeParameters());
+            reifiedTypeParameters.addAll(functionModel.getTypeParameters());
         } else {
-            throw new RuntimeException();
+            reifiedTypeParameters = functionModel.getTypeParameters();
         }
         
         // box the return type
@@ -243,7 +247,7 @@ public class FunctionImpl<Type, Arguments extends Sequential<? extends Object>>
             method = method.bindTo(instance);
         method = method.asType(MethodType.methodType(Object.class, parameterTypes));
         // insert any required type descriptors
-        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(found, false)){
+        if(typeParametersCount != 0 && MethodHandleUtil.isReifiedTypeSupported(foundMethod, false)){
             List<com.redhat.ceylon.model.typechecker.model.Type> typeArguments = new ArrayList<com.redhat.ceylon.model.typechecker.model.Type>();
             Map<com.redhat.ceylon.model.typechecker.model.TypeParameter, com.redhat.ceylon.model.typechecker.model.Type> typeArgumentMap = appliedFunction.getTypeArguments();
             for (com.redhat.ceylon.model.typechecker.model.TypeParameter tp : reifiedTypeParameters) {

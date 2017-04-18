@@ -92,14 +92,16 @@ public abstract class Throwable extends java.lang.Object
         return null;
     }
     
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Throwable>")
-    public final Sequential<Throwable> getSuppressed() {
+    @TypeInfo("ceylon.language::Throwable[]")
+    @NonNull
+    public final Sequential<? extends java.lang.Throwable> getSuppressed() {
         return null;
     }
     
     public final void addSuppressed(
             @Name("suppressed")
             @TypeInfo("ceylon.language::Throwable")
+            @NonNull
             java.lang.Throwable suppressed) {}
     
     @Override
