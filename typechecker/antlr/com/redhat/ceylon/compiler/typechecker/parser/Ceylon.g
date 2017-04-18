@@ -1518,11 +1518,6 @@ anonymousTypeConstraints returns [TypeConstraintList typeConstraintList]
       )+
     ;
 
-annotationListStart
-    : (stringLiteral|annotation) 
-      (LIDENTIFIER|UIDENTIFIER|FUNCTION_MODIFIER|VALUE_MODIFIER|VOID_MODIFIER)
-    ;
-
 destructureStart
     : VALUE_MODIFIER compilerAnnotations 
       (LBRACKET|UIDENTIFIER|VOID_MODIFIER|VALUE_MODIFIER|FUNCTION_MODIFIER|LIDENTIFIER ENTRY_OP)
@@ -1582,14 +1577,13 @@ declaration returns [Declaration declaration]
     ;
 
 annotatedDeclarationStart
-    : stringLiteral? 
-    ( 
-      annotation (annotation | (unambiguousType) => unambiguousType | declarationStart)
+    : 
+      (stringLiteral | annotation) 
+      (LIDENTIFIER | (UIDENTIFIER) => UIDENTIFIER | (unambiguousType) => unambiguousType | declarationStart)
     |
       (unambiguousType) => unambiguousType 
     | 
       declarationStart
-    )
     ;
 
 annotatedAssertionStart
