@@ -44,6 +44,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.argumentSatisfiesEnumeratedConstraint;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.contains;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.findMatchingOverloadedClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.genericFunctionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
@@ -7600,7 +7601,7 @@ public class ExpressionVisitor extends Visitor {
             that.setDeclaration(type);
             if (error) {
                 if (checkConcreteClass(type, that)) {
-                    if (checkSealedReference(type, that)) {
+                    if (checkVisibleConstructor(that, type)) {
                         checkBaseTypeAndConstructorVisibility(
                                 that, name, type);
                     }
@@ -7618,17 +7619,18 @@ public class ExpressionVisitor extends Visitor {
                     (Constructor) 
                         member.getTypeDeclaration();
             if (cons.isAbstract()) {
-                that.addError("partial constructor cannot be invoked: '" +
-                        member.getName(unit) + "' is abstract");
+                that.addError("partial constructor cannot be invoked: '" 
+                        + member.getName(unit) 
+                        + "' is abstract");
                 return false;
             }
             else if (container instanceof Class) {
                 Class c = (Class) container;
                 if (c.isAbstract()) {
-                    that.addError("class cannot be instantiated: '" +
-                            member.getName(unit) + 
-                            "' is a constructor for the abstract class '" +
-                            c.getName(unit));
+                    that.addError("class cannot be instantiated: '" 
+                            + member.getName(unit) 
+                            + "' is a constructor for the abstract class '" 
+                            + c.getName(unit));
                     return false;
                 }
                 else {
@@ -7653,15 +7655,16 @@ public class ExpressionVisitor extends Visitor {
             if (type instanceof Class) {
                 Class c = (Class) type;
                 if (c.isAbstract()) {
-                    that.addError("class cannot be instantiated: '" +
-                            type.getName(unit) + "' is abstract");
+                    that.addError("class cannot be instantiated: '" 
+                            + type.getName(unit) 
+                            + "' is abstract");
                     return false;
                 }
                 else if (c.getParameterList()==null) {
                     if (!c.isAbstraction()) {
-                        that.addError("class cannot be instantiated: '" +
-                                type.getName(unit) + 
-                                "' does not have a default constructor");
+                        that.addError("class cannot be instantiated: '" 
+                                + type.getName(unit) 
+                                + "' does not have a default constructor");
                     }
                     //else the parameter list is null because an
                     //overloaded declaration could not be resolved
@@ -7674,17 +7677,18 @@ public class ExpressionVisitor extends Visitor {
             else if (type instanceof Constructor) {
                 Scope container = type.getContainer();
                 if (type.isAbstract()) {
-                    that.addError("partial constructor cannot be invoked: '" +
-                            type.getName(unit) + "' is abstract");
+                    that.addError("partial constructor cannot be invoked: '" 
+                            + type.getName(unit) 
+                            + "' is abstract");
                     return false;
                 }
                 else if (container instanceof Class) {
                     Class c = (Class) container;
                     if (c.isAbstract()) {
-                        that.addError("class cannot be instantiated: '" +
-                                type.getName(unit) + 
-                                "' is a constructor for the abstract class '" +
-                                c.getName(unit));
+                        that.addError("class cannot be instantiated: '" 
+                                + type.getName(unit) 
+                                + "' is a constructor for the abstract class '" 
+                                + c.getName(unit));
                         return false;
                     }
                     else {
@@ -7696,18 +7700,45 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                that.addError("type cannot be instantiated: '" +
-                        type.getName(unit) + "' is not a class");
+                that.addError("type cannot be instantiated: '" 
+                        + type.getName(unit) 
+                        + "' is not a class");
                 return false;
             }
         }
     }
 
-    private boolean checkSealedReference(TypeDeclaration type,
-            Tree.MemberOrTypeExpression that) {
-        if (type.isSealed() && 
-                !unit.inSameModule(type) &&
-                !that.getStaticMethodReferencePrimary()) {
+    private boolean checkVisibleConstructor(
+            Tree.MemberOrTypeExpression that,
+            TypeDeclaration type) {
+        return checkDefaultConstructorVisibility(that, type) 
+            && checkSealedReference(that, type);
+    }
+
+    private boolean checkDefaultConstructorVisibility(
+            Tree.MemberOrTypeExpression that, 
+            TypeDeclaration type) {
+        if (type instanceof Class 
+                && !contains(type, that.getScope())
+                && !that.getStaticMethodReferencePrimary()) {
+            Class c = (Class) type;
+            Constructor dc = c.getDefaultConstructor();
+            if (dc!=null && !dc.isShared()) {
+                that.addError("default constructor for class '"
+                        + c.getName(unit)
+                        + "' is not 'shared'");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkSealedReference(
+            Tree.MemberOrTypeExpression that, 
+            TypeDeclaration type) {
+        if (type.isSealed() 
+                && !unit.inSameModule(type) 
+                && !that.getStaticMethodReferencePrimary()) {
             String moduleName = 
                     type.getUnit()
                         .getPackage()
@@ -7718,14 +7749,18 @@ public class ExpressionVisitor extends Visitor {
                         type.getExtendedType()
                             .getDeclaration()
                             .getName(unit);
-                that.addError("invokes or references a sealed constructor in a different module: '" +
-                        type.getName(unit) + "' of '" + cname + 
-                        "' in '" + moduleName + "'");
+                that.addError("invokes or references a sealed constructor in a different module: '" 
+                        + type.getName(unit) 
+                        + "' of '" + cname 
+                        + "' in '" + moduleName 
+                        + "'");
             }
             else {
-                that.addError("instantiates or references a sealed class in a different module: '" +
-                        type.getName(unit) + 
-                        "' in '" + moduleName + "'");
+                that.addError("instantiates or references a sealed class in a different module: '" 
+                        + type.getName(unit) 
+                        + "' in '" 
+                        + moduleName 
+                        + "'");
             }
             return false;
         }
@@ -7992,7 +8027,7 @@ public class ExpressionVisitor extends Visitor {
                 }
                 if (error) {
                     if (checkConcreteClass(type, that)) {
-                        if (checkSealedReference(type, that)) {
+                        if (checkVisibleConstructor(that, type)) {
                             checkQualifiedTypeAndConstructorVisibility(
                                     that, type, name, container);
                         }

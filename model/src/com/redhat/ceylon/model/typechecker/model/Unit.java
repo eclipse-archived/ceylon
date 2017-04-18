@@ -2757,12 +2757,15 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         ParameterList parameterList = 
                 declaration.getParameterList();
         Type parameterTuple;
+        Constructor dc = 
+                declaration.getDefaultConstructor();
         if ((declaration.isClassOrInterfaceMember() 
                 || declaration.isToplevel()) 
             && parameterList!=null
             && !declaration.isAbstraction()
             && (!declaration.isSealed() 
-                    || inSameModule(declaration))) {
+                    || inSameModule(declaration))
+            && (dc==null || dc.isShared())) {
             List<Parameter> params = 
                     parameterList.getParameters();
             parameterTuple = 

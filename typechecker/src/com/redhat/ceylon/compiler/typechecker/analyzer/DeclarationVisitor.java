@@ -1023,10 +1023,10 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (that.getIdentifier()==null) {
             //default constructor
-            if (!c.isShared()) {
-                that.addError("default constructor must be annotated 'shared'", 
-                        705);
-            }
+//            if (!c.isShared()) {
+//                that.addError("default constructor must be annotated 'shared'", 
+//                        705);
+//            }
             if (c.isAbstract()) {
                 that.addError("default constructor may not be annotated 'abstract'", 
                         1601);

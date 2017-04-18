@@ -533,3 +533,23 @@ class Stuff {
         value stuff = ofStuff();
     }
 }
+
+class WithPrivateDefConstructor {
+    new () {}
+    shared new create() extends WithPrivateDefConstructor() {}
+    shared class Inner() extends WithPrivateDefConstructor() {
+        WithPrivateDefConstructor();
+    }
+}
+
+class OkExtendsWithPrivateDefConstructor() extends WithPrivateDefConstructor.create() {}
+@error class BadExtendsWithPrivateDefConstructor() extends WithPrivateDefConstructor() {}
+
+void testWithPrivateDefConstructor() {
+    WithPrivateDefConstructor.create().Inner();
+    @error value foo = WithPrivateDefConstructor();     
+    @error value makeF = WithPrivateDefConstructor;
+    WithPrivateDefConstructor bar = WithPrivateDefConstructor.create();
+    @error WithPrivateDefConstructor();
+    @error `WithPrivateDefConstructor`();
+}
