@@ -9,16 +9,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import ceylon.language.null_;
-import ceylon.language.meta.model.IncompatibleTypeException;
-import ceylon.language.meta.model.MutationException;
-import ceylon.language.meta.model.StorageException;
-
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -38,6 +33,11 @@ import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
+import ceylon.language.null_;
+import ceylon.language.meta.model.IncompatibleTypeException;
+import ceylon.language.meta.model.MutationException;
+import ceylon.language.meta.model.StorageException;
+
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
@@ -55,6 +55,7 @@ public class ValueImpl<Get, Set>
     @Ignore
     protected final TypeDescriptor $reifiedSet;
     protected final ValueDeclarationImpl declaration;
+    private boolean isSuppressed = false;
     private MethodHandle getter;
     private MethodHandle setter;
     private final Object instance;
@@ -95,6 +96,7 @@ public class ValueImpl<Get, Set>
                         || "message".equals(name)
                         || "suppressed".equals(name)){
                     javaClass = instance.getClass();
+                    isSuppressed = "suppressed".equals(name);
                 }
             }
             String getterName = ((JavaBeanValue) decl).getGetterName();
@@ -280,7 +282,14 @@ public class ValueImpl<Get, Set>
         if($reifiedGet.equals(null_.$TypeDescriptor$))
             return null;
         try {
-            return (Get) getter.invokeExact();
+            java.lang.Object result = getter.invokeExact();
+            if (isSuppressed) {
+                Throwable[] array = (Throwable[]) result;
+                result = Util.sequentialWrapperCopy(
+                        ceylon.language.Throwable.$TypeDescriptor$, 
+                        array);
+            }
+            return (Get) result;
         } catch (Throwable e) {
             Util.rethrow(e);
             return null;
