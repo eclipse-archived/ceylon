@@ -3762,7 +3762,7 @@ compilerAnnotations returns [List<CompilerAnnotation> annotations]
     ;
     
 compilerAnnotation returns [CompilerAnnotation annotation]
-    : ca=COMPILER_ANNOTATION COMPILER_ANNOTATION
+    : ca=COMPILER_ANNOTATION
       { $annotation=new CompilerAnnotation($ca); }
       annotationName 
       { $annotation.setIdentifier($annotationName.identifier); }
