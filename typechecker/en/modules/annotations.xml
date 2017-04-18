@@ -486,6 +486,10 @@ shared deprecated</programlisting>
                     type.</para>
                 </listitem>
                 <listitem>
+                    <para><literal>since</literal> specifies the version of its
+                    module in which a program element was introduced.</para>
+                </listitem>
+                <listitem>
                     <para><literal>aliased</literal> specifies aliases that tools
                     use to offer suggestions.</para>
                 </listitem>
