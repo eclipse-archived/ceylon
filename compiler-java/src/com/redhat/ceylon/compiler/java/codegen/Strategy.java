@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -263,7 +262,7 @@ class Strategy {
     public static boolean onlyOnCompanion(Declaration model) {
         return Decl.withinInterface(model)
                 && (model instanceof ClassOrInterface
-                        || !Decl.isShared(model));
+                        || !Decl.isShared(model) && !Decl.isActual(model));
     }
     
     static boolean generateInstantiator(Declaration model) {
@@ -277,13 +276,13 @@ class Strategy {
                         // preserved should the member class later become refinable
                         (Decl.isCeylon(cls)
                                 && model.isMember()
-                                && cls.isShared()
+                                && (cls.isShared()||cls.isActual())
                                 && !cls.isAnonymous()));
         } else if (Decl.isConstructor(model)) {
             Constructor ctor = Decl.getConstructor(model);
             Class cls = Decl.getConstructedClass(ctor);
             return cls.isMember()
-                    && cls.isShared()
+                    && (cls.isShared()||cls.isActual())
                     && !cls.isStatic()
                     && ctor.isShared();
         } else {

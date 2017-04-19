@@ -1551,24 +1551,24 @@ public class ExpressionVisitor extends Visitor {
             }
             
 //            if (!that.getRefinement()) {
-                Type lhst = lhs.getTypeModel();
-                if (lhs==me && d instanceof Function &&
-                        !lhst.isTypeConstructor()) {
-                    //if the declaration of the method has
-                    //defaulted parameters, we should ignore
-                    //that when determining if the RHS is
-                    //an acceptable implementation of the
-                    //method
-                    //TODO: this is a pretty nasty way to
-                    //      handle the problem
-                    lhst = eraseDefaultedParameters(lhst);
-                }
-                if (!isTypeUnknown(lhst)) {
-                    TypedDeclaration member = 
-                            that.getRefinement() ? 
-                                    that.getRefined() : td;
-                    checkType(lhst, member, rhs, 2100);
-                }
+            Type lhst = lhs.getTypeModel();
+            if (lhs==me && d instanceof Function &&
+                    !lhst.isTypeConstructor()) {
+                //if the declaration of the method has
+                //defaulted parameters, we should ignore
+                //that when determining if the RHS is
+                //an acceptable implementation of the
+                //method
+                //TODO: this is a pretty nasty way to
+                //      handle the problem
+                lhst = eraseDefaultedParameters(lhst);
+            }
+            if (!isTypeUnknown(lhst)) {
+                TypedDeclaration member = 
+                        that.getRefinement() ? 
+                                that.getRefined() : td;
+                checkType(lhst, member, rhs, 2100);
+            }
 //            }
         }
         

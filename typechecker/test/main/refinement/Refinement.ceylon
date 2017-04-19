@@ -36,7 +36,7 @@ class Refinement() {
 
         //formal member not implemented in concrete class
         class W() extends X() {
-            @error actual String hello = "Hello";
+            actual String hello = "Hello";
             @error default String goodbye = "Goodbye";
             @error formal String hiAgain;
         }

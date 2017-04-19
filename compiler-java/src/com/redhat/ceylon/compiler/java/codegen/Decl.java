@@ -127,7 +127,7 @@ public class Decl {
     public static boolean isSharedParameter(Declaration decl) {
         return decl instanceof Value 
                 && ((Value)decl).isParameter() 
-                && decl.isShared();
+                && (decl.isShared() || decl.isActual());
     }
     
     
@@ -148,22 +148,22 @@ public class Decl {
      */
     public static boolean isValueOrSharedParam(Declaration decl) {
         return isValue(decl) 
-                || decl instanceof Value 
-                    && ((Value)decl).isParameter() 
-                    && decl.isShared();
+            || decl instanceof Value 
+                && ((Value)decl).isParameter() 
+                && (decl.isShared() || decl.isActual());
     }
     
     public static boolean isValueOrSharedOrCapturedParam(Declaration decl) {
         return isValue(decl) 
-                || decl instanceof Value 
-                    && ((Value)decl).isParameter() 
-                    && (decl.isShared() || decl.isCaptured());
+            || decl instanceof Value 
+                && ((Value)decl).isParameter() 
+                && ModelUtil.isCaptured(decl);
     }
     
     public static boolean isMethodOrSharedOrCapturedParam(Declaration decl) {
         return decl instanceof Function 
-                && !isConstructor(decl)
-                    && (!((Function)decl).isParameter() || decl.isShared() || decl.isCaptured());
+            && !isConstructor(decl)
+            && (!((Function)decl).isParameter() || ModelUtil.isCaptured(decl));
     }
 
     /**
@@ -456,14 +456,14 @@ public class Decl {
     public static boolean isClassAttribute(Declaration decl) {
         return (withinClassOrInterface(decl))
                 && (Decl.isValue(decl) || decl instanceof Setter)
-                && (decl.isCaptured() || decl.isShared());
+                && (decl.isCaptured() || decl.isShared() || decl.isActual());
     }
 
     public static boolean isClassParameter(Declaration decl) {
         return (withinClassOrInterface(decl))
                 && (decl instanceof Value) 
                 && ((Value)decl).isParameter()
-                && (decl.isCaptured() || decl.isShared());
+                && (decl.isCaptured() || decl.isShared() || decl.isActual());
     }
 
     public static boolean isLocalToInitializer(Tree.Declaration decl) {
@@ -833,7 +833,7 @@ public class Decl {
             Tree.Primary primary = ((Tree.QualifiedMemberOrTypeExpression)qual).getPrimary();
             Declaration decl = qual.getDeclaration();
             return decl.isMember()
-                    && !decl.isShared()
+                    && !(decl.isShared() || decl.isActual())
                     && !(decl instanceof Constructor) 
                     && decl.getContainer() instanceof Class
                     && !Decl.hasScopeInType(decl.getContainer(), primary.getTypeModel());
@@ -868,7 +868,7 @@ public class Decl {
             Tree.Primary primary = ((Tree.QualifiedMemberOrTypeExpression)qual).getPrimary();
             Declaration decl = qual.getDeclaration();
             return decl.isMember()
-                    && !decl.isShared()
+                    && !(decl.isShared() || decl.isActual())
                     && decl.getContainer() instanceof Interface
                     && !Decl.hasScopeInType(decl.getContainer(), primary.getTypeModel());
         }

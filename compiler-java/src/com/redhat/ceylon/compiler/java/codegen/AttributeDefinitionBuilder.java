@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.model.loader.NamingBase.getJavaAttributeName;
+
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
@@ -220,8 +222,8 @@ public class AttributeDefinitionBuilder {
                         attrAndFieldName, attrAndFieldName, false, false, false, false, memoizedInitialiValue);
         if (!"ref".equals(getterName)
                 && !"get_".equals(getterName)
-                && !attrType.getName().equals(NamingBase.getJavaAttributeName(getterName))
-                && attrType.isShared()
+                && !attrType.getName().equals(getJavaAttributeName(getterName))
+                && (attrType.isShared() || attrType.isActual())
                 && !Decl.isValueConstructor(attrType)) {
             adb.getterBuilder.realName(attrType.getName());
         }

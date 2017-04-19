@@ -549,7 +549,7 @@ public class ClassDefinitionBuilder
         if(decl instanceof Generic) {
             ctor.reifiedTypeParameters(((Generic)decl).getTypeParameters());
         }
-        ctor.modifiers(decl.isShared() ? PUBLIC : 0);
+        ctor.modifiers(decl.isShared() || decl.isActual() ? PUBLIC : 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, "$this");
         pdb.type(new TransformedType(gen.makeJavaType(thisType), null, gen.makeAtNonNull()));
         // ...initialize the $this field from a ctor parameter...

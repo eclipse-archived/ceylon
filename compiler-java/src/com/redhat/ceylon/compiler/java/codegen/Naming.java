@@ -627,7 +627,7 @@ public class Naming extends NamingBase implements LocalId {
     
     private static String quoteMethodNameIfProperty(Function method) {
         String name = method.getName();
-        if (!method.isShared()) {
+        if (!method.isShared() && !method.isActual()) {
             name = suffixName(Suffix.$priv$, name);
         }
         // Toplevel methods keep their original name because their names might be mangled
@@ -1066,7 +1066,7 @@ public class Naming extends NamingBase implements LocalId {
         } else if (decl instanceof Setter) {
             builder.select(getSetterName(decl.getName()));
         } else if (decl instanceof Function
-                && ((!decl.isParameter() || decl.isShared() || decl.isCaptured())
+                && ((!decl.isParameter() || ModelUtil.isCaptured(decl))
                         // if we want it aliased, it means we're in a constructor and we don't want
                         // the member name ever for parameters, so let's never fall into that branch and skip
                         // to the next one

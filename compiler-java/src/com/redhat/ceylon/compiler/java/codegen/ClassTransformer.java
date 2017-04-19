@@ -63,7 +63,6 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -1253,7 +1252,7 @@ public class ClassTransformer extends AbstractTransformer {
                     null, false, expressionGen().transformAnnotations(OutputElement.FIELD, memberTree));
             classBuilder.getInitBuilder().init(make().Exec(make().Assign(naming.makeQualIdent(naming.makeThis(), decl.getName()), naming.makeName(value, Naming.NA_IDENT))));
         } else if (parameterTree instanceof Tree.ValueParameterDeclaration
-                && (value.isShared() || value.isCaptured())) {
+                && ModelUtil.isCaptured(value)) {
             makeFieldForParameter(classBuilder, decl, memberTree);
             AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl.getModel());
             adb.modifiers(classGen().modifierTransformation().getterSetter(decl.getModel(), false));
@@ -1316,22 +1315,23 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private void transformParameter(ParameterizedBuilder<?> classBuilder, 
             Tree.Parameter p, Parameter param, Tree.TypedDeclaration member) {
-        JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
+        FunctionOrValue model = param.getModel();
+        JCExpression type = makeJavaType(model, param.getType(), 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
         pdb.at(p);
         pdb.aliasName(Naming.getAliasedParameterName(param));
-        if (Naming.aliasConstructorParameterName(param.getModel())) {
-            naming.addVariableSubst(param.getModel(), naming.suffixName(Suffix.$param$, param.getName()));
+        if (Naming.aliasConstructorParameterName(model)) {
+            naming.addVariableSubst(model, naming.suffixName(Suffix.$param$, param.getName()));
         }
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
         pdb.type(new TransformedType(type, 
-                makeJavaTypeAnnotations(param.getModel()),
-                makeNullabilityAnnotations(param.getModel())));
+                makeJavaTypeAnnotations(model),
+                makeNullabilityAnnotations(model)));
         pdb.modifiers(modifierTransformation().transformClassParameterDeclFlags(param));
-        if (!(param.getModel().isShared() || param.getModel().isCaptured())) {
+        if (!ModelUtil.isCaptured(model)) {
             // We load the model for shared parameters from the corresponding member
-            pdb.modelAnnotations(param.getModel().getAnnotations());
+            pdb.modelAnnotations(model.getAnnotations());
         }
         if (member != null) {
             pdb.userAnnotations(expressionGen().transformAnnotations(OutputElement.PARAMETER, member));
@@ -1555,7 +1555,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (!value.isTransient()
                     && !value.isFormal()
                     && !ModelUtil.isConstructor(value)
-                    && (value.isShared() || value.isCaptured())) {
+                    && ModelUtil.isCaptured(value)) {
                 return true;
             }
         } /*else if (member instanceof Function) {
@@ -2642,7 +2642,7 @@ public class ClassTransformer extends AbstractTransformer {
                     }
 
                     if (hasOverloads
-                            && (method.isDefault() || method.isShared() && !method.isFormal())
+                            && (method.isDefault() || (method.isShared()||method.isActual()) && !method.isFormal())
                             && Decl.equal(method, subMethod)) {
                         final MethodDefinitionBuilder canonicalMethod = makeDelegateToCompanion(iface,
                                 typedMember,
@@ -3511,8 +3511,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     initialValue(initialValue, boxingStrategy).
                                     fieldVisibilityModifiers(modifiers).
                                     modifiers(modifiers);
-                            classBuilder.defs((List)adb.
-                                    buildFields());
+                            classBuilder.defs((List)adb.buildFields());
                             List<JCStatement> buildInit = adb.buildInit(false);
                             if (!buildInit.isEmpty()) {
                                 if (model.isStatic()) {
@@ -3544,7 +3543,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         boolean withinInterface = Decl.withinInterface(decl);
         if (useField || withinInterface || lazy) {
-            if (!withinInterface || model.isShared()) {
+            if (!withinInterface || model.isShared() || model.isActual()) {
                 // Generate getter in main class or interface (when shared)
                 at(decl.getType());
                 AttributeDefinitionBuilder getter = makeGetter(decl, false, lazy, memoizedInitialValue);
@@ -3554,8 +3553,9 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.attribute(getter);
             }
             if (withinInterface && lazy) {
+                Interface container = (Interface)decl.getDeclarationModel().getContainer();
                 // Generate getter in companion class
-                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, true, lazy, null));
+                classBuilder.getCompanionBuilder(container).attribute(makeGetter(decl, true, lazy, null));
             }
             if (Decl.isVariable(decl) || Decl.isLate(decl)) {
                 if (!withinInterface || model.isShared()) {
@@ -3563,8 +3563,9 @@ public class ClassTransformer extends AbstractTransformer {
                     classBuilder.attribute(makeSetter(decl, false, lazy, memoizedInitialValue));
                 }
                 if (withinInterface && lazy) {
+                    Interface container = (Interface)decl.getDeclarationModel().getContainer();
                     // Generate setter in companion class
-                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeSetter(decl, true, lazy, null));
+                    classBuilder.getCompanionBuilder(container).attribute(makeSetter(decl, true, lazy, null));
                 }
             }
         }
@@ -3626,7 +3627,7 @@ public class ClassTransformer extends AbstractTransformer {
      */
     class ModifierTransformation {
         protected long declarationSharedFlags(Declaration decl){
-            return Decl.isShared(decl) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
+            return (Decl.isShared(decl)||Decl.isActual(decl)) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
         }
         
         public long jpaConstructor(Class model) {
@@ -3706,9 +3707,9 @@ public class ClassTransformer extends AbstractTransformer {
                 result |= def.isShared() ? PUBLIC : 0;
                 result |= STATIC;
             } else if (Decl.isLocalNotInitializer(def)) {
-                result |= def.isShared() ? PUBLIC : 0;
+                result |= def.isShared() || def.isActual() ? PUBLIC : 0;
             } else {
-                result |= def.isShared() ? PUBLIC : PRIVATE;
+                result |= def.isShared() || def.isActual() ? PUBLIC : PRIVATE;
                 result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
                 result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
                 result |= def.isStatic() ? STATIC : 0;
@@ -3776,7 +3777,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             int result = 0;
 
-            result |= tdecl.isShared() ? PUBLIC : PRIVATE;
+            result |= tdecl.isShared() || tdecl.isActual() ? PUBLIC : PRIVATE;
             result |= ((tdecl.isFormal() && !tdecl.isDefault()) && !forCompanion) ? ABSTRACT : 0;
             result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || forCompanion ? FINAL : 0;
             result |= tdecl.isStatic() ? STATIC : 0;
@@ -3797,7 +3798,7 @@ public class ClassTransformer extends AbstractTransformer {
             int result = 0;
 
             result |= FINAL;
-            result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
+            result |= !Decl.isAncestorLocal(cdecl) && (Decl.isShared(cdecl)||Decl.isActual(cdecl)) ? PUBLIC : 0;
             result |= cdecl.isStatic() ? STATIC : 0;
             
             if (isJavaStrictfp(cdecl)) {
@@ -3849,7 +3850,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // initializers can override parameter defaults
                 modifiers |= FINAL;
             }
-            if (container != null && container.isShared()) {
+            if (container != null && (container.isShared()||container.isActual())) {
                 modifiers |= PUBLIC;
             } else if (container == null || (!container.isToplevel()
                     && !noBody)){
@@ -4020,16 +4021,17 @@ public class ClassTransformer extends AbstractTransformer {
     private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, JCExpression memoizedInitialValue) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
+        Value dec = decl.getDeclarationModel();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
-            .getter(this, attrName, decl.getDeclarationModel(), memoizedInitialValue);
-        if(!decl.getDeclarationModel().isInterfaceMember()
-                || (decl.getDeclarationModel().isShared() ^ forCompanion))
+            .getter(this, attrName, dec, memoizedInitialValue);
+        if(!dec.isInterfaceMember()
+                || ((dec.isShared()||dec.isActual()) ^ forCompanion))
             getter.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, decl));
         else
             getter.ignoreAnnotations();
         
         if (Decl.isIndirect(decl)) {
-            getter.getterBlock(generateIndirectGetterBlock(decl.getDeclarationModel()));
+            getter.getterBlock(generateIndirectGetterBlock(dec));
         }
         
         return makeGetterOrSetter(decl, forCompanion, lazy, getter, true);
@@ -4061,7 +4063,7 @@ public class ClassTransformer extends AbstractTransformer {
         naming.clearSubstitutions(model);
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
-        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def), isJavaStrictfp(model));
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def)||Decl.isActual(def), isJavaStrictfp(model));
         // Make sure it's Java Serializable (except toplevels which we never instantiate)
         if(!model.isToplevel())
             builder.introduce(make().QualIdent(syms().serializableType.tsym));
@@ -4204,7 +4206,7 @@ public class ClassTransformer extends AbstractTransformer {
                     companionDefs = transformMethod(def,
                             true,
                             false,
-                            !model.isShared(),
+                            !model.isShared() && !model.isActual(),
                             transformMplBodyUnlessSpecifier(def, model, body),
                             new DaoCompanion(def, def.getParameterLists().get(0)),
                             false);
@@ -4213,7 +4215,7 @@ public class ClassTransformer extends AbstractTransformer {
                 companionDefs = transformMethod(def,  
                         true,
                         false,
-                        !model.isShared(),
+                        !model.isShared() && !model.isActual(),
                         transformMplBodyUnlessSpecifier(def, model, body),
                         new DaoCompanion(def, def.getParameterLists().get(0)),
                         false);
@@ -4226,7 +4228,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             // Transform the declaration to the target interface
             // but only if it's shared and not java native
-            if (Decl.isShared(model)
+            if ((Decl.isShared(model)||Decl.isActual(model))
                     && !model.isJavaNative()) {
                 result = transformMethod(def, 
                         true,
@@ -5614,7 +5616,7 @@ public class ClassTransformer extends AbstractTransformer {
             objectClassBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
             if (def instanceof Tree.ObjectDefinition
                     && klass.isMember()
-                    && (klass.isShared() || klass.isCaptured() || model.isCaptured())) {
+                    && (ModelUtil.isCaptured(klass) || model.isCaptured())) {
                 addWriteReplace(klass, objectClassBuilder);
             }
         }
@@ -5659,7 +5661,7 @@ public class ClassTransformer extends AbstractTransformer {
                     .userAnnotationsSetter(makeAtIgnore())
                     .immutable()
                     .initialValue(makeNewClass(naming.makeName(model, Naming.NA_FQ | Naming.NA_WRAPPER)), BoxingStrategy.BOXED)
-                    .is(PUBLIC, Decl.isShared(klass))
+                    .is(PUBLIC, Decl.isShared(klass)||Decl.isActual(klass))
                     .is(STATIC, true);
             if (annotated != null) {
                 builder.fieldAnnotations(expressionGen().transformAnnotations(OutputElement.FIELD, annotated));

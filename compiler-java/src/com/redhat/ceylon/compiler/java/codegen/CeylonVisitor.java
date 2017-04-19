@@ -582,16 +582,17 @@ public class CeylonVisitor extends Visitor {
         if (!acceptDeclaration(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
+        Value dec = decl.getDeclarationModel();
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)
-                || decl.getDeclarationModel().isStatic()) {
+                || dec.isStatic()) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
             AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
-            if (decl.getDeclarationModel().isShared()) {
+            if (dec.isShared() || dec.isActual()) {
                 adb.ignoreAnnotations();
             }
-            classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(adb);
+            classBuilder.getCompanionBuilder((Interface)dec.getContainer()).attribute(adb);
         } else if (Decl.isToplevel(decl)) {
             topattrBuilder.add(decl);
         } else {

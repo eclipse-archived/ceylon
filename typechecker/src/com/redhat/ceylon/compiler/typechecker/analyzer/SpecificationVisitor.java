@@ -1604,10 +1604,7 @@ public class SpecificationVisitor extends Visitor {
                     Node d = getDeclaration(that);
                     if (d==null) d = that;
                     d.addError("must be definitely specified by class initializer: " + 
-                                message(declaration) + 
-                                (declaration.isShared() ? 
-                                        " is shared" : 
-                                        " is captured"), 
+                                message(declaration) + explanation(), 
                                 1401);
                 }
             }
@@ -1669,29 +1666,35 @@ public class SpecificationVisitor extends Visitor {
         super.visit(that);        
     }
     
+    private String explanation() {
+        if (declaration.isShared()) {
+            return " is shared";
+        }
+        else if (declaration.isActual()) {
+            return " is actual";
+        }
+        else {
+            return " is captured";
+        }
+    }
+    
     public void visit(Tree.Return that) {
         super.visit(that);
         if (!specificationDisabled && 
                 isSharedDeclarationUninitialized()) {
             that.addError("must be definitely specified by class initializer: " +
-                    message(declaration) + 
-                    (declaration.isShared() ? 
-                            " is shared" : 
-                            " is captured"));
+                    message(declaration) + explanation());
         }
         else if (that.getDeclaration()==declaration.getContainer() &&
                 isCapturedDeclarationUninitialized()) {
             that.addError("must be definitely specified by class initializer: " +
-                    message(declaration) + 
-                    (declaration.isShared() ? 
-                            " is shared" : 
-                            " is captured"));
+                    message(declaration) + explanation());
         }
         exit();
     }
 
     private boolean isSharedDeclarationUninitialized() {
-        return (declaration.isShared() || 
+        return (declaration.isShared() || declaration.isActual() || 
                 declaration.getOtherInstanceAccess()) && 
                 !declaration.isFormal() &&
                 !declaration.isJavaNative() && 
@@ -1701,7 +1704,7 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private boolean isCapturedDeclarationUninitialized() {
-        return (declaration.isShared() || 
+        return (declaration.isShared() || declaration.isActual() ||
                 declaration.getOtherInstanceAccess() ||
                 usedInDeclarationSection) &&
                 !definedInDeclarationSection &&

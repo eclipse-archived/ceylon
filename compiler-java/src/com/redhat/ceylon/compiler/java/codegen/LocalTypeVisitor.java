@@ -37,6 +37,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -132,7 +133,7 @@ public class LocalTypeVisitor extends Visitor {
         if(stmt instanceof Tree.AttributeDeclaration
                 && ((Tree.AttributeDeclaration) stmt).getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression){
             Value model = ((Tree.AttributeDeclaration) stmt).getDeclarationModel();
-            return !model.isCaptured() && !model.isShared();
+            return !model.isCaptured() && !(model.isShared() || model.isActual());
         }
         if(stmt instanceof Tree.SpecifierStatement
             && ((Tree.SpecifierStatement) stmt).getSpecifierExpression() instanceof Tree.LazySpecifierExpression){
@@ -180,7 +181,7 @@ public class LocalTypeVisitor extends Visitor {
     }
 
     private boolean isMemberInInitialiser(Declaration model) {
-        if(model.isShared() || model.isCaptured())
+        if(ModelUtil.isCaptured(model))
             return false;
         if(model instanceof ClassOrInterface)
             return false;
@@ -250,7 +251,7 @@ public class LocalTypeVisitor extends Visitor {
         // stop at locals and private non-captured transient members which end up having a
         // locall getter for them
         if(!(model.isMember() 
-                && !model.isShared()
+                && !(model.isShared() || model.isActual())
                 && !model.isCaptured()
                 && model.isTransient()))
             super.visit(that);

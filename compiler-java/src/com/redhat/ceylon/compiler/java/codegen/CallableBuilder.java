@@ -213,10 +213,11 @@ public class CallableBuilder {
                         primaryType = gen.typeFact().getOptionalType(primaryType);
                     }
                     JCExpression primaryExpr = gen.expressionGen().transformQualifiedMemberPrimary(qmte);
+                    Declaration dec = qmte.getDeclaration();
                     if (Decl.isPrivateAccessRequiringCompanion(qmte)) {
-                        primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)qmte.getDeclaration().getContainer());
+                        primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)dec.getContainer());
                     }
-                    Type varType = qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte);
+                    Type varType = dec.isShared() || dec.isActual() ? primaryType : Decl.getPrivateAccessType(qmte);
                     
                     if (qmte.getPrimary().getUnboxed() == false) {
                         varTypeFlags |= JT_NO_PRIMITIVES;
@@ -388,7 +389,8 @@ public class CallableBuilder {
             callBuilder.invoke(gen.naming.makeQualifiedName(target, (Function)methodClassOrCtor, Naming.NA_MEMBER));
         } else if (methodClassOrCtor instanceof Function) {
             callBuilder.invoke(gen.naming.makeQualifiedName(target, (Function)methodClassOrCtor, Naming.NA_MEMBER));
-            if (!((TypedDeclaration)methodClassOrCtor).isShared()) {
+            TypedDeclaration td = (TypedDeclaration)methodClassOrCtor;
+            if (!td.isShared() && !td.isActual()) {
                 accessType = Decl.getPrivateAccessType(qmte);
             }
         } else if (methodClassOrCtor instanceof Class) {
@@ -398,7 +400,7 @@ public class CallableBuilder {
             } else {
                 callBuilder.instantiate(new ExpressionAndType(target, null),
                         gen.makeJavaType(cls.getType(), JT_CLASS_NEW | AbstractTransformer.JT_NON_QUALIFIED));
-                if (!cls.isShared()) {
+                if (!cls.isShared() && !cls.isActual()) {
                     accessType = Decl.getPrivateAccessType(qmte);
                 }
             }
@@ -587,7 +589,7 @@ public class CallableBuilder {
         Value valueModel = new Value();
         instanceParameter.setModel(valueModel);
         Type accessType = gen.getParameterTypeOfCallable(typeModel, 0);;
-        if (!value.isShared()) {
+        if (!value.isShared() && !value.isActual()) {
             accessType = Decl.getPrivateAccessType(qmte);
         }
         valueModel.setName(instanceParameter.getName());

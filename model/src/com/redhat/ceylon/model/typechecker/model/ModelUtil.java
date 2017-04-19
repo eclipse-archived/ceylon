@@ -160,9 +160,9 @@ public class ModelUtil {
     }
 
     public static boolean isResolvable(Declaration declaration) {
-        return declaration.getName()!=null &&
-            !declaration.isSetter() && //return getters, not setters
-            !declaration.isAnonymous(); //don't return the type associated with an object dec 
+        return declaration.getName()!=null 
+            && !declaration.isSetter() //return getters, not setters
+            && !declaration.isAnonymous(); //don't return the type associated with an object dec 
     }
     
     public static boolean isAbstraction(Declaration d) {
@@ -2770,7 +2770,7 @@ public class ModelUtil {
                                 signature, variadic,
                                 rootOverloaded);
                 if (member!=null 
-                        && member.isShared() 
+                        && (member.isShared() || member.isActual()) 
                         && !isAbstraction(member)) {
                     TypeDeclaration td = 
                             (TypeDeclaration) 
@@ -3247,8 +3247,9 @@ public class ModelUtil {
     }
 
     public static boolean isCaptured(Declaration decl) {
-        // Shared elements are implicitely captured although the typechecker doesn't mark them that way
-        return decl.isCaptured() || decl.isShared();
+        // Shared elements are implicitly captured although 
+        // the typechecker doesn't mark them that way
+        return decl.isCaptured() || decl.isShared() || decl.isActual();
     }
 
     public static boolean isNonTransientValue(Declaration decl) {

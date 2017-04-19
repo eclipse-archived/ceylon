@@ -20,11 +20,20 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import static com.redhat.ceylon.model.loader.model.OutputElement.ANNOTATION_TYPE;
+import static com.redhat.ceylon.model.loader.model.OutputElement.CONSTRUCTOR;
+import static com.redhat.ceylon.model.loader.model.OutputElement.FIELD;
+import static com.redhat.ceylon.model.loader.model.OutputElement.GETTER;
+import static com.redhat.ceylon.model.loader.model.OutputElement.LOCAL_VARIABLE;
+import static com.redhat.ceylon.model.loader.model.OutputElement.METHOD;
+import static com.redhat.ceylon.model.loader.model.OutputElement.PACKAGE;
+import static com.redhat.ceylon.model.loader.model.OutputElement.PARAMETER;
+import static com.redhat.ceylon.model.loader.model.OutputElement.SETTER;
+import static com.redhat.ceylon.model.loader.model.OutputElement.TYPE;
+
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
-
-import static com.redhat.ceylon.model.loader.model.OutputElement.*;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
@@ -207,7 +216,7 @@ public class AnnotationUtil {
                 if (declarationModel.isParameter()) {
                     result.add(PARAMETER);
                 }
-                if (declarationModel.isShared() || declarationModel.isCaptured()) {
+                if (ModelUtil.isCaptured(declarationModel)) {
                     result.add(GETTER);
                     if (!(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
                         result.add(FIELD);

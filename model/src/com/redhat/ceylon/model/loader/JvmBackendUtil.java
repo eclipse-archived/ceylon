@@ -1,6 +1,11 @@
 package com.redhat.ceylon.model.loader;
 
+import static com.redhat.ceylon.model.loader.NamingBase.stripLeadingDollar;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getClassOrInterfaceContainer;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isEnumeratedConstructorInLocalVariable;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isLocalNotInitializer;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNonTransientValue;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isVariadic;
 
 import java.io.BufferedReader;
@@ -94,9 +99,9 @@ public class JvmBackendUtil {
             name = (String)annot.getValue();
         } else {
             name = mirror.getName();
-            name = name.isEmpty() ? name : NamingBase.stripLeadingDollar(name);
+            name = name.isEmpty() ? name : stripLeadingDollar(name);
             if (mirror instanceof ClassMirror
-                    && JvmBackendUtil.isInitialLowerCase(name)
+                    && isInitialLowerCase(name)
                     && name.endsWith("_")
                     && mirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null) {
                 name = name.substring(0, name.length()-1);
@@ -107,7 +112,7 @@ public class JvmBackendUtil {
 
     public static boolean isSubPackage(String moduleName, String pkgName) {
         return pkgName.equals(moduleName)
-                || pkgName.startsWith(moduleName+".");
+            || pkgName.startsWith(moduleName+".");
     }
 
     /**
@@ -131,7 +136,7 @@ public class JvmBackendUtil {
     }
 
     public static String strip(String name, boolean isCeylon, boolean isShared) {
-        String stripped = NamingBase.stripLeadingDollar(name);
+        String stripped = stripLeadingDollar(name);
         String privSuffix = NamingBase.Suffix.$priv$.name();
         if(isCeylon && !isShared && name.endsWith(privSuffix))
             return stripped.substring(0, stripped.length() - privSuffix.length());
@@ -302,9 +307,9 @@ public class JvmBackendUtil {
 
     public static boolean createMethod(FunctionOrValue model) {
         return model instanceof Function
-                && model.isParameter()
-                && model.isClassMember()
-                && (model.isShared() || model.isCaptured());
+            && model.isParameter()
+            && model.isClassMember()
+            && ModelUtil.isCaptured(model);
     }
 
     public static boolean supportsReified(Declaration declaration){
@@ -321,7 +326,7 @@ public class JvmBackendUtil {
             // Java methods don't support reified type arguments
             Function m = (Function) getTopmostRefinedDeclaration(declaration);
             // See what its container is
-            ClassOrInterface container = ModelUtil.getClassOrInterfaceContainer(m);
+            ClassOrInterface container = getClassOrInterfaceContainer(m);
             // a method which is not a toplevel and is not a class method, must be a method within method and
             // that must be Ceylon so it supports it
             if(container == null)
@@ -345,12 +350,12 @@ public class JvmBackendUtil {
      * via a {@code VariableBox}
      */
     public static boolean isBoxedVariable(TypedDeclaration attr) {
-        return (ModelUtil.isNonTransientValue(attr)
-                && ModelUtil.isLocalNotInitializer(attr)
+        return (isNonTransientValue(attr)
+                && isLocalNotInitializer(attr)
                 && ((attr.isVariable() && attr.isCaptured())
                         // self-captured objects must also be boxed like variables
                         || attr.isSelfCaptured()))
-                || (attr instanceof Value && ModelUtil.isEnumeratedConstructorInLocalVariable((Value) attr));
+                || (attr instanceof Value && isEnumeratedConstructorInLocalVariable((Value) attr));
     }
 
     private static String getArrayName(TypeDeclaration decl) {
@@ -362,14 +367,14 @@ public class JvmBackendUtil {
     public static boolean isJavaArray(TypeDeclaration decl) {
         String name = getArrayName(decl);
         return "java.lang::ObjectArray".equals(name)
-                || "java.lang::ByteArray".equals(name)
-                || "java.lang::ShortArray".equals(name)
-                || "java.lang::IntArray".equals(name)
-                || "java.lang::LongArray".equals(name)
-                || "java.lang::FloatArray".equals(name)
-                || "java.lang::DoubleArray".equals(name)
-                || "java.lang::BooleanArray".equals(name)
-                || "java.lang::CharArray".equals(name);
+            || "java.lang::ByteArray".equals(name)
+            || "java.lang::ShortArray".equals(name)
+            || "java.lang::IntArray".equals(name)
+            || "java.lang::LongArray".equals(name)
+            || "java.lang::FloatArray".equals(name)
+            || "java.lang::DoubleArray".equals(name)
+            || "java.lang::BooleanArray".equals(name)
+            || "java.lang::CharArray".equals(name);
     }
     
     public static boolean isJavaBooleanArray(TypeDeclaration decl) {

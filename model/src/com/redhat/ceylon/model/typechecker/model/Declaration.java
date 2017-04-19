@@ -665,11 +665,12 @@ public abstract class Declaration
                 ClassOrInterface type = 
                         (ClassOrInterface) 
                             getContainer();
-                return other.getName()!=null && getName()!=null &&
-                        other.getName().equals(getName()) && 
-                        isShared() && other.isShared() &&
-                        //other.getDeclarationKind()==getDeclarationKind() &&
-                        type.isMember(other);
+                return other.getName()!=null && getName()!=null 
+                    && other.getName().equals(getName()) 
+                    && (isShared() || isActual()) 
+                    && (other.isShared() || other.isActual())
+                    //&& other.getDeclarationKind()==getDeclarationKind()
+                    && type.isMember(other);
             }
             else {
                 return false;

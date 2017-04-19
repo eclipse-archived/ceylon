@@ -68,7 +68,7 @@ public class CodegenUtil {
     public static boolean isHashAttribute(Declaration model) {
         return model instanceof Value
                 && Decl.withinClassOrInterface(model)
-                && model.isShared()
+                && (model.isActual()||model.isShared())
                 && "hash".equals(model.getName());
     }
 
@@ -256,7 +256,8 @@ public class CodegenUtil {
                 && !decl.isToplevel()
                 && !decl.isClassOrInterfaceMember()
                 && !decl.isCaptured()
-                && !decl.isShared();
+                && !decl.isShared()
+                && !decl.isActual();
     }
 
     static Declaration getTopmostRefinedDeclaration(Declaration decl){
