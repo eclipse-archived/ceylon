@@ -4,7 +4,11 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
+import static com.redhat.ceylon.model.loader.JvmBackendUtil.isInitialLowerCase;
+import static com.redhat.ceylon.model.loader.NamingBase.capitalize;
+import static com.redhat.ceylon.model.loader.NamingBase.getJavaBeanName;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
@@ -43,6 +47,7 @@ import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -72,29 +77,68 @@ public class AnalyzerUtil {
     
     static final List<Type> NO_TYPE_ARGS = emptyList();
     
+    private static Declaration getMemberInheritedFromOuterTypes(
+            TypeDeclaration td, String name, 
+            List<Type> signature, boolean variadic, 
+            Scope scope) {
+        ClassOrInterface cci = 
+                getContainingClassOrInterface(scope);
+        while (cci!=null) { 
+            if (!(td instanceof NothingType) 
+                    && td.inherits(cci)) {
+                //just in case the current class is a 
+                //superclass of the receiver type, and
+                //has a private member with the given
+                //name, check the current class
+                Declaration direct = 
+                        cci.getDirectMember(name, 
+                                signature, variadic);
+                //ignore it if shared, since it
+                //might be refined by the subtype
+                if (direct!=null && !direct.isShared()) {
+                    return direct;
+                }
+            }
+            cci = getContainingClassOrInterface(
+                    cci.getContainer());
+        }
+        return null;
+    }
+    
+    private static boolean transformNameForJava(
+            TypeDeclaration td, Scope scope, String name, 
+            Boolean type) {
+        return td.isJava()
+            && isForBackend(scope.getScopedBackends(), 
+                            Backend.Java)
+            && type==isInitialLowerCase(name);
+    }
+
     static TypedDeclaration getTypedMember(TypeDeclaration td, 
             String name, List<Type> signature, boolean variadic, 
             Unit unit, Scope scope) {
 
         Declaration member = 
-                td.getImportedMember(scope, name, signature, variadic);
+                getMemberInheritedFromOuterTypes(td, name, 
+                        signature, variadic, scope);
         if (member==null) {
-            member = td.getMember(name, unit, signature, variadic);
+            member = td.getImportedMember(scope, name, 
+                    signature, variadic);
+        }
+        if (member==null) {
+            member = td.getMember(name, unit, 
+                    signature, variadic);
+        }
+        if (member==null 
+                && transformNameForJava(td, scope, name, false)) {
+            member = td.getMember(getJavaBeanName(name), 
+                    unit, signature, variadic);
         }
         
         if (member instanceof TypedDeclaration) {
             return (TypedDeclaration) member;
         }
         else {
-            if (td.isJava()
-                    && isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && !JvmBackendUtil.isInitialLowerCase(name)) {
-                name = NamingBase.getJavaBeanName(name);
-                member = td.getMember(name, unit, signature, variadic);
-                if (member instanceof TypedDeclaration) {
-                    return (TypedDeclaration) member;
-                }
-            }
             return null;
         }
     }
@@ -104,9 +148,20 @@ public class AnalyzerUtil {
             Unit unit, Scope scope) {
         
         Declaration member = 
-                td.getImportedMember(scope, name, signature, variadic);
+                getMemberInheritedFromOuterTypes(td, name, 
+                        signature, variadic, scope);
         if (member==null) {
-            member = td.getMember(name, unit, signature, variadic);
+            member = td.getImportedMember(scope, name, 
+                    signature, variadic);
+        }
+        if (member==null) {
+            member = td.getMember(name, unit, 
+                    signature, variadic);
+        }
+        if (member==null 
+                && transformNameForJava(td, scope, name, true)) {
+            member = td.getMember(capitalize(name), 
+                    unit, signature, variadic);
         }
         
         if (member instanceof TypeDeclaration) {
@@ -117,20 +172,6 @@ public class AnalyzerUtil {
                     (TypedDeclaration) member);
         }
         else {
-            if (td.isJava()
-                    && isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && JvmBackendUtil.isInitialLowerCase(name)) {
-                name = NamingBase.capitalize(name);
-                member = 
-                        td.getMember(name, unit, signature, variadic);
-                if (member instanceof TypeDeclaration) {
-                    return (TypeDeclaration) member;
-                }
-                else if (member instanceof TypedDeclaration) {
-                    return anonymousType(name, 
-                            (TypedDeclaration) member);
-                }
-            }
             return null;
         }
     }

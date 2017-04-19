@@ -7143,33 +7143,9 @@ public class ExpressionVisitor extends Visitor {
                 }
                 container = "type '" + d.getName(unit) + "'";
                 Scope scope = that.getScope();
-                member = null;
-                ClassOrInterface ci = 
-                        getContainingClassOrInterface(scope);
-                while (ci!=null && 
-                        d.inherits(ci) && 
-                        !(d instanceof NothingType)) {
-                    //just in case the current class is a 
-                    //superclass of the receiver type, and
-                    //has a private member with the given
-                    //name, check the current class
-                    Declaration direct = 
-                            ci.getDirectMember(name, 
-                                    signature, spread);
-                    if (direct instanceof TypedDeclaration &&
-                            //ignore it if shared, since it
-                            //might be refined by the subtype
-                            !direct.isShared()) {
-                        member = (TypedDeclaration) direct;
-                        break;
-                    }
-                    ci = getContainingClassOrInterface(
-                            ci.getContainer());
-                }
-                if (member==null) {
-                    member = getTypedMember(d, name, 
-                            signature, spread, unit, scope);
-                }
+                member = 
+                        getTypedMember(d, name, 
+                                signature, spread, unit, scope);
                 ambiguous = member==null && 
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
@@ -7964,30 +7940,9 @@ public class ExpressionVisitor extends Visitor {
                 }
                 container = "type '" + d.getName(unit) + "'";
                 Scope scope = that.getScope();
-                type = null;
-                ClassOrInterface ci = 
-                        getContainingClassOrInterface(scope);
-                while (ci!=null && 
-                        !(d instanceof NothingType) &&
-                        d.inherits(ci)) {
-                    //just in case the current class is a 
-                    //superclass of the receiver type, and
-                    //has a private member with the given
-                    //name, check the current class
-                    Declaration direct = 
-                            ci.getDirectMember(name, 
-                                    signature, spread);
-                    if (direct instanceof TypeDeclaration) {
-                        type = (TypeDeclaration) direct;
-                        break;
-                    }
-                    ci = getContainingClassOrInterface(
-                            ci.getContainer());
-                }
-                if (type==null) {
-                    type = getTypeMember(d, name, 
-                            signature, spread, unit, scope);
-                }
+                type = 
+                        getTypeMember(d, name, 
+                                signature, spread, unit, scope);
                 ambiguous = type==null && 
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
