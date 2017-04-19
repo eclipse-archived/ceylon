@@ -91,10 +91,10 @@ public class AnalyzerUtil {
                 Declaration direct = 
                         cci.getDirectMember(name, 
                                 signature, variadic);
-                //ignore it if shared, since it
-                //might be refined by the subtype
-                if (direct!=null && !direct.isShared()) {
-                    return direct;
+                if (direct!=null) {
+                    //ignore it if shared, since it
+                    //might be refined by the subtype
+                    return direct.isShared() ? null : direct;
                 }
             }
             cci = getContainingClassOrInterface(
