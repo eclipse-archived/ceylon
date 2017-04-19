@@ -35,8 +35,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
-import com.redhat.ceylon.model.loader.JvmBackendUtil;
-import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -108,8 +106,45 @@ public class AnalyzerUtil {
     private static boolean transformNameForJava(
             TypeDeclaration td, Scope scope, String name, 
             Boolean type) {
+        // If this is a Java type, it might have 
+        // members that follow the "wrong" naming
+        // convention
         return td.isJava()
             && isForBackend(scope.getScopedBackends(), 
+                            Backend.Java)
+            && type==isInitialLowerCase(name);
+    }
+
+    private static Declaration getFromJava(String name, 
+            Scope scope, List<Type> signature, boolean ellipsis,
+            Unit unit) {
+        // This method is used for base members, not qualified members
+        // so we don't look for members but we look on the scope, which
+        // may contain values with the modified case. For example, given
+        // import Foo { ... } which contains a \iBAR we map to "bar",
+        // if we look on the scope for "bar" we may find one that is not
+        // the one we wanted to import, so try imports first.
+        Declaration result = 
+                unit.getImportedDeclaration(name, 
+                        signature, ellipsis);
+        if (result!=null && result.isJava()) {
+            return result;
+        }
+        result = 
+                scope.getMemberOrParameter(unit, 
+                        name, signature, ellipsis);
+        if (result!=null && result.isJava()) {
+            return result;
+        }
+        return null;
+    }
+    
+    private static boolean transformNameForJava(
+            Scope scope, String name, 
+            Boolean type) {
+        // We might have imported members of a Java type, 
+        // that follow the "wrong" naming convention
+        return isForBackend(scope.getScopedBackends(), 
                             Backend.Java)
             && type==isInitialLowerCase(name);
     }
@@ -183,42 +218,20 @@ public class AnalyzerUtil {
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
                         name, signature, ellipsis);
+        if (result==null
+                && transformNameForJava(scope, name, false)) {
+            result = getFromJava(getJavaBeanName(name), 
+                    scope, signature, ellipsis, unit);
+        }
         
         if (result instanceof TypedDeclaration) {
             return (TypedDeclaration) result;
         }
         else {
-            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && !JvmBackendUtil.isInitialLowerCase(name)) {
-                name = NamingBase.getJavaBeanName(name);
-                // This method is used for base members, not qualified members
-                // so we don't look for members but we look on the scope, which
-                // may contain values with the modified case. For example, given
-                // import Foo { ... } which contains a \iBAR we map to "bar",
-                // if we look on the scope for "bar" we may find one that is not
-                // the one we wanted to import, so try imports first.
-                result = unit.getImportedDeclaration(name, 
-                        signature, ellipsis);
-                if (result != null && !result.isJava()) {
-                    result = null;
-                }
-                else if (result instanceof TypedDeclaration) {
-                    return (TypedDeclaration) result;
-                }
-                result = 
-                        scope.getMemberOrParameter(unit, 
-                                name, signature, ellipsis);
-                if (result != null && !result.isJava()) {
-                    result = null;
-                }
-                else if (result instanceof TypedDeclaration) {
-                    return (TypedDeclaration) result;
-                }
-            }
             return null;
         }
     }
-    
+
     static TypeDeclaration getTypeDeclaration(Scope scope,
             String name, List<Type> signature, boolean ellipsis,
             Unit unit) {
@@ -226,6 +239,11 @@ public class AnalyzerUtil {
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
                         name, signature, ellipsis);
+        if (result==null
+                && transformNameForJava(scope, name, true)) {
+            result = getFromJava(capitalize(name), 
+                    scope, signature, ellipsis, unit);
+        }
         
         if (result instanceof TypeDeclaration) {
             return (TypeDeclaration) result;
@@ -235,41 +253,6 @@ public class AnalyzerUtil {
                     (TypedDeclaration) result);
         }
         else {
-            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && JvmBackendUtil.isInitialLowerCase(name)) {
-                name = NamingBase.capitalize(name);
-                // This method is used for base members, not qualified members
-                // so we don't look for members but we look on the scope, which
-                // may contain values with the modified case. For example, given
-                // import Foo { ... } which contains a \iBAR we map to "bar",
-                // if we look on the scope for "bar" we may find one that is not
-                // the one we wanted to import, so try imports first.
-                result = unit.getImportedDeclaration(name, 
-                        signature, ellipsis);
-                if (result != null && !result.isJava()) {
-                    result = null;
-                }
-                else if (result instanceof TypeDeclaration) {
-                    return (TypeDeclaration) result;
-                }
-                else if (result instanceof TypedDeclaration) {
-                    return anonymousType(name, 
-                            (TypedDeclaration) result);
-                }
-                result = 
-                        scope.getMemberOrParameter(unit, 
-                                name, signature, ellipsis);
-                if (result != null && !result.isJava()) {
-                    result = null;
-                }
-                else if (result instanceof TypeDeclaration) {
-                    return (TypeDeclaration) result;
-                }
-                else if (result instanceof TypedDeclaration) {
-                    return anonymousType(name, 
-                            (TypedDeclaration) result);
-                }
-            }
             return null;
         }
     }
