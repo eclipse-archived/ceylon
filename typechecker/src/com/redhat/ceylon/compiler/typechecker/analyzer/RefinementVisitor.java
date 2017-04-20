@@ -18,6 +18,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningSharedRefinements;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
@@ -1351,10 +1352,13 @@ public class RefinementVisitor extends Visitor {
         Type refiningType = refiningMember.getType();
         Type refinedType = refinedMember.getType();
         if (!isTypeUnknown(refinedType)) {
-            if (that instanceof Tree.LocalModifier) {
+            if (that instanceof Tree.LocalModifier
+                    && refined.isShared()) {
                 //infer the type of an actual member 
                 //by taking the intersection of all 
-                //members it refines
+                //shared members it refines (no need
+                //to consider unshared refinements
+                //since they can't narrow the type)
                 //NOTE: feature not blessed by the spec!
                 TypedDeclaration td = 
                         (TypedDeclaration) refining;
@@ -2100,7 +2104,7 @@ public class RefinementVisitor extends Visitor {
             Type intersection() {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rv.getType());
-                for (Declaration d: getInterveningRefinements(name, 
+                for (Declaration d: getInterveningSharedRefinements(name, 
                         null, false, root, c, ci)) {
                     addToIntersection(list,
                             c.getType()
@@ -2349,7 +2353,7 @@ public class RefinementVisitor extends Visitor {
             Type intersection() {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rm.getType());
-                for (Declaration d: getInterveningRefinements(name, 
+                for (Declaration d: getInterveningSharedRefinements(name, 
                         signature, variadic, root, c, ci)) {
                     addToIntersection(list,
                             c.getType().getTypedReference(d, NO_TYPE_ARGS).getType(),
