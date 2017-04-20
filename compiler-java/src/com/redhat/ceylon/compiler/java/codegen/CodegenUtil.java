@@ -67,9 +67,9 @@ public class CodegenUtil {
 
     public static boolean isHashAttribute(Declaration model) {
         return model instanceof Value
-                && Decl.withinClassOrInterface(model)
-                && (model.isActual()||model.isShared())
-                && "hash".equals(model.getName());
+            && Decl.withinClassOrInterface(model)
+            && model.isSharedOrActual()
+            && "hash".equals(model.getName());
     }
 
     static boolean isUnBoxed(Term node){
