@@ -1330,18 +1330,14 @@ public class ExpressionVisitor extends Visitor {
                 //we require that both approaches
                 //give exactly the same result
                 inferType(that, sie);
-                checkIsExactly(dec.getType(), 
-                        declaredType, sie, 
-                        "inferred type of '"
-                        + dec.getName(unit)
-                        + "' must be exactly the same as type of refined member");
+                checkUnsharedRefinement(dec, sie, declaredType);
             }
         }
         else if (isTypeUnknown(declaredType)) {
             inferType(that, sie);
         }
     }
-    
+
     private void inferFunctionTypeAccountingForRefinement(
             Tree.MethodDeclaration that, Function fun,
             Tree.Expression e, Tree.SpecifierExpression se) {
@@ -1355,11 +1351,7 @@ public class ExpressionVisitor extends Visitor {
                 //we require that both approaches
                 //give exactly the same result
                 inferFunctionType(that, e);
-                checkIsExactly(fun.getType(), 
-                        declaredType, se, 
-                        "inferred type of '"
-                        + fun.getName(unit)
-                        + "' must be exactly the same as type of refined member");
+                checkUnsharedRefinement(fun, se, declaredType);
             }
         }
         else if (isTypeUnknown(declaredType)) {
@@ -1367,6 +1359,17 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private void checkUnsharedRefinement(TypedDeclaration dec, 
+            Node sie, Type declaredType) {
+        checkIsExactly(dec.getType(), 
+                declaredType, sie, 
+                "inferred type of unshared refinement '"
+                + dec.getName(unit)
+                + "' must be exactly the same as type of refined member (make '"
+                + dec.getName(unit)
+                + "' shared or declare its type explicitly)");
+    }
+    
     @Override public void visit(Tree.ParameterizedExpression that) {
         super.visit(that);
         Tree.Term primary = that.getPrimary();
@@ -2133,11 +2136,7 @@ public class ExpressionVisitor extends Visitor {
         if (declaredType!=null 
                 && v.isActual() 
                 && !v.isShared()) {
-            checkIsExactly(v.getType(), 
-                    declaredType, that, 
-                    "inferred type of '"
-                    + v.getName(unit)
-                    + "' must be exactly the same as type of refined member");
+            checkUnsharedRefinement(v, that, declaredType);
         }
         Setter setter = v.getSetter();
         if (setter!=null) {
@@ -2259,11 +2258,7 @@ public class ExpressionVisitor extends Visitor {
         if (declaredType!=null 
                 && m.isActual() 
                 && !m.isShared()) {
-            checkIsExactly(m.getType(), 
-                    declaredType, that, 
-                    "inferred type of '"
-                    + m.getName(unit)
-                    + "' must be exactly the same as type of refined member");
+            checkUnsharedRefinement(m, that, declaredType);
         }
         if (type instanceof Tree.LocalModifier) {
             if (isTypeUnknown(type.getTypeModel())) {
