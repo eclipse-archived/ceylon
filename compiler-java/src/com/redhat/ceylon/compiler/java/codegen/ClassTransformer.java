@@ -3686,10 +3686,10 @@ public class ClassTransformer extends AbstractTransformer {
             return declarationSharedFlags(cdecl);
         }
         public int constructor(Constructor ctor) {
-            return Decl.isShared(ctor) 
-                    && !Decl.isAncestorLocal(ctor) 
-                    && !ctor.isAbstract() 
-                    && !Decl.isEnumeratedConstructor(ctor)? PUBLIC : PRIVATE;
+            return ctor.isShared() 
+                && !Decl.isAncestorLocal(ctor) 
+                && !ctor.isAbstract() 
+                && !Decl.isEnumeratedConstructor(ctor)? PUBLIC : PRIVATE;
         }
 
         public long typeAlias(TypeAlias decl) {
@@ -5709,7 +5709,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
         } else if (model != null && Decl.withinClassOrInterface(model)) {
-            boolean generateGetter = Decl.isCaptured(model);
+            boolean generateGetter = ModelUtil.isCaptured(model);
             JCExpression type = makeJavaType(klass.getType());
             if (generateGetter) {
                 int modifiers = TRANSIENT | PRIVATE | (model.isStatic() ? STATIC : 0);

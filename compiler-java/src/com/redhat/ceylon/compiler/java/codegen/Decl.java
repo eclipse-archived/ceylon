@@ -116,8 +116,8 @@ public class Decl {
      */
     public static boolean isGetter(Declaration decl) {
         return decl instanceof Value
-                && !((Value)decl).isParameter() 
-                && ((Value)decl).isTransient();
+            && !((Value)decl).isParameter() 
+            && ((Value)decl).isTransient();
     }
 
     public static boolean isNonTransientValue(Declaration decl) {
@@ -284,11 +284,7 @@ public class Decl {
     }
     
     public static boolean isShared(Tree.Declaration decl) {
-        return isShared(decl.getDeclarationModel());
-    }
-    
-    public static boolean isShared(Declaration decl) {
-        return decl.isShared();
+        return decl.getDeclarationModel().isShared();
     }
     
     public static boolean isSmall(Tree.Declaration decl) {
@@ -296,17 +292,14 @@ public class Decl {
     }
     
     public static boolean isSmall(Declaration decl) {
-        return (decl instanceof FunctionOrValue) && ((FunctionOrValue)decl).isSmall();
+        return decl instanceof FunctionOrValue
+            && ((FunctionOrValue)decl).isSmall();
     }
     
     public static boolean isCaptured(Tree.Declaration decl) {
-        return isCaptured(decl.getDeclarationModel());
+        return ModelUtil.isCaptured(decl.getDeclarationModel());
     }
     
-    public static boolean isCaptured(Declaration decl) {
-        return ModelUtil.isCaptured(decl);
-    }
-
     public static boolean isAbstract(Tree.ClassOrInterface decl) {
         return decl.getDeclarationModel().isAbstract();
     }
@@ -320,23 +313,16 @@ public class Decl {
     }
 
     public static boolean isActual(Tree.Declaration decl) {
-        return isActual(decl.getDeclarationModel());
+        return decl.getDeclarationModel().isActual();
     }
     
-    public static boolean isActual(Declaration decl) {
-        return decl.isActual();
-    }
-
     public static boolean isTransient(Tree.AttributeDeclaration decl) {
         return decl.getDeclarationModel().isTransient();
     }
 
     public static boolean isTransient(Declaration decl) {
-        if (decl instanceof FunctionOrValue) {
-            return ((FunctionOrValue)decl).isTransient();
-        } else {
-            return false;
-        }
+        return decl instanceof FunctionOrValue
+            && ((FunctionOrValue)decl).isTransient();
     }
 
     public static boolean isVariable(Tree.AttributeDeclaration decl) {
@@ -372,7 +358,8 @@ public class Decl {
     }
     
     public static boolean isDeferred(Declaration decl) {
-        return (decl instanceof Function) && ((Function)decl).isDeferred();
+        return decl instanceof Function 
+            && ((Function)decl).isDeferred();
     }
     
     /**
@@ -454,14 +441,14 @@ public class Decl {
     }
         
     public static boolean isClassAttribute(Declaration decl) {
-        return (withinClassOrInterface(decl))
+        return withinClassOrInterface(decl)
             && (Decl.isValue(decl) || decl instanceof Setter)
             && ModelUtil.isCaptured(decl);
     }
 
     public static boolean isClassParameter(Declaration decl) {
-        return (withinClassOrInterface(decl))
-            && (decl instanceof Value) 
+        return withinClassOrInterface(decl)
+            && decl instanceof Value 
             && ((Value)decl).isParameter()
             && ModelUtil.isCaptured(decl);
     }
@@ -475,10 +462,7 @@ public class Decl {
     }
     
     public static boolean isOverloaded(Declaration decl) {
-        if (decl instanceof Functional) {
-            return decl.isOverloaded();
-        }
-        return false;
+        return decl instanceof Functional && decl.isOverloaded();
     }
 
     public static boolean isJavaField(Declaration decl) {
@@ -553,7 +537,7 @@ public class Decl {
         if(type == null)
             return false;
         type = type.resolveAliases();
-        if ((type != null) && type.getDeclaration() instanceof LazyClass) {
+        if (type!=null && type.getDeclaration() instanceof LazyClass) {
             return ((LazyClass)type.getDeclaration()).isValueType();
         }
         return false;
@@ -561,10 +545,10 @@ public class Decl {
 
     static boolean isRefinableMemberClass(Declaration model) {
         return model instanceof Class 
-                && model.isMember()
-                && (model.isFormal() || model.isDefault())
-                && !model.isAnonymous()
-                && isCeylon((Class)model);
+            && model.isMember()
+            && (model.isFormal() || model.isDefault())
+            && !model.isAnonymous()
+            && isCeylon((Class)model);
     }
     
     /**
@@ -617,8 +601,8 @@ public class Decl {
     
     public static boolean isAnnotationConstructor(Declaration def) {
         return def.isToplevel()
-                && def instanceof Function
-                && containsAnnotationAnnotation(def);
+            && def instanceof Function
+            && containsAnnotationAnnotation(def);
     }
 
     private static boolean containsAnnotationAnnotation(
@@ -641,7 +625,7 @@ public class Decl {
      */
     public static boolean isAnnotationClassNoModel(Tree.Declaration decl) {
         return decl instanceof Tree.AnyClass
-                && TreeUtil.hasAnnotation(decl.getAnnotationList(), "annotation", decl.getUnit());
+            && TreeUtil.hasAnnotation(decl.getAnnotationList(), "annotation", decl.getUnit());
     }
     
     /**
@@ -666,8 +650,8 @@ public class Decl {
     }
 
     public static boolean isAnnotationClass(Declaration declarationModel) {
-        return (declarationModel instanceof Class)
-                && containsAnnotationAnnotation(declarationModel);
+        return declarationModel instanceof Class
+            && containsAnnotationAnnotation(declarationModel);
     }
 
     /** 
@@ -745,21 +729,18 @@ public class Decl {
     
     public static boolean isParameter(Declaration decl) {
         return decl instanceof FunctionOrValue
-                && ((FunctionOrValue)decl).isParameter();
+            && ((FunctionOrValue)decl).isParameter();
     }
     
     public static boolean isFunctionalParameter(Declaration decl) {
         return decl instanceof Function
-                && ((Function)decl).isParameter();
+            && ((Function)decl).isParameter();
     }
     
     public static boolean isValueParameter(Declaration decl) {
         return decl instanceof Value
-                && ((Value)decl).isParameter();
+            && ((Value)decl).isParameter();
     }
-    
-
-    
     
     public static boolean isEnumeratedTypeWithAnonCases(Type parameterType) {
         if (parameterType.isBoolean()) {
@@ -807,17 +788,16 @@ public class Decl {
             return false;
         Declaration decl = ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration();
         return decl != null
-                && (decl.isStatic() || decl instanceof Interface)
-                && !(decl instanceof Constructor);
+            && (decl.isStatic() || decl instanceof Interface)
+            && !(decl instanceof Constructor);
     }
     
     public static boolean isConstructorPrimary(Tree.Term term) {
         if (term instanceof Tree.MemberOrTypeExpression) {
             Declaration decl = ((Tree.MemberOrTypeExpression)term).getDeclaration();
             return decl != null
-                    && (isConstructor(decl)
-                    || (decl instanceof Class
-                            && ((Class)decl).hasConstructors()));
+                && (isConstructor(decl)
+                || (decl instanceof Class && ((Class)decl).hasConstructors()));
         } else {
             return false;
         }
@@ -885,8 +865,7 @@ public class Decl {
      * @return
      */
     public static Scope getNonConditionScope(Scope scope) {
-        while (scope != null &&
-                scope instanceof ConditionScope) {
+        while (scope instanceof ConditionScope) {
             scope = scope.getContainer();
         }
         return scope;
@@ -898,9 +877,9 @@ public class Decl {
      */
     public static boolean isTopLevelObjectExpressionType(Declaration model) {
         return model instanceof Class
-                && model.isAnonymous()
-                && getNonSkippedContainer(model) instanceof Package
-                && !model.isNamed();
+            && model.isAnonymous()
+            && getNonSkippedContainer(model) instanceof Package
+            && !model.isNamed();
     }
 
     /**
@@ -908,8 +887,8 @@ public class Decl {
      */
     public static boolean isObjectExpressionType(Declaration model) {
         return model instanceof Class
-                && model.isAnonymous()
-                && !model.isNamed();
+            && model.isAnonymous()
+            && !model.isNamed();
     }
 
     public static Constructor getDefaultConstructor(Class c) {
@@ -923,11 +902,8 @@ public class Decl {
     }
     
     public static boolean isDefaultConstructor(Constructor ctor) {
-        if (ctor.getName() == null
-                || ctor.getName().isEmpty()) {
-            return true;
-        }
-        return false;
+        String name = ctor.getName();
+        return name == null || name.isEmpty();
     }
     
     public static Class getConstructedClass(Declaration classOrCtor) {
@@ -1053,7 +1029,7 @@ public class Decl {
 
     public static boolean isValueConstructor(Declaration member) {
         return member instanceof Value
-                && ((Value)member).getTypeDeclaration() instanceof Constructor;
+            && ((Value)member).getTypeDeclaration() instanceof Constructor;
     }
     
     public static boolean isDynamic(Declaration decl) {
@@ -1067,8 +1043,8 @@ public class Decl {
     
     public static boolean isJavaVariadic(Parameter parameter) {
         return parameter.isSequenced()
-                && parameter.getDeclaration() instanceof Function
-                && isJavaMethod((Function) parameter.getDeclaration());
+            && parameter.getDeclaration() instanceof Function
+            && isJavaMethod((Function) parameter.getDeclaration());
     }
     
     public static boolean isJavaVariadicIncludingInheritance(Parameter parameter){
@@ -1188,6 +1164,6 @@ public class Decl {
      */
     public static boolean isMemoized(AttributeDeclaration decl) {
         return decl.getSpecifierOrInitializerExpression() != null
-                && decl.getDeclarationModel().isLate();
+            && decl.getDeclarationModel().isLate();
     }
 }
