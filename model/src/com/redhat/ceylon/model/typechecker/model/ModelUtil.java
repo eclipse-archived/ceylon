@@ -2326,8 +2326,9 @@ public class ModelUtil {
     }
 
     public static boolean isTypeUnknown(Type type) {
-        return type==null || type.getDeclaration()==null ||
-                type.containsUnknowns();
+        return type==null 
+            || type.getDeclaration()==null 
+            || type.containsUnknowns();
     }
     
     public static boolean isVariadic(
