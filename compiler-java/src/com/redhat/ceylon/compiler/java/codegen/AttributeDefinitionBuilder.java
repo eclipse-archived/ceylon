@@ -223,7 +223,7 @@ public class AttributeDefinitionBuilder {
         if (!"ref".equals(getterName)
                 && !"get_".equals(getterName)
                 && !attrType.getName().equals(getJavaAttributeName(getterName))
-                && (attrType.isShared() || attrType.isActual())
+                && attrType.isSharedOrActual()
                 && !Decl.isValueConstructor(attrType)) {
             adb.getterBuilder.realName(attrType.getName());
         }

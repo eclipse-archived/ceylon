@@ -5247,7 +5247,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = transformSuperOf(expr, expr.getPrimary(), exprDec.getName());
             } else if (isThis(primary)
                     && !exprDec.isCaptured() 
-                    && !(exprDec.isShared() || exprDec.isActual())
+                    && !exprDec.isSharedOrActual()
                     && Decl.getDeclarationScope(expr.getScope()) instanceof Constructor) {
                 result = null;
             } else if (Decl.isJavaStaticOrInterfacePrimary(primary)) {
@@ -5636,7 +5636,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // (Value inside a Class) where we might refer to JavaBean properties
                     selector = naming.selector((TypedDeclaration)decl);
                 }
-            } else if (decl.isCaptured() || decl.isShared() || decl.isActual()) {
+            } else if (ModelUtil.isCaptured(decl)) {
                 TypedDeclaration typedDecl = ((TypedDeclaration)decl);
                 TypeDeclaration typeDecl = typedDecl.getType().getDeclaration();
                 mustUseField = Decl.isBoxedVariable((TypedDeclaration)decl);
@@ -5851,7 +5851,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 VarianceCastResult varianceCastResult = getVarianceCastResult(targetType, declarationContainerType);
                 // if we are within a comprehension body, or if we need a variance cast
                 if(isWithinSyntheticClassBody() || varianceCastResult != null){
-                    if ((decl.isShared() || decl.isActual()) && outer instanceof Interface) {
+                    if (decl.isSharedOrActual() && outer instanceof Interface) {
                         // always prefer qualified
                         qualExpr = makeQualifiedDollarThis(declarationContainerType);
                     } else {
@@ -5955,7 +5955,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // this is only for interface containers
                 && declContainer instanceof Interface
                 // we only ever need the $impl if the declaration is not shared
-                && !(decl.isShared() || decl.isActual())
+                && !decl.isSharedOrActual()
                 && (!(expr instanceof Tree.QualifiedMemberExpression)
                 || !isSuperOrSuperOf(((Tree.QualifiedMemberExpression)expr).getPrimary()))){
             Interface declaration = (Interface) declContainer;
@@ -6021,8 +6021,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             Scope scope = expr.getScope();
             while (scope != null){
                 // Is it being used in an interface (=> impl)
-                if(scope instanceof Interface && ((Interface) scope).getType().isSubtypeOf(scope.getDeclaringType(decl))) {
-                    return decl.isShared() || decl.isActual();
+                if (scope instanceof Interface && ((Interface) scope).getType().isSubtypeOf(scope.getDeclaringType(decl))) {
+                    return decl.isSharedOrActual();
                 }
                 scope = scope.getContainer();
             }
@@ -6529,8 +6529,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (isSuperOf(qualified.getPrimary())) {
                     lhs = transformSuperOf(qualified, qualified.getPrimary(), qualifiedDec.getName());
                 } else if (isThis(qualified.getPrimary())
-                        && !qualifiedDec.isCaptured() 
-                        && !(qualifiedDec.isShared() || qualifiedDec.isActual())) {
+                        && !ModelUtil.isCaptured(qualifiedDec)) {
                     lhs = null;
                 } else if (!qualifiedDec.isStatic()) {
                     lhs = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
@@ -6583,7 +6582,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else if (decl instanceof Function && Decl.isDeferred(decl)) {
         } else if ((decl.isVariable() || decl.isLate()) && (Decl.isClassAttribute(decl))) {
-        } else if (decl.isVariable() && (decl.isCaptured() || decl.isShared() || decl.isActual())) {
+        } else if (decl.isVariable() && ModelUtil.isCaptured(decl)) {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
                 
@@ -6676,7 +6675,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
                 }
             }
-        } else if (decl.isVariable() && (decl.isCaptured() || decl.isShared() || decl.isActual())) {
+        } else if (decl.isVariable() && ModelUtil.isCaptured(decl)) {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
                 varExpr = naming.makeName(decl, Naming.NA_Q_LOCAL_INSTANCE | Naming.NA_MEMBER | Naming.NA_SETTER);
@@ -6717,7 +6716,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     return true;
                 }
             }
-        } else if (decl.isVariable() && (decl.isCaptured() || decl.isShared() || decl.isActual())) {
+        } else if (decl.isVariable() && ModelUtil.isCaptured(decl)) {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
                 return false;

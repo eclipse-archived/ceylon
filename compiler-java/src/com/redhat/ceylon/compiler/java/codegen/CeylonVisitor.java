@@ -589,7 +589,7 @@ public class CeylonVisitor extends Visitor {
         } else if (Decl.withinInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
             AttributeDefinitionBuilder adb = gen.classGen().transform(decl, true);
-            if (dec.isShared() || dec.isActual()) {
+            if (dec.isSharedOrActual()) {
                 adb.ignoreAnnotations();
             }
             classBuilder.getCompanionBuilder((Interface)dec.getContainer()).attribute(adb);
