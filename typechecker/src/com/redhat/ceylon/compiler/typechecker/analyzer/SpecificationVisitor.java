@@ -1694,7 +1694,7 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private boolean isSharedDeclarationUninitialized() {
-        return (declaration.isShared() || declaration.isActual() || 
+        return (declaration.isSharedOrActual() || 
                 declaration.getOtherInstanceAccess()) && 
                 !declaration.isFormal() &&
                 !declaration.isJavaNative() && 
@@ -1704,7 +1704,7 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private boolean isCapturedDeclarationUninitialized() {
-        return (declaration.isShared() || declaration.isActual() ||
+        return (declaration.isSharedOrActual() ||
                 declaration.getOtherInstanceAccess() ||
                 usedInDeclarationSection) &&
                 !definedInDeclarationSection &&

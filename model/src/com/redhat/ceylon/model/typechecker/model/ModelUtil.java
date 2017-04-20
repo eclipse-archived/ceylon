@@ -2770,7 +2770,7 @@ public class ModelUtil {
                                 signature, variadic,
                                 rootOverloaded);
                 if (member!=null 
-                        && (member.isShared() || member.isActual()) 
+                        && member.isSharedOrActual() 
                         && !isAbstraction(member)) {
                     TypeDeclaration td = 
                             (TypeDeclaration) 
@@ -3249,7 +3249,7 @@ public class ModelUtil {
     public static boolean isCaptured(Declaration decl) {
         // Shared elements are implicitly captured although 
         // the typechecker doesn't mark them that way
-        return decl.isCaptured() || decl.isShared() || decl.isActual();
+        return decl.isCaptured() || decl.isSharedOrActual();
     }
 
     public static boolean isNonTransientValue(Declaration decl) {

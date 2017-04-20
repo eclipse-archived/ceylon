@@ -373,7 +373,7 @@ public class TypeHierarchyVisitor extends Visitor {
                     type.declaration.getDirectMember(name, null, false);
             boolean isMemberRefined = 
                     directMember!=null && 
-                    (directMember.isShared() || directMember.isActual()); //&& !(directMember instanceof Parameter);
+                    directMember.isSharedOrActual(); //&& !(directMember instanceof Parameter);
             isMemberRefined = isMemberRefined && 
                     type.declaration.getInheritedMembers(name)
                         .contains(declarationOfSupertypeMember);
@@ -696,7 +696,7 @@ public class TypeHierarchyVisitor extends Visitor {
                     members.defaults.add(member);
                 }
                 if (!member.isFormal() && !member.isDefault() 
-                        && (member.isShared() || member.isActual())) {
+                        && member.isSharedOrActual()) {
                     members.nonFormalsNonDefaults.add(member);
                 }
                 if (member.isShared()) {

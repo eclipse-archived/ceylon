@@ -158,7 +158,7 @@ public class RefinementVisitor extends Visitor {
             
             boolean member = 
                     dec.isClassOrInterfaceMember() &&
-                    (dec.isShared() || dec.isActual()) &&
+                    dec.isSharedOrActual() &&
                     !isConstructor(dec) &&
                     !(dec instanceof TypeParameter); //TODO: what about nested interfaces and abstract classes?!            
             if (member) {

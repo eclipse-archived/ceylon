@@ -150,7 +150,7 @@ public class NamingBase {
 
     public static String getAliasInstantiatorMethodName(Class model) {
         String name = suffixName(Suffix.$aliased$, model.getName());
-        if (!model.isShared() && !model.isActual()) {
+        if (!model.isSharedOrActual()) {
             name = suffixName(Suffix.$priv$, name);
         }
         return name;
@@ -321,7 +321,7 @@ public class NamingBase {
         } else if (withinClassOrInterface(decl) && !isLocalToInitializer(decl)
                 || decl.isStatic()) {
             String setterName = getSetterName(decl.getName());
-            if (decl.isMember() && !(decl.isShared() || decl.isActual())) {
+            if (decl.isMember() && !decl.isSharedOrActual()) {
                 setterName = suffixName(Suffix.$priv$, setterName);
             }
             return setterName;
@@ -337,7 +337,7 @@ public class NamingBase {
         String property = decl.getName();
         // ERASURE
         if (!(decl instanceof Value) 
-                || ((Value)decl).isShared() || ((Value)decl).isActual()) {
+                || ((Value)decl).isSharedOrActual()) {
             if ("hash".equals(property)) {
                 return "hashCode";
             } else if ("string".equals(property)) {
@@ -346,7 +346,7 @@ public class NamingBase {
         }
         
         String getterName = getGetterName(property);
-        if (decl.isMember() && !decl.isShared() && !decl.isActual()) {
+        if (decl.isMember() && !decl.isSharedOrActual()) {
             getterName = suffixName(Suffix.$priv$, getterName);
         }
         return getterName;

@@ -133,7 +133,7 @@ public class LocalTypeVisitor extends Visitor {
         if(stmt instanceof Tree.AttributeDeclaration
                 && ((Tree.AttributeDeclaration) stmt).getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression){
             Value model = ((Tree.AttributeDeclaration) stmt).getDeclarationModel();
-            return !model.isCaptured() && !(model.isShared() || model.isActual());
+            return !ModelUtil.isCaptured(model);
         }
         if(stmt instanceof Tree.SpecifierStatement
             && ((Tree.SpecifierStatement) stmt).getSpecifierExpression() instanceof Tree.LazySpecifierExpression){
@@ -251,8 +251,7 @@ public class LocalTypeVisitor extends Visitor {
         // stop at locals and private non-captured transient members which end up having a
         // locall getter for them
         if(!(model.isMember() 
-                && !(model.isShared() || model.isActual())
-                && !model.isCaptured()
+                && !ModelUtil.isCaptured(model)
                 && model.isTransient()))
             super.visit(that);
     }
