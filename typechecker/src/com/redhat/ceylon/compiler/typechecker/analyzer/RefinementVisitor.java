@@ -794,7 +794,7 @@ public class RefinementVisitor extends Visitor {
                 isOverloadedVersion(root) ||
                 member.isNative();
         if (root == null || root.equals(member) || 
-                (root.isNative() && member.isNative())) {
+                root.isNative() && member.isNative()) {
             member.setRefinedDeclaration(member);
             if (member.isActual() &&
                     !isNativeForWrongBackend(
@@ -1352,6 +1352,10 @@ public class RefinementVisitor extends Visitor {
         Type refinedType = refinedMember.getType();
         if (!isTypeUnknown(refinedType)) {
             if (that instanceof Tree.LocalModifier) {
+                //infer the type of an actual member 
+                //by taking the intersection of all 
+                //members it refines
+                //NOTE: feature not blessed by the spec!
                 TypedDeclaration td = 
                         (TypedDeclaration) refining;
                 Tree.LocalModifier mod = 

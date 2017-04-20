@@ -1281,7 +1281,11 @@ public class ExpressionVisitor extends Visitor {
         Value dec = that.getDeclarationModel();
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
-        if (!dec.isActual() || isTypeUnknown(dec.getType())) {
+        if (!dec.isActual() 
+                // Note: actual members have a 
+                // different type inference
+                // approach, in RefinementVisitor
+                || isTypeUnknown(dec.getType())) {
             inferType(that, sie);
         }
         Tree.Type type = that.getType();
@@ -2146,14 +2150,18 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
         Tree.Type type = that.getType();
-        Function m = that.getDeclarationModel();
+        Function fun = that.getDeclarationModel();
         Tree.SpecifierExpression se = 
                 that.getSpecifierExpression();
         if (se!=null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 Type returnType = e.getTypeModel();
-                if (!m.isActual() || isTypeUnknown(m.getType())) {
+                if (!fun.isActual() 
+                        // Note: actual members have a 
+                        // different type inference
+                        // approach, in RefinementVisitor
+                        || isTypeUnknown(fun.getType())) {
                     inferFunctionType(that, returnType, e);
                 }
                 if (type!=null && 
@@ -2163,16 +2171,16 @@ public class ExpressionVisitor extends Visitor {
                 if (type instanceof Tree.VoidModifier && 
                         !isSatementExpression(e)) {
                     se.addError("function is declared void so specified expression must be a statement: '" +
-                            m.getName() + 
+                            fun.getName() + 
                             "' is declared 'void'",
                             210);
                 }
             }
         }
         if (type instanceof Tree.LocalModifier) {
-            if (m.isParameter()) {
+            if (fun.isParameter()) {
                 type.addError("parameter may not have inferred type: '" + 
-                        m.getName() + "' must declare an explicit type");
+                        fun.getName() + "' must declare an explicit type");
             }
             else if (isTypeUnknown(type.getTypeModel())) {
                 if (se==null) {
