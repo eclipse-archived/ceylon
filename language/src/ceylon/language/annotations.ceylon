@@ -38,6 +38,26 @@ shared final sealed annotation class SharedAnnotation()
 shared annotation SharedAnnotation shared()
         => SharedAnnotation();
 
+"The annotation class for the [[friend]] annotation."
+since("1.3.3")
+shared final sealed annotation class RestrictedAnnotation(modules) 
+        satisfies OptionalAnnotation<RestrictedAnnotation,
+                    FunctionOrValueDeclaration
+                  | ClassOrInterfaceDeclaration
+                  | ConstructorDeclaration
+                  | Package | Import>{
+    "The modules to which this declaration is visible."
+    shared Module* modules; 
+}
+
+"Annotation to restrict the visibility of a declaration to a 
+ given list of [[modules]]."
+since("1.3.3")
+shared annotation RestrictedAnnotation restricted(
+    "The modules to which this declaration is visible."
+    Module* modules)
+        => RestrictedAnnotation(*modules);
+
 "The annotation class for the [[variable]] annotation."
 shared final sealed annotation class VariableAnnotation()
         satisfies OptionalAnnotation<VariableAnnotation,

@@ -365,17 +365,21 @@ public class ImportVisitor extends Visitor {
         else {
             if (!declaredInPackage(d, unit)) {
                 if (!d.isShared()) {
-                    id.addError("imported declaration is not shared: '" +
-                            name + "'", 
+                    id.addError("imported declaration is not visible: '" +
+                            name + "' is not shared", 
                             400);
                 }
+                else if (!d.withinRestrictions(unit)) {
+                    id.addError("imported declaration is not visible: '" +
+                            name + "' is restricted");
+                }
                 else if (d.isPackageVisibility()) {
-                    id.addError("imported package private declaration is not visible: '" +
-                            name + "'");
+                    id.addError("imported declaration is not visible: '" +
+                            name + "' is package private");
                 }
                 else if (d.isProtectedVisibility()) {
-                    id.addError("imported protected declaration is not visible: '" +
-                            name + "'");
+                    id.addError("imported declaration is not visible: '" +
+                            name + "' is protected");
                 }
             }
             i.setDeclaration(d);
@@ -449,21 +453,28 @@ public class ImportVisitor extends Visitor {
                 }
             }
             if (!m.isShared()) {
-                id.addError("imported declaration is not shared: '" +
+                id.addError("imported declaration is not visible: '" +
                         name + "' of '" + 
                         td.getName() + 
                         "' is not shared", 
                         400);
             }
+            else if (!m.withinRestrictions(unit)) {
+                id.addError("imported declaration is not visible: '" +
+                        name + "' of '" + 
+                        td.getName() + 
+                        "' is restricted", 
+                        400);
+            }
             else if (!declaredInPackage(m, unit)) {
                 if (m.isPackageVisibility()) {
-                    id.addError("imported package private declaration is not visible: '" +
+                    id.addError("imported declaration is not visible: '" +
                             name + "' of '" + 
                             td.getName() + 
                             "' is package private");
                 }
                 else if (m.isProtectedVisibility()) {
-                    id.addError("imported protected declaration is not visible: '" +
+                    id.addError("imported declaration is not visible: '" +
                             name + "' of '" + 
                             td.getName() + 
                             "' is protected");

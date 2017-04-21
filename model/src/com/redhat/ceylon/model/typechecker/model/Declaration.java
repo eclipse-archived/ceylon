@@ -38,6 +38,7 @@ public abstract class Declaration
 	private boolean otherInstanceAccess;
     protected DeclarationCompleter actualCompleter;
     private List<String> aliases;
+    private List<String> restrictions;
     private int memoizedHash;
 
     public Scope getVisibleScope() {
@@ -292,6 +293,9 @@ public abstract class Declaration
      * directly defined in a containing scope.
      */
     public boolean isVisible(Scope scope) {
+        if (!withinRestrictions(scope)) {
+            return false;
+        }
         Scope vs = getVisibleScope();
         if (vs==null) {
             return true;
@@ -313,6 +317,44 @@ public abstract class Declaration
         else {
             return isDefinedInScope(scope);
         }*/
+    }
+
+    private boolean withinRestrictions(Scope scope) {
+        if (scope==null) {
+            //TODO: this is kinda rubbish
+            return true; //getRestrictions()==null;
+        }
+        else if (scope instanceof Package) {
+            return withinRestrictions(((Package) scope).getModule());
+        }
+        else {
+            return withinRestrictions(scope.getUnit());
+        }
+    }
+    
+    public boolean withinRestrictions(Unit unit) {
+        return withinRestrictions(unit.getPackage().getModule());
+    }
+    
+    private boolean withinRestrictions(Module module) {
+        List<String> restrictions = getRestrictions();
+        if (restrictions==null) {
+            return true;
+        }
+        else {
+            String name = module.getNameAsString();
+            String thisModule = 
+                    getUnit()
+                        .getPackage()
+                        .getModule()
+                        .getNameAsString();
+            for (String mod: restrictions) {
+                if (name.equals(mod.replace("$this$", thisModule))) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     /**
@@ -824,13 +866,21 @@ public abstract class Declaration
             return EMPTY_TYPE_ARG_MAP;
         }
     }
+    
+    public List<String> getRestrictions() {
+        return restrictions;
+    }
+    
+    public void setRestrictions(List<String> restrictions) {
+        this.restrictions = restrictions;
+    }
 
-    public List<String> getAliases(){
+    public List<String> getAliases() {
         return aliases != null ? aliases : 
             Collections.<String>emptyList();
     }
     
-    public void setAliases(List<String> aliases){
+    public void setAliases(List<String> aliases) {
         this.aliases = aliases;
     }
     

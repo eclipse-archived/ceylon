@@ -6607,13 +6607,15 @@ public class ExpressionVisitor extends Visitor {
                     (TypeDeclaration)
                         handleNativeHeader(type, that, true);
             if (!type.isVisible(that.getScope())) {
-                that.addError("type is not visible: " + 
-                        baseDescription(that), 400);
+                that.addError("type is not visible: " 
+                        + baseDescription(that), 
+                        400);
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private type is not visible: " + 
-                        baseDescription(that));
+                that.addError("type is not visible: " 
+                        + baseDescription(that) 
+                        + "is package private");
             }
             //don't need to consider "protected" because
             //toplevel types can't be declared protected
@@ -6632,18 +6634,21 @@ public class ExpressionVisitor extends Visitor {
                         handleNativeHeader(type, that, true);
             if (!type.isVisible(that.getScope())) {
                 if (type instanceof Constructor) {
-                    that.addError("constructor is not visible: " + 
-                            qualifiedDescription(that), 400);
+                    that.addError("constructor is not visible: " 
+                            + qualifiedDescription(that), 
+                            400);
                 }
                 else {
-                    that.addError("member type is not visible: " + 
-                            qualifiedDescription(that), 400);
+                    that.addError("member type is not visible: " 
+                            + qualifiedDescription(that), 
+                            400);
                 }
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private member type is not visible: " + 
-                        qualifiedDescription(that));
+                that.addError("member type is not visible: " 
+                        + qualifiedDescription(that) 
+                        + " is package private");
             }
             //this is actually slightly too restrictive
             //since a qualified type may in fact be an
@@ -6652,8 +6657,9 @@ public class ExpressionVisitor extends Visitor {
             //in fact this restriction is OK
             else if (type.isProtectedVisibility() &&
                     !declaredInPackage(type, unit)) {
-                that.addError("protected member type is not visible: " + 
-                        qualifiedDescription(that));
+                that.addError("member type is not visible: " 
+                        + qualifiedDescription(that) 
+                        + " is protected");
             }
             //Note: we should remove this check if we ever 
             //      make qualified member types like T.Member
@@ -6671,8 +6677,10 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
                 if (std instanceof TypeParameter) {
-                    outerType.addError("type parameter should not occur as qualifying type: '" +
-                            std.getName(unit) + "' is a type parameter");
+                    outerType.addError(
+                            "type parameter should not occur as qualifying type: '" 
+                            + std.getName(unit) 
+                            + "' is a type parameter");
                 }
             }
         }
@@ -6681,13 +6689,15 @@ public class ExpressionVisitor extends Visitor {
     private void checkBaseVisibility(Node that, 
             TypedDeclaration member, String name) {
         if (!member.isVisible(that.getScope())) {
-            that.addError("function or value is not visible: '" +
-                    name + "'", 400);
+            that.addError("function or value is not visible: '" 
+                    + name + "'", 
+                    400);
         }
         else if (member.isPackageVisibility() && 
                 !declaredInPackage(member, unit)) {
-            that.addError("package private function or value is not visible: '" +
-                    name + "'");
+            that.addError("function or value is not visible: '" 
+                    + name 
+                    + "' is package private");
         }
         //don't need to consider "protected" because
         //there are no toplevel members in Java and
@@ -6699,13 +6709,15 @@ public class ExpressionVisitor extends Visitor {
             TypedDeclaration member, String name, 
             String container, boolean selfReference) {
         if (!member.isVisible(that.getScope())) {
-            that.addError("method or attribute is not visible: '" +
-                    name + "' of " + container, 400);
+            that.addError("method or attribute is not visible: '" 
+                    + name + "' of " + container, 
+                    400);
         }
         else if (member.isPackageVisibility() && 
                 !declaredInPackage(member, unit)) {
-            that.addError("package private method or attribute is not visible: '" +
-                    name + "' of " + container);
+            that.addError("method or attribute is not visible: '" 
+                    + name + "' of " + container 
+                    + " is package private");
         }
         //this is actually too restrictive since
         //it doesn't take into account "other 
@@ -6714,8 +6726,9 @@ public class ExpressionVisitor extends Visitor {
         else if (member.isProtectedVisibility() && 
                 !selfReference && 
                 !declaredInPackage(member, unit)) {
-            that.addError("protected method or attribute is not visible: '" +
-                    name + "' of " + container);
+            that.addError("method or attribute is not visible: '" 
+                    + name + "' of " + container
+                    + " is protected");
         }
     }
 
@@ -6735,39 +6748,49 @@ public class ExpressionVisitor extends Visitor {
                     type.getExtendedType()
                         .getDeclaration();
             if (!at.isVisible(that.getScope())) {
-                that.addError("type is not visible: '" + name + "'");
+                that.addError("type is not visible: '" 
+                        + name + "'");
             }
             else if (at.isPackageVisibility() &&
                     !declaredInPackage(type, unit)) {
-                that.addError("package private type is not visible: '" + name + "'");
+                that.addError("type is not visible: '" 
+                        + name + "' package private");
             }
             else if (at.isProtectedVisibility() &&
                     !declaredInPackage(type, unit)) {
-                that.addError("protected type is not visible: '" + name + "'");
+                that.addError("type is not visible: '" 
+                        + name + "' is protected");
             }
             else if (!type.isVisible(that.getScope())) {
-                that.addError("type constructor is not visible: '" + name + "'");
+                that.addError("type constructor is not visible: '" 
+                        + name + "'");
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private constructor is not visible: '" + name + "'");
+                that.addError("constructor is not visible: '" 
+                        + name + "' is package private");
             }
             else if (type.isProtectedVisibility() &&
                     !declaredInPackage(type, unit)) {
-                that.addError("protected constructor is not visible: '" + name + "'");
+                that.addError("constructor is not visible: '" 
+                        + name + "' is protected");
             }
         }
         else {
             if (!type.isVisible(that.getScope())) {
-                that.addError("type is not visible: '" + name + "'", 400);
+                that.addError("type is not visible: '" 
+                        + name + "'", 
+                        400);
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private type is not visible: '" + name + "'");
+                that.addError("type is not visible: '" 
+                        + name + "' is package private");
             }
             else if (type.isProtectedVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("protected type is not visible: '" + name + "'");
+                that.addError("type is not visible: '" 
+                        + name + "' is protected");
             }
         }
     }
@@ -6789,54 +6812,62 @@ public class ExpressionVisitor extends Visitor {
                     type.getExtendedType()
                         .getDeclaration();
             if (!at.isVisible(that.getScope())) {
-                that.addError("member type is not visible: '" +
-                        name + "' of '" + container);
+                that.addError("member type is not visible: '" 
+                        + name + "' of '" + container);
             }
             else if (at.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private member type is not visible: '" +
-                        name + "' of type " + container);
+                that.addError("member type is not visible: '" 
+                        + name + "' of type " + container 
+                        + " is package private");
             }
             else if (at.isProtectedVisibility() &&
                     !declaredInPackage(type, unit)) {
-                that.addError("protected member type is not visible: '" +
-                        name + "' of type " + container);
+                that.addError("member type is not visible: '" 
+                        + name + "' of type " + container
+                        + " is protected");
             }
             else if (!type.isVisible(that.getScope())) {
-                that.addError("member type constructor is not visible: '" +
-                        name + "' of " + container);
+                that.addError("member type constructor is not visible: '" 
+                        + name + "' of " + container);
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private member type constructor is not visible: '" +
-                        name + "' of " + container);
+                that.addError("member type constructor is not visible: '" 
+                        + name + "' of " + container
+                        + " is package private");
             }
             else if (type.isProtectedVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("protected member type constructor is not visible: '" +
-                        name + "' of " + container);
+                that.addError("member type constructor is not visible: '" 
+                        + name + "' of " + container
+                        + " is protected");
             }
         }
         else {
             if (!type.isVisible(that.getScope())) {
                 if (type instanceof Constructor) {
-                    that.addError("constructor is not visible: '" +
-                            name + "' of " + container, 400);
+                    that.addError("constructor is not visible: '" 
+                            + name + "' of " + container, 
+                            400);
                 }
                 else {
-                    that.addError("member type is not visible: '" +
-                            name + "' of " + container, 400);
+                    that.addError("member type is not visible: '" 
+                            + name + "' of " + container, 
+                            400);
                 }
             }
             else if (type.isPackageVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("package private member type is not visible: '" +
-                        name + "' of " + container);
+                that.addError("member type is not visible: '" 
+                        + name + "' of " + container
+                        + " is package private");
             }
             else if (type.isProtectedVisibility() && 
                     !declaredInPackage(type, unit)) {
-                that.addError("protected member type is not visible: '" +
-                        name + "' of " + container);
+                that.addError("member type is not visible: '" 
+                        + name + "' of " + container
+                        + " is protected");
             }
         }
     }
@@ -7833,8 +7864,9 @@ public class ExpressionVisitor extends Visitor {
                         //it is a Java constructor
                         if (result.isPackageVisibility() && 
                                 !declaredInPackage(result, unit)) {
-                            that.addError("package private constructor is not visible: '" + 
-                                    result.getName() + "'");
+                            that.addError("constructor is not visible: '" 
+                                    + result.getName() 
+                                    + "' is package private");
                         }
                     }
                 }
@@ -7842,9 +7874,9 @@ public class ExpressionVisitor extends Visitor {
                 //find a matching overloaded constructor
             }
             if (!c.isAbstraction() && c.getParameterList()==null) {
-                that.addError("class cannot be instantiated: '" +
-                        c.getName(unit) + 
-                        "' does not have a parameter list or default constructor");
+                that.addError("class cannot be instantiated: '" 
+                        + c.getName(unit) 
+                        + "' does not have a parameter list or default constructor");
             }
         }
     }
