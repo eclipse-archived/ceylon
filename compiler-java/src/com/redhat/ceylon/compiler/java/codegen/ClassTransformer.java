@@ -972,7 +972,6 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
-            Parameter parameterModel = p.getParameterModel();
             annoBuilder.method(makeAnnotationMethod(p));
         }
         List<JCTree> result;
@@ -980,7 +979,7 @@ public class ClassTransformer extends AbstractTransformer {
             result = annoBuilder.build();
             String wrapperName = Naming.suffixName(Suffix.$annotations$, klass.getName());
             ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null, false);
-            // annotations are never explicitely final in Java
+            // annotations are never explicitly final in Java
             sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (modifierTransformation().classFlags(klass) & ~FINAL));
             sequencedBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
             MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, naming.getSequencedAnnotationMethodName());
@@ -4124,7 +4123,13 @@ public class ClassTransformer extends AbstractTransformer {
     private MethodDefinitionBuilder makeAnnotationMethod(Tree.Parameter parameter) {
         Parameter parameterModel = parameter.getParameterModel();
         JCExpression type = transformAnnotationMethodType(parameter);
-        JCExpression defaultValue = parameterModel.isDefaulted() ? transformAnnotationParameterDefault(parameter) : null;
+        JCExpression defaultValue = null;
+        if (parameterModel.isDefaulted()) {
+            defaultValue = transformAnnotationParameterDefault(parameter);
+        }
+        if (parameterModel.isSequenced() && !parameterModel.isAtLeastOne()) {
+            defaultValue = make().NewArray(null, null, List.<JCExpression>nil());
+        }
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method(this, parameterModel.getModel(), Naming.NA_ANNOTATION_MEMBER);
         if (isMetamodelReference(parameterModel.getType())
                 || 
