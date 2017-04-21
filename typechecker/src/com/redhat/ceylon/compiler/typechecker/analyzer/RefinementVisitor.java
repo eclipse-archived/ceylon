@@ -12,7 +12,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.hasUncheckedNullType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
@@ -58,6 +57,7 @@ import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.LazyType;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -2094,7 +2094,7 @@ public class RefinementVisitor extends Visitor {
             TypedDeclaration rvtd = (TypedDeclaration) rvd;
             v.setUncheckedNullType(rvtd.hasUncheckedNullType());
         }
-        setVisibleScope(v);
+        ModelUtil.setVisibleScope(v);
         c.addMember(v);
         that.setRefinement(true);
         that.setDeclaration(v);
@@ -2338,7 +2338,7 @@ public class RefinementVisitor extends Visitor {
             TypedDeclaration rmtd = (TypedDeclaration) rmd;
             m.setUncheckedNullType(rmtd.hasUncheckedNullType());
         }
-        setVisibleScope(m);
+        ModelUtil.setVisibleScope(m);
         c.addMember(m);
         that.setRefinement(true);
         that.setDeclaration(m);

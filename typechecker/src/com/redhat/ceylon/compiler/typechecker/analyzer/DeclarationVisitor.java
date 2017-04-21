@@ -145,7 +145,7 @@ public abstract class DeclarationVisitor extends Visitor {
         
         handleDeclarationAnnotations(that, model);
         
-        setVisibleScope(model);
+        ModelUtil.setVisibleScope(model);
         
         checkFormalMember(that, model);
         
@@ -170,7 +170,7 @@ public abstract class DeclarationVisitor extends Visitor {
         visitElement(that, model);
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
-        setVisibleScope(model);
+        ModelUtil.setVisibleScope(model);
     }
 
     private void visitArgument(Tree.Term that, 
@@ -178,7 +178,7 @@ public abstract class DeclarationVisitor extends Visitor {
         visitElement(that, model);
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
-        setVisibleScope(model);
+        ModelUtil.setVisibleScope(model);
     }
 
     private static boolean setModelName(Node that, 
@@ -2114,7 +2114,7 @@ public abstract class DeclarationVisitor extends Visitor {
         that.setDeclarationModel(v);
         visitDeclaration(that, v, 
                 !(type instanceof Tree.SyntheticVariable));
-        setVisibleScope(v);
+        ModelUtil.setVisibleScope(v);
         
         if (type!=null) {
             type.visit(this);
@@ -2214,8 +2214,9 @@ public abstract class DeclarationVisitor extends Visitor {
     }
     
     @Override public void visit(Tree.Declaration that) {
-        if (unit.getFilename().equals("module.ceylon") || 
-            unit.getFilename().equals("package.ceylon")) {
+        String filename = unit.getFilename();
+        if (filename.equals("module.ceylon") || 
+            filename.equals("package.ceylon")) {
             that.addError("declaration may not occur in a module or package descriptor file");
         }
         Declaration model = that.getDeclarationModel();
@@ -2245,83 +2246,190 @@ public abstract class DeclarationVisitor extends Visitor {
     private void handleDeclarationAnnotations(Tree.Declaration that,
             Declaration model) {
         Tree.AnnotationList al = that.getAnnotationList();
-        if (hasAnnotation(al, "shared", unit)) {
-            if (that instanceof Tree.AttributeSetterDefinition) {
-                that.addError("setter may not be annotated 'shared'", 
-                        1201);
+        handleMemberAnnotations(that, model, al);
+        handleNativeAnnotation(that, model, al);
+        handleClassAnnotations(that, model, al);
+        handleValueAnnotations(that, model, al);
+        handleAnnotationAnnotation(that, model, al);
+        handleDocAnnotations(model, al);
+        buildAnnotations(al, model.getAnnotations());
+    }
+
+    private void handleAnnotationAnnotation(Tree.Declaration that, 
+            Declaration model, Tree.AnnotationList al) {
+        if (hasAnnotation(al, "annotation", unit)) {
+            if (!(model instanceof Function) && 
+                !(model instanceof Class)) {
+                that.addError("declaration is not a function or class, and may not be annotated 'annotation'", 
+                        1950);
             }
-            /*else if (that instanceof Tree.TypedDeclaration && !(that instanceof Tree.ObjectDefinition)) {
-                Tree.Type t =  ((Tree.TypedDeclaration) that).getType();
-                if (t instanceof Tree.ValueModifier || t instanceof Tree.FunctionModifier) {
-                    t.addError("shared declarations must explicitly specify a type", 200);
+            else if (!model.isToplevel()) {
+                that.addError("declaration is not toplevel, and may not be annotated 'annotation'", 
+                        1951);
+            }
+            else {
+                model.setAnnotation(true);
+            }
+        }
+    }
+
+    private void handleDocAnnotations(Declaration model, 
+            Tree.AnnotationList al) {
+        
+        if (hasAnnotation(al, "deprecated", unit)) {
+            model.setDeprecated(true);
+        }
+        
+        if (hasAnnotation(al, "aliased", unit)) {
+            Tree.Annotation aliased = 
+                    getAnnotation(al, "aliased", unit);
+            List<String> aliases = 
+                    getAnnotationSequenceArgument(aliased);
+            model.setAliases(aliases);
+        }
+        
+        if (hasAnnotation(al, "doc", unit)
+                && hasAnonymousAnnotation(al)) {
+            getAnnotation(al, "doc", unit)
+                .addError("documentation already specified");
+        }
+        
+    }
+
+    private void handleValueAnnotations(Tree.Declaration that, 
+            Declaration model, Tree.AnnotationList al) {
+        
+        if (hasAnnotation(al, "variable", unit)) {
+            if (model instanceof Value) {
+                Value value = (Value) model; 
+                if (value.isTransient()) {
+                    that.addError("getter may not be annotated 'variable' (define a setter with 'assign' instead)", 
+                            1501);
                 }
                 else {
-                    model.setShared(true);
-                }
-            }*/
-            else {
-                model.setShared(true);
-            }
-        }
-        if (hasAnnotation(al, "static", unit)) {
-            if (model instanceof Function
-             || model instanceof Value
-             || model instanceof ClassOrInterface
-             || model instanceof TypeAlias) {
-                model.setStatic(true);
-                if (model.isInterfaceMember()) {
-                    that.addUnsupportedError("static members of interfaces are not yet supported");
-                }
-                if (isAnonymousClass(model.getContainer())) {
-                    that.addError("member of anonymous class may not be annotated 'static'");
+                    value.setVariable(true);
                 }
             }
             else {
-                that.addError("declaration may not be annotated 'static'");
+                that.addError("declaration is not a value, and may not be annotated 'variable'", 
+                        1500);
             }
         }
+        
+        if (hasAnnotation(al, "late", unit)) {
+            if (model instanceof Value) {
+                if (that instanceof Tree.AttributeDeclaration) {
+                    ((Value) model).setLate(true);
+                }
+                else {
+                    that.addError("value is not a reference, and may not be annotated 'late'", 
+                            1900);
+                }
+            }
+            else {
+                that.addError("declaration is not a value, and may not be annotated 'late'", 
+                        1900);
+            }
+        }
+        
         if (hasAnnotation(al, "small", unit)) {
             if (model instanceof FunctionOrValue) {
                 ((FunctionOrValue) model).setSmall(true);
             }
         }
-        if (hasAnnotation(al, "default", unit)) {
-            if (that instanceof Tree.ObjectDefinition) {
-                that.addError("object declaration may not be annotated 'default'", 
-                        1313);
+    }
+
+    private void handleClassAnnotations(Tree.Declaration that, 
+            Declaration model, Tree.AnnotationList al) {
+        
+        if (hasAnnotation(al, "abstract", unit)) {
+            if (model instanceof Class) {
+                ((Class) model).setAbstract(true);
             }
-            /*else if (that instanceof Tree.Parameter) {
-                that.addError("parameters may not be annotated 'default'", 1313);
-            }*/
+            else if (isConstructor(model)) {
+                if (model instanceof Constructor) {
+                    //ignore for now
+                }
+                else if (model instanceof Function) {
+                    ((Constructor)((Function) model).getTypeDeclaration()).setAbstract(true);
+                }
+                else {
+                    that.addError("declaration is not a callable constructor, and may not be annotated 'abstract'", 
+                            1800);
+                }
+            }
             else {
-                model.setDefault(true);
+                that.addError("declaration is not a class, and may not be annotated 'abstract'", 
+                        1600);
             }
         }
-        if (hasAnnotation(al, "formal", unit)) {
-            if (that instanceof Tree.ObjectDefinition) {
-                that.addError("object declaration may not be annotated 'formal'", 
-                        1312);
+        
+        if (hasAnnotation(al, "final", unit)) {
+            if (model instanceof ClassAlias) {
+                that.addError("declaration is a class alias, and may not be annotated 'final'", 
+                        1700);
+            }
+            else if (model instanceof Class) {
+                ((Class) model).setFinal(true);
             }
             else {
-                model.setFormal(true);
+                that.addError("declaration is not a class, and may not be annotated 'final'", 
+                        1700);
             }
         }
-        if (model.isFormal() && model.isDefault()) {
-            that.addError("declaration may not be annotated both 'formal' and 'default'",
-                    1320);
+        
+        if (hasAnnotation(al, "sealed", unit)) {
+            if (model instanceof ClassOrInterface) {
+                ((ClassOrInterface) model).setSealed(true);
+            }
+            else if (ModelUtil.isConstructor(model)) {
+                if (model instanceof Constructor) {
+                    //ignore for now
+                }
+                else if (model instanceof Function) {
+                    ((Function) model).getTypeDeclaration().setSealed(true);
+                }
+                else {
+                    that.addError("declaration is not a callable constructor, and may not be annotated 'sealed'", 
+                            1800);
+                }
+            }
+            else {
+                that.addError("declaration is not a class or interface, and may not be annotated 'sealed'", 
+                        1800);
+            }
         }
-        if (model.isStatic() && model.isActual()) {
-            that.addError("static member may not be annotated 'actual'", 
-                    1311);            
+        
+        if (hasAnnotation(al, "service", unit)) {
+            if (!(model instanceof Class)) {
+                that.addError("declaration is not a class, and may not be annotated 'service'");
+            }
+            else if (!model.isToplevel()) {
+                that.addError("class is nested, and may not be annotated 'service'");
+            }
+            else if (!model.isShared()) {
+                that.addError("class is not shared, and may not be annotated 'service'",
+                        705);
+            }
+            else if (((Class) model).isAbstract()) {
+                that.addError("class is abstract, and may not be annotated 'service'",
+                        1601);
+            }
         }
-        if (model.isStatic() && model.isFormal()) {
-            that.addError("static member may not be annotated 'formal'", 
-                    1312);
+        
+        if (hasAnnotation(al, "serializable", unit)) {
+            if (model instanceof Class) {
+                ((Class) model).setSerializable(true);
+            }
+            else {
+                that.addError("declaration is not a class, and may not be annotated 'serializable'", 
+                        1600);
+            }
         }
-        if (model.isStatic() && model.isDefault()) {
-            that.addError("static member may not be annotated 'default'", 
-                    1313);            
-        }
+    }
+
+    private void handleNativeAnnotation(Tree.Declaration that, 
+            Declaration model, Tree.AnnotationList al) {
         Tree.Annotation na = 
                 getAnnotation(al, "native", unit);
         Backends backends = Backends.ANY;
@@ -2348,153 +2456,92 @@ public abstract class DeclarationVisitor extends Visitor {
         if (model.isNative() && model.isFormal()) {
             that.addError("declaration may not be annotated both 'formal' and 'native'");
         }
+    }
+
+    private void handleMemberAnnotations(Tree.Declaration that, 
+            Declaration model, Tree.AnnotationList al) {
+        
+        if (hasAnnotation(al, "shared", unit)) {
+            if (that instanceof Tree.AttributeSetterDefinition) {
+                that.addError("setter may not be annotated 'shared'", 
+                        1201);
+            }
+            /*else if (that instanceof Tree.TypedDeclaration && !(that instanceof Tree.ObjectDefinition)) {
+                Tree.Type t =  ((Tree.TypedDeclaration) that).getType();
+                if (t instanceof Tree.ValueModifier || t instanceof Tree.FunctionModifier) {
+                    t.addError("shared declarations must explicitly specify a type", 200);
+                }
+                else {
+                    model.setShared(true);
+                }
+            }*/
+            else {
+                model.setShared(true);
+            }
+        }
+        
+        if (hasAnnotation(al, "static", unit)) {
+            if (model instanceof Function
+             || model instanceof Value
+             || model instanceof ClassOrInterface
+             || model instanceof TypeAlias) {
+                model.setStatic(true);
+                if (model.isInterfaceMember()) {
+                    that.addUnsupportedError("static members of interfaces are not yet supported");
+                }
+                if (isAnonymousClass(model.getContainer())) {
+                    that.addError("member of anonymous class may not be annotated 'static'");
+                }
+            }
+            else {
+                that.addError("declaration may not be annotated 'static'");
+            }
+        }
+        
         if (hasAnnotation(al, "actual", unit)) {
             model.setActual(true);
         }
-        if (hasAnnotation(al, "abstract", unit)) {
-            if (model instanceof Class) {
-                ((Class) model).setAbstract(true);
+        
+        if (hasAnnotation(al, "default", unit)) {
+            if (that instanceof Tree.ObjectDefinition) {
+                that.addError("object declaration may not be annotated 'default'", 
+                        1313);
             }
-            else if (isConstructor(model)) {
-                if (model instanceof Constructor) {
-                    //ignore for now
-                }
-                else if (model instanceof Function) {
-                    ((Constructor)((Function) model).getTypeDeclaration()).setAbstract(true);
-                }
-                else {
-                    that.addError("declaration is not a callable constructor, and may not be annotated 'abstract'", 
-                            1800);
-                }
+            /*else if (that instanceof Tree.Parameter) {
+                that.addError("parameters may not be annotated 'default'", 1313);
+            }*/
+            else {
+                model.setDefault(true);
+            }
+        }
+        
+        if (hasAnnotation(al, "formal", unit)) {
+            if (that instanceof Tree.ObjectDefinition) {
+                that.addError("object declaration may not be annotated 'formal'", 
+                        1312);
             }
             else {
-                that.addError("declaration is not a class, and may not be annotated 'abstract'", 
-                        1600);
+                model.setFormal(true);
             }
         }
-        if (hasAnnotation(al, "final", unit)) {
-            if (model instanceof ClassAlias) {
-                that.addError("declaration is a class alias, and may not be annotated 'final'", 
-                        1700);
-            }
-            else if (model instanceof Class) {
-                ((Class) model).setFinal(true);
-            }
-            else {
-                that.addError("declaration is not a class, and may not be annotated 'final'", 
-                        1700);
-            }
+        
+        if (model.isFormal() && model.isDefault()) {
+            that.addError("declaration may not be annotated both 'formal' and 'default'",
+                    1320);
         }
-        if (hasAnnotation(al, "sealed", unit)) {
-            if (model instanceof ClassOrInterface) {
-                ((ClassOrInterface) model).setSealed(true);
-            }
-            else if (ModelUtil.isConstructor(model)) {
-                if (model instanceof Constructor) {
-                    //ignore for now
-                }
-                else if (model instanceof Function) {
-                    ((Function) model).getTypeDeclaration().setSealed(true);
-                }
-                else {
-                    that.addError("declaration is not a callable constructor, and may not be annotated 'sealed'", 
-                            1800);
-                }
-            }
-            else {
-                that.addError("declaration is not a class or interface, and may not be annotated 'sealed'", 
-                        1800);
-            }
+        if (model.isStatic() && model.isActual()) {
+            that.addError("static member may not be annotated 'actual'", 
+                    1311);            
         }
-        if (hasAnnotation(al, "variable", unit)) {
-            if (model instanceof Value) {
-                ((Value) model).setVariable(true);
-            }
-            else {
-                that.addError("declaration is not a value, and may not be annotated 'variable'", 
-                        1500);
-            }
+        if (model.isStatic() && model.isFormal()) {
+            that.addError("static member may not be annotated 'formal'", 
+                    1312);
         }
-        if (hasAnnotation(al, "late", unit)) {
-            if (model instanceof Value) {
-                if (that instanceof Tree.AttributeDeclaration) {
-                    Tree.AttributeDeclaration ad = 
-                            (Tree.AttributeDeclaration) that;
-                    ((Value) model).setLate(true);
-                }
-                else {
-                    that.addError("value is not a reference, and may not be annotated 'late'", 
-                            1900);
-                }
-            }
-            else {
-                that.addError("declaration is not a value, and may not be annotated 'late'", 
-                        1900);
-            }
+        if (model.isStatic() && model.isDefault()) {
+            that.addError("static member may not be annotated 'default'", 
+                    1313);            
         }
-        if (model instanceof Value) {
-            Value value = (Value) model;
-            if (value.isVariable() && value.isTransient()) {
-                that.addError("getter may not be annotated 'variable' (define a setter with 'assign' instead)", 
-                        1501);
-            }
-        }
-        if (hasAnnotation(al, "deprecated", unit)) {
-            model.setDeprecated(true);
-        }
-        if (hasAnnotation(al, "annotation", unit)) {
-            if (!(model instanceof Function) && 
-                !(model instanceof Class)) {
-                that.addError("declaration is not a function or class, and may not be annotated 'annotation'", 
-                        1950);
-            }
-            else if (!model.isToplevel()) {
-                that.addError("declaration is not toplevel, and may not be annotated 'annotation'", 
-                        1951);
-            }
-            else {
-                model.setAnnotation(true);
-            }
-        }
-        if (hasAnnotation(al, "serializable", unit)) {
-            if (model instanceof Class) {
-                ((Class) model).setSerializable(true);
-            }
-            else {
-                that.addError("declaration is not a class, and may not be annotated 'serializable'", 
-                        1600);
-            }
-        }
-        if (hasAnnotation(al, "aliased", unit)) {
-            Tree.Annotation aliased = 
-                    getAnnotation(al, "aliased", unit);
-            List<String> aliases = 
-                    getAnnotationSequenceArgument(aliased);
-            model.setAliases(aliases);
-        }
-        if (hasAnnotation(al, "service", unit)) {
-            if (!(model instanceof Class) || !model.isToplevel()) {
-                that.addError("declaration is not a toplevel class, and may not be annotated 'service'");
-            }
-            else if (!model.isShared()) {
-                that.addError("class is not shared, and may not be annotated 'service'",
-                        705);
-            }
-            else if (((Class) model).isAbstract()) {
-                that.addError("class is abstract, and may not be annotated 'service'",
-                        1601);
-            }
-        }
-        if (hasAnnotation(al, "doc", unit)
-                && hasAnonymousAnnotation(al)) {
-            getAnnotation(al, "doc", unit)
-                .addError("documentation already specified");
-        }
-        buildAnnotations(al, model.getAnnotations());
-    }
-
-    public static void setVisibleScope(Declaration model) {
-        ModelUtil.setVisibleScope(model);
+        
     }
 
     private static void checkFormalMember(
@@ -3238,7 +3285,7 @@ public abstract class DeclarationVisitor extends Visitor {
         ta.setName("Anonymous#"+fid++);
         ta.setAnonymous(true);
         visitElement(that, ta);
-        setVisibleScope(ta);
+        ModelUtil.setVisibleScope(ta);
         Scope o = enterScope(ta);
         Declaration od = beginDeclaration(ta);
         super.visit(that);

@@ -13,7 +13,7 @@ class NonSharedImplementation() satisfies ServiceInterface {
 
 service(`interface ServiceInterface`)
 shared class ValidImplementation() satisfies ServiceInterface {
-    @error:"declaration is not a toplevel class, and may not be annotated 'service'"
+    @error:"class is nested, and may not be annotated 'service'"
     service(`interface ServiceInterface`)
     class Inner() satisfies ServiceInterface {
         
