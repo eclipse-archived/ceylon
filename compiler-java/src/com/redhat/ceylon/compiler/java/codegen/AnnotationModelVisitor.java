@@ -173,8 +173,11 @@ public class AnnotationModelVisitor extends Visitor {
             if (defaultArgument != null) {
                 defaultedParameter(defaultArgument);
             }
+            else if (p.getParameterModel().isSequenced() 
+                    && !p.getParameterModel().isAtLeastOne()) {
+                acp.setDefaultArgument(new CollectionLiteralAnnotationTerm(getCollectionLiteralFactory(p)));
+            }
             pop();
-            
         }
         // Ignore statements in parameters
     }
@@ -408,31 +411,38 @@ public class AnnotationModelVisitor extends Visitor {
     private CollectionLiteralAnnotationTerm startCollection(Tree.Term t) {
         Unit unit = t.getUnit();
         // Continue the visit to collect the elements
-        Type iteratedType = unit.getIteratedType(parameter().getType());
-        LiteralAnnotationTerm factory;
-        if (iteratedType.isString()) {
-            factory = StringLiteralAnnotationTerm.FACTORY;
-        } else if (iteratedType.isInteger()) {
-            factory = IntegerLiteralAnnotationTerm.FACTORY;
-        } else if (iteratedType.isCharacter()) {
-            factory = CharacterLiteralAnnotationTerm.FACTORY;
-        } else if (iteratedType.isBoolean()) {
-            factory = BooleanLiteralAnnotationTerm.FACTORY;
-        } else if (iteratedType.isFloat()) {
-            factory = FloatLiteralAnnotationTerm.FACTORY;
-        } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
-            factory = ObjectLiteralAnnotationTerm.FACTORY;
-        } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
-            t.addError("compiler bug: iterables of annotation classes or annotation constructors not supported as literal " + (checkingDefaults ? "defaulted parameters" : "arguments"), Backend.Java);
+        LiteralAnnotationTerm factory = getCollectionLiteralFactory(t);
+        if (factory==null) {
             return null;
-        } else if (iteratedType.isSubtypeOf(((TypeDeclaration)unit.getLanguageModuleDeclarationDeclaration("Declaration")).getType())) {
-            factory = DeclarationLiteralAnnotationTerm.FACTORY;
-        } else {
-            throw new RuntimeException();
         }
         CollectionLiteralAnnotationTerm result = this.elements;
         this.elements = new CollectionLiteralAnnotationTerm(factory);
         return result;
+    }
+
+    private LiteralAnnotationTerm getCollectionLiteralFactory(Node err) {
+        Unit unit = err.getUnit();
+        Type iteratedType = unit.getIteratedType(parameter().getType());
+        if (iteratedType.isString()) {
+            return StringLiteralAnnotationTerm.FACTORY;
+        } else if (iteratedType.isInteger()) {
+            return IntegerLiteralAnnotationTerm.FACTORY;
+        } else if (iteratedType.isCharacter()) {
+            return CharacterLiteralAnnotationTerm.FACTORY;
+        } else if (iteratedType.isBoolean()) {
+            return BooleanLiteralAnnotationTerm.FACTORY;
+        } else if (iteratedType.isFloat()) {
+            return FloatLiteralAnnotationTerm.FACTORY;
+        } else if (Decl.isEnumeratedTypeWithAnonCases(iteratedType)) {
+            return ObjectLiteralAnnotationTerm.FACTORY;
+        } else if (Decl.isAnnotationClass(iteratedType.getDeclaration())) {
+            err.addError("compiler bug: iterables of annotation classes or annotation constructors not supported as literal " + (checkingDefaults ? "defaulted parameters" : "arguments"), Backend.Java);
+            return null;
+        } else if (iteratedType.isSubtypeOf(((TypeDeclaration)unit.getLanguageModuleDeclarationDeclaration("Declaration")).getType())) {
+            return DeclarationLiteralAnnotationTerm.FACTORY;
+        } else {
+            throw new RuntimeException();
+        }
     }
     
     @Override

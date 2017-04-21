@@ -315,7 +315,7 @@ class AnnotationInvocationVisitor extends Visitor {
         AnnotationTerm term = argument.getTerm();
         if (term instanceof ParameterAnnotationTerm) {
             ParameterAnnotationTerm parameterArgument = (ParameterAnnotationTerm)term;
-            Parameter sp = parameterArgument.getSourceParameter();
+            Parameter sp = argument.getParameter();
             int argumentIndex = ((Functional)sp.getDeclaration())
                     .getFirstParameterList().getParameters()
                     .indexOf(sp);
