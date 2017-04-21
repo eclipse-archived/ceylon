@@ -123,6 +123,12 @@ public class TreeUtil {
                             result.length() - 1);
                 }
             }
+            if (term instanceof Tree.ModuleLiteral) {
+                Tree.ModuleLiteral ml = (Tree.ModuleLiteral) term;
+                Tree.ImportPath importPath = ml.getImportPath();
+                result = importPath==null ? "$this$" :
+                        formatPath(importPath.getIdentifiers());
+            }
         }
         return result;
     }

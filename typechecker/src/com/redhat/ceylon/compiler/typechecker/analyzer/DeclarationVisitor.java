@@ -2246,6 +2246,7 @@ public abstract class DeclarationVisitor extends Visitor {
     private void handleDeclarationAnnotations(Tree.Declaration that,
             Declaration model) {
         Tree.AnnotationList al = that.getAnnotationList();
+        handleVisibilityAnnotations(that, model, al);
         handleMemberAnnotations(that, model, al);
         handleNativeAnnotation(that, model, al);
         handleClassAnnotations(that, model, al);
@@ -2458,7 +2459,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
     }
 
-    private void handleMemberAnnotations(Tree.Declaration that, 
+    private void handleVisibilityAnnotations(Tree.Declaration that, 
             Declaration model, Tree.AnnotationList al) {
         
         if (hasAnnotation(al, "shared", unit)) {
@@ -2480,6 +2481,24 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         
+        if (hasAnnotation(al, "restricted", unit)) {
+            Tree.Annotation ann = getAnnotation(al, "restricted", unit);
+            int len = getAnnotationArgumentCount(ann);
+            List<String> modules = new ArrayList<String>(len);
+            for (int i=0; i<len; i++) {
+                String arg = getAnnotationArgument(ann, i);
+                if (arg!=null) {
+                    modules.add(arg);
+                }
+            }
+            model.setRestrictions(modules);
+        }
+
+    }
+    
+    private void handleMemberAnnotations(Tree.Declaration that, 
+            Declaration model, Tree.AnnotationList al) {
+            
         if (hasAnnotation(al, "static", unit)) {
             if (model instanceof Function
              || model instanceof Value

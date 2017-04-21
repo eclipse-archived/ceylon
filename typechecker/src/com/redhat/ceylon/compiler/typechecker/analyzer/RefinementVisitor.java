@@ -829,14 +829,22 @@ public class RefinementVisitor extends Visitor {
         else {
             member.setRefinedDeclaration(root);
             Unit unit = that.getUnit();
-            if (root.isPackageVisibility() && 
+            if (!root.withinRestrictions(unit)) {
+                that.addError(
+                        "refined declaration is not visible: " + 
+                        message(member) + 
+                        " refines " + 
+                        message(root) +
+                        " which is restricted");
+            }
+            else if (root.isPackageVisibility() && 
                     !declaredInPackage(root, unit)) {
                 that.addError(
                         "refined declaration is not visible: " + 
                         message(member) + 
                         " refines " + 
                         message(root) +
-                        " which has package visibility");
+                        " which is package private");
             }
             if (root.isCoercionPoint()) {
                 // FIXME: add message pointing to the real method?
