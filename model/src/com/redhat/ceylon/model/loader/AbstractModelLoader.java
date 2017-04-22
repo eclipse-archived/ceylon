@@ -177,6 +177,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     static final String CEYLON_LANGUAGE_NATIVE_ANNOTATION = "ceylon.language.NativeAnnotation$annotation$";
     static final String CEYLON_LANGUAGE_OPTIONAL_ANNOTATION = "ceylon.language.OptionalAnnotation$annotation$";
     static final String CEYLON_LANGUAGE_SERIALIZABLE_ANNOTATION = "ceylon.language.SerializableAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_RESTRICTED_ANNOTATION = "ceylon.language.RestrictedAnnotation$annotation$";
     
     static final String CEYLON_LANGUAGE_DOC_ANNOTATION = "ceylon.language.DocAnnotation$annotation$";
     static final String CEYLON_LANGUAGE_THROWS_ANNOTATIONS = "ceylon.language.ThrownExceptionAnnotation$annotations$";
@@ -1555,6 +1556,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // we have to check the shared annotation
             decl.setShared(mirror.isPublic() || annotatedMirror.getAnnotation(CEYLON_LANGUAGE_SHARED_ANNOTATION) != null);
             setDeclarationAliases(decl, annotatedMirror);
+            setDeclarationRestrictions(decl, annotatedMirror);
         }else{
             decl.setShared(mirror.isPublic() || (mirror.isDefaultAccess() && classMirror.isInnerClass()) || mirror.isProtected());
             decl.setPackageVisibility(mirror.isDefaultAccess());
@@ -3968,6 +3970,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setPackageVisibility(fieldMirror.isDefaultAccess());
         value.setStatic(fieldMirror.isStatic());
         setDeclarationAliases(value, fieldMirror);
+        setDeclarationRestrictions(value, fieldMirror);
         // field can't be abstract or interface, so not formal
         // can we override fields? good question. Not really, but from an external point of view?
         // FIXME: figure this out: (default)
@@ -4187,6 +4190,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         decl.setProtectedVisibility(methodMirror.isProtected());
         decl.setPackageVisibility(methodMirror.isDefaultAccess());
         setDeclarationAliases(decl, methodMirror);
+        setDeclarationRestrictions(decl, methodMirror);
         if(decl instanceof Value){
             setValueTransientLateFlags((Value)decl, methodMirror, isCeylon);
         }
@@ -6480,6 +6484,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             List<String> value = (List<String>) annot.getValue("aliases");
             if(value != null && !value.isEmpty())
                 decl.setAliases(value);
+        }
+    }
+
+    private static void setDeclarationRestrictions(Declaration decl, AnnotatedMirror mirror){
+        AnnotationMirror annot = mirror.getAnnotation(AbstractModelLoader.CEYLON_LANGUAGE_RESTRICTED_ANNOTATION);
+        if (annot != null) {
+            @SuppressWarnings("unchecked")
+            List<String> value = (List<String>) annot.getValue("modules");
+            if(value != null)
+                decl.setRestrictions(value);
         }
     }
 
