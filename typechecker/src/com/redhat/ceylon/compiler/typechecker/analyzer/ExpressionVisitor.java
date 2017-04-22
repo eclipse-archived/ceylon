@@ -10177,7 +10177,7 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         Package pack;
         Tree.ImportPath path = that.getImportPath();
-        if (path==null) {
+        if (path==null || path.getIdentifiers().isEmpty()) {
             path = new Tree.ImportPath(null);
             that.setImportPath(path);
             pack = unit.getPackage();
@@ -10192,15 +10192,16 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.ModuleLiteral that) {
         super.visit(that);
+        Tree.ImportPath path = that.getImportPath();
         Module m;
-        if (that.getImportPath()==null) {
+        if (path==null || path.getIdentifiers().isEmpty()) {
             that.setImportPath(new Tree.ImportPath(null));
             m = unit.getPackage().getModule();
         }
         else {
-            m = importedModule(that.getImportPath());
+            m = importedModule(path);
         }
-        that.getImportPath().setModel(m);
+        path.setModel(m);
         that.setTypeModel(unit.getModuleDeclarationType());
     }
     
