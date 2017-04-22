@@ -81,7 +81,7 @@ public class TreeUtil {
     }
     
     public static String getAnnotationArgument(Tree.Annotation ann, 
-            int index) {
+            int index, Unit unit) {
         String result = null;
         Tree.Expression expression = null;
         Tree.PositionalArgumentList pal = 
@@ -126,7 +126,8 @@ public class TreeUtil {
             if (term instanceof Tree.ModuleLiteral) {
                 Tree.ModuleLiteral ml = (Tree.ModuleLiteral) term;
                 Tree.ImportPath importPath = ml.getImportPath();
-                result = importPath==null ? "$this$" :
+                result = importPath==null || importPath.getIdentifiers().isEmpty() ? 
+                        unit.getPackage().getModule().getNameAsString() :
                         formatPath(importPath.getIdentifiers());
             }
         }
@@ -162,7 +163,7 @@ public class TreeUtil {
                 backends = Backends.HEADER;
             } else {
                 for (int i=0; i<cnt; i++) {
-                    String be = getAnnotationArgument(ann, i);
+                    String be = getAnnotationArgument(ann, i, unit);
                     if (be != null) {
                         backends = backends.merged(Backend.fromAnnotation(be));
                     }

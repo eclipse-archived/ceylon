@@ -2440,7 +2440,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 backends = Backends.HEADER;
             } else {
                 for (int i=0; i<cnt; i++) {
-                    String be = getAnnotationArgument(na, i);
+                    String be = getAnnotationArgument(na, i, unit);
                     Backend backend = Backend.fromAnnotation(be);
                     if (backend != null) {
                         if (!backend.isRegistered()) {
@@ -2486,7 +2486,7 @@ public abstract class DeclarationVisitor extends Visitor {
             int len = getAnnotationArgumentCount(ann);
             List<String> modules = new ArrayList<String>(len);
             for (int i=0; i<len; i++) {
-                String arg = getAnnotationArgument(ann, i);
+                String arg = getAnnotationArgument(ann, i, unit);
                 if (arg!=null) {
                     modules.add(arg);
                 }
