@@ -23,6 +23,7 @@ public class Package
     private List<Unit> units = 
             new ArrayList<Unit>();
     private boolean shared = false;
+    private List<String> restrictions;
     private List<Annotation> annotations = 
             new ArrayList<Annotation>();
     private Unit unit;
@@ -77,6 +78,34 @@ public class Package
         this.shared = shared;
     }
     
+    public List<String> getRestrictions() {
+        return restrictions;
+    }
+    
+    public void setRestrictions(List<String> restrictions) {
+        this.restrictions = restrictions;
+    }
+
+    public boolean withinRestrictions(Unit unit) {
+        return withinRestrictions(unit.getPackage().getModule());
+    }
+    
+    private boolean withinRestrictions(Module module) {
+        List<String> restrictions = getRestrictions();
+        if (restrictions==null) {
+            return true;
+        }
+        else {
+            String name = module.getNameAsString();
+            for (String mod: restrictions) {
+                if (name.equals(mod)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
     private List<Declaration> members;
     
     @Override

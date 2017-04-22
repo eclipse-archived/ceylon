@@ -1678,7 +1678,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
 
             // if we are expecting Ceylon code, check that we have enough reified type parameters
-            if(methodContainer.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null){
+            if(methodContainer.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null){
                 List<AnnotationMirror> tpAnnotations = getTypeParametersFromAnnotations(instantiatedType);
                 int tpCount = tpAnnotations != null ? tpAnnotations.size() : instantiatedType.getTypeParameters().size();
                 if(!checkReifiedTypeDescriptors(tpCount, instantiatedType.getQualifiedName(), methodMirror, true))
@@ -2177,6 +2177,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return;
         }
         pkg.setShared(shared);
+        
+        setPackageRestrictions(packageClass, pkg);
+    }
+    
+    private void setPackageRestrictions(ClassMirror packageClass, Package pkg) {
+        AnnotationMirror annot = packageClass.getAnnotation(CEYLON_LANGUAGE_RESTRICTED_ANNOTATION);
+        if (annot != null) {
+            @SuppressWarnings("unchecked")
+            List<String> value = (List<String>) annot.getValue("modules");
+            if(value != null && !value.isEmpty())
+                pkg.setRestrictions(value);
+            else
+                pkg.setShared(false);
+        }
     }
 
     public Module lookupModuleByPackageName(String packageName) {
@@ -6478,7 +6492,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private static void setDeclarationAliases(Declaration decl, AnnotatedMirror mirror){
-        AnnotationMirror annot = mirror.getAnnotation(AbstractModelLoader.CEYLON_LANGUAGE_ALIASES_ANNOTATION);
+        AnnotationMirror annot = mirror.getAnnotation(CEYLON_LANGUAGE_ALIASES_ANNOTATION);
         if (annot != null) {
             @SuppressWarnings("unchecked")
             List<String> value = (List<String>) annot.getValue("aliases");
@@ -6488,7 +6502,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private static void setDeclarationRestrictions(Declaration decl, AnnotatedMirror mirror){
-        AnnotationMirror annot = mirror.getAnnotation(AbstractModelLoader.CEYLON_LANGUAGE_RESTRICTED_ANNOTATION);
+        AnnotationMirror annot = mirror.getAnnotation(CEYLON_LANGUAGE_RESTRICTED_ANNOTATION);
         if (annot != null) {
             @SuppressWarnings("unchecked")
             List<String> value = (List<String>) annot.getValue("modules");
