@@ -3,6 +3,9 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.common.ModuleUtil.isMavenModule;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotationArgument;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotationArgumentCount;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
@@ -304,14 +307,27 @@ public class ModuleVisitor extends Visitor {
                 if (!completeOnlyAST) {
                     Tree.AnnotationList al = 
                             that.getAnnotationList();
-                    if (hasAnnotation(al, "shared", u)) {
-                        pkg.setShared(true);
-                    }
-                    else {
-                        pkg.setShared(false);
-                    }
+                    pkg.setShared(hasAnnotation(al, "shared", u));
                     pkg.getAnnotations().clear();
                     buildAnnotations(al, pkg.getAnnotations());
+                    
+                    if (hasAnnotation(al, "restricted", u)) {
+                        Tree.Annotation ann = getAnnotation(al, "restricted", u);
+                        int len = getAnnotationArgumentCount(ann);
+                        List<String> modules = new ArrayList<String>(len);
+                        for (int i=0; i<len; i++) {
+                            String arg = getAnnotationArgument(ann, i, u);
+                            if (arg!=null) {
+                                modules.add(arg);
+                            }
+                        }
+                        if (modules.isEmpty()) {
+                            pkg.setShared(false);
+                        }
+                        else {
+                            pkg.setRestrictions(modules);
+                        }
+                    }
                 }
             }
         }
