@@ -10,9 +10,9 @@ public class Annotation {
 	private Map<String,String> namedArguments = new HashMap<String,String>();
 	private List<String> positionalArguments = new ArrayList<String>();
 
-	public Annotation(){}
+	public Annotation() {}
 
-	public Annotation(String name){
+	public Annotation(String name) {
 	    this.name = name;
 	}
 	

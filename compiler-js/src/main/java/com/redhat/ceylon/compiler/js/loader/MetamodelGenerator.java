@@ -81,7 +81,8 @@ public class MetamodelGenerator {
     public static final String METATYPE_TYPE_PARAMETER  = "tp";
     public static final String METATYPE_PARAMETER       = "prm";
     //DO NOT REARRANGE, only append
-    public static final List<String> annotationBits = Arrays.asList("shared", "actual", "formal", "default",
+    public static final List<String> annotationBits = 
+            Arrays.asList("shared", "actual", "formal", "default",
             "sealed", "final", "native", "late", "abstract", "annotation",
             "variable", "serializable", "static");
 
