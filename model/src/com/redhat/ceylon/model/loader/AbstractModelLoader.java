@@ -1559,9 +1559,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             setDeclarationRestrictions(decl, annotatedMirror);
         }else{
             decl.setShared(mirror.isPublic() || (mirror.isDefaultAccess() && classMirror.isInnerClass()) || mirror.isProtected());
-            decl.setPackageVisibility(mirror.isDefaultAccess());
-            decl.setProtectedVisibility(mirror.isProtected());
         }
+        decl.setPackageVisibility(mirror.isDefaultAccess());
+        decl.setProtectedVisibility(mirror.isProtected());
         decl.setDeprecated(isDeprecated(annotatedMirror));
     }
 
@@ -3222,9 +3222,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private boolean addingFieldWouldConflictWithMember(ClassOrInterface klass, String name) {
         return klass.getDirectMember(name, null, false) != null
-                || "equals".equals(name)
-                || "string".equals(name)
-                || "hash".equals(name);
+            || "equals".equals(name)
+            || "string".equals(name)
+            || "hash".equals(name);
     }
     
     private boolean keepField(FieldMirror fieldMirror, boolean isCeylon, boolean isFromJDK) {
@@ -6492,7 +6492,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (annot != null) {
             @SuppressWarnings("unchecked")
             List<String> value = (List<String>) annot.getValue("modules");
-            if(value != null)
+            if(value != null && !value.isEmpty())
                 decl.setRestrictions(value);
         }
     }
