@@ -293,16 +293,9 @@ public abstract class Declaration
      * directly defined in a containing scope.
      */
     public boolean isVisible(Scope scope) {
-        if (!withinRestrictions(scope)) {
-            return false;
-        }
         Scope vs = getVisibleScope();
-        if (vs==null) {
-            return true;
-        }
-        else {
-            return contains(vs, scope);
-        }
+        return (vs==null || contains(vs, scope)) 
+                && withinRestrictions(scope);
         /*
         * Note that this implementation is not quite
         * right, since for a shared member
@@ -343,13 +336,8 @@ public abstract class Declaration
         }
         else {
             String name = module.getNameAsString();
-            String thisModule = 
-                    getUnit()
-                        .getPackage()
-                        .getModule()
-                        .getNameAsString();
             for (String mod: restrictions) {
-                if (name.equals(mod.replace("$this$", thisModule))) {
+                if (name.equals(mod)) {
                     return true;
                 }
             }
