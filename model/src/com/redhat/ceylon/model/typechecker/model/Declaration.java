@@ -295,7 +295,7 @@ public abstract class Declaration
     public boolean isVisible(Scope scope) {
         Scope vs = getVisibleScope();
         return (vs==null || contains(vs, scope)) 
-                && withinRestrictions(scope);
+            && withinRestrictions(scope);
         /*
         * Note that this implementation is not quite
         * right, since for a shared member

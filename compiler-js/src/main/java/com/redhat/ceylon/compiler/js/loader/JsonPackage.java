@@ -1244,7 +1244,7 @@ public class JsonPackage extends LazyPackage {
         }
         
         for (Annotation a: d.getAnnotations()) {
-            if (a.getName().equals("restricted")) {
+            if (a.getName().equals("restricted") && !a.getPositionalArguments().isEmpty()) {
                 d.setRestrictions(a.getPositionalArguments());
             }
         }

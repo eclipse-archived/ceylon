@@ -2491,7 +2491,12 @@ public abstract class DeclarationVisitor extends Visitor {
                     modules.add(arg);
                 }
             }
-            model.setRestrictions(modules);
+            if (modules.isEmpty()) {
+                model.setPackageVisibility(true);
+            }
+            else {
+                model.setRestrictions(modules);
+            }
         }
 
     }
