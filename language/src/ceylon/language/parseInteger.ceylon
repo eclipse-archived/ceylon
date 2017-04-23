@@ -1,6 +1,3 @@
-Integer minRadix = 2;
-Integer maxRadix = 36;
-
 "The [[Integer]] value of the given 
  [[string representation|string]] of an integer value in the 
  base given by [[radix]], or `null` if the string does not 
@@ -48,8 +45,19 @@ shared Integer? parseInteger(
             String string,
             "The base, between [[minRadix]] and [[maxRadix]] 
              inclusive."
-            Integer radix = 10) {
+            Integer radix = 10) 
+        => if (is Integer result 
+                = parseIntegerInternal(string, radix))
+        then result 
+        else null;
+
+Integer minRadix = 2;
+Integer maxRadix = 36;
+
+Integer|ParseException parseIntegerInternal(
+    String string, Integer radix = 10) {
     
+    "illegal radix"
     assert (minRadix <= radix <= maxRadix); 
     
     Integer start;
@@ -72,17 +80,17 @@ shared Integer? parseInteger(
         }
     }
     else {
-        return null;
+        return ParseException("illegal format for Integer: no digits");
     }
     
-    Integer limit = negative 
+    value limit = negative 
             then runtime.minIntegerValue 
             else -runtime.maxIntegerValue;
     
-    Integer length = string.size;
-    variable Integer result = 0;
-    variable Integer digitIndex = 0;
-    variable Integer index = start;
+    value length = string.size;
+    variable value result = 0;
+    variable value digitIndex = 0;
+    variable value index = start;
     while (index < length) {
         assert (exists ch = string.getFromFirst(index));
 
@@ -90,38 +98,35 @@ shared Integer? parseInteger(
                 radix == 10 && 
                 ch in "kMGTP") {
             // The SI-style magnitude
-            if (exists exp = parseIntegerExponent(ch)) {
-                Integer magnitude = 10^exp;
-                if ((limit / magnitude) < result) {
-                    result *= magnitude;
-                    break;
-                }
-                else {
-                    // overflow
-                    return null;
-                }
+            "unrecognized SI magnitude"
+            assert (exists exp = parseIntegerExponent(ch));
+            Integer magnitude = 10^exp;
+            if ((limit / magnitude) < result) {
+                result *= magnitude;
+                break;
             }
             else {
-                return null;
+                // overflow
+                return ParseException("numeric value is too large for Integer");
             }
         }
         else if (exists digit = parseDigit(ch, radix)) {
             // A regular digit
             if (result < max) { 
                 // overflow
-                return null;
+                return ParseException("numeric value too large for Integer");
             }
             result *= radix;
             if (result < limit + digit) { 
                 // overflow
-                return null;
+                return ParseException("numeric value too large for Integer");
             }
             // += would be much more obvious, but it doesn't work for minIntegerValue
             result -= digit;
         }
         else {
             // Invalid character
-            return null;
+            return ParseException("illegal format for Integer: unexpected character '``ch``'");
         }
         
         index++;
@@ -129,7 +134,7 @@ shared Integer? parseInteger(
     }
     
     if (digitIndex == 0) {
-        return null;
+        return ParseException("illegal format for Integer: no digits");
     }
     else {
         return negative then result else -result;

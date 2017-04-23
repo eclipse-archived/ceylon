@@ -31,8 +31,6 @@ class ArraySequence<out Element>(Array<Element> array)
         return last;
     }
     
-    clone() => this;
-    
     tuple() => arrayToTuple(array);
     
     each = array.each;

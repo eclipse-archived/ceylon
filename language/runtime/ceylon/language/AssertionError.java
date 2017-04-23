@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.common.NonNull;
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -22,7 +24,6 @@ public class AssertionError extends java.lang.Error implements ReifiedType {
 
     @Ignore // JPA constructor
     protected AssertionError() {
-        super();
         this.message = null;
     }
     
@@ -33,6 +34,7 @@ public class AssertionError extends java.lang.Error implements ReifiedType {
     public AssertionError(
             @TypeInfo("ceylon.language::String")
             @Name("message")
+            @NonNull
             java.lang.String message) {
         super(message);
         this.message = message;
@@ -46,10 +48,12 @@ public class AssertionError extends java.lang.Error implements ReifiedType {
     public AssertionError(
             @TypeInfo("ceylon.language::String")
             @Name("message")
+            @NonNull
             java.lang.String message,
             @TypeInfo("ceylon.language::Throwable?")
             @Name("cause")
             @Defaulted
+            @Nullable
             java.lang.Throwable cause) {
         super(message, cause);
         this.message = message;

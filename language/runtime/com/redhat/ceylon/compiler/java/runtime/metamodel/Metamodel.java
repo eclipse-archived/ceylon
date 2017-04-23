@@ -60,7 +60,6 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.RuntimeResolver;
@@ -127,7 +126,6 @@ import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.Generic;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
-import ceylon.language.meta.model.Member;
 import ceylon.language.meta.model.TypeApplicationException;
 import ceylon.language.meta.model.ValueModel;
 
@@ -706,10 +704,31 @@ public class Metamodel {
     }
 
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.model.typechecker.model.Module module) {
-        String className = module.getNameAsString() + "." + NamingBase.MODULE_DESCRIPTOR_CLASS_NAME;
-        ReflectionClass classMirror = (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(module, className);
-        return classMirror.klass;
-        
+        if (module.isJava() || module.isDefaultModule()) {
+            //Java modules don't have module descriptor classes 
+            for (com.redhat.ceylon.model.typechecker.model.Package p: module.getPackages()) {
+                for (Declaration d: p.getMembers()) {
+                    if (d instanceof com.redhat.ceylon.model.typechecker.model.ClassOrInterface) {
+                        String className = p.getNameAsString() + "." + d.getName();
+                        ReflectionClass classMirror = classMirror(module, className);
+                        if (classMirror!=null) {
+                            return classMirror.klass;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+        else {
+            String className = module.getNameAsString() + "." + NamingBase.MODULE_DESCRIPTOR_CLASS_NAME;
+            ReflectionClass classMirror = classMirror(module, className);
+            return classMirror.klass;
+        }
+    }
+
+    private static ReflectionClass classMirror(com.redhat.ceylon.model.typechecker.model.Module module,
+            String className) {
+        return (ReflectionClass)moduleManager.getModelLoader().lookupClassMirror(module, className);
     }
     
     public static java.lang.Class<?> getJavaClass(com.redhat.ceylon.model.typechecker.model.Package pkg) {

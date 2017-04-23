@@ -180,8 +180,7 @@ shared native final class Integer
         "The base, between [[minRadix]] and [[maxRadix]] 
          inclusive."
         Integer radix = 10)
-            => package.parseInteger(string, radix)
-            else ParseException("illegal format for Integer");
+            => parseIntegerInternal(string, radix);
     
     "The string representation of the given [[integer]] in 
      the base given by [[radix]]. If the given integer is 

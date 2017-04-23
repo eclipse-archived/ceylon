@@ -349,7 +349,7 @@ public final class Integer
     
     @Ignore 
     public static long parse$radix(java.lang.String string) {
-        return parseInteger_.parseInteger$radix(string);
+        return parseIntegerInternal_.parseIntegerInternal$radix(string);
     }
     
     @Ignore
@@ -363,9 +363,7 @@ public final class Integer
     public static java.lang.Object parse(
             @Name("string") java.lang.String string, 
             @Name("radix") @Defaulted long radix) {
-        Integer result = parseInteger_.parseInteger(string, radix);
-        return result!=null ? result :
-            new ParseException("illegal format for Integer");
+        return parseIntegerInternal_.parseIntegerInternal(string, radix);
     }
     
     @Ignore 

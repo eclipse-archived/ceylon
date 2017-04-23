@@ -895,12 +895,14 @@ shared interface Iterable<out Element=Anything,
          `function byIncreasing`, `function byDecreasing`,
          `function package.comparing`)
     shared default 
-    Element[] sort(
+    [Element+] | []&Iterable<Element,Absent> sort(
         "The function comparing pairs of elements."
         Comparison comparing(Element x, Element y)) {
         value array = Array(this);
         if (array.empty) {
-            return [];
+            "nonempty stream has no elements"
+            assert (is Iterable<Element,Absent> empty = []);
+            return empty;
         }
         else {
             array.sortInPlace(comparing);
@@ -918,7 +920,7 @@ shared interface Iterable<out Element=Anything,
          it.collect(f) == [*it.map(f)]"
     see (`function map`)
     shared default 
-    Result[] collect<Result>(
+    [Result+] | []&Iterable<Result,Absent> collect<Result>(
         "The transformation applied to the elements."
         Result collecting(Element element)) 
             => map(collecting).sequence();

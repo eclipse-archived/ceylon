@@ -95,10 +95,6 @@ public class TypeVisitor extends Visitor {
         super.visit(that);
     }
     
-    @Override public void visit(Tree.Declaration that) {
-        super.visit(that);
-    }
-    
     public void visit(Tree.GroupedType that) {
         super.visit(that);
         Tree.StaticType type = that.getType();

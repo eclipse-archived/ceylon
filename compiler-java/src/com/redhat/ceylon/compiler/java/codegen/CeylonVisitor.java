@@ -62,7 +62,6 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -674,7 +673,7 @@ public class CeylonVisitor extends Visitor {
         ClassOrInterface forDefinition = classBuilder.getForDefinition();
         Type thisType = forDefinition != null ? forDefinition.getType() : null;
         Type extended = extendedType.getType().getTypeModel();
-        if (extended.getDeclaration() instanceof Constructor) {
+        if (extended.isConstructor()) {
             extended = extended.getQualifyingType();
         }
         classBuilder.extending(thisType, extended);

@@ -279,7 +279,7 @@ class Array<Element>
      sequence. This operation has no side-effect, and does
      not modify the array."
     shared actual native 
-    Element[] sort(
+    [Element+]|[] sort(
         "A comparison function that compares pairs of
          elements of this array."
         Comparison comparing(Element x, Element y));

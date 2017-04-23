@@ -12,7 +12,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.hasUncheckedNullType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
@@ -830,14 +829,22 @@ public class RefinementVisitor extends Visitor {
         else {
             member.setRefinedDeclaration(root);
             Unit unit = that.getUnit();
-            if (root.isPackageVisibility() && 
+            if (!root.withinRestrictions(unit)) {
+                that.addError(
+                        "refined declaration is not visible: " + 
+                        message(member) + 
+                        " refines " + 
+                        message(root) +
+                        " which is restricted");
+            }
+            else if (root.isPackageVisibility() && 
                     !declaredInPackage(root, unit)) {
                 that.addError(
                         "refined declaration is not visible: " + 
                         message(member) + 
                         " refines " + 
                         message(root) +
-                        " which has package visibility");
+                        " which is package private");
             }
             if (root.isCoercionPoint()) {
                 // FIXME: add message pointing to the real method?
@@ -2059,7 +2066,7 @@ public class RefinementVisitor extends Visitor {
             TypedDeclaration rvtd = (TypedDeclaration) rvd;
             v.setUncheckedNullType(rvtd.hasUncheckedNullType());
         }
-        setVisibleScope(v);
+        ModelUtil.setVisibleScope(v);
         c.addMember(v);
         that.setRefinement(true);
         that.setDeclaration(v);
@@ -2303,7 +2310,7 @@ public class RefinementVisitor extends Visitor {
             TypedDeclaration rmtd = (TypedDeclaration) rmd;
             m.setUncheckedNullType(rmtd.hasUncheckedNullType());
         }
-        setVisibleScope(m);
+        ModelUtil.setVisibleScope(m);
         c.addMember(m);
         that.setRefinement(true);
         that.setDeclaration(m);

@@ -120,9 +120,9 @@ class Tuple<out Element, out First, out Rest = []>
     shared actual native 
     Tuple<Element,First,Rest> clone() => this;
     
-    "This tuple"
-    shared actual native
-    Tuple<Element,First,Rest> tuple() => this;
+    since("1.3.3")
+    shared actual native 
+    [Element+] tuple() => super.tuple();
     
     shared actual native 
     Iterator<Element> iterator() 

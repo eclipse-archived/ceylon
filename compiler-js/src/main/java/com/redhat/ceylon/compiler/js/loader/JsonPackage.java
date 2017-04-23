@@ -134,15 +134,7 @@ public class JsonPackage extends LazyPackage {
                     int bits = (int)model.remove("$pkg-pa");
                     setShared(hasAnnotationBit(bits, "shared"));
                 }
-                @SuppressWarnings("unchecked")
-                Object pkgAnns = model.remove("$pkg-anns");
-                if (pkgAnns instanceof List) {
-                    JsonPackage.setNewAnnotations(getAnnotations(), (List<Map<String,List<String>>>)pkgAnns);
-                } else if (pkgAnns instanceof Map) {
-                    JsonPackage.setOldAnnotations(getAnnotations(), (Map<String,List<String>>)pkgAnns);
-                } else if (pkgAnns != null) {
-                    throw new IllegalArgumentException("Annotations should be a List (new format) or a Map (old format)");
-                }
+                setPackageAnnotations(model.remove("$pkg-anns"));
             }
 
             // This was part of loadDeclarations() which is now being called lazily, but
@@ -155,7 +147,19 @@ public class JsonPackage extends LazyPackage {
         }
 
         super.setModule(module);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void setPackageAnnotations(Object pkgAnns) {
+        if (pkgAnns instanceof List) {
+            JsonPackage.setNewAnnotations(getAnnotations(), (List<Map<String,List<String>>>)pkgAnns);
+        } else if (pkgAnns instanceof Map) {
+            JsonPackage.setOldAnnotations(getAnnotations(), (Map<String,List<String>>)pkgAnns);
+        } else if (pkgAnns != null) {
+            throw new IllegalArgumentException("Annotations should be a List (new format) or a Map (old format)");
+        }
     };
+    
     Map<String,Object> getModel() { return model; }
 
     private void loadDeclarations() {
@@ -1238,7 +1242,14 @@ public class JsonPackage extends LazyPackage {
         } else {
             throw new IllegalArgumentException("Annotations should be a List (new format) or a Map (old format)");
         }
+        
+        for (Annotation a: d.getAnnotations()) {
+            if (a.getName().equals("restricted") && !a.getPositionalArguments().isEmpty()) {
+                d.setRestrictions(a.getPositionalArguments());
+            }
+        }
     }
+    
     static void setNewAnnotations(List<Annotation> existing, List<Map<String,List<String>>> anns) {
         for (Map<String, List<String>> a : anns) {
             String name = a.keySet().iterator().next();

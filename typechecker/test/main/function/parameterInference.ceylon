@@ -44,6 +44,15 @@ void parameterInference() {
             => if (exists fun) then fun("hello") else "";
     print(hello((str) => str + "world")); 
     print(hello(null));
+    
+    @type:"Iterable<Character,Null>" value mapped_ = "hello world".map((value c) => c.uppercased);
+    @type:"Iterable<Character,Null>" value filtered_ = "hello world".filter((value c) { return !c.whitespace; });
+    @type:"Integer" value folded_ = (1..10).fold(0)((value r, value x) => r+x);
+    accept((value f)=>f.string);
+    variadic((value string)=>print(string), (value string)=>print(string));
+    
+    @error value funWithNoParamType = (p) => 0;
+    value funWithNoParamType_ = (@error value p) => 0;
 }
 
 void testNotVariable() {

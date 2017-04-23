@@ -63,7 +63,6 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
@@ -972,7 +971,6 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
-            Parameter parameterModel = p.getParameterModel();
             annoBuilder.method(makeAnnotationMethod(p));
         }
         List<JCTree> result;
@@ -980,7 +978,7 @@ public class ClassTransformer extends AbstractTransformer {
             result = annoBuilder.build();
             String wrapperName = Naming.suffixName(Suffix.$annotations$, klass.getName());
             ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null, false);
-            // annotations are never explicitely final in Java
+            // annotations are never explicitly final in Java
             sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (modifierTransformation().classFlags(klass) & ~FINAL));
             sequencedBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
             MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, naming.getSequencedAnnotationMethodName());
@@ -3626,7 +3624,10 @@ public class ClassTransformer extends AbstractTransformer {
      */
     class ModifierTransformation {
         protected long declarationSharedFlags(Declaration decl){
-            return Decl.isShared(decl) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
+            return decl.isShared() 
+                && !Decl.isAncestorLocal(decl)
+                && !decl.isPackageVisibility()
+                    ? PUBLIC : 0;
         }
         
         public long jpaConstructor(Class model) {
@@ -3683,10 +3684,12 @@ public class ClassTransformer extends AbstractTransformer {
             return declarationSharedFlags(cdecl);
         }
         public int constructor(Constructor ctor) {
-            return Decl.isShared(ctor) 
-                    && !Decl.isAncestorLocal(ctor) 
-                    && !ctor.isAbstract() 
-                    && !Decl.isEnumeratedConstructor(ctor)? PUBLIC : PRIVATE;
+            return ctor.isShared() 
+                && !Decl.isAncestorLocal(ctor) 
+                && !ctor.isPackageVisibility()
+                && !ctor.isAbstract() 
+                && !Decl.isEnumeratedConstructor(ctor)
+                    ? PUBLIC : PRIVATE;
         }
 
         public long typeAlias(TypeAlias decl) {
@@ -3703,12 +3706,12 @@ public class ClassTransformer extends AbstractTransformer {
             int result = 0;
 
             if (def.isToplevel()) {
-                result |= def.isShared() ? PUBLIC : 0;
+                result |= def.isShared() && !def.isPackageVisibility() ? PUBLIC : 0;
                 result |= STATIC;
             } else if (Decl.isLocalNotInitializer(def)) {
-                result |= def.isShared() ? PUBLIC : 0;
+                result |= def.isShared() && !def.isPackageVisibility() ? PUBLIC : 0;
             } else {
-                result |= def.isShared() ? PUBLIC : PRIVATE;
+                result |= def.isShared() ? (!def.isPackageVisibility() ? PUBLIC : 0) : PRIVATE;
                 result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
                 result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
                 result |= def.isStatic() ? STATIC : 0;
@@ -3720,16 +3723,6 @@ public class ClassTransformer extends AbstractTransformer {
                 result |= Flags.STRICTFP;
             }
             return result;
-        }
-        
-        private boolean containsInteropAnnotation(Tree.AnnotationList annos, String annotationName) {
-            for (Tree.Annotation anno : annos.getAnnotations()) {
-                Declaration declaration = ((Tree.MemberOrTypeExpression)anno.getPrimary()).getDeclaration();
-                if (declaration != null && annotationName.equals(declaration.getQualifiedNameString())) {
-                    return true;
-                }
-            }
-            return false;
         }
         
         public long field(Tree.AttributeDeclaration cdecl) {
@@ -3776,7 +3769,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             int result = 0;
 
-            result |= tdecl.isShared() ? PUBLIC : PRIVATE;
+            result |= tdecl.isShared() ? (!tdecl.isPackageVisibility() ? PUBLIC : 0) : PRIVATE;
             result |= ((tdecl.isFormal() && !tdecl.isDefault()) && !forCompanion) ? ABSTRACT : 0;
             result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || forCompanion ? FINAL : 0;
             result |= tdecl.isStatic() ? STATIC : 0;
@@ -3797,7 +3790,10 @@ public class ClassTransformer extends AbstractTransformer {
             int result = 0;
 
             result |= FINAL;
-            result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
+            result |= !Decl.isAncestorLocal(cdecl) 
+                    && cdecl.isShared() 
+                    && !cdecl.isPackageVisibility() 
+                        ? PUBLIC : 0;
             result |= cdecl.isStatic() ? STATIC : 0;
             
             if (isJavaStrictfp(cdecl)) {
@@ -3839,7 +3835,10 @@ public class ClassTransformer extends AbstractTransformer {
             return constructor(klass) & (PUBLIC | PRIVATE | PROTECTED);
         }
 
-        public long defaultParameterMethod(boolean noBody, Declaration container) {
+        public long defaultParameterMethod(boolean noBody,
+                //the method or class with 
+                //the defaulted parameter
+                Declaration container) {
             int modifiers = 0;
             if (noBody) {
                 modifiers |= PUBLIC | ABSTRACT;
@@ -3850,9 +3849,9 @@ public class ClassTransformer extends AbstractTransformer {
                 modifiers |= FINAL;
             }
             if (container != null && container.isShared()) {
-                modifiers |= PUBLIC;
-            } else if (container == null || (!container.isToplevel()
-                    && !noBody)){
+                modifiers |= !container.isPackageVisibility() ? PUBLIC : 0;
+            } else if (container == null 
+                    || !container.isToplevel() && !noBody){
                 modifiers |= PRIVATE;
             }
             boolean staticMethod = container != null && Strategy.defaultParameterMethodStatic(container);
@@ -4124,7 +4123,13 @@ public class ClassTransformer extends AbstractTransformer {
     private MethodDefinitionBuilder makeAnnotationMethod(Tree.Parameter parameter) {
         Parameter parameterModel = parameter.getParameterModel();
         JCExpression type = transformAnnotationMethodType(parameter);
-        JCExpression defaultValue = parameterModel.isDefaulted() ? transformAnnotationParameterDefault(parameter) : null;
+        JCExpression defaultValue = null;
+        if (parameterModel.isDefaulted()) {
+            defaultValue = transformAnnotationParameterDefault(parameter);
+        }
+        if (parameterModel.isSequenced() && !parameterModel.isAtLeastOne()) {
+            defaultValue = make().NewArray(null, null, List.<JCExpression>nil());
+        }
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method(this, parameterModel.getModel(), Naming.NA_ANNOTATION_MEMBER);
         if (isMetamodelReference(parameterModel.getType())
                 || 

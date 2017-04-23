@@ -1,5 +1,6 @@
 package ceylon.language;
 
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -24,13 +25,15 @@ public class Exception extends RuntimeException implements ReifiedType {
     private final String description;
     
     public Exception(
-            @TypeInfo("ceylon.language::Null|ceylon.language::String")
+            @TypeInfo("ceylon.language::String?")
             @Name("description")
             @Defaulted
+            @Nullable
             String description,
-            @TypeInfo("ceylon.language::Null|ceylon.language::Throwable")
+            @TypeInfo("ceylon.language::Throwable?")
             @Name("cause")
             @Defaulted
+            @Nullable
             java.lang.Throwable cause) {
         super(description==null ? null : description.toString(), cause);
         this.description = description;

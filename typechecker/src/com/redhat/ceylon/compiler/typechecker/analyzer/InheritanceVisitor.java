@@ -5,7 +5,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeDescription;
@@ -14,6 +13,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.areConsistentSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.contains;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
@@ -368,9 +368,9 @@ public class InheritanceVisitor extends Visitor {
                             type.getDeclaration();
                     if (aetd instanceof Constructor &&
                             aetd.isAbstract()) {
-                        et.addError("extends a partial constructor: '" +
-                                aetd.getName(unit) + 
-                                "' is declared abstract");
+                        et.addError("extends a partial constructor: '" 
+                                + aetd.getName(unit) 
+                                + "' is declared abstract");
                     }
                     while (etd!=null && etd.isAlias()) {
                         Type etdet = 
@@ -380,21 +380,32 @@ public class InheritanceVisitor extends Visitor {
                     }
                     if (etd!=null) {
                         if (etd.isFinal()) {
-                            et.addError("extends a final class: '" + 
-                                    etd.getName(unit) + 
-                                    "' is declared final");
+                            et.addError("extends a final class: '" 
+                                    + etd.getName(unit) 
+                                    + "' is declared final");
                         }
-                        if (etd.isSealed() && 
-                                !inSameModule(etd, unit)) {
+                        if (aetd instanceof Class 
+                                && !contains(aetd, that.getScope())) {
+                            Class c = (Class) aetd;
+                            Constructor dc = c.getDefaultConstructor();
+                            if (dc!=null && !dc.isShared()) {
+                                that.addError("extends a class with an unshared default constructor: default constructor of '"
+                                        + c.getName(unit)
+                                        + "' is not 'shared'");
+                            }
+                        }
+                        if (etd.isSealed() 
+                                && !unit.inSameModule(etd)) {
                             String moduleName = 
                                     etd.getUnit()
                                         .getPackage()
                                         .getModule()
                                         .getNameAsString();
-                            et.addError("extends a sealed class in a different module: '" +
-                                    etd.getName(unit) + 
-                                    "' in '" + moduleName + 
-                                    "' is sealed");
+                            et.addError("extends a sealed class in a different module: '" 
+                                    + etd.getName(unit) 
+                                    + "' in '" 
+                                    + moduleName 
+                                    + "' is sealed");
                         }
                     }
                 }
@@ -451,7 +462,7 @@ public class InheritanceVisitor extends Visitor {
                     TypeDeclaration std = 
                             dec;
                     if (std.isSealed() && 
-                            !inSameModule(std, unit)) {
+                            !unit.inSameModule(std)) {
                         String moduleName = 
                                 std.getUnit()
                                     .getPackage()

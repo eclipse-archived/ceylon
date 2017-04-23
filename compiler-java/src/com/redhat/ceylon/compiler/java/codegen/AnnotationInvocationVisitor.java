@@ -315,10 +315,11 @@ class AnnotationInvocationVisitor extends Visitor {
         AnnotationTerm term = argument.getTerm();
         if (term instanceof ParameterAnnotationTerm) {
             ParameterAnnotationTerm parameterArgument = (ParameterAnnotationTerm)term;
-            Parameter sp = parameterArgument.getSourceParameter();
-            int argumentIndex = ((Functional)sp.getDeclaration())
+            Parameter p = argument.getParameter();
+            int argumentIndex = ((Functional)p.getDeclaration())
                     .getFirstParameterList().getParameters()
-                    .indexOf(sp);
+                    .indexOf(p);
+            Parameter sp = parameterArgument.getSourceParameter();
             if (invocation.getPositionalArgumentList() != null) {
                 java.util.List<Tree.PositionalArgument> positionalArguments = invocation.getPositionalArgumentList().getPositionalArguments();
                 

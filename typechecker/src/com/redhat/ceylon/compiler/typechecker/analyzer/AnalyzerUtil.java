@@ -4,7 +4,11 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
+import static com.redhat.ceylon.model.loader.JvmBackendUtil.isInitialLowerCase;
+import static com.redhat.ceylon.model.loader.NamingBase.capitalize;
+import static com.redhat.ceylon.model.loader.NamingBase.getJavaBeanName;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
@@ -31,8 +35,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
-import com.redhat.ceylon.model.loader.JvmBackendUtil;
-import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -43,6 +45,7 @@ import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
+import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -72,29 +75,105 @@ public class AnalyzerUtil {
     
     static final List<Type> NO_TYPE_ARGS = emptyList();
     
+    private static Declaration getMemberInheritedFromOuterTypes(
+            TypeDeclaration td, String name, 
+            List<Type> signature, boolean variadic, 
+            Scope scope) {
+        ClassOrInterface cci = 
+                getContainingClassOrInterface(scope);
+        while (cci!=null) { 
+            if (!(td instanceof NothingType) 
+                    && td.inherits(cci)) {
+                //just in case the current class is a 
+                //superclass of the receiver type, and
+                //has a private member with the given
+                //name, check the current class
+                Declaration direct = 
+                        cci.getDirectMember(name, 
+                                signature, variadic);
+                if (direct!=null) {
+                    //ignore it if shared, since it
+                    //might be refined by the subtype
+                    return direct.isShared() ? null : direct;
+                }
+            }
+            cci = getContainingClassOrInterface(
+                    cci.getContainer());
+        }
+        return null;
+    }
+    
+    private static boolean transformNameForJava(
+            TypeDeclaration td, Scope scope, String name, 
+            Boolean type) {
+        // If this is a Java type, it might have 
+        // members that follow the "wrong" naming
+        // convention
+        return td.isJava()
+            && isForBackend(scope.getScopedBackends(), 
+                            Backend.Java)
+            && type==isInitialLowerCase(name);
+    }
+
+    private static Declaration getFromJava(String name, 
+            Scope scope, List<Type> signature, boolean ellipsis,
+            Unit unit) {
+        // This method is used for base members, not qualified members
+        // so we don't look for members but we look on the scope, which
+        // may contain values with the modified case. For example, given
+        // import Foo { ... } which contains a \iBAR we map to "bar",
+        // if we look on the scope for "bar" we may find one that is not
+        // the one we wanted to import, so try imports first.
+        Declaration result = 
+                unit.getImportedDeclaration(name, 
+                        signature, ellipsis);
+        if (result!=null && result.isJava()) {
+            return result;
+        }
+        result = 
+                scope.getMemberOrParameter(unit, 
+                        name, signature, ellipsis);
+        if (result!=null && result.isJava()) {
+            return result;
+        }
+        return null;
+    }
+    
+    private static boolean transformNameForJava(
+            Scope scope, String name, 
+            Boolean type) {
+        // We might have imported members of a Java type, 
+        // that follow the "wrong" naming convention
+        return isForBackend(scope.getScopedBackends(), 
+                            Backend.Java)
+            && type==isInitialLowerCase(name);
+    }
+
     static TypedDeclaration getTypedMember(TypeDeclaration td, 
             String name, List<Type> signature, boolean variadic, 
             Unit unit, Scope scope) {
 
         Declaration member = 
-                td.getImportedMember(scope, name, signature, variadic);
+                getMemberInheritedFromOuterTypes(td, name, 
+                        signature, variadic, scope);
         if (member==null) {
-            member = td.getMember(name, unit, signature, variadic);
+            member = td.getImportedMember(scope, name, 
+                    signature, variadic);
+        }
+        if (member==null) {
+            member = td.getMember(name, unit, 
+                    signature, variadic);
+        }
+        if (member==null 
+                && transformNameForJava(td, scope, name, false)) {
+            member = td.getMember(getJavaBeanName(name), 
+                    unit, signature, variadic);
         }
         
         if (member instanceof TypedDeclaration) {
             return (TypedDeclaration) member;
         }
         else {
-            if (td.isJava()
-                    && isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && !JvmBackendUtil.isInitialLowerCase(name)) {
-                name = NamingBase.getJavaBeanName(name);
-                member = td.getMember(name, unit, signature, variadic);
-                if (member instanceof TypedDeclaration) {
-                    return (TypedDeclaration) member;
-                }
-            }
             return null;
         }
     }
@@ -104,9 +183,20 @@ public class AnalyzerUtil {
             Unit unit, Scope scope) {
         
         Declaration member = 
-                td.getImportedMember(scope, name, signature, variadic);
+                getMemberInheritedFromOuterTypes(td, name, 
+                        signature, variadic, scope);
         if (member==null) {
-            member = td.getMember(name, unit, signature, variadic);
+            member = td.getImportedMember(scope, name, 
+                    signature, variadic);
+        }
+        if (member==null) {
+            member = td.getMember(name, unit, 
+                    signature, variadic);
+        }
+        if (member==null 
+                && transformNameForJava(td, scope, name, true)) {
+            member = td.getMember(capitalize(name), 
+                    unit, signature, variadic);
         }
         
         if (member instanceof TypeDeclaration) {
@@ -117,20 +207,6 @@ public class AnalyzerUtil {
                     (TypedDeclaration) member);
         }
         else {
-            if (td.isJava()
-                    && isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && JvmBackendUtil.isInitialLowerCase(name)) {
-                name = NamingBase.capitalize(name);
-                member = 
-                        td.getMember(name, unit, signature, variadic);
-                if (member instanceof TypeDeclaration) {
-                    return (TypeDeclaration) member;
-                }
-                else if (member instanceof TypedDeclaration) {
-                    return anonymousType(name, 
-                            (TypedDeclaration) member);
-                }
-            }
             return null;
         }
     }
@@ -142,42 +218,20 @@ public class AnalyzerUtil {
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
                         name, signature, ellipsis);
+        if (result==null
+                && transformNameForJava(scope, name, false)) {
+            result = getFromJava(getJavaBeanName(name), 
+                    scope, signature, ellipsis, unit);
+        }
         
         if (result instanceof TypedDeclaration) {
             return (TypedDeclaration) result;
         }
         else {
-            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && !JvmBackendUtil.isInitialLowerCase(name)) {
-                name = NamingBase.getJavaBeanName(name);
-                // This method is used for base members, not qualified members
-                // so we don't look for members but we look on the scope, which
-                // may contain values with the modified case. For example, given
-                // import Foo { ... } which contains a \iBAR we map to "bar",
-                // if we look on the scope for "bar" we may find one that is not
-                // the one we wanted to import, so try imports first.
-                result = unit.getImportedDeclaration(name, 
-                        signature, ellipsis);
-                if (result != null && !result.isJava()) {
-                    result = null;
-                }
-                else if (result instanceof TypedDeclaration) {
-                    return (TypedDeclaration) result;
-                }
-                result = 
-                        scope.getMemberOrParameter(unit, 
-                                name, signature, ellipsis);
-                if (result != null && !result.isJava()) {
-                    result = null;
-                }
-                else if (result instanceof TypedDeclaration) {
-                    return (TypedDeclaration) result;
-                }
-            }
             return null;
         }
     }
-    
+
     static TypeDeclaration getTypeDeclaration(Scope scope,
             String name, List<Type> signature, boolean ellipsis,
             Unit unit) {
@@ -185,6 +239,11 @@ public class AnalyzerUtil {
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
                         name, signature, ellipsis);
+        if (result==null
+                && transformNameForJava(scope, name, true)) {
+            result = getFromJava(capitalize(name), 
+                    scope, signature, ellipsis, unit);
+        }
         
         if (result instanceof TypeDeclaration) {
             return (TypeDeclaration) result;
@@ -194,41 +253,6 @@ public class AnalyzerUtil {
                     (TypedDeclaration) result);
         }
         else {
-            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && JvmBackendUtil.isInitialLowerCase(name)) {
-                name = NamingBase.capitalize(name);
-                // This method is used for base members, not qualified members
-                // so we don't look for members but we look on the scope, which
-                // may contain values with the modified case. For example, given
-                // import Foo { ... } which contains a \iBAR we map to "bar",
-                // if we look on the scope for "bar" we may find one that is not
-                // the one we wanted to import, so try imports first.
-                result = unit.getImportedDeclaration(name, 
-                        signature, ellipsis);
-                if (result != null && !result.isJava()) {
-                    result = null;
-                }
-                else if (result instanceof TypeDeclaration) {
-                    return (TypeDeclaration) result;
-                }
-                else if (result instanceof TypedDeclaration) {
-                    return anonymousType(name, 
-                            (TypedDeclaration) result);
-                }
-                result = 
-                        scope.getMemberOrParameter(unit, 
-                                name, signature, ellipsis);
-                if (result != null && !result.isJava()) {
-                    result = null;
-                }
-                else if (result instanceof TypeDeclaration) {
-                    return (TypeDeclaration) result;
-                }
-                else if (result instanceof TypedDeclaration) {
-                    return anonymousType(name, 
-                            (TypedDeclaration) result);
-                }
-            }
             return null;
         }
     }
@@ -1430,11 +1454,6 @@ public class AnalyzerUtil {
         }
     }
 
-    static boolean inSameModule(TypeDeclaration etd, Unit unit) {
-        return etd.getUnit().getPackage().getModule()
-                .equals(unit.getPackage().getModule());
-    }
-
     static void checkCasesDisjoint(Type later, Type earlier,
             Node node) {
         if (!isTypeUnknown(later) && !isTypeUnknown(earlier)) {
@@ -1561,9 +1580,14 @@ public class AnalyzerUtil {
                     return pkg;
                 }
                 if (!pkg.isShared()) {
-                    path.addError("imported package is not shared: '" + 
-                            nameToImport + "' is not annotated 'shared' in '" +
+                    path.addError("imported package is not visible: package '" + 
+                            nameToImport + "' is not shared by module `" +
                             pkgMod.getNameAsString() + "'", 402);
+                }
+                else if (!pkg.withinRestrictions(unit)) {
+                    path.addError("imported package is not visible: package '" + 
+                            nameToImport + "' is restricted by module '" +
+                            pkgMod.getNameAsString() + "'");
                 }
 //                if (module.isDefault() && 
 //                        !pkg.getModule().isDefault() &&

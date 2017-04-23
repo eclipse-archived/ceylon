@@ -179,14 +179,15 @@ public class VisibilityVisitor extends Visitor {
             if (!td.isInconsistentType()) {
                 for (Type st: supertypes) {
                     // don't do this check for ObjectArguments
-                    if (that instanceof Tree.Declaration) {
+                    if (that instanceof Tree.Declaration 
+                            && !st.getDeclaration().equals(td)) {
                         if (!isCompletelyVisible(td, st)) {
                             // temporarily disable error for https://github.com/ceylon/ceylon/issues/5882
                             that.addError("supertype is not visible everywhere type '" 
                                     + td.getName() 
                                     + "' is visible: '" 
                                     + st.asString(that.getUnit()) 
-                                    + "' involves an unshared type declaration", 
+                                    + "' involves an unshared or restricted type declaration", 
                                     713);
                         }
                         if (!checkModuleVisibility(td, st, modules)) {

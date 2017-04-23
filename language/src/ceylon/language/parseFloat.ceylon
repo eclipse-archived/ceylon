@@ -1,31 +1,3 @@
-import ceylon.language {
-    ParseFloatState {
-        start, afterPlusMinus, digitsBeforeDecimal,
-        afterJustDecimal, afterDecimal, digitsAfterDecimal,
-        afterE, exponentDigits, afterEPlusMinus,
-        afterSuffix, invalid
-    }
-}
-
-class ParseFloatState of
-        start | afterPlusMinus | digitsBeforeDecimal |
-        afterJustDecimal | afterDecimal |
-        digitsAfterDecimal | afterE | exponentDigits |
-        afterEPlusMinus | afterSuffix | invalid {
-
-    shared new start {}
-    shared new afterPlusMinus {}
-    shared new digitsBeforeDecimal {}
-    shared new afterJustDecimal {}
-    shared new afterDecimal {}
-    shared new digitsAfterDecimal {}
-    shared new afterE {}
-    shared new exponentDigits {}
-    shared new afterEPlusMinus {}
-    shared new afterSuffix {}
-    shared new invalid {}
-}
-
 "The [[Float]] value of the given 
  [[string representation|string]] of a decimal floating 
  point number, or `null` if the string does not represent a 
@@ -54,7 +26,49 @@ class ParseFloatState of
 see (`function Float.parse`)
 tagged("Numbers", "Basic types")
 deprecated("Use [[Float.parse]]")
-shared Float? parseFloat(String string) {
+shared Float? parseFloat(String string)
+        => if (is Float result 
+                = parseFloatInternal(string))
+        then result
+        else null;
+
+class ParseFloatState 
+        of start 
+         | afterPlusMinus 
+         | digitsBeforeDecimal 
+         | afterJustDecimal 
+         | afterDecimal 
+         | digitsAfterDecimal 
+         | afterE 
+         | exponentDigits 
+         | afterEPlusMinus 
+         | afterSuffix 
+         | invalid {
+    
+    shared new start {}
+    shared new afterPlusMinus {}
+    shared new digitsBeforeDecimal {}
+    shared new afterJustDecimal {}
+    shared new afterDecimal {}
+    shared new digitsAfterDecimal {}
+    shared new afterE {}
+    shared new exponentDigits {}
+    shared new afterEPlusMinus {}
+    shared new afterSuffix {}
+    shared new invalid {}
+}
+
+Float|ParseException parseFloatInternal(String string) {
+
+    import ceylon.language {
+        ParseFloatState {
+            start, afterPlusMinus, digitsBeforeDecimal,
+            afterJustDecimal, afterDecimal, digitsAfterDecimal,
+            afterE, exponentDigits, afterEPlusMinus,
+            afterSuffix, invalid
+        }
+    }
+    
     // ("-"|"+")?
     // (Digit* "." Digit+) | (Digit+ "."?)
     // (("E"|"e") ("+"|"-")? Digit+) | suffix
@@ -63,55 +77,55 @@ shared Float? parseFloat(String string) {
     variable value size = 0;
     variable Integer? suffixExponent = null;
 
-    for (c in string) {
+    for (ch in string) {
         size++;
         state = switch (state)
         case (start)
-            if (c == '+' || c == '-')
+            if (ch == '+' || ch == '-')
                 then afterPlusMinus
-            else if ('0' <= c <= '9')
+            else if ('0' <= ch <= '9')
                 then digitsBeforeDecimal
-            else if (c == '.')
+            else if (ch == '.')
                 then afterJustDecimal
             else invalid
         case (afterPlusMinus)
-            if ('0' <= c <= '9')
+            if ('0' <= ch <= '9')
                 then digitsBeforeDecimal
-            else if (c == '.')
+            else if (ch == '.')
                 then afterJustDecimal
             else invalid
         case (digitsBeforeDecimal)
-            if ('0' <= c <= '9')
+            if ('0' <= ch <= '9')
                 then digitsBeforeDecimal
-            else if (c == '.')
+            else if (ch == '.')
                 then afterDecimal
-            else if (c == 'e' || c == 'E')
+            else if (ch == 'e' || ch == 'E')
                 then afterE
-            else if (c in "PTGMkmunpf")
+            else if (ch in "PTGMkmunpf")
                 then afterSuffix
             else invalid
         case (afterJustDecimal)
-            if ('0' <= c <= '9')
+            if ('0' <= ch <= '9')
                 then digitsAfterDecimal
             else invalid
         case (digitsAfterDecimal |
               afterDecimal)
-            if ('0' <= c <= '9')
+            if ('0' <= ch <= '9')
                 then digitsAfterDecimal
-            else if (c == 'e' || c == 'E')
+            else if (ch == 'e' || ch == 'E')
                 then afterE
-            else if (c in "PTGMkmunpf")
+            else if (ch in "PTGMkmunpf")
                 then afterSuffix
             else invalid
         case (afterE)
-            if ('0' <= c <= '9')
+            if ('0' <= ch <= '9')
                 then exponentDigits
-            else if (c == '+' || c == '-')
+            else if (ch == '+' || ch == '-')
                 then afterEPlusMinus
             else invalid
         case (exponentDigits |
               afterEPlusMinus)
-            if ('0' <= c <= '9')
+            if ('0' <= ch <= '9')
                 then exponentDigits
             else invalid
         case (afterSuffix)
@@ -120,29 +134,32 @@ shared Float? parseFloat(String string) {
             invalid;
 
         if (state == afterSuffix) {
-            suffixExponent = parseSuffix(c);
+            suffixExponent = parseSuffix(ch);
         }
 
         if (state == invalid) {
-            return null;
+            return ParseException("illegal format for Float: unexpected character '``ch``'");
         }
     }
 
     if (!state in [digitsBeforeDecimal,
             afterDecimal, digitsAfterDecimal,
             exponentDigits, afterSuffix]) {
-        return null;
+        return ParseException("illegal format for Float: unexpected end of string");
     }
 
-    if (exists exponent = suffixExponent) {
-        // Ceylon style magnitude suffix
-        return nativeParseFloat(
-            "``string[...size-2]``\
-             E``exponent``");
+    try {
+        if (exists exponent = suffixExponent) {
+            // Ceylon style magnitude suffix
+            return nativeParseFloat(string[0:size-1] + "E" + exponent.string);
+        }
+        else {
+            // may or may not have exponent
+            return nativeParseFloat(string);
+        }
     }
-    else {
-        // may or may not have exponent
-        return nativeParseFloat(string);
+    catch (e) {
+        return ParseException("illegal format for Float: " + e.message);
     }
 }
 
@@ -179,15 +196,16 @@ Integer parseSuffix(Character suffix) {
         return -15;
     }
     else {
+        "unrecognized SI magnitude"
         assert (false);
     }
 }
 
 native
-Float? nativeParseFloat(String string);
+Float nativeParseFloat(String string);
 
 native("jvm")
-Float? nativeParseFloat(String string) {
+Float nativeParseFloat(String string) {
     import java.lang {
         Double {
             parseDouble
@@ -198,7 +216,7 @@ Float? nativeParseFloat(String string) {
 }
 
 native("js")
-Float? nativeParseFloat(String string) {
+Float nativeParseFloat(String string) {
     Float result;
     dynamic {
         result = nativeJSParseFloat(string);

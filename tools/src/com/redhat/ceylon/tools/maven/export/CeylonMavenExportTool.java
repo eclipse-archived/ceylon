@@ -46,11 +46,11 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 @Summary("Generate a Maven repository for a given module")
-@Description("Gerate Maven repository which contains the given module and all its run-time"
-        + " dependencies, including the Ceylon run-time, which makes that repository usable by"
+@Description("Generate Maven repository which contains the given module and all its run-time"
+        + " dependencies, including the Ceylon runtime, which makes that repository usable by"
         + " Maven as a regular Maven repository.\n\n"
-        + "Alternately, running with `--for-import` creates a special repository set up suitable"
-        + " for importing the Ceylon distribution to Maven Central. This is mostly useful for the"
+        + "Alternatively, running with `--for-import` creates a special repository set up suitable"
+        + " for importing the Ceylon distribution into Maven Central. This is mostly useful for the"
         + " Ceylon team."
 )
 public class CeylonMavenExportTool extends ModuleLoadingTool {

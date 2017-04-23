@@ -44,26 +44,26 @@ options {
         return errors;
     }
     int expecting=-1;
-  @Override
-  protected Object getMissingSymbol(IntStream input,
-                    RecognitionException e,
-                    int expectedTokenType,
-                    BitSet follow)
-  {
-    String tokenText;
-    if ( expectedTokenType==Token.EOF ) tokenText = "<missing EOF>";
-    else tokenText = "<missing "+getTokenNames()[expectedTokenType]+">";
-    MissingToken t = new MissingToken(expectedTokenType, tokenText);
-    Token current = ((TokenStream)input).LT(1);
-    if ( current.getType() == Token.EOF ) {
-      current = ((TokenStream)input).LT(-1);
+    
+    @Override
+    protected Object getMissingSymbol(IntStream input,
+            RecognitionException e,
+            int expectedTokenType,
+            BitSet follow) {
+        String tokenText;
+        if ( expectedTokenType==Token.EOF ) tokenText = "<missing EOF>";
+        else tokenText = "<missing "+getTokenNames()[expectedTokenType]+">";
+        MissingToken t = new MissingToken(expectedTokenType, tokenText);
+        Token current = ((TokenStream)input).LT(1);
+        if ( current.getType() == Token.EOF ) {
+            current = ((TokenStream)input).LT(-1);
+        }
+        t.setLine(current.getLine());
+        t.setCharPositionInLine(current.getCharPositionInLine());
+        t.setChannel(DEFAULT_TOKEN_CHANNEL);
+        t.setInputStream(current.getInputStream());
+        return t;
     }
-    t.setLine(current.getLine());
-    t.setCharPositionInLine(current.getCharPositionInLine());
-    t.setChannel(DEFAULT_TOKEN_CHANNEL);
-    t.setInputStream(current.getInputStream());
-    return t;
-  }
 }
 
 @lexer::members {
@@ -370,7 +370,6 @@ memberNameDeclaration returns [Identifier identifier]
     | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input), 5001); }
       typeName { $identifier = $typeName.identifier; }
-      
     ;
 
 typeNameDeclaration returns [Identifier identifier]
@@ -643,8 +642,8 @@ variadicVariable returns [Variable variable]
           $variable.setType(st); }*/
       )
       (
-        memberName
-        { $variable.setIdentifier($memberName.identifier); }
+        memberNameDeclaration
+        { $variable.setIdentifier($memberNameDeclaration.identifier); }
       )?
     ;
 
@@ -1359,9 +1358,9 @@ parameterDeclaration returns [TypedDeclaration declaration]
       | VALUE_MODIFIER
         { a.setType(new ValueModifier($VALUE_MODIFIER)); }
       )
-      memberName
-      { a.setIdentifier($memberName.identifier);
-        m.setIdentifier($memberName.identifier); }
+      memberNameDeclaration
+      { a.setIdentifier($memberNameDeclaration.identifier);
+        m.setIdentifier($memberNameDeclaration.identifier); }
       (
         (
           specifier
@@ -1519,11 +1518,6 @@ anonymousTypeConstraints returns [TypeConstraintList typeConstraintList]
       )+
     ;
 
-annotationListStart
-    : (stringLiteral|annotation) 
-      (LIDENTIFIER|UIDENTIFIER|FUNCTION_MODIFIER|VALUE_MODIFIER|VOID_MODIFIER)
-    ;
-
 destructureStart
     : VALUE_MODIFIER compilerAnnotations 
       (LBRACKET|UIDENTIFIER|VOID_MODIFIER|VALUE_MODIFIER|FUNCTION_MODIFIER|LIDENTIFIER ENTRY_OP)
@@ -1535,12 +1529,10 @@ declarationOrStatement returns [Statement statement]
       (
         (destructureStart) => destructure
         { $statement=$destructure.destructure; }
-      | (annotatedDeclarationStart) => d1=declaration
-        { $statement=$d1.declaration; }
       | (annotatedAssertionStart) => assertion
         { $statement = $assertion.assertion; }
-      | (annotationListStart) => d2=declaration
-        { $statement=$d2.declaration; }
+      | (annotatedDeclarationStart) => declaration
+        { $statement = $declaration.declaration; }
       | s=statement
         { $statement=$s.statement; }
       )
@@ -1585,8 +1577,13 @@ declaration returns [Declaration declaration]
     ;
 
 annotatedDeclarationStart
-    : stringLiteral? annotation* 
-      ((unambiguousType) => unambiguousType | declarationStart)
+    : 
+      (stringLiteral | annotation) 
+      (LIDENTIFIER | (UIDENTIFIER) => UIDENTIFIER | (unambiguousType) => unambiguousType | declarationStart)
+    |
+      (unambiguousType) => unambiguousType 
+    | 
+      declarationStart
     ;
 
 annotatedAssertionStart
@@ -3762,8 +3759,8 @@ compilerAnnotations returns [List<CompilerAnnotation> annotations]
     ;
     
 compilerAnnotation returns [CompilerAnnotation annotation]
-    : COMPILER_ANNOTATION 
-      { $annotation=new CompilerAnnotation($COMPILER_ANNOTATION); }
+    : ca=COMPILER_ANNOTATION
+      { $annotation=new CompilerAnnotation($ca); }
       annotationName 
       { $annotation.setIdentifier($annotationName.identifier); }
       ( 
@@ -3886,8 +3883,8 @@ isCondition returns [IsCondition condition]
 isConditionVariable returns [Variable variable]
     @init { $variable = new Variable(null);
             $variable.setType(new ValueModifier(null));  }
-    : memberName
-      { $variable.setIdentifier($memberName.identifier); }
+    : memberNameDeclaration
+      { $variable.setIdentifier($memberNameDeclaration.identifier); }
       specifier
       { $variable.setSpecifierExpression($specifier.specifierExpression); }
     ;
@@ -4386,7 +4383,7 @@ var returns [Variable variable]
         VALUE_MODIFIER
         { $variable.setType(new ValueModifier($VALUE_MODIFIER)); }
       )
-      mn1=memberName 
+      mn1=memberNameDeclaration
       { $variable.setIdentifier($mn1.identifier); }
       ( 
         p1=parameters

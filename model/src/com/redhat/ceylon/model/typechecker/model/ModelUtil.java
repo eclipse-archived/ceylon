@@ -3192,37 +3192,39 @@ public class ModelUtil {
     }
 
     public static void setVisibleScope(Declaration model) {
-        Scope s = model.getContainer();
-        while (s!=null) {
-            if (s instanceof Declaration) {
-                Declaration d = (Declaration) s;
+        Scope scope = model.getContainer();
+        while (scope!=null) {
+            if (scope instanceof Declaration) {
+                Declaration d = (Declaration) scope;
                 if (model.isShared()) {
                     if (!d.isShared()) {
-                        model.setVisibleScope(s.getContainer());
+                        model.setVisibleScope(scope.getContainer());
                         break;
                     }
                 }
                 else {
-                    model.setVisibleScope(s);
+                    model.setVisibleScope(scope);
                     break;
                 }
             }
-            else if (s instanceof Package) {
-                //TODO: unshared packages!
-                /*if (!((Package) s).isShared()) {
-                    model.setVisibleScope(s);
-                }*/
-                if (!model.isShared()) {
-                    model.setVisibleScope(s);
+            else if (scope instanceof Package) {
+                if (!model.isShared() 
+                        || model.isPackageVisibility()) {
+                    model.setVisibleScope(scope);
                 }
+                //TODO: unshared packages!
+                /*if (!((Package) scope).isShared()) {
+                    model.setVisibleScope(scope.getModule());
+                }*/
                 //null visible scope means visible everywhere
                 break;
             }
             else {
-                model.setVisibleScope(s);
+                //a control statement block or whatever
+                model.setVisibleScope(scope);
                 break;
             }    
-            s = s.getContainer();
+            scope = scope.getContainer();
         }
     }
 
@@ -3435,7 +3437,8 @@ public class ModelUtil {
     public static boolean isEnumeratedConstructor(Value value) {
         return value != null
                 && value.getType() != null
-                && value.getType().getDeclaration() instanceof Constructor;
+                && value.getType().isConstructor()
+                && !value.getTypeDeclaration().isJavaEnum();
     }
 
     /** 

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -40,8 +39,12 @@ public class JsonModule extends Module implements NpmAware {
             int bits = (int)model.get("$mod-pa");
             setNativeBackends(JsonPackage.hasAnnotationBit(bits, "native") ? Backend.JavaScript.asSet() : Backends.ANY);
         }
-        @SuppressWarnings("unchecked")
-        final Object moduleAnns = model.get("$mod-anns");
+        
+        setModuleAnnotations(model.get("$mod-anns"));
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void setModuleAnnotations(final Object moduleAnns) {
         if (moduleAnns instanceof List) {
             JsonPackage.setNewAnnotations(getAnnotations(), (List<Map<String,List<String>>>)moduleAnns);
         } else if (moduleAnns instanceof Map) {
@@ -50,6 +53,7 @@ public class JsonModule extends Module implements NpmAware {
             throw new IllegalArgumentException("Annotations should be a List (new format) or a Map (old format)");
         }
     }
+    
     public Map<String, Object> getModel() {
         return model;
     }

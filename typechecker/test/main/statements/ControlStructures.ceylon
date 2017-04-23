@@ -325,9 +325,23 @@ object ey extends EX() {}
 object ex extends EX() {}
 
 void exy(EX val) {
-    @error switch (val)
+    switch (val)
     case (ex) { print("x"); }
     case (ey) { print("y"); }
+}
+
+void switchOnEmpty([String*] strings, String? maybe) {
+    switch (strings)
+    case ([]) {}
+    case (is [String+]) {}
+    
+    switch (strings)
+    case (empty) {}
+    case (is [String+]) {}
+    
+    switch (maybe)
+    case (null) {}
+    case (is String) {}
 }
 
 shared void unreachableif() {

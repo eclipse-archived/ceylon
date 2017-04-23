@@ -9,16 +9,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import ceylon.language.null_;
-import ceylon.language.meta.model.IncompatibleTypeException;
-import ceylon.language.meta.model.MutationException;
-import ceylon.language.meta.model.StorageException;
-
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -38,6 +33,11 @@ import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
+import ceylon.language.null_;
+import ceylon.language.meta.model.IncompatibleTypeException;
+import ceylon.language.meta.model.MutationException;
+import ceylon.language.meta.model.StorageException;
+
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
 @TypeParameters({
@@ -55,6 +55,7 @@ public class ValueImpl<Get, Set>
     @Ignore
     protected final TypeDescriptor $reifiedSet;
     protected final ValueDeclarationImpl declaration;
+    private boolean isSuppressed = false;
     private MethodHandle getter;
     private MethodHandle setter;
     private final Object instance;
@@ -77,22 +78,25 @@ public class ValueImpl<Get, Set>
 
     private void initField(Object instance, Type valueType) {
         com.redhat.ceylon.model.typechecker.model.Value decl = (com.redhat.ceylon.model.typechecker.model.Value) declaration.declaration;
+        String name = decl.getName();
         if(decl instanceof JavaBeanValue){
             java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
             if(javaClass == ceylon.language.Object.class
                     || javaClass == ceylon.language.Basic.class
                     || javaClass == ceylon.language.Identifiable.class){
-                if("string".equals(decl.getName())
-                        || "hash".equals(decl.getName())){
+                if("string".equals(name)
+                        || "hash".equals(name)){
                     // look it up on j.l.Object, getterName should work
                     javaClass = java.lang.Object.class;
                 }else{
-                    throw Metamodel.newModelError("Object/Basic/Identifiable member not supported: "+decl.getName());
+                    throw Metamodel.newModelError("Object/Basic/Identifiable member not supported: "+name);
                 }
             } else if (javaClass == ceylon.language.Throwable.class) {
-                if("cause".equals(decl.getName())
-                        || "message".equals(decl.getName())){
+                if("cause".equals(name)
+                        || "message".equals(name)
+                        || "suppressed".equals(name)){
                     javaClass = instance.getClass();
+                    isSuppressed = "suppressed".equals(name);
                 }
             }
             String getterName = ((JavaBeanValue) decl).getGetterName();
@@ -213,7 +217,7 @@ public class ValueImpl<Get, Set>
                 throw Metamodel.newModelError("Failed to find getter method "+getterName+" for: "+decl, e);
             }
         }else
-            throw new StorageException("Attribute "+decl.getName()+" is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
+            throw new StorageException("Attribute "+name+" is neither captured nor shared so it has no physical storage allocated and cannot be read by the metamodel");
     }
 
     private void initSetter(com.redhat.ceylon.model.typechecker.model.Value decl, java.lang.Class<?> javaClass, 
@@ -278,7 +282,14 @@ public class ValueImpl<Get, Set>
         if($reifiedGet.equals(null_.$TypeDescriptor$))
             return null;
         try {
-            return (Get) getter.invokeExact();
+            java.lang.Object result = getter.invokeExact();
+            if (isSuppressed) {
+                Throwable[] array = (Throwable[]) result;
+                result = Util.sequentialWrapperCopy(
+                        ceylon.language.Throwable.$TypeDescriptor$, 
+                        array);
+            }
+            return (Get) result;
         } catch (Throwable e) {
             Util.rethrow(e);
             return null;

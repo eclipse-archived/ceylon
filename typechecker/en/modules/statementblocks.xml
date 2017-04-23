@@ -2199,8 +2199,7 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>a toplevel anonymous class that is a subtype of 
-                    <literal>Identifiable|Null</literal>, or</para>
+                    <para>a toplevel anonymous class, or</para>
                 </listitem>
                 <listitem>
                     <para>a value constructor of a toplevel class that is a subtype of 

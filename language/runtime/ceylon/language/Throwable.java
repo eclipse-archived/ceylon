@@ -1,5 +1,7 @@
 package ceylon.language;
 
+import com.redhat.ceylon.common.NonNull;
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Defaulted;
@@ -26,20 +28,22 @@ public abstract class Throwable extends java.lang.Object
     private final java.lang.String description;
     
     public Throwable(
-            @TypeInfo("ceylon.language::Null|ceylon.language::String")
+            @TypeInfo("ceylon.language::String?")
             @Name("description")
             @Defaulted
-            java.lang.String description,
-            @TypeInfo("ceylon.language::Null|ceylon.language::Throwable")
+            @Nullable
+            String description,
+            @TypeInfo("ceylon.language::Throwable?")
             @Name("cause")
             @Defaulted
+            @Nullable
             java.lang.Throwable cause) {
         //super(description==null ? null : description.toString(), cause);
-        this.description = description;
+        this.description = description.value;
     }
     
     @Ignore
-    public Throwable(java.lang.String description) {
+    public Throwable(String description) {
         this(description, $default$cause(description));
     }
     
@@ -48,13 +52,15 @@ public abstract class Throwable extends java.lang.Object
         this($default$description());
     }
         
-    @TypeInfo("ceylon.language::Null|ceylon.language::Throwable")
+    @TypeInfo("ceylon.language::Throwable?")
+    @Nullable
     public final java.lang.Throwable getCause() {
         return null;//super.getCause();
     }
     
     @TypeInfo("ceylon.language::String")
     @Transient
+    @NonNull
     public java.lang.String getMessage() {
         if (description != null) {
             return description.toString();
@@ -78,25 +84,25 @@ public abstract class Throwable extends java.lang.Object
     }
 
     @Ignore
-    public static java.lang.String $default$description(){
+    public static String $default$description(){
         return null;
     }
     @Ignore
-    public static java.lang.Throwable $default$cause(java.lang.String description){
+    public static java.lang.Throwable $default$cause(String description){
         return null;
     }
     
-    @TypeInfo("ceylon.language::Sequential<ceylon.language::Throwable>")
-    public final Sequential<Throwable> getSuppressed() {
+    @TypeInfo("ceylon.language::Throwable[]")
+    @NonNull
+    public final Sequential<? extends java.lang.Throwable> getSuppressed() {
         return null;
     }
     
     public final void addSuppressed(
             @Name("suppressed")
             @TypeInfo("ceylon.language::Throwable")
-            java.lang.Throwable suppressed) {
-        
-    }
+            @NonNull
+            java.lang.Throwable suppressed) {}
     
     @Override
     @Ignore

@@ -133,3 +133,19 @@ abstract class BrokenSelfTypeWithUpperBound<T>()
     Integer size = t.size;
 }
 
+class Universe() {
+    Integer count = 0;
+    class Outer() extends Universe() {
+        String name = "Gavin";
+        @error class Inner() extends Outer() {
+            void fun(Outer o) {
+                print(this.name);
+                print(this.count);
+                print(outer.name);
+                print(o.name);
+                print(outer.count);
+                print(o.count);
+            }
+        }
+    }
+}

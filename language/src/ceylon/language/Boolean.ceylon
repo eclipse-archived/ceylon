@@ -14,7 +14,7 @@ shared native abstract class Boolean
     tagged("Basic types")
     since("1.3.1")
     shared static Boolean|ParseException parse(String string)
-            => package.parseBoolean(string) 
+            => parseBoolean(string) 
             else ParseException("illegal format for Boolean");
     
     shared new () {}

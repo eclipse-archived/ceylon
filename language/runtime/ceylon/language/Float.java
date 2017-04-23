@@ -327,9 +327,7 @@ public final class Float
     @TypeInfo("ceylon.language::Float|ceylon.language::ParseException")
     public static java.lang.Object parse(
             @Name("string") java.lang.String string) {
-        Float result = parseFloat_.parseFloat(string);
-        return result!=null ? result :
-            new ParseException("illegal format for Float");
+        return parseFloatInternal_.parseFloatInternal(string);
     }
     
     @Ignore
