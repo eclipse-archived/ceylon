@@ -8024,14 +8024,18 @@ public class ExpressionTransformer extends AbstractTransformer {
             Tree.ModuleLiteral mod = (Tree.ModuleLiteral) ml;
             Tree.ImportPath ip = mod.getImportPath();
             if (mod.getRestriction() || ip.getModel()==null) {
-                return TreeUtil.formatPath(ip.getIdentifiers());
+                return ip.getIdentifiers().isEmpty() ? 
+                        ml.getUnit().getPackage().getModule().getNameAsString() : 
+                        TreeUtil.formatPath(ip.getIdentifiers());
             }
         }
         if (ml instanceof Tree.PackageLiteral) {
             Tree.PackageLiteral pack = (Tree.PackageLiteral) ml;
             Tree.ImportPath ip = pack.getImportPath();
             if (ip.getModel()==null) {
-                return TreeUtil.formatPath(ip.getIdentifiers());
+                return ip.getIdentifiers().isEmpty() ? 
+                        ml.getUnit().getPackage().getNameAsString() : 
+                        TreeUtil.formatPath(ip.getIdentifiers());
             }
         }
         return serializeReferenceable(getMetaLiteralReferenceable(ml));
