@@ -53,6 +53,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
@@ -8019,6 +8020,20 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public static String getSerializedMetaLiteral(Tree.MetaLiteral ml) {
+        if (ml instanceof Tree.ModuleLiteral) {
+            Tree.ModuleLiteral mod = (Tree.ModuleLiteral) ml;
+            Tree.ImportPath ip = mod.getImportPath();
+            if (mod.getRestriction() || ip.getModel()==null) {
+                return TreeUtil.formatPath(ip.getIdentifiers());
+            }
+        }
+        if (ml instanceof Tree.PackageLiteral) {
+            Tree.PackageLiteral pack = (Tree.PackageLiteral) ml;
+            Tree.ImportPath ip = pack.getImportPath();
+            if (ip.getModel()==null) {
+                return TreeUtil.formatPath(ip.getIdentifiers());
+            }
+        }
         return serializeReferenceable(getMetaLiteralReferenceable(ml));
     }
     

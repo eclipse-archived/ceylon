@@ -1642,7 +1642,8 @@ public class AnalyzerUtil {
         return null;
     }
     
-    static Module importedModule(Tree.ImportPath path) {
+    static Module importedModule(Tree.ImportPath path, 
+            boolean restriction) {
         if (path!=null && 
                 !path.getIdentifiers().isEmpty()) {
             String nameToImport = 
@@ -1677,8 +1678,10 @@ public class AnalyzerUtil {
                     }
                 }
             }
-            path.addError("module not found in imported modules: '" + 
-                    nameToImport + "'", 7000);
+            if (!restriction) {
+                path.addError("module not found in imported modules: '" + 
+                        nameToImport + "'", 7000);
+            }
         }
         return null;
     }

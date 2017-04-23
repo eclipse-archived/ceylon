@@ -40,15 +40,14 @@ shared annotation SharedAnnotation shared()
 
 "The annotation class for the [[restricted]] annotation."
 since("1.3.3")
-shared final sealed annotation class RestrictedAnnotation(modules) 
+shared final sealed annotation class RestrictedAnnotation(
+    "The modules to which this declaration is visible."
+    Module* modules)
         satisfies OptionalAnnotation<RestrictedAnnotation,
                     FunctionOrValueDeclaration
                   | ClassOrInterfaceDeclaration
                   | ConstructorDeclaration
-                  | Package> {
-    "The modules to which this declaration is visible."
-    shared Module* modules; 
-}
+                  | Package> {}
 
 "Annotation to restrict the visibility of a declaration to a 
  given list of [[modules]]."

@@ -9,6 +9,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBackend;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.setRestrictionArgument;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.formatPath;
 import static com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
@@ -316,6 +317,7 @@ public class ModuleVisitor extends Visitor {
                         int len = getAnnotationArgumentCount(ann);
                         List<String> modules = new ArrayList<String>(len);
                         for (int i=0; i<len; i++) {
+                            setRestrictionArgument(ann, i, u);
                             String arg = getAnnotationArgument(ann, i, u);
                             if (arg!=null) {
                                 modules.add(arg);
