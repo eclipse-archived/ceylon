@@ -1110,7 +1110,7 @@ public class Metamodel {
         if (pred != null && pred instanceof Predicates.AnnotationPredicate && !((Predicates.AnnotationPredicate<A>)pred).shouldInstantiate(jAnnotationType)) {
             return;
         }
-        if (jAnnotationType.getAnnotation(Ceylon.class) == null) {
+        if (!jAnnotationType.isAnnotationPresent(Ceylon.class)) {
             // It's a Java annotation
             addProxyCeylonAnnotation(annotated, ceylonAnnotations, jAnnotation);
             return;

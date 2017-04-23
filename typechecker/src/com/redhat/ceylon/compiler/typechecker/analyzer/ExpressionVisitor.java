@@ -10203,7 +10203,8 @@ public class ExpressionVisitor extends Visitor {
         Module mod = 
                 path.getIdentifiers().isEmpty() ?
                         unit.getPackage().getModule() :
-                        importedModule(path);
+                        importedModule(path, 
+                                that.getRestriction());
         path.setModel(mod);
         that.setTypeModel(unit.getModuleDeclarationType());
     }

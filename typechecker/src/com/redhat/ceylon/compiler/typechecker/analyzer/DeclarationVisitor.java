@@ -16,6 +16,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getNativeBack
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasAnonymousAnnotation;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.setRestrictionArgument;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
@@ -2486,6 +2487,7 @@ public abstract class DeclarationVisitor extends Visitor {
             int len = getAnnotationArgumentCount(ann);
             List<String> modules = new ArrayList<String>(len);
             for (int i=0; i<len; i++) {
+                setRestrictionArgument(ann, i, unit);
                 String arg = getAnnotationArgument(ann, i, unit);
                 if (arg!=null) {
                     modules.add(arg);
