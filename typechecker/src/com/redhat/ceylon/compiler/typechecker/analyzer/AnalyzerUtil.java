@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
@@ -1604,8 +1605,7 @@ public class AnalyzerUtil {
                 for (ModuleImport mi: module.getImports()) {
                     if (findModuleInTransitiveImports(
                             mi.getModule(), 
-                            pkgMod, 
-                            visited)) {
+                            pkgMod, visited)) {
                         return pkg; 
                     }
                 }
@@ -1616,16 +1616,17 @@ public class AnalyzerUtil {
                         String name = 
                                 mi.getModule()
                                     .getNameAsString();
+                        Backends backends = 
+                                path.getUnit()
+                                    .getSupportedBackends();
                         if (!isForBackend(mi.getNativeBackends(), 
-                                          path.getUnit()
-                                              .getSupportedBackends()) &&
+                                          backends) &&
                                 (nameToImport.equals(name) ||
                                  nameToImport.startsWith(name + "."))) {
                             return null;
                         }
                         if (!isForBackend(Backend.Java.asSet(), 
-                                          path.getUnit()
-                                              .getSupportedBackends()) &&
+                                          backends) &&
                                 unit.isJdkPackage(nameToImport)) {
                             return null;
                         }
@@ -1671,9 +1672,9 @@ public class AnalyzerUtil {
                 //all modules in the same source dir
                 Set<Module> visited = new HashSet<Module>();
                 for (ModuleImport mi: module.getImports()) {
-                    Module m = mi.getModule();
-                    if (findModuleInTransitiveImports(m, mod, 
-                            visited)) {
+                    if (findModuleInTransitiveImports(
+                            mi.getModule(), 
+                            mod, visited)) {
                         return mod; 
                     }
                 }
