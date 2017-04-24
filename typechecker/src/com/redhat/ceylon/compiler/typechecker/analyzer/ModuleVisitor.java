@@ -305,24 +305,30 @@ public class ModuleVisitor extends Visitor {
                                 pkg.getNameAsString() + "'", 
                                 8000);
                 }
+                
+                Tree.AnnotationList al = 
+                        that.getAnnotationList();
+                
                 if (!completeOnlyAST) {
-                    Tree.AnnotationList al = 
-                            that.getAnnotationList();
                     pkg.setShared(hasAnnotation(al, "shared", u));
                     pkg.getAnnotations().clear();
                     buildAnnotations(al, pkg.getAnnotations());
-                    
-                    if (hasAnnotation(al, "restricted", u)) {
-                        Tree.Annotation ann = getAnnotation(al, "restricted", u);
-                        int len = getAnnotationArgumentCount(ann);
-                        List<String> modules = new ArrayList<String>(len);
-                        for (int i=0; i<len; i++) {
-                            setRestrictionArgument(ann, i, u);
-                            String arg = getAnnotationArgument(ann, i, u);
-                            if (arg!=null) {
-                                modules.add(arg);
-                            }
+                }
+                
+            
+                if (hasAnnotation(al, "restricted", u)) {
+                    Tree.Annotation ann = getAnnotation(al, "restricted", u);
+                    int len = getAnnotationArgumentCount(ann);
+                    List<String> modules = new ArrayList<String>(len);
+                    for (int i=0; i<len; i++) {
+                        setRestrictionArgument(ann, i, u);
+                        String arg = getAnnotationArgument(ann, i, u);
+                        if (arg!=null) {
+                            modules.add(arg);
                         }
+                    }
+                    
+                    if (!completeOnlyAST) {
                         if (modules.isEmpty()) {
                             pkg.setShared(false);
                         }
@@ -331,6 +337,7 @@ public class ModuleVisitor extends Visitor {
                         }
                     }
                 }
+
             }
         }
     }
