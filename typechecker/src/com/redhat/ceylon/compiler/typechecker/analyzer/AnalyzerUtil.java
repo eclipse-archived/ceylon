@@ -76,6 +76,33 @@ public class AnalyzerUtil {
     
     static final List<Type> NO_TYPE_ARGS = emptyList();
     
+    private static Declaration getMemberDefinedByThisType(
+            TypeDeclaration td, String name, 
+            List<Type> signature, boolean variadic, 
+            Scope scope) {
+        //TODO: this doesn't do the right thing for outer.x
+        ClassOrInterface cci = 
+                getContainingClassOrInterface(scope);
+        if (cci!=null) { 
+            if (!(td instanceof NothingType) 
+                    && td.inherits(cci)) {
+                //just in case the current class is a 
+                //superclass of the receiver type, and
+                //has a private member with the given
+                //name, check the current class
+                Declaration direct = 
+                        cci.getDirectMember(name, 
+                                signature, variadic);
+                if (direct!=null) {
+                    //ignore it if shared, since it
+                    //might be refined by the subtype
+                    return direct.isShared() ? null : direct;
+                }
+            }
+        }
+        return null;
+    }
+    
     private static Declaration getMemberInheritedFromOuterTypes(
             TypeDeclaration td, String name, 
             List<Type> signature, boolean variadic, 
@@ -155,7 +182,7 @@ public class AnalyzerUtil {
             Unit unit, Scope scope) {
 
         Declaration member = 
-                getMemberInheritedFromOuterTypes(td, name, 
+                getMemberDefinedByThisType(td, name, 
                         signature, variadic, scope);
         if (member==null) {
             member = td.getImportedMember(scope, name, 
@@ -164,6 +191,11 @@ public class AnalyzerUtil {
         if (member==null) {
             member = td.getMember(name, unit, 
                     signature, variadic);
+        }
+        if (member==null) {
+            member = 
+                    getMemberInheritedFromOuterTypes(td, name, 
+                            signature, variadic, scope);
         }
         if (member==null 
                 && transformNameForJava(td, scope, name, false)) {
@@ -184,7 +216,7 @@ public class AnalyzerUtil {
             Unit unit, Scope scope) {
         
         Declaration member = 
-                getMemberInheritedFromOuterTypes(td, name, 
+                getMemberDefinedByThisType(td, name, 
                         signature, variadic, scope);
         if (member==null) {
             member = td.getImportedMember(scope, name, 
@@ -193,6 +225,11 @@ public class AnalyzerUtil {
         if (member==null) {
             member = td.getMember(name, unit, 
                     signature, variadic);
+        }
+        if (member==null) {
+            member = 
+                    getMemberInheritedFromOuterTypes(td, name, 
+                            signature, variadic, scope);
         }
         if (member==null 
                 && transformNameForJava(td, scope, name, true)) {
