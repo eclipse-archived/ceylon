@@ -4399,6 +4399,10 @@ public class Type extends Reference {
         return getDeclaration().isObject();
     }
     
+    public boolean isIdentifiable() {
+        return getDeclaration().isIdentifiable();
+    }
+    
     public boolean isNull() {
         return getDeclaration().isNull();
     }

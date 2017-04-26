@@ -1744,11 +1744,12 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         for (Type sat : type.getSatisfiedTypes()) {
-            Interface iface = (Interface)sat.getDeclaration();
-            
-            if (iface.getType().isExactly(typeFact().getIdentifiableDeclaration().getType())) {
+            if (sat.isIdentifiable()) {
                 return;
             }
+            
+            Interface iface = (Interface)sat.getDeclaration();
+            
             // recurse up this satisfies interface
             walkSatisfiedInterfacesInternal(model, sat, via, visitor, satisfiedInterfaces);
             
@@ -2508,8 +2509,7 @@ public class ClassTransformer extends AbstractTransformer {
             Type satisfiedType, Set<Interface> satisfiedInterfaces) {
         satisfiedType = satisfiedType.resolveAliases();
         Interface iface = (Interface)satisfiedType.getDeclaration();
-        if (satisfiedInterfaces.contains(iface)
-                || iface.getType().isExactly(typeFact().getIdentifiableDeclaration().getType())) {
+        if (satisfiedInterfaces.contains(iface) || iface.isIdentifiable()) {
             return;
         }
      
@@ -4178,8 +4178,7 @@ public class ClassTransformer extends AbstractTransformer {
         List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
         if (!Decl.withinInterface(model)) {
             // Transform to the class
-            boolean refinedResultType = !model.getType().isExactly(
-                    ((TypedDeclaration)model.getRefinedDeclaration()).getType());
+            boolean refinedResultType = !model.equals(model.getRefinedDeclaration());
             result = transformMethod(def, 
                     true,
                     true,

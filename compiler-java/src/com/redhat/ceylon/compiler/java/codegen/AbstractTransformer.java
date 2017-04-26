@@ -3951,8 +3951,8 @@ public abstract class AbstractTransformer implements Transformation {
         } else if (t.isCharacter()) {
             return makeQuotedQualIdentFromString("java.lang.Integer");
         } else if (t.isBoolean()
-                || typeFact().getBooleanTrueDeclaration().getType().isExactly(t)
-                || typeFact().getBooleanFalseDeclaration().getType().isExactly(t)) {
+                || t.getDeclaration().isTrueValue()
+                || t.getDeclaration().isFalseValue()) {
             return make().Type(syms().booleanObjectType);
         } else {
             Type elementType = t.getTypeArgumentList().get(0);
