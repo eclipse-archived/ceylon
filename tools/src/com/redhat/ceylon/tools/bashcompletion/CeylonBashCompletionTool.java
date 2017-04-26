@@ -21,6 +21,8 @@ package com.redhat.ceylon.tools.bashcompletion;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.Flushable;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -53,7 +55,7 @@ value="A tool which provides completion suggestions for the Bash shell.")
 		"  of `java.lang.Enum`.")
 public class CeylonBashCompletionTool implements Tool {
 
-    public static class CompletionResults {
+    public class CompletionResults {
         
         private List<String> results = new ArrayList<String>();
         private String prefix = "";
@@ -75,7 +77,7 @@ public class CeylonBashCompletionTool implements Tool {
             return false;
         }
         
-        public void emitCompletions() {
+        public void emitCompletions() throws IOException {
             boolean appendSpace = results.size() == 1;
             for (String result : results) {
                 String completion;
@@ -88,9 +90,12 @@ public class CeylonBashCompletionTool implements Tool {
                     // If there's only one result, append a space
                     completion = completion + " ";
                 }
-                System.out.println(completion);
+                out.append(completion);
+                out.append(System.lineSeparator());
             }
-            System.out.flush();
+            if (out instanceof Flushable) {
+                ((Flushable)out).flush();
+            }
         }
         
         private String escape(String completion) {
@@ -101,6 +106,7 @@ public class CeylonBashCompletionTool implements Tool {
     private int cword = -1;
     private List<String> arguments;
     private ToolLoader toolLoader;
+    private Appendable out = System.out;
     
     @OptionArgument
     @Description("The index in the `<arguments>` of the argument being " +
@@ -296,5 +302,8 @@ public class CeylonBashCompletionTool implements Tool {
     }
     
     
+    public void setOut(Appendable out) {
+        this.out  = out;
+    }
 
 }

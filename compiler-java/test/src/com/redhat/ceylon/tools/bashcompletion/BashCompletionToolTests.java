@@ -19,12 +19,9 @@
  */
 package com.redhat.ceylon.tools.bashcompletion;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.Arrays;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.tool.ToolFactory;
@@ -36,8 +33,6 @@ import com.redhat.ceylon.tools.TestingToolLoader;
 public class BashCompletionToolTests {
     protected final ToolFactory pluginFactory = new ToolFactory();
     protected final ToolLoader pluginLoader = new TestingToolLoader(null, false);
-    private PrintStream savedOut;
-    private ByteArrayOutputStream out;
     
     Iterable<String> args(String... args) {
         return Arrays.asList(args);
@@ -45,16 +40,6 @@ public class BashCompletionToolTests {
     
     private CeylonTool getMainTool() {
         return pluginLoader.instance("", null);
-    }
-    
-    public void redirectStdout() {
-        this.savedOut = System.out;
-        out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-    }
-    
-    public void restoreStdout() {
-        System.setOut(this.savedOut);
     }
     
     @Test
@@ -72,15 +57,12 @@ public class BashCompletionToolTests {
                         "--",
                         "/path/to/ceylon",
                         ""));
-        try {
-            redirectStdout();
-            tool.run();
-        } finally {
-           restoreStdout();
-        } 
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
         Assert.assertEquals(
                 "example \n" +
-        		"", new String(out.toByteArray()).replace("\r\n", "\n"));
+        		"", b.toString().replace("\r\n", "\n"));
     }
     
     @Test
@@ -92,13 +74,10 @@ public class BashCompletionToolTests {
                         "--",
                         "/path/to/ceylon",
                         "e"));
-        try {
-            redirectStdout();
-            tool.run();
-        } finally {
-           restoreStdout();
-        } 
-        Assert.assertEquals("example \n", new String(out.toByteArray()).replace("\r\n", "\n"));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        Assert.assertEquals("example \n", b.toString().replace("\r\n", "\n"));
     }
     
     @Test
@@ -111,12 +90,9 @@ public class BashCompletionToolTests {
                         "/path/to/ceylon",
                         "example",
                         "--"));
-        try {
-            redirectStdout();
-            tool.run();
-        } finally {
-           restoreStdout();
-        } 
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
         Assert.assertEquals(
                 "--file\\=\n" +
                 "--list-option\\=\n"+
@@ -124,7 +100,7 @@ public class BashCompletionToolTests {
                 "--pure-option\n"+
                 "--short-name\\=\n"+
                 "--thread-state\\=\n"+
-                "", new String(out.toByteArray()).replace("\r\n", "\n"));
+                "", b.toString().replace("\r\n", "\n"));
     }
     
     @Test
@@ -137,16 +113,13 @@ public class BashCompletionToolTests {
                         "/path/to/ceylon",
                         "example",
                         "--l"));
-        try {
-            redirectStdout();
-            tool.run();
-        } finally {
-           restoreStdout();
-        } 
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
         Assert.assertEquals(
                 "--list-option\\=\n" +
                 "--long-name\n" +
-                "", new String(out.toByteArray()).replace("\r\n", "\n"));
+                "", b.toString().replace("\r\n", "\n"));
     }
     
     @Test
@@ -159,13 +132,10 @@ public class BashCompletionToolTests {
                         "/path/to/ceylon",
                         "example",
                         "--file="));
-        try {
-            redirectStdout();
-            tool.run();
-        } finally {
-           restoreStdout();
-        } 
-        String files = new String(out.toByteArray()).replace("\r\n", "\n");
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        String files = b.toString().replace("\r\n", "\n");
         Assert.assertTrue(files, files.contains("--file=src/\n"));
         Assert.assertTrue(files, files.contains("--file=test/\n"));
     }
@@ -180,13 +150,10 @@ public class BashCompletionToolTests {
                         "/path/to/ceylon",
                         "example",
                         "--file=s"));
-        try {
-            redirectStdout();
-            tool.run();
-        } finally {
-           restoreStdout();
-        } 
-        String files = new String(out.toByteArray()).replace("\r\n", "\n");
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        String files = b.toString().replace("\r\n", "\n");
         Assert.assertTrue(files, files.contains("--file=src/"));
         Assert.assertFalse(files, files.contains("--file=test/ \n"));
     }
@@ -201,13 +168,10 @@ public class BashCompletionToolTests {
                         "/path/to/ceylon",
                         "example",
                         "--thread-state="));
-        try {
-            redirectStdout();
-            tool.run();
-        } finally {
-           restoreStdout();
-        } 
-        String files = new String(out.toByteArray()).replace("\r\n", "\n");
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        String files = b.toString().replace("\r\n", "\n");
         Assert.assertTrue(files, files.contains("--thread-state=NEW\n"));
         Assert.assertTrue(files, files.contains("--thread-state=BLOCKED\n"));
         Assert.assertTrue(files, files.contains("--thread-state=RUNNABLE\n"));
@@ -223,13 +187,10 @@ public class BashCompletionToolTests {
                         "/path/to/ceylon",
                         "example",
                         "--thread-state=N"));
-        try {
-            redirectStdout();
-            tool.run();
-        } finally {
-           restoreStdout();
-        } 
-        String files = new String(out.toByteArray()).replace("\r\n", "\n");
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        String files = b.toString().replace("\r\n", "\n");
         Assert.assertTrue(files, files.contains("--thread-state=NEW \n"));
         Assert.assertFalse(files, files.contains("--thread-state=BLOCKED \n"));
         Assert.assertFalse(files, files.contains("--thread-state=RUNNABLE \n"));
