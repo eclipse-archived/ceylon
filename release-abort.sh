@@ -20,3 +20,4 @@ git push origin :version-$CEYLON_RELEASE_VERSION
 git push origin :$CEYLON_RELEASE_VERSION
 git reset --hard $CEYLON_BRANCHING_TAG
 
+cd ../ceylon
