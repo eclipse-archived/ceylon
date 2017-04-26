@@ -243,6 +243,62 @@
             <with module="com.redhat.ceylon.typechecker" version="${uv}" />
         </replace>
 
+        <!-- used for auto-upgrading at runtime for 1.3.3 -->
+        <replace module="ceylon.bootstrap" version="1.3.3">
+            <with module="ceylon.bootstrap" version="${uv}" />
+        </replace>
+        <replace module="ceylon.language" version="1.3.3">
+            <with module="ceylon.language" version="${uv}" />
+        </replace>
+        <replace module="ceylon.runtime" version="1.3.3">
+            <with module="ceylon.runtime" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.cli" version="1.3.3">
+            <with module="com.redhat.ceylon.cli" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.common" version="1.3.3">
+            <with module="com.redhat.ceylon.common" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.compiler.java" version="1.3.3">
+            <with module="com.redhat.ceylon.compiler.java" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.compiler.js" version="1.3.3">
+            <with module="com.redhat.ceylon.compiler.js" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.java.main" version="1.3.3">
+            <with module="com.redhat.ceylon.java.main" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.langtools.classfile" version="1.3.3">
+            <with module="com.redhat.ceylon.langtools.classfile" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.model" version="1.3.3">
+            <with module="com.redhat.ceylon.model" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.module-loader" version="1.3.3">
+            <with module="com.redhat.ceylon.module-loader" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.module-resolver" version="1.3.3">
+            <with module="com.redhat.ceylon.module-resolver" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.module-resolver-aether" version="1.3.3">
+            <with module="com.redhat.ceylon.module-resolver-aether" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.module-resolver-javascript" version="1.3.3">
+            <with module="com.redhat.ceylon.module-resolver-javascript" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.module-resolver-webdav" version="1.3.3">
+            <with module="com.redhat.ceylon.module-resolver-webdav" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.tool.provider" version="1.3.3">
+            <with module="com.redhat.ceylon.tool.provider" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.tools" version="1.3.3">
+            <with module="com.redhat.ceylon.tools" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.typechecker" version="1.3.3">
+            <with module="com.redhat.ceylon.typechecker" version="${uv}" />
+        </replace>
+
         <!-- @NEW_VERSION@ -->
     </dist-upgrade>
 </dist-overrides>

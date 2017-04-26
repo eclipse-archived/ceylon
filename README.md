@@ -2,7 +2,7 @@
 
 # Ceylon
 
-This is the 1.3.3-SNAPSHOT _"Contents May Differ REL"_ release of the Ceylon 
+This is the 1.3.4-SNAPSHOT _"Contents May Differ NEW"_ release of the Ceylon 
 command line tools. This is a production version of the platform.
 
 Ceylon is a modern, modular, statically typed programming language 
