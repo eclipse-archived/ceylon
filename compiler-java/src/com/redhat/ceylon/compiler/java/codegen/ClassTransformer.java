@@ -4178,14 +4178,15 @@ public class ClassTransformer extends AbstractTransformer {
         List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
         if (!Decl.withinInterface(model)) {
             // Transform to the class
-            boolean refinedResultType = !model.equals(model.getRefinedDeclaration());
+            TypedDeclaration rd = (TypedDeclaration) model.getRefinedDeclaration();
+            boolean refinedResultType = !model.getType().isExactly(rd.getType());
             result = transformMethod(def, 
                     true,
                     true,
                     true,
                     transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
-                    && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
+                    && !Decl.withinInterface(rd)? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
                     !Strategy.defaultParameterMethodOnSelf(model)
                     && !Strategy.defaultParameterMethodStatic(model));
         } else {// Is within interface
