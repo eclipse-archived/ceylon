@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOG_FILE=release.log
+LOG_FILE=$PWD/release.log
 
 CEYLON_RELEASE_VERSION_MAJOR=1
 CEYLON_RELEASE_VERSION_MINOR=3
