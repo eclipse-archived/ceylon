@@ -15,7 +15,7 @@ log "Building distrib deb"
 docker pull ceylon/ceylon-package-deb 2>&1 >> $LOG_FILE || fail "Docker pull"
 docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-package-deb $CEYLON_RELEASE_VERSION 2>&1 >> $LOG_FILE || fail "Docker build deb"
 
-log "Publishing distrib zip"
+log "Publishing distrib deb"
 scp /tmp/ceylon/ceylon-${CEYLON_RELEASE_VERSION}_${CEYLON_RELEASE_VERSION}-0_all.deb ceylon-lang.org:/var/www/downloads.ceylonlang/cli/ 2>&1 >> $LOG_FILE || fail "Uploading distrib deb"
 
 log "Building distrib repo"
