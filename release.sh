@@ -17,4 +17,6 @@ log "Starting release"
 #./release-dist-zip.sh || exit 1
 #
 #./release-dist-deb.sh || exit 1
-./release-dist-rpm.sh || exit 1
+#./release-dist-rpm.sh || exit 1
+#
+#./release-sdk-herd.sh || exit 1
