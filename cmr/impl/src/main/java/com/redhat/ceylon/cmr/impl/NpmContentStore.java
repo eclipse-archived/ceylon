@@ -79,12 +79,13 @@ public class NpmContentStore extends AbstractContentStore {
 
     public OpenNode find(Node parent, String child) {
         DefaultNode node = null;
-        if (hasContent(child) == false) {
+        if (!hasContent(child)) {
             node = new DefaultNode(child);
             node.setContentMarker();
             return node;
         } else {
-            if (ArtifactContext.getSuffixFromFilename(child).equals(ArtifactContext.JS)) {
+            if (ArtifactContext.getSuffixFromFilename(child).equals(ArtifactContext.JS)
+                    && child.equals(ArtifactContext.JS)) {
                 child = getTrueArtifactName(parent);
             }
             for (FileContentStore store : stores) {
@@ -161,7 +162,9 @@ public class NpmContentStore extends AbstractContentStore {
             String name = ac.getName();
             String version = ac.getVersion();
             String module = version.isEmpty() ? name : name + "@" + version;
-            if (log != null) log.debug("installing npm module " + module + " in " + out);
+            if (log != null) {
+                log.debug("installing npm module " + module + " in " + out);
+            }
             String npmCmd = npmCommand != null ? npmCommand : System.getProperty(Constants.PROP_CEYLON_EXTCMD_NPM, "npm");
             ProcessBuilder pb = new ProcessBuilder()
                     .command(npmCmd, "install", "--silent", "--no-bin-links", module)
