@@ -2221,9 +2221,12 @@ public class GenerateJsVisitor extends Visitor {
 
     int boxUnboxStart(final Tree.Term fromTerm, boolean toNative) {
         // Box the value
-        final boolean fromNative = TypeUtils.isNativeJs(fromTerm);
         final Type fromType = fromTerm.getTypeModel();
-        if (fromNative != toNative || (fromType != null && fromType.isCallable())) {
+        if (fromType == null) {
+            return 0;
+        }
+        final boolean fromNative = TypeUtils.isNativeJs(fromTerm);
+        if (fromNative != toNative || fromType.isCallable()) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
                 if (fromType.isInteger() || fromType.isFloat()) {
