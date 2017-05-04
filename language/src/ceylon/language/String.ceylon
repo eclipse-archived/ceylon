@@ -94,6 +94,7 @@ shared native final class String
      representation of 
      \{LATIN CAPITAL LETTER I WITH DOT ABOVE} is two 
      characters wide."
+    see (`value String.uppercased`)
     shared native String lowercased;
     
     "This string, with all characters in uppercase.
@@ -109,6 +110,7 @@ shared native final class String
      multiple characters, for example the uppercase 
      representation of \{LATIN SMALL LETTER SHARP S} is 
      SS."
+    see (`value String.lowercased`)
     shared native String uppercased;
     
     "Split the string into tokens, using the given 

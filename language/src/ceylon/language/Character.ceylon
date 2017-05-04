@@ -48,19 +48,19 @@ shared final native class Character(Character character)
      for example \{LATIN CAPITAL LETTER I WITH DOT ABOVE}. 
      Thus,
      
-     - `'\{LATIN CAPITAL LETTER I WITH DOT ABOVE}'.uppercased`
+     - `'\{LATIN CAPITAL LETTER I WITH DOT ABOVE}'.lowercased`
        evaluates to `'i'`, whereas
-     - `\"\{LATIN CAPITAL LETTER I WITH DOT ABOVE}\".uppercased`
+     - `\"\{LATIN CAPITAL LETTER I WITH DOT ABOVE}\".lowercased`
        evaluates, more correctly, to the string 
        `\"i\{COMBINING DOT ABOVE}\"`.
      
      Therefore, for most purposes, it is better to use 
      `char.string.lowercased` instead of `char.lowercased`."
-    see (`value String.lowercased`)
+    see (`value String.lowercased`, 
+         `value Character.uppercased`)
     shared native Character lowercased;
     
-    "The uppercase representation of this character, in the
-     [[system]] default locale.
+    "The uppercase representation of this character.
      
      Conversion of lowercase characters to uppercase is
      performed according to a locale-independent mapping
@@ -80,7 +80,8 @@ shared final native class Character(Character character)
      
      Therefore, for most purposes, it is better to use 
      `char.string.uppercased` instead of `char.uppercased`."
-    see (`value String.uppercased`)
+    see (`value String.uppercased`, 
+         `value Character.lowercased`)
     shared native Character uppercased;
     
     "The title case representation of this character."
