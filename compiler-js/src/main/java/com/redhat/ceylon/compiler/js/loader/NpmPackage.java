@@ -39,7 +39,7 @@ public class NpmPackage extends LazyPackage {
                 //It looks like this needs to be a special class that can return any member
                 //in a fashion similar to this package
                 d = new Class();
-                ((Class)d).setDynamic(true);
+                d.setDynamic(true);
                 ParameterList plist = new ParameterList();
                 plist.setNamedParametersSupported(true);
                 plist.setFirst(true);
@@ -49,6 +49,8 @@ public class NpmPackage extends LazyPackage {
                 p0.setDeclaredAnything(true);
                 Value v = new Value();
                 v.setType(getUnit().getUnknownType());
+                v.setInitializerParameter(p0);
+                v.setContainer((Class)d);
                 p0.setModel(v);
                 plist.getParameters().add(p0);
                 //Add a default constructor with jsNew set
@@ -73,7 +75,7 @@ public class NpmPackage extends LazyPackage {
                 ((Class)d).addMember(cf);
             } else {
                 d = new Function();
-                ((Function)d).setDynamic(true);
+                d.setDynamic(true);
                 ((Function)d).setDynamicallyTyped(true);
             }
             d.setName(name);
