@@ -2230,7 +2230,7 @@ if (is Usable tx) { ... }</programlisting>
             
             <synopsis>Constant: BaseExpression | ConstructorExpression | LiteralConstant | TupleConstant</synopsis>
             <synopsis>LiteralConstant: "-"? IntegerLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
-            <synopsis>TupleConstant: "[" Constant (", " Constant) "]"</synopsis>
+            <synopsis>TupleConstant: "[" (Constant (", " Constant))? "]"</synopsis>
             
             <para>Every case condition has a type:</para>
             
@@ -2256,8 +2256,8 @@ if (is Usable tx) { ... }</programlisting>
                             is <literal>Tuple&lt;T,F,R&gt;</literal>, where <literal>F</literal> 
                             is the type of its first element pattern, <literal>R</literal> is
                             the type of the tuple pattern formed by removing its first element
-                            pattern, and <literal>T</literal> the union of the types of all its 
-                            element patterns,</para>
+                            pattern, and <literal>T</literal> is the union of the types of all 
+                            its element patterns,</para>
                         </listitem>
                         <listitem>
                             <para>the type of an entry pattern is <literal>K->V</literal> 
