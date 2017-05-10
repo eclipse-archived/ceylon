@@ -2180,48 +2180,95 @@ if (is Usable tx) { ... }</programlisting>
             <title>Case conditions</title>
             
             <para>The branches of a <literal>switch</literal> conditional each belong to a 
-            <emphasis>case condition</emphasis>. There are two kinds of case condition:</para> 
+            <emphasis>case condition</emphasis>. There are three kinds of case condition:</para> 
             
             <itemizedlist>
                 <listitem>
-                    <para>a <emphasis>value case</emphasis>&mdash;a list of string literals, 
-                    character literals, integer literals, negated integer literals, value 
-                    references to value constructors, and/or value references to anonymous 
-                    classes, or</para>
+                    <para>a <emphasis>value case</emphasis>&mdash;a list of constant values,</para>
                 </listitem>
                 <listitem>
                     <para>a <emphasis>type case</emphasis>&mdash;an assignability condition 
-                    of form <literal>is V</literal> for some type <literal>V</literal>.</para>
+                    of form <literal>is V</literal> for some type <literal>V</literal>, and</para>
+                </listitem>
+                <listitem>
+                    <para>a <emphasis>pattern case</emphasis>&mdash;a tuple or entry pattern,
+                    as defined above in <xref linkend="patterns"/>, where all pattern variables
+                    declare explicit types.</para>
                 </listitem>
             </itemizedlist>
+                        
+            <synopsis>CaseCondition: "(" (ValueCase | TypeCase | PatternCase) ")"</synopsis>
+            <synopsis>ValueCase: Constant ("|" Constant)*</synopsis>
+            <synopsis>TypeCase: "is" Type</synopsis>
+            <synopsis>PatternCase: TuplePattern | EntryPattern</synopsis>
             
-            <para>For a value case, each value reference must be to:</para>
+            <para>A <emphasis>constant value</emphasis> is:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>a toplevel anonymous class, or</para>
+                    <para>a value reference, as defined in <xref linkend="valuereferences"/>,
+                    to</para>
+		            <itemizedlist>
+		                <listitem>
+		                    <para>a toplevel anonymous class, or</para>
+		                </listitem>
+		                <listitem>
+		                    <para>a value constructor of a toplevel class that is a subtype of 
+		                    <literal>Identifiable</literal>,</para>
+		                </listitem>
+		            </itemizedlist>
                 </listitem>
                 <listitem>
-                    <para>a value constructor of a toplevel class that is a subtype of 
-                    <literal>Identifiable</literal>.</para>
+                    <para>a string literal, character literal, integer literal, or negated 
+                    integer literal, or</para>
+                </listitem>
+                <listitem>
+                    <para>a tuple enumeration, as defined in <xref linkend="enumeration"/>, 
+                    of constant values.</para>
                 </listitem>
             </itemizedlist>
             
-            <synopsis>CaseCondition: "(" (ValueCase | TypeCase) ")"</synopsis>
-            <synopsis>ValueCase: CaseValue ("|" CaseValue)*</synopsis>
-            <synopsis>TypeCase: "is" Type</synopsis>
-            <synopsis>CaseValue: LiteralCase | BaseExpression | ConstructorExpression</synopsis>
-            <synopsis>LiteralCase: "-"? IntegerLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
+            <synopsis>Constant: BaseExpression | ConstructorExpression | LiteralConstant | TupleConstant</synopsis>
+            <synopsis>LiteralConstant: "-"? IntegerLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
+            <synopsis>TupleConstant: "[" Constant (", " Constant) "]"</synopsis>
             
             <para>Every case condition has a type:</para>
             
             <itemizedlist>
                 <listitem>
-                    <para>for a value case, the type is the union of the types of the values, 
-                    and</para>
+                    <para>for a value case, the type is the union of the types of the values,
+                    </para>
                 </listitem>
                 <listitem>
-                    <para>for a type case, the type is the specified type.</para>
+                    <para>for a type case, the type is the specified type, and</para>
+                </listitem>
+                <listitem>
+                    <para>for a pattern case, the type is formed from the explicit types
+                    declared by the pattern variables:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para>the type of a tuple pattern with one element pattern is 
+                            <literal>[T]</literal>, where <literal>T</literal> is the type
+                            of its element pattern,</para>
+                        </listitem>
+                        <listitem>
+                            <para>the type of a tuple pattern with more than one element pattern
+                            is <literal>Tuple&lt;T,F,R&gt;</literal>, where <literal>F</literal> 
+                            is the type of its first element pattern, <literal>R</literal> is
+                            the type of the tuple pattern formed by removing its first element
+                            pattern, and <literal>T</literal> the union of the types of all its 
+                            element patterns,</para>
+                        </listitem>
+                        <listitem>
+                            <para>the type of an entry pattern is <literal>K->V</literal> 
+                            where <literal>K</literal> is the type of its key pattern, and
+                            <literal>K</literal> is the type of its item pattern, and</para>
+                        </listitem>
+                        <listitem>
+                            <para>the type of a pattern variable is its explicitly declared
+                            type.</para>
+                        </listitem>
+                    </itemizedlist>
                 </listitem>
             </itemizedlist>
             
