@@ -157,3 +157,21 @@ shared void nothings() {
         //value xx = x;
     }
 }
+
+void syntax1() {
+    value seq = {""->[1, 2]};
+    for (value str -> [value x, value y] in seq) {}
+    value value str -> [value x, value y] = seq.first;
+    value seq2 = {[1,2,3]};
+    for ([value a, value b, value c] in seq2) {}
+    value [value a, value b, value c] = seq2.first;
+}
+
+void syntax2() {
+    value seq = {""->[1, 2]};
+    for (str -> [x, y] in seq) {}
+    value str -> [x, y] = seq.first;
+    value seq2 = {[1,2,3]};
+    for ([a, b, c] in seq2) {}
+    value [a, b, c] = seq2.first;
+}
