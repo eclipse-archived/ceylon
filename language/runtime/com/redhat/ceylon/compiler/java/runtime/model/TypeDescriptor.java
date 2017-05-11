@@ -900,9 +900,9 @@ public abstract class TypeDescriptor
 
         @Override
         public boolean equals(Object obj) {
-            if(this == obj)
+            if (this == obj)
                 return true;
-            if(obj == null || obj instanceof Union == false)
+            if (obj == null || !(obj instanceof Union ))
                 return false;
             return super.equals((Union)obj);
         }
@@ -1003,9 +1003,9 @@ public abstract class TypeDescriptor
 
         @Override
         public boolean equals(Object obj) {
-            if(this == obj)
+            if (this == obj)
                 return true;
-            if(obj == null || obj instanceof Intersection == false)
+            if (obj == null || !(obj instanceof Intersection))
                 return false;
             return super.equals((Intersection)obj);
         }
