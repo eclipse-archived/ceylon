@@ -32,13 +32,13 @@ import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
-import ceylon.language.Callable;
 import ceylon.language.Empty;
 import ceylon.language.Iterable;
 import ceylon.language.Null;
 import ceylon.language.Resource;
 import ceylon.language.Sequential;
 import ceylon.language.Tuple;
+import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
 import ceylon.language.impl.BaseIterator;
@@ -229,6 +229,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
                     ClassOrInterface<? extends Service> service) {
         // TODO Don't we have something to wrap java iterables in the language module?
         class It extends BaseIterable<Service,Object> {
+            private static final long serialVersionUID = -5781842837386813638L;
             private final ServiceLoader<Service> sl;
             public It(ServiceLoader<Service> sl) {
                 super($reified$Service, Null.$TypeDescriptor$);
@@ -236,6 +237,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
             }
             public ceylon.language.Iterator<? extends Service> iterator() {
                 return new BaseIterator<Service>($reified$Service) {
+                    private static final long serialVersionUID = 6837239340643106746L;
                     java.util.Iterator<Service> it = sl.iterator();
                     @Override
                     public Object next() {
@@ -249,7 +251,11 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
         }
         
         java.lang.Class<Service> klass = (java.lang.Class)Metamodel.getJavaClass(((ClassOrInterfaceDeclarationImpl)service.getDeclaration()).declaration);
-        ServiceLoader<Service> moduleServices = ServiceLoader.<Service>load(klass, Metamodel.getJavaClass(this.declaration).getClassLoader());
+        ClassLoader classLoader = Metamodel.getClassLoader(this.declaration);
+        if (classLoader==null) {
+            return (Iterable<? extends Service, ? extends Object>) empty_.get_();
+        }
+        ServiceLoader<Service> moduleServices = ServiceLoader.<Service>load(klass, classLoader);
         ServiceLoader<Service> extensionServices = ServiceLoader.loadInstalled(klass);
         ceylon.language.Iterable<? extends Service,? extends Object> services = new It(moduleServices).<Service,Object>chain($reified$Service, Null.$TypeDescriptor$, new It(extensionServices));
         // now have to filter the services to return only those which satisfy 
@@ -257,6 +263,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
         return services.filter(new AbstractCallable<ceylon.language.Boolean>(ceylon.language.Boolean.$TypeDescriptor$, 
                 TypeDescriptor.klass(Tuple.class, $reified$Service, $reified$Service, Empty.$TypeDescriptor$), 
                 "Boolean(Service)", (short)-1) {
+            private static final long serialVersionUID = 2096737170221762201L;
             public ceylon.language.Boolean $call$(java.lang.Object arg0) {
                 Service service = (Service)arg0;
                 return ceylon.language.Boolean.instance(
