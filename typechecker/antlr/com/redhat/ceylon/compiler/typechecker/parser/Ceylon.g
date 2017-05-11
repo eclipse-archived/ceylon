@@ -607,16 +607,14 @@ tuplePattern returns [TuplePattern pattern]
     ;
 
 variadicPattern returns [Pattern pattern]
-    : (
-        (compilerAnnotations unionType? PRODUCT_OP) =>
-        variadicVariable
-        { VariablePattern vp = new VariablePattern(null);
-          vp.setVariable($variadicVariable.variable); 
-          $pattern = vp; }
-	    |
-        p=pattern
-        { $pattern = $p.pattern; }
-	    )
+    : (compilerAnnotations unionType? PRODUCT_OP) =>
+      variadicVariable
+      { VariablePattern vp = new VariablePattern(null);
+        vp.setVariable($variadicVariable.variable); 
+        $pattern = vp; }
+	|
+      p=pattern
+      { $pattern = $p.pattern; }
     ;
 
 variadicVariable returns [Variable variable]

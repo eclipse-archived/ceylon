@@ -378,16 +378,18 @@ public abstract class TypeDescriptor
 
         @Override
         public boolean containsNull() {
-            return klass==Null.class || klass == null_.class || klass==Anything.class;
+            return klass==Null.class 
+                || klass == null_.class 
+                || klass==Anything.class;
         }
 
         public TypeDescriptor getSequenceElement() {
-            if(klass == ceylon.language.Tuple.class ||
-                    klass == Sequence.class ||
-                    klass == Sequential.class || 
-                    klass == ceylon.language.Range.class)
+            if (klass == ceylon.language.Tuple.class ||
+                klass == Sequence.class ||
+                klass == Sequential.class || 
+                klass == ceylon.language.Range.class)
                 return typeArguments[0];
-            if(klass == Empty.class)
+            if (klass == Empty.class)
                 return NothingType;
             return null;
         }
@@ -943,8 +945,20 @@ public abstract class TypeDescriptor
         public java.lang.Class<?> getArrayElementClass() {
             java.lang.Class<?> result = null;
             for (TypeDescriptor td: members) {
-                if (td instanceof Nothing || 
-                    td instanceof Class && td.containsNull()) {
+                if (td instanceof Class) {
+                    Class c = (Class) td;
+                    if (c.klass==Anything.class ||
+                        c.klass==ceylon.language.Object.class ||
+                        c.klass==Basic.class ||
+                        c.klass==Identifiable.class) {
+                        return java.lang.Object.class;
+                    }
+                    if (c.klass==Null.class ||
+                        c.klass==null_.class) {
+                        continue;
+                    }
+                }
+                if (td instanceof Nothing) {
                     continue;
                 }
                 java.lang.Class<?> c = td.getArrayElementClass();

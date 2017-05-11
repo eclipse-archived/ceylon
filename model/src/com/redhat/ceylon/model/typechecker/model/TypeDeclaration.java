@@ -1137,6 +1137,10 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
     
+    public boolean isIdentifiable() {
+        return false;
+    }
+    
     public boolean isNull() {
         return false;
     }

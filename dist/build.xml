@@ -928,6 +928,7 @@ Use this when NOT doing a release!">
             <or>
                 <available file="/usr/bin/docbook2x-man" type="file" />
                 <available file="/usr/bin/db2x_docbook2man" type="file" />
+                <available file="/usr/bin/docbook2man" type="file" />
             </or>
             <then>
                 <exec executable="${ceylon.dist.dir}/bin/ceylon${batExt}" failonerror="yes">
@@ -965,14 +966,20 @@ Use this when NOT doing a release!">
         <basename property="toolfile.file" file="${toolfile}"/>
         <echo message="chdir in ${toolfile.dir} and docbookx2-man ${toolfile.file}"/>
         <if>
-            <or>
-                <available file="/usr/bin/docbook2x-man" type="file" />
-            </or>
+            <available file="/usr/bin/docbook2x-man" type="file" />
             <then>
                 <property name="exec" value="docbook2x-man" />
             </then>
             <else>
-                <property name="exec" value="db2x_docbook2man" />
+                <if>
+                    <available file="/usr/bin/db2x_docbook2man" />
+                    <then>
+                        <property name="exec" value="db2x_docbook2man" />
+                    </then>
+                    <else>
+                        <property name="exec" value="docbook2man" />
+                    </else>
+                </if>
             </else>
         </if>
         <exec executable="${exec}" dir="${toolfile.dir}" failonerror="yes">

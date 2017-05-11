@@ -90,7 +90,27 @@ public class NpmRepository extends AbstractRepository {
             store.setPathForRunningNpm(npmCommand);
         }
     }
-    
+
+    public Node findParent(ArtifactContext context) {
+        final List<String> tokens = getDefaultParentPath(context);
+        Node n = NodeUtils.getNode(getRoot(), tokens);
+        try {
+            if (n.getContent(File.class) == null) {
+                StringBuilder sb = new StringBuilder();
+                for (String t : tokens) {
+                    if (sb.length() > 0) {
+                        sb.append('.');
+                    }
+                    sb.append(t);
+                }
+                n = NodeUtils.getNode(getRoot(), Collections.singletonList(sb.toString()));
+            }
+        } catch (IOException ex) {
+            throw new RepositoryException(ex);
+        }
+        return n;
+    }
+
     private static class NpmArtifactResult extends AbstractArtifactResult {
         private RepositoryManager manager;
         private Node node;
@@ -134,7 +154,7 @@ public class NpmRepository extends AbstractRepository {
             if (infos == null || infos.getDependencies().isEmpty())
                 return Collections.emptyList();
 
-            final List<ArtifactResult> results = new ArrayList<ArtifactResult>();
+            final List<ArtifactResult> results = new ArrayList<>();
             for (ModuleDependencyInfo mi : getOrderedDependencies(infos)) {
                 results.add(new LazyArtifactResult(manager,
                         mi.getNamespace(),
@@ -148,7 +168,7 @@ public class NpmRepository extends AbstractRepository {
         }
 
         private List<ModuleDependencyInfo> getOrderedDependencies(ModuleInfo infos) {
-            List<ModuleDependencyInfo> dependencies = new ArrayList<ModuleDependencyInfo>(infos.getDependencies());
+            List<ModuleDependencyInfo> dependencies = new ArrayList<>(infos.getDependencies());
             for (int index = 0; index < dependencies.size(); index++) {
                 ModuleDependencyInfo dep = dependencies.get(index);
                 if ("ceylon.language".equals(dep.getName())) {

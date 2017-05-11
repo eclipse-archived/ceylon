@@ -79,13 +79,19 @@ public class NpmContentStore extends AbstractContentStore {
 
     public OpenNode find(Node parent, String child) {
         DefaultNode node = null;
-        if (hasContent(child) == false) {
+        if (!hasContent(child)) {
             node = new DefaultNode(child);
             node.setContentMarker();
             return node;
         } else {
             if (ArtifactContext.getSuffixFromFilename(child).equals(ArtifactContext.JS)) {
-                child = getTrueArtifactName(parent);
+                String x = getTrueArtifactName(parent);
+                if (x != null) {
+                    child = x;
+                    if (!child.endsWith(ArtifactContext.JS)) {
+                        child = child + ArtifactContext.JS;
+                    }
+                }
             }
             for (FileContentStore store : stores) {
                 OpenNode result = store.find(parent, child);
@@ -109,21 +115,24 @@ public class NpmContentStore extends AbstractContentStore {
     }
 
     private String getTrueArtifactName(Node parent) {
-        Node node = parent.getChild("package.json");
+        final Node node;
+        try {
+            node = parent.getChild("package.json");
+        } catch (NullPointerException ex) {
+            return null;
+        }
         try {
             File json = node.getContent(File.class);
             if (json.exists() && json.isFile() && json.canRead()) {
                 //Parse json, get "main", that's the file we need
-                try (FileReader reader = new FileReader(json)){
-                    Map<String,Object> descriptor = JavaScriptResolver.readNpmDescriptor(json);
-                    Object main = descriptor.get("main");
-                    if (main instanceof String) {
-                        return (String)main;
-                    } else if (main == null) {
-                        return "index.js";
-                    } else {
-                        throw new RepositoryException("unexpected value for 'main' in npm descriptor: " + json);
-                    }
+                Map<String,Object> descriptor = JavaScriptResolver.readNpmDescriptor(json);
+                Object main = descriptor.get("main");
+                if (main instanceof String) {
+                    return (String)main;
+                } else if (main == null) {
+                    return "index.js";
+                } else {
+                    throw new RepositoryException("unexpected value for 'main' in npm descriptor: " + json);
                 }
             } else {
                 throw new RepositoryException("npm descriptor not found: " + json);
@@ -161,7 +170,9 @@ public class NpmContentStore extends AbstractContentStore {
             String name = ac.getName();
             String version = ac.getVersion();
             String module = version.isEmpty() ? name : name + "@" + version;
-            if (log != null) log.debug("installing npm module " + module + " in " + out);
+            if (log != null) {
+                log.debug("installing npm module " + module + " in " + out);
+            }
             String npmCmd = npmCommand != null ? npmCommand : System.getProperty(Constants.PROP_CEYLON_EXTCMD_NPM, "npm");
             ProcessBuilder pb = new ProcessBuilder()
                     .command(npmCmd, "install", "--silent", "--no-bin-links", module)

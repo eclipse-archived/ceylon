@@ -1745,11 +1745,12 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         for (Type sat : type.getSatisfiedTypes()) {
-            Interface iface = (Interface)sat.getDeclaration();
-            
-            if (iface.getType().isExactly(typeFact().getIdentifiableDeclaration().getType())) {
+            if (sat.isIdentifiable()) {
                 return;
             }
+            
+            Interface iface = (Interface)sat.getDeclaration();
+            
             // recurse up this satisfies interface
             walkSatisfiedInterfacesInternal(model, sat, via, visitor, satisfiedInterfaces);
             
@@ -2509,8 +2510,7 @@ public class ClassTransformer extends AbstractTransformer {
             Type satisfiedType, Set<Interface> satisfiedInterfaces) {
         satisfiedType = satisfiedType.resolveAliases();
         Interface iface = (Interface)satisfiedType.getDeclaration();
-        if (satisfiedInterfaces.contains(iface)
-                || iface.getType().isExactly(typeFact().getIdentifiableDeclaration().getType())) {
+        if (satisfiedInterfaces.contains(iface) || iface.isIdentifiable()) {
             return;
         }
      
@@ -4181,15 +4181,15 @@ public class ClassTransformer extends AbstractTransformer {
         List<MethodDefinitionBuilder> result = List.<MethodDefinitionBuilder>nil();
         if (!Decl.withinInterface(model)) {
             // Transform to the class
-            boolean refinedResultType = !model.getType().isExactly(
-                    ((TypedDeclaration)model.getRefinedDeclaration()).getType());
+            TypedDeclaration rd = (TypedDeclaration) model.getRefinedDeclaration();
+            boolean refinedResultType = !model.getType().isExactly(rd.getType());
             result = transformMethod(def, 
                     true,
                     true,
                     true,
                     transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
-                    && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
+                    && !Decl.withinInterface(rd)? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
                     !Strategy.defaultParameterMethodOnSelf(model)
                     && !Strategy.defaultParameterMethodStatic(model));
         } else {// Is within interface
