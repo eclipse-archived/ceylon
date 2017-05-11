@@ -1806,6 +1806,7 @@ public class GenerateJsVisitor extends Visitor {
         if (errVisitor.hasErrors(that))return;
         List<Tree.StringLiteral> literals = that.getStringLiterals();
         List<Expression> exprs = that.getExpressions();
+        out("(");
         for (int i = 0; i < literals.size(); i++) {
             Tree.StringLiteral literal = literals.get(i);
             boolean skip = (i==0 || i==literals.size()-1) && literal.getText().isEmpty();
@@ -1820,7 +1821,7 @@ public class GenerateJsVisitor extends Visitor {
 //            }
             if (i < exprs.size()) {
                 if (!skip) {
-                    out("+(");
+                    out("+");
                 }
                 final Expression expr = exprs.get(i);
                 final Type t = expr.getTypeModel();
@@ -1830,11 +1831,9 @@ public class GenerateJsVisitor extends Visitor {
                 } else if (!t.isString()) {
                     out(".string");
                 }
-                if (!skip) {
-                    out(")");
-                }
             }
         }
+        out(")");
     }
 
     @Override
