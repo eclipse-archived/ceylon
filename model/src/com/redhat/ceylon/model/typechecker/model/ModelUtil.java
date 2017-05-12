@@ -396,14 +396,6 @@ public class ModelUtil {
     
     static boolean isBetterMatch(Declaration d, Declaration r, 
             List<Type> signature, boolean variadic) {
-        //always prefer a non-coerced member 
-        //over a coerced one
-        if (!d.isCoercionPoint() && r.isCoercionPoint()) {
-            return true;
-        }
-        if (d.isCoercionPoint() && !r.isCoercionPoint()) {
-            return false;
-        }
         if (d instanceof Functional && 
             r instanceof Functional) {
             Functional df = (Functional) d;
@@ -2289,7 +2281,6 @@ public class ModelUtil {
     private static void addIfBetterMatch(
             List<Declaration> results, Declaration d, 
             List<Type> signature, boolean variadic) {
-        boolean add = true;
         for (Iterator<Declaration> i = results.iterator(); 
                 i.hasNext();) {
             Declaration o = i.next();
@@ -2297,10 +2288,17 @@ public class ModelUtil {
                 i.remove();
             }
             else if (isBetterMatch(o, d, signature, variadic)) { //TODO: note asymmetry here resulting in nondeterminate behavior!
-                add = false;
+                return;
+            }
+            //prefer a non-coerced member over a coerced one
+            else if (!d.isCoercionPoint() && o.isCoercionPoint()) {
+                i.remove();
+            }
+            else if (!o.isCoercionPoint() && d.isCoercionPoint()) {
+                return;
             }
         }
-        if (add) results.add(d);
+        results.add(d);
     }
     
     public static Declaration findMatchingOverloadedClass(
