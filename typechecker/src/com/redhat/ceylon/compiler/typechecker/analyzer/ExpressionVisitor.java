@@ -4664,7 +4664,7 @@ public class ExpressionVisitor extends Visitor {
         Type paramType;
         if (isGeneric(paramModel)) {
             paramType = 
-                    ModelUtil.genericFunctionType(
+                    genericFunctionType(
                             (Generic) paramModel, 
                             arg.getScope(), //TODO!!! 
                             paramModel, paramRef, unit);
