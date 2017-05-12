@@ -1496,8 +1496,9 @@ public class AnalyzerUtil {
         else {
             String name = name(id);
             for (Parameter p: pl.getParameters()) {
-                if (p.getName()!=null &&
-                        p.getName().equals(name)) {
+                String paramName = p.getName();
+                if (paramName!=null &&
+                        paramName.equals(name)) {
                     return p;
                 }
             }
@@ -1515,9 +1516,9 @@ public class AnalyzerUtil {
                         .getFullType();
             if (t!=null) {
                 t = t.resolveAliases();
+                Unit unit = p.getDeclaration().getUnit();
                 if (!foundParameters.contains(p) &&
-                        p.getDeclaration().getUnit()
-                            .isIterableParameterType(t)) {
+                        unit.isIterableParameterType(t)) {
                     return p;
                 }
             }
