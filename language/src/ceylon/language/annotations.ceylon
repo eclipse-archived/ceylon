@@ -49,10 +49,10 @@ shared final sealed annotation class RestrictedAnnotation(
                   | ConstructorDeclaration
                   | Package> {}
 
-"Annotation to restrict the visibility of a declaration to a 
- given list of [[modules]]. If no modules are specified, a 
- `restricted` declaration is only visible within the package
- in which it is defined."
+"Annotation to restrict the visibility of a declaration or
+ package to a given list of [[modules]]. If no modules are 
+ specified, a `restricted` declaration is only visible 
+ within the package in which it is defined."
 since("1.3.3")
 shared annotation RestrictedAnnotation restricted(
     "The modules to which this declaration is visible."
