@@ -318,15 +318,20 @@ public abstract class Declaration
             return true; //getRestrictions()==null;
         }
         else if (scope instanceof Package) {
-            return withinRestrictions(((Package) scope).getModule());
+            return withinRestrictions((Package) scope);
         }
         else {
             return withinRestrictions(scope.getUnit());
         }
     }
-    
+
     public boolean withinRestrictions(Unit unit) {
-        return withinRestrictions(unit.getPackage().getModule());
+        return withinRestrictions(unit.getPackage());
+    }
+
+    private boolean withinRestrictions(Package scope) {
+        return getUnit().getPackage().equals(scope)
+            || withinRestrictions(scope.getModule());
     }
     
     private boolean withinRestrictions(Module module) {
