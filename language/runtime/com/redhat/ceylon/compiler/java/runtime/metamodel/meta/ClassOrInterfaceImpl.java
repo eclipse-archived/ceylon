@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
@@ -28,11 +28,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
-import ceylon.language.Anything;
 import ceylon.language.Array;
 import ceylon.language.AssertionError;
 import ceylon.language.Iterator;
@@ -41,11 +39,9 @@ import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.ClassDeclaration;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
 import ceylon.language.meta.declaration.FunctionDeclaration;
-import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
 import ceylon.language.meta.declaration.InterfaceDeclaration;
 import ceylon.language.meta.declaration.NestableDeclaration;
 import ceylon.language.meta.declaration.ValueDeclaration;
@@ -1237,8 +1233,8 @@ public abstract class ClassOrInterfaceImpl<Type>
                     break;
                 }
             }
-            if (value == null) {
-                throw new AssertionError("case " + caseClassType + " of "+ this + " not found");
+            if (value == null && !producedType.isNull()) {
+                throw new AssertionError("case " + caseClassType + " of " + this + " not found");
             }
             
             ret.set(count++, value);
