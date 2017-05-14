@@ -893,7 +893,8 @@ shared interface Iterable<out Element=Anything,
      according to the natural order of its elements."
     see (`function increasing`, `function decreasing`,
          `function byIncreasing`, `function byDecreasing`,
-         `function package.comparing`)
+         `function package.comparing`, 
+         `function package.sort`)
     shared default 
     [Element+] | []&Iterable<Element,Absent> sort(
         "The function comparing pairs of elements."
