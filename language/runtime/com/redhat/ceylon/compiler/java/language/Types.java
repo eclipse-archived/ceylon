@@ -169,6 +169,81 @@ public final class Types {
     }
     
     /**
+     * The <code>long[]</code> array underlying the 
+     * given Ceylon <code>Array&lt;Integer&gt;</code>.
+     */
+    @ceylon.language.StaticAnnotation$annotation$
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.common.NonNull
+    public static long[] longArray(
+            @Name("array")
+            @TypeInfo("ceylon.language::Array<ceylon.language::Integer>")
+            @com.redhat.ceylon.common.NonNull
+            final Array<ceylon.language.Integer> array) {
+        return (long[]) array.toArray();
+    }
+    
+    /**
+     * The <code>double[]</code> array underlying the 
+     * given Ceylon <code>Array&lt;Float&gt;</code>.
+     */
+    @ceylon.language.StaticAnnotation$annotation$
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.common.NonNull
+    public static double[] doubleArray(
+            @Name("array")
+            @TypeInfo("ceylon.language::Array<ceylon.language::Float>")
+            @com.redhat.ceylon.common.NonNull
+            final Array<ceylon.language.Float> array) {
+        return (double[]) array.toArray();
+    }
+    
+    /**
+     * The <code>byte[]</code> array underlying the 
+     * given Ceylon <code>Array&lt;Byte&gt;</code>.
+     */
+    @ceylon.language.StaticAnnotation$annotation$
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.common.NonNull
+    public static byte[] byteArray(
+            @Name("array")
+            @TypeInfo("ceylon.language::Array<ceylon.language::Byte>")
+            @com.redhat.ceylon.common.NonNull
+            final Array<ceylon.language.Byte> array) {
+        return (byte[]) array.toArray();
+    }
+    
+    /**
+     * The <code>boolean[]</code> array underlying the 
+     * given Ceylon <code>Array&lt;Boolean&gt;</code>.
+     */
+    @ceylon.language.StaticAnnotation$annotation$
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.common.NonNull
+    public static boolean[] booleanArray(
+            @Name("array")
+            @TypeInfo("ceylon.language::Array<ceylon.language::Boolean>")
+            @com.redhat.ceylon.common.NonNull
+            final Array<ceylon.language.Boolean> array) {
+        return (boolean[]) array.toArray();
+    }
+    
+    /**
+     * The <code>Object[]</code> array underlying the 
+     * given Ceylon <code>Array&lt;Anything&gt;</code>.
+     */
+    @ceylon.language.StaticAnnotation$annotation$
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.common.NonNull
+    public static Object[] objectArray(
+            @Name("array")
+            @TypeInfo("ceylon.language::Array<ceylon.language::Anything>")
+            @com.redhat.ceylon.common.NonNull
+            final Array<Object> array) {
+        return (Object[]) array.toArray();
+    }
+    
+    /**
      * The stack trace information for the given 
      * exception as a Ceylon <code>Array</code> of 
      * {@link StackTraceElement}s, or an empty array 
