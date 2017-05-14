@@ -742,7 +742,22 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(isJavaCharSequence(exprType) && expectedType.isExactly(typeFact().getStringDeclaration().getType())){
             return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
         }
-        if(isCeylonClassOrInterfaceModel(exprType) 
+        if (isCeylonArray(exprType) && isJavaArray(expectedType)) {
+            JCExpression result;
+            if(isOptional(nonSimpleExprType)){
+                Naming.SyntheticName varName = naming.temp();
+                JCExpression test = make().Binary(JCTree.Tag.NE, varName.makeIdent(), makeNull());
+                JCExpression convert = make().Apply(null, makeQualIdent(varName.makeIdent(), "toArray"), List.<JCTree.JCExpression>nil());
+                JCExpression cond = make().Conditional(test, convert, makeNull());
+                JCExpression typeExpr = makeJavaType(typeFact().getObjectType(), 0);
+                result = makeLetExpr(varName, null, typeExpr, ret, cond);
+            }else{
+                result = make().Apply(null, makeQualIdent(ret, "toArray"), List.<JCTree.JCExpression>nil());
+            }
+            JCExpression targetType = makeJavaType(expectedType, 0);
+            return make().TypeCast(targetType, result);
+        }
+        if(isCeylonClassOrInterfaceModel(exprType)
                 && isJavaClass(expectedType)
                 && !(ret instanceof JCTree.JCFieldAccess && ret.toString().endsWith(".class"))){
             // FIXME: perhaps cast as RAW?

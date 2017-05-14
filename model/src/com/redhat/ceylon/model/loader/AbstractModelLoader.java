@@ -3091,7 +3091,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                     && !setter.isDefaultAccess() && !value.mirror.isDefaultAccess())) {
                         VariableMirror setterParam = setter.getParameters().get(0);
                         Module module = ModelUtil.getModuleContainer(klass);
-                        Type paramType = obtainType(setterParam.getType(), setterParam, klass, module, VarianceLocation.INVARIANT,
+                        Type paramType = obtainType(setterParam.getType(), setterParam, klass, module,
                                 "setter '"+setter.getName()+"'", klass);
                         NullStatus nullPolicy = getUncheckedNullPolicy(isCeylon, setterParam.getType(), setterParam);
                         // if there's no annotation on the setter param, inherit annotations from getter
@@ -3266,10 +3266,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     && !setter.isDefaultAccess() && !getter.isDefaultAccess())) {
             Module module = ModelUtil.getModuleContainer(klass);
             VariableMirror setterParam = setter.getParameters().get(0);
-            Type paramType = obtainType(setterParam.getType(), setterParam, klass, module, VarianceLocation.INVARIANT,
+            Type paramType = obtainType(setterParam.getType(), setterParam, klass, module,
                     "setter '"+setter.getName()+"'", klass);
 
-            Type returnType = obtainType(getter.getReturnType(), getter, klass, module, VarianceLocation.INVARIANT,
+            Type returnType = obtainType(getter.getReturnType(), getter, klass, module, 
                     "getter '"+getter.getName()+"'", klass);
             // only add the setter if it has exactly the same type as the getter
             if(paramType.isExactly(returnType)){
@@ -3737,7 +3737,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // and its return type
         // do not log an additional error if we had one from checking if it was overriding
         if(type == null)
-            type = obtainType(methodMirror.getReturnType(), methodMirror, method, module, VarianceLocation.COVARIANT,
+            type = obtainType(methodMirror.getReturnType(), methodMirror, method, module,
                               "method '"+methodMirror.getName()+"'", klass);
         
         switch(getUncheckedNullPolicy(isCeylon, methodMirror.getReturnType(), methodMirror)){
@@ -3941,6 +3941,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return true;
         if(isFunctionCercion(type))
             return true;
+        if (type.getKind()==TypeKind.ARRAY)
+            switch (type.getComponentType().getKind()) {
+            case LONG:
+            case DOUBLE:
+            case BOOLEAN:
+            case BYTE:
+            case DECLARED:
+//            case TYPEVAR:
+                return true;
+            default: //ignore
+            }
         return false;
     }
     
@@ -3957,7 +3968,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setScope(scope);
         parameter.setName("that");
         value.setName("that");
-        value.setType(getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, decl, VarianceLocation.INVARIANT));
+        value.setType(getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, decl));
         parameter.setDeclaration((Declaration) decl);
         parameters.getParameters().add(parameter);
         decl.addMember(value);
@@ -3999,7 +4010,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             value.setEnumValue(true);
         
         Module module = ModelUtil.getModuleContainer(klass);
-        Type type = obtainType(fieldMirror.getType(), fieldMirror, klass, module, VarianceLocation.INVARIANT,
+        Type type = obtainType(fieldMirror.getType(), fieldMirror, klass, module,
                 "field '"+value.getName()+"'", klass);
         if (type.isCached()) {
             type = type.clone();
@@ -4141,7 +4152,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         // do not log an additional error if we had one from checking if it was overriding
         if(type == null)
-            type = obtainType(methodMirror.getReturnType(), methodMirror, klass, module, VarianceLocation.INVARIANT,
+            type = obtainType(methodMirror.getReturnType(), methodMirror, klass, module, 
                               "getter '"+methodName+"'", klass);
         if (type.isCached()) {
             type = type.clone();
@@ -4332,9 +4343,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(klass instanceof Interface){
             // interfaces need to have their superclass set to Object
             if(superClass == null || superClass.getKind() == TypeKind.NONE)
-                extendedType = getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, klass, VarianceLocation.INVARIANT);
+                extendedType = getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, klass);
             else
-                extendedType = getNonPrimitiveType(ModelUtil.getModule(klass), superClass, klass, VarianceLocation.INVARIANT);
+                extendedType = getNonPrimitiveType(ModelUtil.getModule(klass), superClass, klass);
         }else if(klass instanceof Class && ((Class) klass).isOverloaded()){
             // if the class is overloaded we already have it stored
             extendedType = klass.getExtendedType();
@@ -4347,7 +4358,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }else if(className.equals("java.lang.Object")){
                 // we pretend its superclass is something else, but note that in theory we shouldn't 
                 // be seeing j.l.Object at all due to unerasure
-                extendedType = getNonPrimitiveType(getLanguageModule(), CEYLON_BASIC_TYPE, klass, VarianceLocation.INVARIANT);
+                extendedType = getNonPrimitiveType(getLanguageModule(), CEYLON_BASIC_TYPE, klass);
             }else{
                 // read it from annotation first
                 String annotationSuperClassName = getAnnotationStringValue(classMirror, CEYLON_CLASS_ANNOTATION, "extendsType");
@@ -4358,10 +4369,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // read it from the Java super type
                     // now deal with type erasure, avoid having Object as superclass
                     if("java.lang.Object".equals(superClassName)){
-                        extendedType = getNonPrimitiveType(getLanguageModule(), CEYLON_BASIC_TYPE, klass, VarianceLocation.INVARIANT);
+                        extendedType = getNonPrimitiveType(getLanguageModule(), CEYLON_BASIC_TYPE, klass);
                     } else if(superClass != null){
                         try{
-                            extendedType = getNonPrimitiveType(ModelUtil.getModule(klass), superClass, klass, VarianceLocation.INVARIANT);
+                            extendedType = getNonPrimitiveType(ModelUtil.getModule(klass), superClass, klass);
                         }catch(ModelResolutionException x){
                             extendedType = logModelResolutionException(x, klass, "Error while resolving extended type of "+klass.getQualifiedNameString());
                         }
@@ -4484,7 +4495,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     type = applyTypeCoercion(variadicType, paramMirror, methodMirror, paramName, (Declaration)decl, module, scope);
                     coercedParameter = true;
                 }else{
-                    type = obtainType(module, variadicType, scope, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
+                    type = obtainType(module, variadicType, scope, TypeLocation.TOPLEVEL);
                 }
                 if(!isCeylon){
                     // Java parameters are all optional unless primitives or annotated as such
@@ -4500,7 +4511,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     type = applyTypeCoercion(typeMirror, paramMirror, methodMirror, paramName, (Declaration)decl, module, scope);
                     coercedParameter = true;
                 }else{
-                    type = obtainType(typeMirror, paramMirror, scope, module, VarianceLocation.CONTRAVARIANT,
+                    type = obtainType(typeMirror, paramMirror, scope, module, 
                             "parameter '"+paramName+"' of method '"+methodMirror.getName()+"'", (Declaration)decl);
                 }
                 if(!isCeylon){
@@ -4611,7 +4622,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
             Type returnType = 
                     obtainType(moduleScope, functionalInterfaceType.getReturnType(), 
-                            scope, TypeLocation.TOPLEVEL, VarianceLocation.COVARIANT);
+                            scope, TypeLocation.TOPLEVEL);
             switch(getUncheckedNullPolicy(false, functionalInterfaceType.getReturnType(), functionalMethod)){
             case Optional:
             case UncheckedNull:
@@ -4626,7 +4637,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             for(TypeMirror parameterType : functionalInterfaceType.getParameterTypes()){
                 Type modelParameterType = 
                         obtainType(moduleScope, parameterType, scope, 
-                                TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
+                                TypeLocation.TOPLEVEL);
                 Parameter p = new Parameter();
                 Value v = new Value();
                 String name = "arg" + count++;
@@ -4676,12 +4687,37 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // It's much easier to obtain the java.lang.Class<...> type and extract its TP than
             // just obtain its TP, because wildcards are dealt with in obtainTypeArguments, not
             // for "toplevel" wildcards
-            Type classType = obtainType(type, annotatedMirror, scope, module, VarianceLocation.CONTRAVARIANT,
+            Type classType = obtainType(type, annotatedMirror, scope, module, 
                     "parameter '"+paramName+"' of method '"+methodMirror.getName()+"'", (Declaration)decl);
             // gracefully give up with the original type in case of errors
             if(classType.isUnknown() || classType.getTypeArgumentList().isEmpty())
                 return classType;
             return typeFactory.getClassOrInterfaceModelType(classType.getTypeArgumentList().get(0));
+        }
+        if (type.getKind()==TypeKind.ARRAY) {
+            TypeDeclaration ad = typeFactory.getArrayDeclaration();
+            TypeMirror elementType = type.getComponentType();
+            switch (elementType.getKind()) {
+            case LONG:
+                return ad.appliedType(null, 
+                        Arrays.asList(typeFactory.getIntegerType()));
+            case DOUBLE:
+                return ad.appliedType(null, 
+                        Arrays.asList(typeFactory.getFloatType()));
+            case BOOLEAN:
+                return ad.appliedType(null, 
+                        Arrays.asList(typeFactory.getBooleanType()));
+            case BYTE:
+                return ad.appliedType(null, 
+                        Arrays.asList(typeFactory.getByteType()));
+            case DECLARED:
+//            case TYPEVAR:
+                return ad.appliedType(null, 
+                        Arrays.asList(obtainType(module, 
+                                elementType, scope, 
+                                TypeLocation.TOPLEVEL)));
+            default: //impossible!
+            }
         }
         return getFunctionalInterfaceAsCallable(module, scope, type);
     }
@@ -4961,7 +4997,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         return;
                     }
                     value.setDeprecated(value.isDeprecated() | isDeprecated(meth));
-                    value.setType(obtainType(meth.getReturnType(), meth, null, ModelUtil.getModuleContainer(value.getContainer()), VarianceLocation.INVARIANT,
+                    value.setType(obtainType(meth.getReturnType(), meth, null, ModelUtil.getModuleContainer(value.getContainer()), 
                             "toplevel attribute", value));
 
                     markVariable(value);
@@ -5083,7 +5119,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // type params first
                     setTypeParameters(method, meth, true);
 
-                    method.setType(obtainType(meth.getReturnType(), meth, method, ModelUtil.getModuleContainer(method), VarianceLocation.COVARIANT,
+                    method.setType(obtainType(meth.getReturnType(), meth, method, ModelUtil.getModuleContainer(method),
                             "toplevel method", method));
                     method.setDeclaredVoid(meth.isDeclaredVoid());
                     markDeclaredVoid(method, meth);
@@ -5276,7 +5312,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         || (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null && sameType(iface, JAVA_IO_SERIALIZABLE_TYPE_TYPE)))
                     continue;
                 try{
-                    klass.getSatisfiedTypes().add(getNonPrimitiveType(ModelUtil.getModule(klass), iface, klass, VarianceLocation.INVARIANT));
+                    klass.getSatisfiedTypes().add(getNonPrimitiveType(ModelUtil.getModule(klass), iface, klass));
                 }catch(ModelResolutionException x){
                     String classPackageName = unquotePackageName(classMirror.getPackage());
                     if(jdkProvider.isJDKPackage(classPackageName)){
@@ -5478,13 +5514,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // especially since we do not want it for types
                     if(bounds.size() == 1)
                         break;
-                    boundType = getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, scope, VarianceLocation.INVARIANT);
+                    boundType = getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, scope);
                 }else
-                    boundType = getNonPrimitiveType(ModelUtil.getModuleContainer(scope), bound, scope, VarianceLocation.INVARIANT);
+                    boundType = getNonPrimitiveType(ModelUtil.getModuleContainer(scope), bound, scope);
                 param.getSatisfiedTypes().add(boundType);
             }
             if(needsObjectBounds && param.getSatisfiedTypes().isEmpty()){
-                Type boundType = getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, scope, VarianceLocation.INVARIANT);
+                Type boundType = getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, scope);
                 param.getSatisfiedTypes().add(boundType);
             }
         }
@@ -5575,7 +5611,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     /** Warning: only valid for toplevel types, not for type parameters */
-    private Type obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope, Module moduleScope, VarianceLocation variance, 
+    private Type obtainType(TypeMirror type, AnnotatedMirror symbol, Scope scope, Module moduleScope, 
                                     String targetType, Declaration target) {
         String typeName = getAnnotationStringValue(symbol, CEYLON_TYPE_INFO_ANNOTATION);
         if (typeName != null) {
@@ -5588,7 +5624,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return ret;
         } else {
             try{
-                return obtainType(moduleScope, type, scope, TypeLocation.TOPLEVEL, variance);
+                return obtainType(moduleScope, type, scope, TypeLocation.TOPLEVEL);
             }catch(ModelResolutionException x){
                 String text = formatTypeErrorMessage("Error while resolving type of", targetType, target, scope);
                 return logModelResolutionException(x, scope, text);
@@ -5600,21 +5636,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         TOPLEVEL, TYPE_PARAM;
     }
     
-    private enum VarianceLocation {
-        /**
-         * Used in parameter
-         */
-        CONTRAVARIANT,
-        /**
-         * Used in method return value
-         */
-        COVARIANT,
-        /**
-         * For field
-         */
-        INVARIANT;
-    }
-
     private String getUnderlyingType(TypeMirror type, TypeLocation location){
         // don't erase to c.l.String if in a type param location
         if ((sameType(type, STRING_TYPE) && location != TypeLocation.TYPE_PARAM)
@@ -5628,12 +5649,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return null;
     }
     
-    public Type obtainType(Module moduleScope, TypeMirror type, Scope scope, TypeLocation location, VarianceLocation variance) {
+    public Type obtainType(Module moduleScope, TypeMirror type, Scope scope, TypeLocation location) {
         TypeMirror originalType = type;
         // ERASURE
         type = applyTypeMapping(type, location);
         
-        Type ret = getNonPrimitiveType(moduleScope, type, scope, variance);
+        Type ret = getNonPrimitiveType(moduleScope, type, scope);
         if (ret.isCached()) {
             ret = ret.clone();
         }
@@ -5672,13 +5693,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
             Type returnType = 
                     obtainType(moduleScope, functionalInterfaceType.getReturnType(), 
-                            scope, TypeLocation.TOPLEVEL, VarianceLocation.COVARIANT);
+                            scope, TypeLocation.TOPLEVEL);
             java.util.List<Type> modelParameterTypes =
                     new ArrayList<Type>(functionalInterfaceType.getParameterTypes().size());
             for(TypeMirror parameterType : functionalInterfaceType.getParameterTypes()){
                 Type modelParameterType = 
                         obtainType(moduleScope, parameterType, scope, 
-                                TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
+                                TypeLocation.TOPLEVEL);
                 modelParameterTypes.add(modelParameterType);
             }
             com.redhat.ceylon.model.typechecker.model.Type parameterTuple = typeFactory.getTupleType(modelParameterTypes, functionalInterfaceType.isVariadic(), false, -1);
@@ -5778,12 +5799,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return convertToDeclaration(module, typeName, declarationType);
     }
 
-    private Type getNonPrimitiveType(Module moduleScope, TypeMirror type, Scope scope, VarianceLocation variance) {
+    private Type getNonPrimitiveType(Module moduleScope, TypeMirror type, Scope scope) {
         TypeDeclaration declaration = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(moduleScope, type, scope, DeclarationType.TYPE);
         if(declaration == null){
             throw new ModelResolutionException("Failed to find declaration for "+type.getQualifiedName());
         }
-        return applyTypeArguments(moduleScope, declaration, type, scope, variance, TypeMappingMode.NORMAL, null);
+        return applyTypeArguments(moduleScope, declaration, type, scope, TypeMappingMode.NORMAL, null);
     }
 
     private enum TypeMappingMode {
@@ -5794,8 +5815,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static class RecursiveTypeParameterBoundException extends RuntimeException {}
     
     private Type applyTypeArguments(Module moduleScope, TypeDeclaration declaration,
-                                            TypeMirror type, Scope scope, VarianceLocation variance,
-                                            TypeMappingMode mode, Set<TypeDeclaration> rawDeclarationsSeen) {
+                                            TypeMirror type, Scope scope, TypeMappingMode mode, 
+                                            Set<TypeDeclaration> rawDeclarationsSeen) {
         List<TypeMirror> javacTypeArguments = type.getTypeArguments();
         boolean hasTypeParameters = !declaration.getTypeParameters().isEmpty();
         boolean hasTypeArguments = !javacTypeArguments.isEmpty();
@@ -5887,7 +5908,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     // in some cases we may already have a produced type argument we can use. if not let's fetch it
                     if(producedTypeArgument == null){
                         if(mode == TypeMappingMode.NORMAL)
-                            producedTypeArgument = obtainType(moduleScope, typeArgument, scope, TypeLocation.TYPE_PARAM, variance);
+                            producedTypeArgument = obtainType(moduleScope, typeArgument, scope, TypeLocation.TYPE_PARAM);
                         else
                             producedTypeArgument = obtainTypeParameterBound(moduleScope, typeArgument, scope, rawDeclarationsSeen);
                     }
@@ -5895,7 +5916,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
                 Type qualifyingType = null;
                 if(type.getQualifyingType() != null){
-                    qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
+                    qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope);
                 }
                 Type ret = declaration.appliedType(qualifyingType, typeArguments);
                 if(siteVarianceMap != null){
@@ -5916,7 +5937,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // we have no type args, but perhaps we have a qualifying type which has some?
         if(type.getQualifyingType() != null){
             // that one may have type arguments
-            Type qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
+            Type qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope);
             Type ret = declaration.appliedType(qualifyingType, Collections.<Type>emptyList());
             if (ret.isCached()) {
                 ret = ret.clone();
@@ -5953,7 +5974,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(declaration instanceof UnknownType)
                 return declaration.getType();
 
-            Type ret = applyTypeArguments(moduleScope, declaration, type, scope, VarianceLocation.CONTRAVARIANT, TypeMappingMode.GENERATOR, rawDeclarationsSeen);
+            Type ret = applyTypeArguments(moduleScope, declaration, type, scope, TypeMappingMode.GENERATOR, rawDeclarationsSeen);
             if (ret.isCached()) {
                 ret = ret.clone();
             }
