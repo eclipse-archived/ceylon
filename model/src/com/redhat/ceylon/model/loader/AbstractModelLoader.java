@@ -3948,7 +3948,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             case BOOLEAN:
             case BYTE:
             case DECLARED:
-//            case TYPEVAR:
+            case TYPEVAR:
                 return true;
             default: //ignore
             }
@@ -4711,11 +4711,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return ad.appliedType(null, 
                         Arrays.asList(typeFactory.getByteType()));
             case DECLARED:
-//            case TYPEVAR:
+            case TYPEVAR:
+                Type elemType = 
+                        obtainType(module, elementType, scope, 
+                                TypeLocation.TYPE_PARAM);
                 return ad.appliedType(null, 
-                        Arrays.asList(obtainType(module, 
-                                elementType, scope, 
-                                TypeLocation.TOPLEVEL)));
+                        Arrays.asList(typeFactory.getOptionalType(elemType)));
             default: //impossible!
             }
         }
