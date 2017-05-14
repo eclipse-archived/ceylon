@@ -341,13 +341,13 @@ public class AnnotationLoader {
             AnnotationMirror valueAnnotation, boolean singleValue) {
         if (singleValue) {
             TypeMirror klass = getAnnotationClassValues(valueAnnotation, "value").get(0);
-            Type type = modelLoader.obtainType(moduleScope, klass, null, null, null);
+            Type type = modelLoader.obtainType(moduleScope, klass, null, null);
             ObjectLiteralAnnotationTerm term = new ObjectLiteralAnnotationTerm(type);
             return term;
         } else {
             CollectionLiteralAnnotationTerm result = new CollectionLiteralAnnotationTerm(ObjectLiteralAnnotationTerm.FACTORY);
             for (TypeMirror klass : getAnnotationClassValues(valueAnnotation, "value")) {
-                Type type = modelLoader.obtainType(moduleScope, klass, null, null, null);
+                Type type = modelLoader.obtainType(moduleScope, klass, null, null);
                 result.addElement(new ObjectLiteralAnnotationTerm(type));
             }
             return result;
