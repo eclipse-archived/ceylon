@@ -351,18 +351,6 @@ public class MethodDefinitionBuilder
         return this;
     }
 
-    public MethodDefinitionBuilder parameter(
-            Node node,
-            long modifiers, 
-            java.util.List<Annotation> annos, 
-            String name, 
-            Parameter decl, 
-            TypedDeclaration nonWideningDecl, 
-            Type nonWideningType, 
-            int flags, boolean canWiden) {
-        return parameter(node, modifiers, annos, null, name, name, decl, nonWideningDecl, nonWideningType, flags);
-    }
-    
     private MethodDefinitionBuilder parameter(Node node, long modifiers, 
             java.util.List<Annotation> modelAnnotations, List<JCAnnotation> userAnnotations,
             String name, String aliasedName, 
@@ -425,13 +413,7 @@ public class MethodDefinitionBuilder
         return gen.makeJavaType(nonWideningDecl, nonWideningType, flags);
     }
     
-    public MethodDefinitionBuilder parameter(Node node, Parameter paramDecl, 
-            Type paramType, int mods, int flags, boolean canWiden) {
-        String name = paramDecl.getName();
-        return parameter(node, mods, paramDecl.getModel().getAnnotations(), 
-                name, paramDecl, paramDecl.getModel(), paramType, flags, canWiden);
-    }
-    
+   
     static class NonWideningParam {
         /**
          * Flags for makeJavaType

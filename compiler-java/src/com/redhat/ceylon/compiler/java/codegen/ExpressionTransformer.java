@@ -733,15 +733,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression test = make().Binary(JCTree.Tag.NE, varName.makeIdent(), makeNull());
                 JCExpression convert = make().Apply(null, makeQualIdent(varName.makeIdent(), "toString"), List.<JCTree.JCExpression>nil());
                 JCExpression cond = make().Conditional(test, convert, makeNull());
-                JCExpression typeExpr = makeJavaType(typeFact().getObjectType(), 0);
+                JCExpression typeExpr = makeJavaType(typeFact().getObjectType());
                 return makeLetExpr(varName, null, typeExpr, ret, cond);
             }else{
                 return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
             }
         }
+        //TODO: obsolete code?
         if(isJavaCharSequence(exprType) && expectedType.isExactly(typeFact().getStringDeclaration().getType())){
             return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
         }
+        // end of obsolete code
         if (isCeylonArray(exprType) && isJavaArray(expectedType)) {
             JCExpression result;
             if(isOptional(nonSimpleExprType)){
@@ -749,12 +751,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                 JCExpression test = make().Binary(JCTree.Tag.NE, varName.makeIdent(), makeNull());
                 JCExpression convert = make().Apply(null, makeQualIdent(varName.makeIdent(), "toArray"), List.<JCTree.JCExpression>nil());
                 JCExpression cond = make().Conditional(test, convert, makeNull());
-                JCExpression typeExpr = makeJavaType(typeFact().getObjectType(), 0);
+                JCExpression typeExpr = makeJavaType(typeFact().getObjectType());
                 result = makeLetExpr(varName, null, typeExpr, ret, cond);
             }else{
                 result = make().Apply(null, makeQualIdent(ret, "toArray"), List.<JCTree.JCExpression>nil());
             }
-            JCExpression targetType = makeJavaType(expectedType, 0);
+            JCExpression targetType = makeJavaType(expectedType, JT_NO_PRIMITIVES);
             return make().TypeCast(targetType, result);
         }
         if(isCeylonClassOrInterfaceModel(exprType)
