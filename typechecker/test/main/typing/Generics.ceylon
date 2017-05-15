@@ -757,3 +757,7 @@ void testWithUpperBoundConstraint() {
     WithUpperBoundConstraint<Anything> test2 = 
             WithUpperBoundConstraint<Anything>();
 }
+
+R tupleOrTp<R,Es,E>(Callable<R,Tuple<E,E,Nothing>|Es> callable, Es es) 
+        given Es satisfies Tuple<E,E,E[]> 
+        => callable(*es);

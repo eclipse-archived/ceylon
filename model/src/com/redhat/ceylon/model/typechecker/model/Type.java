@@ -748,7 +748,7 @@ public class Type extends Reference {
                 if (!dec.inherits(otherDec)) {
                     return false;
                 }
-                if (isNotGeneric(dec)) {
+                if (isNotGeneric(otherDec)) {
                     return true;
                 }
             }
