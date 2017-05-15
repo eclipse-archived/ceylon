@@ -14,7 +14,7 @@ shared Element[] sort<Element>({Element*} elements)
         return [];
     }
     else {
-        array.sortInPlace(byIncreasing(identity<Element>));
+        array.sortInPlace(increasing);
         return ArraySequence(array);
     }
 }
