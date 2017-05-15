@@ -1148,21 +1148,21 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <para>The type of a list of arguments containing only a comprehension is 
             <literal>[T*]</literal> where <literal>T</literal> is the type of the
-            expression which terminates the comprehension, or <literal>[T+]</literal>
-            if there are no <literal>if</literal> clauses, and if every 
-            <literal>for</literal> clause has an iterated expression of nonempty
-            type.</para>
+            expression which terminates the comprehension, or <literal>[T+]</literal> if 
+            there are no <literal>if</literal> clauses, and if every <literal>for</literal> 
+            clause has an iterated expression of nonempty type.</para>
             
-            <para>An comprehension occurring in an <literal>extends</literal> clause may 
+            <para>A comprehension occurring in an <literal>extends</literal> clause may 
             not contain a reference to a variable value.</para>
             
-            <comment><para>Note: a comprehension, like a spread argument, is not considered an 
-            expression. An expression, when evaluated, produces a single value. A comprehension
-            produces multiple values, like a spread argument, or like a series of listed 
-            arguments. Therefore, a comprehension may only appear in an argument list or an 
-            enumeration expression. This is, however, no limitation; we can simply wrap the
-            comprehension in braces in order to get an expression of type <literal>{T*}</literal>,
-            or in brackets to get an expression of type <literal>[T*]</literal>.</para></comment>
+            <comment><para>Note: a comprehension, like a spread argument, is not considered 
+            an expression. An expression, when evaluated, produces a single value. A 
+            comprehension produces multiple values, like a spread argument, or like a series 
+            of listed arguments. Therefore, a comprehension may only appear in an argument 
+            list or an enumeration expression. This is, however, no limitation; we can simply 
+            wrap the comprehension in braces in order to get an expression of type 
+            <literal>{T*}</literal>, or in brackets to get an expression of type 
+            <literal>[T*]</literal>.</para></comment>
             
             <comment><para>TODO: properly define how expressions with no type occurring in a
             <literal>dynamic</literal> block affect comprehensions.</para></comment>
