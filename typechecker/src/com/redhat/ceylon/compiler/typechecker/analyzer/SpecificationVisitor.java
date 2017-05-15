@@ -132,7 +132,8 @@ public class SpecificationVisitor extends Visitor {
     private boolean isVariable() {
         if (declaration instanceof TypedDeclaration) {
             TypedDeclaration td = 
-                    (TypedDeclaration) declaration;
+                    (TypedDeclaration) 
+                        declaration;
             return td.isVariable();
         }
         else {
@@ -143,7 +144,8 @@ public class SpecificationVisitor extends Visitor {
     private boolean isLate() {
         if (declaration instanceof FunctionOrValue) {
             FunctionOrValue fov = 
-                    (FunctionOrValue) declaration;
+                    (FunctionOrValue) 
+                        declaration;
             return fov.isLate();
         }
         else {
@@ -316,7 +318,8 @@ public class SpecificationVisitor extends Visitor {
             }
             if (inAnonFunctionOrComprehension && 
                 definitely && 
-                isVariable()) {
+                isVariable() && assigned &&
+                declaration.isClassOrInterfaceMember()) {
                 that.addError("member may not be captured by comprehension or function in extends clause: "+
                         name() +
                         " is declared 'variable'");
