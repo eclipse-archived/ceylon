@@ -12,7 +12,7 @@ see (`function byIncreasing`,
      `function Iterable.sort`)
 tagged("Functions", "Comparisons")
 shared Comparison byDecreasing<Element,Value>
-            (Value comparable(Element e))
+        (Value comparable(Element e))
             (Element x, Element y)
         given Value satisfies Comparable<Value>
                 => comparable(y)<=>comparable(x);
