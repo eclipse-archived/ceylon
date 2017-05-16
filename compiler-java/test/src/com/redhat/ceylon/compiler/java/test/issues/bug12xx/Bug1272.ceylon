@@ -33,7 +33,7 @@ Value? bug1272<Value,ProgramElement>(
 
 @noanno
 void bug1272_callsite() {
-    Class<SharedAnnotation, []> s = `SharedAnnotation`;
+    Class<SharedAnnotation, Nothing> s = `SharedAnnotation`;
     ValueDeclaration x => nothing;
     bug1272(s, x);// This is OK!
     SharedAnnotation? srd = bug1272(s, x); // This causes javac stackoverflow
