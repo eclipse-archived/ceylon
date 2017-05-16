@@ -23,11 +23,11 @@ final class assertNotIsException_ {
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ParseException c=e.cause") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.ParseException.$TypeDescriptor$, c$2));
             }
-            .ceylon.language.String lhs$4 = .ceylon.language.String.instance("illegal format for Float");
+            .ceylon.language.String lhs$4 = .ceylon.language.String.instance("illegal format for Float: unexpected character \'b\'");
             .ceylon.language.String rhs$5 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.throwableMessage(c$3));
             if (lhs$4.equals(rhs$5)) {
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"illegal format for Float\"==c.message") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$4, rhs$5));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"illegal format for Float: unexpected character \'b\'\"==c.message") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$4, rhs$5));
             }
         }
         try {
@@ -53,11 +53,11 @@ final class assertNotIsException_ {
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ParseException c=e.cause") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.ParseException.$TypeDescriptor$, c$10));
             }
-            .ceylon.language.String lhs$12 = .ceylon.language.String.instance("illegal format for Float");
+            .ceylon.language.String lhs$12 = .ceylon.language.String.instance("illegal format for Float: unexpected character \'b\'");
             .ceylon.language.String rhs$13 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.throwableMessage(c$11));
             if (lhs$12.equals(rhs$13)) {
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"illegal format for Float\"==c.message") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$12, rhs$13));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"illegal format for Float: unexpected character \'b\'\"==c.message") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$12, rhs$13));
             }
         }
         try {
@@ -83,11 +83,11 @@ final class assertNotIsException_ {
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ParseException c=e.cause") + .com.redhat.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.ParseException.$TypeDescriptor$, c$18));
             }
-            .ceylon.language.String lhs$20 = .ceylon.language.String.instance("illegal format for Float");
+            .ceylon.language.String lhs$20 = .ceylon.language.String.instance("illegal format for Float: unexpected character \'m\'");
             .ceylon.language.String rhs$21 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.throwableMessage(c$19));
             if (lhs$20.equals(rhs$21)) {
             } else {
-                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"illegal format for Float\"==c.message") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$20, rhs$21));
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"illegal format for Float: unexpected character \'m\'\"==c.message") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$20, rhs$21));
             }
         }
     }
