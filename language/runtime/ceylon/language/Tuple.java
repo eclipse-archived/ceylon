@@ -482,6 +482,7 @@ public final class Tuple<Element, First extends Element,
             @Annotation("actual")})
     @Override
     @TypeInfo("ceylon.language::Tuple<Element,First,Rest>")
+    @NonNull
     public final Tuple<Element, ? extends First, ? extends Rest> $clone() {
         return this;
     }
@@ -530,15 +531,6 @@ public final class Tuple<Element, First extends Element,
         return type;
     }
     
-    @Annotations({
-        @Annotation("shared"),
-        @Annotation("actual")})
-    @Override
-    @NonNull
-    public Tuple<? extends Element, ? extends First, ? extends Rest> clone() {
-        return this;
-    }
-
     @Annotations({
         @Annotation("shared"),
         @Annotation("actual")})
