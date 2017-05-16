@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
@@ -2427,7 +2428,7 @@ public class Util {
     
     @SuppressWarnings("unchecked")
     public static <T> T[] unwrapObjectArray(
-            @SuppressWarnings("unused") TypeDescriptor $reified$T, 
+            @SuppressWarnings("unused") @Ignore TypeDescriptor $reified$T, 
             Array<T> array) {
         Object a = array.toArray();
         if (a instanceof Object[]) {
