@@ -117,7 +117,7 @@ public class MiscTests extends CompilerTests {
             }   
         };
         String[] extras = new String[]{
-        		"true", "false"
+        		"true", "false", "arrayToTuple"
         };
         String[] modelExtras = new String[]{
                 "classDeclaration", "annotations", "modules", "type", "typeLiteral"
