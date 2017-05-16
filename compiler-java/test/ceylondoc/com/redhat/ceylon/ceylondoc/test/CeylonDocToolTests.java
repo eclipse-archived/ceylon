@@ -657,7 +657,6 @@ public class CeylonDocToolTests {
                 "ceylon/interop/java/internal/javaShortArray_.java",
                 "ceylon/interop/java/internal/javaStringArray_.java",
                 "ceylon/interop/java/internal/synchronize_.java",
-                "ceylon/interop/java/internal/Util.java",
                 "ceylon/transaction/internal/RecoveryHelper.java",
                 "ceylon/transaction/internal/RecoveryXAResource.java",
                 "ceylon/test/engine/internal/Workaround.java",
