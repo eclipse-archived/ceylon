@@ -21,7 +21,7 @@ final class Y {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
         minor = 1)
-@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("Es")
+@.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Tuple<E,E,ceylon.language::Nothing>|Es")
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "E",
