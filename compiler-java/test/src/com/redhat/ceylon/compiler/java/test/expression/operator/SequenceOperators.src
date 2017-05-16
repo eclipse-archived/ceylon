@@ -26,8 +26,8 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$List$this$.collect($reified$Result, collecting);
+    public <Result>.ceylon.language.Sequential collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return (.ceylon.language.Sequential<? extends Result>)$ceylon$language$List$this$.collect($reified$Result, collecting);
     }
     
     @.java.lang.Override
@@ -475,8 +475,8 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .ceylon.language.String> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
-        return $ceylon$language$Iterable$this$.sort(comparing);
+    public .ceylon.language.Sequential sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.sort(comparing);
     }
     
     @.java.lang.Override
@@ -920,8 +920,8 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$List$this$.collect($reified$Result, collecting);
+    public <Result>.ceylon.language.Sequential collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return (.ceylon.language.Sequential<? extends Result>)$ceylon$language$List$this$.collect($reified$Result, collecting);
     }
     
     @.java.lang.Override
@@ -1369,8 +1369,8 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .ceylon.language.String> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
-        return $ceylon$language$Iterable$this$.sort(comparing);
+    public .ceylon.language.Sequential sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.sort(comparing);
     }
     
     @.java.lang.Override

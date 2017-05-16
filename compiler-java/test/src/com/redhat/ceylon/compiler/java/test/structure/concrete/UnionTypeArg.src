@@ -34,7 +34,7 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.Sequential collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
         return (.ceylon.language.Sequential<? extends Result>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.collect($reified$Result, collecting);
     }
     
@@ -369,7 +369,7 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+    public <Result>.ceylon.language.Sequential collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
         return (.ceylon.language.Sequential<? extends Result>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.collect($reified$Result, collecting);
     }
     

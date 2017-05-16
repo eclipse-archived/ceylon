@@ -23,7 +23,7 @@ class SwitchTupleCase implements .com.redhat.ceylon.compiler.java.runtime.model.
                     .ceylon.language.String.instance("b")}))) {
                 return "ab";
             } else {
-                final .ceylon.language.Sequential<? extends .ceylon.language.String> strings$1 = (.ceylon.language.Sequential)sel$0;
+                final .ceylon.language.Sequence<? extends .ceylon.language.String> strings$1 = (.ceylon.language.Sequence)sel$0;
                 return "other";
             }
         }
@@ -50,7 +50,7 @@ class SwitchTupleCase implements .com.redhat.ceylon.compiler.java.runtime.model.
                             .ceylon.language.String.instance("b")}))) {
                         $ceylontmp$ifResult$2 = "ab";
                     } else {
-                        final .java.lang.Object strings$4 = (.java.lang.Object)sel$3;
+                        final .ceylon.language.Sequence<? extends .ceylon.language.String> strings$4 = (.ceylon.language.Sequence)sel$3;
                         $ceylontmp$ifResult$2 = "other";
                     }
                 }

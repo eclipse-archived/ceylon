@@ -121,7 +121,7 @@ final class bug1533_callsite_ {
     static void bug1533_callsite() {
         final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1533 inst = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1533();
         .ceylon.language.Integer lhs$8 = .ceylon.language.Integer.instance(1L);
-        .ceylon.language.Integer rhs$9 = (.ceylon.language.Integer)(.java.lang.Object)inst.<.ceylon.language.Integer, .ceylon.language.Sequence<? extends .java.lang.Object>, .java.lang.Object>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Anything.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+        .ceylon.language.Integer rhs$9 = (.ceylon.language.Integer)(.java.lang.Object)inst.<.ceylon.language.Integer, .ceylon.language.Sequence<? extends .ceylon.language.Integer>, .ceylon.language.Integer>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
@@ -134,7 +134,7 @@ final class bug1533_callsite_ {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "1 == inst.tupleOrTp((Integer x)=>x, [1])") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$8, rhs$9));
         }
         .ceylon.language.Integer lhs$10 = .ceylon.language.Integer.instance(4L);
-        .ceylon.language.Integer rhs$11 = (.ceylon.language.Integer)(.java.lang.Object)inst.<.ceylon.language.Integer, .ceylon.language.Sequence<? extends .java.lang.Object>, .java.lang.Object>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Anything.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer, Integer)", (short)-1){
+        .ceylon.language.Integer rhs$11 = inst.<.ceylon.language.Integer, .ceylon.language.Sequence<? extends .ceylon.language.Integer>, .ceylon.language.Integer>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer, Integer)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
@@ -142,7 +142,7 @@ final class bug1533_callsite_ {
                 final long y = ((.ceylon.language.Integer)$param$1).longValue();
                 return .ceylon.language.Integer.instance(x + y);
             }
-        }, (.ceylon.language.Sequence)(.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        }, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(2L)}));
         if (lhs$10.equals(rhs$11)) {
@@ -159,7 +159,7 @@ final class bug1533_callsite_ {
             }
         };
         .ceylon.language.Integer lhs$12 = .ceylon.language.Integer.instance(4L);
-        .ceylon.language.Integer rhs$13 = (.ceylon.language.Integer)(.java.lang.Object)inst.<.ceylon.language.Integer, .ceylon.language.Sequence<? extends .java.lang.Object>, .java.lang.Object>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Anything.$TypeDescriptor$, v2, (.ceylon.language.Sequence)(.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        .ceylon.language.Integer rhs$13 = inst.<.ceylon.language.Integer, .ceylon.language.Sequence<? extends .ceylon.language.Integer>, .ceylon.language.Integer>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, v2, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(2L)}));
         if (lhs$12.equals(rhs$13)) {
@@ -178,7 +178,7 @@ final class bug1533_callsite_ {
         }
         final f2_ f2 = new f2_();
         .ceylon.language.Integer lhs$14 = .ceylon.language.Integer.instance(4L);
-        .ceylon.language.Integer rhs$15 = (.ceylon.language.Integer)(.java.lang.Object)inst.<.ceylon.language.Integer, .ceylon.language.Sequence<? extends .java.lang.Object>, .java.lang.Object>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Anything.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer, Integer)", (short)-1){
+        .ceylon.language.Integer rhs$15 = inst.<.ceylon.language.Integer, .ceylon.language.Sequence<? extends .ceylon.language.Integer>, .ceylon.language.Integer>tupleOrTp(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer, Integer)", (short)-1){
             
             @.java.lang.Override
             public .ceylon.language.Integer $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
@@ -186,7 +186,7 @@ final class bug1533_callsite_ {
                 final long $ceylontmp$y = ((.ceylon.language.Integer)$param$1).longValue();
                 return .ceylon.language.Integer.instance(f2.f2($ceylontmp$x, $ceylontmp$y));
             }
-        }, (.ceylon.language.Sequence)(.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        }, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(2L),
                 .ceylon.language.Integer.instance(2L)}));
         if (lhs$14.equals(rhs$15)) {

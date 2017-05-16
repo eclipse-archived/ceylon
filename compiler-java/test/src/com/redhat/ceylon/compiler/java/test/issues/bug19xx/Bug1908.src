@@ -26,7 +26,7 @@ final class bug1908fun_ {
                     final .ceylon.language.Callable<? extends R> f$5 = (.ceylon.language.Callable<? extends R>)(.ceylon.language.Callable)f$4;
                     f$5.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
                 }
-                return ((.ceylon.language.Iterable<? extends Args, ? extends .java.lang.Object>)(.ceylon.language.Iterable)args).<R>collect($reified$R, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<R>($reified$R, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Args), "R(Args)", (short)-1){
+                return (.ceylon.language.Sequential<? extends R>)(.ceylon.language.Sequential)((.ceylon.language.Iterable<? extends Args, ? extends .java.lang.Object>)(.ceylon.language.Iterable)args).<R>collect($reified$R, new .com.redhat.ceylon.compiler.java.language.AbstractCallable<R>($reified$R, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Args), "R(Args)", (short)-1){
                     
                     @.java.lang.Override
                     public R $call$(final .java.lang.Object $param$0) {

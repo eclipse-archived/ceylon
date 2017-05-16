@@ -24,8 +24,8 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequence<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Sequence$this$.collect($reified$Result, collecting);
+    public <Result>.ceylon.language.Sequence collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return (.ceylon.language.Sequence<? extends Result>)$ceylon$language$Sequence$this$.collect($reified$Result, collecting);
     }
     
     @.java.lang.Override
@@ -84,13 +84,18 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequence<? extends .ceylon.language.Integer> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
-        return $ceylon$language$Sequence$this$.sort(comparing);
+    public .ceylon.language.Sequence sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)$ceylon$language$Sequence$this$.sort(comparing);
     }
     
     @.java.lang.Override
     public .java.lang.String toString() {
         return $ceylon$language$Sequence$this$.toString();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequence<? extends .ceylon.language.Integer> tuple() {
+        return $ceylon$language$Sequence$this$.tuple();
     }
     
     @.java.lang.Override

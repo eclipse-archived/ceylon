@@ -38,8 +38,8 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Sequential<? extends Result> collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
-        return $ceylon$language$Iterable$this$.collect($reified$Result, collecting);
+    public <Result>.ceylon.language.Sequential collect(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return (.ceylon.language.Sequential<? extends Result>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.collect($reified$Result, collecting);
     }
     
     @.java.lang.Override
@@ -258,8 +258,8 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .ceylon.language.Sequential<? extends .ceylon.language.Integer> sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
-        return $ceylon$language$Iterable$this$.sort(comparing);
+    public .ceylon.language.Sequential sort(final .ceylon.language.Callable<? extends .ceylon.language.Comparison> comparing) {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)$ceylon$language$Iterable$this$.sort(comparing);
     }
     
     @.java.lang.Override
