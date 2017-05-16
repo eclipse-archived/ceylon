@@ -695,7 +695,7 @@ public class IssuesTests_1000_1499 extends CompilerTests {
     @Test
     public void testBug1392() {
         assertErrors("bug13xx/Bug1392",
-                new CompilerError(25, "protected constructor is not visible: 'LogManager'"),
+                new CompilerError(25, "constructor is not visible: 'LogManager' is protected"),
                 new CompilerError(26, "class cannot be instantiated: 'Class' does not have a default constructor")
         );
     }

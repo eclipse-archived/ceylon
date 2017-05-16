@@ -1753,7 +1753,7 @@ public class CMRTests extends CompilerTests {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR),
-                new CompilerError(2, "imported package is not shared: 'b.hidden' is not annotated 'shared' in 'b'"));
+                new CompilerError(2, "imported package is not visible: package 'b.hidden' is not shared by module 'b'"));
     }
 
     private ModuleImport getModuleImport(Module m, String name) {
