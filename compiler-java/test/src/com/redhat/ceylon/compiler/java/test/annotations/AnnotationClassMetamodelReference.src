@@ -94,7 +94,7 @@ final class AnnotationClassMetamodelReferenceDefaulted implements .com.redhat.ce
 @interface AnnotationClassMetamodelReferenceVariadic$annotation$ {
     
     @.com.redhat.ceylon.compiler.java.metadata.DeclarationReference
-    public abstract .java.lang.String[] mmrs();
+    public abstract .java.lang.String[] mmrs() default {};
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})

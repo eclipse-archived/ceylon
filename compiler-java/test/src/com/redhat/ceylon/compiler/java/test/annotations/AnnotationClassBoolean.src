@@ -113,7 +113,7 @@ final class AnnotationClassBooleanDefaulted implements .com.redhat.ceylon.compil
 @.java.lang.annotation.Target({})
 @interface AnnotationClassBooleanVariadic$annotation$ {
     
-    public abstract boolean[] b();
+    public abstract boolean[] b() default {};
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})

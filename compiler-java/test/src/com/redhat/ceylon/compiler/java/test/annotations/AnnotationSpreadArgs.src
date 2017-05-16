@@ -4,7 +4,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.java.lang.annotation.Target({})
 @interface AnnotationSpreadArgs$annotation$ {
     
-    public abstract .java.lang.String[] args();
+    public abstract .java.lang.String[] args() default {};
 }
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({
