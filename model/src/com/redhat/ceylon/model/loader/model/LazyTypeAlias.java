@@ -372,13 +372,13 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
 
     @Override
     public boolean isProtectedVisibility() {
-        load();
+        // no lazy loading since it is set before completion
         return super.isProtectedVisibility();
     }
 
     @Override
     public boolean isPackageVisibility() {
-        load();
+        // no lazy loading since it is set before completion
         return super.isPackageVisibility();
     }
 
