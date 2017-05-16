@@ -1583,7 +1583,7 @@ public class AnalyzerUtil {
                 }
                 if (!pkg.isShared()) {
                     path.addError("imported package is not visible: package '" + 
-                            nameToImport + "' is not shared by module `" +
+                            nameToImport + "' is not shared by module '" +
                             pkgMod.getNameAsString() + "'", 402);
                 }
                 else if (!pkg.withinRestrictions(unit)) {
