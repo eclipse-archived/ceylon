@@ -814,7 +814,9 @@ public class Type extends Reference {
             if (!dec.inherits(otherDec)) {
                 return false;
             }
-            if (isNotGeneric(otherDec)) {
+            if (qualifyingType == null
+                    && type.qualifyingType == null
+                    && isNotGeneric(otherDec)) {
                 return true;
             }
         }
