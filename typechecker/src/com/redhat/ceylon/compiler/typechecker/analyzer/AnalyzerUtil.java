@@ -1740,7 +1740,8 @@ public class AnalyzerUtil {
             if (correction.getName().equals(name)) {
                 if (correction.isUnimported()) {
                     return " might be misspelled or is not imported (did you mean to import it from '" 
-                        + correction.packageName() + "'?)";
+                        + correction.packageName() 
+                        + "'?)";
                 }
                 else {
                     return "";
@@ -1749,12 +1750,15 @@ public class AnalyzerUtil {
             else {
                 if (correction.isUnimported()) {
                     return " might be misspelled or is not imported (did you mean '" 
-                        + correction.realName(unit) + "' from '" 
-                        + correction.packageName() + "'?)";
+                        + correction.realName(unit) 
+                        + "' from '" 
+                        + correction.packageName() 
+                        + "'?)";
                 }
                 else {
                     return " might be misspelled or is not imported (did you mean '" 
-                        + correction.realName(unit) + "'?)";
+                        + correction.realName(unit) 
+                        + "'?)";
                 }
             }
         }
@@ -1773,7 +1777,8 @@ public class AnalyzerUtil {
         }
         else {
             return " might be misspelled (did you mean '" 
-                + correction.realName(unit) + "'?)";
+                + correction.realName(unit) 
+                + "'?)";
         }
     }
 
@@ -1783,11 +1788,16 @@ public class AnalyzerUtil {
         DeclarationWithProximity correction =
                 correct(scope, name, cancellable);
         if (correction==null) {
-            return " might be misspelled or does not belong to this package";
+            return " might be misspelled or does not belong to the package '" 
+                    + scope.getNameAsString() 
+                    + "'";
         }
         else {
-            return " might be misspelled or does not belong to this package (did you mean '" 
-                + correction.realName(unit) + "'?)";
+            return " might be misspelled or does not belong to the package '" 
+                    + scope.getNameAsString() 
+                    + "' (did you mean '" 
+                    + correction.realName(unit) 
+                    + "'?)";
         }
     }
 
