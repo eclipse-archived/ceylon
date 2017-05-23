@@ -553,13 +553,13 @@ public class InheritanceVisitor extends Visitor {
                             Constructor cons = 
                                     (Constructor) caseDec;
                             Class c = (Class) scope;
-                            if (!c.isToplevel()) {
-                                bme.addError("case must be a value constructor of a toplevel class: '" + 
+                            if (!c.isToplevel() && !c.isStatic()) {
+                                bme.addError("case must be a value constructor of a toplevel or static class: '" + 
                                         c.getName(unit) + 
                                         "' is not toplevel");
                             }
                             else if (!cons.getParameterLists().isEmpty()) {
-                                bme.addError("case must be a value constructor of a toplevel class: '" + 
+                                bme.addError("case must be a value constructor of a toplevel or static class: '" + 
                                         cons.getName(unit) + 
                                         "' is not a value constructor");
                             }

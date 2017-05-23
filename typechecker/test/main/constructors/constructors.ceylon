@@ -553,3 +553,23 @@ void testWithPrivateDefConstructor() {
     @error WithPrivateDefConstructor();
     @error `WithPrivateDefConstructor`();
 }
+
+class Order {
+    shared static class Status 
+            of completed
+             | active
+             | inactive {
+        shared new completed {}
+        shared new active {}
+        shared new inactive {}
+    }
+    new () {}
+}
+
+void testOrderStatus(Order.Status status) {
+    switch (status)
+    case (Order.Status.completed) {}
+    case (Order.Status.active) {}
+    case (Order.Status.inactive) {}
+}
+

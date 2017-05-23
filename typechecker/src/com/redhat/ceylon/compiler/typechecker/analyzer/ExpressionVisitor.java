@@ -8688,13 +8688,20 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private static boolean isToplevelValueConstructorCase(TypeDeclaration dec) {
-        return dec.isValueConstructor() 
-                && (dec.getContainer().isToplevel() || dec.isStatic());
+        if (dec.isValueConstructor()) {
+            Scope container = dec.getContainer();
+            if (container instanceof Class) {
+                Class cl = (Class) container;
+                return cl.isStatic() 
+                    || cl.isToplevel();
+            }
+        }
+        return false;
     }
 
     private static boolean isToplevelObjectCase(TypeDeclaration dec) {
         return dec.isObjectClass() 
-                && (dec.isToplevel() || dec.isStatic());
+            && (dec.isToplevel() || dec.isStatic());
     }
 
     @Override
