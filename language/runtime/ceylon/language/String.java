@@ -1430,7 +1430,7 @@ public final class String
     }
     
     @Ignore
-    public long substring$start() {
+    public long substring$from() {
         return 0;
     }
     
