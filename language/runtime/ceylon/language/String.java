@@ -1435,7 +1435,7 @@ public final class String
     }
     
     @Ignore
-    public long substring$end() {
+    public long substring$end(long from) {
         return java.lang.Integer.MAX_VALUE;
     }
     
