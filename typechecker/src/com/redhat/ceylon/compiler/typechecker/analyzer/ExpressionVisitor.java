@@ -8611,11 +8611,11 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else {
-                e.addError("value case must be a toplevel or static object, a value constructor for a toplevel class, or a literal 'String', 'Integer', or 'Character'");
+                e.addError("value case must be a toplevel or static object, a value constructor of a toplevel or static class, or a literal 'String', 'Integer', or 'Character'");
             }
         }
         else if (term!=null) {
-            e.addError("value case must be a toplevel or static object, a value constructor for a toplevel class, or a literal 'String', 'Integer', or 'Character'");
+            e.addError("value case must be a toplevel or static object, a value constructor of a toplevel or static class, or a literal 'String', 'Integer', or 'Character'");
         }
     }
 
