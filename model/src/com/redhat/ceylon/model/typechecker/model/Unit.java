@@ -3059,4 +3059,66 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return false;
     }
     
+    /**
+     * Returns true if any part of the given Callable is unknown, like Callable&lt;Ret,Args>
+     */
+    public boolean isUnknownArgumentsCallable(Type callableType) {
+        if (getNothingType().isExactly(callableType)) {
+            return false;
+        }
+        Type args = getCallableTuple(callableType);
+        return isUnknownTuple(args);
+    }
+    
+    private boolean isUnknownTuple(Type args) {
+        if (args.isTypeParameter()) {
+            return true;
+        } else if (args.isUnion()){
+            /* Callable<R,A>&Callable<R,B> is the same as Callable<R,A|B> so 
+             * for a union if either A or B is known then the union is known
+             */
+            java.util.List<Type> caseTypes = args.getCaseTypes();
+            if(caseTypes == null || caseTypes.size() < 2)
+                return true;
+            for (int ii = 0; ii < caseTypes.size(); ii++) {
+                if (!isUnknownTuple(caseTypes.get(ii))) {
+                    return false;
+                }
+            }// all unknown
+            return true;
+        } else if (args.isIntersection()) {
+            /* Callable<R,A>|Callable<R,B> is the same as Callable<R,A&B> so 
+             * for an intersection if both A and B are known then the intersection is known
+             */
+            java.util.List<Type> caseTypes = args.getSatisfiedTypes();
+            if(caseTypes == null || caseTypes.size() < 2)
+                return true;
+            for (int ii = 0; ii < caseTypes.size(); ii++) {
+                if (isUnknownTuple(caseTypes.get(ii))) {
+                    return true;
+                }
+            }
+            return false;
+        } else if (args.isNothing()) {
+            return true;
+        } else if(args.isClassOrInterface()) {
+            TypeDeclaration declaration = args.getDeclaration();
+            String name = declaration.getQualifiedNameString();
+            if(name.equals("ceylon.language::Tuple")){
+                Type rest = args.getTypeArgumentList().get(2);
+                return isUnknownTuple(rest);
+            }
+            if(name.equals("ceylon.language::Empty")){
+                return false;
+            }
+            if(name.equals("ceylon.language::Sequential")
+               || name.equals("ceylon.language::Sequence")){
+                return false;
+            }
+        } else if (args.isTypeAlias()) {
+            return isUnknownTuple(args.resolveAliases());
+        }
+        return true;
+        
+    }
 }

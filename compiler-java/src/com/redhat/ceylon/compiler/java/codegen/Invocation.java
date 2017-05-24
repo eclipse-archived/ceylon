@@ -567,7 +567,7 @@ class IndirectInvocation extends SimpleInvocation {
 
         Type callableType = primary.getTypeModel();
 
-        this.unknownArguments = gen.isUnknownArgumentsCallable(callableType);
+        this.unknownArguments = gen.typeFact().isUnknownArgumentsCallable(callableType);
         
         final java.util.List<Type> parameterTypes;
         // if we have an unknown parameter list, like Callble<Ret,Args>, we can't look at parameter types
