@@ -3,21 +3,6 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel.meta;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import ceylon.language.Array;
-import ceylon.language.AssertionError;
-import ceylon.language.Entry;
-import ceylon.language.Iterable;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
-import ceylon.language.meta.declaration.CallableConstructorDeclaration;
-import ceylon.language.meta.declaration.ValueConstructorDeclaration;
-import ceylon.language.meta.model.Applicable;
-import ceylon.language.meta.model.CallableConstructor;
-import ceylon.language.meta.model.FunctionModel;
-import ceylon.language.meta.model.InvocationException;
-import ceylon.language.meta.model.ValueConstructor;
-import ceylon.language.meta.model.ValueModel;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -43,6 +28,20 @@ import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+
+import ceylon.language.Array;
+import ceylon.language.AssertionError;
+import ceylon.language.Entry;
+import ceylon.language.Iterable;
+import ceylon.language.Sequential;
+import ceylon.language.empty_;
+import ceylon.language.meta.declaration.CallableConstructorDeclaration;
+import ceylon.language.meta.declaration.ValueConstructorDeclaration;
+import ceylon.language.meta.model.CallableConstructor;
+import ceylon.language.meta.model.FunctionModel;
+import ceylon.language.meta.model.InvocationException;
+import ceylon.language.meta.model.ValueConstructor;
+import ceylon.language.meta.model.ValueModel;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -89,10 +88,13 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
     }
     
     void checkConstructor() {
-        if(((ClassDeclarationImpl)declaration).getAbstract())
-        throw new InvocationException("Abstract class cannot be instantiated");
-        if(((ClassDeclarationImpl)declaration).getAnonymous())
-        throw new InvocationException("Object class cannot be instantiated");
+        ClassDeclarationImpl classDeclaration = (ClassDeclarationImpl)declaration;
+        if(classDeclaration.getAbstract())
+            throw new InvocationException("Abstract class cannot be instantiated");
+        if(classDeclaration.getAnonymous())
+            throw new InvocationException("Object class cannot be instantiated");
+        if (producedType.getDeclaration().isAbstraction())
+            throw new InvocationException("Class with overloaded constructors cannot be instantiated");
     }
     
     ConstructorDispatch<Type, Arguments> getDispatch() {
