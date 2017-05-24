@@ -37,7 +37,7 @@ public class CompileJsToolTest {
     }
     private List<String> args(String... args) {
         ArrayList<String> result = new ArrayList<>();
-        result.add("--rep=build/runtime");
+        result.add("--rep=../dist/dist/repo/");
         result.add("--out=build/test-modules");
         result.addAll(Arrays.asList(args));
         return result;
@@ -420,7 +420,7 @@ public class CompileJsToolTest {
     
     @Test
     public void testDistSampleHelloworld() throws IOException, InterruptedException {
-        testLaunchDistCeylon("helloworld", "com.example.helloworld", Versions.CEYLON_VERSION_NUMBER);
+        testLaunchDistCeylon("helloworld", "com.example.helloworld", "1.0");
     }
         
     @Test
@@ -430,7 +430,7 @@ public class CompileJsToolTest {
     
     @Test
     public void testDistSampleWithModule() throws IOException, InterruptedException {
-        testLaunchDistCeylon("with-module", "com.example.withmodule", Versions.CEYLON_VERSION_NUMBER);
+        testLaunchDistCeylon("with-module", "com.example.withmodule", "1.0");
     }
 
     /** Check that the version returned by language.runtime is the correct one, and check
