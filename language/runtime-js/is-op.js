@@ -1,3 +1,6 @@
+function isNullType(t) {
+    return t.t===$init$$_null()||t.t===Null||t.t===Anything;
+}
 function is$(obj,type,containers){
   if(type && type.t){
     if(type.t==='i'||type.t==='u'){
@@ -10,7 +13,7 @@ function is$(obj,type,containers){
       return typeof(obj) === 'number';
     }
     if(obj===null||obj===undefined){
-      return type.t===Null||type.t===Anything;
+      return isNullType(type);
     }
     if(obj.getT$all===undefined || !obj.getT$all()){
       if(obj.$crtmm$){
@@ -223,9 +226,10 @@ function is$(obj,type,containers){
 function isOfTypes(obj, types) {
   if (obj===null) {
     for (var i=0; i < types.l.length; i++) {
-      if(types.l[i].t===Null || types.l[i].t===Anything) return true;
-      else if (types.l[i].t==='u') {
-        if (isOfTypes(null, types.l[i])) return true;
+      var t = types.l[i];
+      if (isNullType(t)) return true;
+      else if (t.t==='u') {
+        if (isOfTypes(null,t)) return true;
       }
     }
     return false;
@@ -249,13 +253,13 @@ function isOfTypes(obj, types) {
 }
 //Tells whether t1 is a subtype of t2
 //tparm indicates if the calculations are being done on type parameters
-function extendsType(t1, t2,tparm) {
+function extendsType(t1, t2, tparm) {
     if (t1 === undefined || t1.t === undefined || t1.t === Nothing || t2 === undefined || t2.t === undefined) {
       return true;//t2 === undefined;
     } else if (t2 && t2.t === Anything) {
       return true;
     } else if (t1 === null) {
-      return t2.t === Null || t2.t === Anything;
+      return isNullType(t2);
     }
     if (t1.t === 'u' || t1.t === 'i') {
         if (t1.t==='i')removeSupertypes(t1.l);

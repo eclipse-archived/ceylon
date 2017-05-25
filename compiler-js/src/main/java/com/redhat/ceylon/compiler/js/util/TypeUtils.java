@@ -24,6 +24,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -94,12 +95,13 @@ public class TypeUtils {
     public static void outputQualifiedTypename(final Node node, final boolean imported, final Type pt,
             final GenerateJsVisitor gen, final boolean skipSelfDecl) {
         TypeDeclaration t = pt.getDeclaration();
-        final String qname = t.getQualifiedNameString();
-        if (qname.equals("ceylon.language::Nothing")) {
+        if (t instanceof NothingType) {
             //Hack in the model means hack here as well
             gen.out(gen.getClAlias(), "Nothing");
-        } else if (qname.equals("ceylon.language::null") || qname.equals("ceylon.language::Null")) {
+        } else if (t.isNull()) {
             gen.out(gen.getClAlias(), "Null");
+        } else if (t.isAnything()) {
+            gen.out(gen.getClAlias(), "Anything");
         } else if (ModelUtil.isTypeUnknown(pt)) {
             if (!gen.isInDynamicBlock()) {
                 gen.out("/*WARNING unknown type");
