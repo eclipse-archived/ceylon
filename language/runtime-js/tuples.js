@@ -16,7 +16,7 @@ function tpl$(elems,spread){
   for (var i=0; i < elems.length; i++){
     var e=elems[i];
     if (e===null) {
-      types.push({t:Null});
+      types.push({t:$_null});
     } else if (e===undefined) {
       types.push({t:Anything});
     } else if (e.getT$all && e.getT$name) {
