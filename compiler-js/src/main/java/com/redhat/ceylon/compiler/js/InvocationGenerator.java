@@ -127,12 +127,12 @@ public class InvocationGenerator {
             final String fname = names.createTempVariable();
             gen.out(fname,"=");
             typeArgSource.visit(gen);
-            String fuckingargs = "";
+            String theargs = "";
             if (!argnames.isEmpty()) {
-                fuckingargs = argnames.toString().substring(1);
-                fuckingargs = fuckingargs.substring(0, fuckingargs.length()-1);
+                theargs = argnames.toString().substring(1);
+                theargs = theargs.substring(0, theargs.length()-1);
             }
-            gen.out(",", fname, ".$$===undefined?new ", fname, "(", fuckingargs, "):", fname, "(", fuckingargs, "))");
+            gen.out(",", fname, ".$$===undefined?new ", fname, "(", theargs, "):", fname, "(", theargs, "))");
             //TODO we lose type args for now
             return;
         } else {
