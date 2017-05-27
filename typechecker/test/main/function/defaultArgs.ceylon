@@ -14,14 +14,20 @@ void stuff() {
 }
 
 void variableCapture() {
-    class C(shared variable Integer i, 
-            @error shared Integer f() => i) {
+    @error class C(shared variable Integer i, j = 0,
+            @error shared Integer f() => i,
+            g = j) {
+        shared variable Integer j;
+        shared Integer g;
         shared void inc() { 
-            i = i + 1; 
+            i = i + 1;
         }
     }
-    void f(variable Integer i = 1, 
-           @error Integer f() => i) {
+    @error void f(variable Integer i = 1, j = 0,
+           @error Integer f() => i,
+           g = j) {
+        variable Integer j;
+        Integer g;
         i = 10;
     }
 }

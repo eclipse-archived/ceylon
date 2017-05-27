@@ -58,7 +58,6 @@ public class SpecificationVisitor extends Visitor {
     private boolean endsInReturnThrow = false;
     private boolean endsInBreak = false;
     private boolean inExtends = false;
-    private boolean inDefaultArg = false;
     private boolean inDelegatedContructor = false;
     private boolean inAnonFunctionOrComprehension = false;
     private Parameter parameter = null;
@@ -79,14 +78,6 @@ public class SpecificationVisitor extends Visitor {
         inExtends = declared;
         super.visit(that);
         inExtends = oie;
-    }
-    
-    @Override
-    public void visit(Tree.ParameterDeclaration that) {
-        boolean oida = inDefaultArg;
-        inDefaultArg = true;
-        super.visit(that);
-        inDefaultArg = oida;
     }
     
     private final class ContinueVisitor extends Visitor {
@@ -326,7 +317,7 @@ public class SpecificationVisitor extends Visitor {
                         " is declared 'default'"); 
             }
             if (definitely && isVariable()) {
-                if (inDefaultArg) {
+                if (parameter!=null) {
                     that.addError("value may not be captured by default argument: "+
                             name() +
                             " is declared 'variable'");
