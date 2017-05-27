@@ -12,3 +12,16 @@ void stuff() {
     Z1().foo();
     Anything(String=, Integer=) callable = Z1().foo;
 }
+
+void variableCapture() {
+    class C(shared variable Integer i, 
+            @error shared Integer f() => i) {
+        shared void inc() { 
+            i = i + 1; 
+        }
+    }
+    void f(variable Integer i = 1, 
+           @error Integer f() => i) {
+        i = 10;
+    }
+}

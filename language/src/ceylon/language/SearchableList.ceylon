@@ -124,17 +124,19 @@ shared interface SearchableList<Element>
          at any index in this list with a null element."
         Element element,
         "The smallest index to consider."
-        variable Integer from = 0,
+        Integer from = 0,
         "The number of indexes to consider."
-        variable Integer length = size-from) {
-        if (from < 0) {
-            length += from;
-            from = 0;
+        Integer length = size-from) {
+        variable value start = from;
+        variable value len = length;
+        if (start < 0) {
+            len += start;
+            start = 0;
         }
-        if (length > size - from) {
-            length = size - from;
+        if (len > size - start) {
+            len = size - start;
         }
-        for (index in from:length) {
+        for (index in start:len) {
             if (occursAt(index,element)) {
                 return index;
             }
@@ -158,19 +160,21 @@ shared interface SearchableList<Element>
          a reverse index counting from the _end_ of the 
          list, where `0` is the last element of the list, 
          and `size-1` is the first element of the list."
-        variable Integer from = 0,
+        Integer from = 0,
         "The number of indexes to consider."
-        variable Integer length = size-from) {
+        Integer length = size-from) {
         //TODO: refine reversed to return a SearchableList
         // => reversed.firstOccurrence(element, from, length)
-        if (from < 0) {
-            length += from;
-            from = 0;
+        variable value start = from;
+        variable value len = length;
+        if (start < 0) {
+            len += start;
+            start = 0;
         }
-        if (length > size - from) {
-            length = size - from;
+        if (len > size - start) {
+            len = size - start;
         }
-        for (index in (size-length-from:length).reversed) {
+        for (index in (size-len-start:len).reversed) {
             if (occursAt(index,element)) {
                 return index;
             }
