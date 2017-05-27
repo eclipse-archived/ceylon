@@ -317,8 +317,8 @@ public class SpecificationVisitor extends Visitor {
                         " is declared 'default'"); 
             }
             if (inAnonFunctionOrComprehension && 
-                definitely && 
-                isVariable() && assigned &&
+                definitely &&
+                isVariable() &&
                 declaration.isClassOrInterfaceMember()) {
                 that.addError("member may not be captured by comprehension or function in extends clause: "+
                         name() +

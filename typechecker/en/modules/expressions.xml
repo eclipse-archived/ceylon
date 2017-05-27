@@ -359,7 +359,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
 }</programlisting>
             
         <para>An anonymous function occurring in an <literal>extends</literal>
-        clause may not contain an assignment to a variable attribute of a 
+        clause may not contain a reference to a variable attribute of a 
         containing class or interface.</para>
         
         <comment><para>Note: evaluation of an anonymous function expression,
@@ -1154,7 +1154,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             clause has an iterated expression of nonempty type.</para>
             
             <para>A comprehension occurring in an <literal>extends</literal> clause may 
-            not contain an assignment to a variable attribute of a containing class or 
+            not contain a reference to a variable attribute of a containing class or 
             interface.</para>
             
             <comment><para>Note: a comprehension, like a spread argument, is not considered 
