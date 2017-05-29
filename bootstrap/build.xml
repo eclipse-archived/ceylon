@@ -210,6 +210,7 @@
     </target>
 
     <target name="compile.tests">
+    	<!-- No tests for now
         <mkdir dir="${build.classes}" />
         <javac
             srcdir="${test.src}"
@@ -227,6 +228,7 @@
                 <exclude name="**/*.java" />
             </fileset>
         </copy>
+        -->
     </target>
 
     <target name="test"
