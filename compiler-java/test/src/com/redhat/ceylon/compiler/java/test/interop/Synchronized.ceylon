@@ -2,7 +2,7 @@ import java.lang{synchronized}
 
 @noanno
 class Synchronized(s, shared variable synchronized String u, shared synchronized void f()) {
-    shared variable synchronized String s;
+    shared synchronized String s;
     shared variable synchronized String t=s;
     shared synchronized void m(String s=this.s) {
     }

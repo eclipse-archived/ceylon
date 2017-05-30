@@ -204,7 +204,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6287() {
         assertErrors("bug62xx/Bug6287",
-                new CompilerError(1, "imported declaration not found: 'string' might be misspelled or does not belong to this package (did you mean 'stringify'?)"),
+                new CompilerError(1, "imported declaration not found: 'string' might be misspelled or does not belong to the package 'ceylon.language' (did you mean 'stringify'?)"),
                 new CompilerError(4, "type is not defined: 'string' might be misspelled or is not imported"),
                 new CompilerError(5, "function or value is not defined: 'string' might be misspelled or is not imported"));
     }

@@ -5,38 +5,34 @@ class Bug6174 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Bug6174() {
     }
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6174.Param Param$new$(final .java.lang.String model$param$, long size) {
-        return new Param(model$param$, size);
+    public .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6174.Param Param$new$(final .java.lang.String model, long size) {
+        return new Param(model, size);
     }
     
-    public final long $default$Param$size(final .java.lang.String model$param$) {
-        return .ceylon.language.String.getSize(model$param$);
+    public final long $default$Param$size(final .java.lang.String model) {
+        return .ceylon.language.String.getSize(model);
     }
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6174.Param Param$new$(final .java.lang.String model$param$) {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6174.Param Param$new$(final .java.lang.String model) {
         return (
             let
             {
-                long $ceylontmp$size$0 = $default$Param$size(model$param$);
+                long $ceylontmp$size$0 = $default$Param$size(model);
             }
-            returning new Param(model$param$, $ceylontmp$size$0);
+            returning new Param(model, $ceylontmp$size$0);
         );
     }
     
     public class Param implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
-        protected Param(.java.lang.String model$param$, long size) {
-            this.model = model$param$;
+        protected Param(final .java.lang.String model, long size) {
+            this.model = model;
             this.size = size;
         }
-        private .java.lang.String model;
+        private final .java.lang.String model;
         
         public final .java.lang.String getModel() {
             return this.model;
-        }
-        
-        public final void setModel(final .java.lang.String model) {
-            this.model = model;
         }
         private long size;
         
