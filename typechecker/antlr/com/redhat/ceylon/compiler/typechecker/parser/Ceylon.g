@@ -247,14 +247,19 @@ importDeclaration returns [Import importDeclaration]
 importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
     @init { ImportMemberOrTypeList il=null; 
             boolean wildcarded = false; }
-    :
-    LBRACE
-    { il = new ImportMemberOrTypeList($LBRACE);
-      $importMemberOrTypeList = il; }
-    ( 
-      ie1=importElement 
-      { if ($ie1.importMemberOrType!=null)
-            il.addImportMemberOrType($ie1.importMemberOrType); } 
+    : LBRACE
+      { il = new ImportMemberOrTypeList($LBRACE);
+        $importMemberOrTypeList = il; }
+      (
+      (
+        ie1=importElement 
+        { if ($ie1.importMemberOrType!=null)
+              il.addImportMemberOrType($ie1.importMemberOrType); } 
+      | iw1=importWildcard 
+        { wildcarded = true;
+          if ($iw1.importWildcard!=null) 
+              il.setImportWildcard($iw1.importWildcard); }
+      )
       ( 
         c1=COMMA 
         { il.setEndToken($c1); 
@@ -267,20 +272,19 @@ importElementList returns [ImportMemberOrTypeList importMemberOrTypeList]
                 il.addImportMemberOrType($ie2.importMemberOrType);
             if ($ie2.importMemberOrType!=null)
                 il.setEndToken(null); } 
-        | iw=importWildcard
+        | iw2=importWildcard
           { wildcarded = true;
-            if ($iw.importWildcard!=null) 
-                il.setImportWildcard($iw.importWildcard); 
-            if ($iw.importWildcard!=null) 
+            if ($iw2.importWildcard!=null) 
+                il.setImportWildcard($iw2.importWildcard); 
+            if ($iw2.importWildcard!=null) 
                 il.setEndToken(null); } 
         | { displayRecognitionError(getTokenNames(), 
                 new MismatchedTokenException(ELLIPSIS, input)); }
         )
       )*
-    | iw=importWildcard { il.setImportWildcard($iw.importWildcard); }
-    )?
-    RBRACE
-    { il.setEndToken($RBRACE); }
+      )?
+      RBRACE
+      { il.setEndToken($RBRACE); }
     ;
 
 importElement returns [ImportMemberOrType importMemberOrType]

@@ -91,24 +91,26 @@ public class ImportVisitor extends Visitor {
             return;
         }
         
+        Tree.ImportPath path = that.getImportPath();
         Package importedPackage = 
-                importedPackage(that.getImportPath(), unit);
+                importedPackage(path, unit);
         if (importedPackage!=null) {
-            that.getImportPath().setModel(importedPackage);
+            path.setModel(importedPackage);
             Tree.ImportMemberOrTypeList imtl = 
                     that.getImportMemberOrTypeList();
             if (imtl!=null) {
                 ImportList il = imtl.getImportList();
                 il.setImportedScope(importedPackage);
                 Set<String> names = new HashSet<String>();
-                for (Tree.ImportMemberOrType member: 
-                        imtl.getImportMemberOrTypes()) {
+                List<Tree.ImportMemberOrType> list = 
+                        imtl.getImportMemberOrTypes();
+                for (Tree.ImportMemberOrType member: list) {
                     names.add(importMember(member, importedPackage, il));
                 }
                 if (imtl.getImportWildcard()!=null) {
                     importAllMembers(importedPackage, names, il);
                 } 
-                else if (imtl.getImportMemberOrTypes().isEmpty()) {
+                else if (list.isEmpty()) {
                     imtl.addError("empty import list", 1020);
                 }
             }
