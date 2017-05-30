@@ -154,3 +154,6 @@ class Lambdas() {
 class SuperWithFun(String fun()) {}
 @error class BadSubWithFun(variable String s) extends SuperWithFun(()=>s) {}
 class GoodSubWithFun(String s) extends SuperWithFun(()=>s) {}
+class OkSubWithFun(variable String s) {
+    class Inner() extends SuperWithFun(()=>s) {}
+}
