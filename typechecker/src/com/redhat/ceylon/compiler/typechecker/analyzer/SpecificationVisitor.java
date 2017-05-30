@@ -9,6 +9,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isNev
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isEffectivelyBaseMemberExpression;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isSelfReference;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 
@@ -318,13 +319,19 @@ public class SpecificationVisitor extends Visitor {
             }
             if (definitely && isVariable()) {
                 if (parameter!=null) {
-                    that.addError("value may not be captured by default argument: "+
-                            name() +
-                            " is declared 'variable'");
+                    Declaration paramDec =
+                            parameter.getDeclaration();
+                    if (paramDec.equals(declaration.getContainer())) {
+                        that.addError("value may not be captured by default argument: " +
+                                name() +
+                                " is declared 'variable'");
+                    }
                 }
                 if (inAnonFunctionOrComprehension 
-                        && declaration.isClassOrInterfaceMember()) {
-                    that.addError("member may not be captured by comprehension or function in extends clause: "+
+                        && declaration.isClassOrInterfaceMember()
+                        && getContainingClassOrInterface(scope)
+                            .equals(declaration.getContainer())) {
+                    that.addError("member may not be captured by comprehension or function in extends clause: " +
                             name() +
                             " is declared 'variable'");
                 }
@@ -343,8 +350,8 @@ public class SpecificationVisitor extends Visitor {
             ClassOrInterface container = 
                     (ClassOrInterface) 
                         declaration.getContainer();
-            return container.isNativeHeader() && 
-                    !scope.getScopedBackends().none();
+            return container.isNativeHeader() 
+                && !scope.getScopedBackends().none();
         }
         else {
             return false;

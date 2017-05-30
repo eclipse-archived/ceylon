@@ -30,4 +30,10 @@ void variableCapture() {
         Integer g;
         i = 10;
     }
+    
+    void ff(variable String s, @error void f() => print(s)) {}
+    
+    void gg(variable String s) { 
+        void g(void f() => print(s)) {}
+    }
 }

@@ -604,9 +604,11 @@ TypeConstraints?
             <synopsis>Specifier: "=" Expression</synopsis>
             <synopsis>LazySpecifier: "=&gt;" Expression</synopsis>
             
-            <para>The default argument expression may involve other parameters declared 
-            earlier in the parameter list or lists. It may not involve parameters declared 
-            later in the parameter list or lists.</para>
+            <para>The default argument expression may involve other 
+            non-<literal>variable</literal> parameters declared earlier in the parameter 
+            list or lists. It may not involve parameters declared later in the parameter 
+            list or lists. It may not involve <literal>variable</literal> parameters of
+            the parameter list.</para>
             
             <para>The default argument expression may not involve an assignment, compound
             assignment, increment, or decrement operator.</para>

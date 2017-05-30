@@ -358,9 +358,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     return [string[...mid],string[mid+1...]];
 }</programlisting>
             
-        <para>An anonymous function occurring in an <literal>extends</literal>
-        clause may not contain a reference to a variable attribute of a 
-        containing class or interface.</para>
+        <para>An anonymous function occurring in the <literal>extends</literal>
+        clause of a class may not contain a reference to a variable attribute 
+        of the class.</para>
         
         <comment><para>Note: evaluation of an anonymous function expression,
         as defined in <xref linkend="anonymousfunctionevaluation"/> results
@@ -1153,9 +1153,8 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             there are no <literal>if</literal> clauses, and if every <literal>for</literal> 
             clause has an iterated expression of nonempty type.</para>
             
-            <para>A comprehension occurring in an <literal>extends</literal> clause may 
-            not contain a reference to a variable attribute of a containing class or 
-            interface.</para>
+            <para>A comprehension occurring in an <literal>extends</literal> clause of a
+            class may not contain a reference to a variable attribute of the class.</para>
             
             <comment><para>Note: a comprehension, like a spread argument, is not considered 
             an expression. An expression, when evaluated, produces a single value. A 
