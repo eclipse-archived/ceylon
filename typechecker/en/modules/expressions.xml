@@ -1153,9 +1153,6 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             there are no <literal>if</literal> clauses, and if every <literal>for</literal> 
             clause has an iterated expression of nonempty type.</para>
             
-            <para>A comprehension occurring in an <literal>extends</literal> clause of a
-            class may not contain a reference to a variable attribute of the class.</para>
-            
             <comment><para>Note: a comprehension, like a spread argument, is not considered 
             an expression. An expression, when evaluated, produces a single value. A 
             comprehension produces multiple values, like a spread argument, or like a series 
@@ -1253,6 +1250,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             to assign a local name to an anonymous argument or listed argument, allowing it to 
             be referenced later in the argument list. We might consider this a kind of "let"
             expression, perhaps.</para></comment>
+            
+            <para>An inline declaration argument or an ordinary list of arguments occurring in 
+            an <literal>extends</literal> clause of a class may not contain a reference to a 
+            variable attribute of the class.</para>
             
             <para>Given a parameter list, and a named argument list, we may attempt to construct 
             an <emphasis>equivalent positional argument list</emphasis> as follows:</para>
@@ -1500,6 +1501,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>Every argument expression must have a type, even if the enumeration expression
             occurs in a <literal>dynamic</literal> block.</para>
             
+            <para>An iterable enumeration expression occurring in an <literal>extends</literal> 
+            clause of a class may not contain a reference to a variable attribute of the class.
+            </para>
+            
         </section>
         
         <section id="dynamicenumerations">
@@ -1713,6 +1718,10 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         next() => current++;
     };
 }</programlisting>
+
+            <para>An inline anonymous class expression occurring in an 
+            <literal>extends</literal> clause of a class may not contain a 
+            reference to a variable attribute of the class.</para>
         
         </section>
         

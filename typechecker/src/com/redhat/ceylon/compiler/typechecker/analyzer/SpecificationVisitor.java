@@ -60,7 +60,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean endsInBreak = false;
     private boolean inExtends = false;
     private boolean inDelegatedContructor = false;
-    private boolean inAnonFunctionOrComprehension = false;
+    private boolean inLazyExpression = false;
     private Parameter parameter = null;
     private boolean usedInDeclarationSection = false;
     private boolean definedInDeclarationSection = false;
@@ -327,7 +327,7 @@ public class SpecificationVisitor extends Visitor {
                                 " is declared 'variable'");
                     }
                 }
-                if (inAnonFunctionOrComprehension 
+                if (inLazyExpression 
                         && declaration.isClassOrInterfaceMember()
                         && getContainingClassOrInterface(scope)
                             .equals(declaration.getContainer())) {
@@ -483,8 +483,11 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.SequenceEnumeration that) {
         boolean odefinitely = definitely;
+        boolean oile = inLazyExpression;
+        inLazyExpression = declared&&inExtends;
         super.visit(that);
         definitely = odefinitely;
+        inLazyExpression = oile;
     }
     
     @Override
@@ -495,27 +498,27 @@ public class SpecificationVisitor extends Visitor {
         Tree.SequencedArgument sa = that.getSequencedArgument();
         if (sa!=null) {
             boolean odefinitely = definitely;
+            boolean oile = inLazyExpression;
+            inLazyExpression = declared&&inExtends;
             sa.visit(this);
             definitely = odefinitely;
+            inLazyExpression = oile;
         }
     }
     
     @Override
     public void visit(Tree.Comprehension that) {
         boolean odefinitely = definitely;
-        boolean oicoaf = inAnonFunctionOrComprehension;
-        inAnonFunctionOrComprehension = declared&&inExtends;
         super.visit(that);
         definitely = odefinitely;
-        inAnonFunctionOrComprehension = oicoaf;
     }
     
     @Override
     public void visit(Tree.FunctionArgument that) {
         boolean c = specificationDisabled;
         specificationDisabled = true;
-        boolean oicoaf = inAnonFunctionOrComprehension;
-        inAnonFunctionOrComprehension = declared&&inExtends;
+        boolean oile = inLazyExpression;
+        inLazyExpression = declared&&inExtends;
         boolean odefinitely = definitely;
         boolean opossibly = possibly;
         boolean opossiblyExited = possiblyExited;
@@ -530,7 +533,7 @@ public class SpecificationVisitor extends Visitor {
         definitelyExited = odefinitelyExited;
         definitelyByLoopBreaks = odefinitelyByLoopBreaks;
         possiblyByLoopBreaks = opossiblyByLoopBreaks;
-        inAnonFunctionOrComprehension = oicoaf;
+        inLazyExpression = oile;
         specificationDisabled = c;
     }
     
@@ -538,8 +541,8 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.ObjectExpression that) {
         boolean c = specificationDisabled;
         specificationDisabled = true;
-        boolean oicoaf = inAnonFunctionOrComprehension;
-        inAnonFunctionOrComprehension = declared&&inExtends;
+        boolean oile = inLazyExpression;
+        inLazyExpression = declared&&inExtends;
         boolean odefinitely = definitely;
         boolean opossibly = possibly;
         boolean opossiblyExited = possiblyExited;
@@ -554,7 +557,7 @@ public class SpecificationVisitor extends Visitor {
         definitelyExited = odefinitelyExited;
         definitelyByLoopBreaks = odefinitelyByLoopBreaks;
         possiblyByLoopBreaks = opossiblyByLoopBreaks;
-        inAnonFunctionOrComprehension = oicoaf;
+        inLazyExpression = oile;
         specificationDisabled = c;
     }
     
@@ -1286,6 +1289,8 @@ public class SpecificationVisitor extends Visitor {
 
     @Override
     public void visit(Tree.TypedArgument that) {
+        boolean oile = inLazyExpression;
+        inLazyExpression = declared&&inExtends;
         if (that.getDeclarationModel()==declaration) {
             loopDepth = 0;
             brokenLoopDepth = 0;
@@ -1325,6 +1330,7 @@ public class SpecificationVisitor extends Visitor {
             loopDepth = l;
             brokenLoopDepth = bl;
         }
+        inLazyExpression = oile;
     }
     
     @Override
