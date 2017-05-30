@@ -14,7 +14,7 @@ void stuff() {
 }
 
 void variableCapture() {
-    @error class C(shared variable Integer i, j = 0,
+    class C(shared variable Integer i, j = 0,
             @error shared Integer f() => i,
             g = j) {
         shared variable Integer j;
@@ -23,7 +23,7 @@ void variableCapture() {
             i = i + 1;
         }
     }
-    @error void f(variable Integer i = 1, j = 0,
+    void f(variable Integer i = 1, j = 0,
            @error Integer f() => i,
            g = j) {
         variable Integer j;
@@ -33,7 +33,7 @@ void variableCapture() {
     
     void ff(variable String s, @error void f() => print(s)) {}
     
-    void gg(variable String s) { 
+    void gg(variable String s) {
         void g(void f() => print(s)) {}
     }
 }

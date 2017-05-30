@@ -59,6 +59,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean endsInReturnThrow = false;
     private boolean endsInBreak = false;
     private boolean inExtends = false;
+    private boolean inParameter = false;
     private boolean inDelegatedContructor = false;
     private boolean inLazyExpression = false;
     private Parameter parameter = null;
@@ -249,11 +250,11 @@ public class SpecificationVisitor extends Visitor {
         }
 
         Scope scope = that.getScope();
-        if ((member==declaration || 
-                isDelegationToDefaultConstructor(member)) && 
-                declaration.isDefinedInScope(scope) &&
+        if ((member==declaration 
+                || isDelegationToDefaultConstructor(member)) 
+                && declaration.isDefinedInScope(scope) 
                 //TODO: THIS IS TERRIBLE!!!!!
-                !isReferenceToNativeHeaderMember(scope)) {
+                && !isReferenceToNativeHeaderMember(scope)) {
             if (!declared) {
                 if (!metamodel && 
                         !isForwardReferenceable() && 
@@ -272,8 +273,8 @@ public class SpecificationVisitor extends Visitor {
                     }
                 }
             }
-            else if (!definitely || 
-                    declaration.isFormal()) {
+            else if (!definitely 
+                    || declaration.isFormal()) {
                 //you are allowed to refer to formal
                 //declarations in a class declaration
                 //section or interface
@@ -284,9 +285,9 @@ public class SpecificationVisitor extends Visitor {
                                 " is declared 'formal'");                    
                     }
                 }
-                else if (!metamodel &&
-                        !isNativeHeader(declaration) &&
-                        !isLate()) {
+                else if (!metamodel 
+                        && !isNativeHeader(declaration) 
+                        && !isLate()) {
                     String message = 
                             "not definitely "
                             + (isVariable() ? 
@@ -304,36 +305,40 @@ public class SpecificationVisitor extends Visitor {
             else if (parameter!=null) {
                 Declaration paramDec =
                         parameter.getDeclaration();
-                if (isConstructor(paramDec) &&
-                        !declaration.isStatic() &&
-                        paramDec.getContainer()
+                if (isConstructor(paramDec) 
+                        && !declaration.isStatic() 
+                        && paramDec.getContainer()
                             .equals(declaration.getContainer())) {
                   that.addError("default argument to constructor parameter is a member of the constructed class");
                }
             }
-            if (!assigned && declaration.isDefault() && 
-                    !isForwardReferenceable()) {
+            if (!assigned 
+                    && declaration.isDefault() 
+                    && !isForwardReferenceable()) {
                 that.addError("default member may not be used in initializer: " + 
                         name() +
                         " is declared 'default'"); 
             }
-            if (definitely && isVariable()) {
-                if (parameter!=null) {
+            if (definitely 
+                    && isVariable() 
+                    && inLazyExpression) {
+                if (inParameter) {
                     Declaration paramDec =
                             parameter.getDeclaration();
                     if (paramDec.equals(declaration.getContainer())) {
-                        that.addError("value may not be captured by default argument: " +
+                        that.addError("value may not be captured by lazy expression in default argument: " +
                                 name() +
                                 " is declared 'variable'");
                     }
                 }
-                if (inLazyExpression 
-                        && declaration.isClassOrInterfaceMember()
-                        && getContainingClassOrInterface(scope)
-                            .equals(declaration.getContainer())) {
-                    that.addError("member may not be captured by comprehension or function in extends clause: " +
-                            name() +
-                            " is declared 'variable'");
+                if (inExtends) {
+                    if (declaration.isClassOrInterfaceMember()
+                            && getContainingClassOrInterface(scope)
+                                .equals(declaration.getContainer())) {
+                        that.addError("value may not be captured by lazy expression in extends clause: " +
+                                name() +
+                                " is declared 'variable'");
+                    }
                 }
             }
         }
@@ -484,7 +489,7 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.SequenceEnumeration that) {
         boolean odefinitely = definitely;
         boolean oile = inLazyExpression;
-        inLazyExpression = declared&&inExtends;
+        inLazyExpression = declared&&(inExtends||inParameter);
         super.visit(that);
         definitely = odefinitely;
         inLazyExpression = oile;
@@ -499,7 +504,7 @@ public class SpecificationVisitor extends Visitor {
         if (sa!=null) {
             boolean odefinitely = definitely;
             boolean oile = inLazyExpression;
-            inLazyExpression = declared&&inExtends;
+            inLazyExpression = declared&&(inExtends||inParameter);
             sa.visit(this);
             definitely = odefinitely;
             inLazyExpression = oile;
@@ -514,11 +519,19 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.LazySpecifierExpression that) {
+        boolean oile = inLazyExpression;
+        inLazyExpression = declared&&(inExtends||inParameter);
+        super.visit(that);
+        inLazyExpression = oile;
+    }
+    
+    @Override
     public void visit(Tree.FunctionArgument that) {
         boolean c = specificationDisabled;
         specificationDisabled = true;
         boolean oile = inLazyExpression;
-        inLazyExpression = declared&&inExtends;
+        inLazyExpression = declared&&(inExtends||inParameter);
         boolean odefinitely = definitely;
         boolean opossibly = possibly;
         boolean opossiblyExited = possiblyExited;
@@ -542,7 +555,7 @@ public class SpecificationVisitor extends Visitor {
         boolean c = specificationDisabled;
         specificationDisabled = true;
         boolean oile = inLazyExpression;
-        inLazyExpression = declared&&inExtends;
+        inLazyExpression = declared&&(inExtends||inParameter);
         boolean odefinitely = definitely;
         boolean opossibly = possibly;
         boolean opossiblyExited = possiblyExited;
@@ -1290,7 +1303,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypedArgument that) {
         boolean oile = inLazyExpression;
-        inLazyExpression = declared&&inExtends;
+        inLazyExpression = declared&&(inExtends||inParameter);
         if (that.getDeclarationModel()==declaration) {
             loopDepth = 0;
             brokenLoopDepth = 0;
@@ -1410,10 +1423,13 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Parameter that) {
         Parameter p = that.getParameterModel();
-        Parameter oip = parameter;
+        boolean oip = inParameter;
+        inParameter = true;
+        Parameter op = parameter;
         parameter = p;
         super.visit(that);
-        parameter = oip;
+        parameter = op;
+        inParameter = oip;
         if (p!=null && p.getModel()==declaration) {
             specify();
         }
