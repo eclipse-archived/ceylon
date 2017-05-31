@@ -299,8 +299,9 @@ public class CeylonRunTool extends RepoUsingTool {
         if (run != null) {
             argList.add("-run");
             if (!defaultModuleName.equals(module)
-                    && !run.contains("::")) {
-                argList.add(module + "::" + run);
+                    && !run.contains("::")
+                    && run.startsWith("=")) {
+                argList.add(module + "::" + run.substring(1));
             }
             else {
                 argList.add(run);
