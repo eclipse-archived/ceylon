@@ -233,10 +233,10 @@ public class CeylonRunTool extends RepoUsingTool {
                         run = mfRun;
                     }
                 } else {
-                    throw new IllegalArgumentException("The Assembly does not have a manifest");
+                    throw new IllegalArgumentException("The assembly archive does not have a manifest");
                 }
             } else {
-                throw new IllegalArgumentException("The file specified by '--assembly' is not a valid Ceylon Assembly");
+                throw new IllegalArgumentException("The file specified by '--assembly' is not a valid Ceylon assembly archive: " + assembly);
             }
         }
         
