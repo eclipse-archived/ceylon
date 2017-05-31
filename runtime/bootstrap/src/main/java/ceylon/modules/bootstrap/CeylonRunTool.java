@@ -95,6 +95,8 @@ public class CeylonRunTool extends RepoUsingTool {
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean upgradeDist = DefaultToolOptions.getLinkWithCurrentDistribution();
     
+    private String defaultModuleName = com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME;
+    
     private Map<String,String> extraModules = new HashMap<String,String>();
 
     public CeylonRunTool() {
@@ -296,7 +298,7 @@ public class CeylonRunTool extends RepoUsingTool {
 
         if (run != null) {
             argList.add("-run");
-            if (!"default".equals(module) 
+            if (!defaultModuleName.equals(module)
                     && !run.contains("::")) {
                 argList.add(module + "::" + run);
             }
