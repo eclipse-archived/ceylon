@@ -168,12 +168,12 @@ shared void checkInitializers(){
     variadicClass.apply(2, "a", "a");
     unflatten(variadicClass)([2, "a", "a"]);
     
-    try{
-        `Modifiers`();
-        assert(false);
-    }catch(Exception x){
-        assert(is InvocationException x);
-    }
+    //try{
+    //    `Modifiers`();
+    //    assert(false);
+    //}catch(Exception x){
+    //    assert(is InvocationException x);
+    //}
     try{
         `Modifiers`.apply();
         assert(false);
