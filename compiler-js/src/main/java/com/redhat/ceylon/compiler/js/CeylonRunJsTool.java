@@ -222,7 +222,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     @OptionArgument(shortName='a', argumentName="archive")
-    @Description("Specifies the path to a Ceylon Assembly file that should be executed")
+    @Description("Specifies the path to a Ceylon archive that should be executed")
     public void setAssembly(File assembly) {
         this.assembly = assembly;
     }
