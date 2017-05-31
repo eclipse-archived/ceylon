@@ -12,9 +12,9 @@ void test<T>() {
     value noParamsClass = `class NoParams`;
     @type:"Class<NoParams,Empty>" 
     value noParamsType = `NoParams`;
-    @type:"Class<Params,Tuple<Integer|String,Integer,Tuple<String,String,Empty>>>" 
+    @type:"Class<Params,[Integer,String]>" 
     value paramsType = `Params`;
-    @type:"Class<ParameterisedClass<Integer>,Empty>" 
+    @type:"Class<ParameterisedClass<Integer>,[]>" 
     value parameterisedType = `ParameterisedClass<Integer>`;
     @type:"ClassWithInitializerDeclaration" 
     value parameterisedTypeDeclClass = `class ParameterisedClass`;
@@ -44,18 +44,46 @@ void test<T>() {
     value aliasTypeAlias = `alias Alias`;
     @type:"Type<NoParams>" 
     value aliasType = `Alias`;
+    @type:"ClassWithInitializerDeclaration" 
+    value objectDec = `class Object`;
+    @type:"Class<Object,Nothing>" 
+    value objectType = `Object`;
+    @type:"ClassWithInitializerDeclaration" 
+    value singDec = `class Singleton`;
+    @type:"Class<Singleton<Integer>,[Integer]>" 
+    value singType = `Singleton<Integer>`;
+    @type:"ClassWithInitializerDeclaration" 
+    value nullDec = `class Null`;
+    @type:"Class<Null,Nothing>" 
+    value nullType = `Null`;
+    @type:"ClassWithConstructorsDeclaration" 
+    value nullObjectDec = `class \Inull`;
+    @type:"Class<Null,Nothing>" 
+    value nullObjectType = `\Inull`;
+    @type:"ValueDeclaration" 
+    value nullValueDec = `value null`;
+    @type:"Value<Null,Nothing>" 
+    value nullValueType = `null`;
+    @type:"ClassWithConstructorsDeclaration" 
+    value booleanDec = `class Boolean`;
+    @type:"Class<Boolean,Nothing>" 
+    value booleanType = `Boolean`;
+    @type:"ClassWithConstructorsDeclaration" 
+    value trueDec = `class \Itrue`;
+    @type:"Class<Boolean,Nothing>" 
+    value trueType = `\Itrue`;
     
     // members
     @type:"ClassWithInitializerDeclaration"
     value memberClassTypeClass = `class Container.InnerClass`;
-    @type:"MemberClass<Container,Container.InnerClass,Empty>"
+    @type:"MemberClass<Container,Container.InnerClass,[]>"
     value memberClassType = `Container.InnerClass`;
     @type:"InterfaceDeclaration"
     value memberInterfaceTypeInterface = `interface Container.InnerInterface`;
     @type:"MemberInterface<Container,Container.InnerInterface>"
     value memberInterfaceType = `Container.InnerInterface`;
     
-    @type:"MemberClass<ParameterisedContainer<String>,ParameterisedContainer<String>.InnerClass<Integer>,Empty>"
+    @type:"MemberClass<ParameterisedContainer<String>,ParameterisedContainer<String>.InnerClass<Integer>,[]>"
     value memberParameterisedClassType = `ParameterisedContainer<String>.InnerClass<Integer>`;
     @error
     value memberParameterisedClassDecl = `ParameterisedContainer.InnerClass`;
@@ -76,17 +104,17 @@ void test<T>() {
     // toplevel methods
     @type:"FunctionDeclaration"
     value toplevelMethodFunction = `function method`;
-    @type:"Function<Integer,Tuple<String,String,Empty>>"
+    @type:"Function<Integer,[String]>"
     value toplevelMethod = `method`;
     @error:"does not accept type arguments: 'method'"
     value toplevelMethodErr = `method<String>`;
     @error:"function or value is not defined: 'missingMethod'"
     value toplevelMethodErr2 = `missingMethod`;
-    @type:"Function<Integer,Tuple<String,String,Empty>>"
+    @type:"Function<Integer,[String]>"
     value toplevelParameterisedMethod = `parameterisedMethod<Integer,String>`;
     @type:"FunctionDeclaration"
     value toplevelParameterisedMethodErr = `function parameterisedMethod`;
-    @type:"Function<Callable<Integer,Tuple<Boolean,Boolean,Empty>>,Tuple<String,String,Empty>>"
+    @type:"Function<Integer(Boolean),[String]>"
     value toplevelMPLMethod = `mplMethod`;
 
     // qualified methods
@@ -96,7 +124,7 @@ void test<T>() {
     value containerMethod = `Container.method`;
     @error:"method or attribute is not defined: 'missing' in type 'Container'"
     value containerMethodErr = `Container.missing`;
-    @type:"Method<ParameterisedContainer<String>,Anything,Tuple<Integer,Integer,Empty>>"
+    @type:"Method<ParameterisedContainer<String>,Anything,[Integer]>"
     value parameterisedContainerMethod = `ParameterisedContainer<String>.method<Integer>`;
     @type:"FunctionDeclaration"
     value parameterisedContainerMethodDeclFunction = `function ParameterisedContainer.method`;

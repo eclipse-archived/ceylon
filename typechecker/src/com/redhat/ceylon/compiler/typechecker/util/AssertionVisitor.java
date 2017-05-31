@@ -52,14 +52,20 @@ public class AssertionVisitor extends Visitor {
                     out(that, "missing asserted type");
                 }
                 else {
-                    String expectedType = sl.getText();
+                    String expectedType = 
+                            sl.getText()
+                              .replace(" ", "");
                     if (typedNode==null || type==null || 
                             type.getDeclaration()==null) {
                         out(that, "type not known");
                     }
                     else {
-                        String actualType = type.asString(false);
-                        String abbreviatedActualType = type.asString();
+                        String actualType = 
+                                type.asString(false)
+                                    .replace(" ", "");
+                        String abbreviatedActualType = 
+                                type.asString()
+                                    .replace(" ", "");
                         if (!actualType.equals(expectedType) &&
                                 !abbreviatedActualType.equals(expectedType)) {
                             String desc = "'" + abbreviatedActualType + "'";

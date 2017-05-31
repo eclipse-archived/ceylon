@@ -2765,6 +2765,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             && !declaration.isAbstraction()
             && (!declaration.isSealed() 
                     || inSameModule(declaration))
+            && !declaration.isAbstract()
             && (dc==null || dc.isShared())) {
             List<Parameter> params = 
                     parameterList.getParameters();
