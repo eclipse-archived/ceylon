@@ -172,7 +172,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         this.overrides = mavenOverrides;
     }
 
-    @OptionArgument(longName="overrides", argumentName="file")
+    @OptionArgument(shortName='O', longName="overrides", argumentName="file")
     @Description("Specifies the XML file to use to load module overrides. See http://ceylon-lang.org/documentation/current/reference/repository/maven/ for information. *Experimental*.")
     public void setOverrides(String overrides) {
         this.overrides = overrides;

@@ -101,7 +101,7 @@ public class CeylonRunTool extends RepoUsingTool {
         super(CeylonMessages.RESOURCE_BUNDLE);
     }
     
-    @Option(longName="flat-classpath")
+    @Option(shortName='F', longName="flat-classpath")
     @Description("Launches the Ceylon module using a flat classpath.")
     public void setFlatClasspath(boolean flatClasspath) {
         this.flatClasspath = flatClasspath;
@@ -116,8 +116,8 @@ public class CeylonRunTool extends RepoUsingTool {
     public void setArgs(List<String> args) {
         this.args = args;
     }
-
-    @OptionArgument(shortName='A', argumentName="archive")
+    
+    @OptionArgument(shortName='a', argumentName="archive")
     @Description("Specifies the path to a Ceylon assembly archive that should be executed.")
     public void setAssembly(File assembly) {
         this.assembly = assembly;
@@ -130,7 +130,7 @@ public class CeylonRunTool extends RepoUsingTool {
         this.autoExportMavenDependencies = autoExportMavenDependencies;
     }
 
-    @OptionArgument(longName = "run", argumentName = "toplevel")
+    @OptionArgument(shortName='x', longName = "run", argumentName = "toplevel")
     @Description("Specifies the fully qualified name of a toplevel method or class to run. " +
             "The indicated declaration must be shared by the `module` and have no parameters. " +
             "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator " +
@@ -139,10 +139,11 @@ public class CeylonRunTool extends RepoUsingTool {
         this.run = run;
     }
 
-    @Option
+    @Option(shortName='c')
     @OptionArgument(argumentName = "flags")
     @Description("Determines if and how compilation should be handled. " +
-            "Allowed flags include: `never`, `once`, `force`, `check`.")
+            "Allowed flags include: `never`, `once`, `force`, `check`. " +
+            "If no flags are specified, defaults to `check`.")
     public void setCompile(String compile) {
         this.compileFlags = compile;
     }

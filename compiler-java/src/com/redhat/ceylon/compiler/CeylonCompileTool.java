@@ -258,8 +258,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         }
     }
 
-    @Option(longName="flat-classpath")
-    @Description("Launches the Ceylon module using a flat classpath.")
+    @Option(shortName='F', longName="flat-classpath")
+    @Description("Compiles the Ceylon module using a flat classpath.")
     public void setFlatClasspath(boolean flatClasspath) {
         this.flatClasspath = flatClasspath;
     }
