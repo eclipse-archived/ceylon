@@ -1,0 +1,1 @@
+function arrayToTuple(array) { return tpl$(array.arr$); }

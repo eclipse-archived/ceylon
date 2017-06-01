@@ -20,7 +20,7 @@ COMPILE core_functions.js, is-op.js, exists-nonempty.js, type_arithmetic.js, -An
 
 COMPILE ArraySequence, Tuple, Basic, Throwable, Exception, Comparison, Iterable, comprehensions.js, -Boolean, Boolean.js, tuples.js, impl/
 COMPILE Numeric, Integral, Scalable, Number, -Integer, -Float, numbers.js, Array, Empty, sequences.js, String, strings.js
-COMPILE process.js
+COMPILE process.js, arrayToTuple.js
 
 Now compile the rest of the language module, except the files we already compiled before...
 
