@@ -348,6 +348,12 @@ shared deprecated</programlisting>
                     to, as specified in <xref linkend="imports"/>.</para>
                 </listitem>
                 <listitem>
+                    <para><literal>restricted</literal> specifies that a 
+                    declaration is only referenceable, as defined by
+                    <xref linkend="referenceabilityofdeclaration"/>, in code
+                    belonging to any one of a specified list of modules.</para>
+                </listitem>
+                <listitem>
                     <para><literal>abstract</literal> specifies that a class
                     cannot be instantiated, or that a constructor is a 
                     partial constructor, as specified in 
