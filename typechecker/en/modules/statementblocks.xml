@@ -619,7 +619,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
                 <listitem>
                     <para>a toplevel declaration, as specified in 
                     <xref linkend="topleveldeclarations"/>, or a declaration that occurs in a 
-                    class declaration sectiony, as specified in <xref linkend="declarationsection"/>, 
+                    class declaration section, as specified in <xref linkend="declarationsection"/>, 
                     or interface body, as specified in <xref linkend="interfacebodies"/>.</para>
                 </listitem>
             </itemizedlist> 
@@ -670,7 +670,22 @@ Integer f(Integer n) => n+package.n;</programlisting>
     Float x => y;
     Float y => x;
 }</programlisting>
-    
+
+            <para>If a declaration is annotation <literal>restricted</literal>, and a
+            program element does not occur in either:</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>the same package as the declaration, or</para>
+                </listitem>
+                <listitem>
+                    <para>one of the modules specified as arguments to the
+                    <literal>restricted</literal> annotation of the declaration,</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>then the declaration is not referenceable at the program element.</para>
+            
         </section>
         
         <section id="typeinferenceandblockstructure">
