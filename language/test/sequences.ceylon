@@ -565,4 +565,9 @@ shared void sequences() {
 
     check({1, 2, 3}.string == "{ 1, 2, 3 }", "iter string: ``{1,2,3}``");
     check([1, 2, 3].string == "[1, 2, 3]", "seq string: ``[1,2,3]``");
+    
+    value split = "foo:bar:baz:qux".split(':'.equals).sequence().tuple();
+    assert (is String[4] split);
+    check(split == ["foo", "bar", "baz", "qux"], "tuple()");
+    
 }
