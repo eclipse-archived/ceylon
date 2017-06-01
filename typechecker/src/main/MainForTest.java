@@ -85,6 +85,7 @@ public class MainForTest {
                 .addSrcDirectory( new File("test/moduledep1") )
                 .addSrcDirectory( new File("test/moduledep2") )
                 .addSrcDirectory( new File("test/moduletest") )
+                .addSrcDirectory( new File("test/restricted") )
                 .setRepositoryManager(repositoryManager)
                 .getTypeChecker();
         typeChecker.process();
