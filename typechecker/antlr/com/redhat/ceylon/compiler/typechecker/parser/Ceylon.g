@@ -332,7 +332,7 @@ packagePath returns [ImportPath importPath]
       ( 
         m=MEMBER_OP 
         { $importPath.setEndToken($m); }
-        ((LIDENTIFIER) =>
+        ((LIDENTIFIER|UIDENTIFIER) =>
           pn2=packageName 
           { $importPath.addIdentifier($pn2.identifier); 
             $importPath.setEndToken(null); }
@@ -346,9 +346,7 @@ packageName returns [Identifier identifier]
     : LIDENTIFIER
       { $identifier = new Identifier($LIDENTIFIER);
         $LIDENTIFIER.setType(PIDENTIFIER);}
-    | { displayRecognitionError(getTokenNames(),
-              new MismatchedTokenException(LIDENTIFIER, input), 5001); }
-      UIDENTIFIER
+    | UIDENTIFIER
       { $identifier = new Identifier($UIDENTIFIER);
         $UIDENTIFIER.setType(PIDENTIFIER);}
     ;
