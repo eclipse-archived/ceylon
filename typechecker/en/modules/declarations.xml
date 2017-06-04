@@ -118,7 +118,7 @@ TypeConstraints?
             <xref linkend="sourcelayout"/>.</para>
             
             <para>A package is a namespace. A full package name is a period-separated list of 
-            all-lowercase identifiers.</para>
+            initial lowercase identifiers.</para>
             
             <synopsis>FullPackageName: PackageName ("." PackageName)*</synopsis>
             
