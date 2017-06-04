@@ -12,6 +12,7 @@ public enum Warning {
     redundantImportAlias("Redundant import aliases"),
     ceylonNamespace("Discouraged 'ceylon' namespaces"),
     javaNamespace("Discouraged 'java' namespaces"),
+    packageName("Discouraged package or module name"),
     suppressedAlready("Redundant warning supression"),
     suppressesNothing("Unused warning suppression"),
     unknownWarning("Unknown warnings"),

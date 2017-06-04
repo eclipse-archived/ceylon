@@ -167,6 +167,14 @@ public class ModuleVisitor extends Visitor {
         if (phase==Phase.SRC_MODULE) {
             String version = getVersionString(that.getVersion(), that);
             Tree.ImportPath importPath = that.getImportPath();
+            for (Tree.Identifier id: importPath.getIdentifiers()) {
+                for (char ch: id.getText().toCharArray()) {
+                    if (ch<'a' || ch>'z') {
+                        id.addUsageWarning(Warning.packageName, 
+                                "all-lowercase ASCII module names are recommended");
+                    }
+                }
+            }
             List<String> name = getNameAsList(importPath);
             if (pkg.getNameAsString().isEmpty()) {
                 that.addError("module descriptor encountered in root source directory");
@@ -265,6 +273,14 @@ public class ModuleVisitor extends Visitor {
         super.visit(that);
         if (phase==Phase.REMAINING) {
             Tree.ImportPath importPath = that.getImportPath();
+            for (Tree.Identifier id: importPath.getIdentifiers()) {
+                for (char ch: id.getText().toCharArray()) {
+                    if (ch<'a' || ch>'z') {
+                        id.addUsageWarning(Warning.packageName, 
+                                "all-lowercase ASCII package names are recommended");
+                    }
+                }
+            }
             List<String> name = getNameAsList(importPath);
             if (pkg.getNameAsString().isEmpty()) {
                 that.addError("package descriptor encountered in root source directory");

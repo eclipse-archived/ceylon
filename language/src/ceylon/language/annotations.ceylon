@@ -479,7 +479,8 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `unusedImport`,
      `redundantImportAlias`,
      `ceylonNamespace`,
-     `javaNamespace,` 
+     `javaNamespace`, 
+     `packageName`,
      `hidesLanguageModifier`,
      `suppressedAlready`, 
      `suppressesNothing`, 
