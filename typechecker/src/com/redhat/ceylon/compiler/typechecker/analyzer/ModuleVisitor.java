@@ -126,7 +126,11 @@ public class ModuleVisitor extends Visitor {
                 if (versionString.charAt(0)=='\'') {
                     quoted.addError("module version should be double-quoted");
                 }
-                return removeQuotes(versionString);
+                String version = removeQuotes(versionString);
+                if (version.isEmpty()) {
+                    quoted.addError("empty module version");
+                }
+                return version;
             }
         }
     }
