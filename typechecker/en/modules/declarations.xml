@@ -118,12 +118,12 @@ TypeConstraints?
             <xref linkend="sourcelayout"/>.</para>
             
             <para>A package is a namespace. A full package name is a period-separated list of 
-            initial lowercase identifiers.</para>
+            identifiers.</para>
             
             <synopsis>FullPackageName: PackageName ("." PackageName)*</synopsis>
             
-            <comment><para>Note: it is recommended that package names contain only characters
-            from the ASCII character set.</para></comment>
+            <comment><para>Note: it is recommended that package names contain only lowercase
+            characters from the ASCII character set.</para></comment>
             
             <para>There is also a <emphasis>default package</emphasis> whose name is empty.
             It is impossible to import declarations from this package.</para>

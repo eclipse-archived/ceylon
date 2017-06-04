@@ -177,11 +177,10 @@
         <synopsis>TypeName: UIdentifier</synopsis>
         <synopsis>MemberName: LIdentifier</synopsis>
         
-        <para>A package or module name is a sequence of identifiers, each with an 
-        initial lowercase letter or underscore.</para>
+        <para>A package or module name is a sequence of identifiers.</para>
         
-        <synopsis>PackageName: LIdentifier</synopsis>
-
+        <synopsis>PackageName: LIdentifier | UIdentifier</synopsis>
+        
         <para>Ceylon defines three identifier namespaces:</para>
         
         <itemizedlist>
