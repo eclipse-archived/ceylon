@@ -168,11 +168,9 @@ public class ModuleVisitor extends Visitor {
             String version = getVersionString(that.getVersion(), that);
             Tree.ImportPath importPath = that.getImportPath();
             for (Tree.Identifier id: importPath.getIdentifiers()) {
-                for (char ch: id.getText().toCharArray()) {
-                    if (ch<'a' || ch>'z') {
-                        id.addUsageWarning(Warning.packageName, 
-                                "all-lowercase ASCII module names are recommended");
-                    }
+                if (containsDiscouragedChar(id)) {
+                    id.addUsageWarning(Warning.packageName, 
+                            "all-lowercase ASCII module names are recommended");
                 }
             }
             List<String> name = getNameAsList(importPath);
@@ -267,6 +265,15 @@ public class ModuleVisitor extends Visitor {
         }
         moduleBackends = Backends.ANY;
     }
+
+    private static boolean containsDiscouragedChar(Tree.Identifier id) {
+        for (char ch: id.getText().toCharArray()) {
+            if ((ch<'a' || ch>'z') && (ch<'0' || ch>'9')) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     @Override
     public void visit(Tree.PackageDescriptor that) {
@@ -274,11 +281,9 @@ public class ModuleVisitor extends Visitor {
         if (phase==Phase.REMAINING) {
             Tree.ImportPath importPath = that.getImportPath();
             for (Tree.Identifier id: importPath.getIdentifiers()) {
-                for (char ch: id.getText().toCharArray()) {
-                    if (ch<'a' || ch>'z') {
-                        id.addUsageWarning(Warning.packageName, 
-                                "all-lowercase ASCII package names are recommended");
-                    }
+                if (containsDiscouragedChar(id)) {
+                    id.addUsageWarning(Warning.packageName, 
+                            "all-lowercase ASCII package names are recommended");
                 }
             }
             List<String> name = getNameAsList(importPath);
