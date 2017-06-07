@@ -52,7 +52,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
         if (context.ignoreInner() == false) {
             ArtifactResult result = context.result();
             File mod = result.artifact();
-            if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JAR)) {
+            if (mod != null && IOUtils.isZipFile(mod)) {
                 InputStream stream = IOUtils.findDescriptor(result, JarFile.MANIFEST_NAME);
                 if (stream != null) {
                     try {

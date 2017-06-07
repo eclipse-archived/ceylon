@@ -48,7 +48,7 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
     public ModuleInfo resolve(DependencyContext context, Overrides overrides) {
         final ArtifactResult result = context.result();
         File mod = result.artifact();
-        if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JAR)) {
+        if (mod != null && IOUtils.isZipFile(mod)) {
             if (context.ignoreInner() == false) {
                 String descriptorPath = getQualifiedMetaInfDescriptorName(result.name(), result.version());
                 final InputStream descriptor = IOUtils.findDescriptor(result, descriptorPath);

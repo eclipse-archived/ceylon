@@ -52,7 +52,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         if (context.ignoreInner() == false) {
             ArtifactResult result = context.result();
             File mod = result.artifact();
-            if (mod != null && mod.getName().toLowerCase().endsWith(ArtifactContext.JAR)) {
+            if (mod != null && IOUtils.isZipFile(mod)) {
                 String name = result.name();
                 int p = name.indexOf(':');
                 if (p < 0) {

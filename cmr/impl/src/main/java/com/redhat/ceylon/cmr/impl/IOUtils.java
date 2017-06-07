@@ -42,6 +42,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
@@ -391,5 +392,12 @@ public class IOUtils {
         } finally {
             safeClose(inputStream);
         }
+    }
+    
+    public static boolean isZipFile(File file){
+        String name = file.getName().toLowerCase();
+        return name.endsWith(ArtifactContext.CAR)
+                || name.endsWith(ArtifactContext.JAR)
+                || name.endsWith(ArtifactContext.ZIP);
     }
 }
