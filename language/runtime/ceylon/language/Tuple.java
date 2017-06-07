@@ -534,6 +534,7 @@ public final class Tuple<Element, First extends Element,
     @Annotations({
         @Annotation("shared"),
         @Annotation("actual")})
+    @TypeInfo("ceylon.language::Tuple<Element,First,Rest>")
     @Override
     @NonNull
     public Sequence<? extends Element> tuple() {

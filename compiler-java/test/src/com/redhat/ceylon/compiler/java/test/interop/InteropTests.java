@@ -621,7 +621,7 @@ public class InteropTests extends CompilerTests {
         runInJBossModules("run",
                 "com.redhat.ceylon.compiler.java.test.interop.sdk",
                 Arrays.asList(//"com.redhat.ceylon.compiler.java.test.interop",
-                        "--run", "com.redhat.ceylon.compiler.java.test.interop.sdk.javaSerializationRoundTrip"));
+                        "--run", "com.redhat.ceylon.compiler.java.test.interop.sdk::javaSerializationRoundTrip"));
     }
     
     @Test
@@ -635,7 +635,7 @@ public class InteropTests extends CompilerTests {
         runInJBossModules("run",
                 "com.redhat.ceylon.compiler.java.test.interop.sdk",
                 Arrays.asList(//"com.redhat.ceylon.compiler.java.test.interop",
-                        "--run", "com.redhat.ceylon.compiler.java.test.interop.sdk.javaSerializationRoundTrip"));
+                        "--run", "com.redhat.ceylon.compiler.java.test.interop.sdk::javaSerializationRoundTrip"));
     }
     
     @Test

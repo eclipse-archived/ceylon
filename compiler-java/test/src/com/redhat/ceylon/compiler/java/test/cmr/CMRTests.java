@@ -747,7 +747,8 @@ public class CMRTests extends CompilerTests {
                 collector, 
                 "modules/ceylonAetherConflict/module.ceylon", "modules/ceylonAetherConflict/foo.ceylon");
         assertEquals(Boolean.TRUE, ceylonTask.call());
-        compareErrors(collector.get(Diagnostic.Kind.WARNING), 
+        compareErrors(collector.get(Diagnostic.Kind.WARNING),
+                new CompilerError(Diagnostic.Kind.WARNING, null, 21, "all-lowercase ASCII module names are recommended"),
                 new CompilerError(Diagnostic.Kind.WARNING, null, 21, "source code imports two different versions of similar modules 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'")
         );
     }
