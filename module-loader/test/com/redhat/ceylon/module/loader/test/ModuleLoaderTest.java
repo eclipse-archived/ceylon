@@ -1,5 +1,11 @@
 package com.redhat.ceylon.module.loader.test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,12 +16,16 @@ import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleLoader;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
+import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherRepository;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.log.StderrLogger;
 import com.redhat.ceylon.model.cmr.ModuleScope;
+import com.redhat.ceylon.module.loader.FlatpathModuleLoader;
 
 public class ModuleLoaderTest {
 
@@ -141,5 +151,29 @@ public class ModuleLoaderTest {
         // Check that we got them
         Assert.assertEquals("2.7.7", moduleLoader.getModuleVersion("maven:antlr:antlr"));
         Assert.assertEquals("1.0", moduleLoader.getModuleVersion("maven:aopalliance:aopalliance"));
+    }
+
+    @Test
+    public void testBug7084() throws IOException {
+        Path flatRepo = Files.createTempDirectory("flat-repo");
+        try{
+            RepositoryManager repositoryManager = CeylonUtils.repoManager()
+                    .systemRepo("../dist/dist/repo")
+                    .userRepos(Arrays.asList("flat:"+flatRepo.toAbsolutePath().toString()))
+                    .buildManager();
+
+            File artifact = repositoryManager.getArtifact(null, "ceylon.collection", "1.3.2");
+            Assert.assertNotNull(artifact);
+            Files.copy(artifact.toPath(), flatRepo.resolve("ceylon.collection-1.3.2.jar"));
+
+            ModuleLoader moduleLoader = new FlatpathModuleLoader(repositoryManager, null, Collections.<String,String>emptyMap(), true);
+            try {
+                moduleLoader.loadModule("ceylon.collection", "1.3.2");
+            } catch (ModuleNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }finally{
+            IOUtils.deleteRecursively(flatRepo.toFile());
+        }
     }
 }
