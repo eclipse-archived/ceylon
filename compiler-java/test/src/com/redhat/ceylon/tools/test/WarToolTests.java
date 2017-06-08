@@ -77,11 +77,12 @@ public class WarToolTests extends AbstractToolTests {
             Assert.assertNull(zf.getEntry("WEB-INF/lib/ceylon.collection-1.2.0.jar"));
             // dependency
             Assert.assertNotNull(zf.getEntry("WEB-INF/lib/com.redhat.ceylon.model-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
-            // extra jar
-            Assert.assertNotNull(zf.getEntry("WEB-INF/lib/com.redhat.ceylon.war-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
-            Assert.assertNotNull(zf.getEntry("META-INF/libs.txt"));
-            Assert.assertNotNull(zf.getEntry("META-INF/module.properties"));
-            Assert.assertNotNull(zf.getEntry("WEB-INF/web.xml"));
+            // NO extra jar
+            Assert.assertNull(zf.getEntry("WEB-INF/lib/com.redhat.ceylon.war-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
+            // NO extra stuff
+            Assert.assertNull(zf.getEntry("META-INF/libs.txt"));
+            Assert.assertNull(zf.getEntry("META-INF/module.properties"));
+            Assert.assertNull(zf.getEntry("WEB-INF/web.xml"));
         }
     }
 
@@ -115,10 +116,10 @@ public class WarToolTests extends AbstractToolTests {
             Assert.assertNull(zf.getEntry("WEB-INF/lib/ceylon.collection-1.2.2.jar"));
             // dependency
             Assert.assertNotNull(zf.getEntry("WEB-INF/lib/com.redhat.ceylon.model-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
-            // no extra jar
+            // no extra stuff
             Assert.assertNull(zf.getEntry("WEB-INF/lib/com.redhat.ceylon.war-"+Versions.CEYLON_VERSION_NUMBER+".jar"));
-            Assert.assertNotNull(zf.getEntry("META-INF/libs.txt"));
-            Assert.assertNotNull(zf.getEntry("META-INF/module.properties"));
+            Assert.assertNull(zf.getEntry("META-INF/libs.txt"));
+            Assert.assertNull(zf.getEntry("META-INF/module.properties"));
             // no web.xml
             Assert.assertNull(zf.getEntry("WEB-INF/web.xml"));
             // metamodel
