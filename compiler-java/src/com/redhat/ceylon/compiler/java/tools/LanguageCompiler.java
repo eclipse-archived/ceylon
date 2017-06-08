@@ -73,7 +73,6 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.util.NewlineFixingStringStream;
@@ -557,11 +556,11 @@ public class LanguageCompiler extends JavaCompiler {
             loadModuleFromSource(pkg, modules, moduleTrees, trees);
         }
         for(PhasedUnit phasedUnit : phasedUnits.getPhasedUnits()){
-            for(Tree.ModuleDescriptor modDescr : phasedUnit.getCompilationUnit().getModuleDescriptors()){
+            if(!phasedUnit.getCompilationUnit().getModuleDescriptors().isEmpty()){
                 String name = phasedUnit.getPackage().getNameAsString();
                 CeylonPhasedUnit cpu = (CeylonPhasedUnit) phasedUnit;
                 CeylonFileObject cfo = (CeylonFileObject) cpu.getFileObject();
-                moduleNamesToFileObjects .put(name, cfo);
+                moduleNamesToFileObjects.put(name, cfo);
             }
         }
         if(addModuleTrees){

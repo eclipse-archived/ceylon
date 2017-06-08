@@ -842,12 +842,11 @@ abstract class DirectInvocation extends SimpleInvocation {
     private void addTypeConstructorArguments(
             java.util.List<Type> typeArgumentList,
             ListBuffer<ExpressionAndType> result) {
-        int ii = 0;
-        for(Type reifiedTypeArg : typeArgumentList)
+        for(int i = 0; i<typeArgumentList.size(); i++)
             result.append(new ExpressionAndType(
                     gen.make().Indexed(
                             gen.makeUnquotedIdent("applied"),
-                            gen.make().Literal(ii++)), 
+                            gen.make().Literal(i)), 
                     gen.makeTypeDescriptorType()));
     }
 

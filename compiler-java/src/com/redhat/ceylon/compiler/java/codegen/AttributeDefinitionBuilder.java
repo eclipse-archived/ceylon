@@ -349,7 +349,7 @@ public class AttributeDefinitionBuilder {
         if (hasField) {
             if (initialException == null) {
                 // the value, init flag and exception fields
-                defs.appendList((List)makeFields());
+                defs.appendList(AbstractTransformer.upcastList(makeFields()));
                 if(initialValue != null) {
                     long flags = (modifiers & Flags.STATIC);
                     defs.append(owner.make().Block(flags, makeInit(true)));

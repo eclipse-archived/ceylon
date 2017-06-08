@@ -6302,5 +6302,10 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return naming.makeQuotedQualIdentFromString(name);
     }
+    
+    @SuppressWarnings("unchecked")
+    static <X> List<X> upcastList(List<? extends X> list) {
+        return (List<X>) list;
+    }
 
 }

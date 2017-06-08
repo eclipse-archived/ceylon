@@ -28,7 +28,7 @@ public class CharacterLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     @Override
     public com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtCharacterExprs(exprGen.make().NewArray(null,  null,  (com.redhat.ceylon.langtools.tools.javac.util.List)value));
+        return exprGen.makeAtCharacterExprs(exprGen.make().NewArray(null,  null, AbstractTransformer.upcastList(value)));
     }
     @Override
     public String toString() {

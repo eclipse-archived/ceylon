@@ -7939,13 +7939,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (isSequencedAnnotation(annotationClass)) {
                 JCAnnotation wrapperAnnotation = make().Annotation(
                         makeJavaType(annotationClass.getType(), JT_ANNOTATIONS), 
-                        List.<JCExpression>of(make().NewArray(null,  null, (List)annotations.toList())));
+                        List.<JCExpression>of(make().NewArray(null,  null, upcastList(annotations.toList()))));
                 result.append(wrapperAnnotation);
             } else if (isRepeatableAnnotation(annotationClass)) {
                 Interface containerAnnotation = getRepeatableContainer(annotationClass);
                 JCAnnotation wrapperAnnotation = make().Annotation(
                         makeJavaType(containerAnnotation.appliedType(null, Collections.<Type>emptyList())),
-                        List.<JCExpression>of(make().NewArray(null,  null, (List)annotations.toList())));
+                        List.<JCExpression>of(make().NewArray(null,  null, upcastList(annotations.toList()))));
                 result.append(wrapperAnnotation);
             }else {
                 if (annotations.size() > 1) {
@@ -8202,7 +8202,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
         List<JCTree> klass = classGen().transformObjectExpression(expr);
         at(expr);
-        JCExpression newCall = make().NewClass(null, null, makeUnquotedIdent(naming.escapeClassName(expr.getAnonymousClass().getName())+"_"), List.<JCTree.JCExpression>nil(), null);
+        JCExpression newCall = make().NewClass(null, null, makeUnquotedIdent(Naming.escapeClassName(expr.getAnonymousClass().getName())+"_"), List.<JCTree.JCExpression>nil(), null);
         return make().LetExpr((List)klass, newCall);
     }
 
