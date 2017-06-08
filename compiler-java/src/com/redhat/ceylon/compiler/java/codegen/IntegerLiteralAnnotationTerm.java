@@ -27,7 +27,7 @@ public class IntegerLiteralAnnotationTerm extends LiteralAnnotationTerm {
     }
     @Override
     public com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> makeExprs(ExpressionTransformer exprGen, com.redhat.ceylon.langtools.tools.javac.util.List<JCAnnotation> value) {
-        return exprGen.makeAtIntegerExprs(exprGen.make().NewArray(null,  null, AbstractTransformer.upcastList(value)));
+        return exprGen.makeAtIntegerExprs(exprGen.make().NewArray(null,  null, AbstractTransformer.upcastExprList(value)));
     }
     @Override
     public String toString() {

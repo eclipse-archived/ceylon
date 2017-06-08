@@ -7939,13 +7939,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (isSequencedAnnotation(annotationClass)) {
                 JCAnnotation wrapperAnnotation = make().Annotation(
                         makeJavaType(annotationClass.getType(), JT_ANNOTATIONS), 
-                        List.<JCExpression>of(make().NewArray(null,  null, upcastList(annotations.toList()))));
+                        List.<JCExpression>of(make().NewArray(null,  null, upcastExprList(annotations.toList()))));
                 result.append(wrapperAnnotation);
             } else if (isRepeatableAnnotation(annotationClass)) {
                 Interface containerAnnotation = getRepeatableContainer(annotationClass);
                 JCAnnotation wrapperAnnotation = make().Annotation(
                         makeJavaType(containerAnnotation.appliedType(null, Collections.<Type>emptyList())),
-                        List.<JCExpression>of(make().NewArray(null,  null, upcastList(annotations.toList()))));
+                        List.<JCExpression>of(make().NewArray(null,  null, upcastExprList(annotations.toList()))));
                 result.append(wrapperAnnotation);
             }else {
                 if (annotations.size() > 1) {

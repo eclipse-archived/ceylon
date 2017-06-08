@@ -6304,8 +6304,13 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     @SuppressWarnings("unchecked")
-    static <X> List<X> upcastList(List<? extends X> list) {
-        return (List<X>) list;
+    static <X> List<JCTree> upcastList(List<? extends JCTree> list) {
+        return (List<JCTree>) list;
+    }
+
+    @SuppressWarnings("unchecked")
+    static <X> List<JCExpression> upcastExprList(List<? extends JCExpression> list) {
+        return (List<JCExpression>) list;
     }
 
 }
