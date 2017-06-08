@@ -68,13 +68,13 @@ public class Configuration {
         }
         resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
         resolvers.addResolver(XmlDependencyResolver.INSTANCE);
-        resolvers.addResolver(OSGiDependencyResolver.INSTANCE);
         if (usesMaven(manager)) {
             DependencyResolver mavenResolver = getMavenResolver();
             if (mavenResolver != null) {
                 resolvers.addResolver(mavenResolver);
             }
         }
+        resolvers.addResolver(OSGiDependencyResolver.INSTANCE);
         DependencyResolver npmResolver = getNpmResolver();
         if (npmResolver != null) {
             resolvers.addResolver(npmResolver);
