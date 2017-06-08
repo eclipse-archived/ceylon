@@ -38,6 +38,8 @@ import com.redhat.ceylon.model.typechecker.model.Type;
  */
 public class BugException extends RuntimeException {
 
+    private static final long serialVersionUID = 3751454397244424909L;
+
     private Node node;
     
     private boolean attached;

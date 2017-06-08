@@ -442,7 +442,7 @@ public class ClassDefinitionBuilder
         }else if (ignoreAnnotations) {
             ret = ret.prependList(gen.makeAtIgnore());
         }else{
-            boolean jpaConstructor = thisType != null && Strategy.generateJpaCtor((Class)thisType.getDeclaration());
+//            boolean jpaConstructor = thisType != null && Strategy.generateJpaCtor((Class)thisType.getDeclaration());
             if (hasConstructors || thisType != null) {
                 Type exType = extendingType;
                 if (extendingType != null
@@ -506,9 +506,12 @@ public class ClassDefinitionBuilder
     /**
      * Appends the given trees.
      */
-    public ClassDefinitionBuilder defs(List<JCTree> defs) {
+    public ClassDefinitionBuilder defs(List<? extends JCTree> defs) {
         if (defs != null) {
-            this.defs.appendList(defs);
+            while (defs.nonEmpty()) {
+                this.defs.append(defs.head);
+                defs = defs.tail;
+            }
         }
         return this;
     }

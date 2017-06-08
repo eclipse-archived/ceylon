@@ -23,8 +23,8 @@ public class AnnotationDeclarationVisitor extends Visitor {
     private AnyMethod annotationConstructor;
     /** The instantiation in the body of the constructor, or in its default parameters */
     private AnnotationInvocation instantiation;
-    private boolean checkingArguments;
-    private boolean checkingInvocationPrimary;
+//    private boolean checkingArguments;
+//    private boolean checkingInvocationPrimary;
     private final Errors errors;
     
     public AnnotationDeclarationVisitor(CeylonTransformer gen) {

@@ -152,7 +152,7 @@ public class AttributeDefinitionBuilder {
                 .modelAnnotations(attrType.getAnnotations())
                 .resultType(attrType(), attrType);
             ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(owner, setterParameterName());
-            pdb.at(node);
+//            pdb.at(node);
             pdb.modifiers(Flags.FINAL);
             pdb.aliasName(setterParameterName());
             int seterParamFlags = 0;

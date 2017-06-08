@@ -332,7 +332,7 @@ public class ClassTransformer extends AbstractTransformer {
             .modifiers(modifierTransformation().classFlags(model))
             .satisfies(model.getSatisfiedTypes())
             .caseTypes(model.getCaseTypes(), model.getSelfType())
-            .defs((List)childDefs);
+            .defs(childDefs);
         
         // aliases and native headers don't need a $getType method
         if(!model.isAlias()){
@@ -590,7 +590,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
 
-    private Class refineClass(
+    /*private Class refineClass(
             Scope container,
             Reference pr,
             ClassOrInterface classModel, 
@@ -635,7 +635,7 @@ public class ClassTransformer extends AbstractTransformer {
             refined.addParameterList(refinedPl);
         }
         return refined;
-    }
+    }*/
     
     private Function refineMethod(
             Scope container,
@@ -1305,7 +1305,7 @@ public class ClassTransformer extends AbstractTransformer {
                 boxingStrategy,
                 simplifyType(model.getType()));
         adb.initialValue(paramExpr, boxingStrategy);
-        classBuilder.defs((List)adb.buildFields());
+        classBuilder.defs(adb.buildFields());
         classBuilder.getInitBuilder().init(adb.buildInit(true));
     }
     
@@ -1316,10 +1316,10 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.Parameter p, Parameter param, Tree.TypedDeclaration member) {
         JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
-        pdb.at(p);
+//        pdb.at(p);
         pdb.aliasName(Naming.getAliasedParameterName(param));
         if (Naming.aliasConstructorParameterName(param.getModel())) {
-            naming.addVariableSubst(param.getModel(), naming.suffixName(Suffix.$param$, param.getName()));
+            naming.addVariableSubst(param.getModel(), Naming.suffixName(Suffix.$param$, param.getName()));
         }
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
@@ -1345,14 +1345,14 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.parameter(pdb);
     }
     
-    private void capturedReifiedTypeParameters(ClassOrInterface model,
-            ClassDefinitionBuilder classBuilder) {
-        if (model.isStatic()) {
-            ClassOrInterface outer = (ClassOrInterface)model.getContainer();
-            capturedReifiedTypeParameters(outer, classBuilder);
-            classBuilder.reifiedTypeParameters(outer.getTypeParameters());
-        }
-    }
+//    private void capturedReifiedTypeParameters(ClassOrInterface model,
+//            ClassDefinitionBuilder classBuilder) {
+//        if (model.isStatic()) {
+//            ClassOrInterface outer = (ClassOrInterface)model.getContainer();
+//            capturedReifiedTypeParameters(outer, classBuilder);
+//            classBuilder.reifiedTypeParameters(outer.getTypeParameters());
+//        }
+//    }
     
     private void transformClass(
             Tree.AnyClass def, 
@@ -1501,14 +1501,15 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 if (addOverloadedConstructor) {
                     // Add overloaded constructors for defaulted parameter
-                    MethodDefinitionBuilder overloadBuilder;
+//                    MethodDefinitionBuilder overloadBuilder;
                     DefaultedArgumentConstructor dac;
                     if (constructor != null) {
                         dac = new DefaultedArgumentConstructor(classBuilder.addConstructor(constructor.isDeprecated()), constructor, node, paramList, delegationConstructor);
                     } else {
                         dac = new DefaultedArgumentConstructor(classBuilder.addConstructor(cls.isDeprecated()), cls, node, paramList, delegationConstructor);
                     }
-                    overloadBuilder = dac.makeOverload(
+//                    overloadBuilder = 
+                    dac.makeOverload(
                             paramList.getModel(),
                             param.getParameterModel(),
                             cls.getTypeParameters());
@@ -1523,7 +1524,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
     
     private ParameterDefinitionBuilder makeConstructorNameParameter(Constructor ctor, DeclNameFlag... flags) {
-        Class clz = (Class)ctor.getContainer();
+//        Class clz = (Class)ctor.getContainer();
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, Naming.Unfix.$name$.toString());
         pdb.ignored();
         JCExpression type = naming.makeTypeDeclarationExpression(null, ctor, flags);
@@ -2129,9 +2130,9 @@ public class ClassTransformer extends AbstractTransformer {
         return assignment;
     }
     
-    private JCExpression makeValueDeclaration(Value value) {
-        return expressionGen().makeMemberValueOrFunctionDeclarationLiteral(null, value, false);
-    }
+//    private JCExpression makeValueDeclaration(Value value) {
+//        return expressionGen().makeMemberValueOrFunctionDeclarationLiteral(null, value, false);
+//    }
     
     /**
      * Generate a method for a shared FunctionalParameter which delegates to the Callable 
@@ -3509,14 +3510,13 @@ public class ClassTransformer extends AbstractTransformer {
                                     initialValue(initialValue, boxingStrategy).
                                     fieldVisibilityModifiers(modifiers).
                                     modifiers(modifiers);
-                            classBuilder.defs((List)adb.
-                                    buildFields());
+                            classBuilder.defs(adb.buildFields());
                             List<JCStatement> buildInit = adb.buildInit(false);
                             if (!buildInit.isEmpty()) {
                                 if (model.isStatic()) {
                                     classBuilder.defs(make().Block(STATIC, buildInit));
                                 } else {
-                                    classBuilder.getInitBuilder().init((List)buildInit);
+                                    classBuilder.getInitBuilder().init(buildInit);
                                 }
                             }
                         } else if (!memoized) {
@@ -4301,7 +4301,7 @@ public class ClassTransformer extends AbstractTransformer {
         }*/
         
         // do the reified type param arguments
-        if (gen().supportsReified(methodModel)) {
+        if (AbstractTransformer.supportsReified(methodModel)) {
             methodBuilder.reifiedTypeParameters(Strategy.getEffectiveTypeParameters(methodModel));
         }
         
@@ -4691,7 +4691,7 @@ public class ClassTransformer extends AbstractTransformer {
     
     private boolean isVoid(Declaration def) {
         if (def instanceof Function) {
-            return gen().isAnything(((Function)def).getType());
+            return AbstractTransformer.isAnything(((Function)def).getType());
         } else if (def instanceof Class
                 || def instanceof Constructor) {
             // Consider classes void since ctors don't require a return statement
@@ -5683,7 +5683,7 @@ public class ClassTransformer extends AbstractTransformer {
         objectClassBuilder
             .annotations(makeAtObject())
             .satisfies(klass.getSatisfiedTypes())
-            .defs((List)childDefs);
+            .defs(childDefs);
         objectClassBuilder.getInitBuilder().modifiers(PRIVATE);
         objectClassBuilder.addGetTypeMethod(klass.getType());
         

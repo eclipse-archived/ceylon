@@ -3316,8 +3316,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             return at(expr).Unary(operator.javacOperator, jcTerm);
         }
 
-        Interface compoundType = expr.getUnit().getOrdinalDeclaration();
-        Type valueType = getSupertype(term, compoundType);
+//        Interface compoundType = expr.getUnit().getOrdinalDeclaration();
+//        Type valueType = getSupertype(term, compoundType);
         final Type returnType = term.getTypeModel();//getMostPreciseType(term, getTypeArgument(valueType, 0));
         
         // we work on boxed types unless we could have optimised
@@ -4122,7 +4122,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         List<ExpressionAndType> result = List.<ExpressionAndType>nil();
         int argIndex = 0;
         for(Parameter parameter : invocation.getMethod().getFirstParameterList().getParameters()) {
-            Type exprType = expressionGen().getTypeForParameter(parameter, null, this.TP_TO_BOUND);
+            Type exprType = expressionGen().getTypeForParameter(parameter, null, TP_TO_BOUND);
             Parameter declaredParameter = invocation.getMethod().getFirstParameterList().getParameters().get(argIndex);
             
             JCExpression arg = naming.makeName(parameter.getModel(), Naming.NA_IDENT);

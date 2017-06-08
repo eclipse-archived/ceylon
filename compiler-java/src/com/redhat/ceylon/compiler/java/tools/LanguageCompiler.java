@@ -102,7 +102,6 @@ import com.redhat.ceylon.langtools.tools.javac.util.Abort;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Convert;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
-import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.Pair;
@@ -215,7 +214,7 @@ public class LanguageCompiler extends JavaCompiler {
         Options options = Options.instance(context);
         options.put("-Xprefer", "source");
         // make sure it's registered
-        Log log = CeylonLog.instance(context);
+//        Log log = CeylonLog.instance(context);
         CeylonEnter.instance(context);
         CeylonClassWriter.instance(context);
         JavaCompiler instance = context.get(compilerKey);
@@ -409,6 +408,7 @@ public class LanguageCompiler extends JavaCompiler {
     }
     
     private static class RunTwiceException extends RuntimeException {
+        private static final long serialVersionUID = -3259389833053184306L;
 
         public RunTwiceException(String string) {
             super(string);

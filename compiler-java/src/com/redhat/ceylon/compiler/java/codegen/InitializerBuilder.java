@@ -142,8 +142,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
         return buffer.toList();
     }
     private <T extends JCTree> List<T> copyOf(List<T> list) {
-        TreeCopier<?> copier = new TreeCopier(gen.make());
-        return copier.copy(list);
+        return new TreeCopier<T>(gen.make()).copy(list);
     }
     List<JCStatement> copyStatementsBetween(Constructor first, Constructor second) {
         return copyOf(statementsBetween(first, second));

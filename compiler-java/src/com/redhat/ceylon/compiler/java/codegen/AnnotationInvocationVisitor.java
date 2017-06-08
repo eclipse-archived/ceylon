@@ -238,7 +238,7 @@ class AnnotationInvocationVisitor extends Visitor {
                 unbound.remove(classParameter);
             }
         }
-        outer: for (Parameter classParameter : ((ArrayList<Parameter>)unbound.clone())) {
+        outer: for (Parameter classParameter : new ArrayList<>(unbound)) {
             // Defaulted argument
             if (ai.isInstantiation()) {
                 if (classParameter.isDefaulted()) {

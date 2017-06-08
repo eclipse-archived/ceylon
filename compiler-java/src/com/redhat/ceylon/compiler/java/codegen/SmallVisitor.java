@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;

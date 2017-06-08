@@ -32,8 +32,8 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
             // TODO @TupleValue({elements...})
         } else {// A sequence
             ListBuffer<JCExpression> lb = new ListBuffer<JCExpression>();
-            for (LiteralAnnotationTerm term : (List<LiteralAnnotationTerm>)(List)elements) {
-                lb.add(term.makeLiteral(exprGen));
+            for (AnnotationTerm term : elements) {
+                lb.add(((LiteralAnnotationTerm)term).makeLiteral(exprGen));
             }
             JCNewArray array = exprGen.make().NewArray(null,  null,  lb.toList());
             return factory.makeAtValue(exprGen, null, array);
@@ -48,8 +48,8 @@ public class CollectionLiteralAnnotationTerm extends LiteralAnnotationTerm {
     @Override
     protected JCExpression makeLiteral(ExpressionTransformer exprGen) {
         ListBuffer<JCExpression> lb = new ListBuffer<JCExpression>();
-        for (LiteralAnnotationTerm term : (List<LiteralAnnotationTerm>)(List)elements) {
-            lb.add(term.makeLiteral(exprGen));
+        for (AnnotationTerm term : elements) {
+            lb.add(((LiteralAnnotationTerm)term).makeLiteral(exprGen));
         }
         JCNewArray array = exprGen.make().NewArray(null,  null,  lb.toList());
         return array;

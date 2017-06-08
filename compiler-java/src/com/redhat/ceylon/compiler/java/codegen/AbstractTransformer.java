@@ -2880,7 +2880,7 @@ public abstract class AbstractTransformer implements Transformation {
             // type of param must be Iterable<T>
             Type elementType = typeFact.getIteratedType(type);
             if(elementType == null){
-                log.error("ceylon", "Invalid type for Java variadic parameter: "+type.asQualifiedString());
+                log.error("ceylon", "Invalid type for Java variadic parameter: "+type.asString());
                 return type;
             }
             return elementType;
@@ -2991,6 +2991,7 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(annotationType, List.<JCExpression>nil());
     }
 
+    @SuppressWarnings("unused")
     List<JCAnnotation> makeAtCeylon() {
         JCExpression majorAttribute = make().Assign(naming.makeUnquotedIdent("major"), make().Literal(Versions.JVM_BINARY_MAJOR_VERSION));
         List<JCExpression> annotationArgs;
@@ -5349,7 +5350,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     final List<JCExpression> typeArguments(Functional method) {
         if (method instanceof Generic) {
-            Map<TypeParameter, Type> l = new java.util.HashMap();
+            Map<TypeParameter,Type> l = new java.util.HashMap<>();
             for (TypeParameter tp : Strategy.getEffectiveTypeParameters((Declaration)method)) {
                 l.put(tp, tp.getType());
             }

@@ -856,7 +856,7 @@ public class JavaPositionsRetriever {
     }
     
     private Map<Integer, Set<Integer>> revertMap(Map<Integer, Set<Integer>> ceylonToJava) {
-        Map<Integer, Set<Integer>> result = new TreeMap();
+        Map<Integer, Set<Integer>> result = new TreeMap<>();
         for (int ceylonLine : ceylonToJavaLines.keySet()) {
             for(int javaLine : ceylonToJavaLines.get(ceylonLine)) {
                 Set<Integer> set = null; 

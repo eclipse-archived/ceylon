@@ -481,9 +481,9 @@ public class CallableBuilder {
     }
     
     class MemberReferenceDefaultValueCall implements DefaultValueMethodTransformation {
-        private Functional methodOrClass;
+//        private Functional methodOrClass;
         MemberReferenceDefaultValueCall(final Functional methodOrClass) {
-            this.methodOrClass = methodOrClass;
+//            this.methodOrClass = methodOrClass;
         }
         @Override
         public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam, List<JCExpression> defaultMethodArgs) {

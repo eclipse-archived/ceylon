@@ -1265,7 +1265,7 @@ class CallableInvocation extends DirectInvocation {
  */
 class MethodReferenceSpecifierInvocation extends DirectInvocation {
     
-    private final Function method;
+//    private final Function method;
     private boolean variadic;
     private java.util.List<Parameter> targetParameters;
     private java.util.List<Parameter> sourceParameters;
@@ -1275,7 +1275,7 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
             Declaration primaryDeclaration,
             Reference producedReference, Function method, Tree.SpecifierExpression node) {
         super(gen, primary, primaryDeclaration, producedReference, method.getType(), node);
-        this.method = method;
+//        this.method = method;
         setUnboxed(primary.getUnboxed());
         setBoxingStrategy(CodegenUtil.getBoxingStrategy(method));
         this.sourceParameters = method.getFirstParameterList().getParameters();
@@ -1406,7 +1406,7 @@ class NamedArgumentInvocation extends Invocation {
     private final ListBuffer<JCStatement> vars = new ListBuffer<JCStatement>();
     private final Naming.SyntheticName callVarName;
     private final Naming.SyntheticName varBaseName;
-    private final Set<String> argNames = new HashSet<String>();
+//    private final Set<String> argNames = new HashSet<String>();
     private final TreeMap<Integer, Naming.SyntheticName> argsNamesByIndex = new TreeMap<Integer, Naming.SyntheticName>();
     private final TreeMap<Integer, ExpressionAndType> argsAndTypes = new TreeMap<Integer, ExpressionAndType>();
     private final Set<Parameter> bound = new HashSet<Parameter>();
@@ -1427,7 +1427,7 @@ class NamedArgumentInvocation extends Invocation {
     @Override
     protected void addReifiedArguments(ListBuffer<ExpressionAndType> result) {
         Reference ref = gen.resolveAliasesForReifiedTypeArguments(producedReference);
-        if(!gen.supportsReified(ref.getDeclaration()))
+        if(!AbstractTransformer.supportsReified(ref.getDeclaration()))
             return;
         int tpCount = gen.getTypeParameters(ref).size();
         for(int tpIndex = 0;tpIndex<tpCount;tpIndex++){
@@ -1490,7 +1490,7 @@ class NamedArgumentInvocation extends Invocation {
         // FIXME: this is suspisciously similar to AbstractTransformer.makeIterable(java.util.List<Tree.PositionalArgument> list, Type seqElemType)
         // and possibly needs to be merged
         Parameter parameter = sequencedArgument.getParameter();
-        Type parameterType = parameterType(parameter, parameter.getType(), gen.TP_TO_BOUND);
+        Type parameterType = parameterType(parameter, parameter.getType(), AbstractTransformer.TP_TO_BOUND);
         // find out the individual type, we use the argument type for the value, and the param type for the temp variable
         gen.at(sequencedArgument);
         Type tupleType = AnalyzerUtil.getTupleType(sequencedArgument.getPositionalArguments(), gen.typeFact(), false);
@@ -1540,7 +1540,7 @@ class NamedArgumentInvocation extends Invocation {
         case SELF:
             break;
         case STATIC:
-            if (param.getDeclaration().isStaticallyImportable()) {
+            if (param.getDeclaration().isStatic()) {
                 thisExpr = gen.makeStaticQualifier(param.getDeclaration()); 
             }
             break;
@@ -1653,7 +1653,7 @@ class NamedArgumentInvocation extends Invocation {
             Parameter declaredParam, Naming.SyntheticName argName) {
         ListBuffer<JCStatement> statements;
         Tree.Expression expr = specifiedArg.getSpecifierExpression().getExpression();
-        Type type = parameterType(declaredParam, expr.getTypeModel(), gen.TP_TO_BOUND);
+        Type type = parameterType(declaredParam, expr.getTypeModel(), AbstractTransformer.TP_TO_BOUND);
         final BoxingStrategy boxType = getNamedParameterBoxingStrategy(declaredParam);
         int jtFlags = 0;
         int exprFlags = 0;
@@ -1696,11 +1696,11 @@ class NamedArgumentInvocation extends Invocation {
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(Decl.isMpl(model) || gen.expressionGen().isWithinSyntheticClassBody()); 
         try {
             gen.expressionGen().withinSyntheticClassBody(true);
-            gen.statementGen().noExpressionlessReturn = gen.isAnything(model.getType());
+            gen.statementGen().noExpressionlessReturn = AbstractTransformer.isAnything(model.getType());
             if (methodArg.getBlock() != null) {
                 body = gen.statementGen().transformBlock(methodArg.getBlock());
                 if (!methodArg.getBlock().getDefinitelyReturns()) {
-                    if (gen.isAnything(model.getType())) {
+                    if (AbstractTransformer.isAnything(model.getType())) {
                         body = body.append(gen.make().Return(gen.makeNull()));
                     } else {
                         body = body.append(gen.make().Return(gen.makeErroneous(methodArg.getBlock(), "compiler bug: non-void method does not definitely return")));
@@ -1802,7 +1802,7 @@ class NamedArgumentInvocation extends Invocation {
         if (getNamedParameterBoxingStrategy(param) == BoxingStrategy.BOXED) {
             flags |= JT_TYPE_ARGUMENT;
         }
-        Type type = gen.getTypeForParameter(param, producedReference, gen.TP_TO_BOUND);
+        Type type = gen.getTypeForParameter(param, producedReference, AbstractTransformer.TP_TO_BOUND);
         Naming.SyntheticName argName = argName(param);
         JCExpression typeExpr = gen.makeJavaType(type, flags);
         JCVariableDecl varDecl = gen.makeVar(argName, typeExpr, argExpr);

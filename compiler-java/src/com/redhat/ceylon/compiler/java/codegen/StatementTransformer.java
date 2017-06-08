@@ -197,7 +197,7 @@ public class StatementTransformer extends AbstractTransformer {
                 }
             }
             popBlockImports(block);
-            result = (List<JCStatement>)v.getResult().toList();
+            result = (List<JCStatement>) v.getResult().toList();
             Runnable r = onEndBlock.get(block);
             if (r != null) {
                 r.run();
@@ -217,7 +217,7 @@ public class StatementTransformer extends AbstractTransformer {
         return result;
     }
     
-    private java.util.List<Tree.ImportList> blockImports = new ArrayList();
+    private java.util.List<Tree.ImportList> blockImports = new ArrayList<>();
     
     private void pushBlockImports(Tree.Block block) {
         Tree.ImportList importList = block.getImportList();
@@ -929,13 +929,13 @@ public class StatementTransformer extends AbstractTransformer {
         @Override
         public List<JCStatement> getResult() {
             if (definitelyNotSatisfied(conditions)) {
-                return List.<JCTree.JCStatement>of(makeThrowAssertionFailure(this.getConditionTransformer(conditions.get(0))));
+                return List.<JCStatement>of(makeThrowAssertionFailure(this.getConditionTransformer(conditions.get(0))));
             }
             List<JCStatement> stmts = transformList(conditions);
             at(this.ass);
             ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
             result.appendList(varDecls);
-            current().defs((List)fieldDecls.toList());
+            current().defs(fieldDecls.toList());
             result.appendList(stmts);
 
             return result.toList();
@@ -1624,8 +1624,8 @@ public class StatementTransformer extends AbstractTransformer {
     private class EqualityOpBooleanCond implements Cond {
         private final Tree.BooleanCondition cond;
         private final VarTrans var;
-        private final Tree.BinaryOperatorExpression op;
-        private final boolean negated;
+//        private final Tree.BinaryOperatorExpression op;
+//        private final boolean negated;
         private final boolean negate;
         private final SyntheticName leftVarName;
         private final SyntheticName rightVarName;
@@ -1634,7 +1634,7 @@ public class StatementTransformer extends AbstractTransformer {
         private EqualityOpBooleanCond(Tree.BooleanCondition booleanCondition, boolean negated, final Tree.BinaryOperatorExpression op) {
             super();
             this.cond = booleanCondition;
-            this.op = op;
+//            this.op = op;
             this.leftVarName = naming.alias("lhs");
             this.rightVarName = naming.alias("rhs");
             boolean needsNegating = false;
@@ -1648,7 +1648,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else {
                 throw BugException.unhandledNodeCase(op);
             }
-            this.negated = negated;
+//            this.negated = negated;
             this.negate = negated ^ needsNegating;
             transformed.setLeft(leftVarName.makeIdent());
             transformed.setRight(rightVarName.makeIdent());
@@ -1745,16 +1745,16 @@ public class StatementTransformer extends AbstractTransformer {
             return var;
         }
         
-        /** Is it a {@code ! ... == ...} or {@code ! ... != ...} condition .*/
-        public boolean isNegated() {
-            return negated;
-        }
-        
-        /** Is it a {@code ... != ...} or {@code ! ... != ...} condition .*/
-        public boolean isNotEqual() {
-            return op instanceof Tree.NotEqualOp;
-        }
-        
+//        /** Is it a {@code ! ... == ...} or {@code ! ... != ...} condition .*/
+//        public boolean isNegated() {
+//            return negated;
+//        }
+//        
+//        /** Is it a {@code ... != ...} or {@code ! ... != ...} condition .*/
+//        public boolean isNotEqual() {
+//            return op instanceof Tree.NotEqualOp;
+//        }
+//        
         public JCExpression getLeftName() {
             JCExpression result = leftVarName.makeIdent();
             if (getLeftBoxing() == BoxingStrategy.UNBOXED) {
@@ -1774,7 +1774,7 @@ public class StatementTransformer extends AbstractTransformer {
     private class WithinOpBooleanCond implements Cond {
 
         private final Tree.BooleanCondition cond;
-        private final Tree.WithinOp op;
+//        private final Tree.WithinOp op;
         private final SyntheticName leftVarName;
         private final SyntheticName middleVarName;
         private final SyntheticName rightVarName;
@@ -1785,7 +1785,7 @@ public class StatementTransformer extends AbstractTransformer {
         public WithinOpBooleanCond(Tree.BooleanCondition booleanCondition, boolean negated, Tree.WithinOp op) {
             super();
             this.cond = booleanCondition;
-            this.op = op;
+//            this.op = op;
             this.negate = negated;
             this.leftVarName = naming.alias("lhs");
             this.middleVarName = naming.alias("middle");
@@ -1867,10 +1867,10 @@ public class StatementTransformer extends AbstractTransformer {
         
     }
 
-    private Type actualType(Tree.TypedDeclaration decl) {
-        return decl.getType().getTypeModel();
-    }
-    
+//    private Type actualType(Tree.TypedDeclaration decl) {
+//        return decl.getType().getTypeModel();
+//    }
+//    
     List<JCStatement> transform(Tree.ForStatement stmt) {
         Tree.Term iterableTerm = ExpressionTransformer.eliminateParens(stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTerm());
         Tree.Term baseIterable = iterableTerm;

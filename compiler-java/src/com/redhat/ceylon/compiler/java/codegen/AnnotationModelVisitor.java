@@ -409,7 +409,7 @@ public class AnnotationModelVisitor extends Visitor {
     }
 
     private CollectionLiteralAnnotationTerm startCollection(Tree.Term t) {
-        Unit unit = t.getUnit();
+//        Unit unit = t.getUnit();
         // Continue the visit to collect the elements
         LiteralAnnotationTerm factory = getCollectionLiteralFactory(t);
         if (factory==null) {

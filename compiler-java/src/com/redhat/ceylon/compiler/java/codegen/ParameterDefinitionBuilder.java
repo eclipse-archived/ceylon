@@ -21,7 +21,6 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.Iterator;
 
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
@@ -61,7 +60,7 @@ public class ParameterDefinitionBuilder {
 
     private FunctionOrValue boxedVariable;
 
-    private Node at;
+//    private Node at;
 
     private ParameterDefinitionBuilder(AbstractTransformer gen, String name) {
         this.gen = gen;
@@ -276,8 +275,8 @@ public class ParameterDefinitionBuilder {
         return sb.toString();
     }
 
-    public void at(Node node) {
-        this.at = node;
-    }
+//    public void at(Node node) {
+//        this.at = node;
+//    }
     
 }

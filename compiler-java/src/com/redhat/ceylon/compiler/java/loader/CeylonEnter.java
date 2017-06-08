@@ -633,7 +633,7 @@ public class CeylonEnter extends Enter {
         
         EeVisitor eeVisitor = gen.getEeVisitor();
         UnsupportedVisitor uv = new UnsupportedVisitor(eeVisitor);
-        JvmMissingNativeVisitor mnv = new JvmMissingNativeVisitor(modelLoader);
+        JvmMissingNativeVisitor mnv = new JvmMissingNativeVisitor(/*modelLoader*/);
         BoxingDeclarationVisitor boxingDeclarationVisitor = new CompilerBoxingDeclarationVisitor(gen);
         BoxingVisitor boxingVisitor = new CompilerBoxingVisitor(gen);
         SmallDeclarationVisitor smallDeclarationVisitor = new SmallDeclarationVisitor();

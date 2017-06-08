@@ -357,7 +357,7 @@ public class CeylonVisitor extends Visitor {
         if (parameterList != null) {
             for (Parameter param : parameterList.getModel().getParameters()) {
                 if (Naming.aliasConstructorParameterName(param.getModel())) {
-                    gen.naming.addVariableSubst(param.getModel(), gen.naming.suffixName(Suffix.$param$, param.getName()));
+                    gen.naming.addVariableSubst(param.getModel(), Naming.suffixName(Suffix.$param$, param.getName()));
                 }
             }
         }
@@ -1091,9 +1091,9 @@ public class CeylonVisitor extends Visitor {
                 arg = "java.lang.RuntimeException";
             }
             try {
-                java.lang.Class<? extends Throwable> exceptionClass = (java.lang.Class<? extends RuntimeException>)java.lang.Class.forName(arg, true, getClass().getClassLoader());
-                Throwable exception = exceptionClass.newInstance();
-                if (exception instanceof RuntimeException) {                    
+                java.lang.Class<?> exceptionClass = java.lang.Class.forName(arg, true, getClass().getClassLoader());
+                Throwable exception = (Throwable) exceptionClass.newInstance();
+                if (exception instanceof RuntimeException) {
                     throw (RuntimeException)exception;
                 } else if (exception instanceof Error) {
                     throw (Error)exception;

@@ -22,24 +22,22 @@ package com.redhat.ceylon.compiler.java.codegen.recovery;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.ClassTransformer;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
-import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
-import com.redhat.ceylon.langtools.tools.javac.util.Log;
 
 
 public class Errors {
     /** The instance of {@link Generate} */
     public static final Generate GENERATE = new Generate();
     
-    private final Log log;
+//    private final Log log;
     private AbstractTransformer gen;
     private final DeclarationErrorVisitor declarationVisitor;
     private final StatementErrorVisitor statementVisitor;
     private final ExpressionErrorVisitor expressionVisitor;
 
     Errors(Context context) {
-        log = CeylonLog.instance(context);
+//        log = CeylonLog.instance(context);
         gen = ClassTransformer.getInstance(context);
         statementVisitor = new StatementErrorVisitor();
         expressionVisitor = new ExpressionErrorVisitor();

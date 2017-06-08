@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
-import com.redhat.ceylon.langtools.tools.javac.code.Type.JCPrimitiveType;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIdent;

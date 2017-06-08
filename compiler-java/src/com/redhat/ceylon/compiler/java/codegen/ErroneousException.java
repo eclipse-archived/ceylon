@@ -5,6 +5,8 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 
 public class ErroneousException extends Exception {
 
+    private static final long serialVersionUID = -1315185846592489760L;
+    
     private final Node node;
 
     public ErroneousException(Node node, String message, Throwable cause) {
