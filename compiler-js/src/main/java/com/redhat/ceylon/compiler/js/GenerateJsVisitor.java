@@ -1205,7 +1205,7 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.ObjectExpression that) {
         if (errVisitor.hasErrors(that))return;
-        out("function(){");
+        out("(function(){");
         try {
             final Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
             final Tree.ExtendedType et = that.getExtendedType();
@@ -1215,7 +1215,7 @@ public class GenerateJsVisitor extends Visitor {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        out("}()");
+        out("}())");
     }
 
     @Override
@@ -2905,7 +2905,7 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.ScaleOp that) {
         final String lhs = names.createTempVariable();
-        Operators.simpleBinaryOp(that, "function(){var "+lhs+"=", ";return ", ".scale("+lhs+");}()", this);
+        Operators.simpleBinaryOp(that, "(function(){var "+lhs+"=", ";return ", ".scale("+lhs+");}())", this);
     }
 
     @Override
