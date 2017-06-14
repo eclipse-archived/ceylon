@@ -5867,32 +5867,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.Term leftTerm = that.getLeftTerm();
             if (leftTerm 
                     instanceof Tree.IndexExpression) {
-                Tree.IndexExpression idx = 
-                        (Tree.IndexExpression)
-                            leftTerm;
-                if (idx.getElementOrRange() 
-                        instanceof Tree.Element) {
-                    Type pt = type(idx);
-                    if (that.getTypeModel()!=null 
-                            && pt!=null) {
-                        Interface cmd = 
-                                unit.getKeyedCorrespondenceMutatorDeclaration();
-                        Type vt = 
-                                checkIndexElement(idx, pt, cmd, false, 
-                                        "KeyedCorrespondenceMutator", true);
-                        if (vt!=null) {
-                            checkAssignable(rhst, vt,
-                                    that.getRightTerm(), 
-                                    "assigned expression must be assignable to '" +
-                                    vt.asString() +
-                                    "' of 'CorrespondenceMutator'");
-                        }
-                    }
-                }
-                else {
-                    idx.getPrimary()
-                        .addError("ranged index assignment is not supported");
-                }
+                checkIndexedAssignment(that, rhst);
             }
             else {
                 Type lhst = leftType(that);
@@ -5912,6 +5887,37 @@ public class ExpressionVisitor extends Visitor {
         }
         that.setTypeModel(rhst);
 //      that.setTypeModel(lhst); //this version is easier on backend
+    }
+
+    private void checkIndexedAssignment(
+            Tree.AssignmentOp that, Type rhst) {
+        Tree.IndexExpression idx = 
+                (Tree.IndexExpression)
+                    that.getLeftTerm();
+        if (idx.getElementOrRange() 
+                instanceof Tree.Element) {
+            Type pt = type(idx);
+            if (that.getTypeModel()!=null 
+                    && pt!=null) {
+                Interface cmd = 
+                        unit.getKeyedCorrespondenceMutatorDeclaration();
+                Type vt = 
+                        checkIndexElement(idx, pt, cmd, false, 
+                                "KeyedCorrespondenceMutator", true);
+                if (vt!=null) {
+                    checkAssignable(rhst, vt,
+                            that.getRightTerm(), 
+                            "assigned expression must be assignable to item type '" +
+                            vt.asString() +
+                            "' of 'CorrespondenceMutator'");
+//                    that.setTypeModel(vt);
+                }
+            }
+        }
+        else {
+            idx.getPrimary()
+                .addError("ranged index assignment is not supported");
+        }
     }
 
     private Type checkOperandTypes(
@@ -5994,8 +6000,14 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void visitArithmeticAssignOperator(Tree.BinaryOperatorExpression that, 
+    private void visitArithmeticAssignOperator(
+            Tree.AssignmentOp that, 
             TypeDeclaration type) {
+        if (that.getLeftTerm()
+                instanceof Tree.IndexExpression) {
+            that.addError("compound assignment not supported for indexed expression");
+            return;
+        }
         Type lhst = leftType(that);
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
@@ -6064,7 +6076,11 @@ public class ExpressionVisitor extends Visitor {
 
     private void visitSetAssignmentOperator(
             Tree.BitwiseAssignmentOp that) {
-        //TypeDeclaration sd = unit.getSetDeclaration();
+        if (that.getLeftTerm()
+                instanceof Tree.IndexExpression) {
+            that.addError("compound assignment not supported for indexed expression");
+            return;
+        }
         Type lhst = leftType(that);
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
