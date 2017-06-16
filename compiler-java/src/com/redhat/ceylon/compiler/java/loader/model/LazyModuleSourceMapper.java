@@ -329,7 +329,10 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                         || !compiledModules.contains(imp.getModule())){
                     if(anyImport == null)
                         anyImport = imp;
-                    modules.put(imp.getModule().getNameAsString(), imp.getModule().getVersion());
+                    String name = imp.getModule().getNameAsString();
+                    if(imp.getNamespace() != null)
+                        name = imp.getNamespace() + ":" + name;
+                    modules.put(name, imp.getModule().getVersion());
                 }
             }
         }
