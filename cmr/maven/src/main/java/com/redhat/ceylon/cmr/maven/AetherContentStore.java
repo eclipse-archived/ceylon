@@ -22,11 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.impl.AbstractContentStore;
 import com.redhat.ceylon.cmr.impl.DefaultNode;
 import com.redhat.ceylon.cmr.impl.RootNode;
@@ -35,6 +32,7 @@ import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.cmr.spi.SizedInputStream;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Sonatype Aether content store.
@@ -44,10 +42,12 @@ import com.redhat.ceylon.cmr.spi.SizedInputStream;
 public class AetherContentStore extends AbstractContentStore {
 
     private final AetherUtils utils;
+    private final String settingsXml;
 
     public AetherContentStore(Logger log, String settingsXml, boolean offline, int timeout, String currentDirectory) {
         super(log, offline, timeout);
         utils = new AetherUtils(log, settingsXml, offline, timeout, currentDirectory);
+        this.settingsXml = settingsXml;
     }
 
     AetherUtils getUtils() {
@@ -175,11 +175,21 @@ public class AetherContentStore extends AbstractContentStore {
 
     public String getDisplayString() {
         String name = "Aether";
+        if (settingsXml!=null) {
+            name += ":" + settingsXml;
+        }
         if (offline) {
             name += " (offline)";
         }
         return name;
     }
+    
+    @Override
+    public String toString() {
+        return "AetherContentStore: " + getDisplayString();
+    }
+
+
 
     @Override
     public boolean isHerd() {
