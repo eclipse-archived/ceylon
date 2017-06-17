@@ -9,8 +9,14 @@ public class MavenArtifactContext extends ArtifactContext {
 
     public static final String NAMESPACE = "maven";
     
+    private static String moduleName(String groupId, String artifactId, String classifier) {
+        return classifier==null ? 
+                groupId+":"+artifactId : 
+                groupId+":"+artifactId + ":" + classifier;
+    }
+
     public MavenArtifactContext(String groupId, String artifactId, String version, String packaging, String classifier) {
-        super(NAMESPACE, groupId+":"+artifactId, version);
+        super(NAMESPACE, moduleName(groupId, artifactId, classifier), version);
         this.classifier = classifier;
         this.packaging = packaging;
     }
