@@ -84,7 +84,7 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         File file = cache.get(node);
         if (file == null) {
             File parent = getFileInternal(NodeUtils.firstParent(node));
-            file = new File(parent, node.getLabel()); // bevare of concatinated names; e.g sha1.local
+            file = new File(parent, node.getLabel()); // beware of concatenated names; e.g sha1.local
             cache.put(node, file);
         }
         return file;
