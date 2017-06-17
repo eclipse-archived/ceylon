@@ -96,13 +96,26 @@ class AetherUtils {
     }
 
     String[] nameToGroupArtifactIds(String name){
+        final String groupId;
+        final String artifactId;
+        final String classifier;
+        
         final int p = name.lastIndexOf(":");
         if (p == -1) {
             return null;
         }
-        final String groupId = name.substring(0, p);
-        final String artifactId = name.substring(p + 1);
-        return new String[]{groupId, artifactId};
+        final int q = name.substring(0, p).lastIndexOf(":");
+        if (q == -1) {
+            groupId = name.substring(0, p);
+            artifactId = name.substring(p + 1);
+            classifier = null;
+        }
+        else {
+            groupId = name.substring(0, q);
+            artifactId = name.substring(q + 1, p);
+            classifier = name.substring(p + 1);
+        }
+        return new String[]{groupId, artifactId, classifier};
     }
     
     private ArtifactResult findDependencies(RepositoryManager manager, Node node, Boolean fetchSingleArtifact) {
@@ -117,11 +130,15 @@ class AetherUtils {
         }
         final String groupId = groupArtifactIds[0];
         final String artifactId = groupArtifactIds[1];
+        final String classifier = groupArtifactIds[2];
         final String version = ac.getVersion();
 
         String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
         CmrRepository repository = NodeUtils.getRepository(node);
 
+        if (classifier!=null) {
+            return fetchWithClassifier(repository, groupId, artifactId, version, classifier, repositoryDisplayString);
+        }
         if (CeylonUtils.arrayContains(ac.getSuffixes(), ArtifactContext.LEGACY_SRC)) {
             return fetchWithClassifier(repository, groupId, artifactId, version, "sources", repositoryDisplayString);
         }
@@ -184,7 +201,7 @@ class AetherUtils {
 
             final SingleArtifactResult result;
             if (fetchSingleArtifact) {
-                result = new SingleArtifactResult(repository, name, version, groupId, artifactId, 
+                result = new SingleArtifactResult(repository, name, version, groupId, artifactId, classifier,
                         info.getFile(), repositoryDisplayString);
             } else {
                 final List<ArtifactResult> dependencies = new ArrayList<>();
@@ -258,7 +275,7 @@ class AetherUtils {
                     }
                 }
 
-                result = new AetherArtifactResult(repository, name, version, groupId, artifactId, 
+                result = new AetherArtifactResult(repository, name, version, groupId, artifactId, classifier,
                         info.getFile(), dependencies, repositoryDisplayString);
             }
 
@@ -345,8 +362,6 @@ class AetherUtils {
             Set<String> authors = new HashSet<>();
             for(DependencyDescriptor dep : info.getDependencies()){
                 String namespace = MavenRepository.NAMESPACE;
-                String depGroupId = dep.getGroupId();
-                String depArtifactId = dep.getArtifactId();
                 String depName = dep.getGroupId()+":"+dep.getArtifactId();
                 String depVersion = dep.getVersion();
                 boolean export = false;
@@ -459,7 +474,7 @@ class AetherUtils {
         
         final String dName = toCanonicalForm(groupId, artifactId);
 
-        return new MavenArtifactResult(repository, dName, dVersion, groupId, artifactId, repositoryDisplayString) {
+        return new MavenArtifactResult(repository, dName, dVersion, groupId, artifactId, null, repositoryDisplayString) {
             private ArtifactResult result;
             
             {
@@ -513,12 +528,12 @@ class AetherUtils {
     }
 
     private ArtifactResult fetchWithClassifier(CmrRepository repository, String groupId, String artifactId, String version, String classifier, String repositoryDisplayString) {
-        final String name = toCanonicalForm(groupId, artifactId);
+        final String name = toCanonicalForm(groupId, artifactId, classifier);
         final String coordinates = toCanonicalForm(toCanonicalForm(toCanonicalForm(name, "jar"), classifier), version);
         try {
         	DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, classifier, "jar", true);
             if (info != null) {
-                return new SingleArtifactResult(repository, name, version, groupId, artifactId, 
+                return new SingleArtifactResult(repository, name, version, groupId, artifactId, classifier,
                         info.getFile(), repositoryDisplayString);
             }
         } catch (AetherException e) {
@@ -532,15 +547,20 @@ class AetherUtils {
     static String toCanonicalForm(String groupId, String artifactId) {
         return groupId + ":" + artifactId;
     }
+    
+    static String toCanonicalForm(String groupId, String artifactId, String classifier) {
+        return toCanonicalForm(groupId, artifactId) + ":" + classifier;
+    }
 
     private static abstract class MavenArtifactResult extends AbstractArtifactResult {
         private String repositoryDisplayString;
         private String artifactId;
         private String groupId;
+        private String classifier;
 
         protected MavenArtifactResult(CmrRepository repository, 
                 String name, String version, String groupId, String artifactId, 
-                String repositoryDisplayString) {
+                String classifier, String repositoryDisplayString) {
             super(repository, MavenRepository.NAMESPACE, name, version);
             this.repositoryDisplayString = repositoryDisplayString;
             this.groupId = groupId;
@@ -558,6 +578,11 @@ class AetherUtils {
         }
         
         @Override
+        public String classifier() {
+            return classifier;
+        }
+        
+        @Override
         public ArtifactResultType type() {
             return ArtifactResultType.MAVEN;
         }
@@ -572,9 +597,9 @@ class AetherUtils {
         private File file;
 
         private SingleArtifactResult(CmrRepository repository, String name, String version,
-                String groupId, String artifactId, 
+                String groupId, String artifactId, String classifier,
                 File file, String repositoryDisplayString) {
-            super(repository, name, version, groupId, artifactId, repositoryDisplayString);
+            super(repository, name, version, groupId, artifactId, classifier, repositoryDisplayString);
             this.file = file;
         }
 
@@ -595,9 +620,9 @@ class AetherUtils {
         private List<ArtifactResult> dependencies;
 
         private AetherArtifactResult(CmrRepository repository, String name, String version,
-                String groupId, String artifactId, 
+                String groupId, String artifactId, String classifier,
                 File file, List<ArtifactResult> dependencies, String repositoryDisplayString) {
-            super(repository, name, version, groupId, artifactId, file, repositoryDisplayString);
+            super(repository, name, version, groupId, artifactId, classifier, file, repositoryDisplayString);
             this.dependencies = dependencies;
         }
 

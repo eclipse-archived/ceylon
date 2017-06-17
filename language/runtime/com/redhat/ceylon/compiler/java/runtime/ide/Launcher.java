@@ -204,6 +204,12 @@ public class Launcher {
                 // TODO Auto-generated method stub
                 return null;
             }
+            
+            @Override
+            public String classifier() {
+                // TODO Auto-generated method stub
+                return null;
+            }
         };
     }
 

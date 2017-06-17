@@ -630,6 +630,11 @@ public class JvmBackendUtil {
                     }
                     
                     @Override
+                    public String classifier() {
+                        return null;
+                    }
+                    
+                    @Override
                     public String repositoryDisplayString() {
                         return "Android dependency";
                     }
@@ -714,6 +719,11 @@ public class JvmBackendUtil {
             @Override
             public String groupId() {
                 return ModuleUtil.getMavenGroupIdIfMavenModule(name);
+            }
+            
+            @Override
+            public String classifier() {
+                return null;
             }
             
             @Override

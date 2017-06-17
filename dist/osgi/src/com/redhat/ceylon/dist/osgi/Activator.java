@@ -101,6 +101,10 @@ public class Activator implements BundleActivator {
             return null;
         }
         @Override
+        public String classifier() {
+            return null;
+        }
+        @Override
         public String namespace() {
             return null;
         }

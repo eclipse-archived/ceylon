@@ -403,6 +403,13 @@ public class ModuleVisitor extends Visitor {
                 name.add("");
                 name.addAll(asList(nameString.split("\\.")));
             }
+            Tree.QuotedLiteral classifier = 
+                    that.getClassifier();
+            if (classifier!=null) {
+                String nameString = getNameString(classifier);
+                name.add("");
+                name.addAll(asList(nameString.split("\\.")));
+            }
         }
         if (phase==Phase.SRC_MODULE){
             String path = formatPath(name);

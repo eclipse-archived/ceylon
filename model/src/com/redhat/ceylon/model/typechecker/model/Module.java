@@ -48,6 +48,7 @@ public class Module
     private Map<ClassOrInterface, Set<Class>> services = null;
     private String groupId;
     private String artifactId;
+    private String classifier;
 
     private LanguageModuleCache languageModuleCache = null;
 
@@ -550,5 +551,13 @@ public class Module
     
     public void setArtifactId(String artifactId) {
         this.artifactId = artifactId;
+    }
+    
+    public String getClassifier() {
+        return classifier;
+    }
+    
+    public void setClassifier(String classifier) {
+        this.classifier = classifier;
     }
 }

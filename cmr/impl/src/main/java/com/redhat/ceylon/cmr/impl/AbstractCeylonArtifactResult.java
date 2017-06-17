@@ -150,5 +150,6 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
         }
         return ModuleUtil.getMavenCoordinates(name())[0];
     }
+    
 }
 

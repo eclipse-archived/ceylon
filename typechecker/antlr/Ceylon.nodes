@@ -35,6 +35,7 @@
     QUOTED_LITERAL?
     QUOTED_LITERAL? artifact
     QUOTED_LITERAL? version
+    QUOTED_LITERAL? classifier
     string name;)
 
 "A list of packages imported by a compilation unit."
