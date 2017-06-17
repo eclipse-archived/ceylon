@@ -123,7 +123,7 @@ public class MavenRepository extends AbstractRepository {
             tokens.add(name.substring(p + 1));
         }
         final String version = context.getVersion();
-        if (RepositoryManager.DEFAULT_MODULE.equals(name) == false && version != null)
+        if (!RepositoryManager.DEFAULT_MODULE.equals(name) && version != null)
             tokens.add(version); // add version
         return tokens;
     }
