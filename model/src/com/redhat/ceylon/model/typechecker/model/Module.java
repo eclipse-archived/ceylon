@@ -97,10 +97,10 @@ public class Module
     public boolean isLanguageModule() {
         List<String> name = getName();
         return name.size()==2
-                && name.get(0)
-                    .equals("ceylon")
-                && name.get(1)
-                    .equals("language");
+            && name.get(0)
+                .equals("ceylon")
+            && name.get(1)
+                .equals("language");
     }
     
     /**
@@ -110,8 +110,8 @@ public class Module
     public boolean isDefaultModule() {
         List<String> name = getName();
         return name.size()==1
-                && name.get(0)
-                    .equals(DEFAULT_MODULE_NAME);
+            && name.get(0)
+                .equals(DEFAULT_MODULE_NAME);
     }
     
     public Module getLanguageModule() {

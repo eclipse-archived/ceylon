@@ -565,6 +565,7 @@ class AetherUtils {
             this.repositoryDisplayString = repositoryDisplayString;
             this.groupId = groupId;
             this.artifactId = artifactId;
+            this.classifier = classifier;
         }
 
         @Override

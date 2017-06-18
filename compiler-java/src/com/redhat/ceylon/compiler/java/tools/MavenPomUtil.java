@@ -147,6 +147,8 @@ public class MavenPomUtil {
 
                     out.writeCharacters("\n    ");
                     out.writeStartElement("dependency");
+                    out.writeCharacters("\n    ");
+                    out.writeComment(moduleDependency.getNameAsString());
                     
                     out.writeCharacters("\n      ");
                     out.writeStartElement("groupId");
@@ -157,7 +159,7 @@ public class MavenPomUtil {
                     out.writeStartElement("artifactId");
                     out.writeCharacters(depArtifactId);
                     out.writeEndElement();
-
+                    
                     if (depClassifier!=null) {
                         out.writeCharacters("\n      ");
                         out.writeStartElement("classifier");
