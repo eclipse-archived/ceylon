@@ -66,6 +66,11 @@ public class DependencyNodeDependencyDescriptor implements DependencyDescriptor 
 	}
 
 	@Override
+	public String getClassifier() {
+	    return node.getArtifact().getClassifier();
+	}
+
+	@Override
 	public String getVersion() {
 		return node.getArtifact().getVersion();
 	}

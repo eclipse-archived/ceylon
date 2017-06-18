@@ -11,6 +11,7 @@ public interface DependencyDescriptor {
 
 	public String getGroupId();
 	public String getArtifactId();
+	public String getClassifier();
 	public String getVersion();
 	public boolean isOptional();
 	

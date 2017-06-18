@@ -38,6 +38,11 @@ public class DependencyDependencyDescriptor implements DependencyDescriptor {
 	public String getArtifactId() {
 		return model.getArtifactId();
 	}
+	
+	@Override
+	public String getClassifier() {
+	    return model.getClassifier();
+	}
 
 	@Override
 	public String getVersion() {
