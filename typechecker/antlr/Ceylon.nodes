@@ -15,6 +15,7 @@
     IMPORT_PATH? groupImportPath
     QUOTED_LITERAL? groupQuotedLiteral
     QUOTED_LITERAL? artifact
+    QUOTED_LITERAL? classifier
     QUOTED_LITERAL? version
     IMPORT_MODULE_LIST)
 

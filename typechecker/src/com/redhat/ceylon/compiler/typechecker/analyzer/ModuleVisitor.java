@@ -242,12 +242,23 @@ public class ModuleVisitor extends Visitor {
                         buildAnnotations(that.getAnnotationList(), 
                                 mainModule.getAnnotations());
                         mainModule.setNativeBackends(moduleBackends);
-                        if(that.getArtifact() != null)
-                            mainModule.setArtifactId(getNameString(that.getArtifact()));
-                        if(that.getGroupImportPath() != null)
-                            mainModule.setGroupId(formatPath(that.getGroupImportPath().getIdentifiers()));
-                        else if(that.getGroupQuotedLiteral() != null)
-                            mainModule.setGroupId(getNameString(that.getGroupQuotedLiteral()));
+                        Tree.QuotedLiteral classifier = that.getClassifier();
+                        if (classifier != null) {
+                            mainModule.setClassifier(getNameString(classifier));
+                            classifier.addUnsupportedError("classifiers not yet supported");
+                        }
+                        Tree.QuotedLiteral artifact = that.getArtifact();
+                        if (artifact != null) {
+                            mainModule.setArtifactId(getNameString(artifact));
+                        }
+                        Tree.ImportPath groupImportPath = that.getGroupImportPath();
+                        Tree.QuotedLiteral groupQuotedLiteral = that.getGroupQuotedLiteral();
+                        if (groupImportPath != null) {
+                            mainModule.setGroupId(formatPath(groupImportPath.getIdentifiers()));
+                        }
+                        else if (groupQuotedLiteral != null) {
+                            mainModule.setGroupId(getNameString(groupQuotedLiteral));
+                        }
                     }
                 }
             }
