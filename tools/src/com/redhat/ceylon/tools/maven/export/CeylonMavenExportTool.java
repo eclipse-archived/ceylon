@@ -662,12 +662,16 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
                     if(moduleArtifact != null){
                         mavenCoordinates[0] = moduleArtifact.groupId();
                         mavenCoordinates[1] = moduleArtifact.artifactId();
+                        mavenCoordinates[2] = moduleArtifact.classifier();
                     }
 
                     writeOpen(out, "dependency");
                     {
                         writeElement(out, "groupId", mavenCoordinates[0]);
                         writeElement(out, "artifactId", mavenCoordinates[1]);
+                        if (mavenCoordinates[2]!=null) {
+                            writeElement(out, "classifier", mavenCoordinates[2]);
+                        }
 
                         if(forceVersion
                                 || !(forImport || forSdkImport) 
@@ -733,8 +737,8 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
 
     @Override
     protected boolean shouldExclude(String moduleName, String version) {
-        return super.shouldExclude(moduleName, version) ||
-                this.excludedModules.contains(moduleName);
+        return super.shouldExclude(moduleName, version) 
+            || this.excludedModules.contains(moduleName);
     }
     
     @Override

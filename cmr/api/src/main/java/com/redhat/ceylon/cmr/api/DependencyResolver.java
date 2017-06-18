@@ -18,7 +18,6 @@ package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Set;
 
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.model.cmr.ArtifactResult;

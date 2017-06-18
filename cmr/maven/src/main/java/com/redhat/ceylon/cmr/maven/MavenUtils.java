@@ -96,6 +96,7 @@ public class MavenUtils {
                     Element dep = (Element) depList.item(i);
                     String depGroupId = getText(dep, "groupId");
                     String depArtifactId = getText(dep, "artifactId");
+                    String depClassifier = getText(dep, "classifier");
                     String depVersion = getText(dep, "version");
                     String depScope = getText(dep, "scope");
                     String depOptional = getText(dep, "optional");
@@ -113,12 +114,15 @@ public class MavenUtils {
                     else
                         scope = ModuleScope.COMPILE;
 
-                    ret.add(new ModuleDependencyInfo("maven", depGroupId+":"+depArtifactId, depVersion, 
-                            "true".equals(depOptional), false, Backends.JAVA, scope));
+                    ret.add(new ModuleDependencyInfo("maven", 
+                            depClassifier==null ? 
+                                    depGroupId+":"+depArtifactId : 
+                                    depGroupId+":"+depArtifactId+":"+depClassifier, 
+                            depVersion, "true".equals(depOptional), false, Backends.JAVA, scope));
                 }
             }
         }
-        return new ModuleInfo(modName, modVersion, modGroupId, modArtifactId, null, ret);
+        return new ModuleInfo(modName, modVersion, modGroupId, modArtifactId, null, null, ret);
     }
 
     static String getText(Element element, String childName){

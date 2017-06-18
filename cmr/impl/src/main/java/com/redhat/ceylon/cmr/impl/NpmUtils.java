@@ -182,7 +182,7 @@ public final class NpmUtils extends AbstractDependencyResolverAndModuleInfoReade
     
     private ModuleInfo getModuleInfo(Object obj, String moduleName, String version, Overrides overrides) {
         if (obj == null) {
-            return new ModuleInfo(moduleName, version, null, null, null, Collections.<ModuleDependencyInfo>emptySet());
+            return new ModuleInfo(moduleName, version, null, null, null, null, Collections.<ModuleDependencyInfo>emptySet());
         }
         if (!(obj instanceof Map)) {
             throw new RuntimeException("Expected an Object");
@@ -194,7 +194,7 @@ public final class NpmUtils extends AbstractDependencyResolverAndModuleInfoReade
             String depVersion = asString(map.get(depName));
             deps.add(new ModuleDependencyInfo("npm", depName, depVersion, false, false, Backends.JS));
         }
-        ModuleInfo result = new ModuleInfo(moduleName, version, null, null, null, deps);
+        ModuleInfo result = new ModuleInfo(moduleName, version, null, null, null, null, deps);
         if(overrides != null)
             result = overrides.applyOverrides(moduleName, version, result);
         return result;

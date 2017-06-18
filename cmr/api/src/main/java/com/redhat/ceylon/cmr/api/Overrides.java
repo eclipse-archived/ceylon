@@ -287,7 +287,7 @@ public class Overrides {
                         add.isShared()));
             }
         }
-        return new ModuleInfo(module, version, source.getGroupId(), source.getArtifactId(), filter, result);
+        return new ModuleInfo(module, version, source.getGroupId(), source.getArtifactId(), source.getClassifier(), filter, result);
     }
 
     private static Overrides parse(String overridesFileName, Overrides overrides) throws OverrideException{

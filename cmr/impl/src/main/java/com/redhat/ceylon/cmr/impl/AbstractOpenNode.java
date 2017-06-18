@@ -42,7 +42,6 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@SuppressWarnings({"NullableProblems"})
 public abstract class AbstractOpenNode implements OpenNode, Serializable {
 
     private static final long serialVersionUID = 1L;

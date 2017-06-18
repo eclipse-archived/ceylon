@@ -211,7 +211,7 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
 
     private ModuleInfo getModuleInfo(Object obj, String moduleName, String version, Overrides overrides) {
         if (obj == null) {
-            return new ModuleInfo(moduleName, version, null, null, null, Collections.<ModuleDependencyInfo>emptySet());
+            return new ModuleInfo(moduleName, version, null, null, null, null, Collections.<ModuleDependencyInfo>emptySet());
         }
         if (!(obj instanceof Iterable)) {
             throw new RuntimeException("Expected something Iterable");
@@ -237,7 +237,7 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
             String modName = ModuleUtil.getModuleNameFromUri(depUri);
             deps.add(new ModuleDependencyInfo(namespace, modName, ModuleUtil.moduleVersion(module), optional, exported, Backends.JS));
         }
-        ModuleInfo result = new ModuleInfo(moduleName, version, null, null, null, deps);
+        ModuleInfo result = new ModuleInfo(moduleName, version, null, null, null, null, deps);
         if(overrides != null)
             result = overrides.applyOverrides(moduleName, version, result);
         return result;

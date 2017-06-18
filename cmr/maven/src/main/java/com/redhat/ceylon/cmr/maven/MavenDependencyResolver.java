@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
@@ -124,7 +123,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
         if(version != null && !version.equals(descriptor.getVersion()))
             return null;
         ModuleInfo ret = new ModuleInfo(descrName, descriptor.getVersion(), 
-                descriptor.getGroupId(), descriptor.getArtifactId(), null, infos);
+                descriptor.getGroupId(), descriptor.getArtifactId(), null, null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(descrName, descriptor.getVersion(), ret);
         return ret;

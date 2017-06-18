@@ -129,7 +129,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         final Set<ModuleDependencyInfo> infos = getDependencies(moduleInfo, dependencies, moduleName, version, 
                 groupId, artifactId, overrides);
 
-        ModuleInfo ret = new ModuleInfo(moduleName, version, groupId, artifactId, null, infos);
+        ModuleInfo ret = new ModuleInfo(moduleName, version, groupId, artifactId, null, null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(moduleName, version, ret);
         return ret;
@@ -385,7 +385,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         
         if (overrides != null) {
             result = overrides.applyOverrides(module, version, new ModuleInfo(module, version, groupId, artifactId, 
-                    null, result)).getDependencies();
+                    null, null, result)).getDependencies();
         }
         
         return result;

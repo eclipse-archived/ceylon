@@ -46,10 +46,6 @@ import com.redhat.ceylon.model.typechecker.model.ModuleImport;
  */
 public class MavenPomUtil {
 
-    public static String[] getMavenCoordinates(String moduleName){
-        return ModuleUtil.getMavenCoordinates(moduleName);
-    }
-    
     public static void writeMavenManifest2(File outputFolder, Module module,  
     		JdkProvider jdkProvider) {
         String moduleName = module.getNameAsString();
@@ -62,7 +58,7 @@ public class MavenPomUtil {
             else
                 artifactId = module.getNameAsString();
         }else{
-            String[] mavenCoordinates = getMavenCoordinates(moduleName);
+            String[] mavenCoordinates = ModuleUtil.getMavenCoordinates(moduleName);
             groupId = mavenCoordinates[0];
             artifactId = mavenCoordinates[1];
         }
@@ -134,16 +130,19 @@ public class MavenPomUtil {
                     
                     String depGroupId;
                     String depArtifactId;
+                    String depClassifier;
                     if(moduleDependency.getGroupId() != null){
                         depGroupId = moduleDependency.getGroupId();
                         if(moduleDependency.getArtifactId() != null)
                             depArtifactId = moduleDependency.getArtifactId();
                         else
                             depArtifactId = moduleDependency.getNameAsString();
+                        depClassifier = moduleDependency.getClassifier();
                     }else{
-                        String[] mavenCoordinates = getMavenCoordinates(moduleDependency.getNameAsString());
+                        String[] mavenCoordinates = ModuleUtil.getMavenCoordinates(moduleDependency.getNameAsString());
                         depGroupId = mavenCoordinates[0];
                         depArtifactId = mavenCoordinates[1];
+                        depClassifier = mavenCoordinates[2];
                     }
 
                     out.writeCharacters("\n    ");
@@ -158,6 +157,13 @@ public class MavenPomUtil {
                     out.writeStartElement("artifactId");
                     out.writeCharacters(depArtifactId);
                     out.writeEndElement();
+
+                    if (depClassifier!=null) {
+                        out.writeCharacters("\n      ");
+                        out.writeStartElement("classifier");
+                        out.writeCharacters(depClassifier);
+                        out.writeEndElement();
+                    }
 
                     out.writeCharacters("\n      ");
                     out.writeStartElement("version");
@@ -206,13 +212,13 @@ public class MavenPomUtil {
 
     public static boolean isMavenDescriptor(String entryFullName, Module module) {
         String moduleName = module.getNameAsString();
-        String[] mavenCoordinates = getMavenCoordinates(moduleName);
+        String[] mavenCoordinates = ModuleUtil.getMavenCoordinates(moduleName);
         String groupId = mavenCoordinates[0];
         String artifactId = mavenCoordinates[1];
 
         String path = "META-INF/maven/"+groupId+"/"+artifactId+"/";
         return entryFullName.equals(path+"pom.xml")
-                || entryFullName.equals(path+"pom.properties");
+            || entryFullName.equals(path+"pom.properties");
     }
 
 }

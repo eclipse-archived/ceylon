@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;

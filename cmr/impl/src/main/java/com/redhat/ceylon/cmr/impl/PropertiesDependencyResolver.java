@@ -68,6 +68,7 @@ public final class PropertiesDependencyResolver extends ModulesDependencyResolve
                     // FIXME: store this
                     ModuleUtil.getMavenGroupIdIfMavenModule(moduleName),
                     ModuleUtil.getMavenArtifactIdIfMavenModule(moduleName),
+                    ModuleUtil.getMavenClassifierIfMavenModule(moduleName),
                     null, infos);
             if(overrides != null)
                 ret = overrides.applyOverrides(moduleName, moduleVersion, ret);
