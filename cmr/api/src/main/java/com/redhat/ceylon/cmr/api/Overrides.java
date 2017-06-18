@@ -281,8 +281,9 @@ public class Overrides {
             if(artifactOverrides.getFilter() != null)
                 filter = artifactOverrides.getFilter();
             for(DependencyOverride add : artifactOverrides.getAdd()){
-                result.add(new ModuleDependencyInfo(add.getArtifactContext().getNamespace(), 
-                        add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
+                ArtifactContext addContext = add.getArtifactContext();
+                result.add(new ModuleDependencyInfo(addContext.getNamespace(), 
+                        addContext.getName(), addContext.getVersion(),
                         add.isOptional(),
                         add.isShared()));
             }
