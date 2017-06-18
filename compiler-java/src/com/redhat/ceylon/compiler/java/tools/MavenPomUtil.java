@@ -147,8 +147,6 @@ public class MavenPomUtil {
 
                     out.writeCharacters("\n    ");
                     out.writeStartElement("dependency");
-                    out.writeCharacters("\n    ");
-                    out.writeComment(moduleDependency.getNameAsString());
                     
                     out.writeCharacters("\n      ");
                     out.writeStartElement("groupId");
