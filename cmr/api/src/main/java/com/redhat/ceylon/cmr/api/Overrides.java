@@ -146,6 +146,10 @@ public class Overrides {
         return this.source == null ? super.toString() : "Overrides("+source+")";
     }
     
+    public String getSource() {
+        return source;
+    }
+    
     public void addArtifactOverride(ArtifactOverrides ao) {
         overrides.put(ao.getOwner(), ao);
         if(ao.getOwner().getVersion() == null)
@@ -281,13 +285,14 @@ public class Overrides {
             if(artifactOverrides.getFilter() != null)
                 filter = artifactOverrides.getFilter();
             for(DependencyOverride add : artifactOverrides.getAdd()){
-                result.add(new ModuleDependencyInfo(add.getArtifactContext().getNamespace(), 
-                        add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
+                ArtifactContext addContext = add.getArtifactContext();
+                result.add(new ModuleDependencyInfo(addContext.getNamespace(), 
+                        addContext.getName(), addContext.getVersion(),
                         add.isOptional(),
                         add.isShared()));
             }
         }
-        return new ModuleInfo(module, version, source.getGroupId(), source.getArtifactId(), filter, result);
+        return new ModuleInfo(module, version, source.getGroupId(), source.getArtifactId(), source.getClassifier(), filter, result);
     }
 
     private static Overrides parse(String overridesFileName, Overrides overrides) throws OverrideException{
@@ -528,7 +533,7 @@ public class Overrides {
             String version = optionalVersion ? getAttribute(element, "version", interpolation) : getRequiredAttribute(element, "version", interpolation);
             String packaging = getAttribute(element, "packaging", interpolation);
             String classifier = getAttribute(element, "classifier", interpolation);
-            return createMavenArtifactContext(groupId, artifactId, version, packaging, classifier);
+            return new MavenArtifactContext(groupId, artifactId, classifier, version, packaging);
         }else{
             String moduleUri = getRequiredAttribute(element, "module", interpolation);
             String namespace = ModuleUtil.getNamespaceFromUri(moduleUri);
@@ -651,11 +656,6 @@ public class Overrides {
         return ret;
     }
 
-    public static ArtifactContext createMavenArtifactContext(String groupId, String artifactId, String version, 
-                                                             String packaging, String classifier) {
-        return new MavenArtifactContext(groupId, artifactId, version, packaging, classifier);
-    }
-    
     public ArtifactContext applyOverrides(final ArtifactContext sought) {
         ArtifactContext replacedContext = this.replace(sought);
         if(replacedContext == null) {

@@ -30,14 +30,16 @@ public final class ModuleInfo {
     private String version;
     private String groupId;
     private String artifactId;
+    private String classifier;
     private Set<ModuleDependencyInfo> dependencies;
 
-    public ModuleInfo(String name, String version, String groupId, String artifactId, 
+    public ModuleInfo(String name, String version, String groupId, String artifactId, String classifier,
             String filter, Set<ModuleDependencyInfo> dependencies) {
         this.name = name;
         this.version = version;
         this.groupId = groupId;
         this.artifactId = artifactId;
+        this.classifier = classifier;
         this.filter = filter;
         this.dependencies = dependencies;
     }
@@ -56,6 +58,10 @@ public final class ModuleInfo {
     
     public String getArtifactId() {
         return artifactId;
+    }
+    
+    public String getClassifier() {
+        return classifier;
     }
     
     public Set<ModuleDependencyInfo> getDependencies() {

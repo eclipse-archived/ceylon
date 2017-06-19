@@ -29,7 +29,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -115,6 +114,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
                 // FIXME: does OSGi store this?
                 ModuleUtil.getMavenGroupIdIfMavenModule(name),
                 ModuleUtil.getMavenArtifactIdIfMavenModule(name),
+                ModuleUtil.getMavenClassifierIfMavenModule(name),
                 null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(name, version, ret);

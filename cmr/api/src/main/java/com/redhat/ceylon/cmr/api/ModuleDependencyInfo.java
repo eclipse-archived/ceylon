@@ -91,10 +91,10 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
 
         ModuleDependencyInfo that = (ModuleDependencyInfo) o;
         return that.name.equals(name)
-                && that.version.equals(version)
-                && that.shared == shared
-                && that.scope == scope
-                && that.optional == optional;
+            && that.version.equals(version)
+            && that.shared == shared
+            && that.scope == scope
+            && that.optional == optional;
     }
 
     @Override

@@ -124,6 +124,18 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     }
     
     @Override
+    public String groupId() {
+        ModuleInfo info = resolve();
+        if(info != null){
+            String groupId = info.getGroupId();
+            if(groupId != null && !groupId.isEmpty()){
+                return groupId;
+            }
+        }
+        return ModuleUtil.getMavenCoordinates(name())[0];
+    }
+    
+    @Override
     public String artifactId() {
         ModuleInfo info = resolve();
         if(info != null){
@@ -140,15 +152,16 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     }
     
     @Override
-    public String groupId() {
+    public String classifier() {
         ModuleInfo info = resolve();
         if(info != null){
-            String groupId = info.getGroupId();
-            if(groupId != null && !groupId.isEmpty()){
-                return groupId;
+            String classifier = info.getClassifier();
+            if(classifier != null && !classifier.isEmpty()){
+                return classifier;
             }
         }
-        return ModuleUtil.getMavenCoordinates(name())[0];
+        return ModuleUtil.getMavenCoordinates(name())[2];
     }
+    
 }
 

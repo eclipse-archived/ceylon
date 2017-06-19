@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.maven.model.Exclusion;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.util.artifact.JavaScopes;
 
@@ -64,6 +63,11 @@ public class DependencyNodeDependencyDescriptor implements DependencyDescriptor 
 	@Override
 	public String getArtifactId() {
 		return node.getArtifact().getArtifactId();
+	}
+
+	@Override
+	public String getClassifier() {
+	    return node.getArtifact().getClassifier();
 	}
 
 	@Override

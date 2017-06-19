@@ -69,6 +69,11 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     public String version() {
         return version;
     }
+    
+    @Override
+    public String classifier() {
+        return null;
+    }
 
     @Override
     public boolean exported() {

@@ -114,4 +114,6 @@ public interface ArtifactResult {
     String groupId();
     
     String artifactId();
+    
+    String classifier();
 }

@@ -128,8 +128,8 @@ class ModuleDescriptorReader {
             String name = sourceFile.getName().toLowerCase();
             // did we find a source file?
             return name.endsWith(".ceylon")
-                    || name.endsWith(".java")
-                    || name.endsWith(".js");
+                || name.endsWith(".java")
+                || name.endsWith(".js");
         }
     }
 

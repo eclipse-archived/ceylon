@@ -53,6 +53,11 @@ public class ModelDependencyDescriptor implements DependencyDescriptor {
 	}
 
 	@Override
+	public String getClassifier() {
+	    return null;
+	}
+
+	@Override
 	public String getVersion() {
         String ret = model.getVersion();
         if(ret == null){

@@ -25,7 +25,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
@@ -96,7 +95,7 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
                             String groupId = part.substring(0, sep);
                             String artifactId = part.substring(sep+1);
                             return new ModuleInfo(ret.getName(), ret.getVersion(), 
-                                    groupId, artifactId,
+                                    groupId, artifactId, null,
                                     ret.getFilter(), ret.getDependencies());
                         }
                     }

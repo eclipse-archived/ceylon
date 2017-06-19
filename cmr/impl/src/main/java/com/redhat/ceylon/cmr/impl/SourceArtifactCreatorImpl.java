@@ -44,8 +44,8 @@ public class SourceArtifactCreatorImpl implements SourceArtifactCreator {
         this.originalSrcFile = repoManager.getArtifact(srcContext);
     }
 
-    private void setupSrcOutput() throws IOException {
-    }
+//    private void setupSrcOutput() throws IOException {
+//    }
 
     
     /** Copy the specified source streams, avoiding duplicate entries. */

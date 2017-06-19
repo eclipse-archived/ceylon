@@ -59,7 +59,7 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
             for (ModuleIdentifier mi : module.getDependencies()) {
                 infos.add(new ModuleDependencyInfo(null, mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport(), Backends.JAVA));
             }
-            ModuleInfo ret = new ModuleInfo(name, version, module.getGroupId(), module.getArtifactId(), module.getFilter(), infos);
+            ModuleInfo ret = new ModuleInfo(name, version, module.getGroupId(), module.getArtifactId(), null, module.getFilter(), infos);
             if(overrides != null)
                 ret = overrides.applyOverrides(name, version, ret);
             return ret;
@@ -83,10 +83,10 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
             this.export = export;
         }
 
-        public static ModuleIdentifier create(String string) {
-            String[] split = string.split(":");
-            return new ModuleIdentifier(split[0], split.length > 1 ? split[1] : null, false, false);
-        }
+//        public static ModuleIdentifier create(String string) {
+//            String[] split = string.split(":");
+//            return new ModuleIdentifier(split[0], split.length > 1 ? split[1] : null, false, false);
+//        }
 
         public String getName() {
             return name;

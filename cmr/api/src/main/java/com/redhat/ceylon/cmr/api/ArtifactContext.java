@@ -35,8 +35,9 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@SuppressWarnings("serial")
 public class ArtifactContext implements Serializable, ContentOptions {
+    private static final long serialVersionUID = -6471281296890091693L;
+    
     public static final String CAR = ".car";
     public static final String JAR = ".jar";
     public static final String JS_MODEL = "-model.js";

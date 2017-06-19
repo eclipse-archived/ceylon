@@ -34,7 +34,6 @@ import com.redhat.ceylon.cmr.spi.SizedInputStream;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@SuppressWarnings({"NullableProblems"})
 public class DefaultNode extends AbstractOpenNode {
 
     private static final long serialVersionUID = 1L;

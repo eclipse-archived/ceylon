@@ -26,6 +26,8 @@ import com.redhat.ceylon.cmr.spi.StructureBuilder;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public class RootNode extends DefaultNode {
+    private static final long serialVersionUID = 3690503975494792059L;
+
     public RootNode(ContentStore contentStore, StructureBuilder structureBuilder) {
         super("");
         addService(ContentStore.class, contentStore);

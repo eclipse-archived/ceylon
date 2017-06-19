@@ -149,6 +149,11 @@ moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
           SEGMENT_OP
           s2=STRING_LITERAL
           { $moduleDescriptor.setArtifact(new QuotedLiteral($s2)); }
+          (
+            SEGMENT_OP
+            s3=STRING_LITERAL
+            { $moduleDescriptor.setClassifier(new QuotedLiteral($s3)); }
+          )?
         )?
       )?
       (
@@ -210,6 +215,11 @@ importModule returns [ImportModule importModule]
           SEGMENT_OP
           s2=STRING_LITERAL
           { $importModule.setArtifact(new QuotedLiteral($s2)); }
+          (
+            SEGMENT_OP
+            s3=STRING_LITERAL
+            { $importModule.setClassifier(new QuotedLiteral($s3)); }
+          )?
         )?
       )
       (

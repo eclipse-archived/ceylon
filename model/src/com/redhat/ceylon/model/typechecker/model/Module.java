@@ -48,6 +48,7 @@ public class Module
     private Map<ClassOrInterface, Set<Class>> services = null;
     private String groupId;
     private String artifactId;
+    private String classifier;
 
     private LanguageModuleCache languageModuleCache = null;
 
@@ -96,10 +97,10 @@ public class Module
     public boolean isLanguageModule() {
         List<String> name = getName();
         return name.size()==2
-                && name.get(0)
-                    .equals("ceylon")
-                && name.get(1)
-                    .equals("language");
+            && name.get(0)
+                .equals("ceylon")
+            && name.get(1)
+                .equals("language");
     }
     
     /**
@@ -109,8 +110,8 @@ public class Module
     public boolean isDefaultModule() {
         List<String> name = getName();
         return name.size()==1
-                && name.get(0)
-                    .equals(DEFAULT_MODULE_NAME);
+            && name.get(0)
+                .equals(DEFAULT_MODULE_NAME);
     }
     
     public Module getLanguageModule() {
@@ -550,5 +551,13 @@ public class Module
     
     public void setArtifactId(String artifactId) {
         this.artifactId = artifactId;
+    }
+    
+    public String getClassifier() {
+        return classifier;
+    }
+    
+    public void setClassifier(String classifier) {
+        this.classifier = classifier;
     }
 }

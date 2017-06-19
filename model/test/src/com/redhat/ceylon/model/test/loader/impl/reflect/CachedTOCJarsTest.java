@@ -150,5 +150,10 @@ public class CachedTOCJarsTest {
         public String groupId() {
             return null;
         }
+        
+        @Override
+        public String classifier() {
+            return null;
+        }
     }
 }

@@ -56,7 +56,6 @@ public class ArtifactCallbackStream extends FilterInputStream {
         return read(new byte[1]);
     }
 
-    @SuppressWarnings("NullableProblems")
     public int read(byte[] b, int off, int len) throws IOException {
         int read = super.read(b, off, len);
         callback.read(b, (read == -1) ? 0 : read);

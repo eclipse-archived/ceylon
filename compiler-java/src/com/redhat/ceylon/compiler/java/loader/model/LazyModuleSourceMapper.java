@@ -128,6 +128,8 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                     module.setGroupId(artifact.groupId());
                 if(artifact.artifactId() != null)
                     module.setArtifactId(artifact.artifactId());
+                if(artifact.classifier() != null)
+                    module.setClassifier(artifact.classifier());
 
                 if(!modelLoader.loadCompiledModule(module)){
                     setupJavaModule(moduleImport, lazyModule, modelLoader, moduleManager, artifact);
@@ -155,7 +157,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                 }
             }
             ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), 
-                    artifact.groupId(), artifact.artifactId(), null, existingModuleDependencies);
+                    artifact.groupId(), artifact.artifactId(), artifact.classifier(), null, existingModuleDependencies);
             ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);
             List<ModuleImport> newModuleImports = new ArrayList<>();
             for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {

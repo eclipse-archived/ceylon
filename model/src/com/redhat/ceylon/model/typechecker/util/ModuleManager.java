@@ -152,8 +152,8 @@ public class ModuleManager {
             }
         }
         return !exactVersionMatch 
-                || left.getVersion() != null 
-                && left.getVersion().equals(right.getVersion());
+            || left.getVersion() != null 
+            && left.getVersion().equals(right.getVersion());
     }
 
     public Module findModule(Module module, List<Module> listOfModules, boolean exactVersionMatch) {

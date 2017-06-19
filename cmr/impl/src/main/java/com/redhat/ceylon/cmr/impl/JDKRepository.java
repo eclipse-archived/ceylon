@@ -64,8 +64,9 @@ public class JDKRepository extends AbstractRepository {
     }
 
     public static class JDKRoot extends DefaultNode implements ContentFinderDelegate {
-
-    	private JdkProvider jdkProvider;
+        private static final long serialVersionUID = 3536040774400941766L;
+        
+        private JdkProvider jdkProvider;
 		private SortedSet<String> sortedModuleNames;
 
         public JDKRoot() {

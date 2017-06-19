@@ -18,8 +18,6 @@ package com.redhat.ceylon.cmr.api;
 
 import java.io.File;
 
-import com.redhat.ceylon.cmr.spi.ContentStore;
-
 /**
  * Artifact callback.
  *

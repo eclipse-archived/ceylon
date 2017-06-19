@@ -390,11 +390,11 @@ public class JarOutputRepositoryManager {
                         return classWasUpdated;
                     } else {
                         return modifiedResourceFilesRel.contains(entryFullName)
-                                || entryFullName.equals(FILE_MAPPING)
-                                || entryFullName.equals(FILE_ERRORS)
-                                || entryFullName.equals(FILE_HASHES)
-                                || (writeOsgiManifest && OsgiUtil.OsgiManifest.isManifestFileName(entryFullName))
-                                || (writeMavenManifest && MavenPomUtil.isMavenDescriptor(entryFullName, module));
+                            || entryFullName.equals(FILE_MAPPING)
+                            || entryFullName.equals(FILE_ERRORS)
+                            || entryFullName.equals(FILE_HASHES)
+                            || (writeOsgiManifest && OsgiUtil.OsgiManifest.isManifestFileName(entryFullName))
+                            || (writeMavenManifest && MavenPomUtil.isMavenDescriptor(entryFullName, module));
                     }
                 }
             };

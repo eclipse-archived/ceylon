@@ -362,14 +362,14 @@ public class JvmBackendUtil {
     public static boolean isJavaArray(TypeDeclaration decl) {
         String name = getArrayName(decl);
         return "java.lang::ObjectArray".equals(name)
-                || "java.lang::ByteArray".equals(name)
-                || "java.lang::ShortArray".equals(name)
-                || "java.lang::IntArray".equals(name)
-                || "java.lang::LongArray".equals(name)
-                || "java.lang::FloatArray".equals(name)
-                || "java.lang::DoubleArray".equals(name)
-                || "java.lang::BooleanArray".equals(name)
-                || "java.lang::CharArray".equals(name);
+            || "java.lang::ByteArray".equals(name)
+            || "java.lang::ShortArray".equals(name)
+            || "java.lang::IntArray".equals(name)
+            || "java.lang::LongArray".equals(name)
+            || "java.lang::FloatArray".equals(name)
+            || "java.lang::DoubleArray".equals(name)
+            || "java.lang::BooleanArray".equals(name)
+            || "java.lang::CharArray".equals(name);
     }
     
     public static boolean isJavaBooleanArray(TypeDeclaration decl) {
@@ -630,6 +630,11 @@ public class JvmBackendUtil {
                     }
                     
                     @Override
+                    public String classifier() {
+                        return ModuleUtil.getMavenClassifierIfMavenModule(name);
+                    }
+                    
+                    @Override
                     public String repositoryDisplayString() {
                         return "Android dependency";
                     }
@@ -714,6 +719,11 @@ public class JvmBackendUtil {
             @Override
             public String groupId() {
                 return ModuleUtil.getMavenGroupIdIfMavenModule(name);
+            }
+            
+            @Override
+            public String classifier() {
+                return ModuleUtil.getMavenClassifierIfMavenModule(name);
             }
             
             @Override

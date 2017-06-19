@@ -38,6 +38,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactOverrides;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.DependencyOverride;
+import com.redhat.ceylon.cmr.api.MavenArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
@@ -96,13 +97,26 @@ class AetherUtils {
     }
 
     String[] nameToGroupArtifactIds(String name){
+        final String groupId;
+        final String artifactId;
+        final String classifier;
+        
         final int p = name.lastIndexOf(":");
         if (p == -1) {
             return null;
         }
-        final String groupId = name.substring(0, p);
-        final String artifactId = name.substring(p + 1);
-        return new String[]{groupId, artifactId};
+        final int q = name.substring(0, p).lastIndexOf(":");
+        if (q == -1) {
+            groupId = name.substring(0, p);
+            artifactId = name.substring(p + 1);
+            classifier = null;
+        }
+        else {
+            groupId = name.substring(0, q);
+            artifactId = name.substring(q + 1, p);
+            classifier = name.substring(p + 1);
+        }
+        return new String[]{groupId, artifactId, classifier};
     }
     
     private ArtifactResult findDependencies(RepositoryManager manager, Node node, Boolean fetchSingleArtifact) {
@@ -115,32 +129,34 @@ class AetherUtils {
         if (groupArtifactIds == null) {
             return null;
         }
-        final String groupId = groupArtifactIds[0];
-        final String artifactId = groupArtifactIds[1];
-        final String version = ac.getVersion();
+        String groupId = groupArtifactIds[0];
+        String artifactId = groupArtifactIds[1];
+        String classifier = groupArtifactIds[2];
+        String version = ac.getVersion();
 
         String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
         CmrRepository repository = NodeUtils.getRepository(node);
 
         if (CeylonUtils.arrayContains(ac.getSuffixes(), ArtifactContext.LEGACY_SRC)) {
-            return fetchWithClassifier(repository, groupId, artifactId, version, "sources", repositoryDisplayString);
+            classifier = "sources";
         }
-
-        return fetchDependencies(manager, repository, groupId, artifactId, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isIgnoreDependencies(), repositoryDisplayString);
+        
+        return fetchDependencies(manager, repository, groupId, artifactId, classifier, version, 
+                fetchSingleArtifact != null ? fetchSingleArtifact : ac.isIgnoreDependencies(), 
+                        repositoryDisplayString);
     }
 
     private ArtifactResult fetchDependencies(RepositoryManager manager, CmrRepository repository, 
-    		String groupId, String artifactId, String version, 
+    		String groupId, String artifactId, String classifier, String version,
     		boolean fetchSingleArtifact, String repositoryDisplayString) {
-    	
-        String classifier = null;
+        
         Overrides overrides = repository.getRoot().getService(Overrides.class);
         ArtifactOverrides ao = null;
-        log.debug("Overrides: "+overrides);
-        ArtifactContext context = getArtifactContext(groupId, artifactId, version, null, null);
+        log.debug("Overrides for "+canonicalForm(groupId, artifactId, classifier, version)+" in "+overrides.getSource());
+        ArtifactContext context = getArtifactContext(groupId, artifactId, classifier, version);
         if(overrides != null){
             ao = overrides.getArtifactOverrides(context);
-            log.debug(" ["+context+"] => "+ao);
+            log.debug(ao!=null ? "-> found overrides" : "-> no overrides");
         }
         // entire replacement
         ArtifactContext replacementContext = null;
@@ -156,9 +172,10 @@ class AetherUtils {
             if(nameToGroupArtifactIds != null){
                 groupId = nameToGroupArtifactIds[0];
                 artifactId = nameToGroupArtifactIds[1];
+                classifier = nameToGroupArtifactIds[2];
                 version = replacementContext.getVersion();
                 // new AO
-                context = getArtifactContext(groupId, artifactId, version, null, null);
+                context = getArtifactContext(groupId, artifactId, classifier, version);
                 ao = overrides.getArtifactOverrides(context);
             }
         }
@@ -173,8 +190,8 @@ class AetherUtils {
             log.debug("Using classifier "+classifier);
         }
 
-        final String name = toCanonicalForm(groupId, artifactId);
-        final String coordinates = toCanonicalForm(name, version);
+        final String name = MavenUtils.moduleName(groupId, artifactId, classifier);
+        final String coordinates = canonicalForm(groupId, artifactId, classifier, version); //only used for messages
         try {
         	DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, classifier, null, fetchSingleArtifact);
             if (info == null) {
@@ -184,7 +201,7 @@ class AetherUtils {
 
             final SingleArtifactResult result;
             if (fetchSingleArtifact) {
-                result = new SingleArtifactResult(repository, name, version, groupId, artifactId, 
+                result = new SingleArtifactResult(repository, name, version, groupId, artifactId, classifier,
                         info.getFile(), repositoryDisplayString);
             } else {
                 final List<ArtifactResult> dependencies = new ArrayList<>();
@@ -192,6 +209,7 @@ class AetherUtils {
                 for (DependencyDescriptor dep : info.getDependencies()) {
                     String dGroupId = dep.getGroupId();
                     String dArtifactId = dep.getArtifactId();
+                    String dClassifier = dep.getClassifier();
                     String dVersion = dep.getVersion();
                     boolean export = false;
                     boolean optional = dep.isOptional();
@@ -199,7 +217,7 @@ class AetherUtils {
                     ModuleScope scope = toModuleScope(dep);
                     ArtifactContext dContext = null;
                     if(overrides != null)
-                        dContext = getArtifactContext(dGroupId, dArtifactId, dVersion, null, null);
+                        dContext = getArtifactContext(dGroupId, dArtifactId, dClassifier, dVersion);
 
                     if (overrides != null) {
                         if (overrides.isRemoved(dContext) 
@@ -220,6 +238,7 @@ class AetherUtils {
                             }else{
                                 dGroupId = groupArtifactIds[0];
                                 dArtifactId = groupArtifactIds[1];
+                                dClassifier = groupArtifactIds[2];
                             }
                             dVersion = replace.getVersion();
                         }
@@ -239,10 +258,9 @@ class AetherUtils {
                     ArtifactResult dr;
                     if(isCeylon)
                         dr = createArtifactResult(manager, dContext.getName(), dVersion, 
-                                dGroupId, dArtifactId,
                                 export, optional, scope, repositoryDisplayString);
                     else
-                        dr = createArtifactResult(manager, repository, dGroupId, dArtifactId, dVersion, 
+                        dr = createArtifactResult(manager, repository, dGroupId, dArtifactId, dClassifier, dVersion, 
                                 export, optional, scope, repositoryDisplayString,
                                 dep.getExclusions());
                     dependencies.add(dr);
@@ -258,7 +276,7 @@ class AetherUtils {
                     }
                 }
 
-                result = new AetherArtifactResult(repository, name, version, groupId, artifactId, 
+                result = new AetherArtifactResult(repository, name, version, groupId, artifactId, classifier,
                         info.getFile(), dependencies, repositoryDisplayString);
             }
 
@@ -315,6 +333,7 @@ class AetherUtils {
             Overrides overrides, String repositoryDisplayString) 
                     throws AetherException {
         ArtifactOverrides artifactOverrides = null;
+        String classifier = null;
         if(overrides != null){
             ArtifactContext ctx = new ArtifactContext(MavenRepository.NAMESPACE, groupId+":"+artifactId, version);
             // see if this artifact is replaced
@@ -325,6 +344,7 @@ class AetherUtils {
                     return; // abort
                 groupId = groupArtifactIds[0];
                 artifactId = groupArtifactIds[1];
+                classifier = groupArtifactIds[2];
                 version = replaceContext.getVersion();
                 ctx = replaceContext;
             }else if(overrides.isVersionOverridden(ctx)){
@@ -334,7 +354,7 @@ class AetherUtils {
             }
             artifactOverrides = overrides.getArtifactOverrides(ctx);
         }
-    	DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, null, "pom", false);
+    	DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, classifier, "pom", false);
         if(info != null){
             StringBuilder description = new StringBuilder();
             StringBuilder licenseBuilder = new StringBuilder();
@@ -345,9 +365,7 @@ class AetherUtils {
             Set<String> authors = new HashSet<>();
             for(DependencyDescriptor dep : info.getDependencies()){
                 String namespace = MavenRepository.NAMESPACE;
-                String depGroupId = dep.getGroupId();
-                String depArtifactId = dep.getArtifactId();
-                String depName = dep.getGroupId()+":"+dep.getArtifactId();
+                String depName = MavenUtils.moduleName(dep.getGroupId(),dep.getArtifactId(),dep.getClassifier());
                 String depVersion = dep.getVersion();
                 boolean export = false;
                 boolean optional = dep.isOptional();
@@ -373,8 +391,11 @@ class AetherUtils {
                             optional = artifactOverrides.isOptional(depCtx);
                     }
                 }
-                ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(namespace, depName, depVersion,
-                        optional, export, Backends.JAVA, toModuleScope(dep));
+                ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(
+                        namespace, depName, depVersion,
+                        optional, export, 
+                        Backends.JAVA, 
+                        toModuleScope(dep));
                 dependencies.add(moduleDependencyInfo);
             }
             if(artifactOverrides != null){
@@ -432,11 +453,10 @@ class AetherUtils {
         };
     }
 
-    private ArtifactContext getArtifactContext(String groupId, String artifactId, String version, String packaging, String classifier){
+    private ArtifactContext getArtifactContext(String groupId, String artifactId, String classifier, String version){
         if(classifier != null && classifier.isEmpty())
             classifier = null;
-        return Overrides.createMavenArtifactContext(groupId, artifactId, version,
-                packaging, classifier);
+        return new MavenArtifactContext(groupId, artifactId, classifier, version, null);
     }
 
     protected ArtifactResult createArtifactResult(RepositoryManager manager, CmrRepository repository, 
@@ -446,20 +466,22 @@ class AetherUtils {
         String[] groupArtifactIds = nameToGroupArtifactIds(dCo.getName());
         if(groupArtifactIds == null)
             return createArtifactResult(manager, dCo.getName(), version, 
-                    null, null,
                     shared, optional, scope, repositoryDisplayString);
-        return createArtifactResult(manager, repository, groupArtifactIds[0], groupArtifactIds[1], version, 
+        String groupId = groupArtifactIds[0];
+        String artifactId = groupArtifactIds[1];
+        String classifier = groupArtifactIds[2];
+        return createArtifactResult(manager, repository, groupId, artifactId, classifier, version, 
                 shared, optional, scope, repositoryDisplayString, exclusions);
     }
 
     protected ArtifactResult createArtifactResult(final RepositoryManager manager, CmrRepository repository, 
-            final String groupId, final String artifactId, final String dVersion, 
+            final String groupId, final String artifactId, final String classifier, final String dVersion, 
             final boolean shared, final boolean optional, final ModuleScope scope, final String repositoryDisplayString,
             final List<ExclusionDescriptor> exclusions) {
         
-        final String dName = toCanonicalForm(groupId, artifactId);
+        final String dName = MavenUtils.moduleName(groupId, artifactId, classifier);
 
-        return new MavenArtifactResult(repository, dName, dVersion, groupId, artifactId, repositoryDisplayString) {
+        return new MavenArtifactResult(repository, dName, dVersion, groupId, artifactId, classifier, repositoryDisplayString) {
             private ArtifactResult result;
             
             {
@@ -489,7 +511,7 @@ class AetherUtils {
             
             private synchronized ArtifactResult getResult() {
                 if (result == null) {
-                    result = fetchDependencies(manager, (CmrRepository) repository(), groupId, artifactId, dVersion, false, repositoryDisplayString);
+                    result = fetchDependencies(manager, (CmrRepository) repository(), groupId, artifactId, classifier, dVersion, false, repositoryDisplayString);
                 }
                 return result;
             }
@@ -505,46 +527,30 @@ class AetherUtils {
     }
 
     protected ArtifactResult createArtifactResult(RepositoryManager manager, final String module, final String dVersion,
-            String groupId, String artifactId,
             final boolean shared, final boolean optional, ModuleScope scope, final String repositoryDisplayString) {
-
-        return new LazyArtifactResult(manager, MavenRepository.NAMESPACE, module, dVersion,
-                shared, optional, scope);
+        return new LazyArtifactResult(manager, MavenRepository.NAMESPACE, module, dVersion, shared, optional, scope);
     }
 
-    private ArtifactResult fetchWithClassifier(CmrRepository repository, String groupId, String artifactId, String version, String classifier, String repositoryDisplayString) {
-        final String name = toCanonicalForm(groupId, artifactId);
-        final String coordinates = toCanonicalForm(toCanonicalForm(toCanonicalForm(name, "jar"), classifier), version);
-        try {
-        	DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, classifier, "jar", true);
-            if (info != null) {
-                return new SingleArtifactResult(repository, name, version, groupId, artifactId, 
-                        info.getFile(), repositoryDisplayString);
-            }
-        } catch (AetherException e) {
-        	log.debug("Could not resolve " + classifier + " for artifact [" + coordinates + "] : " + e);
-		}
-
-        log.debug("No artifact found: " + coordinates);
-        return null;
-    }
-
-    static String toCanonicalForm(String groupId, String artifactId) {
-        return groupId + ":" + artifactId;
+    private static String canonicalForm(String groupId, String artifactId, String classifier, String version) {
+        return classifier==null || classifier.isEmpty() ?
+                groupId + ":" + artifactId + ":" + version :
+                groupId + ":" + artifactId + ":" + classifier + ":" + version;
     }
 
     private static abstract class MavenArtifactResult extends AbstractArtifactResult {
         private String repositoryDisplayString;
         private String artifactId;
         private String groupId;
+        private String classifier;
 
         protected MavenArtifactResult(CmrRepository repository, 
                 String name, String version, String groupId, String artifactId, 
-                String repositoryDisplayString) {
+                String classifier, String repositoryDisplayString) {
             super(repository, MavenRepository.NAMESPACE, name, version);
             this.repositoryDisplayString = repositoryDisplayString;
             this.groupId = groupId;
             this.artifactId = artifactId;
+            this.classifier = classifier;
         }
 
         @Override
@@ -555,6 +561,11 @@ class AetherUtils {
         @Override
         public String artifactId() {
             return artifactId;
+        }
+        
+        @Override
+        public String classifier() {
+            return classifier;
         }
         
         @Override
@@ -572,9 +583,9 @@ class AetherUtils {
         private File file;
 
         private SingleArtifactResult(CmrRepository repository, String name, String version,
-                String groupId, String artifactId, 
+                String groupId, String artifactId, String classifier,
                 File file, String repositoryDisplayString) {
-            super(repository, name, version, groupId, artifactId, repositoryDisplayString);
+            super(repository, name, version, groupId, artifactId, classifier, repositoryDisplayString);
             this.file = file;
         }
 
@@ -595,9 +606,9 @@ class AetherUtils {
         private List<ArtifactResult> dependencies;
 
         private AetherArtifactResult(CmrRepository repository, String name, String version,
-                String groupId, String artifactId, 
+                String groupId, String artifactId, String classifier,
                 File file, List<ArtifactResult> dependencies, String repositoryDisplayString) {
-            super(repository, name, version, groupId, artifactId, file, repositoryDisplayString);
+            super(repository, name, version, groupId, artifactId, classifier, file, repositoryDisplayString);
             this.dependencies = dependencies;
         }
 

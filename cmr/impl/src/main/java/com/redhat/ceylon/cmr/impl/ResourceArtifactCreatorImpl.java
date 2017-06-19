@@ -31,8 +31,8 @@ public class ResourceArtifactCreatorImpl implements ArtifactCreator {
     private final String resourceRootName;
     private final String moduleName;
     private final String moduleVersion;
-    private boolean verbose;
-    private Logger log;
+//    private boolean verbose;
+//    private Logger log;
 
     public ResourceArtifactCreatorImpl(RepositoryManager repoManager, Iterable<? extends File> sourcePaths, Iterable<? extends File> resourcePaths, String resourceRootName, String moduleName, String moduleVersion, boolean verbose, Logger log) throws IOException {
         this.repoManager = repoManager;
@@ -41,8 +41,8 @@ public class ResourceArtifactCreatorImpl implements ArtifactCreator {
         this.resourceRootName = resourceRootName;
         this.moduleName = moduleName;
         this.moduleVersion = moduleVersion;
-        this.verbose = verbose;
-        this.log = log;
+//        this.verbose = verbose;
+//        this.log = log;
     }
 
     public Set<String> copy(Collection<String> resFiles) throws IOException {

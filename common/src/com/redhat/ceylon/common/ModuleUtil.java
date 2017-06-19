@@ -153,8 +153,8 @@ public abstract class ModuleUtil {
      */
     public static boolean supportsImportsWithNamespaces(int majorBinVer, int minorBinVer) {
         return (majorBinVer > Versions.V1_3_0_JVM_BINARY_MAJOR_VERSION
-                || (majorBinVer == Versions.V1_3_0_JVM_BINARY_MAJOR_VERSION
-                && minorBinVer >= Versions.V1_3_0_JVM_BINARY_MINOR_VERSION));
+            || (majorBinVer == Versions.V1_3_0_JVM_BINARY_MAJOR_VERSION
+            && minorBinVer >= Versions.V1_3_0_JVM_BINARY_MINOR_VERSION));
     }
 
     public static boolean isMavenJarlessModule(File jar) {
@@ -162,31 +162,76 @@ public abstract class ModuleUtil {
     }
 
     public static String[] getMavenCoordinates(String moduleName){
-        int lastDot = moduleName.lastIndexOf(":");
-        if(lastDot == -1)
-            lastDot = moduleName.lastIndexOf(".");
         String groupId;
         String artifactId;
-        if(lastDot != -1){
-            groupId = moduleName.substring(0, lastDot);
-            artifactId = moduleName.substring(lastDot+1);
-        }else{
-            groupId = artifactId = moduleName;
+        String classifier;
+        int lastColon = moduleName.lastIndexOf(":");
+        if (lastColon == -1) {
+            int lastDot = moduleName.lastIndexOf(".");
+            if (lastDot == -1) {
+                groupId = artifactId = moduleName;
+            }
+            else {
+                groupId = moduleName.substring(0, lastDot);
+                artifactId = moduleName.substring(lastDot+1);
+            }
+            classifier = null;
         }
-        return new String[]{groupId, artifactId};
+        else {
+            int secondLastColon = moduleName.substring(0, lastColon).lastIndexOf(":");
+            if (secondLastColon == -1) {
+                groupId = moduleName.substring(0, lastColon);
+                artifactId = moduleName.substring(lastColon+1);
+                classifier = null;
+            }
+            else {
+                groupId = moduleName.substring(0, secondLastColon);
+                artifactId = moduleName.substring(secondLastColon+1, lastColon);
+                classifier = moduleName.substring(lastColon);
+            }
+        }
+        return new String[]{groupId, artifactId, classifier};
     }
 
     public static String getMavenGroupIdIfMavenModule(String moduleName) {
         int lastDot = moduleName.lastIndexOf(":");
-        if(lastDot == -1)
+        if (lastDot == -1) {
             return null;
-        return moduleName.substring(0, lastDot);
+        }
+        int secondLastDot = moduleName.substring(0, lastDot).lastIndexOf(":");
+        if (secondLastDot == -1) {
+            return moduleName.substring(0, lastDot);
+        }
+        else { 
+            return moduleName.substring(0, secondLastDot);
+        }
     }
 
     public static String getMavenArtifactIdIfMavenModule(String moduleName) {
         int lastDot = moduleName.lastIndexOf(":");
-        if(lastDot == -1)
+        if (lastDot == -1) {
             return null;
-        return moduleName.substring(lastDot+1);
+        }
+        int secondLastDot = moduleName.substring(0, lastDot).lastIndexOf(":");
+        if (secondLastDot == -1) {
+            return moduleName.substring(lastDot+1);
+        }
+        else { 
+            return moduleName.substring(secondLastDot+1, lastDot);
+        }
+    }
+
+    public static String getMavenClassifierIfMavenModule(String moduleName) {
+        int lastDot = moduleName.lastIndexOf(":");
+        if (lastDot == -1) {
+            return null;
+        }
+        int secondLastDot = moduleName.substring(0, lastDot).lastIndexOf(":");
+        if (secondLastDot == -1) {
+            return null;
+        }
+        else { 
+            return moduleName.substring(lastDot+1);
+        }
     }
 }
