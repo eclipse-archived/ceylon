@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -33,7 +32,7 @@ public class ModuleHelper {
             error.append( "\ndue to connection error: " + exceptionOnGetArtifact.getMessage() );
         }
         
-        List<String> repos = 
+        /*List<String> repos = 
                 moduleManagerUtil.getContext()
                     .getRepositoryManager()
                     .getRepositoriesDisplayString();
@@ -41,7 +40,7 @@ public class ModuleHelper {
         for (String repo: repos) {
             error.append("\n\t  ");
             error.append(repo);
-        }
+        }*/
         
         error.append("\n\t- dependency tree: ");
         buildDependencyString(dependencyTree, module, error);
