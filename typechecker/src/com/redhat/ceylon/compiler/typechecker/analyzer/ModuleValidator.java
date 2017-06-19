@@ -306,7 +306,7 @@ public class ModuleValidator {
                     if (importDepth.equals(ImportDepth.First)) {
                         moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 
                                 "the module import should not be overridden, since it is explicitly imported by a project source module",
-                                true);
+                                false);
                     }
                 }
                 moduleManagerUtil.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
