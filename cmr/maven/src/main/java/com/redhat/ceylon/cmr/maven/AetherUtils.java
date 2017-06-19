@@ -129,23 +129,21 @@ class AetherUtils {
         if (groupArtifactIds == null) {
             return null;
         }
-        final String groupId = groupArtifactIds[0];
-        final String artifactId = groupArtifactIds[1];
-        final String classifier = groupArtifactIds[2];
-        final String version = ac.getVersion();
+        String groupId = groupArtifactIds[0];
+        String artifactId = groupArtifactIds[1];
+        String classifier = groupArtifactIds[2];
+        String version = ac.getVersion();
 
         String repositoryDisplayString = NodeUtils.getRepositoryDisplayString(node);
         CmrRepository repository = NodeUtils.getRepository(node);
 
-        if (classifier!=null) {
-            return fetchWithClassifier(repository, groupId, artifactId, classifier, version, repositoryDisplayString);
+        if (CeylonUtils.arrayContains(ac.getSuffixes(), ArtifactContext.LEGACY_SRC)) {
+            classifier = "sources";
         }
-        else if (CeylonUtils.arrayContains(ac.getSuffixes(), ArtifactContext.LEGACY_SRC)) {
-            return fetchWithClassifier(repository, groupId, artifactId, "sources", version, repositoryDisplayString);
-        }
-        else {
-            return fetchDependencies(manager, repository, groupId, artifactId, classifier, version, fetchSingleArtifact != null ? fetchSingleArtifact : ac.isIgnoreDependencies(), repositoryDisplayString);
-        }
+        
+        return fetchDependencies(manager, repository, groupId, artifactId, classifier, version, 
+                fetchSingleArtifact != null ? fetchSingleArtifact : ac.isIgnoreDependencies(), 
+                        repositoryDisplayString);
     }
 
     private ArtifactResult fetchDependencies(RepositoryManager manager, CmrRepository repository, 
@@ -154,11 +152,11 @@ class AetherUtils {
         
         Overrides overrides = repository.getRoot().getService(Overrides.class);
         ArtifactOverrides ao = null;
-        log.debug("Overrides: "+overrides);
+        log.debug("Overrides for "+canonicalForm(groupId, artifactId, classifier, version)+" in "+overrides.getSource());
         ArtifactContext context = getArtifactContext(groupId, artifactId, classifier, version);
         if(overrides != null){
             ao = overrides.getArtifactOverrides(context);
-            log.debug(" ["+context+"] => "+ao);
+            log.debug(ao!=null ? "-> found overrides" : "-> no overrides");
         }
         // entire replacement
         ArtifactContext replacementContext = null;
@@ -240,6 +238,7 @@ class AetherUtils {
                             }else{
                                 dGroupId = groupArtifactIds[0];
                                 dArtifactId = groupArtifactIds[1];
+                                dClassifier = groupArtifactIds[2];
                             }
                             dVersion = replace.getVersion();
                         }
@@ -532,33 +531,10 @@ class AetherUtils {
         return new LazyArtifactResult(manager, MavenRepository.NAMESPACE, module, dVersion, shared, optional, scope);
     }
 
-    private ArtifactResult fetchWithClassifier(CmrRepository repository, String groupId, String artifactId, String classifier, String version, String repositoryDisplayString) {
-        final String name = MavenUtils.moduleName(groupId, artifactId, classifier);
-        final String coordinates = canonicalForm(groupId, artifactId, classifier, "jar", version); //only used for messages
-        try {
-        	DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, classifier, "jar", true);
-            if (info != null) {
-                return new SingleArtifactResult(repository, name, version, groupId, artifactId, classifier,
-                        info.getFile(), repositoryDisplayString);
-            }
-        } catch (AetherException e) {
-        	log.debug("Could not resolve " + classifier + " for artifact [" + coordinates + "] : " + e);
-		}
-
-        log.debug("No artifact found: " + coordinates);
-        return null;
-    }
-
     private static String canonicalForm(String groupId, String artifactId, String classifier, String version) {
         return classifier==null || classifier.isEmpty() ?
                 groupId + ":" + artifactId + ":" + version :
                 groupId + ":" + artifactId + ":" + classifier + ":" + version;
-    }
-
-    private static String canonicalForm(String groupId, String artifactId, String classifier, String packaging, String version) {
-        return classifier==null || classifier.isEmpty() ?
-                groupId + ":" + artifactId + ":" + packaging + ":" + version :
-                groupId + ":" + artifactId + ":" + packaging + ":" + classifier + ":" + version;
     }
 
     private static abstract class MavenArtifactResult extends AbstractArtifactResult {

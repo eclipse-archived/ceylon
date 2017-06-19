@@ -23,14 +23,6 @@ public class MavenArtifactContext extends ArtifactContext {
         this.packaging = packaging;
     }
 
-    public String getClassifier() {
-        return classifier;
-    }
-
-    public void setClassifier(String classifier) {
-        this.classifier = classifier;
-    }
-
     public String getPackaging() {
         return packaging;
     }

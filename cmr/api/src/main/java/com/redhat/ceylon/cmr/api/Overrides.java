@@ -146,6 +146,10 @@ public class Overrides {
         return this.source == null ? super.toString() : "Overrides("+source+")";
     }
     
+    public String getSource() {
+        return source;
+    }
+    
     public void addArtifactOverride(ArtifactOverrides ao) {
         overrides.put(ao.getOwner(), ao);
         if(ao.getOwner().getVersion() == null)
