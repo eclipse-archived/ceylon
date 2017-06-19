@@ -302,12 +302,16 @@ public class ModuleValidator {
                 listener.resolvingModuleArtifact(module, artifact);
                 Module moduleOverride = moduleManager.overridesModule(artifact, module, moduleImport);
                 if (moduleOverride != null) {
-                    module = moduleOverride;
                     if (importDepth.equals(ImportDepth.First)) {
                         moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 
-                                "the module import should not be overridden, since it is explicitly imported by a project source module",
+                                "the module import should not be overridden, since it is explicitly imported by a project source module: '"
+                                + moduleOverride.getNameAsString() + "/" + moduleOverride.getVersion()
+                                + "' overrides '" 
+                                + module.getNameAsString() + "/" + module.getVersion()
+                                + "'",
                                 false);
                     }
+                    module = moduleOverride;
                 }
                 moduleManagerUtil.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
             }
