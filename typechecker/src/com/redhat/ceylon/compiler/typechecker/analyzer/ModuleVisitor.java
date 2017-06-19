@@ -242,14 +242,12 @@ public class ModuleVisitor extends Visitor {
                         buildAnnotations(that.getAnnotationList(), 
                                 mainModule.getAnnotations());
                         mainModule.setNativeBackends(moduleBackends);
-                        Tree.QuotedLiteral classifier = that.getClassifier();
-                        if (classifier != null) {
-                            mainModule.setClassifier(getNameString(classifier));
-                            classifier.addUnsupportedError("classifiers not yet supported");
+                        List<Tree.QuotedLiteral> coordinates = that.getCoordinates();
+                        if (coordinates.size()>1) {
+                            coordinates.get(1).addUnsupportedError("too many coordinates");
                         }
-                        Tree.QuotedLiteral artifact = that.getArtifact();
-                        if (artifact != null) {
-                            mainModule.setArtifactId(getNameString(artifact));
+                        if (coordinates.size()>0) {
+                            mainModule.setArtifactId(getNameString(coordinates.get(0)));
                         }
                         Tree.ImportPath groupImportPath = that.getGroupImportPath();
                         Tree.QuotedLiteral groupQuotedLiteral = that.getGroupQuotedLiteral();
@@ -406,18 +404,18 @@ public class ModuleVisitor extends Visitor {
         }
         
         if (node!=null) {
-            Tree.QuotedLiteral artifact = 
-                    that.getArtifact();
-            if (artifact!=null) {
+            List<Tree.QuotedLiteral> coordinates = that.getCoordinates();
+            if (coordinates.size()>2) {
+                coordinates.get(2).addUnsupportedError("too many coordinates");
+            }
+            if (coordinates.size()>0) {
                 name = new ArrayList<String>(name);
-                String nameString = getNameString(artifact);
+                String nameString = getNameString(coordinates.get(0));
                 name.add("");
                 name.addAll(asList(nameString.split("\\.")));
             }
-            Tree.QuotedLiteral classifier = 
-                    that.getClassifier();
-            if (classifier!=null) {
-                String nameString = getNameString(classifier);
+            if (coordinates.size()>1) {
+                String nameString = getNameString(coordinates.get(1));
                 name.add("");
                 name.addAll(asList(nameString.split("\\.")));
             }

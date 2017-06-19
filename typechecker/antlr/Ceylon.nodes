@@ -14,8 +14,7 @@
     IDENTIFIER? namespace
     IMPORT_PATH? groupImportPath
     QUOTED_LITERAL? groupQuotedLiteral
-    QUOTED_LITERAL? artifact
-    QUOTED_LITERAL? classifier
+    QUOTED_LITERAL* coordinate
     QUOTED_LITERAL? version
     IMPORT_MODULE_LIST)
 
@@ -34,9 +33,8 @@
     IDENTIFIER? namespace
     IMPORT_PATH?
     QUOTED_LITERAL?
-    QUOTED_LITERAL? artifact
+    QUOTED_LITERAL* coordinate
     QUOTED_LITERAL? version
-    QUOTED_LITERAL? classifier
     string name;)
 
 "A list of packages imported by a compilation unit."

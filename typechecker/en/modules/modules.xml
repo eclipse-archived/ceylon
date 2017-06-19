@@ -625,7 +625,7 @@ shared package org.hibernate.query;</programlisting>
             <para>The optional <emphasis>module specifier</emphasis> defines a mapping
             to a foreign module system to which the module will be exported.</para>
             
-            <synopsis>ModuleSpecifier: Repository Module (Artifact Classifier?)?</synopsis>
+            <synopsis>ModuleSpecifier: Repository Module Coordinate*</synopsis>
             
             <para>The repository type identifier selects a foreign module repository 
             system, for example, <literal>maven</literal>, or <literal>npm</literal>, 
@@ -644,12 +644,11 @@ shared package org.hibernate.query;</programlisting>
             module repository systems whose module identifiers do not comply with the 
             format specified for Ceylon module names.</para></comment>
             
-            <para>The optional artifact identifier and classifier are for use with 
-            foreign module repository systems such as Maven. This specification does 
-            not define the semantics of these strings.</para>
+            <para>The optional additional <emphasis>coordinates</emphasis> are for use 
+            with foreign module repository systems such as Maven. This specification 
+            does not define the semantics of these strings.</para>
             
-            <synopsis>Artifact: ":" StringLiteral</synopsis>
-            <synopsis>Classifier: ":" StringLiteral</synopsis>
+            <synopsis>Coordinate: ":" StringLiteral</synopsis>
             
             <para>A module may import other modules.</para>
             
