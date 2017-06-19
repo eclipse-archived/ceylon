@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -31,18 +32,17 @@ public class ModuleHelper {
         if ( exceptionOnGetArtifact != null ) {
             error.append( "\ndue to connection error: " + exceptionOnGetArtifact.getMessage() );
         }
-        //FIXME add list of repositories when ceylon/ceylon-module-resolver/issues/26 is fixed
-//                    error.append("\n\t  in repositories : ");
-//                    if (artifactProviders.size() > 0) {
-//                        error.append(artifactProviders.get(0));
-//                    }
-//                    if (artifactProviders.size() > 1) {
-//                        for (ArtifactProvider searchedProvider : artifactProviders.subList(1, artifactProviders.size())) {
-//                            error.append(", ");
-//                            error.append("\n\t");
-//                            error.append(searchedProvider);
-//                        }
-//                    }
+        
+        List<String> repos = 
+                moduleManagerUtil.getContext()
+                    .getRepositoryManager()
+                    .getRepositoriesDisplayString();
+        error.append("\n\t- in repositories:");
+        for (String repo: repos) {
+            error.append("\n\t  ");
+            error.append(repo);
+        }
+        
         error.append("\n\t- dependency tree: ");
         buildDependencyString(dependencyTree, module, error);
         if ( moduleManagerUtil.getContext().getModules().getLanguageModule() == module) {
