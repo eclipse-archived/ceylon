@@ -18,6 +18,7 @@ import com.redhat.ceylon.cmr.api.DependencyOverride;
 import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
+import com.redhat.ceylon.cmr.api.MavenArtifactContext;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.CycleListener;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.DependencySelector;
@@ -128,7 +129,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                                 continue;
                             if(dep.getExclusions() != null){
                                 for (Exclusion exclusion : dep.getExclusions()) {
-                                    ArtifactContext artifactContext = Overrides.createMavenArtifactContext(exclusion.getGroupId(), exclusion.getArtifactId(), null, null, null);
+                                    ArtifactContext artifactContext = new MavenArtifactContext(exclusion.getGroupId(), exclusion.getArtifactId(), null, null, null);
                                     DependencyOverride doo = new DependencyOverride(artifactContext, Type.REMOVE, false, false);
                                     overrides.addRemovedArtifact(doo);
                                     if(verbose)

@@ -2,20 +2,22 @@ package com.redhat.ceylon.cmr.api;
 
 import java.util.Objects;
 
-@SuppressWarnings("serial")
 public class MavenArtifactContext extends ArtifactContext {
+    private static final long serialVersionUID = -7584989942190722636L;
+    
     private String classifier;
     private String packaging;
 
     public static final String NAMESPACE = "maven";
     
+    //copy-pasted from MavenUtils
     private static String moduleName(String groupId, String artifactId, String classifier) {
-        return classifier==null ? 
+        return classifier==null || classifier.isEmpty() ? 
                 groupId+":"+artifactId : 
-                groupId+":"+artifactId + ":" + classifier;
+                groupId+":"+artifactId+":"+classifier;
     }
-
-    public MavenArtifactContext(String groupId, String artifactId, String version, String packaging, String classifier) {
+    
+    public MavenArtifactContext(String groupId, String artifactId, String classifier, String version, String packaging) {
         super(NAMESPACE, moduleName(groupId, artifactId, classifier), version);
         this.classifier = classifier;
         this.packaging = packaging;
@@ -46,7 +48,7 @@ public class MavenArtifactContext extends ArtifactContext {
                 return false;
             MavenArtifactContext other = (MavenArtifactContext) obj;
             return Objects.equals(classifier, other.classifier)
-                    && Objects.equals(packaging, other.packaging);
+                && Objects.equals(packaging, other.packaging);
         }
         return false;
     }

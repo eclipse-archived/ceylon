@@ -115,9 +115,7 @@ public class MavenUtils {
                         scope = ModuleScope.COMPILE;
 
                     ret.add(new ModuleDependencyInfo("maven", 
-                            depClassifier==null ? 
-                                    depGroupId+":"+depArtifactId : 
-                                    depGroupId+":"+depArtifactId+":"+depClassifier, 
+                            moduleName(depGroupId, depArtifactId, depClassifier), 
                             depVersion, "true".equals(depOptional), false, Backends.JAVA, scope));
                 }
             }
@@ -154,5 +152,11 @@ public class MavenUtils {
                 builder.append(desc);
             }
         }
+    }
+
+    public static String moduleName(String groupId, String artifactId, String classifier) {
+        return classifier==null || classifier.isEmpty() ? 
+                groupId+":"+artifactId : 
+                groupId+":"+artifactId+":"+classifier;
     }
 }

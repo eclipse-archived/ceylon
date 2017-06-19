@@ -529,7 +529,7 @@ public class Overrides {
             String version = optionalVersion ? getAttribute(element, "version", interpolation) : getRequiredAttribute(element, "version", interpolation);
             String packaging = getAttribute(element, "packaging", interpolation);
             String classifier = getAttribute(element, "classifier", interpolation);
-            return createMavenArtifactContext(groupId, artifactId, version, packaging, classifier);
+            return new MavenArtifactContext(groupId, artifactId, classifier, version, packaging);
         }else{
             String moduleUri = getRequiredAttribute(element, "module", interpolation);
             String namespace = ModuleUtil.getNamespaceFromUri(moduleUri);
@@ -652,11 +652,6 @@ public class Overrides {
         return ret;
     }
 
-    public static ArtifactContext createMavenArtifactContext(String groupId, String artifactId, String version, 
-                                                             String packaging, String classifier) {
-        return new MavenArtifactContext(groupId, artifactId, version, packaging, classifier);
-    }
-    
     public ArtifactContext applyOverrides(final ArtifactContext sought) {
         ArtifactContext replacedContext = this.replace(sought);
         if(replacedContext == null) {
