@@ -48,6 +48,10 @@ shared class Contextual<Element>() {
      exception if called when not within a try-resource block"
     native shared Element get();
     
+    "Returns the value previously set, or [[other]] if the value
+     is `null` or has not been set."
+    native shared Element? getOrElse(Element? other = null);
+    
     "Used to set a value for this `Contextual`"
     native shared class Using(Element|Element() newValue)
             satisfies Obtainable {
@@ -74,6 +78,13 @@ shared class Contextual<Element>() {
             assert (is Element null);
             return null;
         }
+    }
+    
+    native("jvm") shared Element? getOrElse(Element? other = null) {
+        if (exists result = threadLocal.get()) {
+            return result;
+        }
+        return other;
     }
     
     native("jvm") shared class Using(Element|Element() newValue)
@@ -113,6 +124,9 @@ shared class Contextual<Element>() {
             return null;
         }
     }
+    
+    native("js") shared Element? getOrElse(Element? other = null)
+        => val else other;
     
     native("js") shared class Using(Element|Element() newValue)
             satisfies Obtainable {
