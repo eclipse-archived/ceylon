@@ -101,7 +101,7 @@ class SatisfiesUnion<T>() satisfies Identifiable?
 
 class Constraints() {
     void f<T, TTypes>() given T satisfies [T] {}
-    void g<T, TTypes>() @error given T satisfies [T,T] {}
+    void g<T, TTypes>() given T satisfies [T,T] {}
     void h<T, TTypes>() given T satisfies [T*] {}
-    void i<T, TTypes>() @error given T satisfies [Integer,T,T*] {}
+    void i<T, TTypes>() given T satisfies [Integer,T,T*] {}
 }

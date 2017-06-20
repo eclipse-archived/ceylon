@@ -1348,9 +1348,17 @@ public class ModelUtil {
      */
     public static void addToUnion(List<Type> list, 
             Type pt) {
+        if (list.size()==1 && 
+                list.get(0).isNothing()) {
+            list.clear();
+        }
+        if (!list.isEmpty() && 
+                list.get(0).isAnything()) {
+            return;
+        }
         if (pt==null || 
                 !list.isEmpty() && 
-                pt.isExactlyNothing()) {
+                pt.isNothing()) {
             return;
         }
         else if (pt.isAnything()) {
@@ -1393,12 +1401,20 @@ public class ModelUtil {
      */
     public static void addToIntersection(List<Type> list, 
             Type type, Unit unit) {
+        if (list.size()==1 && 
+                list.get(0).isAnything()) {
+            list.clear();
+        }
+        if (!list.isEmpty() && 
+                list.get(0).isNothing()) {
+            return;
+        }
         if (type==null || 
                 !list.isEmpty() && 
                 type.isAnything()) {
             return;
         }
-        else if (type.isExactlyNothing()) {
+        else if (type.isNothing()) {
             list.clear();
             list.add(type);
         }
