@@ -1,4 +1,5 @@
 import check {
+    check,
     initAssert,
     results,
     resultsAndAssert,
@@ -2310,6 +2311,7 @@ void runTests() {
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
     print(pass==total then "Metamodel tests OK (``total`` total)" else "Metamodel tests ``pass``/``total``");
+    check(pass==total, "Individual metamodel test pass/total counts: ``pass`` != ``total``");
 }
 
 shared void run() {
