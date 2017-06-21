@@ -425,6 +425,11 @@ public class Overrides {
                 Node node = filterNode.get(0);
                 ao.setFilter(interpolate(PathFilterParser.convertNodeToString(node), interpolation));
             }
+            List<Element> versionNode = getChildren(artifact, "version");
+            if (versionNode != null && !versionNode.isEmpty()) {
+                Node node = versionNode.get(0);
+                ao.setVersion(interpolate(node.getTextContent(), interpolation));
+            }
             List<Element> classifierNode = getChildren(artifact, "classifier");
             if (classifierNode != null && !classifierNode.isEmpty()) {
                 Node node = classifierNode.get(0);

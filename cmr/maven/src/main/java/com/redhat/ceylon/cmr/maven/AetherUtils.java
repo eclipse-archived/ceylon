@@ -184,6 +184,11 @@ class AetherUtils {
             version = overrides.getVersionOverride(context);
             context.setVersion(version);
         }
+        if(ao != null && ao.hasVersion()){
+            version = ao.getVersion();
+            context.setVersion(version);
+            log.debug("Using version "+version);
+        }
         // classifier replacement
         if(ao != null && ao.hasClassifier()){
             classifier = ao.getClassifier();
