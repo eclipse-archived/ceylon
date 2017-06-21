@@ -304,7 +304,7 @@ public class ModuleValidator {
                 if (moduleOverride != null) {
                     if (importDepth.equals(ImportDepth.First)) {
                         moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 
-                                "the module import should not be overridden, since it is explicitly imported by a project source module: '"
+                                "project source module import is overridden in module overrides file: '"
                                 + moduleOverride.getNameAsString() + "/" + moduleOverride.getVersion()
                                 + "' overrides '" 
                                 + module.getNameAsString() + "/" + module.getVersion()
