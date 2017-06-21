@@ -138,7 +138,8 @@ public class InvocationGenerator {
         } else {
             final Tree.PositionalArgument lastArg = argList.getPositionalArguments().isEmpty()?null:argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1);
             boolean hasSpread = lastArg instanceof Tree.SpreadArgument 
-                    && that.getUnit().isUnknownArgumentsCallable(that.getPrimary().getTypeModel());
+                    && that.getUnit().isUnknownArgumentsCallable(that.getPrimary().getTypeModel())
+                    && !typeArgSource.getTypeModel().isUnknown();
             if (hasSpread) {
                 gen.out(gen.getClAlias(), "spread$2(");
             }
