@@ -3064,6 +3064,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
      * Returns true if any part of the given Callable is unknown, like Callable&lt;Ret,Args>
      */
     public boolean isUnknownArgumentsCallable(Type callableType) {
+        if (callableType==null) return true;
         if (getNothingType().isExactly(callableType)) {
             return false;
         }
@@ -3072,6 +3073,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     }
     
     private boolean isUnknownTuple(Type args) {
+        if (args==null) return true;
         if (args.isTypeParameter()) {
             return true;
         } else if (args.isUnion()){

@@ -274,6 +274,7 @@ shared void issues() {
     issue6057();
     issue6604();
     issue6740();
+    issue7069();
     dynamic {
       check(dyn6810()==0, "#6810.1");
       dynamic a6810=dynamic[1,2,3];
@@ -414,4 +415,13 @@ void issue6740() {
     check(tres6740 is Tres6740, "#6740.4");
   }
   check(tres.hijos[499] is Dos6740, "#6740.5");
+}
+
+void issue7069() {
+    dynamic {
+        dynamic f = (dynamic x, dynamic y) => x + " " + y;
+        dynamic args = dynamic [ "hello", "world" ];
+        check(f(*args)=="hello world");
+    }
+
 }
