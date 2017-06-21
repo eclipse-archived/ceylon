@@ -12,6 +12,7 @@ function find(name,version){
     }
     if (lm && lm.$CCMM$) {
       lm = Modulo$jsint(lm);
+      if (lm.version!=version) return null;
       $loadedModules$[modname] = lm;
     }
     return lm === undefined ? null : lm;
