@@ -202,6 +202,9 @@ shared native final class String
     "The rest of the string, without its first character."
     shared actual native String rest;
     
+    "This string, without its last character."
+    shared actual native String exceptLast;
+    
     "A sequence containing all indexes of this string."
     shared actual native Integer[] keys => 0:size;
     
