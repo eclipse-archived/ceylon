@@ -87,17 +87,17 @@ shared sealed interface Sequence<out Element=Anything>
             else [];
     
     sublist(Integer from, Integer to) 
-            => size>0 && from<=to && from<=lastIndex && to>=0
+            => from<=to && from<=lastIndex && to>=0
             then Subsequence(from, to)
             else [];
     
     sublistTo(Integer to) 
-            => size>0 && to>=0 
+            => to>=0 
             then Subsequence { to=to; }
             else [];
             
     sublistFrom(Integer from) 
-            => size>0 && from<=lastIndex
+            => from<=lastIndex
             then Subsequence { from=from; }
             else [];
     
