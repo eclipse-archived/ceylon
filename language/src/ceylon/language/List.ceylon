@@ -134,11 +134,11 @@ shared interface List<out Element=Anything>
      
      This is a lazy operation returning a view of this list."
     shared actual default List<Element> rest 
-            => Sublist { from=1; };
+            => Sublist(1,size-1);
     
     //TODO: refine type of List.exceptLast
     //shared actual default List<Element> exceptLast 
-    //        => Sublist { to=lastIndex-1; };
+    //        => Sublist(0, size-2);
     
     "A list containing all indexes of this list.
      
@@ -710,8 +710,7 @@ shared interface List<out Element=Anything>
         
     }
     
-    class Sublist(Integer from=0, 
-                  Integer to=outer.size-1)
+    class Sublist(Integer from, Integer to)
             extends Object()
             satisfies List<Element> {
         

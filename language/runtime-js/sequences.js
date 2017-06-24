@@ -73,7 +73,7 @@ atr$(arrprot$,'reversed', function() {
   return this.Reversed$List();
 },undefined,List.$$.prototype.$prop$getReversed.$crtmm$);
 atr$(arrprot$,'rest', function() {
-  return this.Rest$List(1);
+  return this.Sublist$List(1, this.size-1);
 },undefined,List.$$.prototype.$prop$getRest.$crtmm$);
 
 //for sequenced enumerations
