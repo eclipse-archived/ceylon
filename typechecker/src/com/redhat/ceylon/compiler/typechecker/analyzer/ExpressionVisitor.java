@@ -8301,7 +8301,7 @@ public class ExpressionVisitor extends Visitor {
         Type oci = 
                 getOuterClassOrInterface(that.getScope());
         if (oci==null) {
-            that.addError("outer appears outside a nested class or interface definition");
+            that.addError("'outer' occurs outside a nested class or interface definition");
         }
         else {
             that.setTypeModel(oci);
@@ -8332,7 +8332,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             //TODO: for consistency, move these errors to SelfReferenceVisitor
             if (ci==null) {
-                that.addError("super occurs outside any type definition");
+                that.addError("'super' occurs outside any type definition");
             }
             else {
                 that.setDeclarationModel(ci);
@@ -8357,7 +8357,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             if (ci==null) {
-                that.addError("this appears outside a class or interface definition");
+                that.addError("'this' occurs outside a class or interface definition");
             }
             else {
                 that.setDeclarationModel(ci);
@@ -8368,7 +8368,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.Package that) {
         if (!that.getQualifier()) {
-            that.addError("package must qualify a reference to a toplevel declaration");
+            that.addError("'package' must qualify a reference to a toplevel declaration");
         }
         super.visit(that);
     }
