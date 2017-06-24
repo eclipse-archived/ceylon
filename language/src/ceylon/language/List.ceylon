@@ -318,7 +318,10 @@ shared interface List<out Element=Anything>
     shared default 
     List<Element> sublist(Integer from, Integer to)
             => from<=to && from<size && to>=0
-            then Sublist(from, to)
+            then Sublist {
+                from = Integer.largest(0, from); 
+                to = Integer.smallest(size-1, to);
+            }
             else [];
     
     "Return a list formed by patching the given [[list]] 
@@ -679,18 +682,9 @@ shared interface List<out Element=Anything>
         
     }
     
-    class Sublist
-            extends Object
+    class Sublist(Integer from, Integer to) 
+            extends Object()
             satisfies List<Element> {
-        
-        Integer from;
-        Integer to;
-        
-        shared new (Integer from, Integer to) 
-                extends Object() {
-            this.from = Integer.largest(0, from);
-            this.to = Integer.smallest(outer.size-1, to);
-        }
         
         assert (from>=0, to>=0, from<=to);
         
@@ -725,18 +719,21 @@ shared interface List<out Element=Anything>
         clone() => outer[from..to];
         
         sublist(Integer from, Integer to)
-                => outer.sublist(
-                    Integer.largest(from+this.from,this.from),
-                    Integer.smallest(to+this.from,this.to));
+                => outer.sublist {
+                    from = Integer.largest(from+this.from,this.from);
+                    to = Integer.smallest(to+this.from,this.to);
+                };
                 
         span(Integer from, Integer to)
                 => from <= to 
-                then outer.span(
-                    Integer.largest(from+this.from,this.from),
-                    Integer.smallest(to+this.from,this.to))
-                else outer.span(
-                    Integer.smallest(from+this.from,this.to),
-                    Integer.largest(to+this.from,this.from));
+                then outer.span {
+                    from = Integer.largest(from+this.from,this.from);
+                    to = Integer.smallest(to+this.from,this.to);
+                }
+                else outer.span {
+                    from = Integer.smallest(from+this.from,this.to);
+                    to = Integer.largest(to+this.from,this.from);
+                };
         
     }
     

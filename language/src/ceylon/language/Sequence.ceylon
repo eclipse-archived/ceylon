@@ -90,7 +90,10 @@ shared sealed interface Sequence<out Element=Anything>
     shared actual default 
     Element[] sublist(Integer from, Integer to) 
             => from<=to && from<=lastIndex && to>=0
-            then Subsequence(from, to)
+            then Subsequence {
+                from = Integer.largest(0, from);
+                to = Integer.smallest(lastIndex, to); 
+            }
             else [];
     
     since("1.3.3")
@@ -314,18 +317,9 @@ shared sealed interface Sequence<out Element=Anything>
         
     }
     
-    class Subsequence
-            extends Object
+    class Subsequence(Integer from, Integer to)
+            extends Object()
             satisfies [Element+] {
-        
-        Integer from;
-        Integer to;
-        
-        shared new (Integer from, Integer to)  
-                extends Object() {
-            this.from = Integer.largest(0, from);
-            this.to = Integer.smallest(outer.lastIndex, to);
-        }
         
         assert (from>=0, to>=0, from<=to);
         
@@ -364,18 +358,21 @@ shared sealed interface Sequence<out Element=Anything>
         iterator() => outer.take(to+1).skip(from).iterator();
         
         sublist(Integer from, Integer to)
-                => outer.sublist(
-                    Integer.largest(from+this.from,this.from),
-                    Integer.smallest(to+this.from,this.to));
+                => outer.sublist {
+                    from = Integer.largest(from+this.from,this.from);
+                    to = Integer.smallest(to+this.from,this.to);
+                };
         
         span(Integer from, Integer to)
                 => from<=to 
-                then outer.span(
-                    Integer.largest(from+this.from,this.from),
-                    Integer.smallest(to+this.from,this.to))
-                else outer.span(
-                    Integer.smallest(from+this.from,this.to),
-                    Integer.largest(to+this.from,this.from));
+                then outer.span {
+                    from = Integer.largest(from+this.from,this.from);
+                    to = Integer.smallest(to+this.from,this.to);
+                }
+                else outer.span {
+                    from = Integer.smallest(from+this.from,this.to);
+                    to = Integer.largest(to+this.from,this.from);
+                };
         
     }
     
