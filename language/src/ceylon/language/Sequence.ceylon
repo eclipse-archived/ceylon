@@ -96,16 +96,12 @@ shared sealed interface Sequence<out Element=Anything>
     since("1.3.3")
     shared actual default 
     Element[] sublistTo(Integer to) 
-            => to>=0 
-            then Subsequence(0, to)
-            else [];
+            => sublist(0, to);
     
     since("1.3.3")
     shared actual default 
-            Element[] sublistFrom(Integer from) 
-            => from<=lastIndex
-            then Subsequence(from, lastIndex)
-            else [];
+    Element[] sublistFrom(Integer from)
+            => sublist(from, size-1);
     
     "A sequence containing the elements of this sequence in
      reverse order to the order in which they occur in this
@@ -220,12 +216,6 @@ shared sealed interface Sequence<out Element=Anything>
             => [this[...index-1], this[index...]];
     
     shared actual default 
-    Element[] measure(Integer from, Integer length) 
-            => if (length > 0)
-            then span(from, from + length - 1)
-            else [];
-    
-    shared actual default 
     Element[] span(Integer from, Integer to) {
         if (from <= to) {
             return
@@ -249,11 +239,17 @@ shared sealed interface Sequence<out Element=Anything>
     
     shared actual default 
     Element[] spanFrom(Integer from)
-            => span(from, size);
+            => from<size then span(from, size-1) else [];
     
     shared actual default 
     Element[] spanTo(Integer to)
-            => span(-1, to);
+            => to>=0 then span(0, to) else [];
+    
+    shared actual default 
+    Element[] measure(Integer from, Integer length) 
+            => length > 0
+            then span(from, from+length-1)
+            else [];
     
     shared actual default 
     String string => (super of Sequential<Element>).string;
@@ -281,26 +277,8 @@ shared sealed interface Sequence<out Element=Anything>
         getFromFirst(Integer index) 
                 => outer.getFromFirst(size-1-index);
         
-        measure(Integer from, Integer length) 
-                => if (length>0)
-                    then let (start = size-1-from)
-                        outer[start..start-length+1]
-                    else [];
-        
         span(Integer from, Integer to) 
                 => outer[to..from];
-        
-        spanFrom(Integer from) 
-                => let (endIndex = size-1)
-                    if (from<=endIndex)
-                        then outer[endIndex-from..0]
-                        else [];
-        
-        spanTo(Integer to)
-                => if (to>=0) 
-                    then let (endIndex = size-1) 
-                        outer[endIndex..endIndex-to]
-                    else [];
         
         iterator() 
                 => let (outerList = outer) 
@@ -336,9 +314,18 @@ shared sealed interface Sequence<out Element=Anything>
         
     }
     
-    class Subsequence(Integer from, Integer to)
-            extends Object()
+    class Subsequence
+            extends Object
             satisfies [Element+] {
+        
+        Integer from;
+        Integer to;
+        
+        shared new (Integer from, Integer to)  
+                extends Object() {
+            this.from = Integer.largest(0, from);
+            this.to = Integer.smallest(outer.lastIndex, to);
+        }
         
         assert (from>=0, to>=0, from<=to);
         
@@ -369,23 +356,26 @@ shared sealed interface Sequence<out Element=Anything>
         exceptLast => size == 1 then [] 
                 else outer.Subsequence(from, to-1);
         
-        sublist(Integer from, Integer to)
-                => outer.sublist(from+this.from, 
-                    Integer.smallest(to+this.from, this.to));
-        
-        sublistTo(Integer to)
-                => outer.sublist(this.from, 
-                    Integer.smallest(to+this.from, this.to));
-        
-        sublistFrom(Integer from)
-                => outer.sublist(this.from+from, this.to);
-        
         getFromFirst(Integer index)
                 => if (0<=index<=to-from)
                 then outer.getFromFirst(index+from)
                 else null;
         
         iterator() => outer.take(to+1).skip(from).iterator();
+        
+        sublist(Integer from, Integer to)
+                => outer.sublist(
+                    Integer.largest(from+this.from,this.from),
+                    Integer.smallest(to+this.from,this.to));
+        
+        span(Integer from, Integer to)
+                => from<=to 
+                then outer.span(
+                    Integer.largest(from+this.from,this.from),
+                    Integer.smallest(to+this.from,this.to))
+                else outer.span(
+                    Integer.smallest(from+this.from,this.to),
+                    Integer.largest(to+this.from,this.from));
         
     }
     

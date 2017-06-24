@@ -418,7 +418,10 @@ shared native final class String
      `string.measure(from, length)` may be written as
      `string[from:length]`."
     shared native actual String measure(Integer from, 
-                                        Integer length);
+                                        Integer length)
+            => length > 0 
+            then span(from, from+length-1) 
+            else "";
     
     "Select the first characters of this string, 
      returning a string no longer than the given 
@@ -973,8 +976,12 @@ shared native final class String
     shared actual native Boolean notLargerThan(String other)
             => super.notLargerThan(other);
     
-    shared actual native List<Character> sublistFrom(Integer from);
-    shared actual native List<Character> sublistTo(Integer to);
+    shared actual native List<Character> sublist(Integer from, Integer to)
+            => super.sublist(from, to);
+    shared actual native List<Character> sublistFrom(Integer from)
+            => super.sublistFrom(from);
+    shared actual native List<Character> sublistTo(Integer to)
+            => super.sublistTo(to);
     
     shared actual native {Integer*} indexesWhere(Boolean selecting(Character element));
     shared actual native Integer? firstIndexWhere(Boolean selecting(Character element));

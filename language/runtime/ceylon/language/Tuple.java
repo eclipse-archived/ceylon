@@ -450,6 +450,11 @@ public final class Tuple<Element, First extends Element,
         }
     }
     
+    @SuppressWarnings("unchecked")
+    private Sequential<? extends Element> getEmptyTuple() {
+        return (Sequential<? extends Element>) empty_.get_();
+    }
+    
     @Annotations({
             @Annotation("shared"),
             @Annotation("actual")})
@@ -462,11 +467,6 @@ public final class Tuple<Element, First extends Element,
                 span(Integer.instance(0), to);
     }
 
-    @SuppressWarnings("unchecked")
-	private Sequential<? extends Element> getEmptyTuple() {
-        return (Sequential<? extends Element>) empty_.get_();
-    }
-    
     @Annotations({
             @Annotation("shared"),
             @Annotation("actual")})
@@ -474,7 +474,10 @@ public final class Tuple<Element, First extends Element,
     @TypeInfo("ceylon.language::Sequential<Element>")
     public final ceylon.language.Sequential<? extends Element> 
     spanFrom(@Name("from") final ceylon.language.Integer from) {
-        return span(from, Integer.instance(getSize()));
+        long size = getSize();
+        return from.longValue() >= size ? 
+                getEmptyTuple() : 
+                span(from, Integer.instance(size-1));
     }
     
     @Annotations({
