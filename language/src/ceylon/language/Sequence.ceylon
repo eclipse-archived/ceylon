@@ -76,29 +76,35 @@ shared sealed interface Sequence<out Element=Anything>
     "The rest of the sequence, without the first element."
     shared actual default Element[] rest 
             => size > 1 
-            then Subsequence { from=1; } 
+            then Subsequence(1, lastIndex) 
             else [];
     
     "This sequence, without the last element."
     since("1.3.3")
     shared actual default Element[] exceptLast 
             => size > 1 
-            then Subsequence { to=lastIndex-1; } 
+            then Subsequence(0, lastIndex-1) 
             else [];
     
-    sublist(Integer from, Integer to) 
+    since("1.3.3")
+    shared actual default 
+    Element[] sublist(Integer from, Integer to) 
             => from<=to && from<=lastIndex && to>=0
             then Subsequence(from, to)
             else [];
     
-    sublistTo(Integer to) 
+    since("1.3.3")
+    shared actual default 
+    Element[] sublistTo(Integer to) 
             => to>=0 
-            then Subsequence { to=to; }
+            then Subsequence(0, to)
             else [];
-            
-    sublistFrom(Integer from) 
+    
+    since("1.3.3")
+    shared actual default 
+            Element[] sublistFrom(Integer from) 
             => from<=lastIndex
-            then Subsequence { from=from; }
+            then Subsequence(from, lastIndex)
             else [];
     
     "A sequence containing the elements of this sequence in
@@ -330,8 +336,7 @@ shared sealed interface Sequence<out Element=Anything>
         
     }
     
-    class Subsequence(Integer from=0, 
-                      Integer to=outer.size-1)
+    class Subsequence(Integer from, Integer to)
             extends Object()
             satisfies [Element+] {
         
@@ -363,6 +368,17 @@ shared sealed interface Sequence<out Element=Anything>
         
         exceptLast => size == 1 then [] 
                 else outer.Subsequence(from, to-1);
+        
+        sublist(Integer from, Integer to)
+                => outer.sublist(from+this.from, 
+                    Integer.smallest(to+this.from, this.to));
+        
+        sublistTo(Integer to)
+                => outer.sublist(this.from, 
+                    Integer.smallest(to+this.from, this.to));
+        
+        sublistFrom(Integer from)
+                => outer.sublist(this.from+from, this.to);
         
         getFromFirst(Integer index)
                 => if (0<=index<=to-from)
