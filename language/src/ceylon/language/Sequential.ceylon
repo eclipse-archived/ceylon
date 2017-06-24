@@ -31,6 +31,26 @@ shared interface Sequential<out Element=Anything>
     "The rest of the sequence, without the first element."
     shared actual formal Element[] rest;
     
+    "This sequence, without the last element."
+    since("1.3.3")
+    shared actual formal Element[] exceptLast;
+    
+    "A subsequence of this sequence, starting at the element 
+     with index [[from]], ending at the element with the 
+     index [[to]]."
+    since("1.3.3")
+    shared actual formal Element[] sublist(Integer from, Integer to);
+    
+    "A subsequence of this sequence, ending at the element 
+     with the given [[index|to]]."
+    since("1.3.3")
+    shared actual formal Element[] sublistTo(Integer to);
+    
+    "A subsequence of this sequence, starting at the element 
+     with the given [[index|from]]."
+    since("1.3.3")
+    shared actual formal Element[] sublistFrom(Integer from);
+    
     "A sequence containing the elements of this sequence in
      reverse order to the order in which they occur in this
      sequence, or the [[empty sequence|empty]] if this

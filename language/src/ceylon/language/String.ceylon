@@ -203,6 +203,7 @@ shared native final class String
     shared actual native String rest;
     
     "This string, without its last character."
+    since("1.3.3")
     shared actual native String exceptLast;
     
     "A sequence containing all indexes of this string."

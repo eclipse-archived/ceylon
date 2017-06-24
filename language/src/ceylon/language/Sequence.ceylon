@@ -75,7 +75,31 @@ shared sealed interface Sequence<out Element=Anything>
     
     "The rest of the sequence, without the first element."
     shared actual default Element[] rest 
-            => size == 1 then [] else Rest(1);
+            => size > 1 
+            then Subsequence { from=1; } 
+            else [];
+    
+    "This sequence, without the last element."
+    since("1.3.3")
+    shared actual default Element[] exceptLast 
+            => size > 1 
+            then Subsequence { to=lastIndex-1; } 
+            else [];
+    
+    sublist(Integer from, Integer to) 
+            => size>0 && from<=to && from<=lastIndex && to>=0
+            then Subsequence(from, to)
+            else [];
+    
+    sublistTo(Integer to) 
+            => size>0 && to>=0 
+            then Subsequence { to=to; }
+            else [];
+            
+    sublistFrom(Integer from) 
+            => size>0 && from<=lastIndex
+            then Subsequence { from=from; }
+            else [];
     
     "A sequence containing the elements of this sequence in
      reverse order to the order in which they occur in this
@@ -306,11 +330,12 @@ shared sealed interface Sequence<out Element=Anything>
         
     }
     
-    class Rest(Integer from)
+    class Subsequence(Integer from=0, 
+                      Integer to=outer.size-1)
             extends Object()
             satisfies [Element+] {
         
-        assert (from>=0);
+        assert (from>=0, to>=0, from<=to);
         
         shared actual Element first {
             if (exists first = outer[from]) {
@@ -321,19 +346,30 @@ shared sealed interface Sequence<out Element=Anything>
                 return null;
             }
         }
+        shared actual Element last {
+            if (exists last = outer[to]) {
+                return last;
+            }
+            else {
+                assert (is Element null);
+                return null;
+            }
+        }
         
-        last => outer.last;
-        size => outer.size-from;
+        size => to-from+1;
         
         rest => size == 1 then [] 
-                else outer.Rest(from+1);
+                else outer.Subsequence(from+1, to);
+        
+        exceptLast => size == 1 then [] 
+                else outer.Subsequence(from, to-1);
         
         getFromFirst(Integer index)
-                => if (index>=0)
+                => if (0<=index<=to-from)
                 then outer.getFromFirst(index+from)
                 else null;
         
-        iterator() => outer.skip(from).iterator();
+        iterator() => outer.take(to+1).skip(from).iterator();
         
     }
     

@@ -1067,18 +1067,18 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
-    public List<? extends Element> sublist(long from, long to) {
-        return sublistTo(to).sublistFrom(from);
+    public Sequential<? extends Element> sublist(long from, long to) {
+        return $ceylon$language$Sequence$impl().sublist(from, to);
     }
 
     @Override @Ignore
-    public List<? extends Element> sublistFrom(long from) {
-        return $ceylon$language$List$impl().sublistFrom(from);
+    public Sequential<? extends Element> sublistFrom(long from) {
+        return $ceylon$language$Sequence$impl().sublistFrom(from);
     }
 
     @Override @Ignore
-    public List<? extends Element> sublistTo(long to) {
-        return $ceylon$language$List$impl().sublistTo(to);
+    public Sequential<? extends Element> sublistTo(long to) {
+        return $ceylon$language$Sequence$impl().sublistTo(to);
     }
 
     @Override @Ignore
@@ -1183,8 +1183,8 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$impl().getExceptLast();
+    public Sequential<? extends Element> getExceptLast() {
+        return $ceylon$language$Sequence$impl().getExceptLast();
     }
 
     @Override @Ignore

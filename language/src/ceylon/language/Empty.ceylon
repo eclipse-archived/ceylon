@@ -67,6 +67,10 @@ shared interface Empty of package.empty
     shared actual [] rest => this;
     
     "Returns `[]`."
+    since("1.3.3")
+    shared actual [] exceptLast => this;
+    
+    "Returns `[]`."
     shared actual [] clone() => this;
     
     "Returns `[]`."
