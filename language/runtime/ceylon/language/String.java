@@ -1482,95 +1482,8 @@ public final class String
     
     @Ignore
     public static List<? extends Character> sublist(
-            java.lang.String value, long from, long to) {
-        return instance(value).sublist(from, to);
-    }
-    
-    @Ignore
-    public static List<? extends Character> sublistTo(
-            final java.lang.String value, final long to) {
-        return new BaseCharacterList() {
-            @Override
-            public Character getFromFirst(long index) {
-                if (index>to) {
-                    return null;
-                }
-                else {
-                    return String.getFromFirst(value, index);
-                }
-            }
-            @Override
-            public boolean getEmpty() {
-                return to<0 || value.isEmpty();
-            }
-            @Override
-            public Integer getLastIndex() {
-                long size = getSize();
-                return size>0 ? Integer.instance(size-1) : null;
-            }
-            @Override
-            public long getSize() {
-                long size = String.getSize(value);
-                return size>to ? to+1 : size;
-            }
-            @Override
-            public Iterator<? extends Character> iterator() {
-                return new BaseIterator<Character>
-                        (Character.$TypeDescriptor$) {
-                    int offset = 0;
-                    @Override
-                    public java.lang.Object next() {
-                        if (offset < value.length() && offset<=to) {
-                            int codePoint = value.codePointAt(offset);
-                            offset += java.lang.Character.charCount(codePoint);
-                            return Character.instance(codePoint);
-                        }
-                        else {
-                            return finished_.get_();
-                        }
-                    }
-                };
-            }
-            @Override
-            public List<? extends Character> sublistTo(long index) {
-                if (index>=to) {
-                    return this;
-                }
-                else {
-                    return String.sublistTo(value, to+index);
-                }
-            }
-            @Override
-            public boolean contains(java.lang.Object element) {
-                int index;
-                if (element instanceof String) {
-                    index = value.indexOf(((String)element).value);
-                }
-                else if (element instanceof Character) {
-                    index = value.indexOf(((Character)element).codePoint);
-                }
-                else {
-                    return false;
-                }
-                if (index<0) {
-                    return false;
-                }
-                else {
-                    return value.offsetByCodePoints(0, index)<=to;
-                }
-            }
-        };
-    }
-    
-    @Override
-    public List<? extends Character> sublistTo(
-            @Name("to") long to) {
-        return sublistTo(value, to);
-    }
-    
-    @Ignore
-    public static List<? extends Character> sublistFrom(
-            final java.lang.String value, final long from) {
+            final java.lang.String value, 
+            final long from, final long to) {
         return new BaseCharacterList() {
             int start;
             {
@@ -1590,6 +1503,7 @@ public final class String
             }
             @Override
             public Character getFromFirst(long index) {
+                if (index+from>to || index<0) return null;
                 try {
                     int offset =
                             value.offsetByCodePoints(start, 
@@ -1603,7 +1517,7 @@ public final class String
             }
             @Override
             public boolean getEmpty() {
-                return start >= value.length();
+                return to < from || start >= value.length();
             }
             @Override
             public Integer getLastIndex() {
@@ -1612,19 +1526,21 @@ public final class String
             }
             @Override
             public long getSize() {
-                return value.codePointCount(start, 
-                                value.length());
+                long len = value.codePointCount(start, value.length());
+                return len>to ? to+1 : len;
             }
             @Override
             public Iterator<? extends Character> iterator() {
                 return new BaseIterator<Character>
                         (Character.$TypeDescriptor$) {
                     int offset = start;
+                    int index = 0;
                     @Override
                     public java.lang.Object next() {
-                        if (offset < value.length()) {
+                        if (offset < value.length() && index <= to) {
                             int codePoint = value.codePointAt(offset);
                             offset += java.lang.Character.charCount(codePoint);
+                            index ++;
                             return Character.instance(codePoint);
                         }
                         else {
@@ -1634,33 +1550,56 @@ public final class String
                 };
             }
             @Override
-            public List<? extends Character> sublistFrom(long index) {
-                if (index<=0) {
-                    return this;
-                }
-                else {
-                    return String.sublistFrom(value, from+index);
-                }
-            }
-            @Override
             public boolean contains(java.lang.Object element) {
+                int index;
                 if (element instanceof String) {
-                    return value.indexOf(((String)element).value, start) >= 0;
+                    index = value.indexOf(((String)element).value, start);
                 }
                 else if (element instanceof Character) {
-                    return value.indexOf(((Character)element).codePoint, start) >= 0;
+                    index = value.indexOf(((Character)element).codePoint, start);
                 }
                 else {
                     return false;
+                }
+                if (index<0) {
+                    return false;
+                }
+                else {
+                    return value.offsetByCodePoints(0, index)<=to;
                 }
             }
         };
     }
     
     @Override
+    public List<? extends Character> sublist(
+            @Name("to") long to, 
+            @Name("from") long from) {
+        return sublist(value, to, from);
+    }
+    
+    @Ignore
+    public static List<? extends Character> sublistTo(
+            final java.lang.String value, final long to) {
+        return sublist(value, 0, to);
+    }
+    
+    @Override
+    public List<? extends Character> sublistTo(
+            @Name("to") long to) {
+        return sublist(value, 0, to);
+    }
+    
+    @Ignore
+    public static List<? extends Character> sublistFrom(
+            final java.lang.String value, final long from) {
+        return sublist(value, from, value.length());
+    }
+    
+    @Override
     public List<? extends Character> sublistFrom(
             @Name("from") long from) {
-        return sublistFrom(value, from);
+        return sublist(value, from, value.length());
     }
 
     @Override
@@ -3406,11 +3345,6 @@ public final class String
         return $ceylon$language$List$impl().patch$length(arg0, arg1, arg2);
     }
     
-    @Override @Ignore
-    public List<? extends Character> sublist(long arg0, long arg1) {
-        return $ceylon$language$List$impl().sublist(arg0, arg1);
-    }
-
     @Override @Ignore
     public SearchableList$impl<Character> $ceylon$language$SearchableList$impl() {
         return new SearchableList$impl<Character>(Character.$TypeDescriptor$, this);
