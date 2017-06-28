@@ -685,6 +685,8 @@ shared void strings() {
     check(if (exists first="abcd".sublistFrom(2).sublistFrom(1).first) then first=='d' else false, "string sublist");
     check(!"abcd".sublistFrom(4).first exists, "string sublist");
     check(!"abcd".sublistFrom(2).sublistFrom(2).first exists, "string sublist");
+    check("hello world".sublist(2, 9).sublist(2, 4)=="o w".sequence(), "string sublist");
+    check("hello world".sublist(2, 9).sublistFrom(1)=="lo worl".sequence(), "string sublist");
     
     check("".indexesWhere((c) => true).size == 0);
     check("12345".indexesWhere((c) => true).size == 5);
@@ -698,4 +700,5 @@ shared void strings() {
     check("hello".exceptLast=="hell");
     check("\{THUMBS UP SIGN}\{THUMBS DOWN SIGN}".rest=="\{THUMBS DOWN SIGN}");
     check("\{THUMBS UP SIGN}\{THUMBS DOWN SIGN}".exceptLast=="\{THUMBS UP SIGN}");
+    
 }

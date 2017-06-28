@@ -1025,6 +1025,127 @@ public final class String
         return new StringIterator(value);
     }
     
+    private static class StringSublist extends BaseCharacterList {
+        private static final long serialVersionUID = 8844691936163990376L;
+        
+        private final java.lang.String value;
+        private final long to;
+        private final long from;
+        private int start;
+
+        private StringSublist(java.lang.String value, 
+                int offset, long index, 
+                long from, long to) {
+            this.value = value;
+            this.from = from;
+            this.to = to;
+            
+            if (from<=0) {
+                this.start = 0;
+            }
+            else {
+                try {
+                    this.start =
+                            value.offsetByCodePoints(offset, 
+                                    Util.toInt(from-index));
+                }
+                catch (IndexOutOfBoundsException e) {
+                    this.start = value.length();
+                }
+            }
+
+        }
+
+        private StringSublist(java.lang.String value, long from, long to) {
+            this(value, 0, 0, from, to);
+        }
+
+        @Override
+        public Character getFromFirst(long index) {
+            System.out.println("index=" + index + " from=" + from + " to=" + to + " start=" + start);
+            if (index+from>to || index<0) return null;
+            try {
+                int offset =
+                        value.offsetByCodePoints(start, 
+                                Util.toInt(index));
+                return Character.instance(
+                        value.codePointAt(offset));
+            }
+            catch (IndexOutOfBoundsException e) {
+                return null;
+            }
+        }
+
+        @Override
+        public boolean getEmpty() {
+            return to < from || start >= value.length();
+        }
+
+        @Override
+        public Integer getLastIndex() {
+            long size = getSize();
+            return size>0 ? Integer.instance(size-1) : null;
+        }
+
+        @Override
+        public long getSize() {
+            return Long.min(
+                    value.codePointCount(start, value.length()),
+                    to-from+1);
+        }
+
+        @Override
+        public Iterator<? extends Character> iterator() {
+            return new BaseIterator<Character>
+                    (Character.$TypeDescriptor$) {
+                private static final long serialVersionUID = 7900738754241223113L;
+                
+                int offset = start;
+                long index = from;
+                @Override
+                public java.lang.Object next() {
+                    if (offset < value.length() && index <= to) {
+                        int codePoint = value.codePointAt(offset);
+                        offset += java.lang.Character.charCount(codePoint);
+                        index ++;
+                        return Character.instance(codePoint);
+                    }
+                    else {
+                        return finished_.get_();
+                    }
+                }
+            };
+        }
+
+        @Override
+        public boolean contains(java.lang.Object element) {
+            int index;
+            if (element instanceof String) {
+                index = value.indexOf(((String)element).value, start);
+            }
+            else if (element instanceof Character) {
+                index = value.indexOf(((Character)element).codePoint, start);
+            }
+            else {
+                return false;
+            }
+            if (index<0) {
+                return false;
+            }
+            else {
+                return value.offsetByCodePoints(0, index)<=to;
+            }
+        }
+
+        @Override
+        public List<? extends Character> sublist(long f, long t) {
+            return new StringSublist(value,
+                    start, from,
+                    Long.max(from, from+f), 
+                    Long.min(from+t, to));
+        }
+    }
+
     @Ignore
     private static class StringIterator 
             extends BaseIterator<Character> 
@@ -1492,107 +1613,14 @@ public final class String
     public static List<? extends Character> sublist(
             final java.lang.String value, 
             final long from, final long to) {
-        return new BaseCharacterList() {
-            private static final long serialVersionUID = 8844691936163990376L;
-            int start;
-            {
-                if (from<=0) {
-                    start = 0;
-                }
-                else {
-                    try {
-                        start = 
-                                value.offsetByCodePoints(0, 
-                                        Util.toInt(from));
-                    }
-                    catch (IndexOutOfBoundsException e) {
-                        start = value.length();
-                    }
-                }
-            }
-            @Override
-            public Character getFromFirst(long index) {
-                if (index+from>to || index<0) return null;
-                try {
-                    int offset =
-                            value.offsetByCodePoints(start, 
-                                    Util.toInt(index));
-                    return Character.instance(
-                            value.codePointAt(offset));
-                }
-                catch (IndexOutOfBoundsException e) {
-                    return null;
-                }
-            }
-            @Override
-            public boolean getEmpty() {
-                return to < from || start >= value.length();
-            }
-            @Override
-            public Integer getLastIndex() {
-                long size = getSize();
-                return size>0 ? Integer.instance(size-1) : null;
-            }
-            @Override
-            public long getSize() {
-                long len = value.codePointCount(start, value.length());
-                return len>to ? to+1 : len;
-            }
-            @Override
-            public Iterator<? extends Character> iterator() {
-                return new BaseIterator<Character>
-                        (Character.$TypeDescriptor$) {
-                    private static final long serialVersionUID = 7900738754241223113L;
-                    
-                    int offset = start;
-                    int index = 0;
-                    @Override
-                    public java.lang.Object next() {
-                        if (offset < value.length() && index <= to) {
-                            int codePoint = value.codePointAt(offset);
-                            offset += java.lang.Character.charCount(codePoint);
-                            index ++;
-                            return Character.instance(codePoint);
-                        }
-                        else {
-                            return finished_.get_();
-                        }
-                    }
-                };
-            }
-            @Override
-            public boolean contains(java.lang.Object element) {
-                int index;
-                if (element instanceof String) {
-                    index = value.indexOf(((String)element).value, start);
-                }
-                else if (element instanceof Character) {
-                    index = value.indexOf(((Character)element).codePoint, start);
-                }
-                else {
-                    return false;
-                }
-                if (index<0) {
-                    return false;
-                }
-                else {
-                    return value.offsetByCodePoints(0, index)<=to;
-                }
-            }
-            @Override
-            public List<? extends Character> sublist(long f, long t) {
-                return String.sublist(value, 
-                        Long.max(0, from+f), 
-                        Long.min(from+t, to));
-            }
-        };
+        return new StringSublist(value, from, to);
     }
     
     @Override
     public List<? extends Character> sublist(
-            @Name("to") long to, 
-            @Name("from") long from) {
-        return sublist(value, to, from);
+            @Name("from") long from,
+            @Name("to") long to) {
+        return sublist(value, from, to);
     }
     
     @Ignore
