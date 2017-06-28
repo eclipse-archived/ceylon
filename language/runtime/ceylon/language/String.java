@@ -533,6 +533,8 @@ public final class String
             final long from, final long length) {
         return new BaseIterable<Integer, java.lang.Object>
                 (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = -3475029134090804161L;
+            
             final long stop = length+from;
             final int start = from<0 ? 0 : Util.toInt(from);
             final int len = java.lang.Character.charCount(element);
@@ -540,6 +542,8 @@ public final class String
             public Iterator<? extends Integer> iterator() {
                 return new BaseIterator<Integer>
                         (Integer.$TypeDescriptor$) {
+                    private static final long serialVersionUID = -2630286770653898228L;
+                    
                     int index = start;
                     int offset;
                     {
@@ -717,6 +721,7 @@ public final class String
         final String string = (String) substring;
         return new BaseIterable<Integer, java.lang.Object>
                 (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 6425626590377958731L;
             final int start = from<0 ? 0 : Util.toInt(from);
             final java.lang.String str = string.value;
             final int len = str.isEmpty() ? 1 :
@@ -726,6 +731,7 @@ public final class String
             public Iterator<? extends Integer> iterator() {
                 return new BaseIterator<Integer>
                         (Integer.$TypeDescriptor$) {
+                    private static final long serialVersionUID = -6489734355270518579L;
                     long index = from;
                     int offset;
                     {
@@ -1024,6 +1030,8 @@ public final class String
             extends BaseIterator<Character> 
             implements ReifiedType {
         
+        private static final long serialVersionUID = 4814327780094420228L;
+
         private static TypeDescriptor $TypeDescriptor$ = 
                 TypeDescriptor.klass(StringIterator.class);
         
@@ -1485,6 +1493,7 @@ public final class String
             final java.lang.String value, 
             final long from, final long to) {
         return new BaseCharacterList() {
+            private static final long serialVersionUID = 8844691936163990376L;
             int start;
             {
                 if (from<=0) {
@@ -1533,6 +1542,8 @@ public final class String
             public Iterator<? extends Character> iterator() {
                 return new BaseIterator<Character>
                         (Character.$TypeDescriptor$) {
+                    private static final long serialVersionUID = 7900738754241223113L;
+                    
                     int offset = start;
                     int index = 0;
                     @Override
@@ -1567,6 +1578,12 @@ public final class String
                 else {
                     return value.offsetByCodePoints(0, index)<=to;
                 }
+            }
+            @Override
+            public List<? extends Character> sublist(long f, long t) {
+                return String.sublist(value, 
+                        Long.max(0, from+f), 
+                        Long.min(from+t, to));
             }
         };
     }
@@ -1989,6 +2006,7 @@ public final class String
             TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
                     Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
             "whitespace", (short)-1) {
+        private static final long serialVersionUID = 6603200992605336560L;
         @Override
         public Boolean $call$(java.lang.Object ch) {
             return Boolean.instance(((Character) ch).getWhitespace());
@@ -2001,6 +2019,8 @@ public final class String
             TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
                     Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
             "newlines", (short)-1) {
+        private static final long serialVersionUID = 1760644948985787386L;
+
         @Override
         public Boolean $call$(java.lang.Object ch) {
             return Boolean.instance(((Character) ch).intValue()=='\n');
@@ -2013,6 +2033,8 @@ public final class String
             TypeDescriptor.klass(Tuple.class, Character.$TypeDescriptor$, 
                     Character.$TypeDescriptor$, Empty.$TypeDescriptor$),
             "returns", (short)-1) {
+        private static final long serialVersionUID = 4959620668480451176L;
+
         @Override
         public Boolean $call$(java.lang.Object ch) {
             return Boolean.instance(((Character) ch).intValue()=='\r');
@@ -2024,6 +2046,8 @@ public final class String
             TypeDescriptor.klass(Tuple.class, $TypeDescriptor$, 
                     $TypeDescriptor$, Empty.$TypeDescriptor$),
             "", (short)-1) {
+        private static final long serialVersionUID = 6922227726110069651L;
+
         @Override
         public String $call$(java.lang.Object str) {
             return instance(trimTrailing(((String)str).value, RETURNS));
@@ -2037,6 +2061,8 @@ public final class String
                     TypeDescriptor.klass(Sequence.class,$TypeDescriptor$), 
                     Empty.$TypeDescriptor$),
                 "", (short)-1) {
+        private static final long serialVersionUID = 5847042412080489763L;
+
         @Override
         public String $call$(java.lang.Object seq) {
             @SuppressWarnings("unchecked")
@@ -2330,10 +2356,14 @@ public final class String
             final Callable<? extends Boolean> selecting) {
         return new BaseIterable<Entry<? extends Integer, ? extends Character>, java.lang.Object>
             (INT_TO_CHAR_ENTRY_DESCRIPTOR, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = -5641994481544252618L;
+
     @Override
     public Iterator<? extends Entry<? extends Integer, ? extends Character>> iterator() {
         return new BaseIterator<Entry<? extends Integer, ? extends Character>>
                 (INT_TO_CHAR_ENTRY_DESCRIPTOR) {
+            private static final long serialVersionUID = -1761302569992096904L;
+            
             int offset = 0;
             int index = 0;
             @Override
@@ -2386,10 +2416,14 @@ public final class String
             final Callable<? extends Boolean> fun) {
         return new BaseIterable<Integer, java.lang.Object>
                 (Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 8508467332888410586L;
+
             @Override
             public Iterator<? extends Integer> iterator() {
                 return new BaseIterator<Integer>
                         (Integer.$TypeDescriptor$) {
+                    private static final long serialVersionUID = -5792659316006135215L;
+                    
                     int offset = 0;
                     int index = 0;
                     @Override
