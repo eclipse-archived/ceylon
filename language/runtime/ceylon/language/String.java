@@ -1025,6 +1025,16 @@ public final class String
         return new StringIterator(value);
     }
     
+    private static long clampedAdd(long left, long right) {
+        if (right > 0 && left > java.lang.Long.MAX_VALUE - right) {
+            return java.lang.Long.MAX_VALUE;
+        }
+        else if (right < 0 && left < java.lang.Long.MIN_VALUE - right) {
+            return java.lang.Long.MIN_VALUE;
+        }
+        return left + right;
+    }
+
     private static class StringSublist extends BaseCharacterList {
         private static final long serialVersionUID = 8844691936163990376L;
         
@@ -1141,8 +1151,8 @@ public final class String
         public List<? extends Character> sublist(long f, long t) {
             return new StringSublist(value,
                     start, from,
-                    Math.max(from, from+f),
-                    Math.min(from+t, to));
+                    Math.max(from, clampedAdd(from, f)),
+                    Math.min(clampedAdd(from, t), to));
         }
 
         @Override
