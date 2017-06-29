@@ -687,6 +687,7 @@ shared void strings() {
     check(!"abcd".sublistFrom(2).sublistFrom(2).first exists, "string sublist");
     check("hello world".sublist(2, 9).sublist(2, 4)=="o w".sequence(), "string sublist");
     check("hello world".sublist(2, 9).sublistFrom(1)=="lo worl".sequence(), "string sublist");
+    check("abcd".sublist(-1, 100).sublist(1,100)=="bcd".sequence(), "string sublist");
     
     check("".indexesWhere((c) => true).size == 0);
     check("12345".indexesWhere((c) => true).size == 5);

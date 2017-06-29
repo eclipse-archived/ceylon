@@ -1037,13 +1037,14 @@ public final class String
                 int offset, long index, 
                 long from, long to) {
             this.value = value;
-            this.from = from;
             this.to = to;
             
             if (from<=0) {
-                this.start = 0;
+                this.start = offset;
+                this.from = index;
             }
             else {
+                this.from = from;
                 try {
                     this.start =
                             value.offsetByCodePoints(offset, 
