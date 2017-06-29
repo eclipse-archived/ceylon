@@ -1025,40 +1025,27 @@ public final class String
         return new StringIterator(value);
     }
     
-    private static long clampedAdd(long left, long right) {
-        if (right > 0 && left > java.lang.Long.MAX_VALUE - right) {
-            return java.lang.Long.MAX_VALUE;
-        }
-        else if (right < 0 && left < java.lang.Long.MIN_VALUE - right) {
-            return java.lang.Long.MIN_VALUE;
-        }
-        return left + right;
-    }
-
     private static class StringSublist extends BaseCharacterList {
         private static final long serialVersionUID = 8844691936163990376L;
         
         private final java.lang.String value;
         private final long to;
-        private final long from;
         private int start;
 
         private StringSublist(java.lang.String value, 
-                int offset, long index, 
-                long from, long to) {
+                int offset, long from, long to) {
             this.value = value;
-            this.to = to;
             
             if (from<=0) {
                 this.start = offset;
-                this.from = index;
+                this.to = to;
             }
             else {
-                this.from = from;
+                this.to = to - from;
                 try {
                     this.start =
                             value.offsetByCodePoints(offset, 
-                                    Util.toInt(from-index));
+                                    Util.toInt(from));
                 }
                 catch (IndexOutOfBoundsException e) {
                     this.start = value.length();
@@ -1068,12 +1055,12 @@ public final class String
         }
 
         private StringSublist(java.lang.String value, long from, long to) {
-            this(value, 0, 0, from, to);
+            this(value, 0, from, to);
         }
 
         @Override
         public Character getFromFirst(long index) {
-            if (index+from>to || index<0) return null;
+            if (index>to || index<0) return null;
             try {
                 int offset =
                         value.offsetByCodePoints(start, 
@@ -1088,7 +1075,7 @@ public final class String
 
         @Override
         public boolean getEmpty() {
-            return to < from || start >= value.length();
+            return to < 0 || start >= value.length();
         }
 
         @Override
@@ -1101,7 +1088,7 @@ public final class String
         public long getSize() {
             return Math.min(
                     value.codePointCount(start, value.length()),
-                    to-from+1);
+                    to+1);
         }
 
         @Override
@@ -1111,7 +1098,7 @@ public final class String
                 private static final long serialVersionUID = 7900738754241223113L;
                 
                 int offset = start;
-                long index = from;
+                long index = 0;
                 @Override
                 public java.lang.Object next() {
                     if (offset < value.length() && index <= to) {
@@ -1143,16 +1130,18 @@ public final class String
                 return false;
             }
             else {
-                return value.offsetByCodePoints(0, index)<=to;
+                int extraLen = 0;
+                if (element instanceof String) {
+                    // check the end of the match, not the start
+                    extraLen = ((String)element).value.length() - 1;
+                }
+                return value.codePointCount(start, index + extraLen) <= to;
             }
         }
 
         @Override
         public List<? extends Character> sublist(long f, long t) {
-            return new StringSublist(value,
-                    start, from,
-                    Math.max(from, clampedAdd(from, f)),
-                    Math.min(clampedAdd(from, t), to));
+            return new StringSublist(value, start, f, Math.min(t, to));
         }
 
         @Override

@@ -690,6 +690,11 @@ shared void strings() {
     check("abcd".sublist(-1, 100).sublist(1,100)=="bcd".sequence(), "string sublist");
     check("abcd".sublist(2, runtime.maxIntegerValue)=="cd".sequence(), "string sublist");
     check("abcd".sublist(1,10).sublist(1, runtime.maxIntegerValue)=="cd".sequence(), "string sublist");
+    // TODO are the following even correct?
+    check(!"111122".sublist(3,4).contains("22"), "string sublist c1");
+    check("111122".sublist(4,5).contains("22"), "string sublist c2");
+    check("111122".sublist(4,6).contains("22"), "string sublist c3");
+    check(!"111122".sublist(5,6).contains("22"), "string sublist c4");
     
     check("".indexesWhere((c) => true).size == 0);
     check("12345".indexesWhere((c) => true).size == 5);
