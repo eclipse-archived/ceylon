@@ -1144,6 +1144,11 @@ public final class String
                     Math.max(from, from+f),
                     Math.min(from+t, to));
         }
+
+        @Override
+        public List<? extends Character> sublistFrom(long f) {
+            return sublist(f, value.length());
+        }
     }
 
     @Ignore
