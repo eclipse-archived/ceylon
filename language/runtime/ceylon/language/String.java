@@ -1062,7 +1062,6 @@ public final class String
 
         @Override
         public Character getFromFirst(long index) {
-            System.out.println("index=" + index + " from=" + from + " to=" + to + " start=" + start);
             if (index+from>to || index<0) return null;
             try {
                 int offset =
@@ -1089,7 +1088,7 @@ public final class String
 
         @Override
         public long getSize() {
-            return Long.min(
+            return Math.min(
                     value.codePointCount(start, value.length()),
                     to-from+1);
         }
@@ -1141,8 +1140,8 @@ public final class String
         public List<? extends Character> sublist(long f, long t) {
             return new StringSublist(value,
                     start, from,
-                    Long.max(from, from+f), 
-                    Long.min(from+t, to));
+                    Math.max(from, from+f),
+                    Math.min(from+t, to));
         }
     }
 
