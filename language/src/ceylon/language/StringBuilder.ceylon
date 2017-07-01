@@ -244,7 +244,7 @@ shared native("jvm") final class StringBuilder()
     shared actual native("jvm") Integer? lastIndex 
             => if (builder.length() == 0)
             then null
-            else builder.length() - 1;
+            else size - 1;
     
     shared actual native("jvm") String string 
             => builder.string;

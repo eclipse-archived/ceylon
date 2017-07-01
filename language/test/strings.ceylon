@@ -18,6 +18,11 @@ void compareIterables<T>(Iterable<T> aIterable, Iterable<T> bIterable, String me
     check(b == finished, "``message``: Iterator B not empty: extra '``b``'");
 }
 
+Boolean eq(Anything a, Anything b)
+    =>  if (exists a, exists b)
+        then a == b
+        else !a exists && !b exists;
+
 @test
 shared void strings() {
     value hello = "hello";
@@ -308,6 +313,11 @@ shared void strings() {
     check(builder.clear().append("oat").reverseInPlace().string == "tao", "StringBuilder.reverseInPlace");
     check(builder.replace(1,1,"omat").string == "tomato", "StringBuilder.replace expected 'tomato' got ``builder``");
     check(builder.size == 6, "StringBuilder.size expected 6 got ``builder.size``");
+
+    check(builder.clear().appendCharacter('\{#01D419}').size == 1, "StringBuilder unicode 1");
+    check(builder.clear().appendCharacter('x').size == 1, "StringBuilder unicode 2");
+    check(eq(builder.clear().appendCharacter('\{#01D419}').lastIndex, 0), "StringBuilder unicode 3");
+    check(eq(builder.clear().appendCharacter('x').lastIndex, 0), "StringBuilder unicode 4");
 
     check("hello world".initial(0)=="", "string initial 1");
     check("hello world".terminal(0)=="", "string terminal 1");
