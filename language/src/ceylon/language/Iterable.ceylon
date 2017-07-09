@@ -1421,7 +1421,51 @@ shared interface Iterable<out Element=Anything,
             => object 
             satisfies Iterable<Element|Other,
                                Absent&OtherAbsent> {
-        iterator() => ChainedIterator(outer, other);
+
+        empty => outer.empty && other.empty;
+
+        size => outer.size + other.size;
+        
+        any(Boolean selecting(Element|Other element))
+                => outer.any(selecting)
+                || other.any(selecting);
+
+        contains(Object element)
+                => outer.contains(element)
+                || other.contains(element);
+
+        count(Boolean selecting(Element|Other element))
+                => outer.count(selecting)
+                + other.count(selecting);
+
+        shared actual
+        void each(void step(Element|Other element)) {
+            outer.each(step);
+            other.each(step);
+        }
+
+        every(Boolean selecting(Element|Other element))
+                => outer.every(selecting)
+                && other.every(selecting);
+
+        find(Boolean selecting(<Element|Other>&Object element))
+                => outer.find(selecting)
+                else other.find(selecting);
+
+        findLast(Boolean selecting(<Element|Other>&Object element))
+                => other.findLast(selecting)
+                else outer.findLast(selecting);
+
+        iterator()
+                => ChainedIterator(outer, other);
+
+        locate(Boolean selecting(<Element|Other>&Object element))
+                => outer.locate(selecting)
+                else other.locate(selecting);
+
+        locateLast(Boolean selecting(<Element|Other>&Object element))
+                => other.locateLast(selecting)
+                else outer.locateLast(selecting);
     };
     
     "A stream of pairs of elements of this stream and the 
