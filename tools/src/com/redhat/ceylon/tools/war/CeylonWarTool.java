@@ -2,26 +2,20 @@ package com.redhat.ceylon.tools.war;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 import java.util.jar.JarOutputStream;
-import java.util.zip.ZipEntry;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
-import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -35,7 +29,7 @@ import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
-import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
+import com.redhat.ceylon.tools.moduleloading.ResourceRootTool;
 
 @Summary("Generates a WAR file from a compiled `.car` file")
 @Description("Generates a WAR file from the `.car` file of the "
@@ -49,15 +43,13 @@ import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
         + "the application container "
         + "(and thus not required to be in `WEB-INF/lib`) can be "
         + "excluded using `--provided-module`.")
-public class CeylonWarTool extends ModuleLoadingTool {
+public class CeylonWarTool extends ResourceRootTool {
 
     private List<ModuleSpec> modules;
-    private final List<EntrySpec> entrySpecs = new ArrayList<>();
     private final List<String> excludedModules = new ArrayList<>();
     private final List<String> providedModules = new ArrayList<>();
     private String out = null;
     private String name = null;
-    private String resourceRoot;
     
     @Hidden
     @Option(longName="static-metamodel")
@@ -85,13 +77,6 @@ public class CeylonWarTool extends ModuleLoadingTool {
     @Description("Sets name of the WAR file (default: moduleName-version.war)")
     public void setName(String name) {
         this.name = name;
-    }
-    
-    @OptionArgument(shortName='R', argumentName="directory")
-    @Description("Sets the special resource directory whose files will " +
-            "end up in the root of the resulting WAR file (default: web-content).")
-    public void setResourceRoot(String root) {
-        this.resourceRoot = root;
     }
     
     @OptionArgument(argumentName="moduleOrFile", shortName='x')
@@ -182,7 +167,7 @@ public class CeylonWarTool extends ModuleLoadingTool {
         List<ArtifactResult> staticMetamodelEntries = new ArrayList<>();
         addLibEntries(staticMetamodelEntries);
         
-        addResources(entrySpecs);
+        addResources();
         
         if (this.name == null) {
             this.name = moduleVersion != null && !moduleVersion.isEmpty() 
@@ -217,11 +202,7 @@ public class CeylonWarTool extends ModuleLoadingTool {
             || this.providedModules.contains(moduleName);
     }
     
-    protected void addSpec(EntrySpec spec) {
-        debug("adding.entry", spec.name);
-        this.entrySpecs.add(spec);
-    }
-    
+    @Override
     protected void debug(String key, Object... args) {
         if (this.verbose != null &&
                 !this.verbose.equals("loader")) {
@@ -233,41 +214,11 @@ public class CeylonWarTool extends ModuleLoadingTool {
         }
     }
     
-    /** 
-     * Copies resources from the {@link #resourceRoot} to the WAR.
-     */
-    protected void addResources(List<EntrySpec> entries) throws MalformedURLException {
-        final File root;
-        if (this.resourceRoot == null) {
-            File defaultRoot = applyCwd(new File("web-content"));
-            if (!defaultRoot.exists()) {
-                return;
-            }
-            root = defaultRoot;
-        } else {
-            root = applyCwd(new File(this.resourceRoot));
-        }
-        if (!root.exists()) {
-            throw new ToolUsageError(CeylonWarMessages.msg("resourceRoot.missing", root.getAbsolutePath()));
-        }
-        if (!root.isDirectory()) {
-            throw new ToolUsageError(CeylonWarMessages.msg("resourceRoot.nondir", root.getAbsolutePath()));
-        }
-        debug("adding.resources", root.getAbsolutePath());
-        
-        addResources(root, "", entries);
+    @Override
+    protected void usageError(String key, Object... args) {
+        throw new ToolUsageError(CeylonWarMessages.msg("resourceRoot.missing", args));
     }
-    
-    protected void addResources(File root, String prefix, List<EntrySpec> entries) throws MalformedURLException {
-        for (File f : root.listFiles()) {
-            if (f.isDirectory()) {
-                addResources(f, prefix + f.getName() + "/", entries);
-            } else {
-                addSpec(new URLEntrySpec(f.toURI().toURL(), prefix + f.getName()));
-            }
-        }
-    }
-    
+
     protected void addLibEntries(final List<ArtifactResult> staticMetamodelEntries) throws MalformedURLException { 
         final List<String> libs = new ArrayList<>();
 
@@ -316,7 +267,7 @@ public class CeylonWarTool extends ModuleLoadingTool {
                 new JarOutputStream(new 
                         BufferedOutputStream(new 
                                 FileOutputStream(jarFile)))) {
-            for (EntrySpec entry : entrySpecs) {
+            for (EntrySpec entry : getEntrySpecs()) {
                 entry.write(out);
             }
             // FIXME: this is not done properly
@@ -326,64 +277,4 @@ public class CeylonWarTool extends ModuleLoadingTool {
         }
     }
     
-    abstract class EntrySpec {
-        EntrySpec(final String name) {
-            this.name = name;
-        }
-        
-        void write(final JarOutputStream out) throws IOException {
-            out.putNextEntry(new ZipEntry(this.name));
-            IOUtils.copyStream(openStream(), out, true, false);
-        }
-        
-        abstract InputStream openStream() throws IOException;
-        
-        final protected String name; 
-    }
-    
-    class URLEntrySpec extends EntrySpec {
-        URLEntrySpec(final URL url, final String name) {
-            super(name);
-            this.url = url;
-        }
-        
-        InputStream openStream() throws IOException {
-            return this.url.openStream();
-        }
-        
-        final private URL url;
-    }
-    
-    class StringEntrySpec extends EntrySpec {
-        StringEntrySpec(final String content, final String name) {
-            super(name);
-            this.content = content;
-        }
-        
-        InputStream openStream() throws IOException {
-            return new ByteArrayInputStream(this.content.getBytes());
-        }
-    
-        final private String content;
-    }
-
-    class PropertiesEntrySpec extends EntrySpec {
-
-        PropertiesEntrySpec(final Properties properties, final String name) {
-            super(name);
-            this.properties = properties;
-        }
-        
-        void write(final JarOutputStream out) throws IOException {
-            out.putNextEntry(new ZipEntry(this.name));
-            this.properties.store(out, "");
-        }
-        
-        InputStream openStream() throws IOException {
-            //unused
-            return null;
-        }
-        
-        final private Properties properties;
-    }
 }

@@ -16,7 +16,6 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
@@ -33,19 +32,20 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
-import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
+import com.redhat.ceylon.tools.moduleloading.ResourceRootTool;
 
 @Summary("Generate a Ceylon executable jar for a given module")
 @Description("Gerate an executable _fat jar_ which contains the given module and all its run-time"
         + " dependencies, including the Ceylon run-time, which makes that jar self-sufficient and"
         + " executable by `java` as if the Ceylon module was run by `ceylon run`."
 )
-public class CeylonFatJarTool extends ModuleLoadingTool {
+public class CeylonFatJarTool extends ResourceRootTool {
 
     private List<ModuleSpec> modules;
     private boolean force;
 	private File out;
     private final List<String> excludedModules = new ArrayList<>();
+    private List<String[]> manifestEntries = new ArrayList<>();
     /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
     private String run;
 
@@ -73,7 +73,7 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
     }
 
     @OptionArgument(argumentName="moduleOrFile", shortName='x')
-    @Description("Excludes modules from the resulting far jat. Can be a module name or " + 
+    @Description("Excludes modules from the resulting far jar. Can be a module name or " + 
             "a file containing module names. Can be specified multiple times. Note that "+
             "this excludes the module from the resulting fat jar, but if your modules require that "+
             "module to be present at runtime it will still be required and may cause your "+
@@ -93,6 +93,18 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
                 }
             } else {
                 this.excludedModules.add(each);
+            }
+        }
+    }
+    
+    @OptionArgument(argumentName="key:value", shortName='e')
+    @Description("Specify a manifest entry for the resulting far jar, of form <key>:<value>. "
+            + "Can be specified multiple times.")
+    public void setManifestEntry(List<String> entries) {
+        for (String entry: entries) {
+            String[] keyValue = entry.split(":");
+            if (keyValue.length==2) {
+                this.manifestEntries.add(keyValue);
             }
         }
     }
@@ -145,10 +157,18 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
         mainAttributes.putValue("Main-Class", className);
         mainAttributes.putValue("Manifest-Version", "1.0");
         mainAttributes.putValue("Created-By", "Ceylon fat-jar for module "+firstModuleName+"/"+firstModuleVersion);
+        for (String[] keyValue: manifestEntries) {
+            mainAttributes.putValue(keyValue[0], keyValue[1]);
+        }
         added.add("META-INF/");
         added.add("META-INF/MANIFEST.MF");
+        
+        addResources();
 
-        try(ZipOutputStream zipFile = new JarOutputStream(new FileOutputStream(outputJar), manifest)){
+        try(JarOutputStream zipFile = new JarOutputStream(new FileOutputStream(outputJar), manifest)){
+            for (EntrySpec entry : getEntrySpecs()) {
+                entry.write(zipFile);
+            }
             final List<ArtifactResult> staticMetamodelEntries = new ArrayList<>();
             loader.visitModules(new ModuleGraph.Visitor() {
                 @Override
@@ -210,7 +230,25 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
 
     @Override
     protected boolean shouldExclude(String moduleName, String version) {
-        return super.shouldExclude(moduleName, version) ||
-                this.excludedModules.contains(moduleName);
+        return super.shouldExclude(moduleName, version) 
+            || this.excludedModules.contains(moduleName);
     }
+
+    @Override
+    protected void debug(String key, Object... args) {
+        if (this.verbose != null &&
+                !this.verbose.equals("loader")) {
+            try {
+                append("Debug: ").append(CeylonFatJarMessages.msg(key, args)).newline();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    
+    @Override
+    protected void usageError(String key, Object... args) {
+        throw new ToolUsageError(CeylonFatJarMessages.msg("resourceRoot.missing", args));
+    }
+
 }
