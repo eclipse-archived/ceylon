@@ -68,7 +68,8 @@ public class TypeUtils {
                     if (((TypeParameter)d).isInvariant() &&
                             (e.getKey().isCovariant() || e.getKey().isContravariant())) {
                         gen.out("/*ORALE!",d.getQualifiedNameString()," inv pero ",
-                                e.getKey().getQualifiedNameString()," var*/");
+                                e.getKey().getQualifiedNameString(),
+                                e.getKey().isCovariant()?" out":" in", "*/");
                     }
                 } else {
                     closeBracket = !pt.isTypeAlias();
