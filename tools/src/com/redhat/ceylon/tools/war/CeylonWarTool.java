@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.Attributes;
 import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
@@ -55,7 +57,7 @@ public class CeylonWarTool extends ResourceRootTool {
     @Option(longName="static-metamodel")
     @Description("Obsolete: Generate a static metamodel, skip the WarInitializer (always true).")
     public void setStaticMetamodel(boolean staticMetamodel) throws IOException {
-        append("WARNING: --static-metamodel option no longer supported: enabled by default");
+        append("WARNING: --static-metamodel option no longer supported: enabled by default").newline();
     }
 
     @Argument(argumentName="module", multiplicity="+")
@@ -263,16 +265,20 @@ public class CeylonWarTool extends ResourceRootTool {
     }
     
     protected void writeJarFile(File jarFile, List<ArtifactResult> staticMetamodelEntries) throws IOException {
-        try (JarOutputStream out = 
-                new JarOutputStream(new 
-                        BufferedOutputStream(new 
-                                FileOutputStream(jarFile)))) {
-            for (EntrySpec entry : getEntrySpecs()) {
-                entry.write(out);
-            }
+        Manifest manifest = new Manifest();
+        Attributes mainAttributes = manifest.getMainAttributes();
+        writeManifestEntries(mainAttributes);
+        
+        try (BufferedOutputStream out = 
+                new BufferedOutputStream(new FileOutputStream(jarFile));
+             JarOutputStream zipFile = 
+                mainAttributes.isEmpty() 
+                        ? new JarOutputStream(out) 
+                        : new JarOutputStream(out, manifest)) {
+            writeResources(zipFile);
             // FIXME: this is not done properly
             Set<String> added = new HashSet<>();
-            JvmBackendUtil.writeStaticMetamodel(out, added, staticMetamodelEntries, jdkProvider, 
+            JvmBackendUtil.writeStaticMetamodel(zipFile, added, staticMetamodelEntries, jdkProvider, 
                     new HashSet<>(providedModules));
         }
     }

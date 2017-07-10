@@ -45,7 +45,6 @@ public class CeylonFatJarTool extends ResourceRootTool {
     private boolean force;
 	private File out;
     private final List<String> excludedModules = new ArrayList<>();
-    private List<String[]> manifestEntries = new ArrayList<>();
     /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
     private String run;
 
@@ -66,14 +65,14 @@ public class CeylonFatJarTool extends ResourceRootTool {
         this.run = run;
     }
 
-    @Description("Target fat-jar file (defaults to `{name}-{version}.jar`).")
+    @Description("Target fat jar file (defaults to `{name}-{version}.jar`).")
     @OptionArgument(shortName = 'o', argumentName="file")
     public void setOut(File out) {
         this.out = out;
     }
 
     @OptionArgument(argumentName="moduleOrFile", shortName='x')
-    @Description("Excludes modules from the resulting far jar. Can be a module name or " + 
+    @Description("Excludes modules from the resulting fat jar. Can be a module name or " + 
             "a file containing module names. Can be specified multiple times. Note that "+
             "this excludes the module from the resulting fat jar, but if your modules require that "+
             "module to be present at runtime it will still be required and may cause your "+
@@ -97,18 +96,6 @@ public class CeylonFatJarTool extends ResourceRootTool {
         }
     }
     
-    @OptionArgument(argumentName="key:value", shortName='e')
-    @Description("Specify a manifest entry for the resulting far jar, of form <key>:<value>. "
-            + "Can be specified multiple times.")
-    public void setManifestEntry(List<String> entries) {
-        for (String entry: entries) {
-            String[] keyValue = entry.split(":");
-            if (keyValue.length==2) {
-                this.manifestEntries.add(keyValue);
-            }
-        }
-    }
-
     @Option(longName="force")
     @Description("Force generation of mlib folder with multiple versions of the same module.")
     public void setForce(boolean force) {
@@ -157,18 +144,17 @@ public class CeylonFatJarTool extends ResourceRootTool {
         mainAttributes.putValue("Main-Class", className);
         mainAttributes.putValue("Manifest-Version", "1.0");
         mainAttributes.putValue("Created-By", "Ceylon fat-jar for module "+firstModuleName+"/"+firstModuleVersion);
-        for (String[] keyValue: manifestEntries) {
-            mainAttributes.putValue(keyValue[0], keyValue[1]);
-        }
+        writeManifestEntries(mainAttributes);
         added.add("META-INF/");
         added.add("META-INF/MANIFEST.MF");
         
         addResources();
 
-        try(JarOutputStream zipFile = new JarOutputStream(new FileOutputStream(outputJar), manifest)){
-            for (EntrySpec entry : getEntrySpecs()) {
-                entry.write(zipFile);
-            }
+        try(JarOutputStream zipFile 
+                = new JarOutputStream(
+                        new FileOutputStream(outputJar), 
+                        manifest)){
+            writeResources(zipFile);
             final List<ArtifactResult> staticMetamodelEntries = new ArrayList<>();
             loader.visitModules(new ModuleGraph.Visitor() {
                 @Override
@@ -217,7 +203,6 @@ public class CeylonFatJarTool extends ResourceRootTool {
         }
         flush();
     }
-
 
     private boolean skipEntry(String name) {
         return name.equals("META-INF/MANIFEST.MF")

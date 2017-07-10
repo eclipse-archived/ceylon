@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.jar.Attributes;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
@@ -20,6 +21,7 @@ public abstract class ResourceRootTool extends ModuleLoadingTool {
 
     private String resourceRoot;
     private final List<EntrySpec> entrySpecs = new ArrayList<>();
+    private List<String[]> manifestEntries = new ArrayList<>();
     
     @OptionArgument(shortName='R', argumentName="directory")
     @Description("Sets the special resource directory whose files will " +
@@ -28,10 +30,30 @@ public abstract class ResourceRootTool extends ModuleLoadingTool {
         this.resourceRoot = root;
     }
     
-    protected List<EntrySpec> getEntrySpecs() {
-        return entrySpecs;
+    @OptionArgument(argumentName="key:value", shortName='e')
+    @Description("Specify a manifest entry for the resulting fat jar, of form <key>:<value>. "
+            + "Can be specified multiple times.")
+    public void setManifestEntry(List<String> entries) {
+        for (String entry: entries) {
+            String[] keyValue = entry.split(":");
+            if (keyValue.length==2) {
+                this.manifestEntries.add(keyValue);
+            }
+        }
     }
     
+    protected void writeResources(JarOutputStream zipFile) throws IOException {
+        for (EntrySpec entry : entrySpecs) {
+            entry.write(zipFile);
+        }
+    }
+
+    protected void writeManifestEntries(Attributes mainAttributes) {
+        for (String[] keyValue: manifestEntries) {
+            mainAttributes.putValue(keyValue[0], keyValue[1]);
+        }
+    }
+
     /** 
      * Copies resources from the {@link #resourceRoot} to the WAR.
      */
