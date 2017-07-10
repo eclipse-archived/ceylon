@@ -200,7 +200,7 @@ shared interface Map<out Key=Object, out Item=Anything>
             for (key -> thisItem in this) {
                 value thatItem = that[key];
                 if (exists thisItem, exists thatItem) {
-                    if (thatItem!=thisItem) {
+                    if (thisItem!=thatItem) {
                         return false;
                     }
                 }
