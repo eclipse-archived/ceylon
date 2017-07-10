@@ -43,13 +43,13 @@ class Entry<out Key,out Item>(key, item)
             if (this.key!=that.key) {
                 return false;
             }
-            if (exists thisItem=this.item,
-                exists thatItem=that.item) {
+            if (exists thisItem = this.item,
+                exists thatItem = that.item) {
                 return thisItem==thatItem;
             }
             else {
-                return !this.item exists &&
-                        !that.item exists;
+                return !this.item exists 
+                    && !that.item exists;
             }
         }
         else {
