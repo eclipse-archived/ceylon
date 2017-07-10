@@ -201,11 +201,11 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
 
     private boolean skipEntry(String name) {
         return name.equals("META-INF/MANIFEST.MF")
-                || name.equals("META-INF/INDEX.LIST")
-                || name.equals("META-INF/mapping.txt")
-                // skip signatures too
-                || (name.startsWith("META-INF/")
-                        && (name.endsWith(".DSA") || name.endsWith(".RSA") || name.endsWith(".SF")));
+            || name.equals("META-INF/INDEX.LIST")
+            || name.equals("META-INF/mapping.txt")
+            // skip signatures too
+            || (name.startsWith("META-INF/")
+                    && (name.endsWith(".DSA") || name.endsWith(".RSA") || name.endsWith(".SF")));
     }
 
     @Override

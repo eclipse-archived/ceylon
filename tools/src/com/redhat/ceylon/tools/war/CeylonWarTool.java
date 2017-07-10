@@ -155,7 +155,6 @@ public class CeylonWarTool extends ModuleLoadingTool {
     public void run() throws Exception {
         String moduleName = null;
         String moduleVersion = null;
-        final Properties properties = new Properties();
         
         for (ModuleSpec module : modules) {
             String name = module.getName();
@@ -208,14 +207,14 @@ public class CeylonWarTool extends ModuleLoadingTool {
 
     @Override
     protected boolean shouldExclude(String moduleName, String version) {
-        return super.shouldExclude(moduleName, version) ||
-                this.excludedModules.contains(moduleName);
+        return super.shouldExclude(moduleName, version) 
+            || this.excludedModules.contains(moduleName);
     }
 
     @Override
     protected boolean isProvided(String moduleName, String version) {
         return super.isProvided(moduleName, version)
-                || this.providedModules.contains(moduleName);
+            || this.providedModules.contains(moduleName);
     }
     
     protected void addSpec(EntrySpec spec) {
