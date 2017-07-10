@@ -150,7 +150,7 @@ shared interface Set<out Element=Object>
      set."
     shared actual default Boolean equals(Object that) {
         if (is Set<> that,
-                that.size==size) {
+            that.size==size) {
             for (element in this) {
                 if (!element in that) {
                     return false;
