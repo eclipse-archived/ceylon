@@ -149,8 +149,7 @@ shared interface Set<out Element=Object>
      set if it is both a subset and a superset of the second
      set."
     shared actual default Boolean equals(Object that) {
-        if (is Set<> that,
-            that.size==size) {
+        if (is Set<> that, that.size==size) {
             for (element in this) {
                 if (!element in that) {
                     return false;

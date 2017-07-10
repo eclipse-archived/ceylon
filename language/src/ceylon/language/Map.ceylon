@@ -195,8 +195,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      equal iff they have same set of `keys`, and for every 
      key in the key set, the maps have equal items."
     shared actual default Boolean equals(Object that) {
-        if (is Map<Object,Anything> that,
-            that.size==size) {
+        if (is Map<> that, that.size==size) {
             for (key -> thisItem in this) {
                 value thatItem = that[key];
                 if (exists thisItem, exists thatItem) {
