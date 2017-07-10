@@ -172,20 +172,15 @@ class ComprehensionGenerator {
                 gen.out("var n", loop.valueVarName, "=function()");
                 gen.beginBlock();
 
-                // extra entry variable for key/value iterators
                 String elemVarName = loop.valueVarName;
-                if (loop.pattern != null) {
-                    elemVarName = names.createTempVariable();
-                    gen.out("var ", elemVarName); gen.endLine(true);
-                }
 
                 // if/while ((elemVar=it.next()!==$finished)
                 gen.out(loop.conditions.isEmpty()?"if":"while", "((", elemVarName, "=",
                         loop.itVarName, ".next())!==", finished, ")");
                 gen.beginBlock();
 
-                // get key/value if necessary
                 if (loop.pattern != null) {
+                    //deconstruct here
                     new Destructurer(loop.pattern, gen, directAccess, elemVarName, true, false);
                     gen.endLine(true);
                 }
@@ -249,6 +244,16 @@ class ComprehensionGenerator {
         final String tempVarName = names.createTempVariable();
         names.forceName(lastLoop.valDecl, tv);
         gen.out("var ", tv, "=", lastLoop.valueVarName, ",");
+        if (lastLoop.pattern != null) {
+            //Capture deconstructed variables here
+            HashSet<Declaration> decs = new HashSet<>();
+            new Destructurer(lastLoop.pattern, null, decs, "", true, false);
+            for (Declaration d : decs) {
+                final String newDeconstructedVarName = names.createTempVariable();
+                gen.out(newDeconstructedVarName, "=", names.name(d), ",");
+                names.forceName(d, newDeconstructedVarName);
+            }
+        }
         List<ConditionGenerator.VarHolder> captureds = null;
         if (expression.getTypeModel() != null && TypeUtils.isCallable(expression.getTypeModel())) {
             captureds = new ArrayList<>(loops.size()*2);
