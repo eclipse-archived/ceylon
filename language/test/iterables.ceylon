@@ -239,7 +239,38 @@ shared void testIterables() {
     check(Array([]).chain({1,2}).sequence()==[1,2], "EmptyArray.chain");
     check(Array{1,2}.chain({3,4}).sequence()=={1,2,3,4}.sequence(), "NonemptyArray.chain");
     check(Singleton(1).chain(Singleton(2)).chain(Singleton("3")).sequence()=={1,2,"3"}.sequence(), "Singletons.chain");
-    
+    check(!{1}.chain({}).empty, "iterable chain opt #1");
+    check(!{}.chain({1}).empty, "iterable chain opt #2");
+    check({}.chain({}).empty, "iterable chain opt #3");
+    check({}.chain({}).size == 0, "iterable chain opt #4");
+    check({1}.chain({}).size == 1, "iterable chain opt #5");
+    check({}.chain({1}).size == 1, "iterable chain opt #6");
+    check({1,2}.chain({1,2,3}).size == 5, "iterable chain opt #7");
+    check(!{1,2}.chain({3,4}).any(5.equals), "iterable chain opt #8");
+    check({1,2}.chain({3,4}).any(2.equals), "iterable chain opt #9");
+    check({1,2}.chain({3,4}).any(4.equals), "iterable chain opt #10");
+    check(!{1,2}.chain({3,4}).contains(5), "iterable chain opt #11");
+    check({1,2}.chain({3,4}).contains(1), "iterable chain opt #12");
+    check({1,2}.chain({3,4}).contains(3), "iterable chain opt #13");
+    check({1,1}.chain({2,2,2}).count(1.equals) == 2, "iterable chain opt #14");
+    check({1,1}.chain({2,2,2}).count(2.equals) == 3, "iterable chain opt #15");
+    variable value total = 0;
+    {2,2}.chain({2,2,2}).each((i) => total += i);
+    check(total == 10, "iterable chain opt #16");
+    check(!{2,2}.chain({3,3}).every(3.largerThan), "iterable chain opt #17");
+    check(!{3,3}.chain({2,2}).every(3.largerThan), "iterable chain opt #18");
+    check({3,3}.chain({2,2}).every(4.largerThan), "iterable chain opt #19");
+    check({1,2}.chain({3,4}).find(1.equals) exists, "iterable chain opt #20");
+    check({1,2}.chain({3,4}).find(3.equals) exists, "iterable chain opt #21");
+    check(!{1,2}.chain({3,4}).find(5.equals) exists, "iterable chain opt #22");
+    check({1,2}.chain({3,4}).findLast(1.equals) exists, "iterable chain opt #23");
+    check({1,2}.chain({3,4}).findLast(3.equals) exists, "iterable chain opt #24");
+    check(!{1,2}.chain({3,4}).findLast(5.equals) exists, "iterable chain opt #25");
+    check(eq({1,2}.chain({3,4}).locate(2.equals), 1->2), "iterable chain opt #26");
+    check(eq({1,2}.chain({3,4}).locate(4.equals), 3->4), "iterable chain opt #27");
+    check(eq({1,2}.chain({3,4}).locateLast(2.equals), 1->2), "iterable chain opt #28");
+    check(eq({1,2}.chain({3,4}).locateLast(4.equals), 3->4), "iterable chain opt #29");
+
     check({}.follow("a").sequence()=={"a"}.sequence(), "Sequence.follow(a) ``{}.follow("a")``");
     check({"b"}.follow("a").sequence()=={"a", "b"}.sequence(), "Sequence.follow(a), 2 ``{"b"}.follow("a")``");
 
