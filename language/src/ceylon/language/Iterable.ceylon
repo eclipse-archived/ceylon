@@ -1458,14 +1458,6 @@ shared interface Iterable<out Element=Anything,
 
         iterator()
                 => ChainedIterator(outer, other);
-
-        locate(Boolean selecting(<Element|Other>&Object element))
-                => outer.locate(selecting)
-                else other.locate(selecting);
-
-        locateLast(Boolean selecting(<Element|Other>&Object element))
-                => other.locateLast(selecting)
-                else outer.locateLast(selecting);
     };
     
     "A stream of pairs of elements of this stream and the 
