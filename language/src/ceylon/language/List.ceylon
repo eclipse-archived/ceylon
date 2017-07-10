@@ -198,11 +198,13 @@ shared interface List<out Element=Anything>
         if (is List<> that) {
             if (that.size==size) {
                 for (index in 0:size) {
-                    value x = getFromFirst(index);
-                    value y = that.getFromFirst(index);
-                    if (exists x) {
-                        if (exists y) {
-                            if (x!=y) {
+                    value thisElement 
+                            = getFromFirst(index);
+                    value thatElement 
+                            = that.getFromFirst(index);
+                    if (exists thisElement) {
+                        if (exists thatElement) {
+                            if (thisElement!=thatElement) {
                                 return false;
                             }
                         }
@@ -210,7 +212,7 @@ shared interface List<out Element=Anything>
                             return false;
                         }
                     }
-                    else if (exists y) {
+                    else if (exists thatElement) {
                         return false;
                     }
                 }
