@@ -41,6 +41,24 @@ class Captest5({Integer*} ints) {
   }
 }
 
+void issue7106() {
+  {[String, String]*} array = {
+    ["a", "1"],
+    ["b", "2"]
+  };
+
+  abstract class Foo({String*} child) {
+    shared actual String string => "<li>``child``</li>";
+  }
+  class Li(shared {String*} child) extends Foo(child) {
+  }
+
+  check([ for (elt in array)
+            Li{"``elt[0]`` -> ``elt[1]``"} ].collect(Li.string) == 
+        [ for ([l, d] in array)
+            Li{"``l`` -> `` d``"} ].collect(Li.string), "#7106");
+}
+
 void testCapture() {
     check(captest1().string == "{ 9, 4, 1 }", "#6698.1");
     if (exists y0 = captest2().first) {
@@ -51,4 +69,5 @@ void testCapture() {
     check(captest3().string == "{ 9, 4, 1 }", "#6698.3");
     check(captest4().string == "{ { 9 }, { 4 }, { 1 } }", "#6698.4");
     Captest5({2,4}).test();
+    issue7106();
 }
