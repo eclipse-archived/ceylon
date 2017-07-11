@@ -95,8 +95,6 @@ public class CeylonRunTool extends RepoUsingTool {
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean upgradeDist = DefaultToolOptions.getLinkWithCurrentDistribution();
     
-    private String defaultModuleName = com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME;
-    
     private Map<String,String> extraModules = new HashMap<String,String>();
 
     public CeylonRunTool() {
@@ -298,7 +296,7 @@ public class CeylonRunTool extends RepoUsingTool {
 
         if (run != null) {
             argList.add("-run");
-            argList.add(prependModuleName(module));
+            argList.add(prependModuleName(module, run));
         }
 
         if (offline) {
@@ -379,9 +377,10 @@ public class CeylonRunTool extends RepoUsingTool {
         }
     }
 
-    private String prependModuleName(String module) {
+    private static String prependModuleName(String module, String run) {
         if (run==null) return null;
-        if (!defaultModuleName.equals(module)
+        if (!com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME
+                    .equals(module)
                 && !run.contains("::")
                 && !run.contains(".")) {
             return module + "::" + run;
@@ -404,7 +403,7 @@ public class CeylonRunTool extends RepoUsingTool {
         options.setOffline(offline);
         options.setSystemRepository(systemRepo);
         options.setVerboseCategory(verbose);
-        options.setRun(prependModuleName(run));
+        options.setRun(prependModuleName(module, run));
         options.setOverrides(overrides);
         options.setDowngradeDist(!upgradeDist);
         options.setExtraModules(extraModules);
