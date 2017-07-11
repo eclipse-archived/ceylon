@@ -195,29 +195,29 @@ shared interface List<out Element=Anything>
         if (is String that) {
             return false;
         }
-        if (is List<> that, that.size==size) {
-            for (index in 0:size) {
-                value thisElement 
-                        = getFromFirst(index);
-                value thatElement 
-                        = that.getFromFirst(index);
+        else if (is List<> that) {
+            variable value size = this.size;
+            if (that.size != size) {
+                return false;
+            }
+            value thisIterator = this.iterator();
+            value thatIterator = that.iterator();
+            while (size-- > 0) {
+                value thisElement = thisIterator.next();
+                value thatElement = thatIterator.next();
                 if (exists thisElement) {
-                    if (exists thatElement) {
-                        if (thisElement!=thatElement) {
-                            return false;
-                        }
+                    if (!exists thatElement) {
+                        return false;
                     }
-                    else {
+                    else if (thisElement != thatElement) {
                         return false;
                     }
                 }
-                else if (exists thatElement) {
+                else if (thatElement exists) {
                     return false;
                 }
             }
-            else {
-                return true;
-            }
+            return true; 
         }
         else {
             return false;
