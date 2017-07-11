@@ -298,14 +298,7 @@ public class CeylonRunTool extends RepoUsingTool {
 
         if (run != null) {
             argList.add("-run");
-            if (!defaultModuleName.equals(module)
-                    && !run.contains("::")
-                    && !run.contains(".")) {
-                argList.add(module + "::" + run);
-            }
-            else {
-                argList.add(run);
-            }
+            argList.add(prependModuleName(module));
         }
 
         if (offline) {
@@ -385,6 +378,18 @@ public class CeylonRunTool extends RepoUsingTool {
             throw new RuntimeException(t);
         }
     }
+
+    private String prependModuleName(String module) {
+        if (run==null) return null;
+        if (!defaultModuleName.equals(module)
+                && !run.contains("::")
+                && !run.contains(".")) {
+            return module + "::" + run;
+        }
+        else {
+            return run;
+        }
+    }
     
     private void startInFlatClasspath(String module, String version) {
         JavaRunnerOptions options = new JavaRunnerOptions();
@@ -399,7 +404,7 @@ public class CeylonRunTool extends RepoUsingTool {
         options.setOffline(offline);
         options.setSystemRepository(systemRepo);
         options.setVerboseCategory(verbose);
-        options.setRun(run);
+        options.setRun(prependModuleName(run));
         options.setOverrides(overrides);
         options.setDowngradeDist(!upgradeDist);
         options.setExtraModules(extraModules);
