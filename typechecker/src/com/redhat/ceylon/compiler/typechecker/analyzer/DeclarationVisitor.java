@@ -2522,8 +2522,10 @@ public abstract class DeclarationVisitor extends Visitor {
              || model instanceof ClassOrInterface
              || model instanceof TypeAlias) {
                 model.setStatic(true);
-                if (model.isInterfaceMember()) {
-                    that.addUnsupportedError("static members of interfaces are not yet supported");
+                if (model.isInterfaceMember() 
+                        && model instanceof FunctionOrValue) {
+                    that.addUsageWarning(Warning.unknownWarning,
+                        "static interface member only supported on Java 8");
                 }
                 if (isAnonymousClass(model.getContainer())) {
                     that.addError("member of anonymous class may not be annotated 'static'");

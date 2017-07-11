@@ -356,7 +356,8 @@ public class Decl {
     }
     
     public static boolean isIndirect(Tree.AttributeDeclaration decl) {
-        return decl.getDeclarationModel().isTransient() && decl.getSpecifierOrInitializerExpression() == null;
+        return decl.getDeclarationModel().isTransient() 
+            && decl.getSpecifierOrInitializerExpression() == null;
     }
 
     public static boolean isToplevel(Tree.Declaration decl) {
@@ -1188,6 +1189,6 @@ public class Decl {
      */
     public static boolean isMemoized(AttributeDeclaration decl) {
         return decl.getSpecifierOrInitializerExpression() != null
-                && decl.getDeclarationModel().isLate();
+            && decl.getDeclarationModel().isLate();
     }
 }
