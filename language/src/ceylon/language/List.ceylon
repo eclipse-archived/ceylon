@@ -196,13 +196,12 @@ shared interface List<out Element=Anything>
             return false;
         }
         else if (is List<> that) {
-            variable value size = this.size;
-            if (that.size != size) {
+            if (this.size != that.size) {
                 return false;
             }
             value thisIterator = this.iterator();
             value thatIterator = that.iterator();
-            while (size-- > 0) {
+            for (_ in 0:size) {
                 value thisElement = thisIterator.next();
                 value thatElement = thatIterator.next();
                 if (exists thisElement) {
@@ -217,7 +216,9 @@ shared interface List<out Element=Anything>
                     return false;
                 }
             }
-            return true; 
+            else {
+                return true;
+            } 
         }
         else {
             return false;
