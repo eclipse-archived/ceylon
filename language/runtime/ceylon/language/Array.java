@@ -2597,45 +2597,80 @@ public final class Array<Element>
     @Override
     public boolean equals(
             @Name("that")
-            java.lang.Object that) {
-        if (that instanceof Array) {
-            java.lang.Object x = ((Array<?>) that).array;
-            java.lang.Object y = ((Array<?>) this).array;
-            if (x instanceof double[] && y instanceof double[]) {
-                return Arrays.equals((double[]) x, (double[]) y);
+            java.lang.Object object) {
+        if (object instanceof Array) {
+            Array<?> that = (Array<?>) object;
+            if (this.size!=that.size) {
+                return false;
             }
-            else if (x instanceof float[] && y instanceof float[]) {
-                return Arrays.equals((float[]) x, (float[]) y);
+            
+            java.lang.Object thisArray = this.array;
+            java.lang.Object thatArray = that.array;
+            if (thatArray==thisArray) {
+                return true;
             }
-            else if (x instanceof long[] && y instanceof long[]) {
-                return Arrays.equals((long[]) x, (long[]) y);
+            if (thatArray instanceof double[] && thisArray instanceof double[]) {
+                return Arrays.equals((double[]) thatArray, (double[]) thisArray);
             }
-            else if (x instanceof int[] && y instanceof int[]) {
-                return Arrays.equals((int[]) x, (int[]) y);
+            else if (thatArray instanceof float[] && thisArray instanceof float[]) {
+                return Arrays.equals((float[]) thatArray, (float[]) thisArray);
             }
-            else if (x instanceof short[] && y instanceof short[]) {
-                return Arrays.equals((short[]) x, (short[]) y);
+            else if (thatArray instanceof long[] && thisArray instanceof long[]) {
+                return Arrays.equals((long[]) thatArray, (long[]) thisArray);
             }
-            else if (x instanceof byte[] && y instanceof byte[]) {
-                return Arrays.equals((byte[]) x, (byte[]) y);
+            else if (thatArray instanceof int[] && thisArray instanceof int[]) {
+                return Arrays.equals((int[]) thatArray, (int[]) thisArray);
             }
-            else if (x instanceof boolean[] && y instanceof boolean[]) {
-                return Arrays.equals((boolean[]) x, (boolean[]) y);
+            else if (thatArray instanceof short[] && thisArray instanceof short[]) {
+                return Arrays.equals((short[]) thatArray, (short[]) thisArray);
             }
-            else if (x instanceof char[] && y instanceof char[]) {
-                return Arrays.equals((char[]) x, (char[]) y);
+            else if (thatArray instanceof byte[] && thisArray instanceof byte[]) {
+                return Arrays.equals((byte[]) thatArray, (byte[]) thisArray);
             }
-            else if (x instanceof Object[] && y instanceof Object[]) {
-                return Arrays.equals((Object[]) x, (Object[]) y);
+            else if (thatArray instanceof boolean[] && thisArray instanceof boolean[]) {
+                return Arrays.equals((boolean[]) thatArray, (boolean[]) thisArray);
+            }
+            else if (thatArray instanceof char[] && thisArray instanceof char[]) {
+                return Arrays.equals((char[]) thatArray, (char[]) thisArray);
+            }
+            else if (thatArray instanceof Object[] && thisArray instanceof Object[]) {
+                return Arrays.equals((Object[]) thatArray, (Object[]) thisArray);
             }
         }
-        return $ceylon$language$List$impl().equals(that);
+        return $ceylon$language$List$impl().equals(object);
     }
     
     @Override
     @Transient
     public int hashCode() {
-        //TODO: optimize hash computation to avoid boxing!!
+        java.lang.Object thisArray = this.array;
+        if (thisArray instanceof double[]) {
+            return Arrays.hashCode((double[]) thisArray);
+        }
+        else if (thisArray instanceof float[]) {
+            return Arrays.hashCode((float[]) thisArray);
+        }
+        else if (thisArray instanceof long[]) {
+            return Arrays.hashCode((long[]) thisArray);
+        }
+        else if (thisArray instanceof int[]) {
+            return Arrays.hashCode((int[]) thisArray);
+        }
+        else if (thisArray instanceof short[]) {
+            return Arrays.hashCode((short[]) thisArray);
+        }
+        else if (thisArray instanceof byte[]) {
+            return Arrays.hashCode((byte[]) thisArray);
+        }
+        else if (thisArray instanceof boolean[]) {
+            return Arrays.hashCode((boolean[]) thisArray);
+        }
+        else if (thisArray instanceof char[]) {
+            return Arrays.hashCode((char[]) thisArray);
+        }
+        else if (thisArray instanceof Object[]) {
+            return Arrays.hashCode((Object[]) thisArray);
+        }
         return $ceylon$language$List$impl().hashCode();
     }
     
