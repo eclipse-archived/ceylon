@@ -35,7 +35,7 @@ public abstract class ResourceRootTool extends ModuleLoadingTool {
             + "Can be specified multiple times.")
     public void setManifestEntry(List<String> entries) {
         for (String entry: entries) {
-            String[] keyValue = entry.split(":");
+            String[] keyValue = entry.split(":", 2);
             if (keyValue.length==2) {
                 this.manifestEntries.add(keyValue);
             }
