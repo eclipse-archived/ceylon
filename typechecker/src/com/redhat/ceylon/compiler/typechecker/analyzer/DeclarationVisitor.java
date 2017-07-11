@@ -523,7 +523,16 @@ public abstract class DeclarationVisitor extends Visitor {
 
     protected abstract boolean isAllowedToChangeModel(
             Declaration declaration);
-
+    
+    private static boolean isForcedOverload(Tree.Declaration that) {
+        for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
+            if (c.getIdentifier().getText().equals("overloaded")) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     private static void checkForDuplicateDeclaration(
             Tree.Declaration that, 
             Declaration model, 
@@ -558,8 +567,9 @@ public abstract class DeclarationVisitor extends Visitor {
                                 model.isShared();
                         boolean legalOverloadedMethod =
                                 possibleOverloadedMethod &&
-                                model.isActual() &&
-                                member.isActual();
+                                (isForcedOverload(that) ||
+                                    model.isActual() &&
+                                    member.isActual());
                         if (legalOverloadedMethod) {
                             // anticipate that it might be
                             // an overloaded method 
