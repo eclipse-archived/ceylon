@@ -4827,8 +4827,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     CallBuilder callBuilder = CallBuilder.instance(this);
                     JCExpression qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
                     Type primType = primary.getTarget().getType();
-                    if (member.isStatic()
-                            && ModelUtil.isCeylonDeclaration(member)
+                    if (ModelUtil.isCeylonDeclaration(member)
                             && !primType.getTypeArgumentList().isEmpty()) {
                         for (Type pt : primType.getTypeArgumentList()) {
                             callBuilder.typeArgument(makeJavaType(pt, JT_TYPE_ARGUMENT));

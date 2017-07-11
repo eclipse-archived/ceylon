@@ -229,7 +229,8 @@ class Strategy {
     }
     
     public static boolean useField(Value attr) {
-        return !Decl.withinInterface(attr) && Decl.isCaptured(attr) || attr.isStatic();
+        return !Decl.withinInterface(attr) && Decl.isCaptured(attr) 
+            || attr.isStatic();
     }
     
     

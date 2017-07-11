@@ -67,11 +67,9 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinitio
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
@@ -3427,25 +3425,24 @@ public class ClassTransformer extends AbstractTransformer {
         final Value model = decl.getDeclarationModel();
         boolean withinInterface = Decl.withinInterface(decl);
         Tree.SpecifierOrInitializerExpression initializer = decl.getSpecifierOrInitializerExpression();
-        boolean lazy = initializer instanceof LazySpecifierExpression;
-        boolean useField = Strategy.useField(model) && !lazy;
+        final boolean lazy = initializer instanceof Tree.LazySpecifierExpression;
         String attrName = decl.getIdentifier().getText();
         boolean memoized = Decl.isMemoized(decl);
         boolean isStatic = model.isStatic();
         // Only a non-formal or a concrete-non-lazy attribute has a corresponding field
         // and if a captured class parameter exists with the same name we skip this part as well
         Parameter parameter = CodegenUtil.findParamForDecl(decl);
+        boolean useField = !lazy && Strategy.useField(model);
         boolean createField = !lazy 
                 && !Decl.isFormal(decl) 
                 && Strategy.createField(parameter, model) 
                 && !model.isJavaNative();
-        boolean concrete = !lazy 
+        boolean createCompanionField = !lazy 
                 && withinInterface 
-                && initializer != null
-                && !isStatic;
+                && initializer != null;
         JCThrow err = null;
         JCExpression memoizedInitialValue = null;
-        if (concrete || createField) {
+        if (createCompanionField || createField) {
             TypedReference typedRef = getTypedReference(model);
             TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
             Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
@@ -3467,10 +3464,15 @@ public class ClassTransformer extends AbstractTransformer {
                     err = makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage());
                 } else {
                     boxingStrategy = useJavaBox(model, nonWideningType) 
-                            && javaBoxExpression(expression.getTypeModel(), nonWideningType) ? BoxingStrategy.JAVA : CodegenUtil.getBoxingStrategy(model);
+                            && javaBoxExpression(expression.getTypeModel(), nonWideningType) 
+                                    ? BoxingStrategy.JAVA 
+                                    : CodegenUtil.getBoxingStrategy(model);
                     initialValue = expressionGen().transformExpression(expression, 
                             boxingStrategy, 
-                            isStatic && nonWideningType.isTypeParameter() ? typeFact().getAnythingType() : nonWideningType, flags);
+                            isStatic && nonWideningType.isTypeParameter() 
+                                ? typeFact().getAnythingType() 
+                                : nonWideningType, 
+                            flags);
                 }
             }
             if (memoized) {
@@ -3497,7 +3499,7 @@ public class ClassTransformer extends AbstractTransformer {
                     type = makeJavaType(nonWideningType, flags);
                 }
                 
-                if (concrete) {
+                if (createCompanionField) {
                     classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
                 } else {
                     
@@ -3550,7 +3552,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (generateInClassOrInterface) {
                 // Generate getter in main class or interface (when shared)
                 at(decl.getType());
-                AttributeDefinitionBuilder getter = makeGetter(decl, false, lazy, isStatic, memoizedInitialValue);
+                AttributeDefinitionBuilder getter = makeGetter(decl, false, memoizedInitialValue);
                 if (err != null) {
                     getter.getterBlock(make().Block(0, List.<JCStatement>of(err)));
                 }
@@ -3559,17 +3561,17 @@ public class ClassTransformer extends AbstractTransformer {
             if (generateInCompanionClass) {
                 // Generate getter in companion class
                 classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer())
-                        .attribute(makeGetter(decl, true, lazy, false, null));
+                        .attribute(makeGetter(decl, true, null));
             }
             if (Decl.isVariable(decl) || Decl.isLate(decl)) {
                 if (generateInClassOrInterface) {
                     // Generate setter in main class or interface (when shared)
-                    classBuilder.attribute(makeSetter(decl, false, lazy, isStatic, memoizedInitialValue));
+                    classBuilder.attribute(makeSetter(decl, false, memoizedInitialValue));
                 }
                 if (generateInCompanionClass) {
                     // Generate setter in companion class
                     classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer())
-                            .attribute(makeSetter(decl, true, lazy, false, null));
+                            .attribute(makeSetter(decl, true, null));
                 }
             }
         }
@@ -3966,12 +3968,15 @@ public class ClassTransformer extends AbstractTransformer {
         return old;
     }
     
-    private AttributeDefinitionBuilder makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, 
-                                                          AttributeDefinitionBuilder builder, boolean isGetter, boolean isStatic) {
+    private AttributeDefinitionBuilder makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion,  
+                                                          AttributeDefinitionBuilder builder, boolean isGetter) {
         at(decl);
         Value declarationModel = decl.getDeclarationModel();
-        if (forCompanion || lazy || isStatic) {
-            SpecifierOrInitializerExpression specOrInit = decl.getSpecifierOrInitializerExpression();
+        boolean withinInterface = Decl.withinInterface(decl);
+        boolean isStatic = declarationModel.isStatic();
+        Tree.SpecifierOrInitializerExpression specOrInit = decl.getSpecifierOrInitializerExpression();
+        boolean lazy = specOrInit instanceof Tree.LazySpecifierExpression;
+        if (forCompanion || lazy || withinInterface && isStatic) {
             if (specOrInit != null) {
                 HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(specOrInit.getExpression());
                 if (error != null) {
@@ -4017,16 +4022,15 @@ public class ClassTransformer extends AbstractTransformer {
                 
             }
         }
-        if(forCompanion)
-            builder.notActual();
+        if (forCompanion) builder.notActual();
         return builder
             .modifiers(modifierTransformation().getterSetter(decl.getDeclarationModel(), forCompanion))
-            .isFormal((Decl.isFormal(decl) || Decl.withinInterface(decl)) && !forCompanion && !isStatic)
+            .isFormal(Decl.isFormal(decl) || withinInterface && !forCompanion && !isStatic)
             .isJavaNative(decl.getDeclarationModel().isJavaNative());
     }
     
-    private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, 
-            boolean isStatic, JCExpression memoizedInitialValue) {
+    private AttributeDefinitionBuilder makeGetter(Tree.AttributeDeclaration decl, boolean forCompanion, 
+            JCExpression memoizedInitialValue) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         Value model = decl.getDeclarationModel();
@@ -4041,7 +4045,7 @@ public class ClassTransformer extends AbstractTransformer {
             getter.getterBlock(generateIndirectGetterBlock(model));
         }
         
-        return makeGetterOrSetter(decl, forCompanion, lazy, getter, true, isStatic);
+        return makeGetterOrSetter(decl, forCompanion, getter, true);
     }
 
     private JCTree.JCBlock generateIndirectGetterBlock(Value v) {
@@ -4054,13 +4058,13 @@ public class ClassTransformer extends AbstractTransformer {
         return block;
     }
 
-    private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, 
-            boolean isStatic, JCExpression memoizedInitialValue) {
+    private AttributeDefinitionBuilder makeSetter(Tree.AttributeDeclaration decl, boolean forCompanion, 
+            JCExpression memoizedInitialValue) {
         at(decl);
         String attrName = decl.getIdentifier().getText();
         AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, decl, attrName, decl.getDeclarationModel(), memoizedInitialValue);
         setter.userAnnotationsSetter(expressionGen().transformAnnotations(OutputElement.SETTER, decl));
-        return makeGetterOrSetter(decl, forCompanion, lazy, setter, false, isStatic);
+        return makeGetterOrSetter(decl, forCompanion, setter, false);
     }
 
     public List<JCTree> transformWrappedMethod(Tree.AnyMethod def, TransformationPlan plan) {
