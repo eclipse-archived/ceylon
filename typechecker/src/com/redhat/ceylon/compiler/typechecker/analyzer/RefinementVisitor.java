@@ -24,6 +24,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOf
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeForWrongBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isObject;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
@@ -140,8 +141,9 @@ public class RefinementVisitor extends Visitor {
                     dec.isClassOrInterfaceMember();
             if (dec.isShared() && !mayBeShared) {
                 that.addError(
-                        "shared declaration is not a member of a class, interface, or package: " +
-                                message(dec) + " may not be annotated 'shared'", 
+                        "shared declaration is not a member of a class, interface, or package: " 
+                                + message(dec) 
+                                + " may not be annotated 'shared'", 
                         1200);
             }
             
@@ -164,8 +166,9 @@ public class RefinementVisitor extends Visitor {
             else {
                 checkNonMember(that, dec);
                 if (isOverloadedVersion(dec)) {
-                    that.addError("duplicate declaration: the name '" + 
-                            dec.getName() + "' is not unique in this scope");
+                    that.addError("duplicate declaration: the name '" 
+                            + dec.getName() 
+                            + "' is not unique in this scope");
                 }
             }
             
@@ -214,7 +217,10 @@ public class RefinementVisitor extends Visitor {
     private void checkNativeDeclaration(Tree.Declaration that, 
             Declaration dec, Declaration header) {
         if (header == null && dec.isMember()) {
-            if (((Declaration)dec.getContainer()).isNative() &&
+            Declaration container = 
+                    (Declaration)
+                        dec.getContainer();
+            if (container.isNative() &&
                 dec.isNative() && 
                 dec.isShared() && 
                 !dec.isFormal() && 
@@ -378,10 +384,11 @@ public class RefinementVisitor extends Visitor {
             int cmp = declarationCmp.compare(hdr, impl);
             if (cmp < 0) {
                 if (!isImplemented(hdr)) {
-                    that.addError("native header '" + 
-                            hdr.getName() +
-                            "' of '" + containerName(hdr) +
-                            "' has no native implementation");
+                    that.addError("native header '" 
+                            + hdr.getName() 
+                            + "' of '" 
+                            + containerName(hdr) 
+                            + "' has no native implementation");
                 }
                 hdrNext = true;
                 implNext = false;
@@ -398,10 +405,11 @@ public class RefinementVisitor extends Visitor {
         while (hdrIter.hasNext()) {
             hdr = hdrIter.next();
             if (!isImplemented(hdr)) {
-                that.addError("native header '" + 
-                        hdr.getName() +
-                        "' of '" + containerName(hdr) +
-                        "' has no native implementation");
+                that.addError("native header '" 
+                        + hdr.getName() 
+                        + "' of '" 
+                        + containerName(hdr) 
+                        + "' has no native implementation");
             }
         }
     }
@@ -492,8 +500,8 @@ public class RefinementVisitor extends Visitor {
                 dec.getSatisfiedTypes();
         List<Type> ast = 
                 header.getSatisfiedTypes();
-        if (dst.size() != ast.size() || 
-                !dst.containsAll(ast)) {
+        if (dst.size() != ast.size() 
+                || !dst.containsAll(ast)) {
             that.addError("native classes do not satisfy the same interfaces: " +
                     message(dec));
         }
@@ -552,7 +560,8 @@ public class RefinementVisitor extends Visitor {
         }
         Type at = header.getType();
         Type dt = dec.getType();
-        if (dt!=null && !dt.isExactly(at)
+        if (dt!=null 
+                && !dt.isExactly(at)
                 && !sameObjects(dec, header)) {
             that.addError("native implementation must have the same type as native header: " +
                     message(dec) + " must have the type '" +
@@ -577,8 +586,9 @@ public class RefinementVisitor extends Visitor {
     }
     
     private boolean sameObjects(Value dec, Value header) {
-        return isObject(dec) && isObject(header) && 
-                dec.getQualifiedNameString()
+        return isObject(dec) 
+            && isObject(header) 
+            && dec.getQualifiedNameString()
                     .equals(header.getQualifiedNameString());
     }
 
@@ -589,8 +599,7 @@ public class RefinementVisitor extends Visitor {
         // First check if the header has constructors and the dec has none and no parameters either
         // (which means it will inherit the constructors from the header)
         boolean checkok = 
-                (header.hasConstructors() || 
-                        header.hasEnumerated())
+                (header.hasConstructors() || header.hasEnumerated())
                     && !dec.hasConstructors()
                     && !dec.hasEnumerated()
                     && dec.getParameterLists().isEmpty();
@@ -642,22 +651,22 @@ public class RefinementVisitor extends Visitor {
                 TypeParameter implTP = 
                         implTypeParams.get(i);
                 if (!headerTP.getName().equals(implTP.getName())) {
-                    that.addError("type parameter does not have the same name as its header: '" +
-                            implTP.getName() +
-                            "' is not '" +
-                            headerTP.getName() +
-                            "' for " +
-                            message(impl));
+                    that.addError("type parameter does not have the same name as its header: '" 
+                            + implTP.getName() 
+                            + "' is not '" 
+                            + headerTP.getName() 
+                            + "' for " 
+                            + message(impl));
                 }
                 Type headerIntersect = 
                         intersectionOfSupertypes(headerTP);
                 Type implIntersect = 
                         intersectionOfSupertypes(implTP);
                 if (!headerIntersect.isExactly(implIntersect)) {
-                    that.addError("type parameter does not have the same bounds as its header: '" +
-                            implTP.getName() +
-                            "' for " +
-                            message(impl));
+                    that.addError("type parameter does not have the same bounds as its header: '" 
+                            + implTP.getName() 
+                            + "' for " 
+                            + message(impl));
                 }
             }
         }
@@ -688,14 +697,16 @@ public class RefinementVisitor extends Visitor {
                             + member.getName() 
                             + "' is a member of class '" 
                             + c.getName()
-                            + "' which is neither 'abstract' nor 'formal'", 1100);
+                            + "' which is neither 'abstract' nor 'formal'", 
+                            1100);
                 }
                 else {
                     that.addError("formal member belongs to concrete class: '" 
                             + member.getName() 
                             + "' is a member of class '" 
                             + c.getName()
-                            + "' which is not annotated 'abstract'", 1100);
+                            + "' which is not annotated 'abstract'", 
+                            1100);
                 }
             }
         }
@@ -725,10 +736,10 @@ public class RefinementVisitor extends Visitor {
                 isOverloadedVersion(root) ||
                 member.isNative();
         if (root == null || root.equals(member) || 
-                (root.isNative() && member.isNative())) {
+                root.isNative() && member.isNative()) {
             member.setRefinedDeclaration(member);
-            if (member.isActual() &&
-                    !ModelUtil.isNativeForWrongBackend(
+            if (member.isActual() 
+                    && !isNativeForWrongBackend(
                             member.getScopedBackends(),
                             member.getUnit().getSupportedBackends())) {
                 that.addError(
@@ -763,28 +774,28 @@ public class RefinementVisitor extends Visitor {
             Unit unit = that.getUnit();
             if (!root.withinRestrictions(unit)) {
                 that.addError(
-                        "refined declaration is not visible: " + 
-                        message(member) + 
-                        " refines " + 
-                        message(root) +
-                        " which is restricted");
+                        "refined declaration is not visible: " 
+                        + message(member) 
+                        + " refines " 
+                        + message(root) 
+                        + " which is restricted");
             }
-            else if (root.isPackageVisibility() && 
-                    !declaredInPackage(root, unit)) {
+            else if (root.isPackageVisibility() 
+                    && !declaredInPackage(root, unit)) {
                 that.addError(
-                        "refined declaration is not visible: " + 
-                        message(member) + 
-                        " refines " + 
-                        message(root) +
-                        " which is package private");
+                        "refined declaration is not visible: " 
+                        + message(member) 
+                        + " refines " 
+                        + message(root) 
+                        + " which is package private");
             }
             if (root.isCoercionPoint()) {
                 // FIXME: add message pointing to the real method?
                 that.addError(
-                        "refined declaration is not a real method: " + 
-                        message(member) + 
-                        " refines " + 
-                        message(root));
+                        "refined declaration is not a real method: " 
+                        + message(member) 
+                        + " refines " 
+                        + message(root));
             }
             boolean found = false;
             TypeDeclaration rootType = 
@@ -820,20 +831,20 @@ public class RefinementVisitor extends Visitor {
                 if (member instanceof Function) {
                     if (!(refined instanceof Function)) {
                         that.addError(
-                                "refined declaration is not a method: " + 
-                                message(member) + 
-                                " refines " + 
-                                message(refined));
+                                "refined declaration is not a method: " 
+                                + message(member) 
+                                + " refines " 
+                                + message(refined));
                         checkTypes = false;
                     }
                 }
                 else if (member instanceof Class) {
                     if (!(refined instanceof Class)) {
                         that.addError(
-                                "refined declaration is not a class: " + 
-                                message(member) + 
-                                " refines " + 
-                                message(refined));
+                                "refined declaration is not a class: " 
+                                + message(member) 
+                                + " refines " 
+                                + message(refined));
                         checkTypes = false;
                     }
                 }
@@ -841,51 +852,51 @@ public class RefinementVisitor extends Visitor {
                     if (refined instanceof Class || 
                         refined instanceof Function) {
                         that.addError(
-                                "refined declaration is not an attribute: " + 
-                                message(member) + 
-                                " refines " + 
-                                message(refined));
+                                "refined declaration is not an attribute: " 
+                                + message(member) 
+                                + " refines " 
+                                + message(refined));
                         checkTypes = false;
                     }
                     else if (refined instanceof TypedDeclaration) {
                         if (((TypedDeclaration) refined).isVariable() && 
-                                !((TypedDeclaration) member).isVariable()) {
+                            !((TypedDeclaration) member).isVariable()) {
                             if (member instanceof Value) {
                                 that.addError(
-                                        "non-variable attribute refines a variable attribute: " + 
-                                        message(member) + 
-                                        " refines variable " + 
-                                        message(refined) + 
-                                        " and so must be 'variable' or have a setter", 
+                                        "non-variable attribute refines a variable attribute: " 
+                                        + message(member) 
+                                        + " refines variable " 
+                                        + message(refined) 
+                                        + " and so must be 'variable' or have a setter", 
                                         804);
                             }
                             else {
                                 //TODO: this message seems like it's not quite right
                                 that.addError(
-                                        "non-variable attribute refines a variable attribute: " + 
-                                        message(member) + 
-                                        " refines variable " + 
-                                        message(refined));
+                                        "non-variable attribute refines a variable attribute: " 
+                                        + message(member) 
+                                        + " refines variable " 
+                                        + message(refined));
                             }
                         }
                     }
                 }
                 if (!member.isActual()) {
                     that.addError(
-                            "non-actual member collides with an inherited member: " + 
-                            message(member) + 
-                            " refines " + 
-                            message(refined) +
-                            " but is not annotated 'actual'", 
+                            "non-actual member collides with an inherited member: " 
+                            + message(member) 
+                            + " refines " 
+                            + message(refined) 
+                            + " but is not annotated 'actual'", 
                             600);
                 }
                 else if (!refined.isDefault() && !refined.isFormal()) {
                     that.addError(
-                            "member refines a non-default, non-formal member: " + 
-                            message(member) + 
-                            " refines " + 
-                            message(refined) +
-                            " which is not annotated 'formal' or 'default'", 
+                            "member refines a non-default, non-formal member: " 
+                            + message(member) 
+                            + " refines " 
+                            + message(refined) 
+                            + " which is not annotated 'formal' or 'default'", 
                             500);
                 }
                 if (checkTypes && !type.isInconsistentType()) {
@@ -1014,7 +1025,7 @@ public class RefinementVisitor extends Visitor {
                     refinedMember, typeNode, refined, refining);
         }
         if (refining instanceof Functional && 
-                refined instanceof Functional) {
+             refined instanceof Functional) {
            checkRefiningMemberParameters(that, refining, refined, 
                    refinedMember, refiningMember, false);
         }
@@ -1103,24 +1114,24 @@ public class RefinementVisitor extends Visitor {
         if (!td.isDynamicallyTyped()) {
             typeNode.addError(
                     "member which refines dynamically typed refined member must also be dynamically typed: " + 
-                            message(refined));
+                    message(refined));
         }
     }
 
     private boolean refiningMemberIsDynamicallyTyped(
             Declaration refinedMemberDec, Declaration refiningMemberDec) {
-        return refinedMemberDec instanceof TypedDeclaration && 
-               refiningMemberDec instanceof TypedDeclaration && 
-                ((TypedDeclaration) refiningMemberDec)
+        return refinedMemberDec instanceof TypedDeclaration 
+            && refiningMemberDec instanceof TypedDeclaration 
+            && ((TypedDeclaration) refiningMemberDec)
                     .isDynamicallyTyped();
     }
 
     private boolean refinedMemberIsDynamicallyTyped(
             Declaration refinedMemberDec, 
             Declaration refiningMemberDec) {
-        return refinedMemberDec instanceof TypedDeclaration && 
-               refiningMemberDec instanceof TypedDeclaration && 
-                ((TypedDeclaration) refinedMemberDec)
+        return refinedMemberDec instanceof TypedDeclaration 
+            && refiningMemberDec instanceof TypedDeclaration 
+            && ((TypedDeclaration) refinedMemberDec)
                     .isDynamicallyTyped();
     }
 
@@ -1212,28 +1223,28 @@ public class RefinementVisitor extends Visitor {
                 boolean ok = false;
                 for (Type refinedBound: refinedBounds) {
                     refinedBound = 
-                            refinedBound.substitute(
-                                    args, variances);
+                            refinedBound.substitute(args, variances);
                     if (refinedBound.isSubtypeOf(refiningBound)) {
                         ok = true;
                     }
                 }
                 if (!ok) {
                     that.addError(
-                            "refining member type parameter '" + 
-                            refiningTypeParam.getName() +
-                            "' has upper bound which refined member type parameter '" + 
-                            refinedTypeParam.getName() + 
-                            "' of " + message(refined) + 
-                            " does not satisfy: '" + 
-                            bound.asString(unit) + 
-                            "' ('" +
-                            refiningTypeParam.getName() +
-                            "' should be upper bounded by '" +
-                            intersectionOfSupertypes(refinedTypeParam)
+                            "refining member type parameter '" 
+                            + refiningTypeParam.getName() 
+                            + "' has upper bound which refined member type parameter '" 
+                            + refinedTypeParam.getName() 
+                            + "' of " 
+                            + message(refined) 
+                            + " does not satisfy: '" 
+                            + bound.asString(unit) 
+                            + "' ('" 
+                            + refiningTypeParam.getName() 
+                            + "' should be upper bounded by '" 
+                            + intersectionOfSupertypes(refinedTypeParam)
                                 .substitute(args, variances)
-                                .asString(unit) + 
-                            "')");
+                                .asString(unit) 
+                            + "')");
                 }
             }
             for (Type bound: refinedBounds) {
@@ -1251,20 +1262,21 @@ public class RefinementVisitor extends Visitor {
                 }
                 if (!ok) {
                     that.addUnsupportedError(
-                            "refined member type parameter '" + 
-                            refinedTypeParam.getName() + 
-                            "' of " + message(refined) +
-                            " has upper bound which refining member type parameter '" + 
-                            refiningTypeParam.getName() + 
-                            "' does not satisfy: '" + 
-                            bound.asString(unit) + 
-                            "' ('" +
-                            refiningTypeParam.getName() +
-                            "' should be upper bounded by '" +
-                            intersectionOfSupertypes(refinedTypeParam)
+                            "refined member type parameter '" 
+                            + refinedTypeParam.getName() 
+                            + "' of " 
+                            + message(refined) 
+                            + " has upper bound which refining member type parameter '" 
+                            + refiningTypeParam.getName() 
+                            + "' does not satisfy: '" 
+                            + bound.asString(unit) 
+                            + "' ('" 
+                            + refiningTypeParam.getName() 
+                            + "' should be upper bounded by '" 
+                            + intersectionOfSupertypes(refinedTypeParam)
                                 .substitute(args, variances)
-                                .asString(unit) + 
-                            "')");
+                                .asString(unit) 
+                            + "')");
                 }
             }
             typeArgs.add(refinedProducedType);
@@ -1284,18 +1296,18 @@ public class RefinementVisitor extends Visitor {
         if (!isTypeUnknown(refinedType)) {
             if (that instanceof Tree.LocalModifier) {
                 TypedDeclaration td = 
-                        (TypedDeclaration) refining;
+                        (TypedDeclaration) 
+                            refining;
                 Tree.LocalModifier mod = 
-                        (Tree.LocalModifier) that;
+                        (Tree.LocalModifier) 
+                            that;
                 Type t;
-                if (isTypeUnknown(refiningType)) {
-                    t = refinedType;
-                }
-                else {
-                    t = intersectionType(
-                            refinedType, refiningType, 
+                t = isTypeUnknown(refiningType) ? 
+                        refinedType : 
+                        intersectionType(
+                            refinedType, 
+                            refiningType, 
                             unit);
-                }
                 td.setType(t);
                 mod.setTypeModel(t);
                 return;
@@ -1335,9 +1347,11 @@ public class RefinementVisitor extends Visitor {
         if (!isTypeUnknown(refinedType)) {
             if (that instanceof Tree.LocalModifier) {
                 TypedDeclaration td = 
-                        (TypedDeclaration) refining;
+                        (TypedDeclaration) 
+                            refining;
                 Tree.LocalModifier mod = 
-                        (Tree.LocalModifier) that;
+                        (Tree.LocalModifier) 
+                            that;
                 Type t;
                 if (isTypeUnknown(refiningType)) {
                     t = refinedType;
@@ -1390,9 +1404,11 @@ public class RefinementVisitor extends Visitor {
             if (refiningSmall
                     && !refinedSmall) {
                 that.addUsageWarning(Warning.smallIgnored, 
-                        "small annotation on actual member " +
-                        message(refiningDeclaration) + " will be ignored: " +
-                        message(refinedDeclaration) + " is not small");
+                        "small annotation on actual member " 
+                        + message(refiningDeclaration) 
+                        + " will be ignored: " 
+                        + message(refinedDeclaration) 
+                        + " is not small");
             }
             refiningFunctionOrValue.setSmall(refinedSmall);
         }
@@ -1432,18 +1448,20 @@ public class RefinementVisitor extends Visitor {
         
         if (dec.isStatic()) {
             if (nonTypeMember) {
-                that.addError("static declaration is not a member of a class or interface: '" + 
-                        dec.getName() + 
-                        "' is not defined directly in the body of a class or interface");
+                that.addError("static declaration is not a member of a class or interface: '" 
+                        + dec.getName() 
+                        + "' is not defined directly in the body of a class or interface");
             }
             else {
                 ClassOrInterface type = 
                         (ClassOrInterface) 
                             dec.getContainer();
                 if (!type.isToplevel()) {
-                    that.addError("static declaration belongs to a nested a class or interface: '" + 
-                            dec.getName() + 
-                            "' is a member of nested type '" + type.getName() + "'");
+                    that.addError("static declaration belongs to a nested a class or interface: '" 
+                            + dec.getName() 
+                            + "' is a member of nested type '" 
+                            + type.getName() 
+                            + "'");
                 }
             }
         }
@@ -1507,17 +1525,21 @@ public class RefinementVisitor extends Visitor {
                 Declaration member = 
                         intersectionOfSupertypes(clazz)
                             .getDeclaration()
-                            .getMember(dec.getName(), null, false);
+                            .getMember(dec.getName(), 
+                                        null, false);
                 if (member!=null && 
                         member.isShared() &&
                         !isConstructor(member)) {
                     Declaration supertype = 
                             (Declaration) 
                                 member.getContainer();
-                    that.addError("constructor has same name as an inherited member '" + 
-                            clazz.getName() + "' inherits '" + 
-                            member.getName() + "' from '" + 
-                            supertype.getName(that.getUnit()) + "'");
+                    that.addError("constructor has same name as an inherited member '" 
+                            + clazz.getName() 
+                            + "' inherits '" 
+                            + member.getName() 
+                            + "' from '" 
+                            + supertype.getName(that.getUnit()) 
+                            + "'");
                 }
             }
         }
@@ -1569,12 +1591,17 @@ public class RefinementVisitor extends Visitor {
                         pl.getParameters().get(i);
                 if (forNative &&
                         !param.getName().equals(rparam.getName())) {
-                    parameter.addError("parameter does not have the same name as its header: '"
-                            + param.getName() + "' is not '" + rparam.getName() + "' for "
+                    parameter.addError(
+                            "parameter does not have the same name as its header: '"
+                            + param.getName() 
+                            + "' is not '" 
+                            + rparam.getName() 
+                            + "' for "
                             + message(refinedMember.getDeclaration()));
                 }
                 if (rparam.isSequenced() && !param.isSequenced()) {
-                    parameter.addError("parameter must be variadic: parameter '" 
+                    parameter.addError(
+                            "parameter must be variadic: parameter '" 
                             + rparam.getName()
                             + "' of "
                             + (forNative ? "native header " : "refined member ")
@@ -1647,11 +1674,15 @@ public class RefinementVisitor extends Visitor {
         if (param.getModel().isSmall()
                 && !refinedParam.getModel().isSmall()) {
             that.addUsageWarning(Warning.smallIgnored, 
-                    "small annotation on parameter '" + 
-                    param.getName() + "' of '" + member.getName()+
-                    "' will be ignored: corresponding parameter '" + 
-                    refinedParam.getName() + "' of '" + refinedMember.getName() + 
-                    "' is not small");
+                    "small annotation on parameter '" 
+                    + param.getName() 
+                    + "' of '" 
+                    + member.getName()
+                    + "' will be ignored: corresponding parameter '" 
+                    + refinedParam.getName() 
+                    + "' of '" 
+                    + refinedMember.getName() 
+                    + "' is not small");
         }
         param.getModel().setSmall(refinedParam.getModel().isSmall());
     }
@@ -1763,16 +1794,17 @@ public class RefinementVisitor extends Visitor {
             Node typeNode) {
         if (!rparam.getModel().isDynamicallyTyped()) {
             typeNode.addError(
-                    "parameter which refines statically typed parameter must also be statically typed: '" + 
-                    param.getName() + "' of '" + 
-                    member.getDeclaration().getName() + 
-                    "' declared by '" + 
-                    containerName(member) +
-                    "' refining '" + 
-                    refinedMember.getDeclaration().getName() +
-                    "' declared by '" + 
-                    containerName(refinedMember) + 
-                    "'");
+                    "parameter which refines statically typed parameter must also be statically typed: '" 
+                    + param.getName() 
+                    + "' of '" 
+                    + member.getDeclaration().getName() 
+                    + "' declared by '" 
+                    + containerName(member) 
+                    + "' refining '" 
+                    + refinedMember.getDeclaration().getName() 
+                    + "' declared by '" 
+                    + containerName(refinedMember) 
+                    + "'");
         }
     }
 
@@ -1781,16 +1813,17 @@ public class RefinementVisitor extends Visitor {
             Parameter param, Node typeNode) {
         if (!param.getModel().isDynamicallyTyped()) {
             typeNode.addError(
-                    "parameter which refines dynamically typed parameter must also be dynamically typed: '" + 
-                    param.getName() + "' of '" + 
-                    member.getDeclaration().getName() + 
-                    "' declared by '" + 
-                    containerName(member) +
-                    "' refining '" + 
-                    refinedMember.getDeclaration().getName() +
-                    "' declared by '" + 
-                    containerName(refinedMember) + 
-                    "'");
+                    "parameter which refines dynamically typed parameter must also be dynamically typed: '" 
+                    + param.getName() 
+                    + "' of '" 
+                    + member.getDeclaration().getName() 
+                    + "' declared by '" 
+                    + containerName(member) 
+                    + "' refining '" 
+                    + refinedMember.getDeclaration().getName() 
+                    + "' declared by '" 
+                    + containerName(refinedMember) 
+                    + "'");
         }
     }
 
@@ -1930,9 +1963,9 @@ public class RefinementVisitor extends Visitor {
                             // interpret this specification as a 
                             // refinement of an inherited member
                             else if (tdcontainer==scope) {
-                                that.addError("parameter declaration hides refining member: '" +
-                                        td.getName(unit) + 
-                                        "' (rename parameter)");
+                                that.addError("parameter declaration hides refining member: '" 
+                                        + td.getName(unit) 
+                                        + "' (rename parameter)");
                             }
                             else if (td instanceof Value) {
                                 refineAttribute((Value) td, 
@@ -2008,7 +2041,8 @@ public class RefinementVisitor extends Visitor {
             Type intersection() {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rv.getType());
-                for (Declaration d: getInterveningRefinements(name, 
+                for (Declaration d: 
+                    getInterveningRefinements(name, 
                         null, false, root, c, ci)) {
                     addToIntersection(list,
                             c.getType()
@@ -2172,9 +2206,9 @@ public class RefinementVisitor extends Visitor {
         }
         else if (!sm.getTypeParameters().isEmpty()) {
             if (me instanceof Tree.ParameterizedExpression) {
-                bme.addError("refined method is generic: '" +
-                        sm.getName(unit) + 
-                        "' declares type parameters");
+                bme.addError("refined method is generic: '" 
+                        + sm.getName(unit) 
+                        + "' declares type parameters");
             }
             else {
                 //we're refining it by assigning a function
@@ -2257,10 +2291,13 @@ public class RefinementVisitor extends Visitor {
             Type intersection() {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rm.getType());
-                for (Declaration d: getInterveningRefinements(name, 
+                for (Declaration d: 
+                    getInterveningRefinements(name, 
                         signature, variadic, root, c, ci)) {
                     addToIntersection(list,
-                            c.getType().getTypedReference(d, NO_TYPE_ARGS).getType(),
+                            c.getType()
+                             .getTypedReference(d, NO_TYPE_ARGS)
+                             .getType(),
                             getUnit());
                 }
                 IntersectionType it = new IntersectionType(getUnit()); 
