@@ -689,18 +689,17 @@ shared void strings() {
     check("VWXYZ".permutations.size==120, "string permutations");
     check("UVWXYZ".permutations.size==720, "string permutations");
     
-    check(if (exists first="abcd".sublistFrom(1).first) then first=='b' else false, "string sublist");
-    check(if (exists first="abcd".sublistFrom(2).first) then first=='c' else false, "string sublist");
-    check(if (exists first="abcd".sublistFrom(1).sublistFrom(1).first) then first=='c' else false, "string sublist");
-    check(if (exists first="abcd".sublistFrom(2).sublistFrom(1).first) then first=='d' else false, "string sublist");
-    check(!"abcd".sublistFrom(4).first exists, "string sublist");
-    check(!"abcd".sublistFrom(2).sublistFrom(2).first exists, "string sublist");
-    check("hello world".sublist(2, 9).sublist(2, 4)=="o w".sequence(), "string sublist");
-    check("hello world".sublist(2, 9).sublistFrom(1)=="lo worl".sequence(), "string sublist");
-    check("abcd".sublist(-1, 100).sublist(1,100)=="bcd".sequence(), "string sublist");
-    check("abcd".sublist(2, runtime.maxIntegerValue)=="cd".sequence(), "string sublist");
-    check("abcd".sublist(1,10).sublist(1, runtime.maxIntegerValue)=="cd".sequence(), "string sublist");
-    // TODO are the following even correct?
+    check(if (exists first="abcd".sublistFrom(1).first) then first=='b' else false, "string sublist 1");
+    check(if (exists first="abcd".sublistFrom(2).first) then first=='c' else false, "string sublist 2");
+    check(if (exists first="abcd".sublistFrom(1).sublistFrom(1).first) then first=='c' else false, "string sublist 3");
+    check(if (exists first="abcd".sublistFrom(2).sublistFrom(1).first) then first=='d' else false, "string sublist 4");
+    check(!"abcd".sublistFrom(4).first exists, "string sublist 5");
+    check(!"abcd".sublistFrom(2).sublistFrom(2).first exists, "string sublist 6");
+    check("hello world".sublist(2, 9).sublist(2, 4)=="o w".sequence(), "string sublist 7");
+    check("hello world".sublist(2, 9).sublistFrom(1)=="lo worl".sequence(), "string sublist 8");
+    check("abcd".sublist(-1, 100).sublist(1,100)=="bcd".sequence(), "string sublist 9");
+    check("abcd".sublist(2, runtime.maxIntegerValue)=="cd".sequence(), "string sublist 10");
+    check("abcd".sublist(1,10).sublist(1, runtime.maxIntegerValue)=="cd".sequence(), "string sublist 11");
     check(!"111122".sublist(3,4).contains("22"), "string sublist c1");
     check("111122".sublist(4,5).contains("22"), "string sublist c2");
     check("111122".sublist(4,6).contains("22"), "string sublist c3");
