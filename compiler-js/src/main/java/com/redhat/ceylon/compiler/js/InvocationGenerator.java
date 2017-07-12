@@ -500,7 +500,7 @@ public class InvocationGenerator {
                     generateSpreadArgument(primary, (Tree.SpreadArgument)arg, expr, pd);
                 } else {
                     arg.visit(gen);
-                    if (!arg.getTypeModel().isSequential() && !arg.getTypeModel().isUnknown()) {
+                    if ((pd != null && pd.getType().isSequential()) && !arg.getTypeModel().isSequential() && !arg.getTypeModel().isUnknown()) {
                         gen.out(".sequence()");
                     }
                 }
