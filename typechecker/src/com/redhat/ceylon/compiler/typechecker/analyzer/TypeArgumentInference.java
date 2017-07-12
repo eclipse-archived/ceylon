@@ -150,7 +150,7 @@ public class TypeArgumentInference {
                 }
                 else if (argType.isUnknown()) {
                     //TODO: is this error really necessary now!?
-                    if (argNode.getErrors().isEmpty()) {
+                    if (!argNode.hasErrors()) {
                         argNode.addError("argument of unknown type assigned to inferred type parameter: '" + 
                                 tp.getName() + "' of '" + 
                                 tp.getDeclaration()

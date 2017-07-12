@@ -713,8 +713,7 @@ public class TypeHierarchyVisitor extends Visitor {
                 //that are already done above in 
                 //checkForDoubleMemberInheritance, 
                 //resulting in multiple errors
-                && that.getErrors()
-                        .isEmpty()) {
+                && !that.hasErrors()) {
             Set<String> errors = new HashSet<String>();
             for (TypeDeclaration std: 
                     td.getSupertypeDeclarations()) {

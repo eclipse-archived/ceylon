@@ -936,7 +936,8 @@ public class ModelUtil {
     static TypeDeclaration erase(Type paramType, Unit unit) {
         paramType = paramType.resolveAliases();
         if (paramType.isTypeParameter()) {
-            if (paramType.getSatisfiedTypes().isEmpty()) {
+            if (paramType.getSatisfiedTypes()
+                         .isEmpty()) {
                 Type et = 
                         paramType.getExtendedType();
                 return et==null ? null : 
@@ -3507,6 +3508,35 @@ public class ModelUtil {
             }
         }
         return false;
+    }
+    
+    public static TypeDeclaration erasedType(Parameter p, Unit unit) {
+        return p==null ? null : 
+            p.isSequenced() ? 
+                unit.getSequentialDeclaration() : 
+                erasedType(p.getType(), unit);
+    }
+    
+    private static TypeDeclaration erasedType(Type x, Unit unit) {
+        // this doesn't distinguish Integer (long) 
+        // from Integer? (Integer) which is actually 
+        // a legal overload
+        if (x==null || x.isUnknown()) {
+            return unit.getObjectDeclaration();
+        }
+        x = x.resolveAliases();
+        if (x.isNothing() || x.isAnything()
+                || x.isNull()) {
+            return unit.getObjectDeclaration();
+        }
+        x = unit.getDefiniteType(x);
+        if (x.isUnion() || x.isIntersection()
+                || x.isObject()
+                || x.isBasic()
+                || x.isIdentifiable()) {
+            return unit.getObjectDeclaration();
+        }
+        return x.getDeclaration();
     }
     
 }

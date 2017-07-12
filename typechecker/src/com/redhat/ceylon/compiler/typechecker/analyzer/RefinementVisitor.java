@@ -15,6 +15,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.messa
 import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.erasedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
@@ -726,6 +727,49 @@ public class RefinementVisitor extends Visitor {
                 that.addError("non-formal member belongs to dynamic interface");
             }
         }
+        
+        Unit unit = that.getUnit();
+        if (member instanceof Functional
+                && !that.hasErrors()
+                && isOverloadedVersion(member)) {
+            Declaration abstraction = 
+                    member.getScope()
+                          .getDirectMember(name, 
+                                  null, false);
+            Functional fun = (Functional) member;
+            List<Parameter> parameters = 
+                    fun.getFirstParameterList()
+                       .getParameters();
+            for (Declaration dec: 
+                    abstraction.getOverloads()) {
+                if (dec==member) break;
+                Functional other = (Functional) dec;
+                List<Parameter> otherParams = 
+                        other.getFirstParameterList()
+                             .getParameters();
+                //TODO: consider defaulted params
+                if (otherParams.size() == parameters.size()) {
+                    boolean allSame = true;
+                    for (int i=0; i<parameters.size(); i++) {
+                        TypeDeclaration paramType = 
+                                erasedType(parameters.get(i), 
+                                         unit);
+                        TypeDeclaration otherType = 
+                                erasedType(otherParams.get(i), 
+                                         unit);
+                        if (paramType!=null && otherType!=null
+                                && !paramType.equals(otherType)) {
+                            allSame = false;
+                            break;
+                        }
+                    }
+                    if (allSame) {
+                        that.addError("ambiguous overload: overloaded function parameter lists have same erasure");
+                    }
+                }
+            }
+        }
+        
         List<Type> signature = getSignature(member);
         boolean variadic = isVariadic(member);
         Declaration root = 
@@ -771,7 +815,6 @@ public class RefinementVisitor extends Visitor {
         }
         else {
             member.setRefinedDeclaration(root);
-            Unit unit = that.getUnit();
             if (!root.withinRestrictions(unit)) {
                 that.addError(
                         "refined declaration is not visible: " 

@@ -243,8 +243,20 @@ public abstract class Node {
      * The compilation errors belonging to this node.
      */
     public List<Message> getErrors() {
-        return errors != null ? 
-                errors : Collections.<Message>emptyList();
+        return errors != null ? errors : 
+            Collections.<Message>emptyList();
+    }
+    
+    public boolean hasErrors() {
+        if (errors == null) {
+            return false;
+        }
+        for (Message message: errors) {
+            if (!message.isWarning()) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public void addError(Message error){

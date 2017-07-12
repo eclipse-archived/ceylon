@@ -23,13 +23,13 @@ interface Interface {
     shared formal void run(Integer int);
     shared formal void run(Integer int1, Integer int2);
     shared formal void run(Integer* int);
-    shared formal void run(Integer? int);
+    @error shared formal void run(Integer? int);
     
     shared formal void wrong(Integer int);
     @error shared formal void wrong(Integer? int);
     shared formal void wrong(String string);
     shared formal void wrong(Object thing);
-    shared formal void wrong(Anything thing);
+    @error shared formal void wrong(Anything thing);
 }
 
 void test(Interface i) {
@@ -126,6 +126,9 @@ native("jvm")
 class Native() {
     shared void fun(String s) {}
     shared void fun(Integer u) {}
+    shared void func(String|Integer si) {}
+    @error shared void func(Basic b) {}
+    @error shared void func(Nothing n) {}
 }
 
 native shared void run();
