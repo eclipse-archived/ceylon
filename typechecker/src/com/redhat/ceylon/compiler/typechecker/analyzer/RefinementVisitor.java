@@ -736,43 +736,45 @@ public class RefinementVisitor extends Visitor {
                     member.getScope()
                           .getDirectMember(name, 
                                   null, false);
-            Functional fun = (Functional) member;
-            List<Parameter> parameters = 
-                    fun.getFirstParameterList()
-                       .getParameters();
-            for (Parameter param: parameters) {
-                if (param.isDefaulted()) {
-                    that.addError("overloaded function parameter must be required: parameter '" 
-                            + param.getName() 
-                            + "' is defaulted");
-                }
-            }
-            for (Declaration dec: 
-                    abstraction.getOverloads()) {
-                if (dec==member) break;
-                Functional other = (Functional) dec;
-                List<Parameter> otherParams = 
-                        other.getFirstParameterList()
-                             .getParameters();
-                if (otherParams.size() == parameters.size()) {
-                    boolean allSame = true;
-                    for (int i=0; i<parameters.size(); i++) {
-                        TypeDeclaration paramType = 
-                                erasedType(parameters.get(i), 
-                                         unit);
-                        TypeDeclaration otherType = 
-                                erasedType(otherParams.get(i), 
-                                         unit);
-                        if (paramType!=null && otherType!=null
-                                && !paramType.equals(otherType)) {
-                            allSame = false;
-                            break;
-                        }
+            if (abstraction!=null) {
+                Functional fun = (Functional) member;
+                List<Parameter> parameters = 
+                        fun.getFirstParameterList()
+                           .getParameters();
+                for (Parameter param: parameters) {
+                    if (param.isDefaulted()) {
+                        that.addError("overloaded function parameter must be required: parameter '" 
+                                + param.getName() 
+                                + "' is defaulted");
                     }
-                    if (allSame) {
-                        that.addError("non-unique parameter list erasure for overloaded function: each overloaded declaration of '"
-                                + member.getName() 
-                                + "' must have a distinct parameter list erasure");
+                }
+                for (Declaration dec: 
+                        abstraction.getOverloads()) {
+                    if (dec==member) break;
+                    Functional other = (Functional) dec;
+                    List<Parameter> otherParams = 
+                            other.getFirstParameterList()
+                                 .getParameters();
+                    if (otherParams.size() == parameters.size()) {
+                        boolean allSame = true;
+                        for (int i=0; i<parameters.size(); i++) {
+                            TypeDeclaration paramType = 
+                                    erasedType(parameters.get(i), 
+                                             unit);
+                            TypeDeclaration otherType = 
+                                    erasedType(otherParams.get(i), 
+                                             unit);
+                            if (paramType!=null && otherType!=null
+                                    && !paramType.equals(otherType)) {
+                                allSame = false;
+                                break;
+                            }
+                        }
+                        if (allSame) {
+                            that.addError("non-unique parameter list erasure for overloaded function: each overloaded declaration of '"
+                                    + member.getName() 
+                                    + "' must have a distinct parameter list erasure");
+                        }
                     }
                 }
             }
