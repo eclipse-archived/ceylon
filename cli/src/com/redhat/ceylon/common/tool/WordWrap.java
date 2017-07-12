@@ -99,9 +99,10 @@ public class WordWrap {
     
     public WordWrap(Appendable out, int width) {
         if (width <= 0) {
-            throw new IllegalArgumentException();
+            this.width = 80;
+        } else {
+            this.width = width;
         }
-        this.width = width;
         this.out = new LineOutput(out);
     }
     
