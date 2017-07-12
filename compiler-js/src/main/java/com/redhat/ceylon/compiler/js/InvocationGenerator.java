@@ -441,7 +441,7 @@ public class InvocationGenerator {
                             if (sequencedType.isTypeParameter()) {
                                 sequencedType = that.getUnit().getIterableType(sequencedType);
                             }
-                            SequenceGenerator.lazyEnumeration(seqargs, that, sequencedType,
+                            SequenceGenerator.lazyEnumeration(seqargs, primary, sequencedType,
                                     lastArg instanceof Tree.SpreadArgument ||
                                             lastArg instanceof Tree.Comprehension, gen);
                             return argvars;

@@ -363,10 +363,8 @@ public class TypeUtils {
             for (Iterator<ParameterList> iter0 = ((Function)tp.getContainer()).getParameterLists().iterator();
                     type == null && iter0.hasNext();) {
                 for (Iterator<Parameter> iter1 = iter0.next().getParameters().iterator();
-                        type == null && iter1.hasNext();) {
-                    if (type == null) {
-                        type = typeContainsTypeParameter(iter1.next().getType(), tp);
-                    }
+                        iter1.hasNext();) {
+                    type = typeContainsTypeParameter(iter1.next().getType(), tp);
                 }
             }
             //The Type that we find corresponds to a parameter, whose type can be:
