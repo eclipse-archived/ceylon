@@ -406,15 +406,16 @@ shared annotation AliasesAnnotation aliased(
 
 "The annotation class for the [[license]] annotation."
 shared final sealed annotation class LicenseAnnotation(
-    "The name, text, or URL of the license."
+    "Description is processed by the ceylon doc tool,
+     which assumes it contains Markdown formatted text."
     shared String description)
         satisfies OptionalAnnotation<LicenseAnnotation,
                     Module> {}
 
-"Annotation to specify the URL of the license of a module or 
- package."
+"Annotation to specify the license of a module."
 shared annotation LicenseAnnotation license(
-    "The name, text, or URL of the license."
+    "Description is processed by the ceylon doc tool,
+     which assumes it contains Markdown formatted text."
     String description)
         => LicenseAnnotation(description);
 
