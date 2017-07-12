@@ -10,7 +10,7 @@ object service {
 }
 
 
-void run() {
+void runme() {
     service.execute(object satisfies Runnable {});
     service.execute((id) => print("id: " + id));
     service.execute(print);
@@ -121,4 +121,21 @@ void testStream() {
     @error Stream("", 1).filter((Integer t) => true);
 }
 
+
+native("jvm")
+class Native() {
+    shared void fun(String s) {}
+    shared void fun(Integer u) {}
+}
+
+native shared void run();
+
+native("jvm")
+shared void run() {
+    Native().fun("hello");
+    Native().fun(0);
+}
+
+native("js")
+shared void run() {}
 

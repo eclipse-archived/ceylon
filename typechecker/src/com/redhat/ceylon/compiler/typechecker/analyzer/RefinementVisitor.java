@@ -24,10 +24,8 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOf
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isObject;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isVariadic;
 import static java.util.Collections.emptyList;
@@ -193,90 +191,24 @@ public class RefinementVisitor extends Visitor {
 
     private void checkNative(Tree.Declaration that, Declaration dec) {
         if (dec instanceof Setter) {
-            // We ignore setter assuming the check done for their
-            // getters will have been enough
+            // We ignore setter assuming the 
+            // check done for their getters 
+            // will have been enough
             return;
         }
-        // Find the header
+        
         Declaration header = getNativeHeader(dec);
-        if (header == null) {
-            // We don't have a header but we still need to maintain
-            // the same interface as the rest of the implementations,
-            // so we choose another declaration to be the "header"
-            List<Declaration> decls = 
-                    getNativeMembers(
-                            dec.getContainer(), 
-                            dec.getName());
-            if (decls.size() > 1) {
-                for (Declaration d : decls) {
-                    if (d != dec && 
-                            !d.getNativeBackends().supports(
-                                    dec.getNativeBackends())) {
-                        header = dec;
-                        break;
-                    }
-                }
-            }
-        }
-        if (dec!=header) {
+        if (header==null || 
+                // getNativeHeader() will sometimes return the
+                // declaration itself, or, worse, a different
+                // overload of the declaration
+                // TODO: fix getNativeHeader()
+                !(dec==header 
+                    || dec.isClassOrInterfaceMember() 
+                    && dec.getContainer()==header.getContainer())) {
             checkNativeDeclaration(that, dec, header);
         }
-    }
-    
-    // This methods retrieves a list of all the native members
-    // of a given name in the given scope. And if the scope itself
-    // is a native implementation we'll go look for all the
-    // members in the other implementations as well. But only if
-    // there wasn't a native header for the scope, because that
-    // case is already handled elsewhere
-    private List<Declaration> getNativeMembers(
-            Scope container, String name) {
-        ArrayList<Declaration> lst = 
-                new ArrayList<Declaration>();
-        ArrayList<Scope> containers = 
-                new ArrayList<Scope>();
-        if (container instanceof Declaration) {
-            Declaration cd = (Declaration)container;
-            if (cd.isNativeImplementation()) {
-                // The container is a native implementation so
-                // we first need to find _its_ implementations
-                // but only if there's no header
-                Declaration header = getNativeHeader(cd);
-                if (header == null) {
-                    List<Declaration> cs = 
-                            getNativeMembers(
-                                    cd.getContainer(), 
-                                    cd.getName());
-                    for (Declaration c: cs) {
-                        // Is this the Value part of an object?
-                        if (c instanceof Value) {
-                            Value v = (Value) c;
-                            if (isObject(v)) {
-                                // Then use the Class part as the container
-                                c = v.getType().getDeclaration();
-                            }
-                        }
-                        containers.add((Scope)c);
-                    }
-                }
-            }
-            else {
-                containers.add(container);
-            }
-        }
-        else {
-            containers.add(container);
-        }
-        for (Scope s : containers) {
-            for (Declaration dec: s.getMembers()) {
-                if (isResolvable(dec)
-                        && isNamed(name, dec)
-                        && dec.isNative()) {
-                    lst.add(dec);
-                }
-            }
-        }
-        return lst;
+        
     }
     
     private void checkNativeDeclaration(Tree.Declaration that, 

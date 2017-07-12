@@ -525,12 +525,19 @@ public abstract class DeclarationVisitor extends Visitor {
             Declaration declaration);
     
     private static boolean isForcedOverload(Tree.Declaration that) {
-        for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
-            if (c.getIdentifier().getText().equals("overloaded")) {
-                return true;
-            }
+        Scope container = 
+                that.getDeclarationModel()
+                    .getContainer();
+        if (container instanceof ClassOrInterface) {
+            ClassOrInterface ci = 
+                    (ClassOrInterface) 
+                        container;
+            return ci.getNativeBackends()
+                     .equals(Backends.JAVA);
         }
-        return false;
+        else {
+            return false;
+        }
     }
     
     private static void checkForDuplicateDeclaration(
@@ -594,7 +601,7 @@ public abstract class DeclarationVisitor extends Visitor {
                                 if (initOverload(model, member, 
                                         scope, unit)) {
                                     that.addError("duplicate declaration: the name '" + 
-                                            name + "' is not unique in this scope (overloading is only supported when refining Java methods)");
+                                            name + "' is not unique in this scope (overloading is legal for a type which is marked 'native(\"jvm\")' or which inherits a native Java type)");
                                 }
                             }
                             else {
