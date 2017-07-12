@@ -740,6 +740,13 @@ public class RefinementVisitor extends Visitor {
             List<Parameter> parameters = 
                     fun.getFirstParameterList()
                        .getParameters();
+            for (Parameter param: parameters) {
+                if (param.isDefaulted()) {
+                    that.addError("overloaded function parameter must be required: parameter '" 
+                            + param.getName() 
+                            + "' is defaulted");
+                }
+            }
             for (Declaration dec: 
                     abstraction.getOverloads()) {
                 if (dec==member) break;
@@ -747,7 +754,6 @@ public class RefinementVisitor extends Visitor {
                 List<Parameter> otherParams = 
                         other.getFirstParameterList()
                              .getParameters();
-                //TODO: consider defaulted params
                 if (otherParams.size() == parameters.size()) {
                     boolean allSame = true;
                     for (int i=0; i<parameters.size(); i++) {
@@ -764,7 +770,9 @@ public class RefinementVisitor extends Visitor {
                         }
                     }
                     if (allSame) {
-                        that.addError("ambiguous overload: overloaded function parameter lists have same erasure");
+                        that.addError("non-unique parameter list erasure for overloaded function: each overloaded declaration of '"
+                                + member.getName() 
+                                + "' must have a distinct parameter list erasure");
                     }
                 }
             }

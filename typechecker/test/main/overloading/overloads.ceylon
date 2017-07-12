@@ -126,9 +126,17 @@ native("jvm")
 class Native() {
     shared void fun(String s) {}
     shared void fun(Integer u) {}
+    
     shared void func(String|Integer si) {}
     @error shared void func(Basic b) {}
     @error shared void func(Nothing n) {}
+    @error shared void func(Null n) {}
+    @error shared void func(Float f = 1.9) {}
+    shared void func(Object o, Float f, Integer i) {}
+    shared void func(Object* o) {}
+    
+    shared void sing(Singleton<String> sing) {}
+    @error shared void sing(Singleton<Integer>? sing) {}
 }
 
 native shared void run();
