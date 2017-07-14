@@ -10561,21 +10561,26 @@ public class ExpressionVisitor extends Visitor {
             Declaration dec, 
             Node that, 
             boolean error) {
+        //really nasty workaround to get the "real" scope
+        //in which an annotation occurs! (bug #7143)
+        Scope scope = 
+                (that instanceof Tree.BaseMemberExpression ? 
+                ((Tree.BaseMemberExpression) that).getIdentifier() :
+                that).getScope();
+        
         Declaration impl = dec;
         Declaration hdr = null;
         Module ctxModule = 
-                that.getUnit()
-                    .getPackage()
+                unit.getPackage()
                     .getModule();
         Module decModule = 
                 dec.getUnit()
                     .getPackage()
                     .getModule();
         Backends decModuleBackends =
-                getModuleBackends(decModule, that.getUnit());
+                getModuleBackends(decModule, unit);
         Backends inBackends = 
-                that.getScope()
-                    .getScopedBackends();
+                scope.getScopedBackends();
         if (dec.isNative()) {
             Backends backends = 
                     inBackends.none() ?
@@ -10602,7 +10607,7 @@ public class ExpressionVisitor extends Visitor {
         if (error
                 && impl != null
                 && (dec.isToplevel() || dec.isMember())
-                && declarationScope(that.getScope()) != null
+                && declarationScope(scope) != null
                 && (hdr == null || !isImplemented(hdr))
                 && (ctxModule != decModule
                         && !decModuleBackends.none()
@@ -10617,7 +10622,7 @@ public class ExpressionVisitor extends Visitor {
                     || !decModuleBackends.none()
                         && !isForBackend(decModuleBackends, 
                                 inBackends))) {
-            Declaration d = declarationScope(that.getScope());
+            Declaration d = declarationScope(scope);
             if (!inBackends.none()) {
                 that.addError("illegal reference to native declaration '" + 
                         dec.getName(unit) + "': native declaration '" +
