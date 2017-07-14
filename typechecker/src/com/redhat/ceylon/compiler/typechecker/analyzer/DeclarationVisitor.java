@@ -588,7 +588,7 @@ public abstract class DeclarationVisitor extends Visitor {
                                 if (initOverload(model, member, 
                                         scope, unit)) {
                                     that.addError("duplicate declaration: the name '" + 
-                                            name + "' is not unique in this scope (overloading is legal for a type which is marked 'native(\"jvm\")' or which inherits a native Java type)");
+                                            name + "' is not unique in this scope");
                                 }
                             }
                             else {

@@ -760,7 +760,9 @@ public class RefinementVisitor extends Visitor {
                             "overloaded function should be declared with the 'overloaded' annotation in 'java.lang'");
                 }
                 else {
-                    that.addError("overloaded function must be declared with the 'overloaded' annotation in 'java.lang'");
+                    that.addError(
+                            "duplicate declaration: the name '" +  name + "' is not unique in this scope " +
+                            "(overloaded function must be declared with the 'overloaded' annotation in 'java.lang')");
                 }
             }
             
