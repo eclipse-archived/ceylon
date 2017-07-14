@@ -397,9 +397,9 @@ public abstract class DeclarationVisitor extends Visitor {
     }
     
     protected static boolean canBeNative(Declaration member) {
-        return member instanceof Function || 
-                member instanceof Value || 
-                member instanceof ClassOrInterface;
+        return member instanceof Function 
+            || member instanceof Value 
+            || member instanceof ClassOrInterface;
     }
 
     private static boolean mustHaveHeader(Declaration model) {
@@ -411,8 +411,8 @@ public abstract class DeclarationVisitor extends Visitor {
                 Declaration container = 
                         (Declaration)
                             model.getContainer();
-                return !container.isNative() ||
-                        container.isNativeHeader();
+                return !container.isNative() 
+                    || container.isNativeHeader();
             }
         }
         return false;
@@ -439,18 +439,26 @@ public abstract class DeclarationVisitor extends Visitor {
                             overloadFromModelLoader;
                 loadedFunctionsOrValues.add(fov);
             }
-            else if (overloadFromModelLoader instanceof ClassOrInterface) {
+            else if (overloadFromModelLoader 
+                        instanceof ClassOrInterface) {
                 if (loadedClasses == null) {
-                    loadedClasses = new ArrayList<ClassOrInterface>();
+                    loadedClasses = 
+                            new ArrayList<ClassOrInterface>();
                 }
-                ClassOrInterface c = (ClassOrInterface) overloadFromModelLoader;
+                ClassOrInterface c = 
+                        (ClassOrInterface) 
+                        overloadFromModelLoader;
                 loadedClasses.add(c);
             }
-            else if (overloadFromModelLoader instanceof Constructor) {
+            else if (overloadFromModelLoader 
+                        instanceof Constructor) {
                 if (loadedConstructors == null) {
-                    loadedConstructors = new ArrayList<Constructor>();
+                    loadedConstructors = 
+                            new ArrayList<Constructor>();
                 }
-                Constructor c = (Constructor) overloadFromModelLoader;
+                Constructor c = 
+                        (Constructor) 
+                            overloadFromModelLoader;
                 loadedConstructors.add(c);
             }
         }
