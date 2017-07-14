@@ -9,29 +9,30 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Class
 @ceylon.language.FinalAnnotation$annotation$
 @ceylon.language.AnnotationAnnotation$annotation$
-@com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<java.lang::Synchronized,ceylon.language.meta.declaration::FunctionDeclaration|ceylon.language.meta.declaration::ValueDeclaration,ceylon.language::Anything>"})
-public class Synchronized 
+@com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<java.lang::Overloaded,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+public class Overloaded 
         implements com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, 
-            ceylon.language.OptionalAnnotation<Synchronized, ceylon.language.meta.declaration.ValueDeclaration, 
+            ceylon.language.OptionalAnnotation<Overloaded, ceylon.language.meta.declaration.FunctionDeclaration, 
             java.lang.Object>, java.io.Serializable { 
-    private static final long serialVersionUID = 7469006294191443025L;
+    
+    private static final long serialVersionUID = -5466420866210193001L;
 
     @Ignore
-    public Synchronized(Synchronized$annotation$ ignored) {
+    public Overloaded(Overloaded$annotation$ ignored) {
     }
-    public Synchronized() {
+    public Overloaded() {
     }
     @java.lang.Override
     @com.redhat.ceylon.compiler.java.metadata.Ignore
     public com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return Synchronized.$TypeDescriptor$;
+        return Overloaded.$TypeDescriptor$;
     }
     @com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Synchronized.class);
+    public static final TypeDescriptor $TypeDescriptor$ = TypeDescriptor.klass(Overloaded.class);
     
     @java.lang.Override
     @com.redhat.ceylon.compiler.java.metadata.Ignore
     public java.lang.Class<? extends java.lang.annotation.Annotation> annotationType() {
-        return Synchronized$annotation$.class;
+        return Overloaded$annotation$.class;
     }
 }

@@ -732,6 +732,38 @@ public class RefinementVisitor extends Visitor {
         if (member instanceof Functional
                 && !that.hasErrors()
                 && isOverloadedVersion(member)) {
+            //non-actual overloaded methods
+            //must be annotated 'overloaded'
+            boolean marked = false;
+            for (Tree.Annotation a: 
+                    that.getAnnotationList()
+                        .getAnnotations()) {
+                Tree.Primary p = a.getPrimary();
+                if (p instanceof Tree.BaseMemberExpression) {
+                    Tree.BaseMemberExpression bme = 
+                            (Tree.BaseMemberExpression) p;
+                    String aname = bme.getIdentifier().getText();
+                    Declaration ad = 
+                            p.getScope()
+                             .getMemberOrParameter(unit, aname, null, false);
+                    if (ad!=null && 
+                            "java.lang::overloaded"
+                                .equals(ad.getQualifiedNameString())) {
+                        marked = true;
+                    }
+                }
+            }
+            if (!marked) {
+                if (member.isActual()) {
+                    that.addUsageWarning(
+                            Warning.unknownWarning,
+                            "overloaded function should be declared with the 'overloaded' annotation in 'java.lang'");
+                }
+                else {
+                    that.addError("overloaded function must be declared with the 'overloaded' annotation in 'java.lang'");
+                }
+            }
+            
             Declaration abstraction = 
                     member.getScope()
                           .getDirectMember(name, 

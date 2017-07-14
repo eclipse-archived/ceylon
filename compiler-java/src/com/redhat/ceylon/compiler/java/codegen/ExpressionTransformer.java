@@ -7911,12 +7911,16 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (annotationList.getAnnotations() != null) {
                 for (Tree.Annotation annotation : annotationList.getAnnotations()) {
                     Function annoCtorDecl = ((Function)((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration());
-                    if (annoCtorDecl != null && ("java.lang::transient".equals(annoCtorDecl.getQualifiedNameString())
-                            || "java.lang::volatile".equals(annoCtorDecl.getQualifiedNameString())
-                            || "java.lang::synchronized".equals(annoCtorDecl.getQualifiedNameString())
-                            || "java.lang::native".equals(annoCtorDecl.getQualifiedNameString())
-                            || "java.lang::strictfp".equals(annoCtorDecl.getQualifiedNameString()))) {
-                        continue;
+                    if (annoCtorDecl != null) {
+                        String aname = annoCtorDecl.getQualifiedNameString();
+                        if ("java.lang::transient".equals(aname)
+                                || "java.lang::volatile".equals(aname)
+                                || "java.lang::synchronized".equals(aname)
+                                || "java.lang::native".equals(aname)
+                                || "java.lang::strictfp".equals(aname)
+                                || "java.lang::overloaded".equals(aname)) {
+                            continue;
+                        }
                     }
                     boolean isNaturalTarget = AnnotationUtil.isNaturalTarget(annoCtorDecl, useSite, target);
                     EnumSet<OutputElement> possibleTargets = AnnotationUtil.interopAnnotationTargeting(

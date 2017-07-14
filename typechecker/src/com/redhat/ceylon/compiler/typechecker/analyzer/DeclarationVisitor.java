@@ -532,22 +532,6 @@ public abstract class DeclarationVisitor extends Visitor {
     protected abstract boolean isAllowedToChangeModel(
             Declaration declaration);
     
-    private static boolean isForcedOverload(Tree.Declaration that) {
-        Scope container = 
-                that.getDeclarationModel()
-                    .getContainer();
-        if (container instanceof ClassOrInterface) {
-            ClassOrInterface ci = 
-                    (ClassOrInterface) 
-                        container;
-            return ci.getNativeBackends()
-                     .equals(Backends.JAVA);
-        }
-        else {
-            return false;
-        }
-    }
-    
     private static void checkForDuplicateDeclaration(
             Tree.Declaration that, 
             Declaration model, 
@@ -572,32 +556,27 @@ public abstract class DeclarationVisitor extends Visitor {
                     if (member!=null && member!=model) {
                         boolean dup = false;
                         boolean possibleOverloadedMethod = 
-                                member instanceof Function && 
-                                model instanceof Function &&
                                 !(that instanceof Tree.Constructor ||
-                                  that instanceof Tree.Enumerated) &&
-                                scope instanceof ClassOrInterface &&
-                                !member.isNative() &&
-                                member.isShared() &&
-                                model.isShared();
+                                  that instanceof Tree.Enumerated) 
+                                && member instanceof Function 
+                                && model instanceof Function 
+                                && scope instanceof ClassOrInterface 
+                                && !member.isNative() 
+                                && member.isShared() 
+                                && model.isShared();
                         boolean legalOverloadedMethod =
-                                possibleOverloadedMethod &&
-                                (isForcedOverload(that) ||
-                                    model.isActual() &&
-                                    member.isActual());
+                                possibleOverloadedMethod;
                         if (legalOverloadedMethod) {
                             // anticipate that it might be
-                            // an overloaded method 
-                            // overriding a method inherited 
-                            // from a Java superclass - then
+                            // an overloaded method - then
                             // further checking happens in
                             // RefinementVisitor
                             initOverload(model, member, 
                                     scope, unit);
                         }
-                        else if (canBeNative(member) && 
-                                 canBeNative(model) &&
-                                 model.isNative()) {
+                        else if (canBeNative(member) 
+                              && canBeNative(model) 
+                              && model.isNative()) {
                             // just to make sure no error 
                             // gets reported
                         }
@@ -803,7 +782,9 @@ public abstract class DeclarationVisitor extends Visitor {
         for (Tree.ModuleDescriptor md: 
                 that.getModuleDescriptors()) {
             if (index<0 || 
-                    md.getToken().getTokenIndex()<index) {
+                    md.getToken()
+                      .getTokenIndex()
+                          < index) {
                 firstNonImportNode = md;
                 index = md.getToken().getTokenIndex();
             }
@@ -812,7 +793,9 @@ public abstract class DeclarationVisitor extends Visitor {
         for (Tree.PackageDescriptor pd: 
                 that.getPackageDescriptors()) {
             if (index<0 || 
-                    pd.getToken().getTokenIndex()<index) {
+                    pd.getToken()
+                      .getTokenIndex()
+                          < index) {
                 firstNonImportNode = pd;
                 index = pd.getToken().getTokenIndex();
             }
@@ -820,7 +803,8 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (firstNonImportNode!=null) {
             for (Tree.Import im: 
-                    that.getImportList().getImports()) {
+                    that.getImportList()
+                        .getImports()) {
                 if (im.getEndIndex() > 
                         firstNonImportNode.getStartIndex()) {
                     im.addError("import statement must occur before any declaration or descriptor");
