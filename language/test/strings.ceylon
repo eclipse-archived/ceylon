@@ -689,9 +689,12 @@ shared void strings() {
     check("VWXYZ".permutations.size==120, "string permutations");
     check("UVWXYZ".permutations.size==720, "string permutations");
     
-    check(if (exists first="abcd".sublistFrom(1).first) then first=='b' else false, "string sublist 1");
-    check(if (exists first="abcd".sublistFrom(2).first) then first=='c' else false, "string sublist 2");
-    check(if (exists first="abcd".sublistFrom(1).sublistFrom(1).first) then first=='c' else false, "string sublist 3");
+    value tsub1="abcd".sublistFrom(1).first else '!';
+    check(tsub1=='b', "string sublist 1 expect b, got ``tsub1``");
+    value tsub2="abcd".sublistFrom(2).first else '!';
+    check(tsub2=='c', "string sublist 2 expect c, got ``tsub2``");
+    value tsub3="abcd".sublistFrom(1).sublistFrom(1).first else '!';
+    check(tsub3=='c', "string sublist 3 expect c, got ``tsub2``");
     check(if (exists first="abcd".sublistFrom(2).sublistFrom(1).first) then first=='d' else false, "string sublist 4");
     check(!"abcd".sublistFrom(4).first exists, "string sublist 5");
     check(!"abcd".sublistFrom(2).sublistFrom(2).first exists, "string sublist 6");
