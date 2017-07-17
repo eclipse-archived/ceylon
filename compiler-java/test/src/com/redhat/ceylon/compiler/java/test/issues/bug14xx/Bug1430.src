@@ -34,6 +34,11 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
+    public .ceylon.language.Sequential<? extends .ceylon.language.Integer> getExceptLast() {
+        return $ceylon$language$Sequence$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
     public .ceylon.language.Integer find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Sequence$this$.find(selecting);
     }
@@ -91,6 +96,21 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.java.lang.Override
     public .java.lang.String toString() {
         return $ceylon$language$Sequence$this$.toString();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends .ceylon.language.Integer> sublist(final long from, final long to) {
+        return $ceylon$language$Sequence$this$.sublist(from, to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends .ceylon.language.Integer> sublistFrom(final long from) {
+        return $ceylon$language$Sequence$this$.sublistFrom(from);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends .ceylon.language.Integer> sublistTo(final long to) {
+        return $ceylon$language$Sequence$this$.sublistTo(to);
     }
     
     @.java.lang.Override
@@ -231,21 +251,6 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     public boolean startsWith(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
         return $ceylon$language$List$this$.startsWith(sublist);
     }
-    
-    @.java.lang.Override
-    public .ceylon.language.List<? extends .ceylon.language.Integer> sublist(final long from, final long to) {
-        return $ceylon$language$List$this$.sublist(from, to);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.List<? extends .ceylon.language.Integer> sublistFrom(final long from) {
-        return $ceylon$language$List$this$.sublistFrom(from);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.List<? extends .ceylon.language.Integer> sublistTo(final long to) {
-        return $ceylon$language$List$this$.sublistTo(to);
-    }
     protected final .ceylon.language.Collection$impl<.ceylon.language.Integer> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
@@ -317,11 +322,6 @@ class Bug1430 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.java.lang.Override
     public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this$.every(selecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override

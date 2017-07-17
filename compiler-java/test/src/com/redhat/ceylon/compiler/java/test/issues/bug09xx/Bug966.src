@@ -63,6 +63,11 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     }
     
     @.java.lang.Override
+    public .ceylon.language.Sequential<? extends Element> getExceptLast() {
+        return $ceylon$language$Sequence$this$.getExceptLast();
+    }
+    
+    @.java.lang.Override
     public Element find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Sequence$this$.find(selecting);
     }
@@ -155,6 +160,21 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     @.java.lang.Override
     public .java.lang.String toString() {
         return $ceylon$language$Sequence$this$.toString();
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends Element> sublist(final long from, final long to) {
+        return $ceylon$language$Sequence$this$.sublist(from, to);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends Element> sublistFrom(final long from) {
+        return $ceylon$language$Sequence$this$.sublistFrom(from);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequential<? extends Element> sublistTo(final long to) {
+        return $ceylon$language$Sequence$this$.sublistTo(to);
     }
     
     @.java.lang.Override
@@ -305,21 +325,6 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     public boolean startsWith(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
         return $ceylon$language$List$this$.startsWith(sublist);
     }
-    
-    @.java.lang.Override
-    public .ceylon.language.List<? extends Element> sublist(final long from, final long to) {
-        return $ceylon$language$List$this$.sublist(from, to);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.List<? extends Element> sublistFrom(final long from) {
-        return $ceylon$language$List$this$.sublistFrom(from);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.List<? extends Element> sublistTo(final long to) {
-        return $ceylon$language$List$this$.sublistTo(to);
-    }
     protected final .ceylon.language.Collection$impl<Element> $ceylon$language$Collection$this$;
     
     @.java.lang.Override
@@ -391,11 +396,6 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     @.java.lang.Override
     public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this$.every(selecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override
