@@ -89,6 +89,7 @@ import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
 import com.redhat.ceylon.javax.tools.ToolProvider;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.model.cmr.JDKUtils;
@@ -1696,9 +1697,10 @@ public class CMRTests extends CompilerTests {
         ModulesRetriever modulesRetriever = new ModulesRetriever(compilerTask.getContext());
         compilerTask.setTaskListener(modulesRetriever);
         Boolean result = compilerTask.call();
-        Assert.assertEquals(Boolean.FALSE, result);
-        compareErrors(collector.get(Diagnostic.Kind.ERROR),
-                new CompilerError(2, "the module import should not be overridden, since it is explicitly imported by a project source module"));
+        Assert.assertEquals(Boolean.TRUE, result);
+        compareErrors(collector.get(Diagnostic.Kind.WARNING),
+                new CompilerError(Kind.WARNING, null, 1, "all-lowercase ASCII module names are recommended"),
+                new CompilerError(Kind.WARNING, null, 2, "project source module import is overridden in module overrides file: 'a/2' overrides 'a/1'"));
         
         assert(modulesRetriever.modules != null);
         Module a = modulesRetriever.modules.get("a");
