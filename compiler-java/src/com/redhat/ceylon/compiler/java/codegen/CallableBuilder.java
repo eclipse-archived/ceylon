@@ -1233,6 +1233,13 @@ public class CallableBuilder {
                         true, 
                         BoxingStrategy.UNBOXED,
                         returnType);
+            }else if(callableReturnType.isNull()){
+                // if the callable returns null and the SAM does not, we need a cast
+                call = gen.expressionGen().applyErasureAndBoxing(call, 
+                        callableReturnType, 
+                        true, 
+                        BoxingStrategy.INDIFFERENT,
+                        returnType);
             }
             body = gen.make().Return(call);
         }
