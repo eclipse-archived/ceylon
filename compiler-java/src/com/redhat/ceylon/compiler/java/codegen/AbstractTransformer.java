@@ -6132,8 +6132,6 @@ public abstract class AbstractTransformer implements Transformation {
         if(!visited.add(declaration))
             return null;
         Declaration member = declaration.getMember(name, null, false);
-        if(member.isFormal())
-            return member;
         if(member.isAbstraction()){
             // find the formal one
             for(Declaration decl : member.getOverloads()){
@@ -6142,6 +6140,8 @@ public abstract class AbstractTransformer implements Transformation {
                 }
             }
         }
+        if(member.isFormal())
+            return member;
         // try supertypes
         for(Type superType : declaration.getSatisfiedTypes()){
             TypeDeclaration superTypeDeclaration = superType.getDeclaration();
