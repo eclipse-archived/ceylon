@@ -19,6 +19,8 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
@@ -34,15 +36,20 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     protected String transformDestDir(String name) {
         return name + "-7000-7499";
     }
-    
+
     @Test
-    public void bug7105(){
-        compile("bug70xx/bug7105/run.ceylon");
+    public void bug7083(){
+        compile(Arrays.asList("-fully-export-maven-dependencies"), "bug70xx/bug7083/run.ceylon");
     }
 
     @Test
     public void bug7090(){
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug70xx.bug7090",
                 "bug70xx/bug7090.ceylon");
+    }
+
+    @Test
+    public void bug7105(){
+        compile("bug70xx/bug7105/run.ceylon");
     }
 }
