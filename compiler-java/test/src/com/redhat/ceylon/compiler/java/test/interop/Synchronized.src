@@ -10,9 +10,9 @@ class Synchronized implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         this.t = null;
     }
     
-    Synchronized(final .java.lang.String s, .java.lang.String u, final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    Synchronized(final .java.lang.String s, .java.lang.String u$param$, final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         this.s = s;
-        this.u = u;
+        this.u = u$param$;
         this.f = f;
         this.t = getS();
     }

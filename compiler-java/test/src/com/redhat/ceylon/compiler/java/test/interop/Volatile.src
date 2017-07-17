@@ -9,9 +9,9 @@ class Volatile implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         this.t = null;
     }
     
-    Volatile(.java.lang.String s, .java.lang.String u) {
-        this.s = s;
-        this.u = u;
+    Volatile(.java.lang.String s$param$, .java.lang.String u$param$) {
+        this.s = s$param$;
+        this.u = u$param$;
         this.t = getS();
     }
     private volatile .java.lang.String u;
