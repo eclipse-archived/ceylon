@@ -38,6 +38,12 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     }
 
     @Test
+    public void bug7027(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug70xx.bug7027",
+                "bug70xx/bug7027.ceylon");
+    }
+
+    @Test
     public void bug7053(){
         compile("bug70xx/bug7053/run.ceylon");
     }
