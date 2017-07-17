@@ -936,6 +936,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // 2/ if the type parameters we're passing to our super type actually depend in any way from type parameters we've lost
                 boolean lostTypeParameter2 = lostTypeParameter || isTurnedToRaw(pt);
                 pt = simplifyType(pt);
+                // skip unknown types
+                if(pt.isUnknown())
+                    continue;
                 // it has to be an interface
                 Interface interf = (Interface) pt.getDeclaration();
                 if(lostTypeParameterInInheritance(interf, commonDecl, searchInterfaces, lostTypeParameter2))

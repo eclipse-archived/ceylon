@@ -6,6 +6,7 @@ import static com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NA
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -213,7 +214,22 @@ public class ModuleManager {
     }
 
     public static List<String> splitModuleName(String moduleName) {
-        return asList(moduleName.split("[\\.]"));
+        List<String> ret = new LinkedList<>();
+        for(String part : moduleName.split("[\\.]")){
+            if(part.indexOf('-') != -1){
+                boolean first = true;
+                for(String subpart : part.split("[\\:]")){
+                    if(first)
+                        first = false;
+                    else
+                        ret.add("");
+                    ret.add(subpart);
+                }
+            }else{
+                ret.add(part);
+            }
+        }
+        return ret;
     }
 
     public void prepareForTypeChecking() {
