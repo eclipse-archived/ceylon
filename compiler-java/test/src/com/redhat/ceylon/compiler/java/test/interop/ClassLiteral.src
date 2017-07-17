@@ -51,7 +51,7 @@ final class classLiteral_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class ceylon.language.Boolean\"==ClassLiteral.classString(`Boolean`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$12, rhs$13));
         }
-        x = (.ceylon.language.meta.model.ClassOrInterface<? extends .java.lang.Object>)(.ceylon.language.meta.model.Class<? extends .ceylon.language.Boolean, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.ceylon.language.Boolean.$TypeDescriptor$);
+        x = (.ceylon.language.meta.model.ClassOrInterface<? extends .java.lang.Object>)(.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.ceylon.language.Boolean.$TypeDescriptor$);
         .ceylon.language.String lhs$14 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.com.redhat.ceylon.compiler.java.Util.javaClassForModel(x)));
         .ceylon.language.String rhs$15 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.ceylon.language.Boolean.class));
         if (lhs$14.equals(rhs$15)) {
@@ -103,7 +103,7 @@ final class classLiteral_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class java.lang.Object\"==ClassLiteral.classString(`Object`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$28, rhs$29));
         }
-        x = (.ceylon.language.meta.model.ClassOrInterface<? extends .java.lang.Object>)(.ceylon.language.meta.model.Class<? extends .java.lang.Object, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.ceylon.language.Object.$TypeDescriptor$);
+        x = (.ceylon.language.meta.model.ClassOrInterface<? extends .java.lang.Object>)(.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.ceylon.language.Object.$TypeDescriptor$);
         .ceylon.language.String lhs$30 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.com.redhat.ceylon.compiler.java.Util.javaClassForModel(x)));
         .ceylon.language.String rhs$31 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Object.class));
         if (lhs$30.equals(rhs$31)) {
@@ -116,7 +116,7 @@ final class classLiteral_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"class java.lang.Object\"==ClassLiteral.classString(`Basic`)") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(lhs$32, rhs$33));
         }
-        x = (.ceylon.language.meta.model.ClassOrInterface<? extends .java.lang.Object>)(.ceylon.language.meta.model.Class<? extends .java.lang.Object, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.ceylon.language.Basic.$TypeDescriptor$);
+        x = (.ceylon.language.meta.model.ClassOrInterface<? extends .java.lang.Object>)(.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.ceylon.language.Basic.$TypeDescriptor$);
         .ceylon.language.String lhs$34 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.com.redhat.ceylon.compiler.java.Util.javaClassForModel(x)));
         .ceylon.language.String rhs$35 = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.interop.ClassLiteral.classString(.java.lang.Object.class));
         if (lhs$34.equals(rhs$35)) {
