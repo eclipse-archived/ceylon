@@ -38,6 +38,11 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     }
 
     @Test
+    public void bug7073(){
+        compile("bug70xx/bug7073.ceylon");
+    }
+
+    @Test
     public void bug7083(){
         compile(Arrays.asList("-fully-export-maven-dependencies"), "bug70xx/bug7083/run.ceylon");
     }
