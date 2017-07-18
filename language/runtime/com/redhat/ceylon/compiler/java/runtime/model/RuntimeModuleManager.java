@@ -37,6 +37,14 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
         this.runtimeResolver = runtimeResolver;
     }
 
+	@Override
+    protected void loadPackageDescriptors() {
+	    // DO NOT load package descriptors here because that happens before any
+	    // manual setup, and so will trigger lazy-loading of modules before we've
+	    // had a chance to set them up: this is done after we've manually set up the
+	    // language module in loadModule instead
+    }
+	
     @Override
     public boolean isModuleLoadedFromSource(String moduleName) {
         return false;
@@ -98,6 +106,9 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
                 u.setFullPath(artifact.artifact().getAbsolutePath());
             }
             module.setUnit(u);
+            
+            if(module.isLanguageModule())
+                modelLoader.loadPackageDescriptors();
 
             if(!module.isDefaultModule()){
                 // FIXME: dependencies of Ceylon modules?
