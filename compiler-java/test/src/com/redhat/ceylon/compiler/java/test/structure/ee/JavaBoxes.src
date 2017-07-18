@@ -135,7 +135,7 @@ class JavaBoxesP implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     JavaBoxesP(final .ceylon.language.Integer x) {
-        this.x = .java.lang.Long.valueOf(x.longValue());
+        this.x = x == null ? null : .java.lang.Long.valueOf(x.longValue());
     }
     private final .java.lang.Long x;
     
