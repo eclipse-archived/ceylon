@@ -128,6 +128,14 @@ public class InteropTests extends CompilerTests {
     }
 
     @Test
+    public void testIopDeclareOverloadedMethods(){
+        assertErrors("DeclareOverloadedMethodsErrors", 
+                new CompilerError(22, "overloaded function must be declared with the 'overloaded' annotation in 'java.lang'"),
+                new CompilerError(23, "overloaded function must be declared with the 'overloaded' annotation in 'java.lang'"));
+        compareWithJavaSource("DeclareOverloadedMethods");
+    }
+
+    @Test
     public void testIopFields(){
         compile("JavaFields.java");
         compareWithJavaSource("Fields");

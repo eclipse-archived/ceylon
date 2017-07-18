@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class ImplementOverloadedMethods extends .com.redhat.ceylon.compiler.java.test.interop.JavaWithOverloadedMembersSubClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ImplementOverloadedMethods() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final void method() {
+    }
+    
+    @.java.lang.Override
+    public final void method(final long param) {
+    }
+    
+    @.java.lang.Override
+    public final void topMethod() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedMethods.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.ImplementOverloadedMethods.class);
+}

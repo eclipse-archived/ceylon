@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+class DeclareOverloadedMethods implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    DeclareOverloadedMethods() {
+    }
+    
+    public final void method() {
+    }
+    
+    public final void method(final long param) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.DeclareOverloadedMethods.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.DeclareOverloadedMethods.class);
+}
