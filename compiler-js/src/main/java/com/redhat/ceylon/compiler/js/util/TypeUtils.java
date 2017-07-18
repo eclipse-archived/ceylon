@@ -696,7 +696,7 @@ public class TypeUtils {
             Type _tuple, boolean nameAndMetatype, GenerateJsVisitor gen) {
         gen.out("[");
         int pos = 1;
-        int minTuple = node.getUnit().getTupleMinimumLength(_tuple);
+//        int minTuple = node.getUnit().getTupleMinimumLength(_tuple);
         final Type empty = node.getUnit().getEmptyType();
         while (_tuple != null && !(_tuple.isExactly(empty) || _tuple.isTypeParameter())) {
             if (pos > 1) gen.out(",");

@@ -2,13 +2,11 @@ package com.redhat.ceylon.compiler.js;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.InitDeferrer;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.SuperVisitor;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
-import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
@@ -18,8 +16,6 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
 public class ClassGenerator {
     
@@ -40,7 +36,7 @@ public class ClassGenerator {
             return;
         }
         final Tree.ParameterList plist = that.getParameterList();
-        final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
+//        final Tree.SatisfiedTypes sats = that.getSatisfiedTypes();
         final List<Tree.Statement> stmts;
         if (NativeUtil.isForBackend(d, Backend.JavaScript)) {
             Tree.Declaration nh = gen.getNativeHeader(d);
