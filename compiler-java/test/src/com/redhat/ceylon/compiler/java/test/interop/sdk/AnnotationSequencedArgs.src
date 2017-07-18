@@ -15,8 +15,8 @@ final class annotationSequencedArgs_ {
     @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationSequencedArgs2(
             foo = {},
             bar = {
-                    @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationSequencedArgs({""}),
-                    @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationSequencedArgs({""})})
+                    @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationSequencedArgs(""),
+                    @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationSequencedArgs("")})
     static void annotationSequencedArgs() {
     }
 }

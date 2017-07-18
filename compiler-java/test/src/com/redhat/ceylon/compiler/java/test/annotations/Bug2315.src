@@ -212,12 +212,12 @@ final class bug2315Iterable2_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable(strings);
     }
 }
-@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315$annotation$(strings = {"foo"})
-@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer$annotation$(ints = {1L})
-@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class$annotation$(classes = {"::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CBug2315Use"})
+@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315$annotation$(strings = "foo")
+@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Integer$annotation$(ints = 1L)
+@.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Class$annotation$(classes = "::1.2.3:com.redhat.ceylon.compiler.java.test.annotations::CBug2315Use")
 @.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotations$({
-        @.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$(strings = {"foo"}),
-        @.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$(strings = {"foo"})})
+        @.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$(strings = "foo"),
+        @.com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable$annotation$(strings = "foo")})
 class Bug2315Use implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2315Use() {

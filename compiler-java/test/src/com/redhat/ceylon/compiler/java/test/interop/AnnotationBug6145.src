@@ -6,7 +6,7 @@ public class AnnotationBug6145 implements .com.redhat.ceylon.compiler.java.runti
     public AnnotationBug6145() {
     }
     
-    @.javax.ws.rs.Produces({.javax.ws.rs.core.MediaType.TEXT_PLAIN})
+    @.javax.ws.rs.Produces(.javax.ws.rs.core.MediaType.TEXT_PLAIN)
     @.ceylon.language.SharedAnnotation$annotation$
     public final .java.lang.String $getString() {
         return "Hello!";

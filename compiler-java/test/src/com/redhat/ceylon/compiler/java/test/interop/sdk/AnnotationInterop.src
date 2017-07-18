@@ -12,14 +12,14 @@ package com.redhat.ceylon.compiler.java.test.interop.sdk;
         f = (float)32.0,
         d = 64.0,
         str = "",
-        ba = {true},
-        oa = {(byte)8L},
-        sa = {(short)16L},
-        ia = {(int)32L},
-        la = {64L},
-        fa = {(float)32.0},
-        da = {64.0},
-        stra = {""})
+        ba = true,
+        oa = (byte)8L,
+        sa = (short)16L,
+        ia = (int)32L,
+        la = 64L,
+        fa = (float)32.0,
+        da = 64.0,
+        stra = "")
 @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationClass(
         clas = .ceylon.language.String.class,
         classRaw = .java.lang.String.class,
@@ -36,7 +36,7 @@ package com.redhat.ceylon.compiler.java.test.interop.sdk;
         classesWithBound = {
                 .java.lang.Exception.class,
                 .ceylon.language.AssertionError.class},
-        classesExact = {.java.lang.String.class})
+        classesExact = .java.lang.String.class)
 @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationEnum(
         threadState = .java.lang.Thread.State.NEW,
         threadStates = {
@@ -48,11 +48,11 @@ package com.redhat.ceylon.compiler.java.test.interop.sdk;
                 threadStates = {
                         .java.lang.Thread.State.RUNNABLE,
                         .java.lang.Thread.State.BLOCKED}),
-        annotations = {@.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationEnum(
+        annotations = @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationEnum(
                 threadState = .java.lang.Thread.State.NEW,
                 threadStates = {
                         .java.lang.Thread.State.RUNNABLE,
-                        .java.lang.Thread.State.BLOCKED})})
+                        .java.lang.Thread.State.BLOCKED}))
 @.com.redhat.ceylon.compiler.java.test.interop.sdk.JAVAAnnotationAcronym
 @.com.redhat.ceylon.compiler.java.test.interop.sdk.javaAnnotationLowercase
 @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationDefaultTarget
@@ -201,11 +201,11 @@ class CPAnnoTest2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         super();
     }
     
-    @.javax.annotation.Generated({"by you"})
+    @.javax.annotation.Generated("by you")
     @.ceylon.language.SharedAnnotation$annotation$
     public CPAnnoTest2(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
     @.com.redhat.ceylon.common.NonNull
-    @.javax.annotation.Generated({"by me"})
+    @.javax.annotation.Generated("by me")
     final .java.lang.String x$param$) {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -227,7 +227,7 @@ class CPAnnoTest2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     public CPAnnoTest2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.interop.sdk.CPAnnoTest2.other_ $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("x")
     @.com.redhat.ceylon.common.NonNull
-    @.javax.annotation.Generated({"by me"})
+    @.javax.annotation.Generated("by me")
     final .java.lang.String x$param$) {
     }
     
@@ -248,7 +248,7 @@ final class bug2103_ {
     private bug2103_() {
     }
     
-    @.javax.annotation.Generated({.java.util.jar.JarFile.MANIFEST_NAME})
+    @.javax.annotation.Generated(.java.util.jar.JarFile.MANIFEST_NAME)
     static void bug2103() {
     }
 }

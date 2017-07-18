@@ -12,10 +12,10 @@ public final class bug2037_ {
     @.ceylon.language.SharedAnnotation$annotation$
     public static void bug2037(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     @.com.redhat.ceylon.common.NonNull
-    @.javax.annotation.Generated({"by me"})
+    @.javax.annotation.Generated("by me")
     final .java.lang.String p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")
     @.com.redhat.ceylon.common.NonNull
-    @.javax.annotation.Generated({"by me"})
+    @.javax.annotation.Generated("by me")
     final .java.lang.String p2) {
     }
 }
@@ -41,7 +41,7 @@ public class Bug2037 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         this.p1 = p1;
         this.p2 = p2;
     }
-    @.javax.annotation.Generated({"by me"})
+    @.javax.annotation.Generated("by me")
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String p2;
     
@@ -49,7 +49,7 @@ public class Bug2037 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private final .java.lang.String getP2$priv$() {
         return this.p2;
     }
-    @.javax.annotation.Generated({"by me"})
+    @.javax.annotation.Generated("by me")
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String p1;
     
@@ -64,7 +64,7 @@ public class Bug2037 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
-    @.javax.annotation.Generated({"by me"})
+    @.javax.annotation.Generated("by me")
     final .java.lang.Object other) {
         return false;
     }
