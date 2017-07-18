@@ -370,4 +370,13 @@ shared void testArrays() {
     check(Array {-1, 2, 3, -4, 0, 100}.indexesWhere(Integer.positive).sequence()==[1,2,5], "array indexesWhere");
     check((Array {-1, 2, 3, -4, 0, 100}.firstIndexWhere(Integer.positive) else -1)==1, "array firstIndexWhere");
     check((Array {-1, 2, 3, -4, 0, 100}.lastIndexWhere(Integer.positive) else -1)==5, "array lastIndexWhere");
+    
+    check((Integer.product(Array {1, 2, 3, 4}) else 0)==24, "Integer.product Array");
+    check((Float.product(Array {2.0, 2.0}) else 0)==4.0, "Float.product Array");
+    check((Integer.sum(Array {1, 2, 3, 4}) else 0)==10, "Integer.sum Array");
+    check((Float.sum(Array {1.5, 2.2, 3.1, 4.0}) else 0)==10.8, "Float.sum Array");
+    check((Integer.min(Array {2, 3, 1, 4, 100}) else 0)==1, "Integer.min Array");
+    check((Float.min(Array {3.1, 4.0, 1.5, -1.5, 2.2}) else 0)==-1.5, "Float.min Array");
+    check((Integer.max(Array {2, 3, 1, 4, -10}) else 0)==4, "Integer.max Array");
+    check((Float.max(Array {3.1, 4.0, 1.5, 2.2}) else 0)==4.0, "Float.maz Array");
 }
