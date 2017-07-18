@@ -38,6 +38,16 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     }
 
     @Test
+    public void bug7015() throws Throwable{
+        compileAndRun(defaultOptions,
+                "com.redhat.ceylon.compiler.java.test.issues.bug70xx.bug7015.run",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug70xx.bug7015", "1"),
+                "bug70xx/bug7015/run.ceylon",
+                "bug70xx/bug7015/package.ceylon");
+        runInJBossModules("com.redhat.ceylon.compiler.java.test.issues.bug70xx.bug7015/1");
+    }
+
+    @Test
     public void bug7027(){
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug70xx.bug7027",
                 "bug70xx/bug7027.ceylon");
