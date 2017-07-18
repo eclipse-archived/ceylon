@@ -115,7 +115,6 @@ public class InteropTests extends CompilerTests {
         compareWithJavaSource("ImplementOverloadedConstructors");
     }
 
-    @Ignore("M5")
     @Test
     public void testIopImplementOverloadedMethods(){
         compile("JavaWithOverloadedMembers.java", "JavaWithOverloadedMembersSubClass.java");

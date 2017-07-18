@@ -17,15 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.io{File}
 
-@error
 @noanno
 class ImplementOverloadedMethods() extends JavaWithOverloadedMembersSubClass() {
-    @error
     shared actual void method(){}
-    @error
     shared actual void method(Integer param){}
-    @error
     shared actual void topMethod(){}
 }
