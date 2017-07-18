@@ -785,6 +785,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                 }
             }
+            // make sure erasure doesn't get in the way of calling this method
+            if(willEraseToObject(exprType))
+                ret = make().TypeCast(makeJavaType(typeFact().getClassOrInterfaceModelType(typeFact().getObjectType())), ret);
             // FIXME: pass type arg explicitly?
             return utilInvocation().javaClassForModel(ret);
         }
