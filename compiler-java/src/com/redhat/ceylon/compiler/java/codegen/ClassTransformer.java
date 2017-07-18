@@ -1302,6 +1302,15 @@ public class ClassTransformer extends AbstractTransformer {
                 simplifyType(model.getType()),
                 boxingStrategy,
                 simplifyType(model.getType()));
+        if (boxingStrategy == BoxingStrategy.JAVA && !isJavaString(model.getType())) {
+            paramExpr = make().Conditional(
+                    make().Binary(JCTree.Tag.EQ, 
+                            naming.makeName(model, Naming.NA_IDENT_PARAMETER_ALIASED), 
+                            makeNull()),
+                    makeNull(),
+                    paramExpr);
+        }
+
         adb.initialValue(paramExpr, boxingStrategy);
         classBuilder.defs(adb.buildFields());
         classBuilder.getInitBuilder().init(adb.buildInit(true));
