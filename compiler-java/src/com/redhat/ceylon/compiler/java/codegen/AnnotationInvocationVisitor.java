@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAssign;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
@@ -300,7 +301,12 @@ class AnnotationInvocationVisitor extends Visitor {
                 exprList = new ListBuffer<JCExpression>();
                 args.put(classParameter, exprList);
             }
-            exprList.append(expr);
+            // if we spread iterables in there we want the elements
+            if(expr instanceof JCTree.JCNewArray){
+                exprList.appendList(((JCTree.JCNewArray) expr).elems);
+            }else{
+                exprList.append(expr);
+            }
         }
     }
 
