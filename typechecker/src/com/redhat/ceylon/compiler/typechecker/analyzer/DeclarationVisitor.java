@@ -1031,23 +1031,9 @@ public abstract class DeclarationVisitor extends Visitor {
                 f.addParameterList(model);
             }
         }
-        if (that.getIdentifier()==null) {
-            //default constructor
-//            if (!c.isShared()) {
-//                that.addError("default constructor must be annotated 'shared'", 
-//                        705);
-//            }
-            if (c.isAbstract()) {
-                that.addError("default constructor may not be annotated 'abstract'", 
-                        1601);
-            }
-//        if (scope instanceof Class) {
-//            Class clazz = (Class) scope;
-//            //constructor of sealed class implicitly inherits sealed
-//            if (clazz.isSealed()) {
-//                c.setSealed(true);
-//            }
-//        }
+        if (that.getIdentifier()==null && c.isAbstract()) {
+            that.addError("default constructor may not be annotated 'abstract'", 
+                    1601);
         }
         if (c.isAbstract() && c.isShared()) {
             that.addError("abstract constructor may not be annotated 'shared'", 
