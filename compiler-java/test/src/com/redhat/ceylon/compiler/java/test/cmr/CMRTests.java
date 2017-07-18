@@ -1871,4 +1871,9 @@ public class CMRTests extends CompilerTests {
         assertEquals(Boolean.TRUE, ceylonTask.call());
     }
 
+    @Test
+    public void test7062(){
+        compile(Arrays.asList("-overrides", "test/src/com/redhat/ceylon/compiler/java/test/cmr/modules/bug7062/overrides.xml"), 
+                "modules/bug7062/run.ceylon");
+    }
 }
