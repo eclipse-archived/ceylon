@@ -85,6 +85,12 @@ void lambdas() {
     j.charSequences("a");
     j.charSequences("a", "b");
     
+    //
+    // Arrays
+
+    j.arrays(Array{1, 2}, Array{1.0, 2.0}, Array{1.byte, 2.byte}, Array{true, false}, Array{j, null}, Array{j});
+
+    
     class LocalClass(){}
 
     // use constants

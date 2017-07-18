@@ -10,4 +10,6 @@ void classModelCoercionTest() {
 
     assert(j.klassMethodParameterised(`String`).name == "ceylon.language.String");
     assert(j.klassMethodParameterised(`Numeric<Integer>`).name == "ceylon.language.Numeric");
+
+    j.arrays(Array{1, 2}, Array{1.0, 2.0}, Array{1.byte, 2.byte}, Array{true, false}, Array{j, null}, Array{j});
 }

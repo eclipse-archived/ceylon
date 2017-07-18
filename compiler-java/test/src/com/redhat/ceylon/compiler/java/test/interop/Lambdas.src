@@ -850,6 +850,97 @@ final class lambdas_ {
         j.charSequences();
         j.charSequences(.ceylon.language.String.instance("a").toString());
         j.charSequences(.ceylon.language.String.instance("a").toString(), .ceylon.language.String.instance("b").toString());
+        j.<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>arrays((long[])(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$2$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
+            }
+            returning new .ceylon.language.Array<.ceylon.language.Integer>(arg$2$reified$0, arg$2$0);
+        ).toArray(), (double[])(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = .ceylon.language.Float.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0));
+            }
+            returning new .ceylon.language.Array<.ceylon.language.Float>(arg$3$reified$0, arg$3$0);
+        ).toArray(), (byte[])(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .ceylon.language.Byte.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$4$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Byte, .java.lang.Object>(.ceylon.language.Byte.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return .ceylon.language.Byte.instance((byte)1L);
+                        
+                        case 1: 
+                            return .ceylon.language.Byte.instance((byte)2L);
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning new .ceylon.language.Array<.ceylon.language.Byte>(arg$4$reified$0, arg$4$0);
+        ).toArray(), (boolean[])(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$5$reified$0 = .ceylon.language.Boolean.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$5$0 = new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Boolean, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.false_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Boolean.instance(true), .ceylon.language.Boolean.instance(false));
+            }
+            returning new .ceylon.language.Array<.ceylon.language.Boolean>(arg$5$reified$0, arg$5$0);
+        ).toArray(), (.com.redhat.ceylon.compiler.java.test.interop.LambdasJava[])(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$6$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class), .ceylon.language.Null.$TypeDescriptor$);
+                .ceylon.language.Iterable arg$6$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class), .ceylon.language.null_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return j;
+                        
+                        case 1: 
+                            return null;
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning new .ceylon.language.Array<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>(arg$6$reified$0, arg$6$0);
+        ).toArray(), (.com.redhat.ceylon.compiler.java.test.interop.LambdasJava[])(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$7$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
+                .ceylon.language.Iterable arg$7$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return j;
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning new .ceylon.language.Array<.com.redhat.ceylon.compiler.java.test.interop.LambdasJava>(arg$7$reified$0, arg$7$0);
+        ).toArray());
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
                 major = 8,
@@ -1312,9 +1403,9 @@ final class lambdas_ {
                 return (
                     let
                     {
-                        .ceylon.language.String $ceylontmp$2 = $call$(.ceylon.language.String.instance(arg0));
+                        .ceylon.language.String $ceylontmp$8 = $call$(.ceylon.language.String.instance(arg0));
                     }
-                    returning $ceylontmp$2 != null ? $ceylontmp$2.toString() : null;
+                    returning $ceylontmp$8 != null ? $ceylontmp$8.toString() : null;
                 );
             }
         });
@@ -1336,9 +1427,9 @@ final class lambdas_ {
                 return (
                     let
                     {
-                        .ceylon.language.String $ceylontmp$3 = $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)));
+                        .ceylon.language.String $ceylontmp$9 = $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)));
                     }
-                    returning $ceylontmp$3 != null ? $ceylontmp$3.toString() : null;
+                    returning $ceylontmp$9 != null ? $ceylontmp$9.toString() : null;
                 );
             }
         });
@@ -1380,9 +1471,9 @@ final class lambdas_ {
                 return (
                     let
                     {
-                        .ceylon.language.String $ceylontmp$4 = $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)));
+                        .ceylon.language.String $ceylontmp$10 = $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)));
                     }
-                    returning $ceylontmp$4 != null ? $ceylontmp$4.toString() : null;
+                    returning $ceylontmp$10 != null ? $ceylontmp$10.toString() : null;
                 );
             }
         });
@@ -1487,9 +1578,9 @@ public final class bug6634_ {
                 return (
                     let
                     {
-                        .ceylon.language.Integer $ceylontmp$5 = i;
+                        .ceylon.language.Integer $ceylontmp$11 = i;
                     }
-                    returning $ceylontmp$5 != null ? $ceylontmp$5 : .ceylon.language.Integer.instance(0L);
+                    returning $ceylontmp$11 != null ? $ceylontmp$11 : .ceylon.language.Integer.instance(0L);
                 );
             }
             
@@ -1533,9 +1624,9 @@ public final class bug6634_ {
                 return (
                     let
                     {
-                        .ceylon.language.Integer $ceylontmp$6 = i;
+                        .ceylon.language.Integer $ceylontmp$12 = i;
                     }
-                    returning $ceylontmp$6 != null ? $ceylontmp$6 : .ceylon.language.Integer.instance(0L);
+                    returning $ceylontmp$12 != null ? $ceylontmp$12 : .ceylon.language.Integer.instance(0L);
                 );
             }
             
