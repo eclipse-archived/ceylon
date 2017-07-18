@@ -145,8 +145,8 @@ public class JsOutput {
         if (requires.put(path, modAlias) == null) {
             //For NPM modules on Node.js we use our own special "require" which will
             //wrap single functions in a proper exports object. If the module name
-            //has dashes, we transform that into camel casing.
-            String singleFunctionName = mod.getNameAsString();
+            //has dashes, dots, or underscores, we transform that into camel casing.
+            String singleFunctionName = mod.getNameAsString().replace('.', '-').replace('_', '-');
             int dashIdx = singleFunctionName.indexOf('-');
             while (dashIdx > 0) {
                 singleFunctionName = singleFunctionName.substring(0, dashIdx) +
