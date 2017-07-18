@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug70xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public class Bug7093User implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public Bug7093User() {
+        super();
+        this.name = null;
+    }
+    
+    public Bug7093User(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.String name) {
+        this.name = name == null ? null : name.toString();
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.String name;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Final
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public .ceylon.language.String getName() {
+        return this.name == null ? null : .ceylon.language.String.instance(this.name);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug70xx.Bug7093User.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug70xx.Bug7093User.class);
+}
