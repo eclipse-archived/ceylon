@@ -36,8 +36,13 @@ public class MavenArtifactContext extends ArtifactContext {
         if(super.equals(obj)){
             if(obj == this)
                 return true;
-            if(obj instanceof MavenArtifactContext == false)
+            if(obj instanceof MavenArtifactContext == false){
+                // make ourselves pass equal to ArtifactContext if we add nothing to it
+                if(classifier == null && packaging == null)
+                    return true;
+                // we have extra data
                 return false;
+            }
             MavenArtifactContext other = (MavenArtifactContext) obj;
             return Objects.equals(classifier, other.classifier)
                 && Objects.equals(packaging, other.packaging);
@@ -48,6 +53,9 @@ public class MavenArtifactContext extends ArtifactContext {
     @Override
     public int hashCode() {
         int hash = super.hashCode();
+        // make ourselves pass equal to ArtifactContext if we add nothing to it
+        if(classifier == null && packaging == null)
+            return hash;
         hash = 37 * hash + (classifier != null ? classifier.hashCode() : 0);
         hash = 37 * hash + (packaging != null ? packaging.hashCode() : 0);
         return hash;
