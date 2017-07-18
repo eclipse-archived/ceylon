@@ -359,6 +359,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     }
 
     @Test
+    public void testBug6969() throws Throwable {
+        compile("bug69xx/Bug6969.ceylon", "bug69xx/Bug6969Java.java");
+    }
+
+    @Test
     public void testBug6970() throws Throwable {
         compile("bug69xx/Bug6970.ceylon", "bug69xx/Bug6970Java.java");
     }
