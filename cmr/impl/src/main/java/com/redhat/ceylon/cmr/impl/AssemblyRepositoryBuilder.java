@@ -26,9 +26,9 @@ import java.util.jar.Manifest;
 
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
+import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.cmr.util.JarUtils;
 
 /**
  * Repository builder for assemblies
@@ -132,7 +132,7 @@ public class AssemblyRepositoryBuilder implements RepositoryBuilder {
                 File mavenFolder = new File(tmpAssemblyFolder, "maven");
                 if (mavenFolder.isDirectory()) {
                     // Now create a Maven repository on top of the unpacked assembly
-                    mvnRepo =  MavenRepositoryHelper.getMavenRepository(mavenFolder);
+                    mvnRepo = MavenRepositoryBuilder.createMavenRepository(mavenFolder.getAbsolutePath(), config);
                 }
                 
                 File npmFolder = new File(tmpAssemblyFolder, "node_modules");

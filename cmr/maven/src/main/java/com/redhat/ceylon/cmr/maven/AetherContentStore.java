@@ -44,9 +44,9 @@ public class AetherContentStore extends AbstractContentStore {
     private final AetherUtils utils;
     private final String settingsXml;
 
-    public AetherContentStore(Logger log, String settingsXml, boolean offline, int timeout, String currentDirectory) {
+    public AetherContentStore(Logger log, String settingsXml, String rootFolderOverride, boolean offline, int timeout, String currentDirectory) {
         super(log, offline, timeout);
-        utils = new AetherUtils(log, settingsXml, offline, timeout, currentDirectory);
+        utils = new AetherUtils(log, settingsXml, rootFolderOverride, offline, timeout, currentDirectory);
         this.settingsXml = settingsXml;
     }
 

@@ -76,11 +76,11 @@ class AetherUtils {
     private Logger log;
     private AetherResolver impl;
 
-    AetherUtils(Logger log, String settingsXml, boolean offline, int timeout, String currentDirectory) {
+    AetherUtils(Logger log, String settingsXml, String rootFolderOverride, boolean offline, int timeout, String currentDirectory) {
         this.log = log;
         if(settingsXml == null)
             settingsXml = MavenUtils.getDefaultMavenSettings();
-        impl = new AetherResolverImpl(currentDirectory, settingsXml, offline, timeout);
+        impl = new AetherResolverImpl(currentDirectory, settingsXml, rootFolderOverride, offline, timeout);
     }
 
     File findDependency(Node node) {

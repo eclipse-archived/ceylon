@@ -89,6 +89,7 @@ public class AetherResolverImpl implements AetherResolver {
     private int timeout;
     private boolean offline;
     private String settingsXml;
+    private String rootFolderOverride;
 
     private static RepositorySystem newRepositorySystem() {
         DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
@@ -110,15 +111,18 @@ public class AetherResolverImpl implements AetherResolver {
         SettingsBuildingRequest settingsBuilderRequest = new DefaultSettingsBuildingRequest();
         settingsBuilderRequest.setSystemProperties(System.getProperties());
         
-        // find the settings
-        String settingsFile = settingsXml;
-        if(settingsFile == null){
-        	File userSettings = new File(System.getProperty("user.home"), ".m2/settings.xml");
-        	if(userSettings.exists())
-        		settingsFile = userSettings.getAbsolutePath();
-        }
-        if(settingsFile != null){
-        	settingsBuilderRequest.setUserSettingsFile(new File(settingsXml));
+        // if we have a root folder, don't read settings at all
+        if(rootFolderOverride == null){
+            // find the settings
+            String settingsFile = settingsXml;
+            if(settingsFile == null){
+                File userSettings = new File(System.getProperty("user.home"), ".m2/settings.xml");
+                if(userSettings.exists())
+                    settingsFile = userSettings.getAbsolutePath();
+            }
+            if(settingsFile != null){
+                settingsBuilderRequest.setUserSettingsFile(new File(settingsXml));
+            }
         }
         
         // read it
@@ -131,7 +135,9 @@ public class AetherResolverImpl implements AetherResolver {
         Settings set = settingsBuildingResult.getEffectiveSettings();
         
         // configure the local repo
-        String localRepository = set.getLocalRepository();
+        String localRepository = rootFolderOverride;
+        if(localRepository == null)
+            localRepository = set.getLocalRepository();
         if(localRepository == null)
         	localRepository = System.getProperty("user.home")+File.separator+".m2"+File.separator+"repository";
         else {
@@ -253,11 +259,12 @@ public class AetherResolverImpl implements AetherResolver {
     };
     
 
-    public AetherResolverImpl(String currentDirectory, String settingsXml, boolean offline, int timeout) {
+    public AetherResolverImpl(String currentDirectory, String settingsXml, String rootFolderOverride, boolean offline, int timeout) {
         this.currentDirectory = currentDirectory;
         this.timeout = timeout;
         this.offline = offline;
         this.settingsXml = settingsXml;
+        this.rootFolderOverride = rootFolderOverride;
     }
 
     @Override

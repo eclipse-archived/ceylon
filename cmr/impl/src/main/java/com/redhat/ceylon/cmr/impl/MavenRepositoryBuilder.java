@@ -95,4 +95,10 @@ public class MavenRepositoryBuilder implements RepositoryBuilder {
         CmrRepository repo = (CmrRepository)createRepository.invoke(null, config.log, settingsXml, config.offline, config.timeout, config.currentDirectory);
         return new CmrRepository[] { repo };
     }
+
+    public static CmrRepository createMavenRepository(String rootRepository, RepositoryBuilderConfig config) throws Exception {
+        Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
+        Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class, int.class, String.class);
+        return (CmrRepository)createRepository.invoke(null, config.log, null, rootRepository, config.offline, config.timeout, config.currentDirectory);
+    }
 }
