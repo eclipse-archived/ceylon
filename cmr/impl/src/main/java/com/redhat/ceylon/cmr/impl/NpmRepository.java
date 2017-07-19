@@ -55,7 +55,8 @@ public class NpmRepository extends AbstractRepository {
         List<String> suffixes = Arrays.asList(context.getSuffixes());
         if (suffixes.contains(ArtifactContext.JS)
                 || suffixes.contains(ArtifactContext.JS_MODEL)) {
-            return getArtifactNames(context.getName(), context.getVersion(), new String[] { ArtifactContext.JS, ArtifactContext.NPM_DESCRIPTOR });
+            return getArtifactNames(context.getName(), context.getVersion(), 
+                    new String[] { ArtifactContext.JS, ArtifactContext.NPM_DESCRIPTOR });
         } else {
             return new String[0];
         }

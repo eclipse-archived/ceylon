@@ -82,7 +82,8 @@ public class NpmContentStore extends AbstractContentStore {
     public OpenNode find(Node parent, String child) {
         DefaultNode node = null;
         if (!hasContent(child) //TODO: this test looks like rubbish to me!
-                || parent.getLabel().startsWith("@")) {
+                || parent.getLabel().startsWith("@")
+                || parent instanceof RootNode) { //RootNode has an empty label
             node = new DefaultNode(child);
             node.setContentMarker();
             return node;

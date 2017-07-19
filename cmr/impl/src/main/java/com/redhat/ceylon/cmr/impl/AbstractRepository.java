@@ -71,7 +71,7 @@ public abstract class AbstractRepository implements CmrRepository {
         final List<String> tokens = new ArrayList<String>();
         tokens.addAll(Arrays.asList(name.split("\\.")));
         final String version = context.getVersion();
-        if (RepositoryManager.DEFAULT_MODULE.equals(name) == false && version != null)
+        if (!RepositoryManager.DEFAULT_MODULE.equals(name) && version != null)
             tokens.add(version); // add version
         return tokens;
     }
