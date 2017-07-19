@@ -215,6 +215,7 @@ public class Overrides {
             ret.setVersion(context.getVersion());
         // even if we replace, respect the set version
         ret.setVersion(getVersionOverride(ret));
+        ret.setNamespace(replacingContext.getNamespace());
         return ret;
     }
 
