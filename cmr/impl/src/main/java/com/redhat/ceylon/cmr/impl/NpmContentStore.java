@@ -42,23 +42,6 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
  */
 public class NpmContentStore extends AbstractContentStore {
     
-    private static final class NpmFileContentStore extends FileContentStore {
-        private NpmFileContentStore(File root) {
-            super(root);
-        }
-
-        @Override
-        File getFile(Node node) {
-            if (node == null)
-                return getRoot();
-            File parent = getFile(NodeUtils.firstParent(node));
-            // For some reason we get a node with the  
-            // label @scope.name for scoped modules
-            // TODO: fix that and get rid of this class!!!
-            return new File(parent, node.getLabel().replace('.', '/'));
-        }
-    }
-
     private final File out;
     private final FileContentStore[] stores;
     private final FileContentStore outstore;
@@ -71,11 +54,11 @@ public class NpmContentStore extends AbstractContentStore {
         this.stores = new FileContentStore[roots.length];
         int i = 0;
         for (File root : roots) {
-            stores[i++] = new NpmFileContentStore(root);
+            stores[i++] = new FileContentStore(root);
         }
         this.out = out;
         if (out != null) {
-            outstore = new NpmFileContentStore(out);
+            outstore = new FileContentStore(out);
         } else {
             outstore = null;
         }
