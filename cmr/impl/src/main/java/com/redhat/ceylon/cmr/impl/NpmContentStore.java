@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.impl;
 
 import static com.redhat.ceylon.cmr.api.ArtifactContext.getSuffixFromFilename;
+import static com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver.readNpmDescriptor;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +27,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
@@ -81,12 +81,14 @@ public class NpmContentStore extends AbstractContentStore {
 
     public OpenNode find(Node parent, String child) {
         DefaultNode node = null;
-        if (!hasContent(child)) {
+        if (!hasContent(child) //TODO: this test looks like rubbish to me!
+                || parent.getLabel().startsWith("@")) {
             node = new DefaultNode(child);
             node.setContentMarker();
             return node;
         } else {
-            if (getSuffixFromFilename(child).equals(ArtifactContext.JS)) {
+            if (getSuffixFromFilename(child)
+                    .equals(ArtifactContext.JS)) {
                 String artifactName = getTrueArtifactName(parent);
                 if (artifactName != null) {
                     child = artifactName;
@@ -136,7 +138,7 @@ public class NpmContentStore extends AbstractContentStore {
             File json = node.getContent(File.class);
             if (json.exists() && json.isFile() && json.canRead()) {
                 //Parse json, get "main", that's the file we need
-                Map<String,Object> descriptor = JavaScriptResolver.readNpmDescriptor(json);
+                Map<String,Object> descriptor = readNpmDescriptor(json);
                 Object main = descriptor.get("main");
                 if (main instanceof String) {
                     return (String)main;
@@ -175,35 +177,39 @@ public class NpmContentStore extends AbstractContentStore {
                 out.mkdirs();
             }
             ArtifactContext ac = ArtifactContext.fromNode(node);
-            String name = ac.getName();
-            if (name.contains(":")) {
-                name = "@" + name.replace(':', '/');
-            }
-            String version = ac.getVersion();
-            String module = version.isEmpty() ? name : name + "@" + version;
-            if (log != null) {
-                log.debug("installing npm module " + module + " in " + out);
-            }
-            String npmCmd = npmCommand != null ? npmCommand : System.getProperty(Constants.PROP_CEYLON_EXTCMD_NPM, "npm");
-            ProcessBuilder pb = new ProcessBuilder()
-                    .command(npmCmd, "install", "--silent", "--no-bin-links", module)
-                    .directory(out.getParentFile())
-                    .inheritIO();
-            Map<String, String> env = pb.environment();
-            String pathVariableName = "PATH";
-            for (String key : env.keySet()) {
-                if (key.equalsIgnoreCase("path")) {
-                    pathVariableName = key;
-                    break;
+            if (ac != null) {
+                String name = ac.getName();
+                if (name.contains(":")) {
+                    name = "@" + name.replace(':', '/');
                 }
-            }
-            String pathForRunningNpm = path != null ? path : System.getProperty(Constants.PROP_CEYLON_EXTCMD_PATH, System.getenv("PATH"));
-            env.put(pathVariableName, pathForRunningNpm);
-            
-            Process p = pb.start();
-            p.waitFor();
-            if (p.exitValue() != 0) {
-                throw new RepositoryException("npm installer for '" + name + "' failed with exit code: " + p.exitValue());
+                String version = ac.getVersion();
+                String module = version.isEmpty() ? name : name + "@" + version;
+                if (log != null) {
+                    log.debug("installing npm module " + module + " in " + out);
+                }
+                String npmCmd = npmCommand != null ? npmCommand : 
+                    System.getProperty(Constants.PROP_CEYLON_EXTCMD_NPM, "npm");
+                ProcessBuilder pb = new ProcessBuilder()
+                        .command(npmCmd, "install", "--silent", "--no-bin-links", module)
+                        .directory(out.getParentFile())
+                        .inheritIO();
+                Map<String, String> env = pb.environment();
+                String pathVariableName = "PATH";
+                for (String key : env.keySet()) {
+                    if (key.equalsIgnoreCase("path")) {
+                        pathVariableName = key;
+                        break;
+                    }
+                }
+                String pathForRunningNpm = path != null ? path : 
+                    System.getProperty(Constants.PROP_CEYLON_EXTCMD_PATH, System.getenv("PATH"));
+                env.put(pathVariableName, pathForRunningNpm);
+                
+                Process p = pb.start();
+                p.waitFor();
+                if (p.exitValue() != 0) {
+                    throw new RepositoryException("npm installer for '" + name + "' failed with exit code: " + p.exitValue());
+                }
             }
         } catch (InterruptedException | IOException ex) {
             throw new RepositoryException("error running npm installer (make sure 'npm' is installed and available in your PATH)", ex);
