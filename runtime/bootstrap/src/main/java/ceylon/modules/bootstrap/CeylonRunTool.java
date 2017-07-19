@@ -32,6 +32,7 @@ import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.impl.AssemblyRepositoryBuilder;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Constants;
@@ -94,11 +95,16 @@ public class CeylonRunTool extends RepoUsingTool {
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean upgradeDist = DefaultToolOptions.getLinkWithCurrentDistribution();
-    
     private Map<String,String> extraModules = new HashMap<String,String>();
 
     public CeylonRunTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
+    }
+    
+    @OptionArgument(argumentName="option")
+    @Description("Passes an option to the underlying ceylon compiler.")
+    public void setCompilerArguments(List<String> compilerArguments) {
+        this.compilerArguments = compilerArguments;
     }
     
     @Option(shortName='F', longName="flat-classpath")
@@ -181,6 +187,11 @@ public class CeylonRunTool extends RepoUsingTool {
     @Override
     protected boolean shouldUpgradeDist() {
         return upgradeDist;
+    }
+
+    @Override
+    protected Type getCompilerType() {
+        return ModuleQuery.Type.JVM;
     }
     
     @Override

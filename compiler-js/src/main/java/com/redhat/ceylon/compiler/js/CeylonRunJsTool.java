@@ -20,6 +20,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.impl.AssemblyRepositoryBuilder;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Constants;
@@ -192,6 +193,12 @@ public class CeylonRunJsTool extends RepoUsingTool {
         output = value;
     }
 
+    @OptionArgument(argumentName="option")
+    @Description("Passes an option to the underlying ceylon compiler.")
+    public void setCompilerArguments(List<String> compilerArguments) {
+        this.compilerArguments = compilerArguments;
+    }
+    
     @OptionArgument(argumentName="debug")
     @Description("Shows more detailed output in case of errors.")
     public void setDebug(boolean debug) {
@@ -236,6 +243,11 @@ public class CeylonRunJsTool extends RepoUsingTool {
     @Description("The path to the Node.js executable. Will be searched in standard locations if not specified.")
     public void setNodeExe(String path) {
         this.exepath=path;
+    }
+
+    @Override
+    protected Type getCompilerType() {
+        return ModuleQuery.Type.JS;
     }
 
     private static String getNodePath() {
