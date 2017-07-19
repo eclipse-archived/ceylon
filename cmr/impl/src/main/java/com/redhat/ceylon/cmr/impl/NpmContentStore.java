@@ -92,9 +92,6 @@ public class NpmContentStore extends AbstractContentStore {
                 String artifactName = getTrueArtifactName(parent);
                 if (artifactName != null) {
                     child = artifactName;
-                    if (!child.endsWith(ArtifactContext.JS)) {
-                        child = child + ArtifactContext.JS;
-                    }
                 }
             }
             for (FileContentStore store : stores) {
@@ -119,15 +116,6 @@ public class NpmContentStore extends AbstractContentStore {
     }
 
     private String getTrueArtifactName(Node parent) {
-//        ArtifactContext ac = ArtifactContext.fromNode(parent);
-//        String name = ac.getName();
-//        if (name.contains(":")) {
-//            name = "@" + name.replace(':', '/');
-//        }
-//        
-//        try {
-//            File json = new File("node_modules/" + name + "/package.json");
-
         final Node node;
         try {
             node = parent.getChild("package.json");
@@ -140,10 +128,22 @@ public class NpmContentStore extends AbstractContentStore {
                 //Parse json, get "main", that's the file we need
                 Map<String,Object> descriptor = readNpmDescriptor(json);
                 Object main = descriptor.get("main");
-                if (main instanceof String) {
-                    return (String)main;
-                } else if (main == null) {
+                if (main == null) {
                     return "index.js";
+                } else if (main instanceof String) {
+                    String string = (String) main; 
+                    if (string.endsWith(".js")) {
+                        return string;
+                    } else {
+                        //TODO: this is rubbish, but I don't understand    
+                        //      what the rules really are
+                        if (string.equals("lib") || string.endsWith("/lib")) {
+                            return string + "/index.js";
+                        }
+                        else {
+                            return string + ".js";
+                        }
+                    }
                 } else {
                     throw new RepositoryException("unexpected value for 'main' in npm descriptor: " + json);
                 }
