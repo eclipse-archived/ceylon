@@ -909,7 +909,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         if (compileFlags != null) {
             args.add("--include-dependencies=" + compileFlags);
         }
-        if (type == ModuleQuery.Type.JVM) {
+        if (!compileFlags.contains(COMPILE_FORCE)
+                && type == ModuleQuery.Type.JVM) {
             args.add("--incremental");
         }
         args.add(name);
