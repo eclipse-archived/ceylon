@@ -39,11 +39,16 @@ public class NpmRepository extends AbstractRepository {
     }
 
     protected List<String> getDefaultParentPathInternal(ArtifactContext context) {
-        //npm simply creates a dir with the module name and puts files inside
-        final String name = context.getName();
-        final List<String> tokens = new ArrayList<String>();
-        tokens.addAll(Arrays.asList(name.split("\\.")));
-        return tokens;
+        String name = context.getName();
+        int index = name.indexOf(':');
+        if (index <= 0) {
+            //npm simply creates a dir with the module name and puts files inside
+            return Arrays.asList(name);
+        } else {
+            //for a scoped module, the dir is inside the scope dir
+            return Arrays.asList("@" + name.substring(0, index), 
+                                 name.substring(index+1));
+        }
     }
 
     public String[] getArtifactNames(ArtifactContext context) {
@@ -91,23 +96,7 @@ public class NpmRepository extends AbstractRepository {
     }
 
     public Node findParent(ArtifactContext context) {
-        final List<String> tokens = getDefaultParentPath(context);
-        Node n = NodeUtils.getNode(getRoot(), tokens);
-        try {
-            if (n.getContent(File.class) == null) {
-                StringBuilder sb = new StringBuilder();
-                for (String t : tokens) {
-                    if (sb.length() > 0) {
-                        sb.append('.');
-                    }
-                    sb.append(t);
-                }
-                n = NodeUtils.getNode(getRoot(), Collections.singletonList(sb.toString()));
-            }
-        } catch (IOException ex) {
-            throw new RepositoryException(ex);
-        }
-        return n;
+        return NodeUtils.getNode(getRoot(), getDefaultParentPath(context));
     }
 
     private static class NpmArtifactResult extends AbstractArtifactResult {

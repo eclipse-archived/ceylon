@@ -282,12 +282,15 @@ public class GenerateJsVisitor extends Visitor {
         root = that;
         if (!that.getModuleDescriptors().isEmpty()) {
             final Tree.ModuleDescriptor md = that.getModuleDescriptors().get(0);
-            if (md.getNamespace() != null
-                    && NpmRepository.NAMESPACE.equals(md.getNamespace().getText())
-                    && md.getGroupQuotedLiteral() != null) {
-                String npmName = md.getGroupQuotedLiteral().getText();
-                if (npmName.charAt(0)=='"' && npmName.charAt(npmName.length()-1) == '"') {
-                    npmName = npmName.substring(1, npmName.length()-1);
+            Tree.QuotedLiteral gql = md.getGroupQuotedLiteral();
+            Tree.QuotedLiteral aql = md.getArtifact();
+            Tree.Identifier namespace = md.getNamespace();
+            if (namespace != null
+                    && NpmRepository.NAMESPACE.equals(namespace.getText())
+                    && gql != null) {
+                String npmName = quotedText(gql);
+                if (aql != null) {
+                    npmName = "@" + npmName + "/" + quotedText(aql);
                 }
                 ((JsonModule)that.getUnit().getPackage().getModule()).setNpmPath(npmName);
             }
@@ -411,6 +414,16 @@ public class GenerateJsVisitor extends Visitor {
             that.getImportList().visit(this);
         }
         visitStatements(that.getDeclarations());
+    }
+
+    private String quotedText(Tree.QuotedLiteral ql) {
+        String npmName = ql.getText();
+        if (npmName.charAt(0)=='"' && npmName.charAt(npmName.length()-1) == '"') {
+            return npmName.substring(1, npmName.length()-1);
+        }
+        else {
+            return npmName;
+        }
     }
 
     public void visit(final Tree.Import that) {

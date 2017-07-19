@@ -29,7 +29,11 @@ public class ModuleHelper {
         error.append("artifact ");
         error.append("'").append( artifactContext.toString() ).append("'");
         if ( exceptionOnGetArtifact != null ) {
-            error.append( "\ndue to connection error: " + exceptionOnGetArtifact.getMessage() );
+            String message = exceptionOnGetArtifact.getMessage();
+            if (message==null) {
+                message = exceptionOnGetArtifact.getClass().getName();
+            }
+            error.append( "\ndue to connection error: " + message );
         }
         
         /*List<String> repos = 

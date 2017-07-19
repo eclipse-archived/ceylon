@@ -146,14 +146,11 @@ public class JsOutput {
             //For NPM modules on Node.js we use our own special "require" which will
             //wrap single functions in a proper exports object. If the module name
             //has dashes, dots, or underscores, we transform that into camel casing.
-            String singleFunctionName = mod.getNameAsString().replace('.', '-').replace('_', '-');
-            int dashIdx = singleFunctionName.indexOf('-');
-            while (dashIdx > 0) {
-                singleFunctionName = singleFunctionName.substring(0, dashIdx) +
-                        Character.toUpperCase(singleFunctionName.charAt(dashIdx+1)) +
-                        singleFunctionName.substring(dashIdx+2);
-                dashIdx = singleFunctionName.indexOf('-', dashIdx);
-            }
+            String singleFunctionName = 
+                    toCamelCase(mod.getNameAsString()
+                                    .replace(':', '.')
+                                    .replace('_', '.')
+                                    .replace('-', '.'));
             out("var ", modAlias, "=", "(", getLanguageModuleAlias(), "run$isNode())?",
                     getLanguageModuleAlias(), "npm$req('", singleFunctionName, "','",
                     path, "',require):require('", JsCompiler.scriptPath(mod), "');\n");
@@ -161,6 +158,25 @@ public class JsOutput {
                 out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
             }
         }
+    }
+    
+    private static String toCamelCase(String string) {
+        int dotIdx = string.indexOf('.');
+        while (dotIdx > 0) {
+            string = string.substring(0, dotIdx) +
+                    Character.toUpperCase(string.charAt(dotIdx+1)) +
+                    string.substring(dotIdx+2);
+            dotIdx = string.indexOf('.', dotIdx);
+        }
+        return string;
+    }
+    
+    public static String ceylonPackageName(final String npmPath) {
+        String packageName = npmPath.replace('-', '.').replace('_', '.');
+        if (packageName.startsWith("@")) {
+            packageName = packageName.substring(1).replace('/', '.');
+        }
+        return packageName;
     }
 
     public void require(final Module mod, final JsIdentifierNames names) {

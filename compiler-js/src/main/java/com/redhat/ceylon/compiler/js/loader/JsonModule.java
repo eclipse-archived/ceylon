@@ -108,8 +108,11 @@ public class JsonModule extends Module implements NpmAware {
     public Package getDirectPackage(String name) {
         Package pkg = super.getDirectPackage(name);
         if (pkg == null && npmPath != null) {
-            String modName = getNameAsString().replace('-', '.').replace('_', '.');
-            if (modName.equals(name)) {
+            if (getNameAsString()
+                    .replace(':', '.')
+                    .replace('_', '.')
+                    .replace('-', '.')
+                    .equals(name)) {
                 pkg = new NpmPackage(this, name);
                 getPackages().add(pkg);
             }

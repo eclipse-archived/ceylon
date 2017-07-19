@@ -53,6 +53,10 @@ public class FileContentStore implements ContentStore, StructureBuilder {
             throw new IllegalArgumentException("Null root!");
         this.root = root;
     }
+    
+    protected File getRoot() {
+        return root;
+    }
 
     public Iterable<File> getBaseDirectories() {
         return Arrays.asList(root);

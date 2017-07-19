@@ -16,6 +16,8 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import static com.redhat.ceylon.cmr.api.ArtifactContext.getSuffixFromFilename;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +41,24 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
  * @author Tako Schotanus (tako@ceylon-lang.org)
  */
 public class NpmContentStore extends AbstractContentStore {
+    
+    private static final class NpmFileContentStore extends FileContentStore {
+        private NpmFileContentStore(File root) {
+            super(root);
+        }
+
+        @Override
+        File getFile(Node node) {
+            if (node == null)
+                return getRoot();
+            File parent = getFile(NodeUtils.firstParent(node));
+            // For some reason we get a node with the  
+            // label @scope.name for scoped modules
+            // TODO: fix that and get rid of this class!!!
+            return new File(parent, node.getLabel().replace('.', '/'));
+        }
+    }
+
     private final File out;
     private final FileContentStore[] stores;
     private final FileContentStore outstore;
@@ -51,11 +71,11 @@ public class NpmContentStore extends AbstractContentStore {
         this.stores = new FileContentStore[roots.length];
         int i = 0;
         for (File root : roots) {
-            stores[i++] = new FileContentStore(root);
+            stores[i++] = new NpmFileContentStore(root);
         }
         this.out = out;
         if (out != null) {
-            outstore = new FileContentStore(out);
+            outstore = new NpmFileContentStore(out);
         } else {
             outstore = null;
         }
@@ -83,10 +103,10 @@ public class NpmContentStore extends AbstractContentStore {
             node.setContentMarker();
             return node;
         } else {
-            if (ArtifactContext.getSuffixFromFilename(child).equals(ArtifactContext.JS)) {
-                String x = getTrueArtifactName(parent);
-                if (x != null) {
-                    child = x;
+            if (getSuffixFromFilename(child).equals(ArtifactContext.JS)) {
+                String artifactName = getTrueArtifactName(parent);
+                if (artifactName != null) {
+                    child = artifactName;
                     if (!child.endsWith(ArtifactContext.JS)) {
                         child = child + ArtifactContext.JS;
                     }
@@ -114,6 +134,15 @@ public class NpmContentStore extends AbstractContentStore {
     }
 
     private String getTrueArtifactName(Node parent) {
+//        ArtifactContext ac = ArtifactContext.fromNode(parent);
+//        String name = ac.getName();
+//        if (name.contains(":")) {
+//            name = "@" + name.replace(':', '/');
+//        }
+//        
+//        try {
+//            File json = new File("node_modules/" + name + "/package.json");
+
         final Node node;
         try {
             node = parent.getChild("package.json");
@@ -157,9 +186,6 @@ public class NpmContentStore extends AbstractContentStore {
         }
     }
 
-    /**
-     * 
-     */
     public void installNpmModule(Node node) {
         try {
             if (!out.exists()) {
@@ -167,6 +193,9 @@ public class NpmContentStore extends AbstractContentStore {
             }
             ArtifactContext ac = ArtifactContext.fromNode(node);
             String name = ac.getName();
+            if (name.contains(":")) {
+                name = "@" + name.replace(':', '/');
+            }
             String version = ac.getVersion();
             String module = version.isEmpty() ? name : name + "@" + version;
             if (log != null) {
@@ -191,7 +220,7 @@ public class NpmContentStore extends AbstractContentStore {
             Process p = pb.start();
             p.waitFor();
             if (p.exitValue() != 0) {
-                throw new RepositoryException("npm installer failed with exit code: " + p.exitValue());
+                throw new RepositoryException("npm installer for '" + name + "' failed with exit code: " + p.exitValue());
             }
         } catch (InterruptedException | IOException ex) {
             throw new RepositoryException("error running npm installer (make sure 'npm' is installed and available in your PATH)", ex);

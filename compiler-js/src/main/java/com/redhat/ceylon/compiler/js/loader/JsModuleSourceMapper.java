@@ -177,7 +177,6 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                     module.setJsMajor(Versions.JS_BINARY_MAJOR_VERSION);
                     module.setJsMinor(Versions.JS_BINARY_MINOR_VERSION);
                 } catch (IOException ex) {
-                    System.out.println("ay no mames");
                     ex.printStackTrace();
                 }
                 return;
