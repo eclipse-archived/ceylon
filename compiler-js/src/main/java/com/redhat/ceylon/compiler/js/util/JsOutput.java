@@ -171,14 +171,6 @@ public class JsOutput {
         return string;
     }
     
-    public static String ceylonPackageName(final String npmPath) {
-        String packageName = npmPath.replace('-', '.').replace('_', '.');
-        if (packageName.startsWith("@")) {
-            packageName = packageName.substring(1).replace('/', '.');
-        }
-        return packageName;
-    }
-
     public void require(final Module mod, final JsIdentifierNames names) {
         final String path = JsCompiler.scriptPath(mod);
         final String modAlias = names.moduleAlias(mod);
