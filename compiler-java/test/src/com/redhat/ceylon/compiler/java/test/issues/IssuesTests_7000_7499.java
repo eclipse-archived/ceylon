@@ -83,4 +83,9 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     public void bug7105(){
         compile("bug70xx/bug7105/run.ceylon");
     }
+
+    @Test
+    public void bug7121(){
+        compile("bug70xx/bug7121.ceylon");
+    }
 }
