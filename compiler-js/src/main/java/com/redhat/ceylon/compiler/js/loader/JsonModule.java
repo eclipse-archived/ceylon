@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.js.loader;
 
+import static java.util.Collections.singletonList;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -103,21 +105,52 @@ public class JsonModule extends Module implements NpmAware {
         // not found
         return null;
     }
+    
+    @Override
+    public List<Package> getPackages() {
+        if (npmPath == null) {
+            return super.getPackages();
+        }
+        else {
+            return singletonList(getRootPackage());
+        }
+    }
+    
+    @Override
+    public Package getRootPackage() {
+        if (npmPath == null) {
+            return super.getRootPackage();
+        }
+        else {
+            return getDirectPackage(getNpmPackageName());
+        }
+    }
 
     @Override
     public Package getDirectPackage(String name) {
-        Package pkg = super.getDirectPackage(name);
-        if (pkg == null && npmPath != null) {
-            if (getNameAsString()
-                    .replace(':', '.')
-                    .replace('_', '.')
-                    .replace('-', '.')
-                    .equals(name)) {
-                pkg = new NpmPackage(this, name);
-                getPackages().add(pkg);
+        if (npmPath == null) {
+            return super.getDirectPackage(name);
+        }
+        else {
+            if (getNpmPackageName().equals(name)) {
+                Package pkg = super.getDirectPackage(name);
+                if (pkg==null) {
+                    pkg = new NpmPackage(this, name);
+                    super.getPackages().add(pkg);
+                }
+                return pkg;
+            }
+            else {
+                return null;
             }
         }
-        return pkg;
+    }
+
+    private String getNpmPackageName() {
+        return getNameAsString()
+                .replace(':', '.')
+                .replace('_', '.')
+                .replace('-', '.');
     }
 
     private Package getPackageFromImport(String name, Module module, Set<Module> visited) {
