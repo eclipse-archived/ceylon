@@ -29,6 +29,7 @@ if (run$isNode()) {
     if (process.versions !== undefined && process.versions.node != undefined) {
         properties["node.version"] = $_String(process.versions.node);
     }
+    _process = process;
 }
 if (typeof document !== "undefined") {
     if (document.defaultCharset !== undefined) {
