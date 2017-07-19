@@ -176,4 +176,17 @@ public class ModuleLoaderTest {
             IOUtils.deleteRecursively(flatRepo.toFile());
         }
     }
+
+    @Test
+    public void testBug7062() throws ModuleNotFoundException {
+        RepositoryManager repositoryManager = CeylonUtils.repoManager()
+                .systemRepo("../dist/dist/repo")
+                .overrides("test/"+ModuleLoaderTest.class.getPackage().getName().replace('.', '/')+
+                        "/bug7062-overrides.xml")
+                .buildManager();
+        Map<String, String> extraModules = new HashMap<>();
+        TestableModuleLoader moduleLoader = new TestableModuleLoader(repositoryManager, null, extraModules, false);
+        
+        moduleLoader.loadModule("ceylon.interop.persistence", "1.3.1", ModuleScope.RUNTIME);
+    }
 }
