@@ -146,16 +146,19 @@ public class JsOutput {
             //For NPM modules on Node.js we use our own special "require" which will
             //wrap single functions in a proper exports object. If the module name
             //has dashes, dots, or underscores, we transform that into camel casing.
+            String modName = mod.getNameAsString();
+            int colonIndex = modName.indexOf(':');
+            if (colonIndex>0) {
+                modName = modName.substring(colonIndex+1);
+            }
             String singleFunctionName = 
-                    toCamelCase(mod.getNameAsString()
-                                    .replace(':', '.')
-                                    .replace('_', '.')
-                                    .replace('-', '.'));
+                    toCamelCase(modName.replace('_', '.')
+                                       .replace('-', '.'));
             out("var ", modAlias, "=", "(", getLanguageModuleAlias(), "run$isNode())?",
                     getLanguageModuleAlias(), "npm$req('", singleFunctionName, "','",
                     path, "',require):require('", JsCompiler.scriptPath(mod), "');\n");
             if (modAlias != null && !modAlias.isEmpty()) {
-                out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
+                out(clalias, "$addmod$(", modAlias,",'", modName, "/", mod.getVersion(), "');\n");
             }
         }
     }
