@@ -19,6 +19,8 @@
  */
 package org.jboss.ceylon.test.modules.tool.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -189,6 +191,46 @@ public class RunToolTestCase extends AbstractToolTest {
         CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), options("--run=foo.long.module::run", "foo.long.module/1.0.0"));
         assertOutput(tool, OUT_EXPECTED_DEFAULT);
     }
+
+    @Test
+    public void testCompileForce() throws Exception {
+        ToolModel<CeylonRunTool> model = pluginLoader.loadToolModel("run");
+        Assert.assertNotNull(model);
+        CeylonRunTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                options("--offline",
+                        "--rep", "build/test/modules",
+                        "--compile=force",
+                        "--compiler-arguments=--sysrep",
+                        "--compiler-arguments=../dist/dist/repo",
+                        "--compiler-arguments=--offline",
+                        "--compiler-arguments=--source",
+                        "--compiler-arguments=testsuite/src/test/resources/source",
+                        "--compiler-arguments=--out",
+                        "--compiler-arguments=build/test/modules",
+                        "bug7035/1"));
+        tool.run();
+
+        // run it again, should force
+        tool = pluginFactory.bindArguments(model, getMainTool(), 
+                options("--offline",
+                        "--rep", "build/test/modules",
+                        "--compile=force",
+                        "--compiler-arguments=--sysrep",
+                        "--compiler-arguments=../dist/dist/repo",
+                        "--compiler-arguments=--offline",
+                        "--compiler-arguments=--source",
+                        "--compiler-arguments=testsuite/src/test/resources/source",
+                        "--compiler-arguments=--out",
+                        "--compiler-arguments=build/test/modules",
+                        "bug7035/1"));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream out = new PrintStream(baos);
+        tool.setOut(out);
+        tool.run();
+        assertTrue(baos.size() > 0);
+        assertTrue(baos.toString().contains("Source found for module bug7035, compiling..."));
+    }
+
     private void assertOutput(CeylonRunTool tool, String txt) throws IOException {
         PrintStream oldout = System.out;
         PrintStream out = null;
