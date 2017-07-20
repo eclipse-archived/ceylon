@@ -3221,9 +3221,11 @@ public class ExpressionVisitor extends Visitor {
                                     anon.getParameterLists()) {
                                 for (Tree.Parameter pm: 
                                         pl.getParameters()) {
-                                    createInferredDynamicParameter(
-                                            anon.getDeclarationModel(), 
-                                            pm.getParameterModel());
+                                    if (isInferrableParameter(pm)) {
+                                        createInferredDynamicParameter(
+                                                anon.getDeclarationModel(), 
+                                                pm.getParameterModel());
+                                    }
                                 }
                             }
                         }
@@ -3234,21 +3236,22 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void createInferredDynamicParameter(Function m, Parameter pm) {
-        Value model = (Value) pm.getModel(); 
+        FunctionOrValue model = pm.getModel();
         if (model==null) {
-            model = new Value();
-            model.setUnit(unit);
-            model.setName(pm.getName());
-            pm.setModel(model);
-            model.setContainer(m);
-            model.setScope(m);
-            m.addMember(model);
+            Value value = (Value) model; 
+            value = new Value();
+            value.setUnit(unit);
+            value.setName(pm.getName());
+            pm.setModel(value);
+            value.setContainer(m);
+            value.setScope(m);
+            m.addMember(value);
+            value.setType(unit.getUnknownType());
+//            value.setDynamic(true);
+            value.setDynamicallyTyped(true);
+            value.setInferred(true);
+            value.setInitializerParameter(pm);
         }
-        model.setType(unit.getUnknownType());
-        model.setDynamic(true);
-        model.setDynamicallyTyped(true);
-        model.setInferred(true);
-        model.setInitializerParameter(pm);
     }
 
     /**
