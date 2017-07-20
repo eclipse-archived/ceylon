@@ -36,43 +36,30 @@ public class NpmPackage extends LazyPackage {
         Declaration d = decs.get(name);
         if (d == null) {
             if (Character.isUpperCase(name.charAt(0))) {
-                //It looks like this needs to be a special class that can return any member
-                //in a fashion similar to this package
+                // TODO: it looks like this needs to be a special 
+                // class that can return any member in a fashion 
+                // similar to this package
                 d = new Class();
                 d.setDynamic(true);
                 ParameterList plist = new ParameterList();
                 plist.setNamedParametersSupported(true);
                 plist.setFirst(true);
-                Parameter p0 = new Parameter();
-                p0.setName("args");
-                p0.setSequenced(true);
-                p0.setDeclaredAnything(true);
-                Value v = new Value();
-                v.setType(getUnit().getUnknownType());
-                v.setInitializerParameter(p0);
-                v.setContainer((Class)d);
-                p0.setModel(v);
-                plist.getParameters().add(p0);
-                //Add a default constructor with jsNew set
-                Constructor defcon = new Constructor();
-                defcon.addParameterList(plist);
-                defcon.setDynamic(true);
-                defcon.setShared(true);
-                defcon.setUnit(getUnit());
-                defcon.setContainer((Class)d);
-                defcon.setScope((Class)d);
-                Function cf = new Function();
-                cf.setDynamicallyTyped(true);
-                cf.addParameterList(plist);
-                cf.setContainer((Class)d);
-                cf.setScope((Class)d);
-                cf.setUnit(d.getUnit());
-                cf.setVisibleScope(defcon.getVisibleScope());
-                cf.setShared(true);
-                cf.setDynamic(true);
-                ((Class)d).setConstructors(true);
-                ((Class)d).addMember(defcon);
-                ((Class)d).addMember(cf);
+                for (int i=0; i<10; i++) {
+                    Parameter p = new Parameter();
+                    p.setName("arg" + i);
+                    Value v = new Value();
+                    v.setUnit(d.getUnit());
+                    v.setType(getUnit().getUnknownType());
+                    v.setDynamic(true);
+                    v.setDynamicallyTyped(true);
+                    v.setInitializerParameter(p);
+                    v.setContainer((Class)d);
+                    p.setModel(v);
+                    p.setDeclaration(d);
+                    p.setDefaulted(true);
+                    plist.getParameters().add(p);
+                }
+                ((Class)d).setParameterList(plist);
             } else {
                 d = new Function();
                 d.setDynamic(true);
