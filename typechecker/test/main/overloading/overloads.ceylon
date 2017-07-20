@@ -1,3 +1,6 @@
+import java.lang {
+    overloaded
+}
 import ceylon.language.meta.model {
     Class
 }
@@ -5,10 +8,14 @@ import ceylon.language.meta.model {
 interface Runnable {}
 
 object service {
-    shared void execute(Runnable run) {}
-    @error shared void execute(Anything run(String id)) {}
+    overloaded shared void execute(Runnable run) {}
+    overloaded shared void execute(Anything run(String id)) {}
 }
 
+object service2 {
+    @error shared void execute(Runnable run) {}
+    @error shared void execute(Anything run(String id)) {}
+}
 
 void runme() {
     service.execute(object satisfies Runnable {});
@@ -18,18 +25,18 @@ void runme() {
 
 
 interface Interface {
-    shared formal void run(String str);
-    @error shared formal void run(String str1, String str2);
-    shared formal void run(Integer int);
-    shared formal void run(Integer int1, Integer int2);
-    shared formal void run(Integer* int);
-    @error shared formal void run(Integer? int);
+    shared overloaded formal void run(String str);
+    overloaded shared formal void run(String str1, String str2);
+    shared overloaded formal void run(Integer int);
+    shared overloaded formal void run(Integer int1, Integer int2);
+    shared overloaded formal void run(Integer* int);
+    @error overloaded shared formal void run(Integer? int);
     
-    shared formal void wrong(Integer int);
-    @error shared formal void wrong(Integer? int);
-    shared formal void wrong(String string);
-    shared formal void wrong(Object thing);
-    @error shared formal void wrong(Anything thing);
+    shared overloaded formal void wrong(Integer int);
+    @error shared overloaded formal void wrong(Integer? int);
+    shared overloaded formal void wrong(String string);
+    shared overloaded formal void wrong(Object thing);
+    @error shared overloaded formal void wrong(Anything thing);
 }
 
 void test(Interface i) {
@@ -47,7 +54,12 @@ void test(Interface i) {
 }
 
 class X() {
-    shared void execute(void run()) => run();
+    overloaded shared void execute(void run()) => run();
+    overloaded shared T execute<T>(T run()) given T satisfies Object => run();
+}
+
+class X2() {
+    @error shared void execute(void run()) => run();
     @error shared T execute<T>(T run()) given T satisfies Object => run();
 }
 
@@ -58,10 +70,10 @@ void do() {
 interface Inter<T> {}
 
 class Clazz() {
-    shared void find<T>(Inter<T> c) {
+    shared overloaded void find<T>(Inter<T> c) {
         find(c);
     }
-    @error shared void find<T>() {
+    shared overloaded void find<T>() {
         Inter<T> list = nothing of Inter<T>;
     }
     
@@ -74,17 +86,17 @@ class Clazz() {
 }
 
 interface Iface {
-    shared formal void y();
-    @error shared formal void y(String s);
-    shared formal void y(Integer i);
+    shared overloaded formal void y();
+    overloaded shared formal void y(String s);
+    shared overloaded formal void y(Integer i);
 }
 
 class Clas() satisfies Iface {
-    shared actual void y() {}
-    shared actual void y(String s) {}
-    shared actual void y(Integer i) {}
-    @error shared actual void y(Float x) {}
-    @error shared void y(Byte x) {}
+    shared overloaded actual void y() {}
+    shared overloaded actual void y(String s) {}
+    shared overloaded actual void y(Integer i) {}
+    @error shared overloaded actual void y(Float x) {}
+    shared overloaded void y(Byte x) {}
     @error void y(Character x) {}
     @error String y = "";
 }
@@ -96,8 +108,8 @@ class My() {
 class Sender() {}
 
 class Controller() {
-    shared void fun(String() fun) {}
-    @error shared void fun<U>(Class<U> c, Object* objs) {}
+    overloaded shared void fun(String() fun) {}
+    overloaded shared void fun<U>(Class<U> c, Object* objs) {}
     
     fun(`Sender`);
 }
@@ -105,7 +117,12 @@ class Controller() {
 interface Predicate<T> {}
 
 class Stream<T>(T* elements){
-    shared Stream<T> filter(Predicate<T> pred) => this;
+    overloaded shared Stream<T> filter(Predicate<T> pred) => this;
+    overloaded shared Stream<T> filter(Boolean fun(T t)) => this;
+}
+
+class Stream2<T>(T* elements){
+    @error shared Stream<T> filter(Predicate<T> pred) => this;
     @error shared Stream<T> filter(Boolean fun(T t)) => this;
 }
 
@@ -124,19 +141,19 @@ void testStream() {
 
 native("jvm")
 class Native() {
-    shared void fun(String s) {}
-    shared void fun(Integer u) {}
+    overloaded shared void fun(String s) {}
+    overloaded shared void fun(Integer u) {}
     
-    shared void func(String|Integer si) {}
-    @error shared void func(Basic b) {}
-    @error shared void func(Nothing n) {}
-    @error shared void func(Null n) {}
-    @error shared void func(Float f = 1.9) {}
-    shared void func(Object o, Float f, Integer i) {}
-    shared void func(Object* o) {}
+    overloaded shared void func(String|Integer si) {}
+    @error overloaded shared void func(Basic b) {}
+    @error overloaded shared void func(Nothing n) {}
+    @error overloaded shared void func(Null n) {}
+    @error overloaded shared void func(Float f = 1.9) {}
+    overloaded shared void func(Object o, Float f, Integer i) {}
+    overloaded shared void func(Object* o) {}
     
-    shared void sing(Singleton<String> sing) {}
-    @error shared void sing(Singleton<Integer>? sing) {}
+    overloaded shared void sing(Singleton<String> sing) {}
+    @error overloaded shared void sing(Singleton<Integer>? sing) {}
 }
 
 native shared void run();

@@ -1,5 +1,5 @@
 class ClassWithDupeMembers() {
-    shared void fun() {}
+    @error shared void fun() {}
     @error shared void fun(String string) {}
     String name = "";
     @error String name => "";
@@ -7,7 +7,7 @@ class ClassWithDupeMembers() {
 
 class SuperclassWithDupeMembers() {
     shared default void foo() {}
-    shared default void bar() {}
+    @error shared default void bar() {}
     @error shared default void bar(String string) {}
 }
 

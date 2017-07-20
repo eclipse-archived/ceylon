@@ -35,14 +35,14 @@ void testClassWithStaticMembers() {
 }
 
 interface InterfaceWithStaticMembers {
-    @error shared static void hello(String str) {}
+    @warning shared static void hello(String str) {}
     @error shared static String name = "Trompon";
-    @error shared static class Inner() {}
+    @warning shared static class Inner() {}
     @error shared static object inner {
         shared String greeting = "Hello";
     }
-    @error shared static interface Inter {}
-    @error shared static alias Name => String;
+    @warning shared static interface Inter {}
+    @warning shared static alias Name => String;
 }
 
 @error class ClassWithParamsAndStaticMembers() {
