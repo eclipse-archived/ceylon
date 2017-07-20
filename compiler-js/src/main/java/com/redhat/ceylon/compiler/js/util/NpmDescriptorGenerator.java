@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.compiler.js.loader.NpmAware;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -32,14 +31,15 @@ public class NpmDescriptorGenerator {
         src = withSources;
         resources = withResources;
     }
+    
+    private static String name(Module mod) {
+        String name = mod.getNameAsString();
+        return name.contains(":") ? "@" + name.replace(':', '/') : name;
+    }
 
     public String generateDescriptor() throws IOException {
         Map<String,Object> desc = new HashMap<>();
-        if (mod instanceof NpmAware && ((NpmAware)mod).getNpmPath() != null) {
-            desc.put("name", ((NpmAware)mod).getNpmPath());
-        } else {
-            desc.put("name", mod.getNameAsString());
-        }
+        desc.put("name", name(mod));
         desc.put("version", mod.getVersion());
         for (Annotation ann : mod.getAnnotations()) {
             List<String> args = ann.getPositionalArguments();
@@ -57,9 +57,9 @@ public class NpmDescriptorGenerator {
             Map<String,String> opts = new HashMap<>(mod.getImports().size());
             for (ModuleImport imp : mod.getImports()) {
                 if (imp.isOptional()) {
-                    opts.put(imp.getModule().getNameAsString(), imp.getModule().getVersion());
+                    opts.put(name(imp.getModule()), imp.getModule().getVersion());
                 } else if (!imp.isNative() || imp.getNativeBackends().supports(Backend.JavaScript)) {
-                    deps.put(imp.getModule().getNameAsString(), imp.getModule().getVersion());
+                    deps.put(name(imp.getModule()), imp.getModule().getVersion());
                 }
             }
             if (!deps.isEmpty()) {
