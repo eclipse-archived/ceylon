@@ -3178,7 +3178,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) term;
             Declaration dec = mte.getDeclaration();
-            if (dec==null) {
+            if (dec==null || dec.isDynamic()) {
                 if (type==null || type.isUnknown()) {
                     inferDynamicParameters(pal);
                 }

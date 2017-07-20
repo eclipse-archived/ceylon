@@ -39,7 +39,6 @@ public class NpmPackage extends LazyPackage {
                 // class that can return any member in a fashion 
                 // similar to this package
                 d = new Class();
-                d.setDynamic(true);
                 ParameterList plist = new ParameterList();
                 plist.setNamedParametersSupported(true);
                 plist.setFirst(true);
@@ -61,9 +60,9 @@ public class NpmPackage extends LazyPackage {
                 ((Class)d).setParameterList(plist);
             } else {
                 d = new Function();
-                d.setDynamic(true);
                 ((Function)d).setDynamicallyTyped(true);
             }
+            d.setDynamic(true);
             d.setName(name);
             d.setUnit(getUnit());
             d.setShared(true);
