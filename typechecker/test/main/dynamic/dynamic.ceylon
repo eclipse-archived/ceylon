@@ -295,3 +295,11 @@ void calljsfun() {
         jsfun((a) => a.whatever);
     }
 }
+
+void inferredDynamicParam() {
+    dynamic {
+        foo((x) {
+            print(x);
+        });
+    }
+}

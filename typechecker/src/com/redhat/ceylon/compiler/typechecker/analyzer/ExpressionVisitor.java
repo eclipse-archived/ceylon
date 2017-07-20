@@ -3172,12 +3172,18 @@ public class ExpressionVisitor extends Visitor {
      */
     private void inferParameterTypes(Tree.Primary p,
             Tree.PositionalArgumentList pal) {
+        Type type = p.getTypeModel();
         Tree.Term term = unwrapExpressionUntilTerm(p);
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) term;
             Declaration dec = mte.getDeclaration();
-            if (dec instanceof Functional) {
+            if (dec==null) {
+                if (type==null || type.isUnknown()) {
+                    inferDynamicParameters(pal);
+                }
+            }
+            else if (dec instanceof Functional) {
                 inferParameterTypesDirectly(dec, pal, mte);
             }
             else if (dec instanceof Value) {
@@ -3187,9 +3193,62 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else {
-            inferParameterTypesIndirectly(pal, 
-                    p.getTypeModel());
+            if (type==null || type.isUnknown()) {
+                inferDynamicParameters(pal);
+            }
+            else {
+                inferParameterTypesIndirectly(pal, type);
+            }
         }
+    }
+
+    private void inferDynamicParameters(
+            Tree.PositionalArgumentList pal) {
+        if (dynamic) {
+            for (Tree.PositionalArgument pa: 
+                    pal.getPositionalArguments()) {
+                if (pa instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument arg = 
+                            (Tree.ListedArgument) pa;
+                    Tree.Expression e = arg.getExpression();
+                    if (e!=null) {
+                        Tree.Term et = e.getTerm();
+                        if (et instanceof Tree.FunctionArgument) {
+                            Tree.FunctionArgument anon =
+                                    (Tree.FunctionArgument) 
+                                        et;
+                            for (Tree.ParameterList pl: 
+                                    anon.getParameterLists()) {
+                                for (Tree.Parameter pm: 
+                                        pl.getParameters()) {
+                                    createInferredDynamicParameter(
+                                            anon.getDeclarationModel(), 
+                                            pm.getParameterModel());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void createInferredDynamicParameter(Function m, Parameter pm) {
+        Value model = (Value) pm.getModel(); 
+        if (model==null) {
+            model = new Value();
+            model.setUnit(unit);
+            model.setName(pm.getName());
+            pm.setModel(model);
+            model.setContainer(m);
+            model.setScope(m);
+            m.addMember(model);
+        }
+        model.setType(unit.getUnknownType());
+        model.setDynamic(true);
+        model.setDynamicallyTyped(true);
+        model.setInferred(true);
+        model.setInitializerParameter(pm);
     }
 
     /**
