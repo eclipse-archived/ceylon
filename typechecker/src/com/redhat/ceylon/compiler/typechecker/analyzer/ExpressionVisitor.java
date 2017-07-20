@@ -7844,7 +7844,7 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.MemberOrTypeExpression) p;
             Declaration pd = mte.getDeclaration();
             if (!that.getStaticMethodReference()) {
-                if (pd instanceof Functional) {
+                if (pd instanceof Functional && !pd.isDynamic()) {
                     //this is a direct function ref
                     //it's not a type, it can't have members
                     that.addError("direct function references do not have members");
