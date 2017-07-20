@@ -298,8 +298,8 @@ void calljsfun() {
 
 void inferredDynamicParam() {
     dynamic {
-        foo((x) {
-            print(x);
+        dynamicFunctionWithCallback((param) {
+            print(param);
         });
     }
 }
