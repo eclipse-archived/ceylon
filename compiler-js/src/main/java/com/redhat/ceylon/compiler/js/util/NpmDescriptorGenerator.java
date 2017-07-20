@@ -33,6 +33,16 @@ public class NpmDescriptorGenerator {
     }
     
     private static String name(Module mod) {
+        if (mod.getGroupId()!=null && mod.getArtifactId()!=null) {
+            return "@" + mod.getGroupId() + "/" + mod.getArtifactId();
+            
+        }
+        if (mod.getGroupId()!=null) {
+            return mod.getGroupId();
+        }
+        if (mod.getArtifactId()!=null) {
+            return mod.getArtifactId();
+        }
         String name = mod.getNameAsString();
         return name.contains(":") ? "@" + name.replace(':', '/') : name;
     }
