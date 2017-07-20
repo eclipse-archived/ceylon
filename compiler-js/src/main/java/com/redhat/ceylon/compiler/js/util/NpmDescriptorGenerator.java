@@ -93,6 +93,7 @@ public class NpmDescriptorGenerator {
             files.add(ArtifactContext.RESOURCES);
         }
         desc.put("files", files);
+        desc.put("main", files.get(0));
         StringWriter sw = new StringWriter();
         JSONObject.writeJSON(desc, sw);
         return sw.toString();
