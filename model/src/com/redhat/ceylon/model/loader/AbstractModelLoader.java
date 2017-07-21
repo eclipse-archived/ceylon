@@ -2242,7 +2242,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private boolean isSubPackage(String moduleName, String pkgName) {
         return pkgName.equals(moduleName)
-                || pkgName.startsWith(moduleName+".");
+            || pkgName.startsWith(moduleName+".");
     }
 
     //

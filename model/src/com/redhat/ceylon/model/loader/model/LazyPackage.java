@@ -10,6 +10,7 @@ import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.LanguageModuleCache;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -190,14 +191,14 @@ public class LazyPackage extends Package {
 
     private boolean isForBackend(@NonNull Declaration d, @NonNull Backends backends) {
         return backends.none() 
-                || d.getNativeBackends().none() 
-                || backends.supports(d.getNativeBackends());
+            || d.getNativeBackends().none() 
+            || backends.supports(d.getNativeBackends());
     }
 
     public Declaration getDirectMemberFromSource(String name, Backends backends) {
         for (Declaration d: super.getMembers()) {
-            if (com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable(d) /* && d.isShared() */ 
-            && com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed(name, d)
+            if (ModelUtil.isResolvable(d) /* && d.isShared() */ 
+            && ModelUtil.isNamed(name, d)
             && isForBackend(d, backends)) {
                 return d;
             }

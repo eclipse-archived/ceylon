@@ -139,8 +139,8 @@ public class Class extends ClassOrInterface implements Functional {
     public FunctionOrValue getDefaultConstructorFunctionOrValue() {
         if (hasConstructors()) {
             for (Declaration dec: getMembers()) {
-                if (dec instanceof FunctionOrValue &&
-                        dec.getName()==null) {
+                if (dec instanceof FunctionOrValue 
+                        && dec.getName()==null) {
                     return (FunctionOrValue) dec;
                 }
             }
@@ -156,8 +156,8 @@ public class Class extends ClassOrInterface implements Functional {
         if (parameterList==null) {
             Constructor defaultConstructor = 
                     getDefaultConstructor();
-            return defaultConstructor!=null &&
-                    defaultConstructor.isSealed();
+            return defaultConstructor!=null 
+                && defaultConstructor.isSealed();
         }
         else {
             return super.isSealed();
@@ -177,12 +177,7 @@ public class Class extends ClassOrInterface implements Functional {
                 return null;
             }
             else {
-                if (defaultConstructor.getParameterLists().isEmpty()) {
-                    return null;
-                }
-                else {
-                    return defaultConstructor.getFirstParameterList();
-                }
+                return defaultConstructor.getParameterList();
             }
         }
         else {
@@ -214,7 +209,8 @@ public class Class extends ClassOrInterface implements Functional {
         for (Declaration d : getMembers()) {
             if (d.isParameter() && 
                     ModelUtil.isNamed(name, d)) {
-                FunctionOrValue fov = (FunctionOrValue) d;
+                FunctionOrValue fov = 
+                        (FunctionOrValue) d;
                 return fov.getInitializerParameter();
             }
         }
@@ -274,7 +270,8 @@ public class Class extends ClassOrInterface implements Functional {
     
     @Override
     public boolean isFinal() {
-		return (flags&FINAL)!=0||(flags&ANONYMOUS)!=0;
+		return (flags&FINAL)!=0
+	        || (flags&ANONYMOUS)!=0;
 	}
     
     public void setFinal(boolean fin) {
@@ -461,13 +458,14 @@ public class Class extends ClassOrInterface implements Functional {
             return true;
         }
         else if (dec.isObject()) {
-            return !isAnything() && 
-                !isNull() && !isNullValue();
+            return !isAnything() 
+                && !isNull() && !isNullValue();
         }
         else if (dec.isNull()) {
             return isNull() || isNullValue();
         }
-        else if (dec instanceof Class && equals(dec)) {
+        else if (dec instanceof Class 
+                    && equals(dec)) {
             return true;
         }
         else if (dec.isFinal() &&
@@ -482,15 +480,17 @@ public class Class extends ClassOrInterface implements Functional {
             //TODO: optimize this to avoid walking the
             //      same supertypes multiple times
             Type et = getExtendedType();
-            if (et!=null && 
-                    et.getDeclaration().inherits(dec)) {
+            if (et!=null 
+                    && et.getDeclaration()
+                        .inherits(dec)) {
                 return true;
             }
             if (dec instanceof Interface) {
                 List<Type> sts = getSatisfiedTypes();
                 for (int i=0, s=sts.size(); i<s; i++) {
                     Type st = sts.get(i);
-                    if (st.getDeclaration().inherits(dec)) {
+                    if (st.getDeclaration()
+                            .inherits(dec)) {
                         return true;
                     }
                 }
