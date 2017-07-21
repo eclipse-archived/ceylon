@@ -154,9 +154,9 @@ public class ModelUtil {
     public static Type appliedType(
             TypeDeclaration declaration, 
             Type... typeArguments) {
-        if (declaration==null) return null;
-        return declaration.appliedType(null, 
-                asList(typeArguments));
+        return declaration==null ? null : 
+            declaration.appliedType(null, 
+                    asList(typeArguments));
     }
 
     public static boolean isResolvable(Declaration declaration) {

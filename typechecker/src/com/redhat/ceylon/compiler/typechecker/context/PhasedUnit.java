@@ -455,7 +455,7 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
     }
 
     public synchronized void analyseUsage() {
-        if (! usageAnalyzed) {
+        if (!usageAnalyzed) {
             ReferenceCounter rc = new ReferenceCounter();
             rootNode.visit(rc.setExceptionHandler(this));
             rootNode.visit(new UsageVisitor(rc).setExceptionHandler(this));

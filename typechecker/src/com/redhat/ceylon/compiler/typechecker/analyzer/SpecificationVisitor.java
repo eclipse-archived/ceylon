@@ -1208,7 +1208,7 @@ public class SpecificationVisitor extends Visitor {
         lastContinue = null;
         endsInReturnThrow = false;
         endsInBreak = false;
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             loopDepth = 0;
             brokenLoopDepth = 0;
             specificationDisabled = true;
@@ -1267,6 +1267,22 @@ public class SpecificationVisitor extends Visitor {
         endsInBreak = of;
         lastContinue = olc;
     }
+
+    private boolean isSameDeclaration(Tree.Declaration that) {
+        Declaration dec = that.getDeclarationModel();
+        if (dec instanceof Class && dec.isAbstraction()) {
+            return dec==declaration
+                || dec.getOverloads().contains(declaration);
+        }
+        else {
+            return dec==declaration;
+        }
+    }
+    
+    private boolean isSameDeclaration(Tree.TypedArgument that) {
+        Declaration dec = that.getDeclarationModel();
+        return dec==declaration;
+    }
     
     @Override
     public void visit(Tree.Constructor that) {
@@ -1304,7 +1320,7 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.TypedArgument that) {
         boolean oile = inLazyExpression;
         inLazyExpression = declared&&(inExtends||inParameter);
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             loopDepth = 0;
             brokenLoopDepth = 0;
             specificationDisabled = true;
@@ -1348,7 +1364,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.MethodDeclaration that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             if (that.getSpecifierExpression()!=null) {
                 specify();
                 super.visit(that);
@@ -1396,7 +1412,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.MethodDefinition that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             declare();
             specify();
         }
@@ -1405,7 +1421,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.MethodArgument that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             declare();
             specify();
         }
@@ -1415,7 +1431,7 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.Variable that) {
         super.visit(that);
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             specify();
         }
     }
@@ -1454,14 +1470,14 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeParameterDeclaration that) {
         super.visit(that);
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             specify();
         }
     }
     
     @Override
     public void visit(Tree.AttributeDeclaration that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             Tree.SpecifierOrInitializerExpression sie = 
                     that.getSpecifierOrInitializerExpression();
             if (sie!=null) {
@@ -1516,7 +1532,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeGetterDefinition that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             declare();
             super.visit(that);        
             specify();
@@ -1539,7 +1555,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeArgument that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             declare();
             specify();
         }
@@ -1548,7 +1564,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectDefinition that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             declare();
             specify();
         }
@@ -1557,7 +1573,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ObjectArgument that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             declare();
             specify();
         }
@@ -1613,7 +1629,7 @@ public class SpecificationVisitor extends Visitor {
                 public void visit(Tree.Declaration that) {
                     super.visit(that);
                     if (declarationSection &&
-                            that.getDeclarationModel()==declaration) {
+                            isSameDeclaration(that)) {
                         definedInDeclarationSection = true;
                     }
                     if (that==lastExecutableStatement) {
@@ -1690,7 +1706,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ClassOrInterface that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             declare();
             specify();
         }
@@ -1699,7 +1715,7 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TypeAliasDeclaration that) {
-        if (that.getDeclarationModel()==declaration) {
+        if (isSameDeclaration(that)) {
             declare();
             specify();
         }
