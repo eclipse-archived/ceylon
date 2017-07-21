@@ -914,7 +914,7 @@ public class ClassTransformer extends AbstractTransformer {
             args.add(argExpr);
         }
         annoCtor.body(at(def).Exec(
-                make().Apply(null,  naming.makeThis(), args.toList())));
+                make().Apply(null, naming.makeThis(), args.toList())));
     }
 
     private JCNewClass instantiateAnnotationClass(
@@ -6003,6 +6003,9 @@ public class ClassTransformer extends AbstractTransformer {
     protected void transformConstructorName(
             ClassDefinitionBuilder classBuilder, ListBuffer<JCTree> result,
             Constructor ctor, Class clz, int classMods, String ctorName, DeclNameFlag...declFlags) {
+        if (!classBuilder.names.add(ctor.getName())) {
+            return;
+        }
         ClassDefinitionBuilder constructorNameClass = ClassDefinitionBuilder.klass(this, 
                 ctorName, null, true);
         JCVariableDecl constructorNameConst;

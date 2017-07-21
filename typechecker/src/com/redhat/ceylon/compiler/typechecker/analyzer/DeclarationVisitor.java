@@ -556,9 +556,7 @@ public abstract class DeclarationVisitor extends Visitor {
                     if (member!=null && member!=model) {
                         boolean dup = false;
                         boolean possibleOverloadedMethod = 
-                                !(that instanceof Tree.Constructor ||
-                                  that instanceof Tree.Enumerated) 
-                                && member instanceof Function 
+                                   member instanceof Function 
                                 && model instanceof Function 
                                 && scope instanceof ClassOrInterface 
                                 && !member.isNative() 

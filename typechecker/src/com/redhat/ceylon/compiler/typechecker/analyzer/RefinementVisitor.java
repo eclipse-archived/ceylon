@@ -1632,8 +1632,14 @@ public class RefinementVisitor extends Visitor {
         }
         
         if (isOverloadedVersion(dec)) {
-            that.addError("duplicate declaration: the name '" 
-                    + name + "' is not unique in this scope");
+            if (isConstructor(dec)) {
+                checkOverloadedAnnotation(that, dec);
+                checkOverloadedParameters(that, dec);
+            }
+            else {
+                that.addError("duplicate declaration: the name '" 
+                        + name + "' is not unique in this scope");
+            }
         }
         else if (isAbstraction(dec)) {
             //validation of default constructor overloading
@@ -1673,8 +1679,7 @@ public class RefinementVisitor extends Visitor {
                 Declaration member = 
                         intersectionOfSupertypes(clazz)
                             .getDeclaration()
-                            .getMember(name, 
-                                        null, false);
+                            .getMember(name, null, false);
                 if (member!=null && 
                         member.isShared() &&
                         !isConstructor(member)) {

@@ -27,6 +27,8 @@ import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PUBLIC;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.STATIC;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -157,6 +159,8 @@ public class ClassDefinitionBuilder
     public String toString() {
         return "CDB for " + (isInterface() ? "interface " : "class ") + name;
     }
+    
+    Set<String> names = new HashSet<>();
 
     ClassDefinitionBuilder getContainingClassBuilder() {
         return containingClassBuilder;
