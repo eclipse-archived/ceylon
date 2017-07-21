@@ -170,10 +170,7 @@ public class Class extends ClassOrInterface implements Functional {
     }
     
     public ParameterList getParameterList() {
-        if (isAbstraction()) {
-            return null;
-        }
-        else if (hasConstructors()) {
+        if (hasConstructors()) {
             Constructor defaultConstructor = 
                     getDefaultConstructor();
             return defaultConstructor==null ? null : 

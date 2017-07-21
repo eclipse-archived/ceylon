@@ -965,8 +965,6 @@ public abstract class DeclarationVisitor extends Visitor {
                 c.setOverloaded(true);
                 c.setAbstraction(true);
                 c.setOverloads(overloads);
-                that.addUsageWarning(Warning.unknownWarning, 
-                        "overloaded class: " + c.getOverloads());
             }
             
         }
