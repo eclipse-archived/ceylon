@@ -941,7 +941,7 @@ public abstract class DeclarationVisitor extends Visitor {
     //objects themselves are not represented as 
     //overloaded since we never look them up directly
     //at the invocation site
-    private void initClassOverloads(Scope scope, 
+    private static void initClassOverloads(Scope scope, 
             Class abstraction, Unit unit) {
         ArrayList<Declaration> overloads = 
                 new ArrayList<Declaration>(3);
