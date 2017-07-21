@@ -160,8 +160,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         //that.setDeclarationModel(model);
         unit.addDeclaration(model);
-        Scope sc = getContainer(that);
-        sc.addMember(model);
+        getContainer(that).addMember(model);
     }
 
     private void visitArgument(Tree.NamedArgument that, 
@@ -918,7 +917,8 @@ public abstract class DeclarationVisitor extends Visitor {
         if (c.isSealed() && c.isFormal() && 
                 c.isClassOrInterfaceMember()) {
             ClassOrInterface container = 
-                    (ClassOrInterface) c.getContainer();
+                    (ClassOrInterface) 
+                        c.getContainer();
             if (!container.isSealed()) {
                 that.addError("sealed formal member class does not belong to a sealed type", 
                         1801);
@@ -926,6 +926,49 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (c.isNativeImplementation()) {
             addMissingHeaderMembers(c);
+        }
+        
+        if (c.getDefaultConstructor()!=null) {
+            
+            boolean overloaded = false;
+            for (Declaration d: c.getMembers()) {
+                if (d instanceof Constructor 
+                        && d.getName()==null
+                        && d!=c.getDefaultConstructor()) {
+                    overloaded = true;
+                    break;
+                }
+            }
+            
+            if (overloaded) {
+                ArrayList<Declaration> overloads = 
+                        new ArrayList<Declaration>();
+                
+                for (Declaration d: c.getMembers()) {
+                    if (d instanceof Constructor 
+                            && d.getName()==null) {
+                        Constructor cc = (Constructor) d;
+                        Class overload = new Class();
+                        overload.setName(c.getName());
+                        overload.setUnit(unit);
+                        overload.setScope(c.getScope());
+                        overload.setContainer(c.getContainer());
+                        overload.setOverloaded(true);
+                        overload.setExtendedType(c.getType());
+                        overload.setParameterList(cc.getParameterList());
+                        overloads.add(overload);
+                        unit.addDeclaration(overload);
+                        getContainer(that).addMember(overload);
+                    }
+                }
+                
+                c.setOverloaded(true);
+                c.setAbstraction(true);
+                c.setOverloads(overloads);
+                that.addUsageWarning(Warning.unknownWarning, 
+                        "overloaded class: " + c.getOverloads());
+            }
+            
         }
     }
     
@@ -978,16 +1021,16 @@ public abstract class DeclarationVisitor extends Visitor {
     public void visit(Tree.Constructor that) {
         Constructor c = new Constructor();
         that.setConstructor(c);
-        if (scope instanceof Class) {
-            Class clazz = (Class) scope;
-            if (that.getIdentifier()==null && 
-                    clazz.getDefaultConstructor()!=null) {
-                that.addError("duplicate default constructor: '" +
-                        clazz.getName() + 
-                        "' may have at most one default constructor");
-                unit.getDuplicateDeclarations().add(c);
-            }
-        }
+//        if (scope instanceof Class) {
+//            Class clazz = (Class) scope;
+//            if (that.getIdentifier()==null && 
+//                    clazz.getDefaultConstructor()!=null) {
+//                that.addError("duplicate default constructor: '" +
+//                        clazz.getName() + 
+//                        "' may have at most one default constructor");
+//                unit.getDuplicateDeclarations().add(c);
+//            }
+//        }
         visitDeclaration(that, c, false);
         Type at;
         Scope realScope = getRealScope(scope);

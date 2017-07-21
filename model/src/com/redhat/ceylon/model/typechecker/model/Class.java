@@ -170,15 +170,14 @@ public class Class extends ClassOrInterface implements Functional {
     }
     
     public ParameterList getParameterList() {
-        if (hasConstructors()) {
+        if (isAbstraction()) {
+            return null;
+        }
+        else if (hasConstructors()) {
             Constructor defaultConstructor = 
                     getDefaultConstructor();
-            if (defaultConstructor==null) {
-                return null;
-            }
-            else {
-                return defaultConstructor.getParameterList();
-            }
+            return defaultConstructor==null ? null : 
+                defaultConstructor.getParameterList();
         }
         else {
             return parameterList;

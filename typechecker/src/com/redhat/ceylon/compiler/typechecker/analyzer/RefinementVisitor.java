@@ -166,7 +166,7 @@ public class RefinementVisitor extends Visitor {
             }
             else {
                 checkNonMember(that, dec);
-                if (isOverloadedVersion(dec)) {
+                if (isOverloadedVersion(dec) && !(dec instanceof Class)) {
                     that.addError("duplicate declaration: the name '" 
                             + dec.getName() 
                             + "' is not unique in this scope");
