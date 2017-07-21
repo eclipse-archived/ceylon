@@ -167,3 +167,18 @@ shared void run() {
 native("js")
 shared void run() {}
 
+class StaticClass {
+    shared overloaded static void x() { print("bye"); }
+    shared overloaded static void x(String s) { print(s); }
+    shared overloaded static void x(Object o) { print(o); }
+    shared overloaded static void x(Integer i) => print(10 * i);
+    shared new () {}
+}
+
+void testStaticClass() {
+    StaticClass.x();
+    StaticClass.x(StaticClass());
+    StaticClass.x("hello");
+    StaticClass.x(10);
+}
+
