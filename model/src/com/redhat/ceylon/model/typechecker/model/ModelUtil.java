@@ -165,6 +165,10 @@ public class ModelUtil {
             && !declaration.isAnonymous(); //don't return the type associated with an object dec 
     }
     
+    public static boolean isDefaultConstructor(Declaration d) {
+        return d instanceof Constructor && d.getName()==null;
+    }
+    
     public static boolean isAbstraction(Declaration d) {
         return d!=null && d.isAbstraction();
     }

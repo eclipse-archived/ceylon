@@ -26,6 +26,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAnonymousClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isDefaultConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
@@ -570,7 +571,9 @@ public abstract class DeclarationVisitor extends Visitor {
                             // an overloaded method - then
                             // further checking happens in
                             // RefinementVisitor
-                            initOverload(model, member, 
+                            initFunctionOverload(
+                                    (Function) model, 
+                                    (Function) member, 
                                     scope, unit);
                         }
                         else if (canBeNative(member) 
@@ -584,7 +587,9 @@ public abstract class DeclarationVisitor extends Visitor {
                             if (possibleOverloadedMethod) {
                                 //not a legal overload but treat 
                                 //it as overloading anyway
-                                if (initOverload(model, member, 
+                                if (initFunctionOverload(
+                                        (Function) model, 
+                                        (Function) member, 
                                         scope, unit)) {
                                     that.addError("duplicate declaration: the name '" + 
                                             name + "' is not unique in this scope");
@@ -656,15 +661,11 @@ public abstract class DeclarationVisitor extends Visitor {
         }
     }
 
-    private static boolean initOverload(
-            Declaration model, Declaration member,
+    //An overloaded function is represented in
+    //the model with multiple Function objects
+    private static boolean initFunctionOverload(
+            Function model, Function member,
             Scope scope, Unit unit) {
-        //even though Ceylon does not 
-        //officially support overloading,
-        //we actually do let you overload
-        //a method that is refining an
-        //overloaded method inherited from
-        //a Java superclass
         Function abstraction;
         Function method = 
                 (Function) member;
@@ -928,46 +929,39 @@ public abstract class DeclarationVisitor extends Visitor {
             addMissingHeaderMembers(c);
         }
         
-        if (c.getDefaultConstructor()!=null) {
-            
-            boolean overloaded = false;
-            for (Declaration d: c.getMembers()) {
-                if (d instanceof Constructor 
-                        && d.getName()==null
-                        && d!=c.getDefaultConstructor()) {
-                    overloaded = true;
-                    break;
-                }
-            }
-            
-            if (overloaded) {
-                ArrayList<Declaration> overloads = 
-                        new ArrayList<Declaration>();
-                
-                for (Declaration d: c.getMembers()) {
-                    if (d instanceof Constructor 
-                            && d.getName()==null) {
-                        Constructor cc = (Constructor) d;
-                        Class overload = new Class();
-                        overload.setName(c.getName());
-                        overload.setUnit(unit);
-                        overload.setScope(c.getScope());
-                        overload.setContainer(c.getContainer());
-                        overload.setOverloaded(true);
-                        overload.setExtendedType(c.getType());
-                        overload.setParameterList(cc.getParameterList());
-                        overloads.add(overload);
-                        unit.addDeclaration(overload);
-                        getContainer(that).addMember(overload);
-                    }
-                }
-                
-                c.setOverloaded(true);
-                c.setAbstraction(true);
-                c.setOverloads(overloads);
-            }
-            
+        if (c.isAbstraction()) {
+            initClassOverloads(getContainer(that), 
+                    c, unit);
         }
+    }
+
+    //A class with an overloaded default constructor
+    //is represented in the model as an overloaded
+    //class with multiple Class objects. The Constructor
+    //objects themselves are not represented as 
+    //overloaded since we never look them up directly
+    //at the invocation site
+    private void initClassOverloads(Scope scope, 
+            Class abstraction, Unit unit) {
+        ArrayList<Declaration> overloads = 
+                new ArrayList<Declaration>(3);
+        for (Declaration d: abstraction.getMembers()) {
+            if (isDefaultConstructor(d)) {
+                Constructor cc = (Constructor) d;
+                Class overload = new Class();
+                overload.setName(abstraction.getName());
+                overload.setUnit(unit);
+                overload.setScope(abstraction.getScope());
+                overload.setContainer(abstraction.getContainer());
+                overload.setOverloaded(true);
+                overload.setExtendedType(abstraction.getType());
+                overload.setParameterList(cc.getParameterList());
+                overloads.add(overload);
+                unit.addDeclaration(overload);
+                scope.addMember(overload);
+            }
+        }            
+        abstraction.setOverloads(overloads);
     }
     
     @Override
@@ -1019,16 +1013,17 @@ public abstract class DeclarationVisitor extends Visitor {
     public void visit(Tree.Constructor that) {
         Constructor c = new Constructor();
         that.setConstructor(c);
-//        if (scope instanceof Class) {
-//            Class clazz = (Class) scope;
-//            if (that.getIdentifier()==null && 
-//                    clazz.getDefaultConstructor()!=null) {
-//                that.addError("duplicate default constructor: '" +
-//                        clazz.getName() + 
-//                        "' may have at most one default constructor");
-//                unit.getDuplicateDeclarations().add(c);
-//            }
-//        }
+        if (scope instanceof Class) {
+            Class clazz = (Class) scope;
+            if (that.getIdentifier()==null && 
+                clazz.getDefaultConstructor()!=null) {
+                //found an overloaded default constructor
+                //we'll set up the class overloads later
+                //when exiting visit(Tree.ClassDefinition)
+                clazz.setOverloaded(true);
+                clazz.setAbstraction(true);
+            }
+        }
         visitDeclaration(that, c, false);
         Type at;
         Scope realScope = getRealScope(scope);
