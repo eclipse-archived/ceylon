@@ -160,9 +160,9 @@ public class ModelUtil {
     }
 
     public static boolean isResolvable(Declaration declaration) {
-        return declaration.getName()!=null &&
-            !declaration.isSetter() && //return getters, not setters
-            !declaration.isAnonymous(); //don't return the type associated with an object dec 
+        return declaration.getName()!=null 
+            && !declaration.isSetter() //return getters, not setters
+            && !declaration.isAnonymous(); //don't return the type associated with an object dec 
     }
     
     public static boolean isAbstraction(Declaration d) {
@@ -207,9 +207,8 @@ public class ModelUtil {
             }
             Functional f = (Functional) dec;
             Unit unit = dec.getUnit();
-            List<ParameterList> pls = f.getParameterLists();
-            if (pls!=null && !pls.isEmpty()) {
-                ParameterList pl = pls.get(0);
+            ParameterList pl = f.getFirstParameterList();
+            if (pl!=null) {
                 List<Parameter> params = pl.getParameters();
                 int size = params.size();
                 boolean hasSeqParam = 
@@ -2341,8 +2340,9 @@ public class ModelUtil {
     }
 
     public static boolean isTypeUnknown(Type type) {
-        return type==null || type.getDeclaration()==null ||
-                type.containsUnknowns();
+        return type==null 
+            || type.getDeclaration()==null 
+            || type.containsUnknowns();
     }
     
     public static boolean isVariadic(

@@ -10740,19 +10740,20 @@ public class ExpressionVisitor extends Visitor {
                 List<Declaration> overloads = 
                         dec.getOverloads();
                 Declaration found = null;
-                for(Declaration overload : overloads){
-                    if(overload.isCoercionPoint())
-                        continue;
-                    if(found == null)
-                        found = overload;
-                    else{
-                        // give up if we find two
-                        found = null;
-                        break;
+                for (Declaration overload: overloads) {
+                    if (!overload.isCoercionPoint()) {
+                        if (found == null) {
+                            found = overload;
+                        }
+                        else {
+                            // give up if we find two
+                            return dec;
+                        }
                     }
                 }
-                if(found != null)
+                if (found != null) {
                     return found;
+                }
             }
         }
         return dec;
