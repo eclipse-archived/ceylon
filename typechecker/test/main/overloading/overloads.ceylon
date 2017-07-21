@@ -182,3 +182,21 @@ void testStaticClass() {
     StaticClass.x(10);
 }
 
+class Thing {
+    shared overloaded new () {}
+    shared overloaded new (Object oj) {}
+    shared overloaded new (String string) {}
+    shared overloaded new (Integer integer) {}
+    @error shared overloaded new (String string) {}
+}
+
+class Wrong {
+    @error shared new () {}
+    @error shared new (Integer i) {}
+}
+
+void tryit() {
+    Thing x = Thing();
+    Thing y = Thing("");
+    Thing z = Thing(1);
+}
