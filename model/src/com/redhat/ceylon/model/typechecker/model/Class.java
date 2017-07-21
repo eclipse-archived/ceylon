@@ -218,7 +218,7 @@ public class Class extends ClassOrInterface implements Functional {
     
     @Override
     public boolean isOverloaded() {
-    	return (flags&OVERLOADED)!=0;
+        return (flags&OVERLOADED)!=0;
     }
     
     public void setOverloaded(boolean overloaded) {
@@ -228,8 +228,7 @@ public class Class extends ClassOrInterface implements Functional {
         else {
             flags&=(~OVERLOADED);
         }
-
-	}
+    }
     
     @Override
     public Type getExtendedType() {
@@ -269,18 +268,18 @@ public class Class extends ClassOrInterface implements Functional {
     
     @Override
     public boolean isFinal() {
-		return (flags&FINAL)!=0
-	        || (flags&ANONYMOUS)!=0;
-	}
+        return (flags&FINAL)!=0
+            || (flags&ANONYMOUS)!=0;
+    }
     
     public void setFinal(boolean fin) {
-		if (fin) {
-		    flags|=FINAL;
-		}
-		else {
-		    flags&=(~FINAL);
-		}
-	}
+        if (fin) {
+            flags|=FINAL;
+        }
+        else {
+            flags&=(~FINAL);
+        }
+    }
 
     @Override
     public boolean isDeclaredVoid() {
