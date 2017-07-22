@@ -130,7 +130,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.file", "1.1.0")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.http", "1.1.0")); // optional
         archives.add(getRepoJar(ceylonRepo, "com.google.guava", "18.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.lang3", "3.4")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.lang3", "3.6")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-artifact", "3.3.9")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-model", "3.3.9")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-model-builder", "3.3.9")); // optional
@@ -159,8 +159,8 @@ public class CeylonClassLoader extends URLClassLoader {
         // For aether and webdav/sardine
         archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.5.3")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.4.6")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.1.1")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.8")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.2")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.10")); // optional
 
         return archives;
     }

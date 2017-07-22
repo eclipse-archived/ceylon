@@ -8,8 +8,8 @@ ext {
     antDep                  = 'org.apache.ant:ant:1.8.2'
     antContribDep           = 'ant-contrib:ant-contrib:1.0b3'
     antlrDep                = 'org.antlr:antlr:3.4' // complete
-    apacheCommonsCodecDep   = 'commons-codec:commons-codec:1.8'
-    apacheCommonsLoggingDep = 'commons-logging:commons-logging:1.1.1'
+    apacheCommonsCodecDep   = 'commons-codec:commons-codec:1.10'
+    apacheCommonsLoggingDep = 'commons-logging:commons-logging:1.2'
     jbossDep                = 'org.jboss.modules:jboss-modules:1.4.4.Final'
 //    jbossShrinkwrapDep      = ':1.0.0.cr-1' // api, impl-base, spi
     // org.jboss:jandex:2.0.0.Final
@@ -46,7 +46,7 @@ ext {
 //plexus-utils.lib=${runtime.repo.path}/org/codehaus/plexus/plexus-utils/3.0.22/org.codehaus.plexus.plexus-utils-3.0.22.jar
 //
 //guava.lib=${runtime.repo.path}/com/google/guava/18.0/com.google.guava-18.0.jar
-//commons-lang3.lib=${runtime.repo.path}/org/apache/commons/lang3/3.4/org.apache.commons.lang3-3.4.jar
+//commons-lang3.lib=${runtime.repo.path}/org/apache/commons/lang3/3.6/org.apache.commons.lang3-3.6.jar
 //
 //maven-support.lib=${aether-api.lib}:${aether-spi.lib}:${aether-util.lib}:${aether-impl.lib}:\
 // ${aether-connector-basic.lib}:${aether-transport-file.lib}:${aether-transport-http.lib}:\

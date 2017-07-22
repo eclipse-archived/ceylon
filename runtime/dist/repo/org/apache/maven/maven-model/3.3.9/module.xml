@@ -27,7 +27,7 @@
         <resource-root path="org.apache.maven.maven-model-3.3.9.jar"/>
     </resources>
     <dependencies>
-        <module name="org.apache.commons.lang3" slot="3.4"/>
+        <module name="org.apache.commons.lang3" slot="3.6"/>
         <module name="org.codehaus.plexus.plexus-utils" slot="3.0.22"/>
     </dependencies>
 </module>
