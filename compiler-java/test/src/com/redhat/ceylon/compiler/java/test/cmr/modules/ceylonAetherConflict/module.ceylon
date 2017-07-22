@@ -19,6 +19,6 @@
  */
 native("jvm")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict "1" {
-    import org.apache.httpcomponents.httpclient "4.3.2";
+    import org.apache.httpcomponents.httpclient "4.5.3";
     import com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict2 "1";
 }

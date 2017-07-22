@@ -36,6 +36,6 @@
         <module name="org.eclipse.aether.api" slot="1.1.0" export="true"/>
         <module name="org.eclipse.aether.spi" slot="1.1.0" export="true"/>
         <module name="org.eclipse.aether.util" slot="1.1.0"/>
-        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
+        <module name="org.apache.httpcomponents.httpclient" slot="4.5.3"/>
     </dependencies>
 </module>
