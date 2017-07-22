@@ -133,7 +133,7 @@ sardine-314.jar (https://code.google.com/p/sardine/) is distributed with this
 software under the Apache License, Version 2.0 (see the LICENSE-ASL file). 
 
 
-slf4j-api-1.6.1.jar (http://slf4j.org) is distributed with this software under 
+slf4j-api-1.7.25.jar (http://slf4j.org) is distributed with this software under 
 the following license:
 
     Copyright (c) 2004-2011 QOS.ch 
@@ -157,7 +157,7 @@ the following license:
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
     DEALINGS IN THE SOFTWARE.
     
-slf4j-simple-1.6.1.jar (http://slf4j.org) is distributed with this software under 
+slf4j-simple-1.7.25.jar (http://slf4j.org) is distributed with this software under 
 the following license:
 
     Copyright (c) 2004-2011 QOS.ch 

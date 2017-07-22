@@ -130,7 +130,7 @@ public abstract class CompilerTests {
         "./../common/build/classes",
         "./../runtime/build/classes",
         "./../runtime/dist/repo/org/jboss/modules/" + jbmv + "/org.jboss.modules-" + jbmv + ".jar",
-        "./../runtime/dist/repo/org/slf4j/api/1.6.1/org.slf4j.api-1.6.1.jar",
+        "./../runtime/dist/repo/org/slf4j/api/1.7.25/org.slf4j.api-1.7.25.jar",
         LANGUAGE_MODULE_CAR,
     };
 

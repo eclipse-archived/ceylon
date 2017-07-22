@@ -1,7 +1,7 @@
 ext {
     mavenVer       = '3.3.9'
     mavenAetherVer = '1.1.0'
-    slf4jVer       = '1.6.1'
+    slf4jVer       = '1.7.25'
     bndVer         = '3.2.0'
     osgiVer        = '4.3.1'
 
