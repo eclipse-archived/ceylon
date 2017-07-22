@@ -13,7 +13,7 @@ ext {
     jbossDep                = 'org.jboss.modules:jboss-modules:1.4.4.Final'
 //    jbossShrinkwrapDep      = ':1.0.0.cr-1' // api, impl-base, spi
     // org.jboss:jandex:2.0.0.Final
-    jsonSmartDep            = 'net.minidev:json-smart:1.1.1'
+    jsonSmartDep            = 'net.minidev:json-smart:1.3.1'
     junitDep                = 'junit:junit:4.11.0'
     markdownPapersDep       = 'org.tautua.markdownpapers:markdownpapers-core:1.2.7'
     mavenAetherApiDep       = "org.eclipse.aether:aether-api:${mavenAetherVer}"
