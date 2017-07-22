@@ -50,6 +50,8 @@ import org.tautua.markdownpapers.ast.Ruler;
 import org.tautua.markdownpapers.ast.SimpleNode;
 import org.tautua.markdownpapers.ast.Tag;
 import org.tautua.markdownpapers.ast.TagAttribute;
+import org.tautua.markdownpapers.ast.TagAttributeList;
+import org.tautua.markdownpapers.ast.TagBody;
 import org.tautua.markdownpapers.ast.Text;
 import org.tautua.markdownpapers.ast.Visitor;
 
@@ -258,23 +260,37 @@ public class DocBookMarkdownVisitor implements Visitor {
     public void visit(SimpleNode node) {
         throw new IllegalArgumentException("can not process this element");
     }
+    
+    @Override
+    public void visit(TagBody node) {
+        node.childrenAccept(this);
+    }
+    
+    @Override
+    public void visit(TagAttributeList node) {
+        node.childrenAccept(this);
+    }
+
+    @Override
+    public void visit(TagAttribute node) {
+        append(SPACE);
+        append(node.getName());
+        append("=\"");
+        append(node.getValue());
+        append("\"");
+    }
 
     public void visit(Tag node) {
         append("<");
         append(node.getName());
-        for (TagAttribute attribute : node.getAttributes()) {
-            append(SPACE);
-            append(attribute.getName());
-            append("=\"");
-            append(attribute.getValue());
-            append("\"");
-        }
+        TagAttributeList atts = node.getAttributeList();
+        atts.accept(this);
 
-        if(node.jjtGetNumChildren() == 0) {
+        if(node.getBody().jjtGetNumChildren() == 0) {
             append("/>");
         } else {
             append(">");
-            node.childrenAccept(this);
+            node.getBody().childrenAccept(this);
             append("</");
             append(node.getName());
             append(">");
@@ -320,4 +336,5 @@ public class DocBookMarkdownVisitor implements Visitor {
             throw new RuntimeException(e);
         }
     }
+
 }
