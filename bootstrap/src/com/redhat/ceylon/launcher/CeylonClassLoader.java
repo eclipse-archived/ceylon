@@ -147,7 +147,7 @@ public class CeylonClassLoader extends URLClassLoader {
         // For the JS backend
         archives.add(getRepoJar(ceylonRepo, "net.minidev.json-smart", "1.3.1"));
         // For the "doc" tool
-        archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.4.4"));
+        archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.3.4"));
         archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.13"));
         // For the --out http:// functionality of the compiler (sardine)
         if(includeSlf4j){

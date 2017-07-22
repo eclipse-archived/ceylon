@@ -152,7 +152,7 @@ public class CeylonModuleLoader extends ModuleLoader
         ANTLR_ANTLR = ModuleIdentifier.create("org.antlr.antlr", "2.7.7");
         ANTLR_STRINGTEMPLATE = ModuleIdentifier.create("org.antlr.stringtemplate", "3.2.1");
         ANTLR_RUNTIME = ModuleIdentifier.create("org.antlr.runtime", "3.4");
-        MARKDOWN_PAPERS = ModuleIdentifier.create("org.tautua.markdownpapers.core", "1.4.4");
+        MARKDOWN_PAPERS = ModuleIdentifier.create("org.tautua.markdownpapers.core", "1.3.4");
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");
 
