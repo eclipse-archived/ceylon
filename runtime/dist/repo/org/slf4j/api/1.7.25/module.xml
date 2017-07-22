@@ -22,18 +22,18 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="org.slf4j.simple" slot="1.6.1">
+<module xmlns="urn:jboss:module:1.0" name="org.slf4j.api" slot="1.7.25">
     <properties>
         <property name="groupId" value="org.slf4j"/>
-        <property name="artifactId" value="slf4j-simple"/>
+        <property name="artifactId" value="slf4j-api"/>
     </properties>
 
     <resources>
-        <resource-root path="org.slf4j.simple-1.6.1.jar"/>
+        <resource-root path="org.slf4j.api-1.7.25.jar"/>
     </resources>
 
     <dependencies>
-        <module name="org.slf4j.api" slot="1.6.1" export="true"/>
         <module name="java.base" slot="7" export="true"/>
+        <module name="org.slf4j.simple" slot="1.7.25" optional="true"/>
     </dependencies>
 </module>
