@@ -137,10 +137,12 @@ public class ModuleVisitor extends Visitor {
 
     private String getVersionString(
             Tree.QuotedLiteral quoted, 
-            Tree.Identifier constantVersion,
+            Tree.BaseMemberExpression constantVersion,
             Node that) {
         if (constantVersion!=null) {
-            String constVers = constants.get(constantVersion.getText());
+            String name = 
+                    constantVersion.getIdentifier().getText();
+            String constVers = constants.get(name);
             if (constVers==null) {
                 constantVersion.addError("constant not defined");
                 return "0";

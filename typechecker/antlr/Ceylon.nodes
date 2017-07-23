@@ -38,7 +38,7 @@
     QUOTED_LITERAL? artifact
     QUOTED_LITERAL? classifier
     QUOTED_LITERAL? version
-    IDENTIFIER? constantVersion
+    BASE_MEMBER_EXPRESSION? constantVersion
     string name;)
 
 "A list of packages imported by a compilation unit."

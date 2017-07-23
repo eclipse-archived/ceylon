@@ -232,7 +232,10 @@ importModule returns [ImportModule importModule]
           expecting=SEMICOLON; }
       |
         c=memberName
-        { $importModule.setConstantVersion($c.identifier); 
+        { BaseMemberExpression bme = new BaseMemberExpression(null);
+          bme.setIdentifier($c.identifier);
+          bme.setTypeArguments(new InferredTypeArguments(null)); 
+          $importModule.setConstantVersion(bme); 
           expecting=SEMICOLON; }
       )?
       SEMICOLON
