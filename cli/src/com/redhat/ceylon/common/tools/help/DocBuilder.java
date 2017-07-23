@@ -140,7 +140,7 @@ public class DocBuilder {
             Synopsis s2 = new Synopsis();
             s2.setInvocation(Tools.progName());
             
-            ArrayList<Object> args = new ArrayList<>(model.getOptions());
+            ArrayList<Object> args = new ArrayList<Object>(model.getOptions());
             args.remove(model.getOption("version"));
             /*ArgumentModel<?> options = new ArgumentModel();
             options.setMultiplicity(Multiplicity._0_OR_MORE);
@@ -406,7 +406,7 @@ public class DocBuilder {
 
     private List<Object> optionsAndArguments(ToolModel<?> model) {
         List<OptionModel<?>> options = sortedOptions(model.getOptions());
-        List<Object> optionsAndArguments = new ArrayList<>(options);
+        List<Object> optionsAndArguments = new ArrayList<Object>(options);
         optionsAndArguments.addAll(model.getArguments());
         return optionsAndArguments;
     }
