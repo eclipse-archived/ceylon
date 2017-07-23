@@ -95,7 +95,8 @@ public class ModuleVisitor extends Visitor {
         Tree.Identifier id = that.getIdentifier();
         if (id!=null) {
             String name = id.getText();
-            Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+            Tree.SpecifierOrInitializerExpression sie = 
+                    that.getSpecifierOrInitializerExpression();
             if (sie!=null) {
                 Tree.Expression ex = sie.getExpression();
                 if (ex!=null) {

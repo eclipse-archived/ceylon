@@ -168,19 +168,26 @@ importModuleList returns [ImportModuleList importModuleList]
     : LBRACE
       { $importModuleList = new ImportModuleList($LBRACE); }
       (
-        c=inferredAttributeDeclaration
-        { $c.declaration.setAnnotationList(new AnnotationList(null));
-          $importModuleList.addConstant($c.declaration); }
-      )*
-      (
         compilerAnnotations annotations
-        importModule
-        { if ($importModule.importModule!=null)
-              $importModuleList.addImportModule($importModule.importModule); 
-          if ($importModule.importModule!=null)
-              $importModule.importModule.setAnnotationList($annotations.annotationList);
-          if ($importModule.importModule!=null)
-              $importModule.importModule.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+        (
+          c=inferredAttributeDeclaration
+          { $c.declaration.setAnnotationList(new AnnotationList(null));
+            $importModuleList.addConstant($c.declaration);
+            if ($c.declaration!=null)
+                $c.declaration.setAnnotationList($annotations.annotationList);
+            if ($c.declaration!=null)
+                $c.declaration.getCompilerAnnotations()
+                    .addAll($compilerAnnotations.annotations); }
+        |
+          importModule
+          { if ($importModule.importModule!=null)
+                $importModuleList.addImportModule($importModule.importModule); 
+            if ($importModule.importModule!=null)
+                $importModule.importModule.setAnnotationList($annotations.annotationList);
+            if ($importModule.importModule!=null)
+                $importModule.importModule.getCompilerAnnotations()
+                    .addAll($compilerAnnotations.annotations); }
+        )
       )*
       RBRACE
       { $importModuleList.setEndToken($RBRACE); }
