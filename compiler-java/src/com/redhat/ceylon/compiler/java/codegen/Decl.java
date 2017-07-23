@@ -49,6 +49,7 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImportList;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -1127,8 +1128,13 @@ public class Decl {
     }
 
     public static Declaration getToplevelDeclarationContainer(Declaration decl) {
-        while (!(decl.getContainer() instanceof Package)) {
-            decl = getDeclarationScope(decl.getContainer());
+        while (decl!=null) {
+            Scope container = decl.getContainer();
+            if (container instanceof Package || 
+                container instanceof ModuleImportList) {
+                return decl;
+            }
+            decl = getDeclarationScope(container);
         }
         return decl;
     }

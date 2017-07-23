@@ -105,7 +105,7 @@ public interface Scoped extends Sourced {
      */
     public Declaration getDirectMember(String name, 
             List<Type> signature, 
-            boolean ellipsis);
+            boolean variadic);
 
     /**
      * Get a member declared directly in this scope for any of the given backends

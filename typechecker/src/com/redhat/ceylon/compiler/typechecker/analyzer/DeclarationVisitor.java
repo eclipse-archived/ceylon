@@ -64,6 +64,7 @@ import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.LazyType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.ModuleImportList;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -105,7 +106,6 @@ public abstract class DeclarationVisitor extends Visitor {
     private ParameterList parameterList;
     private Declaration declaration;
     private boolean dynamic;
-    private boolean inImportModuleList;
         
     public DeclarationVisitor(Unit unit) {
         this.unit = unit;
@@ -1453,8 +1453,7 @@ public abstract class DeclarationVisitor extends Visitor {
                     1102);
         }
         Tree.Type type = that.getType();
-        if (type instanceof Tree.ValueModifier
-                && !inImportModuleList) {
+        if (type instanceof Tree.ValueModifier) {
             if (v.isToplevel()) {
                 if (sie==null) {
                     type.addError("toplevel value must explicitly specify a type");
@@ -2247,17 +2246,21 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ImportModuleList that) {
-        inImportModuleList = true;
+        ModuleImportList il = new ModuleImportList();
+        il.setContainer(scope);
+        il.setUnit(unit);
+        Scope o = enterScope(il);
         super.visit(that);
-        inImportModuleList = false;
+        exitScope(o);        
     }
     
     @Override public void visit(Tree.Declaration that) {
         String filename = unit.getFilename();
-        if (isDescriptor(filename) && !inImportModuleList) {
+        Declaration model = that.getDeclarationModel();
+        if (isDescriptor(filename) 
+                && model.isToplevel()) {
             that.addError("declaration may not occur in a module or package descriptor file");
         }
-        Declaration model = that.getDeclarationModel();
         Declaration d = beginDeclaration(model);
         super.visit(that);
         endDeclaration(d);
