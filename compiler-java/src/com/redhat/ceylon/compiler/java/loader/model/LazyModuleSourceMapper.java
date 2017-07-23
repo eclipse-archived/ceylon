@@ -270,7 +270,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         if(jdkProvider != null && jdkProvider.isJDKModule(name)){
             error = "imported module '" + name + "' depends on JDK version '\"" + 
                     moduleImport.getModule().getVersion() +
-                    "\"' and you're compiling with Java " + jdkProvider.getJDKVersion();
+                    "\"' and compiler is using Java " + jdkProvider.getJDKVersion();
         }
         super.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error, isError);
     }
