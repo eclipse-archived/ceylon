@@ -48,6 +48,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -79,6 +80,16 @@ public class ClassDefinitionBuilder
     
     private boolean hasConstructors = false;
     
+    private Set<String> usedConstructorNames = new HashSet<>();
+    
+    /**
+     * To avoid generating constructor name classes twice
+     * for overloaded named constructors. 
+     */
+    public boolean hasGeneratedConstructorName(Constructor ctor) {
+        return !usedConstructorNames.add(ctor.getName());
+    }
+
     /** 
      * Remembers the class which we're defining, because we need this for special
      * cases in the super constructor invocation.
@@ -160,8 +171,6 @@ public class ClassDefinitionBuilder
         return "CDB for " + (isInterface() ? "interface " : "class ") + name;
     }
     
-    Set<String> names = new HashSet<>();
-
     ClassDefinitionBuilder getContainingClassBuilder() {
         return containingClassBuilder;
     }

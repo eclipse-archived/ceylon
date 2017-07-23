@@ -5999,13 +5999,19 @@ public class ClassTransformer extends AbstractTransformer {
     
     /**
      * Make the constructor name class, and a constant
+     * 
+     * (Used to identify named constructors.)
      */
     protected void transformConstructorName(
             ClassDefinitionBuilder classBuilder, ListBuffer<JCTree> result,
             Constructor ctor, Class clz, int classMods, String ctorName, DeclNameFlag...declFlags) {
-        if (!classBuilder.names.add(ctor.getName())) {
+        if (classBuilder.hasGeneratedConstructorName(ctor)) {
+            //we have already generated the little inner class
+            //that represents the constructor name, since this
+            //is an overloaded named constructor
             return;
         }
+        
         ClassDefinitionBuilder constructorNameClass = ClassDefinitionBuilder.klass(this, 
                 ctorName, null, true);
         JCVariableDecl constructorNameConst;
