@@ -973,9 +973,6 @@ public class AnnotationVisitor extends Visitor {
             Tree.AnnotationList annotationList,
             Type declarationType, 
             Type modelType, Node that) {
-        if (annotationList==null) {
-            return;
-        }
         Unit unit = annotationList.getUnit();
         List<Tree.Annotation> annotations = 
                 annotationList.getAnnotations();

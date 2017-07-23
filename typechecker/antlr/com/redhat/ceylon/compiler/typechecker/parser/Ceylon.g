@@ -169,7 +169,8 @@ importModuleList returns [ImportModuleList importModuleList]
       { $importModuleList = new ImportModuleList($LBRACE); }
       (
         c=inferredAttributeDeclaration
-        { $importModuleList.addConstant($c.declaration); }
+        { $c.declaration.setAnnotationList(new AnnotationList(null));
+          $importModuleList.addConstant($c.declaration); }
       )*
       (
         compilerAnnotations annotations
