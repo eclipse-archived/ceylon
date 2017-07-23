@@ -168,6 +168,10 @@ importModuleList returns [ImportModuleList importModuleList]
     : LBRACE
       { $importModuleList = new ImportModuleList($LBRACE); }
       (
+        c=inferredAttributeDeclaration
+        { $importModuleList.addConstant($c.declaration); }
+      )*
+      (
         compilerAnnotations annotations
         importModule
         { if ($importModule.importModule!=null)
@@ -225,6 +229,10 @@ importModule returns [ImportModule importModule]
       (
         s3=STRING_LITERAL
         { $importModule.setVersion(new QuotedLiteral($s3)); 
+          expecting=SEMICOLON; }
+      |
+        c=memberName
+        { $importModule.setConstantVersion($c.identifier); 
           expecting=SEMICOLON; }
       )?
       SEMICOLON

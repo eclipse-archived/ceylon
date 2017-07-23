@@ -105,7 +105,8 @@ public abstract class DeclarationVisitor extends Visitor {
     private ParameterList parameterList;
     private Declaration declaration;
     private boolean dynamic;
-    
+    private boolean inImportModuleList;
+        
     public DeclarationVisitor(Unit unit) {
         this.unit = unit;
         this.pkg = unit.getPackage();
@@ -1452,7 +1453,8 @@ public abstract class DeclarationVisitor extends Visitor {
                     1102);
         }
         Tree.Type type = that.getType();
-        if (type instanceof Tree.ValueModifier) {
+        if (type instanceof Tree.ValueModifier
+                && !inImportModuleList) {
             if (v.isToplevel()) {
                 if (sie==null) {
                     type.addError("toplevel value must explicitly specify a type");
@@ -2243,10 +2245,16 @@ public abstract class DeclarationVisitor extends Visitor {
         super.visit(that);
     }
     
+    @Override
+    public void visit(Tree.ImportModuleList that) {
+        inImportModuleList = true;
+        super.visit(that);
+        inImportModuleList = false;
+    }
+    
     @Override public void visit(Tree.Declaration that) {
         String filename = unit.getFilename();
-        if (filename.equals("module.ceylon") || 
-            filename.equals("package.ceylon")) {
+        if (isDescriptor(filename) && !inImportModuleList) {
             that.addError("declaration may not occur in a module or package descriptor file");
         }
         Declaration model = that.getDeclarationModel();
@@ -2271,6 +2279,11 @@ public abstract class DeclarationVisitor extends Visitor {
                 that.addUnsupportedError("toplevel declaration belonging to package with name ending in _ not currently supported");
             }
         }
+    }
+
+    private boolean isDescriptor(String filename) {
+        return filename.equals("module.ceylon") || 
+            filename.equals("package.ceylon");
     }
 
     private void handleDeclarationAnnotations(Tree.Declaration that,

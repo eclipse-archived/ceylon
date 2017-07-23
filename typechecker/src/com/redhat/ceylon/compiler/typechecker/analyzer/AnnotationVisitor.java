@@ -56,16 +56,16 @@ public class AnnotationVisitor extends Visitor {
             }
             TypeDeclaration ptd = pt.getDeclaration();
             Unit unit = ptd.getUnit();
-            if (!ptd.isAnnotation() && !isEnum(ptd) &&
-                    !pt.isBoolean() &&
-                    !pt.isString() &&
-                    !pt.isInteger() &&
-                    !pt.isFloat() &&
-                    !pt.isCharacter() &&
-                    !pt.isIterable() &&
-                    !pt.isSequential() &&
-                    !pt.isSequence() &&
-                    !pt.isSubtypeOf(unit.getType(unit.getDeclarationDeclaration()))) {
+            if (!ptd.isAnnotation() && !isEnum(ptd) 
+                    && !pt.isBoolean() 
+                    && !pt.isString() 
+                    && !pt.isInteger() 
+                    && !pt.isFloat() 
+                    && !pt.isCharacter() 
+                    && !pt.isIterable() 
+                    && !pt.isSequential() 
+                    && !pt.isSequence() 
+                    && !pt.isSubtypeOf(unit.getType(unit.getDeclarationDeclaration()))) {
                 return true;
             }
             if (pt.isIterable() || pt.isSequential() || pt.isSequence()) {
@@ -973,6 +973,9 @@ public class AnnotationVisitor extends Visitor {
             Tree.AnnotationList annotationList,
             Type declarationType, 
             Type modelType, Node that) {
+        if (annotationList==null) {
+            return;
+        }
         Unit unit = annotationList.getUnit();
         List<Tree.Annotation> annotations = 
                 annotationList.getAnnotations();

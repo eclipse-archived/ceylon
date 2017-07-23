@@ -26,6 +26,7 @@
 
 "A list of modules imported by a module."
 ^(IMPORT_MODULE_LIST
+    ANY_ATTRIBUTE* constant
     IMPORT_MODULE*)
 
 "A module import."
@@ -35,8 +36,9 @@
     IMPORT_PATH?
     QUOTED_LITERAL?
     QUOTED_LITERAL? artifact
-    QUOTED_LITERAL? version
     QUOTED_LITERAL? classifier
+    QUOTED_LITERAL? version
+    IDENTIFIER? constantVersion
     string name;)
 
 "A list of packages imported by a compilation unit."

@@ -17,6 +17,7 @@ import static java.util.Arrays.asList;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +87,37 @@ public class ModuleVisitor extends Visitor {
     public void setPhase(Phase phase) {
         this.phase = phase;
     }
+    
+    private Map<String,String> constants = new HashMap<String,String>(0);
 
+    @Override
+    public void visit(Tree.AttributeDeclaration that) {
+        Tree.Identifier id = that.getIdentifier();
+        if (id!=null) {
+            String name = id.getText();
+            Tree.SpecifierOrInitializerExpression sie = that.getSpecifierOrInitializerExpression();
+            if (sie!=null) {
+                Tree.Expression ex = sie.getExpression();
+                if (ex!=null) {
+                    Tree.Term term = ex.getTerm();
+                    if (term instanceof Tree.StringLiteral) {
+                        String value = term.getText();
+                        constants.put(name, "\"" + value + "\"");
+                    }
+                    else {
+                        ex.addError("not a string literal");
+                    }
+                }
+            }
+        }
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.AttributeGetterDefinition that) {
+        that.getBlock().addError("not a constant");
+        super.visit(that);
+    }
     
     @Override
     public void visit(Tree.CompilationUnit that) {
@@ -104,34 +135,50 @@ public class ModuleVisitor extends Visitor {
         return quoted.substring(1, quoted.length()-1);
     }
 
-    private static String getVersionString(Tree.QuotedLiteral quoted, Node that) {
-        if (quoted==null) {
+    private String getVersionString(
+            Tree.QuotedLiteral quoted, 
+            Tree.Identifier constantVersion,
+            Node that) {
+        if (constantVersion!=null) {
+            String constVers = constants.get(constantVersion.getText());
+            if (constVers==null) {
+                constantVersion.addError("constant not defined");
+                return "0";
+            }
+            else {
+                return toVersionString(constantVersion, constVers);
+            }
+        }
+        else if (quoted!=null) {
+            return toVersionString(quoted, quoted.getText());
+        }
+        else {
             that.addError("missing version");
             return "0";
         }
+    }
+
+    private static String toVersionString(Node node, String versionString) {
+        for (int i=0; i<versionString.length();) {
+            int codePoint = versionString.codePointAt(i);
+            i += Character.charCount(codePoint);
+            if (Character.isWhitespace(codePoint)) {
+                node.addError("module version may not contain whitespace");
+                break;
+            }
+        }
+        if (versionString.length()<2) {
+            return "";
+        }
         else {
-            String versionString = quoted.getText();
-            for (int i=0; i<versionString.length();) {
-                int codePoint = versionString.codePointAt(i);
-                i += Character.charCount(codePoint);
-                if (Character.isWhitespace(codePoint)) {
-                    quoted.addError("module version may not contain whitespace");
-                    break;
-                }
+            if (versionString.charAt(0)=='\'') {
+                node.addError("module version should be double-quoted");
             }
-            if (versionString.length()<2) {
-                return "";
+            String version = removeQuotes(versionString);
+            if (version.isEmpty()) {
+                node.addError("empty module version");
             }
-            else {
-                if (versionString.charAt(0)=='\'') {
-                    quoted.addError("module version should be double-quoted");
-                }
-                String version = removeQuotes(versionString);
-                if (version.isEmpty()) {
-                    quoted.addError("empty module version");
-                }
-                return version;
-            }
+            return version;
         }
     }
 
@@ -169,7 +216,11 @@ public class ModuleVisitor extends Visitor {
                         that.getUnit());
         super.visit(that);
         if (phase==Phase.SRC_MODULE) {
-            String version = getVersionString(that.getVersion(), that);
+            String version = 
+                    getVersionString(
+                            that.getVersion(), 
+                            null, 
+                            that);
             Tree.ImportPath importPath = that.getImportPath();
             for (Tree.Identifier id: importPath.getIdentifiers()) {
                 if (containsDiscouragedChar(id)) {
@@ -382,7 +433,10 @@ public class ModuleVisitor extends Visitor {
     public void visit(Tree.ImportModule that) {
         super.visit(that);
         String version = 
-                getVersionString(that.getVersion(), that);
+                getVersionString(
+                        that.getVersion(),
+                        that.getConstantVersion(),
+                        that);
         List<String> name;
         Node node;
 
