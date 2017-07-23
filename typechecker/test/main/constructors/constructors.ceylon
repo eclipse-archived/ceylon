@@ -273,7 +273,7 @@ class WithDupeConstructor {
     shared new create() {}
 }
 class WithDupeDefaultConstructor {
-    shared new () {}
+    @error shared new () {}
     @error new (String string) {}
 }
 
@@ -433,7 +433,7 @@ interface InterfaceWithMethod {
 }
 
 class WithDuplicateDefaultConstructor {
-    shared new() {}
+    @error shared new() {}
     @error shared new(String name) {}
 }
 

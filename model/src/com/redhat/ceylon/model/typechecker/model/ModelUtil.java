@@ -154,15 +154,19 @@ public class ModelUtil {
     public static Type appliedType(
             TypeDeclaration declaration, 
             Type... typeArguments) {
-        if (declaration==null) return null;
-        return declaration.appliedType(null, 
-                asList(typeArguments));
+        return declaration==null ? null : 
+            declaration.appliedType(null, 
+                    asList(typeArguments));
     }
 
     public static boolean isResolvable(Declaration declaration) {
         return declaration.getName()!=null 
             && !declaration.isSetter() //return getters, not setters
             && !declaration.isAnonymous(); //don't return the type associated with an object dec 
+    }
+    
+    public static boolean isDefaultConstructor(Declaration d) {
+        return d instanceof Constructor && d.getName()==null;
     }
     
     public static boolean isAbstraction(Declaration d) {

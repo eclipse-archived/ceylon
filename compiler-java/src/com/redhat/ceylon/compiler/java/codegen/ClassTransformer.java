@@ -245,7 +245,7 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.getInitBuilder().deprecated(model.isDeprecated());
         
         // Very special case for Anything
-        if ("ceylon.language::Anything".equals(model.getQualifiedNameString())) {
+        if (model.isAnything()) {
             classBuilder.extending(model.getType(), null);
         }
         
@@ -914,7 +914,7 @@ public class ClassTransformer extends AbstractTransformer {
             args.add(argExpr);
         }
         annoCtor.body(at(def).Exec(
-                make().Apply(null,  naming.makeThis(), args.toList())));
+                make().Apply(null, naming.makeThis(), args.toList())));
     }
 
     private JCNewClass instantiateAnnotationClass(
@@ -5999,10 +5999,21 @@ public class ClassTransformer extends AbstractTransformer {
     
     /**
      * Make the constructor name class, and a constant
+     * 
+     * (Used to identify named constructors.)
      */
     protected void transformConstructorName(
             ClassDefinitionBuilder classBuilder, ListBuffer<JCTree> result,
-            Constructor ctor, Class clz, int classMods, String ctorName, DeclNameFlag...declFlags) {
+            Constructor ctor, Class clz, int classMods, String ctorName, 
+            DeclNameFlag...declFlags) {
+        boolean isDelegation = contains(declFlags, DeclNameFlag.DELEGATION);
+        if (classBuilder.hasGeneratedConstructorName(ctor, isDelegation)) {
+            //we have already generated the little inner class
+            //that represents the constructor name, since this
+            //is an overloaded named constructor
+            return;
+        }
+        
         ClassDefinitionBuilder constructorNameClass = ClassDefinitionBuilder.klass(this, 
                 ctorName, null, true);
         JCVariableDecl constructorNameConst;
@@ -6041,7 +6052,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         constructorNameClass.modifiers(classMods);
         constructorNameClass.annotations(makeAtIgnore());
-        constructorNameClass.annotations(makeAtConstructorName(ctor.getName(), contains(declFlags, DeclNameFlag.DELEGATION)));
+        constructorNameClass.annotations(makeAtConstructorName(ctor.getName(), isDelegation));
         
         List<JCTree> ctorNameClassDecl = constructorNameClass.build();
         if (clz.isToplevel()) {

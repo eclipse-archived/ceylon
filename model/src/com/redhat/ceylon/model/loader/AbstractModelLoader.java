@@ -3802,8 +3802,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         List<Type> result = null;
         if (decl instanceof Functional) {
             Functional func = (Functional)decl;
-            if (func.getParameterLists().size() > 0) {
-                List<Parameter> params = func.getFirstParameterList().getParameters();
+            ParameterList firstParameterList = func.getFirstParameterList();
+            if (firstParameterList!=null) {
+                List<Parameter> params = firstParameterList.getParameters();
                 result = new ArrayList<Type>(params.size());
                 for (Parameter p : params) {
                     result.add(p.getType());
@@ -3824,7 +3825,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private boolean allReifiedTypeParameters(List<VariableMirror> list) {
         for (VariableMirror v : list) {
-            if ("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor".equals(v.getType().getQualifiedName())) {
+            if ("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor"
+                    .equals(v.getType().getQualifiedName())) {
                 continue;
             } else {
                 return false;

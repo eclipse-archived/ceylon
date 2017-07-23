@@ -5,15 +5,17 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
+import ceylon.language.Annotated;
+
 @Ceylon(major = 8)
 @Class
 @ceylon.language.FinalAnnotation$annotation$
 @ceylon.language.AnnotationAnnotation$annotation$
-@com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<java.lang::Overloaded,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+@com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<java.lang::Overloaded,ceylon.language.meta.declaration::FunctionDeclaration|ceylon.language.meta.declaration::CallableConstructorDeclaration,ceylon.language::Anything>"})
 public class Overloaded 
         implements com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, 
-            ceylon.language.OptionalAnnotation<Overloaded, ceylon.language.meta.declaration.FunctionDeclaration, 
-            java.lang.Object>, java.io.Serializable { 
+            ceylon.language.OptionalAnnotation<Overloaded, Annotated, java.lang.Object>, 
+            java.io.Serializable { 
     
     private static final long serialVersionUID = -5466420866210193001L;
 

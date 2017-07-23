@@ -23,6 +23,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeForWrongBackend;
@@ -47,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
@@ -166,11 +168,6 @@ public class RefinementVisitor extends Visitor {
             }
             else {
                 checkNonMember(that, dec);
-                if (isOverloadedVersion(dec)) {
-                    that.addError("duplicate declaration: the name '" 
-                            + dec.getName() 
-                            + "' is not unique in this scope");
-                }
             }
             
             if (dec.isNativeImplementation()
@@ -728,91 +725,14 @@ public class RefinementVisitor extends Visitor {
             }
         }
         
-        Unit unit = that.getUnit();
         if (member instanceof Functional
                 && !that.hasErrors()
                 && isOverloadedVersion(member)) {
-            //non-actual overloaded methods
-            //must be annotated 'overloaded'
-            boolean marked = false;
-            for (Tree.Annotation a: 
-                    that.getAnnotationList()
-                        .getAnnotations()) {
-                Tree.Primary p = a.getPrimary();
-                if (p instanceof Tree.BaseMemberExpression) {
-                    Tree.BaseMemberExpression bme = 
-                            (Tree.BaseMemberExpression) p;
-                    String aname = bme.getIdentifier().getText();
-                    Declaration ad = 
-                            p.getScope()
-                             .getMemberOrParameter(unit, aname, null, false);
-                    if (ad!=null && 
-                            "java.lang::overloaded"
-                                .equals(ad.getQualifiedNameString())) {
-                        marked = true;
-                    }
-                }
-            }
-            if (!marked) {
-                if (member.isActual()) {
-                    that.addUsageWarning(
-                            Warning.unknownWarning,
-                            "overloaded function should be declared with the 'overloaded' annotation in 'java.lang'");
-                }
-                else {
-                    that.addError(
-                            "duplicate declaration: the name '" +  name + "' is not unique in this scope " +
-                            "(overloaded function must be declared with the 'overloaded' annotation in 'java.lang')");
-                }
-            }
-            
-            Declaration abstraction = 
-                    member.getScope()
-                          .getDirectMember(name, 
-                                  null, false);
-            if (abstraction!=null) {
-                Functional fun = (Functional) member;
-                List<Parameter> parameters = 
-                        fun.getFirstParameterList()
-                           .getParameters();
-                for (Parameter param: parameters) {
-                    if (param.isDefaulted()) {
-                        that.addError("overloaded function parameter must be required: parameter '" 
-                                + param.getName() 
-                                + "' is defaulted");
-                    }
-                }
-                for (Declaration dec: 
-                        abstraction.getOverloads()) {
-                    if (dec==member) break;
-                    Functional other = (Functional) dec;
-                    List<Parameter> otherParams = 
-                            other.getFirstParameterList()
-                                 .getParameters();
-                    if (otherParams.size() == parameters.size()) {
-                        boolean allSame = true;
-                        for (int i=0; i<parameters.size(); i++) {
-                            TypeDeclaration paramType = 
-                                    erasedType(parameters.get(i), 
-                                             unit);
-                            TypeDeclaration otherType = 
-                                    erasedType(otherParams.get(i), 
-                                             unit);
-                            if (paramType!=null && otherType!=null
-                                    && !paramType.equals(otherType)) {
-                                allSame = false;
-                                break;
-                            }
-                        }
-                        if (allSame) {
-                            that.addError("non-unique parameter list erasure for overloaded function: each overloaded declaration of '"
-                                    + member.getName() 
-                                    + "' must have a distinct parameter list erasure");
-                        }
-                    }
-                }
-            }
+            checkOverloadedAnnotation(that, member);
+            checkOverloadedParameters(that, member);
         }
+        
+        Unit unit = that.getUnit();
         
         List<Type> signature = getSignature(member);
         boolean variadic = isVariadic(member);
@@ -1007,6 +927,110 @@ public class RefinementVisitor extends Visitor {
                                 + message(member, signature, variadic, unit)
                                 + " does not match any overloaded version of "
                                 + message(root));
+            }
+        }
+    }
+
+    private void checkOverloadedAnnotation(
+            Tree.Declaration that, 
+            Declaration member) {
+        //non-actual overloaded methods
+        //must be annotated 'overloaded'
+        boolean marked = false;
+        Unit unit = that.getUnit();
+        for (Tree.Annotation a: 
+                that.getAnnotationList()
+                    .getAnnotations()) {
+            Tree.Primary p = a.getPrimary();
+            if (p instanceof Tree.BaseMemberExpression) {
+                Tree.BaseMemberExpression bme = 
+                        (Tree.BaseMemberExpression) p;
+                String aname = bme.getIdentifier().getText();
+                Declaration ad = 
+                        p.getScope()
+                         .getMemberOrParameter(unit, aname, 
+                                 null, false);
+                if (ad!=null && 
+                        "java.lang::overloaded"
+                            .equals(ad.getQualifiedNameString())) {
+                    marked = true;
+                }
+            }
+        }
+        if (!marked) {
+            if (member.isActual()) {
+                that.addUsageWarning(
+                        Warning.unknownWarning,
+                        "overloaded function should be declared with the 'overloaded' annotation in 'java.lang'");
+            }
+            else {
+                if (member instanceof Constructor) {
+                    //default constructors are the only 
+                    //thing that can legally have no name
+                    that.addError("duplicate default constructor (overloaded default constructor must be declared with the 'overloaded' annotation in 'java.lang')");
+                }
+                else if (member instanceof Function) {
+                    //functions are the only thing  
+                    //that can legally have a name
+                    //and be overloaded
+                    that.addError(
+                            "duplicate declaration: the name '" 
+                            + member.getName()
+                            + "' is not unique in this scope " +
+                            "(overloaded function must be declared with the 'overloaded' annotation in 'java.lang')");
+                }
+            }
+        }
+    }
+
+    private void checkOverloadedParameters(
+            Tree.Declaration that, 
+            Declaration member) {
+        String name = member.getName();
+        Declaration abstraction = 
+                member.getScope()
+                      .getDirectMember(name, 
+                              null, false);
+        if (abstraction!=null) {
+            Functional fun = (Functional) member;
+            List<Parameter> parameters = 
+                    fun.getFirstParameterList()
+                       .getParameters();
+            for (Parameter param: parameters) {
+                if (param.isDefaulted()) {
+                    that.addError("overloaded function parameter must be required: parameter '" 
+                            + param.getName() 
+                            + "' is defaulted");
+                }
+            }
+            Unit unit = that.getUnit();
+            for (Declaration dec: 
+                    abstraction.getOverloads()) {
+                if (dec==member) break;
+                Functional other = (Functional) dec;
+                List<Parameter> otherParams = 
+                        other.getFirstParameterList()
+                             .getParameters();
+                if (otherParams.size() == parameters.size()) {
+                    boolean allSame = true;
+                    for (int i=0; i<parameters.size(); i++) {
+                        TypeDeclaration paramType = 
+                                erasedType(parameters.get(i), 
+                                         unit);
+                        TypeDeclaration otherType = 
+                                erasedType(otherParams.get(i), 
+                                         unit);
+                        if (paramType!=null && otherType!=null
+                                && !paramType.equals(otherType)) {
+                            allSame = false;
+                            break;
+                        }
+                    }
+                    if (allSame) {
+                        that.addError("non-unique parameter list erasure for overloaded function: each overloaded declaration of '"
+                                + name + "' must have a distinct parameter list erasure");
+                    }
+                }
             }
         }
     }
@@ -1533,10 +1557,12 @@ public class RefinementVisitor extends Visitor {
         boolean mayBeShared = !(dec instanceof TypeParameter);
         boolean nonTypeMember = !dec.isClassOrInterfaceMember();
         
+        String name = dec.getName();
+        
         if (dec.isStatic()) {
             if (nonTypeMember) {
                 that.addError("static declaration is not a member of a class or interface: '" 
-                        + dec.getName() 
+                        + name 
                         + "' is not defined directly in the body of a class or interface");
             }
             else {
@@ -1545,7 +1571,7 @@ public class RefinementVisitor extends Visitor {
                             dec.getContainer();
                 if (!type.isToplevel()) {
                     that.addError("static declaration belongs to a nested a class or interface: '" 
-                            + dec.getName() 
+                            + name 
                             + "' is a member of nested type '" 
                             + type.getName() 
                             + "'");
@@ -1556,52 +1582,93 @@ public class RefinementVisitor extends Visitor {
         if (nonTypeMember && mayBeShared) {
             if (dec.isActual()) {
                 that.addError("actual declaration is not a member of a class or interface: '" + 
-                        dec.getName() + "'", 
+                        name + "'", 
                         1301);
             }
             if (dec.isFormal()) {
                 that.addError("formal declaration is not a member of a class or interface: '" + 
-                        dec.getName() + "'", 
+                        name + "'", 
                         1302);
             }
             if (dec.isDefault()) {
                 that.addError("default declaration is not a member of a class or interface: '" + 
-                        dec.getName() + "'", 
+                        name + "'", 
                         1303);
             }
         }
         else if (!dec.isShared() && mayBeShared) {
             if (dec.isActual()) {
                 that.addError("actual declaration must be shared: '" + 
-                        dec.getName() + "'", 
+                        name + "'", 
                         701);
             }
             if (dec.isFormal()) {
                 that.addError("formal declaration must be shared: '" + 
-                        dec.getName() + "'", 
+                        name + "'", 
                         702);
             }
             if (dec.isDefault()) {
                 that.addError("default declaration must be shared: '" + 
-                        dec.getName() + "'", 
+                        name + "'", 
                         703);
             }
         }
         else {
             if (dec.isActual()) {
                 that.addError("declaration may not be actual: '" + 
-                        dec.getName() + "'", 
+                        name + "'", 
                         1301);
             }
             if (dec.isFormal()) {
                 that.addError("declaration may not be formal: '" + 
-                        dec.getName() + "'", 
+                        name + "'", 
                         1302);
             }
             if (dec.isDefault()) {
                 that.addError("declaration may not be default: '" + 
-                        dec.getName() + "'", 
+                        name + "'", 
                         1303);
+            }
+        }
+        
+        if (isOverloadedVersion(dec)) {
+            if (isConstructor(dec)) {
+                checkOverloadedAnnotation(that, dec);
+                checkOverloadedParameters(that, dec);
+            }
+            else {
+                that.addError("duplicate declaration: the name '" 
+                        + name + "' is not unique in this scope");
+            }
+        }
+        else if (isAbstraction(dec)) {
+            //validation of default constructor overloading
+            //is a real mess because it's the Class itself
+            //that is considered overloaded in the model
+            if (that instanceof Tree.ClassDefinition
+                    && !that.hasErrors()) {
+                Tree.ClassDefinition def = 
+                        (Tree.ClassDefinition) that;
+                Class abs = (Class) dec; //this is an abstraction
+                //iterate over all the default constructors
+                //declarations of the class (need to find
+                //the tree Nodes so that errors can be
+                //correctly located)
+                for (Tree.Statement st: 
+                        def.getClassBody()
+                           .getStatements()) {
+                    if (st instanceof Tree.Constructor) {
+                        Tree.Constructor node =
+                                (Tree.Constructor) st;
+                        if (node.getIdentifier()==null) {
+                            Constructor con = node.getConstructor();
+                            //get the corresponding overloaded version
+                            Class cla = classOverloadForConstructor(abs, con);
+                            checkOverloadedAnnotation(node, con);
+                            checkOverloadedParameters(node, cla);
+                        }
+                    }
+                }
             }
         }
         
@@ -1612,8 +1679,7 @@ public class RefinementVisitor extends Visitor {
                 Declaration member = 
                         intersectionOfSupertypes(clazz)
                             .getDeclaration()
-                            .getMember(dec.getName(), 
-                                        null, false);
+                            .getMember(name, null, false);
                 if (member!=null && 
                         member.isShared() &&
                         !isConstructor(member)) {
@@ -1630,6 +1696,31 @@ public class RefinementVisitor extends Visitor {
                 }
             }
         }
+        
+    }
+    
+    //A class with an overloaded default constructor
+    //is represented in the model as an overloaded 
+    //class. This method gives me the Class object
+    //corresponding to a Constructor that represents
+    //an overloaded default constructor
+    private static Class classOverloadForConstructor(
+            Class abs, Constructor con) {
+        //we are given the abstraction, and we're
+        //looking for the right overloaded version
+        for (Declaration d: abs.getOverloads()) {
+            if (d instanceof Class) {
+                Class c = (Class) d;
+                //wow, this is amazingly fragile
+                //TODO: store a ref back to the
+                //Class in the COnstructor model
+                if (c.getParameterList() 
+                        == con.getParameterList()) {
+                    return c;
+                }
+            }
+        }
+        return null;
     }
     
     private static String containerName(

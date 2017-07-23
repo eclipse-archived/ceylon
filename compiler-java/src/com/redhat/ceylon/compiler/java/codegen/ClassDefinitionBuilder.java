@@ -27,6 +27,8 @@ import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PUBLIC;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.STATIC;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -46,6 +48,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -77,6 +80,17 @@ public class ClassDefinitionBuilder
     
     private boolean hasConstructors = false;
     
+    private Set<String> usedConstructorNames = new HashSet<>();
+    
+    /**
+     * To avoid generating constructor name classes twice
+     * for overloaded named constructors. 
+     * @param isDelegation 
+     */
+    public boolean hasGeneratedConstructorName(Constructor ctor, boolean isDelegation) {
+        return !usedConstructorNames.add(isDelegation ? "$$$" + ctor.getName() : ctor.getName());
+    }
+
     /** 
      * Remembers the class which we're defining, because we need this for special
      * cases in the super constructor invocation.
@@ -157,7 +171,7 @@ public class ClassDefinitionBuilder
     public String toString() {
         return "CDB for " + (isInterface() ? "interface " : "class ") + name;
     }
-
+    
     ClassDefinitionBuilder getContainingClassBuilder() {
         return containingClassBuilder;
     }

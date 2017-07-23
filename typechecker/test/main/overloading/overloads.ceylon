@@ -182,3 +182,55 @@ void testStaticClass() {
     StaticClass.x(10);
 }
 
+class Thing {
+    shared actual String string;
+    shared overloaded new () {
+        string = "nil";
+    }
+    shared overloaded new (Object oj) {
+        string = oj.string;
+    }
+    shared overloaded new (String string) {
+        this.string = string.uppercased;
+    }
+    shared overloaded new (Integer integer) {
+        this.string = (integer^2).string;
+    }
+    @error shared overloaded new (String string) {
+        this.string = string;
+    }
+}
+
+class OtherThing {
+    shared actual String string;
+    shared overloaded new make() {
+        string = "nil";
+    }
+    shared overloaded new make(String string) {
+        this.string = string.uppercased;
+    }
+    shared overloaded new make(Integer integer) {
+        this.string = (integer^2).string;
+    }
+    @error shared overloaded new make(String string) {
+        this.string = string;
+    }
+}
+
+
+class Wrong {
+    @error shared new () {}
+    @error shared new (Integer i) {}
+    
+    @error shared new make() {}
+    @error shared new make(Integer i) {}
+}
+
+void tryit() {
+    Thing x = Thing();
+    Thing y = Thing("");
+    Thing z = Thing(1);
+    OtherThing ox = OtherThing.make();
+    OtherThing oy = OtherThing.make("");
+    OtherThing oz = OtherThing.make(1);
+}
