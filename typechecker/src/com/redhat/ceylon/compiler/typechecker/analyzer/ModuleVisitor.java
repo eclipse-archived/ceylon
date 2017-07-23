@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.common.ModuleUtil.isMavenModule;
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_LITERAL;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.buildAnnotations;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.getAnnotation;
@@ -21,6 +22,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
+import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
@@ -440,6 +443,12 @@ public class ModuleVisitor extends Visitor {
                         that.getVersion(),
                         that.getConstantVersion(),
                         that);
+        if (that.getVersion()==null 
+                && version!=null) {
+            that.setVersion(new Tree.QuotedLiteral(
+                    new CommonToken(STRING_LITERAL, 
+                            "\"" + version + "\"")));
+        }
         List<String> name;
         Node node;
 
