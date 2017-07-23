@@ -157,8 +157,8 @@ public class CeylonClassLoader extends URLClassLoader {
         }
 
         // For aether and webdav/sardine
-        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.5.3")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.4.6")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.3.2")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.3.2")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.2")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.10")); // optional
 

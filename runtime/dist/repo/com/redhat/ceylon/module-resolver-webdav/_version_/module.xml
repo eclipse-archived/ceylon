@@ -33,7 +33,7 @@
 
     <dependencies>
         <module name="com.github.lookfirst.sardine" slot="5.7"/>
-        <module name="org.apache.httpcomponents.httpclient" slot="4.5.3"/>
-        <module name="org.apache.httpcomponents.httpcore" slot="4.4.6"/>
+        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2"/>
+        <module name="org.apache.httpcomponents.httpcore" slot="4.3.2"/>
     </dependencies>
 </module>
