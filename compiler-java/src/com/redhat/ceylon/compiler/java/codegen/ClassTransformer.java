@@ -245,7 +245,7 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.getInitBuilder().deprecated(model.isDeprecated());
         
         // Very special case for Anything
-        if ("ceylon.language::Anything".equals(model.getQualifiedNameString())) {
+        if (model.isAnything()) {
             classBuilder.extending(model.getType(), null);
         }
         
