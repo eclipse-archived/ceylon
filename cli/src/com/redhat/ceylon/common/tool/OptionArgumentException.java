@@ -8,6 +8,8 @@ import java.util.List;
  */
 public abstract class OptionArgumentException extends ToolError {
 
+    private static final long serialVersionUID = -8536656057367891798L;
+
     private static String getIllegalArgumentErrorMessage(Throwable t) {
         String msg = "";
         if (t.getLocalizedMessage() != null) {
@@ -51,6 +53,8 @@ public abstract class OptionArgumentException extends ToolError {
     }
     
     public static class ToolInitializationException extends OptionArgumentException {
+        private static final long serialVersionUID = -3286018453113850512L;
+        
         private ToolModel<?> toolModel;
         
         public ToolInitializationException(ToolModel<?> toolModel, Throwable cause) {
@@ -69,6 +73,8 @@ public abstract class OptionArgumentException extends ToolError {
     }
     
     public static class OptionWithoutArgumentException extends OptionArgumentException {
+        private static final long serialVersionUID = 5217517203245991532L;
+        
         private final OptionModel<?> optionModel;
 
         public OptionWithoutArgumentException(OptionModel<?> optionModel, String arg) {
@@ -87,12 +93,16 @@ public abstract class OptionArgumentException extends ToolError {
     }
     
     public static class UnexpectedArgumentException extends OptionArgumentException {
+        private static final long serialVersionUID = -8861791330072701948L;
+
         public UnexpectedArgumentException(String arg, ToolModel<?> toolModel) {
             super(ToolMessages.msg("argument.unexpected", arg, getToolName(toolModel)));
         }
     }
     
     public static class InvalidOptionValueException extends OptionArgumentException {
+        private static final long serialVersionUID = 1860096260030346627L;
+        
         private final OptionModel<?> optionModel;
         private final String givenOption;
         private final String badValue;
@@ -129,6 +139,8 @@ public abstract class OptionArgumentException extends ToolError {
     }
     
     public static class InvalidArgumentValueException extends OptionArgumentException {
+        private static final long serialVersionUID = -7379636849386770440L;
+        
         private final ArgumentModel<?> argumentModel;
         private final String badValue;
 
@@ -159,6 +171,8 @@ public abstract class OptionArgumentException extends ToolError {
     }
     
     public static class OptionMultiplicityException extends OptionArgumentException {
+        private static final long serialVersionUID = -8991297612985232397L;
+        
         private final OptionModel<?> optionModel;
 
         public OptionMultiplicityException(OptionModel<?> optionModel, 
@@ -177,6 +191,8 @@ public abstract class OptionArgumentException extends ToolError {
     }
     
     public static class ArgumentMultiplicityException extends OptionArgumentException {
+        private static final long serialVersionUID = -4582386675771578147L;
+        
         private ArgumentModel<?> argumentModel;
 
         public ArgumentMultiplicityException(ArgumentModel<?> argumentModel, int bound, String msgKey) {
@@ -194,7 +210,8 @@ public abstract class OptionArgumentException extends ToolError {
     }
     
     public static class UnknownOptionException extends OptionArgumentException {
-
+        private static final long serialVersionUID = 1449297548618037595L;
+        
         private final List<UnknownOptionException> aggregating;
         private final String longName;
         private final Character shortName;

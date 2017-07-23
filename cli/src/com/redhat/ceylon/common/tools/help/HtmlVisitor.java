@@ -42,7 +42,7 @@ public class HtmlVisitor implements Visitor {
 
     private final Html html;
     private boolean hadFirstArgument;
-    private boolean hadOptions;
+//    private boolean hadOptions;
     private Doc doc;
     private int optionsDepth = 0;
     private final boolean omitDoctype;
@@ -52,7 +52,7 @@ public class HtmlVisitor implements Visitor {
         this.omitDoctype = omitDoctype;
     }
     
-    AbstractMl getHtml() {
+    Html getHtml() {
         return html;
     }
     
@@ -100,7 +100,7 @@ public class HtmlVisitor implements Visitor {
         html.close("div").text("\n");
     }
 
-    private static void shortcutInfo(AbstractMl html, String key, String description) {
+    private static void shortcutInfo(Html html, String key, String description) {
         html.open("div id='"+key+"'").open("span class='key badge'").text(key).close("span");
         html.open("span class='info muted'").text(description).close("span", "div");
     }
@@ -115,11 +115,11 @@ public class HtmlVisitor implements Visitor {
         html.close("body", "html");
     }
 
-    private static void addTableStart(AbstractMl html, String section, String title, int cols) {
+    private static void addTableStart(Html html, String section, String title, int cols) {
         addTableStart(html, section, Markdown.markdown("##" + title), cols);
     }
     
-    private static void addTableStart(AbstractMl html, String sectionId, Node title, int cols) {
+    private static void addTableStart(Html html, String sectionId, Node title, int cols) {
         html.open("table class='table table-condensed table-bordered'").text("\n");
         html.open("thead").text("\n");
         html.open("tr class='table-header' title='Click for expand/collapse'");
@@ -130,7 +130,7 @@ public class HtmlVisitor implements Visitor {
         html.open("tbody").text("\n");
     }
 
-    private static void addTableEnd(AbstractMl html) {
+    private static void addTableEnd(Html html) {
         html.close("tbody", "table");
     }
     
@@ -260,7 +260,7 @@ public class HtmlVisitor implements Visitor {
         html.open("div class='container-fluid'").text("\n");
     }
 
-    private static void addShortcutKey(AbstractMl html, String url, String title, String key, String rest) {
+    private static void addShortcutKey(Html html, String url, String title, String key, String rest) {
         html.open("a href='" + url + "'");
         html.open("span title='" + title + " [Shortcut: "+key+"]'");
         html.open("span class='accesskey'").text(key).close("span").text(rest).close("span", "a");
@@ -283,9 +283,9 @@ public class HtmlVisitor implements Visitor {
         html.link(string, "#" + idShortOption(option));
     }
 
-    private void argumentSynopsis(String name) {
-        html.link(name, "#arg" + name);
-    }
+//    private void argumentSynopsis(String name) {
+//        html.link(name, "#arg" + name);
+//    }
     
     private void subtoolSynopsis(SubtoolVisitor.ToolModelAndSubtoolModel nast) {
         String name = nast.getName();
@@ -307,7 +307,7 @@ public class HtmlVisitor implements Visitor {
     @Override
     public void startSynopsis(Synopsis synopsis) {
         hadFirstArgument = false;
-        hadOptions = false;
+//        hadOptions = false;
         html.open("tr", "td");
         html.open("div class='synopsis'", "code");
         html.text(synopsis.getInvocation() + " ");
@@ -344,7 +344,7 @@ public class HtmlVisitor implements Visitor {
 
     @Override
     public void visitSynopsisOption(OptionModel<?> option) {
-        hadOptions = true;
+//        hadOptions = true;
         html.text(" ");
         final ArgumentModel<?> argument = option.getArgument();
         if (!argument.getMultiplicity().isRequired()) {

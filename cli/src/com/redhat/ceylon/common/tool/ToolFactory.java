@@ -111,8 +111,8 @@ public class ToolFactory {
         
         public OptionArgumentException invalid(Throwable throwable, ArgumentParser<?> parser) {
             
-            String key;
-            final Object[] args = new Object[3];
+//            String key;
+//            final Object[] args = new Object[3];
             final String badValue = unparsedArgumentValue != null ? unparsedArgumentValue : String.valueOf(value);
             if (optionModel != null) {
                 throw new OptionArgumentException.InvalidOptionValueException(throwable, optionModel, givenOption, badValue);   

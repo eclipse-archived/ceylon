@@ -5,6 +5,8 @@ package com.redhat.ceylon.common.tool;
  */
 public class ToolException extends RuntimeException {
 
+    private static final long serialVersionUID = 717634710054953267L;
+
     ToolException() {
         super();
     }
