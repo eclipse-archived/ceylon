@@ -85,9 +85,10 @@ public class ClassDefinitionBuilder
     /**
      * To avoid generating constructor name classes twice
      * for overloaded named constructors. 
+     * @param isDelegation 
      */
-    public boolean hasGeneratedConstructorName(Constructor ctor) {
-        return !usedConstructorNames.add(ctor.getName());
+    public boolean hasGeneratedConstructorName(Constructor ctor, boolean isDelegation) {
+        return !usedConstructorNames.add(isDelegation ? "$$$" + ctor.getName() : ctor.getName());
     }
 
     /** 

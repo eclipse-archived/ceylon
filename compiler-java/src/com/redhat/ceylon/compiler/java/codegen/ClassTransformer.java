@@ -6004,8 +6004,10 @@ public class ClassTransformer extends AbstractTransformer {
      */
     protected void transformConstructorName(
             ClassDefinitionBuilder classBuilder, ListBuffer<JCTree> result,
-            Constructor ctor, Class clz, int classMods, String ctorName, DeclNameFlag...declFlags) {
-        if (classBuilder.hasGeneratedConstructorName(ctor)) {
+            Constructor ctor, Class clz, int classMods, String ctorName, 
+            DeclNameFlag...declFlags) {
+        boolean isDelegation = contains(declFlags, DeclNameFlag.DELEGATION);
+        if (classBuilder.hasGeneratedConstructorName(ctor, isDelegation)) {
             //we have already generated the little inner class
             //that represents the constructor name, since this
             //is an overloaded named constructor
@@ -6050,7 +6052,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         constructorNameClass.modifiers(classMods);
         constructorNameClass.annotations(makeAtIgnore());
-        constructorNameClass.annotations(makeAtConstructorName(ctor.getName(), contains(declFlags, DeclNameFlag.DELEGATION)));
+        constructorNameClass.annotations(makeAtConstructorName(ctor.getName(), isDelegation));
         
         List<JCTree> ctorNameClassDecl = constructorNameClass.build();
         if (clz.isToplevel()) {
