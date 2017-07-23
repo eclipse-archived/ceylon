@@ -271,8 +271,7 @@ public abstract class BoxingVisitor extends Visitor {
                     if(term instanceof Tree.NaturalLiteral){
                         Declaration decl = ((Tree.BaseTypeExpression)ce.getPrimary()).getDeclaration();
                         if(decl instanceof Class){
-                            String name = decl.getQualifiedNameString();
-                            if(name.equals("ceylon.language::Byte")){
+                            if(((Class) decl).isByte()){
                                 return true;
                             }
                         }

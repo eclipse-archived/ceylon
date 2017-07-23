@@ -1968,11 +1968,6 @@ public class Unit implements LanguageModuleProvider, ImportScope {
 
     public List<Type> getTupleElementTypes(Type args) {
         if (args!=null) {
-            /*List<Type> simpleResult = 
-                    getSimpleTupleElementTypes(args, 0);
-            if (simpleResult!=null) {
-                return simpleResult;
-            }*/
             if (isEmptyType(args)) {
                 return NO_TYPE_ARGS;
             }
@@ -2040,87 +2035,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return result;
     }
     
-    /*private List<Type> getSimpleTupleElementTypes(
-            Type args, int count) {
-        // can be a defaulted tuple of Empty|Tuple
-        if (args.isUnion()) {
-            List<Type> caseTypes = 
-                    args.getCaseTypes();
-            if (caseTypes == null || caseTypes.size() != 2) {
-                return null;
-            }
-            Type caseA = caseTypes.get(0);
-            Type caseB = caseTypes.get(1);
-            if (!caseA.isClassOrInterface() || 
-                !caseB.isClassOrInterface()) {
-                    return null;
-            }
-            TypeDeclaration caseADecl = 
-                    caseA.getDeclaration();
-            TypeDeclaration caseBDecl = 
-                    caseB.getDeclaration();
-            String caseAName = 
-                    caseADecl.getQualifiedNameString();
-            String caseBName = 
-                    caseBDecl.getQualifiedNameString();
-            if (caseAName.equals("ceylon.language::Empty") && 
-                caseBName.equals("ceylon.language::Tuple")) {
-                return getSimpleTupleElementTypes(caseB, count);
-            }
-            if (caseBName.equals("ceylon.language::Empty") && 
-                caseAName.equals("ceylon.language::Tuple")) {
-                return getSimpleTupleElementTypes(caseA, count);
-            }
-            return null;
-        }
-        // can be Tuple, Empty, Sequence or Sequential
-        if (!(args.isClassOrInterface())) {
-            return null;
-        }
-        String name = 
-                args.getDeclaration()
-                    .getQualifiedNameString();
-        if (name.equals("ceylon.language::Tuple")){
-            List<Type> tal = 
-                    args.getTypeArgumentList();
-            Type first = tal.get(1);
-            Type rest = tal.get(2);
-            List<Type> ret = 
-                    getSimpleTupleElementTypes(rest, count+1);
-            if (ret == null)
-                return null;
-            ret.set(count, first);
-            return ret;
-        }
-        if (name.equals("ceylon.language::Empty")){
-            ArrayList<Type> ret = 
-                    new ArrayList<Type>(count);
-            for (int i=0;i<count;i++) {
-                ret.add(null);
-            }
-            return ret;
-        }
-        if (name.equals("ceylon.language::Sequential")
-                || name.equals("ceylon.language::Sequence")
-                || name.equals("ceylon.language::Range")) {
-            ArrayList<Type> ret = 
-                    new ArrayList<Type>(count+1);
-            for (int i=0;i<count;i++) {
-                ret.add(null);
-            }
-            ret.add(args);
-            return ret;
-        }
-        return null;
-    }*/
-
     public boolean isTupleLengthUnbounded(Type args) {
         if (args!=null) {
-            /*Boolean simpleTupleLengthUnbounded = 
-                    isSimpleTupleLengthUnbounded(args);
-            if (simpleTupleLengthUnbounded != null) {
-                return simpleTupleLengthUnbounded.booleanValue();
-            }*/
             Type emptyType = getEmptyType();
             if (args.isSubtypeOf(emptyType)) {
                 return false;
@@ -2164,70 +2080,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return false;
     }
     
-    /*protected Boolean isSimpleTupleLengthUnbounded(Type args) {
-        // can be a defaulted tuple of Empty|Tuple
-        if (args.isUnion()) {
-            List<Type> caseTypes = 
-                    args.getCaseTypes();
-            if (caseTypes == null || caseTypes.size() != 2) {
-                return null;
-            }
-            Type caseA = caseTypes.get(0);
-            Type caseB = caseTypes.get(1);
-            if (!caseA.isClassOrInterface() || 
-                !caseB.isClassOrInterface()) {
-                    return null;
-            }
-            TypeDeclaration caseADecl = 
-                    caseA.getDeclaration();
-            TypeDeclaration caseBDecl = 
-                    caseB.getDeclaration();
-            String caseAName = 
-                    caseADecl.getQualifiedNameString();
-            String caseBName = 
-                    caseBDecl.getQualifiedNameString();
-            if (caseAName.equals("ceylon.language::Empty") && 
-                caseBName.equals("ceylon.language::Tuple")) {
-                return isSimpleTupleLengthUnbounded(caseB);
-            }
-            if (caseBName.equals("ceylon.language::Empty") && 
-                caseAName.equals("ceylon.language::Tuple")) {
-                return isSimpleTupleLengthUnbounded(caseA);
-            }
-            return null;
-        }
-        // can be Tuple, Empty, Sequence or Sequential
-        if (!(args.isClassOrInterface())) {
-            return null;
-        }
-        String name = 
-                args.getDeclaration()
-                    .getQualifiedNameString();
-        if (name.equals("ceylon.language::Tuple")) {
-            Type rest = 
-                    args.getTypeArgumentList().get(2);
-            return isSimpleTupleLengthUnbounded(rest);
-        }
-        if (name.equals("ceylon.language::Empty")) {
-            return false;
-        }
-        if (name.equals("ceylon.language::Range")) {
-            return true;
-        }
-        if (name.equals("ceylon.language::Sequential") || 
-            name.equals("ceylon.language::Sequence")) {
-            return true;
-        }
-        return null;
-    }*/
-
     public boolean isTupleVariantAtLeastOne(Type args) {
         if (args!=null) {
-            /*Boolean simpleTupleVariantAtLeastOne = 
-                    isSimpleTupleVariantAtLeastOne(args);
-            if (simpleTupleVariantAtLeastOne != null) {
-                return simpleTupleVariantAtLeastOne.booleanValue();
-            }*/
             Type emptyType = getEmptyType();
             if (emptyType.isSubtypeOf(args)) {
                 return false;
@@ -2273,72 +2127,8 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return false;
     }
     
-    /*private Boolean isSimpleTupleVariantAtLeastOne(Type args) {
-        // can be a defaulted tuple of Empty|Tuple
-        if (args.isUnion()) {
-            List<Type> caseTypes = 
-                    args.getCaseTypes();
-            if (caseTypes == null || caseTypes.size() != 2) {
-                return null;
-            }
-            Type caseA = caseTypes.get(0);
-            Type caseB = caseTypes.get(1);
-            if (!caseA.isClassOrInterface() || 
-                !caseB.isClassOrInterface()) {
-                    return null;
-            }
-            TypeDeclaration caseADecl = 
-                    caseA.getDeclaration();
-            TypeDeclaration caseBDecl = 
-                    caseB.getDeclaration();
-            String caseAName = 
-                    caseADecl.getQualifiedNameString();
-            String caseBName = 
-                    caseBDecl.getQualifiedNameString();
-            if (caseAName.equals("ceylon.language::Empty") && 
-                caseBName.equals("ceylon.language::Tuple")) {
-                return isSimpleTupleVariantAtLeastOne(caseB);
-            }
-            if (caseBName.equals("ceylon.language::Empty") && 
-                caseAName.equals("ceylon.language::Tuple")) {
-                return isSimpleTupleVariantAtLeastOne(caseA);
-            }
-            return null;
-        }
-        // can be Tuple, Empty, Sequence or Sequential
-        if (!(args.isClassOrInterface())) {
-            return null;
-        }
-        String name = 
-                args.getDeclaration()
-                    .getQualifiedNameString();
-        if (name.equals("ceylon.language::Tuple")) {
-            Type rest = 
-                    args.getTypeArgumentList().get(2);
-            return isSimpleTupleVariantAtLeastOne(rest);
-        }
-        if (name.equals("ceylon.language::Empty")) {
-            return false;
-        }
-        if (name.equals("ceylon.language::Range")) {
-            return true;
-        }
-        if (name.equals("ceylon.language::Sequential")) {
-            return false;
-        }
-        if (name.equals("ceylon.language::Sequence")) {
-            return true;
-        }
-        return null;
-    }*/
-
     public int getTupleMinimumLength(Type args) {
         if (args!=null) {
-            /*int simpleMinimumLength = 
-                    getSimpleTupleMinimumLength(args);
-            if (simpleMinimumLength != -1) {
-                return simpleMinimumLength;
-            }*/
             Type emptyType = getEmptyType();
             if (emptyType.isSubtypeOf(args)) {
                 return 0;
@@ -2386,11 +2176,6 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     
     public int getTupleMaximumLength(Type args) {
         if (args!=null) {
-            /*int simpleMinimumLength = 
-                    getSimpleTupleMinimumLength(args);
-            if (simpleMinimumLength != -1) {
-                return simpleMinimumLength;
-            }*/
             Type emptyType = getEmptyType();
             if (args.isSubtypeOf(emptyType)) {
                 return 0;
@@ -2434,66 +2219,6 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return Integer.MAX_VALUE;
     }
     
-    /*private int getSimpleTupleMinimumLength(Type args) {
-        // can be a defaulted tuple of Empty|Tuple
-        if (args.isUnion()){
-            List<Type> caseTypes = 
-                    args.getCaseTypes();
-            if (caseTypes == null || caseTypes.size() != 2) {
-                return -1;
-            }
-            Type caseA = caseTypes.get(0);
-            Type caseB = caseTypes.get(1);
-            if (!caseA.isClassOrInterface() || 
-                !caseB.isClassOrInterface()) {
-                    return -1;
-            }
-            TypeDeclaration caseADecl = 
-                    caseA.getDeclaration();
-            TypeDeclaration caseBDecl = 
-                    caseB.getDeclaration();
-            String caseAName = 
-                    caseADecl.getQualifiedNameString();
-            String caseBName = 
-                    caseBDecl.getQualifiedNameString();
-            if (caseAName.equals("ceylon.language::Empty") && 
-                caseBName.equals("ceylon.language::Tuple")) {
-                return 0;
-            }
-            if (caseBName.equals("ceylon.language::Empty") && 
-                caseAName.equals("ceylon.language::Tuple")) {
-                return 0;
-            }
-            return -1;
-        }
-        // can be Tuple, Empty, Sequence or Sequential
-        if (!(args.isClassOrInterface())) {
-            return -1;
-        }
-        String name = 
-                args.getDeclaration()
-                    .getQualifiedNameString();
-        if (name.equals("ceylon.language::Tuple")) {
-            Type rest = 
-                    args.getTypeArgumentList().get(2);
-            int ret = getSimpleTupleMinimumLength(rest);
-            return ret == -1 ? -1 : ret + 1;
-        }
-        if (name.equals("ceylon.language::Empty")) {
-            return 0;
-        }
-        if (name.equals("ceylon.language::Range")) {
-            return 1;
-        }
-        if (name.equals("ceylon.language::Sequential")) {
-            return 0;
-        }
-        if (name.equals("ceylon.language::Sequence")) {
-            return 1;
-        }
-        return -1;
-    }*/
-
     public List<Type> getCallableArgumentTypes(Type t) {
         Type tuple = getCallableTuple(t);
         if (tuple == null) {
@@ -3106,16 +2831,14 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             return true;
         } else if(args.isClassOrInterface()) {
             TypeDeclaration declaration = args.getDeclaration();
-            String name = declaration.getQualifiedNameString();
-            if(name.equals("ceylon.language::Tuple")){
+            if(declaration.isTuple()){
                 Type rest = args.getTypeArgumentList().get(2);
                 return isUnknownTuple(rest);
             }
-            if(name.equals("ceylon.language::Empty")){
+            if(declaration.isEmpty()){
                 return false;
             }
-            if(name.equals("ceylon.language::Sequential")
-               || name.equals("ceylon.language::Sequence")){
+            if(declaration.isSequential() || declaration.isSequence()){
                 return false;
             }
         } else if (args.isTypeAlias()) {

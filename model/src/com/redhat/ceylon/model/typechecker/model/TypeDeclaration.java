@@ -399,8 +399,7 @@ public abstract class TypeDeclaration extends Declaration
             Declaration result, Declaration candidate) {
         if (candidate==null ||
                 candidate.isActual() /*&& 
-                !candidate.getNameAsString()
-                    .equals("ceylon.language::Object")*/ || 
+                !candidate.isObject()*/ || 
                 !candidate.isShared()) {
             return false;
         }
@@ -1163,6 +1162,14 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
 
+    public boolean isThrowable() {
+        return false;
+    }
+
+    public boolean isException() {
+        return false;
+    }
+
     public boolean isBoolean() {
         return false;
     }
@@ -1219,6 +1226,10 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
 
+    public boolean isArray() {
+        return false;
+    }
+    
     public List<TypedDeclaration> getCaseValues() {
         return caseValues;
     }
@@ -1258,6 +1269,5 @@ public abstract class TypeDeclaration extends Declaration
     public void setSamName(String samName){
         this.samName = samName;
     }
-
 
 }

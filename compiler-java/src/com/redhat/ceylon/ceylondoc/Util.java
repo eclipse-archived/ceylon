@@ -470,14 +470,7 @@ public class Util {
     }
     
     public static boolean isThrowable(TypeDeclaration c) {
-        if (c instanceof Class) {
-            if ("ceylon.language::Throwable".equals(c.getQualifiedNameString())) {
-                return true;
-            } else if (c.getExtendedType()!=null) {
-                return isThrowable(c.getExtendedType().getDeclaration());
-            }
-        }
-        return false;
+        return c.inherits(c.getUnit().getThrowableDeclaration());
     }  
 
     public static String getUnitPackageName(PhasedUnit unit) {

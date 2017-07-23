@@ -3361,13 +3361,20 @@ public class ModelUtil {
     }
 
     public static boolean isBooleanTrue(Declaration d) {
-        return d!=null && d.getQualifiedNameString()
-                .equals("ceylon.language::true");
+        return isInLanguagePackage(d)
+            && "true".equals(d.getName());
     }
 
     public static boolean isBooleanFalse(Declaration d) {
-        return d!=null && d.getQualifiedNameString()
-                .equals("ceylon.language::false");
+        return isInLanguagePackage(d)
+            && "false".equals(d.getName());
+    }
+
+    private static boolean isInLanguagePackage(Declaration d) {
+        return d!=null 
+            && d.getUnit()
+                .getPackage()
+                .isLanguagePackage();
     }
 
     public static Type genericFunctionType(

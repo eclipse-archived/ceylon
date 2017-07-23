@@ -15,6 +15,9 @@ public class Class extends ClassOrInterface implements Functional {
     private static final int TRUE_VALUE = 1<<21;
     private static final int NULL_VALUE = 1<<20;
     private static final int RANGE = 1<<12;
+    private static final int ARRAY = 1<<13;
+    private static final int THROWABLE = 1<<14;
+    private static final int EXCEPTION = 1<<15;
     private static final int ENTRY = 1<<11;
     private static final int TUPLE = 1<<10;
     private static final int BYTE = 1<<9;
@@ -325,6 +328,12 @@ public class Class extends ClassOrInterface implements Functional {
                             code = ENTRY; break;
                         case "Range":
                             code = RANGE; break;
+                        case "Array":
+                            code = ARRAY; break;
+                        case "Throwable":
+                            code = THROWABLE; break;
+                        case "Exception":
+                            code = EXCEPTION; break;
                         case "null":
                             code = NULL_VALUE; break;
                         case "true":
@@ -444,6 +453,24 @@ public class Class extends ClassOrInterface implements Functional {
         return code == RANGE;
     }
     
+    @Override
+    public boolean isArray() {
+        setCode();
+        return code == ARRAY;
+    }
+
+    @Override
+    public boolean isThrowable() {
+        setCode();
+        return code == THROWABLE;
+    }
+
+    @Override
+    public boolean isException() {
+        setCode();
+        return code == EXCEPTION;
+    }
+
     @Override
     public boolean inherits(TypeDeclaration dec) {
         if (dec==null) {

@@ -2807,11 +2807,9 @@ public abstract class AbstractTransformer implements Transformation {
             if(caseADecl instanceof ClassOrInterface == false
                     || caseBDecl instanceof ClassOrInterface == false)
                 return -1;
-            if(caseADecl.getQualifiedNameString().equals("ceylon.language::Empty")
-                    && caseBDecl.getQualifiedNameString().equals("ceylon.language::Tuple"))
+            if(caseADecl.isEmpty() && caseBDecl.isTuple())
                 return getSimpleNumParametersOfCallable(caseB);
-            if(caseBDecl.getQualifiedNameString().equals("ceylon.language::Empty")
-                    && caseADecl.getQualifiedNameString().equals("ceylon.language::Tuple"))
+            if(caseBDecl.isEmpty() && caseADecl.isTuple())
                 return getSimpleNumParametersOfCallable(caseA);
             return -1;
         }
@@ -2819,19 +2817,17 @@ public abstract class AbstractTransformer implements Transformation {
         if(!args.isClassOrInterface())
             return -1;
         TypeDeclaration declaration = args.getDeclaration();
-        String name = declaration.getQualifiedNameString();
-        if(name.equals("ceylon.language::Tuple")){
+        if(declaration.isTuple()){
             Type rest = args.getTypeArgumentList().get(2);
             int ret = getSimpleNumParametersOfCallable(rest);
             if(ret == -1)
                 return -1;
             return ret + 1;
         }
-        if(name.equals("ceylon.language::Empty")){
+        if(declaration.isEmpty()){
             return 0;
         }
-        if(name.equals("ceylon.language::Sequential")
-           || name.equals("ceylon.language::Sequence")){
+        if(declaration.isSequential() || declaration.isSequence()){
             return 1;
         }
         return -1;

@@ -7707,8 +7707,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     if(term instanceof Tree.NaturalLiteral){
                         Declaration decl = ((Tree.BaseTypeExpression)ce.getPrimary()).getDeclaration();
                         if(decl instanceof Class){
-                            String name = decl.getQualifiedNameString();
-                            if(name.equals("ceylon.language::Byte")){
+                            if(((Class) decl).isByte()){
                                 at(ce);
                                 try{
                                     long value = literalValue((Tree.NaturalLiteral) term).longValue();

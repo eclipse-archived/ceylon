@@ -524,7 +524,7 @@ public class TypeUtils {
                 gen.out(",'", t.isFloat() ? "f" : "i", "','",
                         term.getUnit().getFilename(), " ", term.getLocation(), "')");
             } else if (t.getDeclaration() != null &&
-                    t.getDeclaration().getQualifiedNameString().equals("ceylon.language::Array")) {
+                    t.getDeclaration().isArray()) {
                 gen.out(gen.getClAlias(), "natc$(");
                 term.visit(gen);
                 gen.out(",");
