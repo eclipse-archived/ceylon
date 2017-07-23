@@ -50,7 +50,7 @@ the following notices:
     provided this notice is preserved. 
 
 
-commons-logging-1.1.1.jar (http://commons.apache.org/logging/) is distributed 
+commons-logging-1.2.jar (http://commons.apache.org/logging/) is distributed 
 with this software under the Apache License, Version 2.0 (see the 
 LICENSE-ASL file). In accordance with that license, that software comes with 
 the following notices:
@@ -119,12 +119,12 @@ following license:
     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-json-smart-1.1.1.jar (http://code.google.com/p/json-smart/) is distributed 
+json-smart-1.3.1.jar (http://code.google.com/p/json-smart/) is distributed 
 with this software under the Apache License, Version 2.0 (see the 
 LICENSE-ASL file). 
 
 
-markdownpapers-core-1.2.7.jar (http://markdown.tautua.org/) is distributed 
+markdownpapers-core-1.3.4.jar (http://markdown.tautua.org/) is distributed 
 with this software under the Apache License, Version 2.0 (see the 
 LICENSE-ASL file). 
 

@@ -27,6 +27,6 @@
         <resource-root path="org.apache.maven.maven-builder-support-3.3.9.jar"/>
     </resources>
     <dependencies>
-        <module name="org.apache.commons.lang3" slot="3.4"/>
+        <module name="org.apache.commons.lang3" slot="3.6"/>
     </dependencies>
 </module>

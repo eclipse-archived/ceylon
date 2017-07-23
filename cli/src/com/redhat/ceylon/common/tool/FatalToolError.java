@@ -5,6 +5,8 @@ package com.redhat.ceylon.common.tool;
  */
 public abstract class FatalToolError extends ToolError {
 
+    private static final long serialVersionUID = 2151486863112265165L;
+
     public FatalToolError(String message, Throwable cause) {
         super(message, cause);
     }

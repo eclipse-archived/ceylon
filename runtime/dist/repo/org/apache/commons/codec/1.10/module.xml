@@ -22,14 +22,14 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="org.tautua.markdownpapers.core" slot="1.2.7">
+<module xmlns="urn:jboss:module:1.0" name="org.apache.commons.codec" slot="1.10">
     <properties>
-        <property name="groupId" value="org.tautua.markdownpapers"/>
-        <property name="artifactId" value="markdownpapers-core"/>
+        <property name="groupId" value="commons-codec"/>
+        <property name="artifactId" value="commons-codec"/>
     </properties>
 
     <resources>
-        <resource-root path="org.tautua.markdownpapers.core-1.2.7.jar"/>
+        <resource-root path="org.apache.commons.codec-1.10.jar"/>
     </resources>
 
     <dependencies>

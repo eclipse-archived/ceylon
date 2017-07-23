@@ -19,8 +19,6 @@
  */
 package com.redhat.ceylon.common.tools.help;
 
-import java.util.ResourceBundle;
-
 import com.redhat.ceylon.common.tool.ArgumentModel;
 import com.redhat.ceylon.common.tool.OptionModel;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
@@ -38,25 +36,25 @@ public class DocBookVisitor implements Visitor {
 
     private final DocBook docbook;
     private boolean hadFirstArgument;
-    private boolean hadOptions;
+//    private boolean hadOptions;
     private Doc doc;
     private int optionsDepth = 0;
     private final boolean omitDoctype;
-    private int openVariablelist;
+//    private int openVariablelist;
     
     DocBookVisitor(Appendable out, boolean omitDoctype) {
         this.docbook = new DocBook(out);
         this.omitDoctype = omitDoctype;
     }
     
-    AbstractMl getDocbook() {
+    DocBook getDocbook() {
         return docbook;
     }
     
     @Override
     public void start(Doc doc) {
         this.doc = doc;
-        ResourceBundle bundle = CeylonHelpToolMessages.RESOURCE_BUNDLE;
+//        ResourceBundle bundle = CeylonHelpToolMessages.RESOURCE_BUNDLE;
         if (!omitDoctype) {
             docbook.doctype(
             		"refentry PUBLIC \"-//OASIS//DTD DocBook XML V4.1.2//EN\"\n"+
@@ -120,7 +118,7 @@ public class DocBookVisitor implements Visitor {
             docbook.open("refsect" + (optionsDepth + 1)).text("\n");
             docbook.markdown(optionsSection.getTitle()).text("\n");
             docbook.open("variablelist").text("\n");
-            this.openVariablelist++;
+//            this.openVariablelist++;
         } else {
             throw new RuntimeException();
         }
@@ -209,9 +207,9 @@ public class DocBookVisitor implements Visitor {
         docbook.text("-" + option.getShortName());
     }
 
-    private void argumentSynopsis(String name) {
-        docbook.text(name);
-    }
+//    private void argumentSynopsis(String name) {
+//        docbook.text(name);
+//    }
     
     private void subtoolSynopsis(SubtoolVisitor.ToolModelAndSubtoolModel nast) {
         String name = nast.getName();
@@ -228,7 +226,7 @@ public class DocBookVisitor implements Visitor {
     @Override
     public void startSynopsis(Synopsis synopsis) {
         hadFirstArgument = false;
-        hadOptions = false;
+//        hadOptions = false;
         docbook.open("cmdsynopsis").text("\n");
         docbook.open("command").text(doc.getInvocation()).close("command").text("\n");
     }
@@ -263,7 +261,7 @@ public class DocBookVisitor implements Visitor {
     public void visitSynopsisOption(OptionModel<?> option) {
         // TODO Should probably be using req=plain
         
-        hadOptions = true;
+//        hadOptions = true;
         String argTag = "arg";
         final ArgumentModel<?> argument = option.getArgument();
         if (argument.getMultiplicity().isRequired()) {

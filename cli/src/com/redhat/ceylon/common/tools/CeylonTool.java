@@ -584,7 +584,9 @@ public class CeylonTool implements Tool {
             }
             int exit = process.waitFor();
             if(exit != 0)
-                throw new ToolError("Script "+model.getScriptName()+" returned error exit code "+exit) {};
+                throw new ToolError("Script "+model.getScriptName()+" returned error exit code "+exit) {
+                    private static final long serialVersionUID = -3812680804210059230L;                
+                };
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

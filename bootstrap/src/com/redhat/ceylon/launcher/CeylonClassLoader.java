@@ -130,7 +130,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.file", "1.1.0")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.http", "1.1.0")); // optional
         archives.add(getRepoJar(ceylonRepo, "com.google.guava", "18.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.lang3", "3.4")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.lang3", "3.6")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-artifact", "3.3.9")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-model", "3.3.9")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-model-builder", "3.3.9")); // optional
@@ -145,13 +145,13 @@ public class CeylonClassLoader extends URLClassLoader {
         // For the typechecker
         archives.add(getRepoJar(ceylonRepo, "org.antlr.runtime", "3.4"));
         // For the JS backend
-        archives.add(getRepoJar(ceylonRepo, "net.minidev.json-smart", "1.1.1"));
+        archives.add(getRepoJar(ceylonRepo, "net.minidev.json-smart", "1.3.1"));
         // For the "doc" tool
-        archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.2.7"));
+        archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.3.4"));
         archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.13"));
         // For the --out http:// functionality of the compiler (sardine)
         if(includeSlf4j){
-            archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1")); // optional
+            archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.7")); // optional
             archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.7.25")); // optional
             archives.add(getRepoJar(ceylonRepo, "org.slf4j.simple", "1.7.25")); // optional
         }
@@ -159,8 +159,8 @@ public class CeylonClassLoader extends URLClassLoader {
         // For aether and webdav/sardine
         archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.3.2")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.3.2")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.1.1")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.8")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.2")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.10")); // optional
 
         return archives;
     }

@@ -20,10 +20,11 @@
 package com.redhat.ceylon.common.tools.config;
 
 import com.redhat.ceylon.common.tool.ToolError;
-import com.redhat.ceylon.common.tool.WordWrap;
 
 
 public class ConfigException extends ToolError {
+
+    private static final long serialVersionUID = -7893648169111228746L;
 
     public ConfigException(String message) {
         super(message);

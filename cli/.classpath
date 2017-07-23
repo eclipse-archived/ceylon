@@ -5,7 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/tautua/markdownpapers/core/1.2.7/org.tautua.markdownpapers.core-1.2.7.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/tautua/markdownpapers/core/1.3.4/org.tautua.markdownpapers.core-1.3.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
 	<classpathentry kind="output" path="build/classes"/>

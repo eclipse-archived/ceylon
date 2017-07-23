@@ -255,7 +255,7 @@ public class CeylonDocToolTool extends CeylonBaseTool {
         ResourceBundle bundle = CeylonHelpToolMessages.RESOURCE_BUNDLE;
         try (FileWriter writer = new FileWriter(indexFile)) {
             HtmlVisitor htmlOutput = (HtmlVisitor)Format.html.newOutput(this, writer);
-            AbstractMl html = htmlOutput.getHtml();
+            Html html = htmlOutput.getHtml();
             indexHeader(html, bundle.getString("index.title"), bundle.getString("index.overview"));
             
             List<Doc> porcelain = new ArrayList<>();
@@ -278,7 +278,7 @@ public class CeylonDocToolTool extends CeylonBaseTool {
         }
     }
 
-    private void indexHeader(AbstractMl html, String title, String overview) {
+    private void indexHeader(Html html, String title, String overview) {
         html.doctype("html").text("\n");
         html.open("html", "head").text("\n");
         html.tag("meta charset='UTF-8'").text("\n");
@@ -300,11 +300,11 @@ public class CeylonDocToolTool extends CeylonBaseTool {
         html.open("div class='container-fluid'").text("\n");
     }
     
-    private void indexFooter(AbstractMl html) {
+    private void indexFooter(Html html) {
         html.close("div", "body", "html");
     }
     
-    private void generateToolList(List<Doc> docs, AbstractMl html, String title) {
+    private void generateToolList(List<Doc> docs, Html html, String title) {
         html.open("table class='table table-condensed table-bordered table-hover'").text("\n");
         html.open("thead").text("\n");
         html.open("tr class='table-header'");

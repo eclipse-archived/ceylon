@@ -18,7 +18,7 @@ dependencies {
     compile project(':cmr')
     compile project(':cmr-js')
     compile project(':typechecker')
-    compile 'net.minidev:json-smart:1.1.1'
+    compile 'net.minidev:json-smart:1.3.1'
     compile 'org.antlr:antlr:3.4'
 
 }

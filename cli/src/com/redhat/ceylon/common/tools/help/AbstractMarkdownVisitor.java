@@ -40,6 +40,9 @@ import org.tautua.markdownpapers.ast.ResourceDefinition;
 import org.tautua.markdownpapers.ast.Ruler;
 import org.tautua.markdownpapers.ast.SimpleNode;
 import org.tautua.markdownpapers.ast.Tag;
+import org.tautua.markdownpapers.ast.TagAttribute;
+import org.tautua.markdownpapers.ast.TagAttributeList;
+import org.tautua.markdownpapers.ast.TagBody;
 import org.tautua.markdownpapers.ast.Text;
 import org.tautua.markdownpapers.ast.Visitor;
 
@@ -152,6 +155,21 @@ class AbstractMarkdownVisitor implements Visitor {
 
     @Override
     public void visit(Text that) {
+        visit((SimpleNode)that);
+    }
+
+    @Override
+    public void visit(TagAttribute that) {
+        visit((SimpleNode)that);
+    }
+
+    @Override
+    public void visit(TagAttributeList that) {
+        visit((SimpleNode)that);
+    }
+
+    @Override
+    public void visit(TagBody that) {
         visit((SimpleNode)that);
     }
 

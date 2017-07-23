@@ -27,7 +27,7 @@
         <resource-root path="org.apache.maven.maven-aether-provider-3.3.9.jar"/>
     </resources>
     <dependencies>
-        <module name="org.apache.commons.lang3" slot="3.4"/>
+        <module name="org.apache.commons.lang3" slot="3.6"/>
         <module name="org.apache.maven.maven-model" slot="3.3.9" export="true"/>
         <module name="org.apache.maven.maven-model-builder" slot="3.3.9" export="true"/>
         <module name="org.apache.maven.maven-artifact" slot="3.3.9"/>

@@ -8,7 +8,7 @@ apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
 apply plugin : CeylonBuildInfoPlugin
 
 dependencies {
-    compile 'org.tautua.markdownpapers:markdownpapers-core:1.2.7'
+    compile 'org.tautua.markdownpapers:markdownpapers-core:1.3.4'
 }
 
 ext {

@@ -22,21 +22,16 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="com.github.lookfirst.sardine" slot="5.1">
-    <resources>
-        <resource-root path="com.github.lookfirst.sardine-5.1.jar"/>
-    </resources>
+<module xmlns="urn:jboss:module:1.0" name="org.apache.commons.lang3" slot="3.6">
+    <properties>
+        <property name="groupId" value="org.apache.commons"/>
+        <property name="artifactId" value="commons-lang3"/>
+    </properties>
 
+    <resources>
+        <resource-root path="org.apache.commons.lang3-3.6.jar"/>
+    </resources>
     <dependencies>
-        <module name="org.apache.httpcomponents.httpclient" slot="4.3.2" export="true"/>
-        <module name="org.apache.httpcomponents.httpcore" slot="4.3.2" export="true"/>
-        <module name="org.slf4j.api" slot="1.7.25"/>
         <module name="java.base" slot="7" export="true"/>
-        <module name="javax.jaxws" slot="7" export="true"/>
-        <module name="javax.xml" slot="7" export="true"/>
     </dependencies>
-    
-    <exports>
-        <exclude path="com/github/sardine/ant/**"/>
-    </exports>
 </module>

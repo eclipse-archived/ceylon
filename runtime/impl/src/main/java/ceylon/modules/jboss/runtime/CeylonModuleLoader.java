@@ -134,7 +134,7 @@ public class CeylonModuleLoader extends ModuleLoader
         AETHER_TRANSPORT_FILE = ModuleIdentifier.create("org.eclipse.aether.transport.file", "1.1.0");
         AETHER_TRANSPORT_HTTP = ModuleIdentifier.create("org.eclipse.aether.transport.http", "1.1.0");
         GUAVA = ModuleIdentifier.create("com.google.guava", "18.0");
-        COMMONS_LANG3 = ModuleIdentifier.create("org.apache.commons.lang3", "3.4");
+        COMMONS_LANG3 = ModuleIdentifier.create("org.apache.commons.lang3", "3.6");
         MAVEN_ARTIFACT = ModuleIdentifier.create("org.apache.maven.maven-artifact", "3.3.9");
         MAVEN_MODEL = ModuleIdentifier.create("org.apache.maven.maven-model", "3.3.9");
         MAVEN_MODEL_BUILDER = ModuleIdentifier.create("org.apache.maven.maven-model-builder", "3.3.9");
@@ -152,7 +152,7 @@ public class CeylonModuleLoader extends ModuleLoader
         ANTLR_ANTLR = ModuleIdentifier.create("org.antlr.antlr", "2.7.7");
         ANTLR_STRINGTEMPLATE = ModuleIdentifier.create("org.antlr.stringtemplate", "3.2.1");
         ANTLR_RUNTIME = ModuleIdentifier.create("org.antlr.runtime", "3.4");
-        MARKDOWN_PAPERS = ModuleIdentifier.create("org.tautua.markdownpapers.core", "1.2.7");
+        MARKDOWN_PAPERS = ModuleIdentifier.create("org.tautua.markdownpapers.core", "1.3.4");
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");
 

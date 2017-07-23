@@ -126,7 +126,7 @@ public class DocBuilder {
         {
             Synopsis s1 = new Synopsis();
             s1.setInvocation(Tools.progName());
-            OptionModel<Boolean> option = new OptionModel();
+            OptionModel<Boolean> option = new OptionModel<>();
             option.setLongName("version");
             option.setArgumentType(ArgumentType.BOOLEAN);
             ArgumentModel<Boolean> argument = new ArgumentModel<>();
@@ -140,24 +140,24 @@ public class DocBuilder {
             Synopsis s2 = new Synopsis();
             s2.setInvocation(Tools.progName());
             
-            ArrayList args = new ArrayList(model.getOptions());
+            ArrayList<Object> args = new ArrayList<Object>(model.getOptions());
             args.remove(model.getOption("version"));
             /*ArgumentModel<?> options = new ArgumentModel();
             options.setMultiplicity(Multiplicity._0_OR_MORE);
             options.setName("cey\u2011options");
             args.add(options);*/
             
-            ArgumentModel<?> command = new ArgumentModel();
+            ArgumentModel<?> command = new ArgumentModel<>();
             command.setMultiplicity(Multiplicity._1);
             command.setName("command");
             args.add(command);
             
-            ArgumentModel<?> commandOptions = new ArgumentModel();
+            ArgumentModel<?> commandOptions = new ArgumentModel<>();
             commandOptions.setMultiplicity(Multiplicity._0_OR_MORE);
             commandOptions.setName("command\u2011options");
             args.add(commandOptions);
             
-            ArgumentModel<?> commandArgs = new ArgumentModel();
+            ArgumentModel<?> commandArgs = new ArgumentModel<>();
             commandArgs.setMultiplicity(Multiplicity._0_OR_MORE);
             commandArgs.setName("command\u2011args");
             args.add(commandArgs);
@@ -318,47 +318,47 @@ public class DocBuilder {
     }
     
 
-    private DescribedSection buildSubcommands(ToolModel<?> model) {
-        /*
-        DescribedSection section = null;
-        if (!description.isEmpty()) {
-            SubtoolModel<?> subtool = model.getSubtoolModel();
-            for (String toolName : subtool.getToolLoader().getToolNames()) {
-                ToolModel<Tool> subtoolModel = subtool.getToolLoader().loadToolModel(toolName);
-            }
-            / *
-             * Here I need to build up the markdown something like as follows
-             * 
-            The command `ceylon config` takes various subcommands
-            
-            ## SUBCOMMANDS
-            
-            ### `ceylon config foo`
-            
-            summary
-            
-            description
-            
-            options
-            
-            ### `ceylon config bar baz`
-            
-            summary
-            
-            description
-            
-            options
-            
-            * /
-            section = new DescribedSection();
-            section.setRole(Role.SUBCOMMANDS);
-            section.setDescription(Markdown.markdown(
-                    "##" + sectionsBundle.getString("section.SUBCOMMANDS") + "\n\n" +
-                    description));
-        }
-        return section;*/
-        return null;
-    }
+//    private DescribedSection buildSubcommands(ToolModel<?> model) {
+//        /*
+//        DescribedSection section = null;
+//        if (!description.isEmpty()) {
+//            SubtoolModel<?> subtool = model.getSubtoolModel();
+//            for (String toolName : subtool.getToolLoader().getToolNames()) {
+//                ToolModel<Tool> subtoolModel = subtool.getToolLoader().loadToolModel(toolName);
+//            }
+//            / *
+//             * Here I need to build up the markdown something like as follows
+//             * 
+//            The command `ceylon config` takes various subcommands
+//            
+//            ## SUBCOMMANDS
+//            
+//            ### `ceylon config foo`
+//            
+//            summary
+//            
+//            description
+//            
+//            options
+//            
+//            ### `ceylon config bar baz`
+//            
+//            summary
+//            
+//            description
+//            
+//            options
+//            
+//            * /
+//            section = new DescribedSection();
+//            section.setRole(Role.SUBCOMMANDS);
+//            section.setDescription(Markdown.markdown(
+//                    "##" + sectionsBundle.getString("section.SUBCOMMANDS") + "\n\n" +
+//                    description));
+//        }
+//        return section;*/
+//        return null;
+//    }
 
     private SynopsesSection buildSynopsis(ToolModel<?> model) {
         //Synopsis synopsis = out.startSynopsis(bundle.getString("section.SYNOPSIS"));
@@ -376,22 +376,22 @@ public class DocBuilder {
                 if (model.getSubtoolModel() == null) {// a leaf
                     Synopsis synopsis = new Synopsis();
                     synopsis.setInvocation(getCeylonInvocationForSynopsis(root));
-                    List<?> optionsAndArguments;
+                    List<Object> optionsAndArguments;
                     if (ancestors.isEmpty()) {
                         optionsAndArguments = optionsAndArguments(model);
                     } else {
                         optionsAndArguments = new ArrayList<>();
                         for (SubtoolVisitor.ToolModelAndSubtoolModel ancestor : ancestors) {
-                            List subOptAndArgs = optionsAndArguments(ancestor.getModel());
+                            List<Object> subOptAndArgs = optionsAndArguments(ancestor.getModel());
                             if (ancestor.getModel() != root) {
                                 // Don't treat the foo in `ceylon foo` as a subtool 
                                 subOptAndArgs.add(0, ancestor);
                             }
-                            optionsAndArguments.addAll((List)subOptAndArgs);
+                            optionsAndArguments.addAll(subOptAndArgs);
                         }
-                        List subOptAndArgs = optionsAndArguments(model);
+                        List<Object> subOptAndArgs = optionsAndArguments(model);
                         subOptAndArgs.add(0, new SubtoolVisitor.ToolModelAndSubtoolModel(model, subtoolModel));
-                        optionsAndArguments.addAll((List)subOptAndArgs);
+                        optionsAndArguments.addAll(subOptAndArgs);
                     }
                     synopsis.setOptionsAndArguments(optionsAndArguments);
                     synopsisList.add(synopsis);
@@ -404,9 +404,10 @@ public class DocBuilder {
         return synopsesSection;
     }
 
-    private <E> List<E> optionsAndArguments(ToolModel<?> model) {
-        List<E> optionsAndArguments = (List)sortedOptions(model.getOptions());
-        optionsAndArguments.addAll((List)model.getArguments());
+    private List<Object> optionsAndArguments(ToolModel<?> model) {
+        List<OptionModel<?>> options = sortedOptions(model.getOptions());
+        List<Object> optionsAndArguments = new ArrayList<Object>(options);
+        optionsAndArguments.addAll(model.getArguments());
         return optionsAndArguments;
     }
 
