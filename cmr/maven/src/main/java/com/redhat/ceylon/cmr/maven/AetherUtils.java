@@ -262,7 +262,7 @@ class AetherUtils {
                     
                     ArtifactResult dr;
                     if(isCeylon)
-                        dr = createArtifactResult(manager, dContext.getName(), dVersion, 
+                        dr = createArtifactResult(manager, dContext.getNamespace(), dContext.getName(), dVersion, 
                                 export, optional, scope, repositoryDisplayString);
                     else
                         dr = createArtifactResult(manager, repository, dGroupId, dArtifactId, dClassifier, dVersion, 
@@ -470,7 +470,7 @@ class AetherUtils {
             List<ExclusionDescriptor> exclusions) {
         String[] groupArtifactIds = nameToGroupArtifactIds(dCo.getName());
         if(groupArtifactIds == null)
-            return createArtifactResult(manager, dCo.getName(), version, 
+            return createArtifactResult(manager, dCo.getNamespace(), dCo.getName(), version, 
                     shared, optional, scope, repositoryDisplayString);
         String groupId = groupArtifactIds[0];
         String artifactId = groupArtifactIds[1];
@@ -531,9 +531,9 @@ class AetherUtils {
         };
     }
 
-    protected ArtifactResult createArtifactResult(RepositoryManager manager, final String module, final String dVersion,
+    protected ArtifactResult createArtifactResult(RepositoryManager manager, String namespace, final String module, final String dVersion,
             final boolean shared, final boolean optional, ModuleScope scope, final String repositoryDisplayString) {
-        return new LazyArtifactResult(manager, MavenRepository.NAMESPACE, module, dVersion, shared, optional, scope);
+        return new LazyArtifactResult(manager, namespace, module, dVersion, shared, optional, scope);
     }
 
     private static String canonicalForm(String groupId, String artifactId, String classifier, String version) {
