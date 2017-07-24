@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ArtifactOverrides;
 import com.redhat.ceylon.cmr.api.DependencyOverride;
 import com.redhat.ceylon.cmr.api.Overrides;
@@ -662,11 +663,13 @@ public class ModuleVisitor extends Visitor {
         if (!completeOnlyAST && mainModule != null) {
             Module overriddenModule = that.getModule();
             if (overriddenModule!=null) {
+                ArtifactContext context = 
+                        getArtifactContext(
+                                getNamespace(that), 
+                                overriddenModule);
                 ArtifactOverrides ao = 
                         new ArtifactOverrides(
-                                getArtifactContext(
-                                        getNamespace(that), 
-                                        overriddenModule));
+                                context);
                 RepositoryManager manager = 
                         moduleManagerUtil.getContext()
                             .getRepositoryManager();
@@ -681,13 +684,24 @@ public class ModuleVisitor extends Visitor {
                     System.out.println("- setting version to " + version);
                     ao.setVersion(version);
                 }
+                if (that.getModuleOverride()!=null) {
+                    Tree.ImportModule override = that.getModuleOverride();
+                    Module module = override.getModule();
+                    if (module!=null) {
+                        System.out.println("-  replacing with " + module);
+                        overrides.addReplacedArtifact(context,
+                                getArtifactContext(
+                                        getNamespace(override),
+                                        module));
+                    }
+                }
                 for (Tree.ImportModuleOverride o: that.getOverrides()) {
                     Tree.ModuleIdentifier original = o.getOriginal();
                     Tree.ModuleIdentifier override = o.getOverride();
                     if (original!=null) {
                         Module module = original.getModule();
                         if (module!=null)
-                            System.out.println("- removing " + module);
+                            System.out.println("- removing dependency " + module);
                             ao.addOverride(new DependencyOverride(
                                     getArtifactContext(
                                             getNamespace(original),
@@ -698,7 +712,7 @@ public class ModuleVisitor extends Visitor {
                     if (override!=null) {
                         Module module = override.getModule();
                         if (module!=null)
-                            System.out.println("-  adding " + module);
+                            System.out.println("-  adding dependency " + module);
                             ao.addOverride(new DependencyOverride(
                                     getArtifactContext(
                                             getNamespace(override),

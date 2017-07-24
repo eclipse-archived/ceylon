@@ -252,10 +252,17 @@ moduleOverride returns [ModuleOverride moduleOverride]
       )?
       (
         COMPUTE
-        s4=STRING_LITERAL
-        { $moduleOverride.setVersionOverride(new QuotedLiteral($s4)); }
-      )?
-      (
+        (
+          over=importModule
+          { $over.importModule.setAnnotationList(new AnnotationList(null));
+            $moduleOverride.setModuleOverride($over.importModule); }
+        |
+          s4=STRING_LITERAL
+          { $moduleOverride.setVersionOverride(new QuotedLiteral($s4)); }
+          SEMICOLON
+          { $moduleOverride.setEndToken($SEMICOLON); }
+        )
+      |
         LBRACE
         (
           imo=importModuleOverride
@@ -263,9 +270,6 @@ moduleOverride returns [ModuleOverride moduleOverride]
         )*
         RBRACE
         { $moduleOverride.setEndToken($RBRACE); }
-      |
-        SEMICOLON
-        { $moduleOverride.setEndToken($SEMICOLON); }
       )
     ;
 
