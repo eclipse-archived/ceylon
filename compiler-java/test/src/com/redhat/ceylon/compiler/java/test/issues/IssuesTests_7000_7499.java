@@ -19,10 +19,12 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class IssuesTests_7000_7499 extends CompilerTests {
@@ -62,6 +64,10 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     public void bug7072(){
         compile(Arrays.asList("-overrides", "test/src/com/redhat/ceylon/compiler/java/test/issues/bug70xx/bug7072/overrides.xml"), 
                 "bug70xx/bug7072/run.ceylon");
+        assertErrors("bug70xx/bug7072/run", 
+                Arrays.asList("-overrides", "test/src/com/redhat/ceylon/compiler/java/test/issues/bug70xx/bug7072/overrides-bogus.xml"),
+                null, 
+                new CompilerError(-1, new File("").getAbsolutePath()+"/test/src/com/redhat/ceylon/compiler/java/test/issues/bug70xx/bug7072/overrides-bogus.xml:9:36: Element 'module > replace' accepts no child element (seen 'with')."));
     }
 
     @Test
