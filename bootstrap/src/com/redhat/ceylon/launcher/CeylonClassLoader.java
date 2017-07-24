@@ -151,7 +151,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.13"));
         // For the --out http:// functionality of the compiler (sardine)
         if(includeSlf4j){
-            archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.7")); // optional
+            archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1")); // optional
             archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.7.25")); // optional
             archives.add(getRepoJar(ceylonRepo, "org.slf4j.simple", "1.7.25")); // optional
         }
