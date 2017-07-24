@@ -27,7 +27,7 @@ ext {
     osgiBindexDep           = ":org.osgi.impl.bundle.bindex:2.2.0"
     osgiBndDep              = "biz.aQute.bnd:biz.aQute.bnd:${bndVer}"
     osgiBndAntDep           = "biz.aQute.bnd:org.osgi.impl.bundle.repoindex.ant:${bndVer}"
-    sardineDep              = 'com.github.lookfirst:sardine:5.7'
+    sardineDep              = 'com.github.lookfirst:sardine:5.1'
     slf4jApiDep             = "org.slf4j:slf4j-api:${slf4jVer}"
     slf4jSimpleDep          = "org.slf4j:slf4j-simple:${slf4jVer}"
     txtmarkDep              = 'com.github.rjeschke:txtmark:0.13'

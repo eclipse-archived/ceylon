@@ -1,0 +1,10 @@
+<overrides xmlns="http://www.ceylon-lang.org/xsd/overrides">
+    <module groupId="com.zaxxer"
+            artifactId="HikariCP"
+            version="2.6.3">
+        <remove groupId="org.slf4j"
+                artifactId="slf4j-api"/>
+        <add module="org.slf4j.api"
+            version="1.6.1"/>
+    </module>
+</overrides>

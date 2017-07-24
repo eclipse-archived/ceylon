@@ -105,7 +105,7 @@ public class ClasspathToolTests extends AbstractToolTests {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
         CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                toolOptions("net.minidev.json-smart"));
+                toolOptions("com.google.guava"));
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();
