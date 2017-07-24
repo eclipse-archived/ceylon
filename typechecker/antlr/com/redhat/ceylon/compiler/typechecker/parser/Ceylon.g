@@ -320,7 +320,7 @@ importModule returns [ImportModule importModule]
 
 identifyModule returns [ModuleIdentifier identifier]
     : IMPORT
-      { $identifier = new ModuleIdentifier($IMPORT); 
+      { $identifier = new ImportModule($IMPORT); 
         $identifier.setAnnotationList(new AnnotationList(null)); }
       ((LIDENTIFIER SEGMENT_OP) =>
         ins=importNamespace
