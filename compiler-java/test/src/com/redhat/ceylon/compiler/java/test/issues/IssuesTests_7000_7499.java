@@ -59,6 +59,12 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     }
 
     @Test
+    public void bug7072(){
+        compile(Arrays.asList("-overrides", "test/src/com/redhat/ceylon/compiler/java/test/issues/bug70xx/bug7072/overrides.xml"), 
+                "bug70xx/bug7072/run.ceylon");
+    }
+
+    @Test
     public void bug7073(){
         compile("bug70xx/bug7073.ceylon");
     }
