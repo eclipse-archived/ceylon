@@ -26,7 +26,10 @@ import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
 
+import com.redhat.ceylon.cmr.api.ArtifactOverrides;
+import com.redhat.ceylon.cmr.api.DependencyOverride;
 import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.common.Backend;
@@ -438,7 +441,7 @@ public class ModuleVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ImportModule that) {
+    public void visit(Tree.ModuleIdentifier that) {
         super.visit(that);
         String version = 
                 getVersionString(
@@ -498,10 +501,8 @@ public class ModuleVisitor extends Visitor {
             // set in previous phase
             String path = that.getName();
 
-            Tree.Identifier ns = that.getNamespace();
-            String namespace = ns!=null ? ns.getText() : null;
-            boolean hasMavenName = 
-                    isMavenModule(path);
+            String namespace = getNamespace(that);
+            boolean hasMavenName = isMavenModule(path);
             boolean forCeylon 
                      = (importPath != null && namespace == null)
                     || (importPath == null && namespace == null && !hasMavenName)
@@ -535,8 +536,9 @@ public class ModuleVisitor extends Visitor {
                 }
                 Tree.AnnotationList al =
                         that.getAnnotationList();
-                Unit u = unit.getUnit();
-                Backends bs = getNativeBackend(al, u);
+                Backends bs = 
+                        getNativeBackend(al, 
+                                unit.getUnit());
                 if (!bs.none()) {
                     for (Backend b : bs) {
                         if (!b.isRegistered()) {
@@ -559,28 +561,48 @@ public class ModuleVisitor extends Visitor {
                     if (importedModule.getVersion() == null) {
                         importedModule.setVersion(version);
                     }
-                    ModuleImport moduleImport =
-                            moduleManager.findImport(
-                                    mainModule, importedModule);
-                    if (moduleImport == null) {
-                        boolean optional =
-                                hasAnnotation(al, "optional", u);
-                        boolean export =
-                                hasAnnotation(al, "shared", u);
-                        moduleImport =
-                                new ModuleImport(namespace,
-                                        importedModule,
-                                        optional, export, bs);
-                        moduleImport.getAnnotations().clear();
-                        buildAnnotations(al,
-                                moduleImport.getAnnotations());
-                        mainModule.addImport(moduleImport);
-                    }
-                    that.setModel(moduleImport);
-                    moduleManagerUtil.addModuleDependencyDefinition(
-                            moduleImport, that);
                 }
+                that.setModule(importedModule);
             }
+        }
+    }
+
+    private String getNamespace(Tree.ModuleIdentifier that) {
+        Tree.Identifier ns = that.getNamespace();
+        String namespace = ns!=null ? ns.getText() : null;
+        return namespace;
+    }
+    
+    @Override
+    public void visit(Tree.ImportModule that) {
+        super.visit(that);
+        Module importedModule = that.getModule();
+        if (importedModule!=null) {
+            ModuleImport moduleImport =
+                    moduleManager.findImport(
+                            mainModule, importedModule);
+            if (moduleImport == null) {
+                Tree.AnnotationList al =
+                        that.getAnnotationList();
+                Unit u = unit.getUnit();
+                boolean optional =
+                        hasAnnotation(al, "optional", u);
+                boolean export =
+                        hasAnnotation(al, "shared", u);
+                moduleImport =
+                        new ModuleImport(
+                                getNamespace(that),
+                                importedModule,
+                                optional, export, 
+                                getNativeBackend(al, u));
+                moduleImport.getAnnotations().clear();
+                buildAnnotations(al,
+                        moduleImport.getAnnotations());
+                mainModule.addImport(moduleImport);
+            }
+            that.setModel(moduleImport);
+            moduleManagerUtil.addModuleDependencyDefinition(
+                    moduleImport, that);
         }
     }
 
@@ -635,23 +657,49 @@ public class ModuleVisitor extends Visitor {
     }
     
     @Override
-    public void visit(Tree.ImportModuleOverride that) {
+    public void visit(Tree.ModuleOverride that) {
         super.visit(that);
-        //TODO: don't ignore the module that this override applies to!!
         if (!completeOnlyAST && mainModule != null) {
-            Tree.ImportModule original = that.getOriginal();
-            Tree.ImportModule override = that.getOverride();
-            Overrides overrides = Overrides.create();
-            if (original!=null && override!=null) {
-                overrides.addReplacedArtifact(
-                        getArtifactContext(original.getModel()), 
-                        getArtifactContext(override.getModel()));
+            Module overriddenModule = that.getModule();
+            if (overriddenModule!=null) {
+                ArtifactOverrides ao = 
+                        new ArtifactOverrides(
+                                getArtifactContext(
+                                        getNamespace(that), 
+                                        overriddenModule));
+                RepositoryManager manager = 
+                        moduleManagerUtil.getContext()
+                            .getRepositoryManager();
+                Overrides overrides = manager.getOverrides();
+                System.out.println("processing overrides for " + overriddenModule);
+                for (Tree.ImportModuleOverride o: that.getOverrides()) {
+                    Tree.ModuleIdentifier original = o.getOriginal();
+                    Tree.ModuleIdentifier override = o.getOverride();
+                    if (original!=null) {
+                        Module module = original.getModule();
+                        if (module!=null)
+                            System.out.println("removing " + module);
+                            ao.addOverride(new DependencyOverride(
+                                    getArtifactContext(
+                                            getNamespace(original),
+                                            module),
+                                    DependencyOverride.Type.REMOVE,
+                                    true, false));
+                    }
+                    if (override!=null) {
+                        Module module = override.getModule();
+                        if (module!=null)
+                            System.out.println("adding " + module);
+                            ao.addOverride(new DependencyOverride(
+                                    getArtifactContext(
+                                            getNamespace(override),
+                                            module),
+                                    DependencyOverride.Type.ADD,
+                                    true, false));
+                    }
+                }
+                overrides.addArtifactOverride(ao);
             }
-            else if (override!=null) {
-                overrides.addAddedArtifact(
-                        getArtifactContext(override.getModel()));
-            }
-            //TODO: wth do I do with the overrides?
         }
     }
     

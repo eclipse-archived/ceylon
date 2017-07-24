@@ -262,11 +262,11 @@ moduleOverride returns [ModuleOverride moduleOverride]
 importModuleOverride returns [ImportModuleOverride override]
     : { $override = new ImportModuleOverride(null); }
       orig=identifyModule
-      { $override.setOverride($orig.importModule); }
+      { $override.setOverride($orig.identifier); }
       (
         over=replaceModule
-        { $override.setOriginal($orig.importModule);
-          $override.setOverride($over.importModule);
+        { $override.setOriginal($orig.identifier);
+          $override.setOverride($over.identifier);
           expecting=SEMICOLON; }
       )?
       SEMICOLON
@@ -318,86 +318,86 @@ importModule returns [ImportModule importModule]
         expecting=-1; }
     ;
 
-identifyModule returns [ImportModule importModule]
+identifyModule returns [ModuleIdentifier identifier]
     : IMPORT
-      { $importModule = new ImportModule($IMPORT); 
-        $importModule.setAnnotationList(new AnnotationList(null)); }
+      { $identifier = new ModuleIdentifier($IMPORT); 
+        $identifier.setAnnotationList(new AnnotationList(null)); }
       ((LIDENTIFIER SEGMENT_OP) =>
         ins=importNamespace
-        { $importModule.setNamespace($ins.identifier); }
+        { $identifier.setNamespace($ins.identifier); }
         SEGMENT_OP
       )?
       (
         ( 
           s1=STRING_LITERAL
-          { $importModule.setQuotedLiteral(new QuotedLiteral($s1)); }
+          { $identifier.setQuotedLiteral(new QuotedLiteral($s1)); }
         |
           p1=packagePath
-          { $importModule.setImportPath($p1.importPath); }
+          { $identifier.setImportPath($p1.importPath); }
         )
         (
           SEGMENT_OP
           s2=STRING_LITERAL
-          { $importModule.setArtifact(new QuotedLiteral($s2)); }
+          { $identifier.setArtifact(new QuotedLiteral($s2)); }
           (
             SEGMENT_OP
             s3=STRING_LITERAL
-            { $importModule.setClassifier(new QuotedLiteral($s3)); }
+            { $identifier.setClassifier(new QuotedLiteral($s3)); }
           )?
         )?
       )
       (
         s3=STRING_LITERAL
-        { $importModule.setVersion(new QuotedLiteral($s3)); 
+        { $identifier.setVersion(new QuotedLiteral($s3)); 
           expecting=SEMICOLON; }
       |
         c=memberName
         { BaseMemberExpression bme = new BaseMemberExpression(null);
           bme.setIdentifier($c.identifier);
           bme.setTypeArguments(new InferredTypeArguments(null)); 
-          $importModule.setConstantVersion(bme); 
+          $identifier.setConstantVersion(bme); 
           expecting=SEMICOLON; }
       )?
     ;
 
-replaceModule returns [ImportModule importModule]
+replaceModule returns [ModuleIdentifier identifier]
     : COMPUTE
-      { $importModule = new ImportModule($COMPUTE); 
-        $importModule.setAnnotationList(new AnnotationList(null)); }
+      { $identifier = new ModuleIdentifier($COMPUTE); 
+        $identifier.setAnnotationList(new AnnotationList(null)); }
       ((LIDENTIFIER SEGMENT_OP) =>
         ins=importNamespace
-        { $importModule.setNamespace($ins.identifier); }
+        { $identifier.setNamespace($ins.identifier); }
         SEGMENT_OP
       )?
       (
         ( 
           s1=STRING_LITERAL
-          { $importModule.setQuotedLiteral(new QuotedLiteral($s1)); }
+          { $identifier.setQuotedLiteral(new QuotedLiteral($s1)); }
         |
           p1=packagePath
-          { $importModule.setImportPath($p1.importPath); }
+          { $identifier.setImportPath($p1.importPath); }
         )
         (
           SEGMENT_OP
           s2=STRING_LITERAL
-          { $importModule.setArtifact(new QuotedLiteral($s2)); }
+          { $identifier.setArtifact(new QuotedLiteral($s2)); }
           (
             SEGMENT_OP
             s3=STRING_LITERAL
-            { $importModule.setClassifier(new QuotedLiteral($s3)); }
+            { $identifier.setClassifier(new QuotedLiteral($s3)); }
           )?
         )?
       )
       (
         s3=STRING_LITERAL
-        { $importModule.setVersion(new QuotedLiteral($s3)); 
+        { $identifier.setVersion(new QuotedLiteral($s3)); 
           expecting=SEMICOLON; }
       |
         c=memberName
         { BaseMemberExpression bme = new BaseMemberExpression(null);
           bme.setIdentifier($c.identifier);
           bme.setTypeArguments(new InferredTypeArguments(null)); 
-          $importModule.setConstantVersion(bme); 
+          $identifier.setConstantVersion(bme); 
           expecting=SEMICOLON; }
       )?
     ;

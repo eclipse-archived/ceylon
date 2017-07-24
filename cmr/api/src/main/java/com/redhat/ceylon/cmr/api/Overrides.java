@@ -53,7 +53,6 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.typechecker.model.Module;
-import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 
 /**
  * FIXME: we still need to define how add/remove/set works with replace or recursive replacements.
@@ -534,8 +533,7 @@ public class Overrides {
         return "${" + strbufName.toString();
     }
     
-    public static ArtifactContext getArtifactContext(ModuleImport moduleImport) {
-        Module module = moduleImport.getModule();
+    public static ArtifactContext getArtifactContext(String namespace, Module module) {
         if (module.getGroupId() != null) {
             return new MavenArtifactContext(
                     module.getGroupId(), 
@@ -546,7 +544,7 @@ public class Overrides {
         }
         else {
             return new ArtifactContext(
-                    moduleImport.getNamespace(), 
+                    namespace, 
                     module.getNameAsString(), 
                     module.getVersion());
         }
