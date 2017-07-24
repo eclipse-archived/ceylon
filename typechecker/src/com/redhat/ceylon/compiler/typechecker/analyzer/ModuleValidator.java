@@ -77,7 +77,7 @@ public class ModuleValidator {
         this.moduleManagerUtil = phasedUnits.getModuleSourceMapper();
     }
 
-    public void setListener (ProgressListener listener) {
+    public void setListener(ProgressListener listener) {
         this.listener = listener;
     }
 

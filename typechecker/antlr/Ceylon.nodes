@@ -27,10 +27,10 @@
 "A list of modules imported by a module."
 ^(IMPORT_MODULE_LIST
     ANY_ATTRIBUTE* constant
-    IMPORT_MODULE*)
+    IMPORT_MODULE*
+    MODULE_OVERRIDE*)
 
-"A module import."
-^(IMPORT_MODULE:STATEMENT_OR_ARGUMENT
+^(abstract MODULE_IDENTIFIER:STATEMENT_OR_ARGUMENT
     ANNOTATION_LIST?
     IDENTIFIER? namespace
     IMPORT_PATH?
@@ -40,6 +40,18 @@
     QUOTED_LITERAL? version
     BASE_MEMBER_EXPRESSION? constantVersion
     string name;)
+    
+"A module import."
+^(IMPORT_MODULE:MODULE_IDENTIFIER
+    ModuleImport model;)
+
+"A module override."
+^(MODULE_OVERRIDE:MODULE_IDENTIFIER
+    IMPORT_MODULE_OVERRIDE* override)
+
+^(IMPORT_MODULE_OVERRIDE:STATEMENT_OR_ARGUMENT
+    IMPORT_MODULE? original
+    IMPORT_MODULE override)
 
 "A list of packages imported by a compilation unit."
 ^(IMPORT_LIST 

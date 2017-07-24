@@ -126,6 +126,20 @@ annotatedPackageDescriptorStart
     : compilerAnnotations annotations PACKAGE ~MEMBER_OP
     ;
 
+packageDescriptor returns [PackageDescriptor packageDescriptor]
+    : compilerAnnotations annotations
+      PACKAGE 
+      { $packageDescriptor = new PackageDescriptor($PACKAGE); 
+        $packageDescriptor.setAnnotationList($annotations.annotationList); 
+        $packageDescriptor.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
+      packagePath
+      { $packageDescriptor.setImportPath($packagePath.importPath); 
+        expecting=SEMICOLON; }
+      SEMICOLON
+      { $packageDescriptor.setEndToken($SEMICOLON); 
+        expecting=-1; }
+    ;
+
 moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
     : compilerAnnotations annotations
       MODULE 
@@ -171,39 +185,92 @@ importModuleList returns [ImportModuleList importModuleList]
         compilerAnnotations annotations
         (
           c=inferredAttributeDeclaration
-          { $c.declaration.setAnnotationList(new AnnotationList(null));
-            $importModuleList.addConstant($c.declaration);
-            if ($c.declaration!=null)
+          { if ($c.declaration!=null) {
+                $importModuleList.addConstant($c.declaration);
                 $c.declaration.setAnnotationList($annotations.annotationList);
-            if ($c.declaration!=null)
                 $c.declaration.getCompilerAnnotations()
-                    .addAll($compilerAnnotations.annotations); }
+                    .addAll($compilerAnnotations.annotations); 
+            } }
         |
-          importModule
-          { if ($importModule.importModule!=null)
-                $importModuleList.addImportModule($importModule.importModule); 
-            if ($importModule.importModule!=null)
-                $importModule.importModule.setAnnotationList($annotations.annotationList);
-            if ($importModule.importModule!=null)
-                $importModule.importModule.getCompilerAnnotations()
-                    .addAll($compilerAnnotations.annotations); }
+          i=importModule
+          { if ($i.importModule!=null) {
+                $importModuleList.addImportModule($i.importModule); 
+                $i.importModule.setAnnotationList($annotations.annotationList);
+                $i.importModule.getCompilerAnnotations()
+                    .addAll($compilerAnnotations.annotations); 
+            } }
+        |
+          o=moduleOverride
+          { if ($o.moduleOverride!=null) {
+                $importModuleList.addModuleOverride($o.moduleOverride); 
+                $o.moduleOverride.setAnnotationList($annotations.annotationList);
+                $o.moduleOverride.getCompilerAnnotations()
+                    .addAll($compilerAnnotations.annotations);
+            } }
         )
       )*
       RBRACE
       { $importModuleList.setEndToken($RBRACE); }
     ;
 
-packageDescriptor returns [PackageDescriptor packageDescriptor]
-    : compilerAnnotations annotations
-      PACKAGE 
-      { $packageDescriptor = new PackageDescriptor($PACKAGE); 
-        $packageDescriptor.setAnnotationList($annotations.annotationList); 
-        $packageDescriptor.getCompilerAnnotations().addAll($compilerAnnotations.annotations); }
-      packagePath
-      { $packageDescriptor.setImportPath($packagePath.importPath); 
-        expecting=SEMICOLON; }
+moduleOverride returns [ModuleOverride moduleOverride]
+    : MODULE 
+      { $moduleOverride = new ModuleOverride($MODULE); }
+      ((LIDENTIFIER SEGMENT_OP) =>
+        ins=importNamespace
+        { $moduleOverride.setNamespace($ins.identifier); }
+        SEGMENT_OP
+      )?
+      (
+        ( 
+          s1=STRING_LITERAL
+          { $moduleOverride.setQuotedLiteral(new QuotedLiteral($s1)); }
+        |
+          p1=packagePath
+          { $moduleOverride.setImportPath($p1.importPath); }
+        )
+        (
+          SEGMENT_OP
+          s2=STRING_LITERAL
+          { $moduleOverride.setArtifact(new QuotedLiteral($s2)); }
+          (
+            SEGMENT_OP
+            s3=STRING_LITERAL
+            { $moduleOverride.setClassifier(new QuotedLiteral($s3)); }
+          )?
+        )?
+      )
+      (
+        s3=STRING_LITERAL
+        { $moduleOverride.setVersion(new QuotedLiteral($s3)); }
+      |
+        c=memberName
+        { BaseMemberExpression bme = new BaseMemberExpression(null);
+          bme.setIdentifier($c.identifier);
+          bme.setTypeArguments(new InferredTypeArguments(null)); 
+          $moduleOverride.setConstantVersion(bme); }
+      )?
+      LBRACE
+      (
+        imo=importModuleOverride
+        { $moduleOverride.addOverride($imo.override); }
+      )*
+      RBRACE
+      { $moduleOverride.setEndToken($RBRACE); }
+    ;
+
+importModuleOverride returns [ImportModuleOverride override]
+    : { $override = new ImportModuleOverride(null); }
+      orig=identifyModule
+      { $override.setOverride($orig.importModule); }
+      (
+        over=replaceModule
+        { $override.setOriginal($orig.importModule);
+          $override.setOverride($over.importModule);
+          expecting=SEMICOLON; }
+      )?
       SEMICOLON
-      { $packageDescriptor.setEndToken($SEMICOLON); 
+      { $override.setEndToken($SEMICOLON); 
         expecting=-1; }
     ;
 
@@ -249,6 +316,90 @@ importModule returns [ImportModule importModule]
       SEMICOLON
       { $importModule.setEndToken($SEMICOLON); 
         expecting=-1; }
+    ;
+
+identifyModule returns [ImportModule importModule]
+    : IMPORT
+      { $importModule = new ImportModule($IMPORT); 
+        $importModule.setAnnotationList(new AnnotationList(null)); }
+      ((LIDENTIFIER SEGMENT_OP) =>
+        ins=importNamespace
+        { $importModule.setNamespace($ins.identifier); }
+        SEGMENT_OP
+      )?
+      (
+        ( 
+          s1=STRING_LITERAL
+          { $importModule.setQuotedLiteral(new QuotedLiteral($s1)); }
+        |
+          p1=packagePath
+          { $importModule.setImportPath($p1.importPath); }
+        )
+        (
+          SEGMENT_OP
+          s2=STRING_LITERAL
+          { $importModule.setArtifact(new QuotedLiteral($s2)); }
+          (
+            SEGMENT_OP
+            s3=STRING_LITERAL
+            { $importModule.setClassifier(new QuotedLiteral($s3)); }
+          )?
+        )?
+      )
+      (
+        s3=STRING_LITERAL
+        { $importModule.setVersion(new QuotedLiteral($s3)); 
+          expecting=SEMICOLON; }
+      |
+        c=memberName
+        { BaseMemberExpression bme = new BaseMemberExpression(null);
+          bme.setIdentifier($c.identifier);
+          bme.setTypeArguments(new InferredTypeArguments(null)); 
+          $importModule.setConstantVersion(bme); 
+          expecting=SEMICOLON; }
+      )?
+    ;
+
+replaceModule returns [ImportModule importModule]
+    : COMPUTE
+      { $importModule = new ImportModule($COMPUTE); 
+        $importModule.setAnnotationList(new AnnotationList(null)); }
+      ((LIDENTIFIER SEGMENT_OP) =>
+        ins=importNamespace
+        { $importModule.setNamespace($ins.identifier); }
+        SEGMENT_OP
+      )?
+      (
+        ( 
+          s1=STRING_LITERAL
+          { $importModule.setQuotedLiteral(new QuotedLiteral($s1)); }
+        |
+          p1=packagePath
+          { $importModule.setImportPath($p1.importPath); }
+        )
+        (
+          SEGMENT_OP
+          s2=STRING_LITERAL
+          { $importModule.setArtifact(new QuotedLiteral($s2)); }
+          (
+            SEGMENT_OP
+            s3=STRING_LITERAL
+            { $importModule.setClassifier(new QuotedLiteral($s3)); }
+          )?
+        )?
+      )
+      (
+        s3=STRING_LITERAL
+        { $importModule.setVersion(new QuotedLiteral($s3)); 
+          expecting=SEMICOLON; }
+      |
+        c=memberName
+        { BaseMemberExpression bme = new BaseMemberExpression(null);
+          bme.setIdentifier($c.identifier);
+          bme.setTypeArguments(new InferredTypeArguments(null)); 
+          $importModule.setConstantVersion(bme); 
+          expecting=SEMICOLON; }
+      )?
     ;
 
 importNamespace returns [Identifier identifier]

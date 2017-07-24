@@ -52,6 +52,8 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ModuleScope;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 
 /**
  * FIXME: we still need to define how add/remove/set works with replace or recursive replacements.
@@ -219,7 +221,7 @@ public class Overrides {
         return ret;
     }
 
-    private void addReplacedArtifact(ArtifactContext context, ArtifactContext withContext) {
+    public void addReplacedArtifact(ArtifactContext context, ArtifactContext withContext) {
         if(context.getVersion() == null)
             replacedNoVersion.put(context.getName(), withContext);
         else
@@ -302,7 +304,7 @@ public class Overrides {
             throw new OverrideNotFoundException("No such overrides file: " + overridesFile);
         }
         try(InputStream is = new FileInputStream(overridesFile)){
-            Overrides.parse(is, overrides);
+            parse(is, overrides);
             overrides.source = overridesFile.getAbsolutePath();
             return overrides;
         } catch (InvalidOverrideException e ) {
@@ -530,6 +532,24 @@ public class Overrides {
         // if we've gone to the end without finding the end of "}" then let's no substitute
         end[0] = string.length();
         return "${" + strbufName.toString();
+    }
+    
+    public static ArtifactContext getArtifactContext(ModuleImport moduleImport) {
+        Module module = moduleImport.getModule();
+        if (module.getGroupId() != null) {
+            return new MavenArtifactContext(
+                    module.getGroupId(), 
+                    module.getArtifactId(), 
+                    module.getClassifier(), 
+                    module.getVersion(), 
+                    null);
+        }
+        else {
+            return new ArtifactContext(
+                    moduleImport.getNamespace(), 
+                    module.getNameAsString(), 
+                    module.getVersion());
+        }
     }
 
     protected static ArtifactContext getArtifactContext(Element element, boolean optionalVersion, Map<String, String> interpolation) {

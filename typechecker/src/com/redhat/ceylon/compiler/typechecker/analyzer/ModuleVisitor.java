@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.cmr.api.Overrides.getArtifactContext;
 import static com.redhat.ceylon.common.ModuleUtil.isMavenModule;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_LITERAL;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.buildAnnotations;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 import org.antlr.runtime.CommonToken;
 
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.common.Backend;
@@ -574,6 +576,7 @@ public class ModuleVisitor extends Visitor {
                                 moduleImport.getAnnotations());
                         mainModule.addImport(moduleImport);
                     }
+                    that.setModel(moduleImport);
                     moduleManagerUtil.addModuleDependencyDefinition(
                             moduleImport, that);
                 }
@@ -628,6 +631,27 @@ public class ModuleVisitor extends Visitor {
                     }
                 }
             }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.ImportModuleOverride that) {
+        super.visit(that);
+        //TODO: don't ignore the module that this override applies to!!
+        if (!completeOnlyAST && mainModule != null) {
+            Tree.ImportModule original = that.getOriginal();
+            Tree.ImportModule override = that.getOverride();
+            Overrides overrides = Overrides.create();
+            if (original!=null && override!=null) {
+                overrides.addReplacedArtifact(
+                        getArtifactContext(original.getModel()), 
+                        getArtifactContext(override.getModel()));
+            }
+            else if (override!=null) {
+                overrides.addAddedArtifact(
+                        getArtifactContext(override.getModel()));
+            }
+            //TODO: wth do I do with the overrides?
         }
     }
     
