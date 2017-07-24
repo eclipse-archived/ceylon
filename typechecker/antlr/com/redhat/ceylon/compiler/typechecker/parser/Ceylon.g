@@ -250,13 +250,23 @@ moduleOverride returns [ModuleOverride moduleOverride]
           bme.setTypeArguments(new InferredTypeArguments(null)); 
           $moduleOverride.setConstantVersion(bme); }
       )?
-      LBRACE
       (
-        imo=importModuleOverride
-        { $moduleOverride.addOverride($imo.override); }
-      )*
-      RBRACE
-      { $moduleOverride.setEndToken($RBRACE); }
+        COMPUTE
+        s4=STRING_LITERAL
+        { $moduleOverride.setVersionOverride(new QuotedLiteral($s4)); }
+      )?
+      (
+        LBRACE
+        (
+          imo=importModuleOverride
+          { $moduleOverride.addOverride($imo.override); }
+        )*
+        RBRACE
+        { $moduleOverride.setEndToken($RBRACE); }
+      |
+        SEMICOLON
+        { $moduleOverride.setEndToken($SEMICOLON); }
+      )
     ;
 
 importModuleOverride returns [ImportModuleOverride override]

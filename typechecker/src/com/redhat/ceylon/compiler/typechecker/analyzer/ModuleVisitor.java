@@ -672,13 +672,22 @@ public class ModuleVisitor extends Visitor {
                             .getRepositoryManager();
                 Overrides overrides = manager.getOverrides();
                 System.out.println("processing overrides for " + overriddenModule);
+                if (that.getVersionOverride()!=null) {
+                    String version = 
+                            getVersionString(
+                                    that.getVersionOverride(), 
+                                    null, //TODO constant interpolation!
+                                    that);
+                    System.out.println("- setting version to " + version);
+                    ao.setVersion(version);
+                }
                 for (Tree.ImportModuleOverride o: that.getOverrides()) {
                     Tree.ModuleIdentifier original = o.getOriginal();
                     Tree.ModuleIdentifier override = o.getOverride();
                     if (original!=null) {
                         Module module = original.getModule();
                         if (module!=null)
-                            System.out.println("removing " + module);
+                            System.out.println("- removing " + module);
                             ao.addOverride(new DependencyOverride(
                                     getArtifactContext(
                                             getNamespace(original),
@@ -689,7 +698,7 @@ public class ModuleVisitor extends Visitor {
                     if (override!=null) {
                         Module module = override.getModule();
                         if (module!=null)
-                            System.out.println("adding " + module);
+                            System.out.println("-  adding " + module);
                             ao.addOverride(new DependencyOverride(
                                     getArtifactContext(
                                             getNamespace(override),
