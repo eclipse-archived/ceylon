@@ -30,6 +30,9 @@ sun.security.util
 sun.security.validator
 sun.security.x509
 sun.security.timestamp
+com.sun.net.ssl.internal.ssl
+sun.security.ssl
+sun.security.ssl.krb5sun.nio.cs
 sun.nio.cs
 sun.text
 sun.text.bidi
