@@ -50,6 +50,8 @@ public class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
     private int headerLevel = -1;
 
     private boolean inCode;
+
+    private boolean inEmphasis;
     
     public PlaintextMarkdownVisitor(WordWrap out) {
         this.out = out;
@@ -194,20 +196,18 @@ public class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
 
     @Override
     public void visit(Emphasis node) {
-        String text = node.getText();
-        if (uppercaseText()) {
-            text = text.toUpperCase();
-        }
+        boolean prevInEmphasis = inEmphasis;
         switch (node.getType()) {
         case ITALIC_AND_BOLD:
         case BOLD:
-            text = text.toUpperCase();
+            inEmphasis = true;
             break;
         case ITALIC:
         default:    
             break;
         }
-        out.append(text);
+        node.childrenAccept(this);
+        inEmphasis = prevInEmphasis;
     }
 
     @Override
@@ -278,7 +278,7 @@ public class PlaintextMarkdownVisitor extends AbstractMarkdownVisitor {
     }
 
     private boolean uppercaseText() {
-        return headerLevel == 1 || headerLevel == 2;
+        return headerLevel == 1 || headerLevel == 2 || inEmphasis;
     }
 
 }
