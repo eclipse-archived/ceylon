@@ -1833,8 +1833,8 @@ public class CMRTests extends CompilerTests {
     @Test
     public void testMdlNullVersion() throws IOException{
         assertErrors("modules/nullVersion/module",
-                new CompilerError(21, "missing version"),
-                new CompilerError(21, "cannot find module artifact 'null-0(.car|.jar)'\n  \t- dependency tree: 'com.redhat.ceylon.compiler.java.test.cmr.modules.nullVersion/1' -> 'null/0'")
+                new CompilerError(1, "missing version"),
+                new CompilerError(1, "cannot find module artifact 'null-0(.car|.jar)'\n  \t- dependency tree: 'com.redhat.ceylon.compiler.java.test.cmr.modules.nullVersion/1' -> 'null/0'")
                 );
     }
     
