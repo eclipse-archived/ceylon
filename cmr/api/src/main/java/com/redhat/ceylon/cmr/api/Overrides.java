@@ -552,6 +552,15 @@ public class Overrides {
     protected static void addOverrides(ArtifactOverrides ao, Element artifact, DependencyOverride.Type type, Map<String, String> interpolation) {
         List<Element> overrides = getChildren(artifact, type.name().toLowerCase());
         for (Element override : overrides) {
+            NodeList overrideChildren = override.getChildNodes();
+            for(int i=0;i<overrideChildren.getLength();i++){
+                Node item = overrideChildren.item(i);
+                if(item.getNodeType() == Node.ELEMENT_NODE){
+                    throw new InvalidOverrideException(String.format("Element '%s > %s' accepts no child element (seen '%s').", 
+                            artifact.getTagName(), override.getTagName(), item.getNodeName()), 
+                            (Element)item);
+                }
+            }
             ArtifactContext dep = getArtifactContext(override, type == Type.REMOVE, interpolation);
             boolean shared = getBooleanAttribute(override, "shared", interpolation);
             boolean optional = getBooleanAttribute(override, "optional", interpolation);
