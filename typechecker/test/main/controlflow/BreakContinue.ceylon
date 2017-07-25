@@ -241,3 +241,63 @@ class BreakContinue() {
     }
     
 }
+
+Boolean continueThenReturnInForOk(Anything+ xs) {
+    for (x in xs) {
+        if (x exists) {
+            continue;
+        }
+        return false;
+    }
+    return true;
+}
+
+Boolean continueThenReturnInWhileOk(Anything x, Boolean f()) {
+    while (f()) {
+        if (x exists) {
+            continue;
+        }
+        return false;
+    }
+    return true;
+}
+
+Boolean continueThenReturnInWhileBad(Anything x) {
+    while (true) {
+        if (x exists) {
+            continue;
+        }
+        return false;
+    }
+    @error return true;
+}
+
+Boolean breakThenReturnInForOk(Anything+ xs) {
+    for (x in xs) {
+        if (x exists) {
+            break;
+        }
+        return false;
+    }
+    return true;
+}
+
+Boolean breakThenReturnInWhileOk(Anything x, Boolean f()) {
+    while (f()) {
+        if (x exists) {
+            break;
+        }
+        return false;
+    }
+    return true;
+}
+
+Boolean breakThenReturnInWhileOk2(Anything x) {
+    while (true) {
+        if (x exists) {
+            break;
+        }
+        return false;
+    }
+    return true;
+}

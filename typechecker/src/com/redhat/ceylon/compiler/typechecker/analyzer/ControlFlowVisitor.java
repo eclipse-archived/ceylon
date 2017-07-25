@@ -22,12 +22,22 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class ControlFlowVisitor extends Visitor {
     
+    private static class LoopState {
+        private boolean breaks = false;
+        private boolean continues = false;
+        private LoopState() {}
+        private LoopState(LoopState loopState) {
+            breaks = loopState.breaks;
+            continues = loopState.continues;
+        }
+    }
+    
     private boolean definitelyReturns = false;
     private boolean definitelyBreaksOrContinues = false;
     private boolean canReturn = false;
     private boolean canExecute = true;
-    private Boolean possiblyBreaks = null;
     private boolean unreachabilityReported = false;
+    private LoopState loopState = null;
     
     boolean beginDefiniteReturnScope() {
         boolean dr = definitelyReturns;
@@ -68,14 +78,30 @@ public class ControlFlowVisitor extends Visitor {
         canExecute = ce;
     }
     
-    Boolean beginLoop() {
-        Boolean efl = possiblyBreaks;
-        possiblyBreaks = false;
+    LoopState beginLoop() {
+        LoopState efl = loopState;
+        loopState = new LoopState();
         return efl;
     }
     
-    void endLoop(Boolean efl) {
-        possiblyBreaks = efl;
+    void endLoop(LoopState efl) {
+        loopState = efl;
+    }
+    
+    void exitLoop() {
+        if (loopState!=null) {
+            loopState.breaks = true;
+        }
+    }
+    
+    void continueLoop() {
+        if (loopState!=null) {
+            loopState.continues = true;
+        }
+    }
+    
+    boolean inLoop() {
+        return loopState!=null;
     }
     
     boolean beginLoopScope() {
@@ -84,30 +110,22 @@ public class ControlFlowVisitor extends Visitor {
         return obc;
     }
     
-    void exitLoopScope() {
-        definitelyBreaksOrContinues = true;
-    }
-    
     void endLoopScope(boolean bc) {
         definitelyBreaksOrContinues = bc;
     }
     
-    void exitLoop() {
-        possiblyBreaks = true;
+    void exitLoopScope() {
+        definitelyBreaksOrContinues = true;
     }
     
-    boolean inLoop() {
-        return possiblyBreaks!=null;
-    }
-    
-    Boolean pauseLoop() {
-        Boolean efl = possiblyBreaks;
-        possiblyBreaks = null;
+    LoopState pauseLoop() {
+        LoopState efl = loopState;
+        loopState = null;
         return efl;
     }
     
-    void unpauseLoop(Boolean efl) {
-        possiblyBreaks = efl;
+    void unpauseLoop(LoopState efl) {
+        loopState = efl;
     }
         
     boolean pauseLoopScope() {
@@ -199,7 +217,7 @@ public class ControlFlowVisitor extends Visitor {
     @Override
     public void visit(Tree.FunctionArgument that) {
         if (that.getExpression()==null) {
-            Boolean efl = pauseLoop();
+            LoopState efl = pauseLoop();
             boolean bc = pauseLoopScope();
             boolean c = beginReturnScope(true);
             boolean d = beginDefiniteReturnScope();
@@ -326,7 +344,7 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Declaration that) {
-        Boolean efl = pauseLoop();
+        LoopState efl = pauseLoop();
         boolean bc = pauseLoopScope();
         super.visit(that);
         unpauseLoop(efl);
@@ -335,7 +353,7 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.TypedArgument that) {
-        Boolean efl = pauseLoop();
+        LoopState efl = pauseLoop();
         boolean bc = pauseLoopScope();
         super.visit(that);
         unpauseLoop(efl);
@@ -396,6 +414,7 @@ public class ControlFlowVisitor extends Visitor {
             that.addError("no surrounding loop to continue");
         }
         super.visit(that);
+        continueLoop();
         exitLoopScope();
     }
     
@@ -421,17 +440,15 @@ public class ControlFlowVisitor extends Visitor {
         checkExecutableStatementAllowed(that);
         checkReachable(that);
         boolean d = beginIndefiniteReturnScope();
-        Boolean b = beginLoop();
+        LoopState b = beginLoop();
         boolean bc = beginLoopScope();
         that.getWhileClause().visit(this);
-        boolean definitelyDoesNotBreakFromWhile = !possiblyBreaks;
-        boolean definitelyReturnsFromWhile = definitelyReturns;
+        boolean definitelyDoesNotBreakWhile = !loopState.breaks;
         endDefiniteReturnScope(d);
         endLoop(b);
         endLoopScope(bc);
         if (isAlwaysSatisfied(that.getWhileClause().getConditionList())) {
-            if (definitelyDoesNotBreakFromWhile 
-                    || definitelyReturnsFromWhile) { //superfluous?
+            if (definitelyDoesNotBreakWhile) {
                 definitelyReturns = true;
             }
         }
@@ -443,7 +460,7 @@ public class ControlFlowVisitor extends Visitor {
         checkReachable(that);
         boolean d = beginIndefiniteReturnScope();
         
-        Boolean b = beginLoop();
+        LoopState b = beginLoop();
         boolean bc = beginLoopScope();
         boolean atLeastOneIteration = false;
         Tree.ForClause forClause = that.getForClause();
@@ -451,10 +468,13 @@ public class ControlFlowVisitor extends Visitor {
             forClause.visit(this);
             atLeastOneIteration = isAtLeastOne(forClause);
         }
-        boolean definitelyDoesNotBreakFromFor = !possiblyBreaks;
+        boolean definitelyDoesNotBreakFor = !loopState.breaks;
+        boolean definitelyDoesNotContinueFor = !loopState.continues;
         boolean definitelyReturnsFromFor = definitelyReturns && 
-                atLeastOneIteration && definitelyDoesNotBreakFromFor;
-        that.setExits(possiblyBreaks);
+                atLeastOneIteration 
+                    && definitelyDoesNotBreakFor
+                    && definitelyDoesNotContinueFor;
+        that.setExits(loopState.breaks);
         endLoop(b);
         endLoopScope(bc);
         
@@ -465,7 +485,7 @@ public class ControlFlowVisitor extends Visitor {
         if (elseClause!=null) {
             elseClause.visit(this);
             definitelyReturnsFromElse = definitelyReturns && 
-                    definitelyDoesNotBreakFromFor;
+                    definitelyDoesNotBreakFor;
         }
         else {
             definitelyReturnsFromElse = false;
@@ -482,20 +502,23 @@ public class ControlFlowVisitor extends Visitor {
         checkExecutableStatementAllowed(that);
         checkReachable(that);
         boolean d = beginIndefiniteReturnScope();
-        Boolean e = possiblyBreaks;
+        LoopState ls = loopState;
         boolean bc = definitelyBreaksOrContinues;
         
+        loopState = ls==null ? null : new LoopState(ls);
         Tree.IfClause ifClause = that.getIfClause();
         if (ifClause!=null) {
             ifClause.visit(this);
         }
         boolean definitelyReturnsFromIf = definitelyReturns;
-        Boolean possiblyBreaksFromIf = possiblyBreaks;
+        boolean possiblyBreaksFromIf = inLoop() && loopState.breaks;
+        boolean possiblyContinuesFromIf = inLoop() && loopState.continues;
         boolean breaksOrContinuesFromIf = definitelyBreaksOrContinues;
-        possiblyBreaks = e;
+        loopState = ls;
         endDefiniteReturnScope(d);
         endLoopScope(bc);
         
+        loopState = ls==null ? null : new LoopState(ls);
         boolean definitelyReturnsFromElse;
         boolean breaksOrContinuesFromElse;
         Tree.ElseClause elseClause = that.getElseClause();
@@ -508,26 +531,35 @@ public class ControlFlowVisitor extends Visitor {
             definitelyReturnsFromElse = false;
             breaksOrContinuesFromElse = false;
         }
-        Boolean possiblyBreaksFromElse = possiblyBreaks;
-        possiblyBreaks = e;
+        Boolean possiblyBreaksFromElse = inLoop() && loopState.breaks;
+        boolean possiblyContinuesFromElse = inLoop() && loopState.continues;
+        loopState = ls;
         endLoopScope(bc);
         
         Tree.ConditionList cl = ifClause==null ? null : ifClause.getConditionList();
         if (isAlwaysSatisfied(cl)) {
             definitelyReturns = d || definitelyReturnsFromIf;
-            possiblyBreaks = possiblyBreaksFromIf;
             definitelyBreaksOrContinues = bc || breaksOrContinuesFromIf;
+            if (inLoop()) {
+                loopState.breaks = loopState.breaks || possiblyBreaksFromIf;
+                loopState.continues = loopState.continues || possiblyContinuesFromIf;
+            }
         } 
         else if (isNeverSatisfied(cl)) {
             definitelyReturns = d || definitelyReturnsFromElse;
-            possiblyBreaks = possiblyBreaksFromElse;
             definitelyBreaksOrContinues = bc || breaksOrContinuesFromElse;
+            if (inLoop()) {
+                loopState.breaks = loopState.breaks || possiblyBreaksFromElse;
+                loopState.continues = loopState.continues || possiblyContinuesFromElse;
+            }
         }
         else {
             definitelyReturns = d || (definitelyReturnsFromIf && definitelyReturnsFromElse);
-            possiblyBreaks = e==null ? null : possiblyBreaksFromIf || possiblyBreaksFromElse;
             definitelyBreaksOrContinues = bc || breaksOrContinuesFromIf && breaksOrContinuesFromElse;
-
+            if (inLoop()) {
+                loopState.breaks = loopState.breaks || possiblyBreaksFromIf || possiblyBreaksFromElse;
+                loopState.continues = loopState.continues || possiblyContinuesFromIf || possiblyContinuesFromElse;
+            }
         }
     }
 
