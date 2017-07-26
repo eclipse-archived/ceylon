@@ -4581,8 +4581,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 value.setUnit(scope.getUnit());
                 value.setName(paramName);
             }else{
-                // Ceylon 1.1 had a bug where TypeInfo for functional parameters included the full CallableType on the method
-                // rather than just the method return type, so we try to detect this and fix it
+                // Ceylon 1.1 had a bug where TypeInfo for functional parameters 
+                // included the full CallableType on the method rather than just 
+                // the method return type, so we try to detect this and fix it
                 if(value instanceof Function 
                         && isCeylon1Dot1(classMirror)){
                     Type newType = getSimpleCallableReturnType(value.getType());
@@ -4599,9 +4600,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 parameter.setSequenced(true);
             if(paramMirror.getAnnotation(CEYLON_DEFAULTED_ANNOTATION) != null)
                 parameter.setDefaulted(true);
-            if (parameter.isSequenced() &&
+            if (parameter.isSequenced() 
                     // FIXME: store info in Sequenced
-                    typeFactory.isNonemptyIterableType(parameter.getType())) {
+                    && "ceylon.language.Sequence"
+                            .equals(paramMirror.getType().getQualifiedName())) {
                 parameter.setAtLeastOne(true);
             }
             // unboxed is already set if it's a real method
