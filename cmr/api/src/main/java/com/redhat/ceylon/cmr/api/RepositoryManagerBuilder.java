@@ -188,7 +188,7 @@ public class RepositoryManagerBuilder {
         if(overridesFileName != null){
             try {
                 return Overrides.getDistOverrides().append(overridesFileName);
-            }catch(IllegalArgumentException x ){
+            }catch(IllegalArgumentException x){
                 throw x;
             } catch (Exception e) {
                 throw new IllegalStateException(e);
