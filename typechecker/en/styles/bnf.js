@@ -10,4 +10,4 @@ Rainbow.extend( "bnf", [
     name: "variable.global",
     pattern: /\b[A-Z]\w*\b/g
   }
-], true );
+] );
