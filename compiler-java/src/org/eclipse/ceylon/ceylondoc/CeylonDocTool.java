@@ -891,7 +891,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 markup.around("script src='" + getResourceUrl(pkg, "ceylon.js") + "' type='text/javascript'");
                 markup.around("script src='" + getResourceUrl(pkg, "ceylondoc.js") + "' type='text/javascript'"); 
                 markup.close("head");
-                markup.open("body", "pre data-language='ceylon' style='font-family: Inconsolata, Monaco, Courier, monospace'");
+                markup.open("body", "pre", "code data-language='ceylon' style='font-family: Inconsolata, Monaco, Courier, monospace'");
 
                 String encoding = getEncoding();
                 if (encoding == null) {
@@ -907,7 +907,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                         line = input.readLine();
                     }
                 }
-                markup.close("pre", "body", "html");
+                markup.close("code", "pre", "body", "html");
             } finally {
                 writer.close();
             }
