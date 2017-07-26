@@ -117,8 +117,8 @@ public class Decl {
      */
     public static boolean isGetter(Declaration decl) {
         return decl instanceof Value
-                && !((Value)decl).isParameter() 
-                && ((Value)decl).isTransient();
+            && !((Value)decl).isParameter() 
+            && ((Value)decl).isTransient();
     }
 
     public static boolean isNonTransientValue(Declaration decl) {
@@ -127,8 +127,8 @@ public class Decl {
     
     public static boolean isSharedParameter(Declaration decl) {
         return decl instanceof Value 
-                && ((Value)decl).isParameter() 
-                && decl.isShared();
+            && ((Value)decl).isParameter() 
+            && decl.isShared();
     }
     
     
@@ -149,22 +149,22 @@ public class Decl {
      */
     public static boolean isValueOrSharedParam(Declaration decl) {
         return isValue(decl) 
-                || decl instanceof Value 
-                    && ((Value)decl).isParameter() 
-                    && decl.isShared();
+            || decl instanceof Value 
+                && ((Value)decl).isParameter() 
+                && decl.isShared();
     }
     
     public static boolean isValueOrSharedOrCapturedParam(Declaration decl) {
         return isValue(decl) 
-                || decl instanceof Value 
-                    && ((Value)decl).isParameter() 
-                    && (decl.isShared() || decl.isCaptured());
+            || decl instanceof Value 
+                && ((Value)decl).isParameter() 
+                && (decl.isShared() || decl.isCaptured());
     }
     
     public static boolean isMethodOrSharedOrCapturedParam(Declaration decl) {
         return decl instanceof Function 
                 && !isConstructor(decl)
-                    && (!((Function)decl).isParameter() || decl.isShared() || decl.isCaptured());
+                && (!((Function)decl).isParameter() || decl.isShared() || decl.isCaptured());
     }
 
     /**
@@ -456,16 +456,16 @@ public class Decl {
     }
         
     public static boolean isClassAttribute(Declaration decl) {
-        return (withinClassOrInterface(decl))
-                && (Decl.isValue(decl) || decl instanceof Setter)
-                && (decl.isCaptured() || decl.isShared());
+        return withinClassOrInterface(decl)
+            && (Decl.isValue(decl) || decl instanceof Setter)
+            && (decl.isCaptured() || decl.isShared());
     }
 
     public static boolean isClassParameter(Declaration decl) {
-        return (withinClassOrInterface(decl))
-                && (decl instanceof Value) 
-                && ((Value)decl).isParameter()
-                && (decl.isCaptured() || decl.isShared());
+        return withinClassOrInterface(decl)
+            && decl instanceof Value
+            && ((Value)decl).isParameter()
+            && (decl.isCaptured() || decl.isShared());
     }
 
     public static boolean isLocalToInitializer(Tree.Declaration decl) {
@@ -477,10 +477,8 @@ public class Decl {
     }
     
     public static boolean isOverloaded(Declaration decl) {
-        if (decl instanceof Functional) {
-            return decl.isOverloaded();
-        }
-        return false;
+        return decl instanceof Functional 
+            && decl.isOverloaded();
     }
 
     public static boolean isJavaField(Declaration decl) {
@@ -488,13 +486,9 @@ public class Decl {
     }
 
     public static boolean isStatic(TypeDeclaration declaration) {
-        if(declaration instanceof LazyClass){
-            return ((LazyClass)declaration).isStatic();
-        }
-        if(declaration instanceof LazyInterface){
-            return ((LazyInterface)declaration).isStatic();
-        }
-        return false;
+        return (declaration instanceof LazyClass || 
+                declaration instanceof LazyInterface)
+            && declaration.isStatic();
     }
 
     public static boolean isCeylon(TypeDeclaration declaration) {

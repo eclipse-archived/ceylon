@@ -302,7 +302,7 @@ public class TypeParameter extends TypeDeclaration {
         }
         TypeParameter b = (TypeParameter) o;
         return getDeclaration().equalsForCache(b.getDeclaration())
-                && Objects.equals(getName(),b.getName());
+            && Objects.equals(getName(),b.getName());
     }
 
     @Override

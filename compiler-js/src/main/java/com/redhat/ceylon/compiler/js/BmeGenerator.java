@@ -42,7 +42,7 @@ public class BmeGenerator {
                     return;
                 }
             }
-            if (TypeUtils.isConstructor(decl)) {
+            if (ModelUtil.isConstructor(decl)) {
                 Constructor cd = TypeUtils.getConstructor(decl);
                 Declaration cdc = (Declaration)cd.getContainer();
                 if (!gen.qualify(bme, cd)) {
@@ -213,7 +213,7 @@ public class BmeGenerator {
             }
             if (dyncall) {
                 gen.out(".", that.getIdentifier().getText());
-            } else if (TypeUtils.isConstructor(d)) {
+            } else if (ModelUtil.isConstructor(d)) {
                 gen.out(gen.getNames().constructorSeparator(d),
                         gen.getNames().name(d));
             } else {

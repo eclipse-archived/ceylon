@@ -27,7 +27,7 @@ public class MetamodelHelper {
 
     static void generateOpenType(final Tree.MetaLiteral that, final Declaration d, final GenerateJsVisitor gen, boolean compilingLanguageModule) {
         final Module m = d.getUnit().getPackage().getModule();
-        final boolean isConstructor = TypeUtils.isConstructor(d)
+        final boolean isConstructor = ModelUtil.isConstructor(d)
                 || that instanceof Tree.NewLiteral;
         if (d instanceof TypeParameter == false) {
             if (compilingLanguageModule) {
@@ -151,7 +151,7 @@ public class MetamodelHelper {
         final TypeDeclaration td = ltype.getDeclaration();
         final Map<TypeParameter,Type> targs = ltype.getTypeArguments();
         final boolean isConstructor = that instanceof Tree.NewLiteral
-                || TypeUtils.isConstructor(td);
+                || ModelUtil.isConstructor(td);
         if (ltype.isClass()) {
             if (td.isClassOrInterfaceMember()) {
                 gen.out(gen.getClAlias(), "$init$AppliedMemberClass$jsint()(");
@@ -243,7 +243,7 @@ public class MetamodelHelper {
         final Class anonClass = d.isMember()&&d.getContainer() instanceof Class && ((Class)d.getContainer()).isAnonymous()?(Class)d.getContainer():null;
 
         if (that instanceof Tree.FunctionLiteral || d instanceof Function) {
-            if (TypeUtils.isConstructor(d)) {
+            if (ModelUtil.isConstructor(d)) {
                 constructorLiteral(ref.getType(), TypeUtils.getConstructor(d), that, gen);
                 return;
             }
@@ -308,7 +308,7 @@ public class MetamodelHelper {
             }
             gen.out(")");
         } else if (that instanceof ValueLiteral || d instanceof Value) {
-            if (TypeUtils.isConstructor(d)) {
+            if (ModelUtil.isConstructor(d)) {
                 constructorLiteral(ref.getType(), TypeUtils.getConstructor(d), that, gen);
                 return;
             }

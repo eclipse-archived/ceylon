@@ -157,7 +157,7 @@ public class JvmBackendUtil {
      */
     public static boolean isMethod(Declaration decl) {
         return (decl instanceof Function)
-                && !((Function)decl).isParameter();
+            && !((Function)decl).isParameter();
     }
 
     public static boolean isCeylon(TypeDeclaration declaration) {

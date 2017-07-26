@@ -97,8 +97,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                     boolean sameScope = d.getContainer().equals(s)
                             || (s instanceof Declaration
                                     && (Decl.isParameter((Declaration)s) || (s instanceof Value && !((Value)s).isTransient()))
-                                    && d.getContainer().equals(s.getScope()))
-                                    ;
+                                    && d.getContainer().equals(s.getScope()));
                     if (!sameScope || methodSpecifier || inLazySpecifierExpression) {
                         ((FunctionOrValue)d).setCaptured(true);
                     }
@@ -143,7 +142,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
         TypeDeclaration type = d.getTypeDeclaration();
         Scope scope = that.getScope();
         while(scope != null 
-                && scope instanceof Package == false
+                && !(scope instanceof Package)
                 && !Decl.equalScopeDecl(scope, type)) {
             scope = scope.getScope();
         }

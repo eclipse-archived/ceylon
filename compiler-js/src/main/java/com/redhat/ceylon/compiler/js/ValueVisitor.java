@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.js;
 
-import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -63,7 +62,7 @@ public class ValueVisitor extends Visitor {
                         //list does not capture a parameter
                         ((FunctionOrValue) d).setJsCaptured(true);
                     }
-                } else if (d instanceof Value && !TypeUtils.isConstructor(d) && !d.isToplevel()) {
+                } else if (d instanceof Value && !ModelUtil.isConstructor(d) && !d.isToplevel()) {
                     ((Value) d).setJsCaptured(true);
                 }
             }

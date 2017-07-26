@@ -3268,7 +3268,7 @@ public class ModelUtil {
     }
 
     public static boolean isCaptured(Declaration decl) {
-        // Shared elements are implicitely captured although the typechecker doesn't mark them that way
+        // Shared elements are implicitly captured although the typechecker doesn't mark them that way
         return decl.isCaptured() || decl.isShared();
     }
 
@@ -3287,10 +3287,10 @@ public class ModelUtil {
      */
     public static boolean isLocalNotInitializerScope(Scope scope) {
         return scope instanceof FunctionOrValue 
-                || scope instanceof Constructor
-                || scope instanceof ControlBlock
-                || scope instanceof NamedArgumentList
-                || scope instanceof Specification;
+            || scope instanceof Constructor
+            || scope instanceof ControlBlock
+            || scope instanceof NamedArgumentList
+            || scope instanceof Specification;
     }
 
     /**
@@ -3462,9 +3462,9 @@ public class ModelUtil {
     /** Is the given value the result of an enumerated ("singleton") constructor */
     public static boolean isEnumeratedConstructor(Value value) {
         return value != null
-                && value.getType() != null
-                && value.getType().isConstructor()
-                && !value.getTypeDeclaration().isJavaEnum();
+            && value.getType() != null
+            && value.getType().isConstructor()
+            && !value.getTypeDeclaration().isJavaEnum();
     }
 
     /** 

@@ -510,7 +510,7 @@ public class FunctionHelper {
             if (name == null) {
                 name = gen.memberAccess(that, "");
             }
-            if (TypeUtils.isConstructor(d)) {
+            if (ModelUtil.isConstructor(d)) {
                 Constructor cd = TypeUtils.getConstructor(d);
                 final boolean hasTargs = BmeGenerator.hasTypeParameters(
                         (Tree.BaseTypeExpression) that.getPrimary());
@@ -552,7 +552,7 @@ public class FunctionHelper {
         String primaryVar = gen.createRetainedTempVar();
         gen.out("(", primaryVar, "=");
         that.getPrimary().visit(gen);
-        if (!(that.getStaticMethodReferencePrimary() && !TypeUtils.isConstructor(that.getDeclaration()))) {
+        if (!(that.getStaticMethodReferencePrimary() && !ModelUtil.isConstructor(that.getDeclaration()))) {
             gen.out(",");
             final String member = (name == null) ? gen.memberAccess(that, primaryVar) : (primaryVar+"."+name);
             if (that.getDeclaration() instanceof Function

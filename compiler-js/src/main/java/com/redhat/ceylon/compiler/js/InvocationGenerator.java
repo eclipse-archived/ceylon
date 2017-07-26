@@ -42,7 +42,7 @@ public class InvocationGenerator {
             final boolean hasTargs = d != null && d.getContainer() instanceof Generic
                     && !((Generic)d.getContainer()).getTypeParameters().isEmpty();
             final boolean hasParentTargs = TypeUtils.isStaticWithGenericContainer(d);
-            if (hasTargs && TypeUtils.isConstructor(d)) {
+            if (hasTargs && ModelUtil.isConstructor(d)) {
                 return smote.getTarget().getTypeArguments();
             } else if (hasParentTargs) {
                 if (smote.getTypeArguments() != null && !smote.getTypeArguments().getTypeModels().isEmpty()) {
