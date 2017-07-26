@@ -941,7 +941,7 @@ public class TypeUtils {
                     || _cont instanceof Value == false)) {
                 //Captured values will have a metamodel so we don't skip those
                 //Neither do we skip classes, even if they're anonymous
-                if ((_cont instanceof Value && (((Value)_cont).isCaptured())) || _cont instanceof Class) {
+                if ((_cont instanceof Value && (((Value)_cont).isJsCaptured())) || _cont instanceof Class) {
                     break;
                 }
                 Declaration __d = ModelUtil.getContainingDeclaration(_cont);

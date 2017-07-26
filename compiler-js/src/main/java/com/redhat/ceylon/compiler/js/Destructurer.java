@@ -127,7 +127,7 @@ public class Destructurer extends Visitor {
         if (d.isClassOrInterfaceMember()) {
             attribs.add(d);
         }
-        if (d.isCaptured()) {
+        if (d.isJsCaptured()) {
             caps.add(d);
         }
         added.add(v);

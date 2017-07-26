@@ -239,7 +239,7 @@ public class SerializationHelper {
         if (v.isParameter()) {
             return gen.getNames().name(d.getParameter(v.getName())) + "_";
         }
-        return v.isLate() || v.isCaptured() ? gen.getNames().name(v)+ "_" : gen.getNames().privateName(v);
+        return v.isLate() || v.isJsCaptured() ? gen.getNames().name(v)+ "_" : gen.getNames().privateName(v);
     }
 
 }

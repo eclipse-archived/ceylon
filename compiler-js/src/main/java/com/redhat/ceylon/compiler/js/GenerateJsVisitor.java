@@ -1452,7 +1452,7 @@ public class GenerateJsVisitor extends Visitor {
                 out(";}");
                 endLine();
             }
-            if ((typeDecl != null && typeDecl instanceof ClassAlias==false) && (pd.getModel().isCaptured() ||
+            if ((typeDecl != null && typeDecl instanceof ClassAlias==false) && (pd.getModel().isJsCaptured() ||
                     pd.getDeclaration() instanceof Class)) {
                 out(names.self(typeDecl), ".", names.valueName(pd.getModel()), "=", paramName);
                 if (!opts.isOptimize() && pd.isHidden()) { //belt and suspenders...

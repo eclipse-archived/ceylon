@@ -257,7 +257,7 @@ public class ConditionGenerator {
             }
             gen.out("else");
             gen.encloseBlockInFunction(anoserque.getBlock(), true,
-                    elseDec != null && elseDec.isCaptured() ?
+                    elseDec != null && elseDec.isJsCaptured() ?
                             Collections.singleton(elseDec) : null);
             if (elseDec != null) {
                 directAccess.remove(elseDec);
@@ -495,7 +495,7 @@ public class ConditionGenerator {
             gen.out(";");
         } else {
             gen.out(" ");
-            Set<Value> cap = caseDec != null && caseDec.isCaptured() ?
+            Set<Value> cap = caseDec != null && caseDec.isJsCaptured() ?
                     Collections.singleton(caseDec) : null;
             gen.encloseBlockInFunction(cc.getBlock(), true, cap);
         }
@@ -560,7 +560,7 @@ public class ConditionGenerator {
             if (st instanceof Tree.Variable) {
                 var = (Tree.Variable)st;
                 destr = null;
-                if (var.getDeclarationModel() != null && var.getDeclarationModel().isCaptured()) {
+                if (var.getDeclarationModel() != null && var.getDeclarationModel().isJsCaptured()) {
                     captured = Collections.singleton(var.getDeclarationModel());
                 }
             } else {
