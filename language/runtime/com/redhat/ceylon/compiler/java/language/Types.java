@@ -162,7 +162,7 @@ public final class Types {
     @com.redhat.ceylon.common.NonNull
     @TypeInfo("ceylon.language::String")
     public static java.lang.String codepoints(
-            @Name("string")
+            @Name("array")
             @com.redhat.ceylon.common.NonNull
             final char[] array) {
         return new java.lang.String(array);
