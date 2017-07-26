@@ -122,6 +122,8 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
             if(!force)
                 errorOnConflictingModule(moduleName, version);
         }
+        // force loading the module which contains the main
+        loadModule(null, "com.redhat.ceylon.java.main", Versions.CEYLON_VERSION_NUMBER);
         loader.resolve();
 
         

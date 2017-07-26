@@ -123,7 +123,7 @@ public class Java9Util {
 		}
 
 		private String getMain(String module) {
-			if(module.equals(Module.LANGUAGE_MODULE_NAME))
+			if(module.equals("com.redhat.ceylon.java.main"))
 				return "com.redhat.ceylon.compiler.java.runtime.Main2";
 			else 
 				return null;
