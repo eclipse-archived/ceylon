@@ -23,8 +23,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 
-import junit.framework.Assert;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.tautua.markdownpapers.ast.Document;
@@ -32,6 +30,8 @@ import org.tautua.markdownpapers.parser.Parser;
 
 import com.redhat.ceylon.common.tool.WordWrap;
 import com.redhat.ceylon.common.tools.help.PlaintextMarkdownVisitor;
+
+import junit.framework.Assert;
 
 public class PlaintextTests {
 
