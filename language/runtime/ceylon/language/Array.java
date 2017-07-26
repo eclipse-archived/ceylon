@@ -157,7 +157,7 @@ public final class Array<Element>
                 (elements instanceof List
                  && elements.getClass().getCanonicalName()
                      .equals("ceylon.collection.ArrayList"))) {
-            return createArrayFromList($reifiedElement, 
+            return createArrayFromArrayList($reifiedElement, 
                     (List<? extends Element>) elements);
         }
         
@@ -173,6 +173,11 @@ public final class Array<Element>
                     (Array<? extends Element>) elements);
         }
         
+        if (elements instanceof List) {
+            return createArrayFromList($reifiedElement, 
+                    (List<? extends Element>) elements);
+        }
+
         final ArrayList<Element> list = new ArrayList<Element>();
         Iterator<?> iterator = elements.iterator();
         java.lang.Object elem;
@@ -299,6 +304,114 @@ public final class Array<Element>
     }
 
     private static <Element> java.lang.Object createArrayFromList(
+            final TypeDescriptor $reifiedElement,
+            final List<? extends Element> elements) {
+        
+        Iterator<?> iterator = elements.iterator();
+        final int size = (int) elements.getSize();
+        
+        switch (elementType($reifiedElement)) {
+        case CeylonString:
+            //note: we don't unbox strings in an Array<String?>
+            //      because it would break javaObjectArray()
+            java.lang.String[] stringArray = new java.lang.String[size];
+            for (int i=0; i<size; i++) {
+                String string = (String) iterator.next();
+                stringArray[i] = string==null ? null : string.value;
+            }
+            return stringArray;
+        case CeylonInteger:
+            long[] longPrecisionArray = new long[size];
+            for (int i=0; i<size; i++) {
+                longPrecisionArray[i] = ((Integer) iterator.next()).value;
+            }
+            return longPrecisionArray;
+        case CeylonFloat:
+            double[] doublePrecisionArray = new double[size];
+            for (int i=0; i<size; i++) {
+                doublePrecisionArray[i] = ((Float) iterator.next()).value;
+            }
+            return doublePrecisionArray;
+        case CeylonCharacter:
+            int[] codepointArray = new int[size];
+            for (int i=0; i<size; i++) {
+                codepointArray[i] = ((Character) iterator.next()).codePoint;
+            }
+            return codepointArray;
+        case CeylonBoolean:
+            boolean[] boolArray = new boolean[size];
+            for (int i=0; i<size; i++) {
+                boolArray[i] = ((Boolean) iterator.next()).booleanValue();
+            }
+            return boolArray;
+        case CeylonByte:
+            byte[] bitsArray = new byte[size];
+            for (int i=0; i<size; i++) {
+                bitsArray[i] = ((Byte) iterator.next()).value;
+            }
+            return bitsArray;
+        case JavaBoolean:
+            boolean[] booleanArray = new boolean[size];
+            for (int i=0; i<size; i++) {
+                booleanArray[i] = (java.lang.Boolean) iterator.next();
+            }
+            return booleanArray;
+        case JavaCharacter:
+            char[] charArray = new char[size];
+            for (int i=0; i<size; i++) {
+                charArray[i] = (java.lang.Character) iterator.next();
+            }
+            return charArray;
+        case JavaFloat:
+            float[] floatArray = new float[size];
+            for (int i=0; i<size; i++) {
+                floatArray[i] = (java.lang.Float) iterator.next();
+            }
+            return floatArray;
+        case JavaDouble:
+            double[] doubleArray = new double[size];
+            for (int i=0; i<size; i++) {
+                doubleArray[i] = (java.lang.Double) iterator.next();
+            }
+            return doubleArray;
+        case JavaByte:
+            byte[] byteArray = new byte[size];
+            for (int i=0; i<size; i++) {
+                byteArray[i] = (java.lang.Byte) iterator.next();
+            }
+            return byteArray;
+        case JavaShort:
+            short[] shortArray = new short[size];
+            for (int i=0; i<size; i++) {
+                shortArray[i] = (java.lang.Short) iterator.next();
+            }
+            return shortArray;
+        case JavaInteger:
+            int[] intArray = new int[size];
+            for (int i=0; i<size; i++) {
+                intArray[i] = (java.lang.Integer) iterator.next();
+            }
+            return intArray;
+        case JavaLong:
+            long[] longArray = new long[size];
+            for (int i=0; i<size; i++) {
+                longArray[i] =(java.lang.Long) iterator.next();
+            }
+            return longArray;
+        default:
+            java.lang.Class<?> clazz = 
+                    $reifiedElement.getArrayElementClass();
+            java.lang.Object[] array = (java.lang.Object[]) 
+                    java.lang.reflect.Array.newInstance(clazz, size);
+            for (int i=0; i<size; i++) {
+                array[i] = iterator.next();
+            }
+            return array;
+        }
+
+    }
+
+    private static <Element> java.lang.Object createArrayFromArrayList(
             final TypeDescriptor $reifiedElement,
             final List<? extends Element> elements) {
         
