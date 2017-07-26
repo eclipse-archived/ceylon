@@ -43,12 +43,11 @@ import com.redhat.ceylon.langtools.classfile.Attribute;
 import com.redhat.ceylon.langtools.classfile.Attributes;
 import com.redhat.ceylon.langtools.classfile.ClassFile;
 import com.redhat.ceylon.langtools.classfile.ClassWriter;
-import com.redhat.ceylon.langtools.classfile.ConcealedPackages_attribute;
 import com.redhat.ceylon.langtools.classfile.ConstantPool;
 import com.redhat.ceylon.langtools.classfile.ConstantPool.CPInfo;
-import com.redhat.ceylon.langtools.classfile.MainClass_attribute;
+import com.redhat.ceylon.langtools.classfile.ModuleMainClass_attribute;
+import com.redhat.ceylon.langtools.classfile.ModulePackages_attribute;
 import com.redhat.ceylon.langtools.classfile.Module_attribute;
-import com.redhat.ceylon.langtools.classfile.Version_attribute;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -74,8 +73,15 @@ public class Java9Util {
 				else
 					concealedPackages.add(pkg.getNameAsString());
 			}
+            Set<String> importedModules = new HashSet<>();
 			for(ModuleImport imp : module.getImports()){
+			    // skip optional deps since create-mlib will skip them too
+			    if(imp.isOptional())
+			        continue;
 				String dependency = JDKUtils.getJava9ModuleName(imp.getModule().getNameAsString(), imp.getModule().getVersion());
+                // never import a module twice, and due to jdk8->9 aliases this can be the case
+                if(!importedModules.add(dependency))
+                    continue;
 				if(skipModuleImport(dependency))
 					continue;
 				imports.add(new Java9ModuleImport(dependency, imp.isExport()));
@@ -88,8 +94,15 @@ public class Java9Util {
 			this.name = sanitiseName(name);
 			this.version = version;
 			exportedPackages.addAll(packages);
+			Set<String> importedModules = new HashSet<>();
 			for(ModuleDependencyInfo imp : info.getDependencies()){
+                // skip optional deps since create-mlib will skip them too
+                if(imp.isOptional())
+                    continue;
 				String dependency = JDKUtils.getJava9ModuleName(imp.getName(), imp.getVersion());
+				// never import a module twice, and due to jdk8->9 aliases this can be the case
+				if(!importedModules.add(dependency))
+				    continue;
 				if(skipModuleImport(dependency))
 					continue;
 				imports.add(new Java9ModuleImport(dependency, imp.isExport()));
@@ -103,11 +116,14 @@ public class Java9Util {
 			// will barf if it sees it at compile-time, so special-case it
 			if(name.equals("com.redhat.ceylon.model") && dependency.equals(Module.LANGUAGE_MODULE_NAME))
 				return true;
+			// same for slf4j
+            if(name.equals("org.slf4j.api") && dependency.equals("org.slf4j.simple"))
+                return true;
 			return false;
 		}
 
 		private String getMain(String module) {
-			if(module.equals(Module.LANGUAGE_MODULE_NAME))
+			if(module.equals("com.redhat.ceylon.java.main"))
 				return "com.redhat.ceylon.compiler.java.runtime.Main2";
 			else 
 				return null;
@@ -175,74 +191,84 @@ public class Java9Util {
     }
 
     private static ClassFile generateModuleDescriptor(Java9ModuleDescriptor module) {
-        CPInfo[] pool = new ConstantPool.CPInfo[1+6
-                                                + module.imports.size()
-                                                + module.getPackagesSize()
+        CPInfo[] pool = new ConstantPool.CPInfo[1+7
+                                                + (module.imports.size() * 2)
+                                                + (module.getPackagesSize() * 2)
                                                 + (module.main != null ? 3 : 0)];
         ConstantPool constantPool = new ConstantPool(pool);
         
         int cp = 1;
         // 1: this_class name
-        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.name.replace('.', '/')+"/module-info");
+        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info("module-info");
         // 2: this_class
         pool[cp++] = new ConstantPool.CONSTANT_Class_info(constantPool, 1);
         // 3: module attr
         pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.Module);
-        // 4: concealed pkgs attr
-        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.ConcealedPackages);
-        // 5: version attr
-        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.Version);
-        // 6: version
+        // 4: module pkgs attr
+        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.ModulePackages);
+        // 5: version
         pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.version);
+        // 6: module name
+        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.name);
+        // 7: module info
+        pool[cp++] = new ConstantPool.CONSTANT_Module_info(constantPool, 6);
         if(module.main != null){
-            // 7: main attr
-            pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.MainClass);
-            // 8: main class name
+            // 8: main attr
+            pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.ModuleMainClass);
+            // 9: main class name
             pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.main.replace('.', '/'));
-            // 9: main class
-            pool[cp++] = new ConstantPool.CONSTANT_Class_info(constantPool, 8);
+            // 10: main class
+            pool[cp++] = new ConstantPool.CONSTANT_Class_info(constantPool, 9);
         }
         int i=0;
         // now imports
         Module_attribute.RequiresEntry[] requires = new Module_attribute.RequiresEntry[module.imports.size()];
         for(Java9ModuleImport imp : module.imports){
             pool[cp] = new ConstantPool.CONSTANT_Utf8_info(imp.name);
+            pool[cp+1] = new ConstantPool.CONSTANT_Module_info(constantPool, cp);
             int flag = 0;
             if(imp.exported)
-                flag &= Module_attribute.ACC_PUBLIC;
-            requires[i] = new Module_attribute.RequiresEntry(cp, flag);
+                flag |= Module_attribute.ACC_TRANSITIVE;
+            // FIXME: add version info!
+            requires[i] = new Module_attribute.RequiresEntry(cp+1, flag, 0);
             i++;
-            cp++;
+            cp+=2;
         }
         Module_attribute.ExportsEntry[] exports = new Module_attribute.ExportsEntry[module.exportedPackages.size()];
         i = 0;
+        int[] modulePackages = new int[module.exportedPackages.size() + module.concealedPackages.size()];
+        int m=0;
         for(String pkg : module.exportedPackages){
             pool[cp] = new ConstantPool.CONSTANT_Utf8_info(pkg.replace('.', '/'));
-            exports[i++] = new Module_attribute.ExportsEntry(cp, new int[0]);
-            cp++;
+            pool[cp+1] = new ConstantPool.CONSTANT_Package_info(constantPool, cp);
+            exports[i++] = new Module_attribute.ExportsEntry(cp+1, 0, new int[0]);
+            modulePackages[m++] = cp+1;
+            cp+=2;
         }
-        int[] concealedPackages = new int[module.concealedPackages.size()];
-        i = 0;
         for(String pkg : module.concealedPackages){
             pool[cp] = new ConstantPool.CONSTANT_Utf8_info(pkg.replace('.', '/'));
-            concealedPackages[i++] = cp;
-            cp++;
+            pool[cp+1] = new ConstantPool.CONSTANT_Package_info(constantPool, cp);
+            modulePackages[m++] = cp+1;
+            cp+=2;
         }
-        Attribute[] attributesArray = new Attribute[3 + (module.main != null ? 1 : 0)];
+        Attribute[] attributesArray = new Attribute[2 + (module.main != null ? 1 : 0)];
         attributesArray[0] = new Module_attribute(3, 
+                        7, // module name index
+                        0, // flags
+                        5, // version
                         requires,
                         exports, 
+                        new Module_attribute.OpensEntry[0],
                         new int[0], 
                         new Module_attribute.ProvidesEntry[0]);
-        attributesArray[1] = new ConcealedPackages_attribute(4, concealedPackages);
-        attributesArray[2] = new Version_attribute(5, 6);
+        attributesArray[1] = new ModulePackages_attribute(4, modulePackages);
         if(module.main != null)
-            attributesArray[3] = new MainClass_attribute(7, 9);
+            attributesArray[2] = new ModuleMainClass_attribute(8, 10);
                 
         Attributes attributes = new Attributes(constantPool, attributesArray );
         return new ClassFile(com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.JAVA_MAGIC,
-                com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.major,
                 com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.minor,
+                com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.major,
                 constantPool,
                 new com.redhat.ceylon.langtools.classfile.AccessFlags(com.redhat.ceylon.langtools.classfile.AccessFlags.ACC_MODULE),
                 2,

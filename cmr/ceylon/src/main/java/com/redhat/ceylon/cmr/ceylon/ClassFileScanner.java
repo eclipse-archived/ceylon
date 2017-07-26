@@ -49,7 +49,9 @@ import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_Long_info;
 import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_MethodHandle_info;
 import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_MethodType_info;
 import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_Methodref_info;
+import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_Module_info;
 import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_NameAndType_info;
+import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_Package_info;
 import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_String_info;
 import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_Utf8_info;
 import com.redhat.ceylon.langtools.classfile.ConstantPool.CPInfo;
@@ -346,6 +348,16 @@ public class ClassFileScanner {
 			public Object visitUtf8(CONSTANT_Utf8_info info, ConstantPool p) {
 				return null;
 			}
+
+            @Override
+            public Object visitModule(CONSTANT_Module_info info, ConstantPool p) {
+                return null;
+            }
+
+            @Override
+            public Object visitPackage(CONSTANT_Package_info info, ConstantPool p) {
+                return null;
+            }
 		
 	};
 

@@ -42,7 +42,7 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
 	                // add a read to the language module since that's where the metadata annotations are
 	                Object otherModule = Java9ModuleUtil.findModule(mod, LANGUAGE_MODULE_NAME);
 	                if(otherModule != null){
-	                    Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.reflect.Module");
+	                    Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.Module");
 	                    // also add a read to it
 	                    Method addReads = moduleClass.getMethod("addReads", moduleClass);
 	                    addReads.invoke(mod, otherModule);

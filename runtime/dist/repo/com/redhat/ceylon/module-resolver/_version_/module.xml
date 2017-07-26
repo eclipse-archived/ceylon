@@ -41,6 +41,7 @@
         <!-- Aka java.xml/9 -->
         <module name="javax.xml" slot="7" export="true"/>
         <module name="java.base" slot="7" export="true"/>
+        <!-- Aka java.xml.ws/9 -->
         <module name="javax.jaxws" slot="7"/>
         <module name="javax.script" slot="7"/>
         <module name="java.logging" slot="7" export="true"/>

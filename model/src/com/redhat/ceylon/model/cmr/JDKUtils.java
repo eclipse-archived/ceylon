@@ -67,7 +67,7 @@ public class JDKUtils {
     static {
         String version = System.getProperty("java.version");
         if(version != null){
-            if(version.startsWith("1.9")){
+            if(version.startsWith("1.9") || version.startsWith("9.") || version.equals("9")){
                 jdk = JDK.JDK9;
             }else if(version.startsWith("1.8")){
                 jdk = JDK.JDK8;
@@ -93,6 +93,8 @@ public class JDKUtils {
         java8To9ModuleAliases.put("javax.script", "java.scripting");
         java8To9ModuleAliases.put("javax.xml", "java.xml");
         java8To9ModuleAliases.put("javax.xmldsig", "java.xml.crypto");
+        java8To9ModuleAliases.put("javax.jaxws", "java.xml.ws");
+        java8To9ModuleAliases.put("java.tls", "java.base");
     }
 
     private static class Tuple {

@@ -48,6 +48,8 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.tools.p2.ModuleInfo.Dependency;
 
@@ -900,7 +902,7 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
 
     private void collectModules(RepositoryManager repoManager, String name, String version, Map<String, ModuleInfo> allModules) throws IOException {
         // ignore JDK dependencies
-        if(skipModule(name))
+        if(skipModule(name, version))
             return;
         String key = name+"/"+version;
         if(allModules.containsKey(key))
@@ -940,7 +942,11 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
         }
     }
 
-    public boolean skipModule(String name) {
+    public boolean skipModule(String name, String version) {
+        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+            // unalias jdk7-8 module names if we're running on jdk9+
+            name = JDKUtils.getJava9ModuleName(name, version);
+        }
         return jdkProvider.isJDKModule(name)
                 // this one is "provided"
                 || "org.osgi.core".equals(name);

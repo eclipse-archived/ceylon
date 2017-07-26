@@ -190,9 +190,6 @@ class ModuleInfo {
                     String[] details = split(pkg, ";");
                     String name = details[0];
                     boolean optional = false;
-                    // skip some modules
-                    if(tool.skipModule(name))
-                        continue;
                     String version = "";// GRRR: API of ModuleInfo
                     for(int i=1;i<details.length;i++){
                         if(details[i].startsWith("bundle-version=")){
@@ -205,6 +202,9 @@ class ModuleInfo {
                             }
                         }
                     }
+                    // skip some modules
+                    if(tool.skipModule(name, version))
+                        continue;
                     ret.add(new Dependency(name, version, optional));
                 }
             }

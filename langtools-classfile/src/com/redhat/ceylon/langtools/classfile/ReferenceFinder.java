@@ -168,10 +168,18 @@ public final class ReferenceFinder {
             return false;
         }
 
+        public Boolean visitModule(CONSTANT_Module_info info, ConstantPool cpool) {
+            return false;
+        }
+
         public Boolean visitNameAndType(CONSTANT_NameAndType_info info, ConstantPool cpool) {
             return false;
         }
 
+        public Boolean visitPackage(CONSTANT_Package_info info, ConstantPool cpool) {
+            return false;
+        }
+        
         public Boolean visitMethodHandle(CONSTANT_MethodHandle_info info, ConstantPool cpool) {
             return false;
         }

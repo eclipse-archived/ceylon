@@ -34,7 +34,9 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.ModuleScope;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.JdkProvider;
 
 
@@ -577,7 +579,12 @@ public class LegacyImporter {
 				 *   being checked
 				 */
 				// skip JDK checks
-                if (jdkProvider.isJDKModule(dep.name()))
+				String name = dep.name();
+	            if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+	                // unalias jdk7-8 module names if we're running on jdk9+
+	                name = JDKUtils.getJava9ModuleName(name, dep.version());
+	            }
+                if (jdkProvider.isJDKModule(name))
                 	continue;
 				log.info(" dep "+dep.name()+"/"+dep.version());
 				// look it up

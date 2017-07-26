@@ -42,8 +42,6 @@ public abstract class Attribute {
     public static final String BootstrapMethods         = "BootstrapMethods";
     public static final String CharacterRangeTable      = "CharacterRangeTable";
     public static final String Code                     = "Code";
-    // Ceylon: backport from JDK9/Jigsaw
-    public static final String ConcealedPackages        = "ConcealedPackages";
     public static final String ConstantValue            = "ConstantValue";
     public static final String CompilationID            = "CompilationID";
     public static final String Deprecated               = "Deprecated";
@@ -55,9 +53,13 @@ public abstract class Attribute {
     public static final String LocalVariableTypeTable   = "LocalVariableTypeTable";
     public static final String MethodParameters         = "MethodParameters";
     // Ceylon: backport from JDK9/Jigsaw
-    public static final String MainClass                = "MainClass";
-    // Ceylon: backport from JDK9/Jigsaw
     public static final String Module                   = "Module";
+    public static final String ModuleHashes             = "ModuleHashes";
+    public static final String ModuleMainClass          = "ModuleMainClass";
+    public static final String ModulePackages           = "ModulePackages";
+    public static final String ModuleResolution         = "ModuleResolution";
+    public static final String ModuleTarget             = "ModuleTarget";
+    // Ceylon: end backport
     public static final String RuntimeVisibleAnnotations = "RuntimeVisibleAnnotations";
     public static final String RuntimeInvisibleAnnotations = "RuntimeInvisibleAnnotations";
     public static final String RuntimeVisibleParameterAnnotations = "RuntimeVisibleParameterAnnotations";
@@ -71,8 +73,6 @@ public abstract class Attribute {
     public static final String StackMap                 = "StackMap";
     public static final String StackMapTable            = "StackMapTable";
     public static final String Synthetic                = "Synthetic";
-    // Ceylon: backport from JDK9/Jigsaw
-    public static final String Version                  = "Version";
 
     public static class Factory {
         public Factory() {
@@ -126,8 +126,12 @@ public abstract class Attribute {
             standardAttributes.put(LocalVariableTable, LocalVariableTable_attribute.class);
             standardAttributes.put(LocalVariableTypeTable, LocalVariableTypeTable_attribute.class);
             standardAttributes.put(MethodParameters,  MethodParameters_attribute.class);
-            standardAttributes.put(MainClass,         MainClass_attribute.class);
             standardAttributes.put(Module,            Module_attribute.class);
+            standardAttributes.put(ModuleHashes,      ModuleHashes_attribute.class);
+            standardAttributes.put(ModuleMainClass,   ModuleMainClass_attribute.class);
+            standardAttributes.put(ModulePackages,    ModulePackages_attribute.class);
+            standardAttributes.put(ModuleResolution,  ModuleResolution_attribute.class);
+            standardAttributes.put(ModuleTarget,      ModuleTarget_attribute.class);
             standardAttributes.put(RuntimeInvisibleAnnotations, RuntimeInvisibleAnnotations_attribute.class);
             standardAttributes.put(RuntimeInvisibleParameterAnnotations, RuntimeInvisibleParameterAnnotations_attribute.class);
             standardAttributes.put(RuntimeVisibleAnnotations, RuntimeVisibleAnnotations_attribute.class);
@@ -141,7 +145,6 @@ public abstract class Attribute {
             standardAttributes.put(StackMap,          StackMap_attribute.class);
             standardAttributes.put(StackMapTable,     StackMapTable_attribute.class);
             standardAttributes.put(Synthetic,         Synthetic_attribute.class);
-            standardAttributes.put(Version,           Version_attribute.class);
         }
 
         private Map<String,Class<? extends Attribute>> standardAttributes;
@@ -177,7 +180,6 @@ public abstract class Attribute {
         R visitCharacterRangeTable(CharacterRangeTable_attribute attr, P p);
         R visitCode(Code_attribute attr, P p);
         R visitCompilationID(CompilationID_attribute attr, P p);
-        R visitConcealedPackages(ConcealedPackages_attribute attr, P p);
         R visitConstantValue(ConstantValue_attribute attr, P p);
         R visitDeprecated(Deprecated_attribute attr, P p);
         R visitEnclosingMethod(EnclosingMethod_attribute attr, P p);
@@ -187,8 +189,12 @@ public abstract class Attribute {
         R visitLocalVariableTable(LocalVariableTable_attribute attr, P p);
         R visitLocalVariableTypeTable(LocalVariableTypeTable_attribute attr, P p);
         R visitMethodParameters(MethodParameters_attribute attr, P p);
-        R visitMainClass(MainClass_attribute attr, P p);
         R visitModule(Module_attribute attr, P p);
+        R visitModuleHashes(ModuleHashes_attribute attr, P p);
+        R visitModuleMainClass(ModuleMainClass_attribute attr, P p);
+        R visitModulePackages(ModulePackages_attribute attr, P p);
+        R visitModuleResolution(ModuleResolution_attribute attr, P p);
+        R visitModuleTarget(ModuleTarget_attribute attr, P p);
         R visitRuntimeVisibleAnnotations(RuntimeVisibleAnnotations_attribute attr, P p);
         R visitRuntimeInvisibleAnnotations(RuntimeInvisibleAnnotations_attribute attr, P p);
         R visitRuntimeVisibleParameterAnnotations(RuntimeVisibleParameterAnnotations_attribute attr, P p);
@@ -202,6 +208,5 @@ public abstract class Attribute {
         R visitStackMap(StackMap_attribute attr, P p);
         R visitStackMapTable(StackMapTable_attribute attr, P p);
         R visitSynthetic(Synthetic_attribute attr, P p);
-        R visitVersion(Version_attribute attr, P p);
     }
 }

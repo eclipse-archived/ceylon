@@ -273,37 +273,4 @@ public class CeylonClassLoader extends URLClassLoader {
         }
         return null;
     }
-
-    /**
-     * Cleans up any resource associated with this class loader. This class loader will not be usable after calling this
-     * method, so any code using it to run better not be running anymore.
-     * DO NOT call this method "clearCache" as Spring Boot has reserved that name: 
-     * https://github.com/ceylon/ceylon/issues/6681
-     */
-    public void clearCacheButNotWithThisNameToKeepSpringBootHappy() {
-        try {
-            Class<?> klass = java.net.URLClassLoader.class;
-            Field ucp = klass.getDeclaredField("ucp");
-            ucp.setAccessible(true);
-            Object sunMiscURLClassPath = ucp.get(this);
-            Field loaders = sunMiscURLClassPath.getClass().getDeclaredField("loaders");
-            loaders.setAccessible(true);
-            Object collection = loaders.get(sunMiscURLClassPath);
-            for (Object sunMiscURLClassPathJarLoader : ((Collection<?>) collection).toArray()) {
-                try {
-                    Field loader = sunMiscURLClassPathJarLoader.getClass().getDeclaredField("jar");
-                    loader.setAccessible(true);
-                    Object jarFile = loader.get(sunMiscURLClassPathJarLoader);
-                    ((JarFile) jarFile).close();
-                } catch (Throwable t) {
-                    // not a JAR loader?
-                    t.printStackTrace();
-                }
-            }
-        } catch (Throwable t) {
-            // Something's wrong
-            t.printStackTrace();
-        }
-        return;
-    }
 }
