@@ -53,3 +53,42 @@ class Foobar3 {
     }
     
 }
+
+void run0() {
+    value ref = Bar.do;
+    String x = "";
+    class Bar() {
+        shared void do() {
+            print(x);
+        }
+    }
+}
+
+void run1() {
+    @error Bar();
+    String x = "";
+    class Bar() {
+        print(x);
+    }
+}
+
+void run2() {
+    @error Bar.create();
+    String x = "";
+    class Bar {
+        shared new create() {
+            print(x);
+        }
+    }
+}
+
+void run3() {
+    @error Bar.create();
+    String x = "";
+    class Bar {
+        @error shared static void create() {
+            print(x);
+        }
+        new () {}
+    }
+}

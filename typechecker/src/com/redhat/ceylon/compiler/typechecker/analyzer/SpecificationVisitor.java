@@ -231,7 +231,8 @@ public class SpecificationVisitor extends Visitor {
                     (Tree.MemberOrTypeExpression) that;
             if (that instanceof Tree.BaseTypeExpression || 
                     that instanceof Tree.QualifiedTypeExpression) {
-                if (mte.getStaticMethodReferencePrimary()) {
+                if (mte.getStaticMethodReferencePrimary()
+                        && !hasConstructors(mte.getDeclaration())) {
                     return;
                 }
             }
@@ -342,6 +343,11 @@ public class SpecificationVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    private static boolean hasConstructors(Declaration td) {
+        return td instanceof Class 
+            && ((Class) td).hasConstructors();
     }
 
     private boolean isDelegationToDefaultConstructor(Declaration member) {
