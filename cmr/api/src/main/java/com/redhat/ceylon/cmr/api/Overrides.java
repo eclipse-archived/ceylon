@@ -299,7 +299,7 @@ public class Overrides {
 
     private static Overrides parse(String overridesFileName, Overrides overrides) throws OverrideException{
         File overridesFile = new File(overridesFileName);
-        if (overridesFile.exists() == false) {
+        if (!overridesFile.exists()) {
             throw new OverrideNotFoundException("No such overrides file: " + overridesFile);
         }
         try(InputStream is = new FileInputStream(overridesFile)){
