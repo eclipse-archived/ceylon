@@ -153,6 +153,37 @@ public final class Types {
     }
     
     /**
+     * A Ceylon <code>String</code> with the 
+     * codepoints of the given <code>char[]</code> 
+     * array.
+     */
+    @ceylon.language.StaticAnnotation$annotation$
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.common.NonNull
+    @TypeInfo("ceylon.language::String")
+    public static java.lang.String codepoints(
+            @Name("string")
+            @com.redhat.ceylon.common.NonNull
+            final char[] array) {
+        return new java.lang.String(array);
+    }
+    
+    /**
+     * A <code>char[]</code> array with the 
+     * characters of the given Ceylon <code>String</code>.
+     */
+    @ceylon.language.StaticAnnotation$annotation$
+    @ceylon.language.SharedAnnotation$annotation$
+    @com.redhat.ceylon.common.NonNull
+    public static char[] charArray(
+            @Name("string")
+            @TypeInfo("ceylon.language::String")
+            @com.redhat.ceylon.common.NonNull
+            final java.lang.String string) {
+        return string.toCharArray();
+    }
+    
+    /**
      * The {@link java.lang.String} underlying the 
      * given Ceylon <code>String</code>.
      */
