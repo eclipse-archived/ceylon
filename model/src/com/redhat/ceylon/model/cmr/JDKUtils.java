@@ -93,6 +93,8 @@ public class JDKUtils {
         java8To9ModuleAliases.put("javax.script", "java.scripting");
         java8To9ModuleAliases.put("javax.xml", "java.xml");
         java8To9ModuleAliases.put("javax.xmldsig", "java.xml.crypto");
+        java8To9ModuleAliases.put("javax.jaxws", "java.xml.ws");
+        java8To9ModuleAliases.put("java.tls", "java.base");
     }
 
     private static class Tuple {
