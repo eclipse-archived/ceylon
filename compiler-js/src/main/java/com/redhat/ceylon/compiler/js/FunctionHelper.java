@@ -329,6 +329,7 @@ public class FunctionHelper {
             }
             Tree.ParameterList paramList = that.getParameterLists().get(0);
             paramList.visit(gen);
+            gen.pushImports(that.getBlock());
             gen.beginBlock();
             if (d.getContainer() instanceof TypeDeclaration) {
                 gen.initSelf(that);
@@ -337,6 +338,7 @@ public class FunctionHelper {
             gen.initParameters(paramList, null, d);
             gen.visitStatements(that.getBlock().getStatements());
             gen.endBlock();
+            gen.popImports(that.getBlock());
         } else {
             List<MplData> metas = new ArrayList<>(that.getParameterLists().size());
             for (Tree.ParameterList paramList : that.getParameterLists()) {

@@ -7,16 +7,11 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
+import com.redhat.ceylon.model.typechecker.model.*;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Package;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.cmr.impl.NpmRepository;
@@ -57,31 +52,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpres
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
-import com.redhat.ceylon.model.typechecker.model.Annotation;
-import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.ClassAlias;
-import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
-import com.redhat.ceylon.model.typechecker.model.Constructor;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
-import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
-import com.redhat.ceylon.model.typechecker.model.Module;
-import com.redhat.ceylon.model.typechecker.model.Package;
-import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.Scope;
-import com.redhat.ceylon.model.typechecker.model.Setter;
-import com.redhat.ceylon.model.typechecker.model.Specification;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypeAlias;
-import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class GenerateJsVisitor extends Visitor {
 
@@ -525,6 +495,62 @@ public class GenerateJsVisitor extends Visitor {
         visitStatements(that.getStatements());
     }
 
+    private final Deque<Tree.ImportList> blockImports = new ArrayDeque<>();
+
+    public void pushImports(Tree.Block block) {
+        if (block.getImportList() != null) {
+            blockImports.push(block.getImportList());
+        }
+    }
+    public void popImports(Tree.Block block) {
+        if (block.getImportList() != null) {
+            Tree.ImportList top = blockImports.pop();
+            if (top != block.getImportList()) {
+                throw new CompilerErrorException("POPS != PUSHES in block imports");
+            }
+        }
+    }
+
+    public Import findImport(Node node, Declaration d) {
+        Import found = null;
+        for (Tree.ImportList il : blockImports) {
+            for (Tree.Import i : il.getImports()) {
+                for (Tree.ImportMemberOrType imot : i.getImportMemberOrTypeList().getImportMemberOrTypes()) {
+                    found = findImport(d, imot);
+                    if (found != null) {
+                        break;
+                    }
+                }
+            }
+        }
+        if (found == null) {
+            for (Import i : node.getUnit().getImports()) {
+                if (!i.isAmbiguous() && i.getTypeDeclaration() != null && i.getDeclaration().equals(d)) {
+                    found = i;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
+    private Import findImport(Declaration d, Tree.ImportMemberOrType imot) {
+        Import found = null;
+        Import imp = imot.getImportModel();
+        if (!imp.isAmbiguous() && imp.getTypeDeclaration() != null
+                && imp.getDeclaration().equals(d)) {
+            found = imp;
+        }
+        if (found == null) {
+            for (Tree.ImportMemberOrType nested : imot.getImportMemberOrTypeList().getImportMemberOrTypes()) {
+                found = findImport(d, nested);
+                if (found != null) {
+                    break;
+                }
+            }
+        }
+        return found;
+    }
+
     @Override
     public void visit(final Tree.Block that) {
         List<Statement> stmnts = that.getStatements();
@@ -532,9 +558,11 @@ public class GenerateJsVisitor extends Visitor {
             out("{}");
         }
         else {
+            pushImports(that);
             beginBlock();
             visitStatements(stmnts);
             endBlock();
+            popImports(that);
         }
     }
 
@@ -2081,10 +2109,8 @@ public class GenerateJsVisitor extends Visitor {
 
     String getMember(Node node, String lhs) {
         final StringBuilder sb = new StringBuilder();
-        if (lhs != null) {
-            if (lhs.length() > 0) {
-                sb.append(lhs);
-            }
+        if (lhs != null && !lhs.isEmpty()) {
+            sb.append(lhs);
         }
         else if (node instanceof Tree.BaseMemberOrTypeExpression) {
             Tree.BaseMemberOrTypeExpression bmte = (Tree.BaseMemberOrTypeExpression) node;
@@ -2093,7 +2119,7 @@ public class GenerateJsVisitor extends Visitor {
                 return names.name(bmd);
             }
             String path = qualifiedPath(node, bmd);
-            if (path.length() > 0) {
+            if (!path.isEmpty()) {
                 sb.append(path);
             }
         }
@@ -2755,7 +2781,16 @@ public class GenerateJsVisitor extends Visitor {
                     if (imported) {
                         path.append(names.moduleAlias(id.getUnit().getPackage().getModule())).append('.');
                     }
-                    path.append(id.isAnonymous() ? names.objectName(id) : names.name(id));
+                    if (id.isAnonymous()) {
+                        path.append(names.objectName(id));
+                    } else {
+                        Import imp = findImport(that, d);
+                        if (imp == null) {
+                            path.append(names.name(id));
+                        } else {
+                            path.append(names.objectName(imp.getTypeDeclaration()));
+                        }
+                    }
                 }
                 return path.toString();
             }
