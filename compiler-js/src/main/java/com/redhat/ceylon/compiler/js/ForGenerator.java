@@ -53,7 +53,7 @@ public class ForGenerator {
         boolean captured=false;
         if (that instanceof Tree.ValueIterator) {
             final Value val = ((Tree.ValueIterator)that).getVariable().getDeclarationModel();
-            captured=val.isCaptured();
+            captured=val.isJsCaptured();
             if (captured) {
                 itemVar = gen.getNames().createTempVariable();
                 capturedValues.add(val);

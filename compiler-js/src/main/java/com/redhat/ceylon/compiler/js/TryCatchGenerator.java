@@ -149,7 +149,7 @@ public class TryCatchGenerator {
                 destroy = r.getVariable().getType().getTypeModel().isSubtypeOf(
                         r.getUnit().getDestroyableType());
                 var = gen.getNames().name(r.getVariable().getDeclarationModel());
-                captured = r.getVariable().getDeclarationModel().isCaptured() ?
+                captured = r.getVariable().getDeclarationModel().isJsCaptured() ?
                         r.getVariable().getDeclarationModel() : null;
                 directAccess.add(r.getVariable().getDeclarationModel());
             } else {
