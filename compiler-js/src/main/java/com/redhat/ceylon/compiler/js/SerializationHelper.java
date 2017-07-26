@@ -225,7 +225,7 @@ public class SerializationHelper {
     static List<Value> serializableValues(com.redhat.ceylon.model.typechecker.model.Class d) {
         ArrayList<Value> vals = new ArrayList<>();
         for (Declaration m : d.getMembers()) {
-            if (!m.isFormal() && m instanceof Value && !m.isSetter() && (m.isCaptured() || m.isShared())) {
+            if (!m.isFormal() && m instanceof Value && !m.isSetter() && (m.isJsCaptured() || m.isShared())) {
                 Value v = (Value)m;
                 if (!v.isTransient()) {
                     vals.add(v);

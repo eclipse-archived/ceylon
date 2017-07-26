@@ -1635,7 +1635,7 @@ public class GenerateJsVisitor extends Visitor {
 
     boolean isCaptured(Declaration d) {
         if (d.isToplevel()||d.isClassOrInterfaceMember()) {
-            if (d.isShared() || d.isCaptured()) {
+            if (d.isShared() || d.isJsCaptured()) {
                 return true;
             }
             else {
@@ -2673,7 +2673,7 @@ public class GenerateJsVisitor extends Visitor {
             return names.moduleAlias(d.getUnit().getPackage().getModule());
         }
         else if (opts.isOptimize() && !inProto) {
-            if (isMember && !(d.isParameter() && !d.isCaptured())) {
+            if (isMember && !(d.isParameter() && !d.isJsCaptured())) {
                 TypeDeclaration id = that.getScope().getInheritingDeclaration(d);
                 TypeDeclaration nd = null;
                 if (id == null) {

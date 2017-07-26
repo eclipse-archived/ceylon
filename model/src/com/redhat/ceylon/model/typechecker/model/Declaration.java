@@ -371,6 +371,10 @@ public abstract class Declaration
         return false;
     }
 
+    public boolean isJsCaptured() {
+        return false;
+    }
+
     public boolean isToplevel() {
         return getContainer() instanceof Package;
     }

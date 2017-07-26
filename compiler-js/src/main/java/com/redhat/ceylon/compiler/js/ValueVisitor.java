@@ -61,10 +61,10 @@ public class ValueVisitor extends Visitor {
                         //a reference from a default argument 
                         //expression of the same parameter 
                         //list does not capture a parameter
-                        ((FunctionOrValue) d).setCaptured(true);
+                        ((FunctionOrValue) d).setJsCaptured(true);
                     }
                 } else if (d instanceof Value && !TypeUtils.isConstructor(d) && !d.isToplevel()) {
-                    ((Value) d).setCaptured(true);
+                    ((Value) d).setJsCaptured(true);
                 }
             }
         }
@@ -100,9 +100,9 @@ public class ValueVisitor extends Visitor {
             return;
         }
         Declaration cd = ModelUtil.getContainingDeclaration(d);
-        if (cd != null && !cd.isAnonymous() && !cd.isCaptured()) {
+        if (cd != null && !cd.isAnonymous() && !cd.isJsCaptured()) {
             if (cd instanceof FunctionOrValue) {
-                ((FunctionOrValue) cd).setCaptured(true);
+                ((FunctionOrValue) cd).setJsCaptured(true);
             }
         }
     }
@@ -164,7 +164,7 @@ public class ValueVisitor extends Visitor {
     public void visit(Tree.Parameter that) {
         //Mark all class initializer parameters as captured
         if (that.getParameterModel().getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Class) {
-            that.getParameterModel().getModel().setCaptured(true);
+            that.getParameterModel().getModel().setJsCaptured(true);
         }
         super.visit(that);
     }

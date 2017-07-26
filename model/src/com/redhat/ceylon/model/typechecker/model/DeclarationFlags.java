@@ -35,13 +35,14 @@ public class DeclarationFlags {
     
     public static class FunctionOrValueFlags extends TypedDeclarationFlags {
         public static final long CAPTURED            = 1L << TypedDeclarationFlags.LAST + 1;
-        public static final long SHORTCUT_REFINEMENT = 1L << TypedDeclarationFlags.LAST + 2;
-        public static final long OVERLOADED          = 1L << TypedDeclarationFlags.LAST + 3;
-        public static final long ABSTRACTION         = 1L << TypedDeclarationFlags.LAST + 4;
-        public static final long IMPLEMENTED         = 1L << TypedDeclarationFlags.LAST + 5;
-        public static final long SMALL               = 1L << TypedDeclarationFlags.LAST + 6;
-        public static final long JAVA_NATIVE         = 1L << TypedDeclarationFlags.LAST + 7;
-        private static final int LAST               = TypedDeclarationFlags.LAST + 7; // KEEP THIS IN SYNC WITH LAST SHIFT
+        public static final long JS_CAPTURED         = 1L << TypedDeclarationFlags.LAST + 2;
+        public static final long SHORTCUT_REFINEMENT = 1L << TypedDeclarationFlags.LAST + 3;
+        public static final long OVERLOADED          = 1L << TypedDeclarationFlags.LAST + 4;
+        public static final long ABSTRACTION         = 1L << TypedDeclarationFlags.LAST + 5;
+        public static final long IMPLEMENTED         = 1L << TypedDeclarationFlags.LAST + 6;
+        public static final long SMALL               = 1L << TypedDeclarationFlags.LAST + 7;
+        public static final long JAVA_NATIVE         = 1L << TypedDeclarationFlags.LAST + 8;
+        private static final int LAST               = TypedDeclarationFlags.LAST + 9; // KEEP THIS IN SYNC WITH LAST SHIFT
     }
 
     public static class FunctionFlags extends FunctionOrValueFlags {
