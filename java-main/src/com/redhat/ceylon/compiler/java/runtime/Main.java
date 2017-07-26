@@ -1069,7 +1069,7 @@ public class Main {
     				otherModule = Java9ModuleUtil.loadModuleDynamically(module);
     			}
     			if(otherModule != null){
-                    Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.reflect.Module");
+                    Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.Module");
                     // also add a read to it
                     Method addReads = moduleClass.getMethod("addReads", moduleClass);
                     addReads.invoke(mod, otherModule);
