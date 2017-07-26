@@ -140,7 +140,7 @@ public class CeylonFatJarTool extends ResourceRootTool {
 
         Manifest manifest = new Manifest();
         Attributes mainAttributes = manifest.getMainAttributes();
-        String className = JVMModuleUtil.javaClassNameFromCeylon(firstModuleName, run != null ? run : (firstModuleName + "::run"));
+        String className = JVMModuleUtil.javaClassNameFromCeylon(firstModuleName, run);
         mainAttributes.putValue("Main-Class", className);
         mainAttributes.putValue("Manifest-Version", "1.0");
         mainAttributes.putValue("Created-By", "Ceylon fat-jar for module "+firstModuleName+"/"+firstModuleVersion);

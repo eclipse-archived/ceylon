@@ -229,21 +229,22 @@ public class JVMModuleUtil {
      * @return
      */
     public static String javaClassNameFromCeylon(String moduleName, String ceylonRunnableName) {
-        String runClassName1 = ceylonRunnableName;
-        if (runClassName1 == null || runClassName1.isEmpty()) {
+        if (ceylonRunnableName == null || ceylonRunnableName.isEmpty()) {
             // "default" is not a package name
             if (moduleName.equals("default")) {
-                runClassName1 = RUN_INFO_CLASS;
+                ceylonRunnableName = RUN_INFO_CLASS;
             } else {
-                runClassName1 = moduleName + "." + RUN_INFO_CLASS;
+                ceylonRunnableName = moduleName + "." + RUN_INFO_CLASS;
             }
         } else {
-            // replace any :: with a dot to allow for both java and ceylon-style run methods
-            runClassName1 = runClassName1.replace("::", ".");
+            if (ceylonRunnableName.startsWith("default::")) {
+                ceylonRunnableName = ceylonRunnableName.substring(9);
+            }
+            else {
+                // replace any :: with a dot to allow for both java and ceylon-style run methods
+                ceylonRunnableName = ceylonRunnableName.replace("::", ".");
+            }
         }
-        ceylonRunnableName = runClassName1;
-        
-        
         
         char firstChar = ceylonRunnableName.charAt(0);
         int lastDot = ceylonRunnableName.lastIndexOf('.');
