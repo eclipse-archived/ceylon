@@ -4,6 +4,7 @@ import java.util.List;
 
 import ceylon.language.Iterator;
 import ceylon.language.Sequential;
+import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.meta.declaration.Declaration;
 import ceylon.language.meta.declaration.FunctionOrValueDeclaration;
@@ -14,8 +15,11 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 
 public class FunctionalUtil {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static Sequential<FunctionOrValueDeclaration> getParameters(Functional declaration) {
         ParameterList parameterList = ((Functional)declaration).getFirstParameterList();
+        if(parameterList == null)
+            return (Sequential)empty_.get_();
         List<Parameter> modelParameters = parameterList.getParameters();
         ceylon.language.meta.declaration.FunctionOrValueDeclaration[] parameters = new ceylon.language.meta.declaration.FunctionOrValueDeclaration[modelParameters.size()];
         int i=0;
