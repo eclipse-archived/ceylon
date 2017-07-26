@@ -116,6 +116,9 @@ public class Java9Util {
 			// will barf if it sees it at compile-time, so special-case it
 			if(name.equals("com.redhat.ceylon.model") && dependency.equals(Module.LANGUAGE_MODULE_NAME))
 				return true;
+			// same for slf4j
+            if(name.equals("org.slf4j.api") && dependency.equals("org.slf4j.simple"))
+                return true;
 			return false;
 		}
 
