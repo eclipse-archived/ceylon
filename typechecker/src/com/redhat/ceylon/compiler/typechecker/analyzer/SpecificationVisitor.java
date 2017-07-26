@@ -183,8 +183,19 @@ public class SpecificationVisitor extends Visitor {
     }
     
     @Override
+    public void visit(Tree.TypeConstraint that) {
+        //the SatisfiedTypes are just upper bounds
+    }
+    
+    @Override
     public void visit(Tree.SatisfiedTypes that) {
-        //unnecessary ... for consistency nothing else
+        for (Tree.Type type: that.getTypes()) {
+            if (type instanceof Tree.SimpleType) {
+                Tree.SimpleType st = (Tree.SimpleType) type;
+                checkReference(type, st.getDeclarationModel(), 
+                        false, false);
+            }
+        }
     }
     
     @Override
@@ -250,6 +261,11 @@ public class SpecificationVisitor extends Visitor {
             return;
         }
 
+        checkReference(that, member, assigned, metamodel);
+    }
+
+    private void checkReference(Node that, Declaration member, 
+            boolean assigned, boolean metamodel) {
         Scope scope = that.getScope();
         if ((member==declaration 
                 || isDelegationToDefaultConstructor(member)) 

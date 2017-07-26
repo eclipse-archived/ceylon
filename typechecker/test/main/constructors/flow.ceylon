@@ -92,3 +92,15 @@ void run3() {
         new () {}
     }
 }
+
+void run4() {
+    @error object bar extends Bar() {}
+    @error object baz satisfies Baz {}
+    String x = "";
+    class Bar() {
+        print(x);
+    }
+    interface Baz {
+        void fun() => print(x);
+    }
+}
