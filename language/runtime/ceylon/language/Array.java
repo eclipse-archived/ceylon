@@ -153,9 +153,12 @@ public final class Array<Element>
             final TypeDescriptor $reifiedElement,
             final Iterable<? extends Element,?> elements) {
         
-        if (elements instanceof Sequential) {
+        if (elements instanceof Sequential ||
+                (elements instanceof List
+                 && elements.getClass().getCanonicalName()
+                     .equals("ceylon.collection.ArrayList"))) {
             return createArrayFromList($reifiedElement, 
-                    (Sequential<? extends Element>) elements);
+                    (List<? extends Element>) elements);
         }
         
         if (elements instanceof ceylon.language.String
@@ -297,7 +300,7 @@ public final class Array<Element>
 
     private static <Element> java.lang.Object createArrayFromList(
             final TypeDescriptor $reifiedElement,
-            final Sequential<? extends Element> elements) {
+            final List<? extends Element> elements) {
         
         int size = Util.toInt(elements.getSize());
         
