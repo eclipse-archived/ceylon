@@ -38,7 +38,7 @@ public class Launcher {
             return runInJava7Checked(loader, args);
         }finally{
             if(cleanupClassLoader)
-                loader.clearCacheButNotWithThisNameToKeepSpringBootHappy();
+                loader.close();
         }
     }
     

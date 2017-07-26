@@ -1,7 +1,0 @@
-Bundle-SymbolicName: com.redhat.ceylon.compiler.java
-Bundle-Version: 1.3.3.osgi-4-20170127-1018
-Export-Package: !about.html, !licenses, !settings.xml, *;version="1.3.3.osgi-4-20170127-1018"
-Require-Bundle: ceylon.language;bundle-version=1.3.3.osgi-4,com.redhat.ceylon.common;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.redhat.ceylon.cli;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.redhat.ceylon.model;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.redhat.ceylon.typechecker;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.redhat.ceylon.module-resolver;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.redhat.ceylon.langtools.classfile;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.github.rjeschke.txtmark;bundle-version=0.13,org.antlr.runtime;bundle-version=3.4;visibility:=reexport
-Import-Package: javax.lang.model.*
--nouses: true
-Require-Bundle: ceylon.language;bundle-version=1.3.3.osgi-4,com.redhat.ceylon.common;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.redhat.ceylon.cli;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.redhat.ceylon.model;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.redhat.ceylon.typechecker;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.redhat.ceylon.module-resolver;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.redhat.ceylon.langtools.classfile;bundle-version=1.3.3.osgi-4;visibility:=reexport,com.github.rjeschke.txtmark;bundle-version=0.13,org.antlr.runtime;bundle-version=3.4;visibility:=reexport
