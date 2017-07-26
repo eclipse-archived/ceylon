@@ -262,5 +262,6 @@ shared void test() {
     testRefinement2();
     testStatics();
     testIssues();
+    test6719();
     results();
 }
