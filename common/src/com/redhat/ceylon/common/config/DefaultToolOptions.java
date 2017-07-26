@@ -382,7 +382,7 @@ public class DefaultToolOptions {
         String[] parts = dottedVersion.split("\\.|_|-");
         long major = Long.parseLong(parts[0]);
         if(major == 1)
-            Long.parseLong(parts[1]);
+            return Long.parseLong(parts[1]);
         return major;
     }
     
