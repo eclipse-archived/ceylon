@@ -620,11 +620,16 @@ public class Locations {
             } else {
                 // Standard system classes for this compiler's release.
                 String files = System.getProperty("sun.boot.class.path");
-                path.addFiles(files, false);
-                File rt_jar = new File("rt.jar");
-                for (File file : getPathEntries(files)) {
-                    if (new File(file.getName()).equals(rt_jar))
-                        defaultBootClassPathRtJar = file;
+                if(files != null){
+                    path.addFiles(files, false);
+                    File rt_jar = new File("rt.jar");
+                    for (File file : getPathEntries(files)) {
+                        if (new File(file.getName()).equals(rt_jar))
+                            defaultBootClassPathRtJar = file;
+                    }
+                }else{
+                    // Enable Java9 scanning of jrt:// in JavacFileManager.openArchive
+                    path.addFile(new File("nonexistant.jimage"), false);
                 }
             }
 
