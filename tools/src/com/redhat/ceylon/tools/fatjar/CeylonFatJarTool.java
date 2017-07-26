@@ -1,5 +1,7 @@
 package com.redhat.ceylon.tools.fatjar;
 
+import static com.redhat.ceylon.common.JVMModuleUtil.javaClassNameFromCeylon;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +23,6 @@ import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -137,10 +138,17 @@ public class CeylonFatJarTool extends ResourceRootTool {
             FileUtil.delete(outputJar);
         }
         final Set<String> added = new HashSet<>();
+        
+        if (firstModuleName!=null 
+                && run!=null 
+                && !run.contains("::") 
+                && !run.contains(".")) {
+            run = firstModuleName + "::" + run;
+        }
 
         Manifest manifest = new Manifest();
         Attributes mainAttributes = manifest.getMainAttributes();
-        String className = JVMModuleUtil.javaClassNameFromCeylon(firstModuleName, run);
+        final String className = javaClassNameFromCeylon(firstModuleName, run);
         mainAttributes.putValue("Main-Class", className);
         mainAttributes.putValue("Manifest-Version", "1.0");
         mainAttributes.putValue("Created-By", "Ceylon fat-jar for module "+firstModuleName+"/"+firstModuleVersion);
@@ -157,6 +165,7 @@ public class CeylonFatJarTool extends ResourceRootTool {
             writeResources(zipFile);
             final List<ArtifactResult> staticMetamodelEntries = new ArrayList<>();
             loader.visitModules(new ModuleGraph.Visitor() {
+                String runClassPath = className.replace('.', '/') + ".class";
                 @Override
                 public void visit(ModuleGraph.Module module) {
                     if(module.artifact != null){
@@ -173,13 +182,19 @@ public class CeylonFatJarTool extends ResourceRootTool {
                                     Enumeration<? extends ZipEntry> entries = src.entries();
                                     while(entries.hasMoreElements()){
                                         ZipEntry srcEntry = entries.nextElement();
+                                        if (srcEntry.getName().equals(runClassPath))
+                                            foundRun = true;
                                         // skip manifests
                                         if(skipEntry(srcEntry.getName()))
                                             continue;
                                         if(!added.add(srcEntry.getName())){
                                             // multiple folders is fine
                                             if(!srcEntry.isDirectory()){
-                                                append("Warning: duplicate entry "+srcEntry.getName()+" (from "+file+") already added: skipping\n");
+                                                append("Warning: skipping duplicate entry ")
+                                                .append(srcEntry.getName())
+                                                .append(" from ")
+                                                .append(file)
+                                                .newline();
                                             }
                                             continue;
                                         }
@@ -202,7 +217,13 @@ public class CeylonFatJarTool extends ResourceRootTool {
             zipFile.flush();
         }
         flush();
+        
+        if (!foundRun) {
+            append("Warning: missing run class ").append(className).newline();
+        }
     }
+    
+    boolean foundRun;
 
     private boolean skipEntry(String name) {
         return name.equals("META-INF/MANIFEST.MF")
