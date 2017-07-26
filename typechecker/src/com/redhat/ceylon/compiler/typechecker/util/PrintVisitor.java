@@ -130,7 +130,7 @@ public class PrintVisitor extends Visitor {
         if (node instanceof Tree.Declaration) {
             Declaration d = ((Tree.Declaration) node).getDeclarationModel();
             if (d!=null) {
-                if (d.isCaptured()) {
+                if (d.isCaptured() || d.isJsCaptured()) {
                     print("[captured]");
                 }
                 print(" : " + d);

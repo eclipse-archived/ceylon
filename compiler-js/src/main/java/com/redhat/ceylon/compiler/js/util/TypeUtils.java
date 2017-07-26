@@ -857,7 +857,7 @@ public class TypeUtils {
                 }
                 p = ModelUtil.getContainingDeclaration(p);
                 while (p != null  && p instanceof ClassOrInterface == false &&
-                        !(p.isToplevel() || p.isAnonymous() || p.isClassOrInterfaceMember() || p.isCaptured())) {
+                        !(p.isToplevel() || p.isAnonymous() || p.isClassOrInterfaceMember() || p.isJsCaptured())) {
                     p = ModelUtil.getContainingDeclaration(p);
                 }
             }

@@ -16,14 +16,14 @@ public class BlockWithCaptureVisitor extends Visitor {
     }
 
     public void visit(Tree.Declaration that) {
-        if (that.getDeclarationModel() != null && that.getDeclarationModel().isCaptured()) {
+        if (that.getDeclarationModel() != null && that.getDeclarationModel().isJsCaptured()) {
             hasCapture |= scope == ModelUtil.getRealScope(that.getDeclarationModel().getScope());
         }
         super.visit(that);
     }
 
     public void visit(Tree.BaseMemberExpression that) {
-        if (that.getDeclaration() != null && that.getDeclaration().isCaptured()) {
+        if (that.getDeclaration() != null && that.getDeclaration().isJsCaptured()) {
             hasCapture |= scope == ModelUtil.getRealScope(that.getDeclaration().getScope());
         }
         super.visit(that);

@@ -75,6 +75,20 @@ public abstract class FunctionOrValue extends TypedDeclaration {
     }
 
     @Override
+    public boolean isJsCaptured() {
+        return (flags&JS_CAPTURED)!=0;
+    }
+
+    public void setJsCaptured(boolean captured) {
+        if (captured) {
+            flags|=JS_CAPTURED;
+        }
+        else {
+            flags&=(~JS_CAPTURED);
+        }
+    }
+
+    @Override
     public boolean isOverloaded() {
         return (flags&OVERLOADED)!=0;
     }

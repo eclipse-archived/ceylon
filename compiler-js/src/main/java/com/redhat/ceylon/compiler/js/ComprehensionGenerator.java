@@ -185,7 +185,7 @@ class ComprehensionGenerator {
                     gen.endLine(true);
                 }
                 final String capname;
-                if (loop.valDecl != null && loop.valDecl.isCaptured()) {
+                if (loop.valDecl != null && loop.valDecl.isJsCaptured()) {
                     capname = names.createTempVariable();
                     gen.out("var ", capname, "=", loop.valueVarName, ";");
                     names.forceName(loop.valDecl, capname);
