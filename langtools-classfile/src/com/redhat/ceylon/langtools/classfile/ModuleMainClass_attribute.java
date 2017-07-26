@@ -35,18 +35,18 @@ import java.io.IOException;
  *  This code and its internal interfaces are subject to change or
  *  deletion without notice.</b>
  */
-public class MainClass_attribute extends Attribute {
-    MainClass_attribute(ClassReader cr, int name_index, int length) throws IOException {
+public class ModuleMainClass_attribute extends Attribute {
+    ModuleMainClass_attribute(ClassReader cr, int name_index, int length) throws IOException {
         super(name_index, length);
         main_class_index = cr.readUnsignedShort();
     }
 
-    public MainClass_attribute(ConstantPool constant_pool, int mainClass_index)
+    public ModuleMainClass_attribute(ConstantPool constant_pool, int mainClass_index)
             throws ConstantPoolException {
-        this(constant_pool.getUTF8Index(Attribute.Version), mainClass_index);
+        this(constant_pool.getUTF8Index(Attribute.ModuleMainClass), mainClass_index);
     }
 
-    public MainClass_attribute(int name_index, int mainClass_index) {
+    public ModuleMainClass_attribute(int name_index, int mainClass_index) {
         super(name_index, 2);
         this.main_class_index = mainClass_index;
     }
@@ -57,7 +57,7 @@ public class MainClass_attribute extends Attribute {
 
     @Override
     public <R, D> R accept(Visitor<R, D> visitor, D data) {
-        return visitor.visitMainClass(this, data);
+        return visitor.visitModuleMainClass(this, data);
     }
 
     public final int main_class_index;

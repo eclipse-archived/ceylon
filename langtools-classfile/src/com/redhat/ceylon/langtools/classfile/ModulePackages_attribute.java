@@ -27,6 +27,8 @@ package com.redhat.ceylon.langtools.classfile;
 
 import java.io.IOException;
 
+import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_Package_info;
+
 /**
  * See JVMS, section 4.8.15.
  *
@@ -35,8 +37,8 @@ import java.io.IOException;
  *  This code and its internal interfaces are subject to change or
  *  deletion without notice.</b>
  */
-public class ConcealedPackages_attribute extends Attribute {
-    ConcealedPackages_attribute(ClassReader cr, int name_index, int length)
+public class ModulePackages_attribute extends Attribute {
+    ModulePackages_attribute(ClassReader cr, int name_index, int length)
             throws IOException {
         super(name_index, length);
         packages_count = cr.readUnsignedShort();
@@ -45,15 +47,15 @@ public class ConcealedPackages_attribute extends Attribute {
             packages_index[i] = cr.readUnsignedShort();
     }
 
-    public ConcealedPackages_attribute(ConstantPool constant_pool,
-                                       int[] packages_index)
+    public ModulePackages_attribute(ConstantPool constant_pool,
+                              int[] packages_index)
             throws ConstantPoolException {
-        this(constant_pool.getUTF8Index(Attribute.ConcealedPackages),
+        this(constant_pool.getUTF8Index(Attribute.ModulePackages),
              packages_index);
     }
 
-    public ConcealedPackages_attribute(int name_index,
-                                       int[] packages_index) {
+    public ModulePackages_attribute(int name_index,
+                              int[] packages_index) {
         super(name_index, 2 + packages_index.length * 2);
         this.packages_count = packages_index.length;
         this.packages_index = packages_index;
@@ -61,12 +63,13 @@ public class ConcealedPackages_attribute extends Attribute {
 
     public String getPackage(int index, ConstantPool constant_pool) throws ConstantPoolException {
         int package_index = packages_index[index];
-        return constant_pool.getUTF8Value(package_index);
+        CONSTANT_Package_info info = constant_pool.getPackageInfo(package_index);
+        return info.getName();
     }
 
     @Override
     public <R, D> R accept(Visitor<R, D> visitor, D data) {
-        return visitor.visitConcealedPackages(this, data);
+        return visitor.visitModulePackages(this, data);
     }
 
     public final int packages_count;

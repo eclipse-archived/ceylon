@@ -278,12 +278,25 @@ public class ClassWriter {
             return 2;
         }
 
+        @Override
+        public Integer visitModule(CONSTANT_Module_info info, ClassOutputStream out) {
+            out.writeShort(info.name_index);
+            return 1;
+        }
+
+        @Override
         public Integer visitNameAndType(CONSTANT_NameAndType_info info, ClassOutputStream out) {
             out.writeShort(info.name_index);
             out.writeShort(info.type_index);
             return 1;
         }
 
+        @Override
+        public Integer visitPackage(CONSTANT_Package_info info, ClassOutputStream out) {
+            out.writeShort(info.name_index);
+            return 1;
+        }
+        
         public Integer visitMethodHandle(CONSTANT_MethodHandle_info info, ClassOutputStream out) {
             out.writeByte(info.reference_kind.tag);
             out.writeShort(info.reference_index);
@@ -401,14 +414,6 @@ public class ClassWriter {
             return null;
         }
 
-        @Override
-        public Void visitConcealedPackages(ConcealedPackages_attribute attr, ClassOutputStream out) {
-            out.writeShort(attr.packages_count);
-            for (int i: attr.packages_index)
-                out.writeShort(i);
-            return null;
-        }
-
         public Void visitConstantValue(ConstantValue_attribute attr, ClassOutputStream out) {
             out.writeShort(attr.constantvalue_index);
             return null;
@@ -496,34 +501,92 @@ public class ClassWriter {
             return null;
         }
 
+
         @Override
-        public Void visitMainClass(MainClass_attribute attr, ClassOutputStream out) {
+        public Void visitModule(Module_attribute attr, ClassOutputStream out) {
+            out.writeShort(attr.module_name);
+            out.writeShort(attr.module_flags);
+            out.writeShort(attr.module_version_index);
+
+            out.writeShort(attr.requires.length);
+            for (Module_attribute.RequiresEntry e: attr.requires) {
+                out.writeShort(e.requires_index);
+                out.writeShort(e.requires_flags);
+                out.writeShort(e.requires_version_index);
+            }
+
+            out.writeShort(attr.exports.length);
+            for (Module_attribute.ExportsEntry e: attr.exports) {
+                out.writeShort(e.exports_index);
+                out.writeShort(e.exports_flags);
+                out.writeShort(e.exports_to_index.length);
+                for (int index: e.exports_to_index)
+                    out.writeShort(index);
+            }
+
+            out.writeShort(attr.opens.length);
+            for (Module_attribute.OpensEntry e: attr.opens) {
+                out.writeShort(e.opens_index);
+                out.writeShort(e.opens_flags);
+                out.writeShort(e.opens_to_index.length);
+                for (int index: e.opens_to_index)
+                    out.writeShort(index);
+            }
+
+            out.writeShort(attr.uses_index.length);
+            for (int index: attr.uses_index) {
+                out.writeShort(index);
+            }
+
+            out.writeShort(attr.provides.length);
+            for (Module_attribute.ProvidesEntry e: attr.provides) {
+                out.writeShort(e.provides_index);
+                out.writeShort(e.with_count);
+                for (int with : e.with_index) {
+                    out.writeShort(with);
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        public Void visitModuleHashes(ModuleHashes_attribute attr, ClassOutputStream out) {
+            out.writeShort(attr.algorithm_index);
+            out.writeShort(attr.hashes_table.length);
+            for (ModuleHashes_attribute.Entry e: attr.hashes_table) {
+                out.writeShort(e.module_name_index);
+                out.writeShort(e.hash.length);
+                for (byte b: e.hash) {
+                    out.writeByte(b);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public Void visitModuleMainClass(ModuleMainClass_attribute attr, ClassOutputStream out) {
             out.writeShort(attr.main_class_index);
             return null;
         }
 
         @Override
-        public Void visitModule(Module_attribute attr, ClassOutputStream out) {
-            out.writeShort(attr.requires.length);
-            for (Module_attribute.RequiresEntry e: attr.requires) {
-                out.writeShort(e.requires_index);
-                out.writeShort(e.requires_flags);
-            }
-            out.writeShort(attr.exports.length);
-            for (Module_attribute.ExportsEntry e: attr.exports) {
-                out.writeShort(e.exports_index);
-                out.writeShort(e.exports_to_index.length);
-                for (int index: e.exports_to_index)
-                    out.writeShort(index);
-            }
-            out.writeShort(attr.uses_index.length);
-            for (int index: attr.uses_index)
-                out.writeShort(index);
-            out.writeShort(attr.provides.length);
-            for (Module_attribute.ProvidesEntry e: attr.provides) {
-                out.writeShort(e.provides_index);
-                out.writeShort(e.with_index);
-            }
+        public Void visitModulePackages(ModulePackages_attribute attr, ClassOutputStream out) {
+            out.writeShort(attr.packages_count);
+            for (int i: attr.packages_index)
+                out.writeShort(i);
+            return null;
+        }
+
+        @Override
+        public Void visitModuleResolution(ModuleResolution_attribute attr, ClassOutputStream out) {
+            out.writeShort(attr.resolution_flags);
+            return null;
+        }
+
+        @Override
+        public Void visitModuleTarget(ModuleTarget_attribute attr, ClassOutputStream out) {
+            out.writeShort(attr.target_platform_index);
             return null;
         }
 
@@ -607,12 +670,6 @@ public class ClassWriter {
 
         protected void writeAccessFlags(AccessFlags flags, ClassOutputStream p) {
             sharedOut.writeShort(flags.flags);
-        }
-
-        @Override
-        public Void visitVersion(Version_attribute attr, ClassOutputStream out) {
-            out.writeShort(attr.version_index);
-            return null;
         }
 
         protected StackMapTableWriter stackMapWriter;

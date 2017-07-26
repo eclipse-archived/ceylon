@@ -13,12 +13,12 @@ import java.util.zip.ZipFile;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.langtools.classfile.Attribute;
 import com.redhat.ceylon.langtools.classfile.ClassFile;
+import com.redhat.ceylon.langtools.classfile.ConstantPool.CONSTANT_Package_info;
 import com.redhat.ceylon.langtools.classfile.ConstantPoolException;
-import com.redhat.ceylon.langtools.classfile.MainClass_attribute;
+import com.redhat.ceylon.langtools.classfile.ModuleMainClass_attribute;
 import com.redhat.ceylon.langtools.classfile.Module_attribute;
 import com.redhat.ceylon.langtools.classfile.Module_attribute.ExportsEntry;
 import com.redhat.ceylon.langtools.classfile.Module_attribute.RequiresEntry;
-import com.redhat.ceylon.langtools.classfile.Version_attribute;
 
 public class Java9ModuleReader {
 
@@ -35,23 +35,22 @@ public class Java9ModuleReader {
                 name = nameAttr.replace('/', '.');
                 for(ExportsEntry export : moduleAttribute.exports){
                     if(export.exports_to_count == 0){
-                        String ex;
-                        ex = classFile.constant_pool.getUTF8Value(export.exports_index).replace('/', '.');
+                        CONSTANT_Package_info exportPackage = classFile.constant_pool.getPackageInfo(export.exports_index);
+                        String ex = classFile.constant_pool.getUTF8Value(exportPackage.name_index).replace('/', '.');
                         exports.add(ex);
                     }
                 }
                 for(RequiresEntry requires : moduleAttribute.requires){
-                    dependencies.add(new Java9ModuleDependency(requires.getRequires(-1/*ignored*/, classFile.constant_pool),
-                            (requires.requires_flags & Module_attribute.ACC_PUBLIC) != 0));
+                    dependencies.add(new Java9ModuleDependency(requires.getRequires(classFile.constant_pool),
+                            (requires.requires_flags & Module_attribute.ACC_TRANSITIVE) != 0));
                 }
-                Version_attribute versionAttribute = (Version_attribute) classFile.getAttribute(Attribute.Version);
-                if(versionAttribute != null){
-                    version = classFile.constant_pool.getUTF8Value(versionAttribute.version_index);
+                if(moduleAttribute.module_version_index != 0){
+                    version = classFile.constant_pool.getUTF8Value(moduleAttribute.module_version_index);
                 }else{
                     // or throw?
                     version = null;
                 }
-                MainClass_attribute mainAttribute = (MainClass_attribute) classFile.getAttribute(Attribute.MainClass);
+                ModuleMainClass_attribute mainAttribute = (ModuleMainClass_attribute) classFile.getAttribute(Attribute.ModuleMainClass);
                 if(mainAttribute != null){
                     mainClass = mainAttribute.getMainClassName(classFile.constant_pool).replace('/', '.');
                 }else{
