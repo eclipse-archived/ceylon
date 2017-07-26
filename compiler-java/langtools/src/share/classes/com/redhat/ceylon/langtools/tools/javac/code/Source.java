@@ -68,7 +68,10 @@ public enum Source {
     JDK1_7("1.7"),
 
     /** 1.8 covers the to be determined language features that will be added in JDK 8. */
-    JDK1_8("1.8");
+    JDK1_8("1.8"),
+
+    /** 1.9 covers the to be determined language features that will be added in JDK 9. */
+    JDK1_9("1.9");
 
     private static final Context.Key<Source> sourceKey
         = new Context.Key<Source>();
@@ -96,6 +99,7 @@ public enum Source {
         tab.put("6", JDK1_6); // Make 6 an alias for 1.6
         tab.put("7", JDK1_7); // Make 7 an alias for 1.7
         tab.put("8", JDK1_8); // Make 8 an alias for 1.8
+        tab.put("9", JDK1_9); // Make 9 an alias for 1.9
     }
 
     private Source(String name) {
