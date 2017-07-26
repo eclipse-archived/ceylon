@@ -573,6 +573,9 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
             Context context,
             List<JavaFileObject> fileObjects,
             Iterable<? extends Processor> processors) {
+        context.put(Log.outKey, out);
+        log = CeylonLog.instance(context);
+
         if (options == null) {
             options = Options.instance(context); // creates a new one
         }
