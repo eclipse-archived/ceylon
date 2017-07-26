@@ -3,7 +3,8 @@ pre {
     margin: 0;
     margin-left: 15px;
     color: #000;
-    font-size: 95%;
+    /*font-size: 95%;*/
+    font-size: 15.2px; /* TODO this seems to be necessary in Firefox, otherwise code spans are tiny. periodically check if still needed */
 }
 
 pre, code {

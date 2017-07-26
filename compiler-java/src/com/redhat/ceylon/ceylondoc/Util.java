@@ -544,10 +544,10 @@ public class Util {
                 return;
             
             if( meta == null || meta.length() == 0 ) {
-                out.append("<pre data-language=\"ceylon\">");
+                out.append("<pre><code data-language=\"ceylon\">");
             }
             else {
-                out.append("<pre data-language=\"").append(meta).append("\">");
+                out.append("<pre><code data-language=\"").append(meta).append("\">");
             }
 
             for (final String s : lines) {
@@ -570,7 +570,7 @@ public class Util {
                 }
                 out.append('\n');
             }
-            out.append("</pre>\n");
+            out.append("</code></pre>\n");
         }
         
     }

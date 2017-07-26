@@ -227,13 +227,25 @@
         <replace dir="${build.dir}/${lang}/html/">
             <include name="**/*.html"/>
           <replacetoken><![CDATA[<pre class="programlisting">]]></replacetoken>
-          <replacevalue><![CDATA[<pre data-language="ceylon">]]></replacevalue>
+          <replacevalue><![CDATA[<pre><code data-language="ceylon">]]></replacevalue>
         </replace>
         
         <replace dir="${build.dir}/${lang}/html/">
             <include name="**/*.html"/>
           <replacetoken><![CDATA[<pre class="synopsis">]]></replacetoken>
-          <replacevalue><![CDATA[<pre data-language="bnf">]]></replacevalue>
+          <replacevalue><![CDATA[<pre><code data-language="bnf">]]></replacevalue>
+        </replace>
+        
+        <replace dir="${build.dir}/${lang}/html/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<pre class="screen">]]></replacetoken>
+          <replacevalue><![CDATA[<pre class="screen"><code>]]></replacevalue>
+        </replace>
+                
+        <replace dir="${build.dir}/${lang}/html/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[</pre>]]></replacetoken>
+          <replacevalue><![CDATA[</code></pre>]]></replacevalue>
         </replace>
         
         <replace dir="${build.dir}/${lang}/html/">
@@ -269,18 +281,30 @@
   <script src='../shared/css/bnf.js' type='text/javascript'></script>]]></replacevalue>
           </replace>
           
-          <replace dir="${build.dir}/${lang}/html_single/">
-              <include name="**/*.html"/>
-            <replacetoken><![CDATA[<pre class="programlisting">]]></replacetoken>
-            <replacevalue><![CDATA[<pre data-language="ceylon">]]></replacevalue>
-          </replace>
-          
-          <replace dir="${build.dir}/${lang}/html_single/">
-              <include name="**/*.html"/>
-            <replacetoken><![CDATA[<pre class="synopsis">]]></replacetoken>
-            <replacevalue><![CDATA[<pre data-language="bnf">]]></replacevalue>
-          </replace>
-          
+        <replace dir="${build.dir}/${lang}/html_single/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<pre class="programlisting">]]></replacetoken>
+          <replacevalue><![CDATA[<pre><code data-language="ceylon">]]></replacevalue>
+        </replace>
+        
+        <replace dir="${build.dir}/${lang}/html_single/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<pre class="synopsis">]]></replacetoken>
+          <replacevalue><![CDATA[<pre><code data-language="bnf">]]></replacevalue>
+        </replace>
+        
+        <replace dir="${build.dir}/${lang}/html_single/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[<pre class="screen">]]></replacetoken>
+          <replacevalue><![CDATA[<pre class="screen"><code>]]></replacevalue>
+        </replace>
+                
+        <replace dir="${build.dir}/${lang}/html_single/">
+            <include name="**/*.html"/>
+          <replacetoken><![CDATA[</pre>]]></replacetoken>
+          <replacevalue><![CDATA[</code></pre>]]></replacevalue>
+        </replace>
+        
     </target>
 
     <target name="lang.htmlmisc">
