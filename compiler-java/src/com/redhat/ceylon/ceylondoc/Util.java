@@ -70,6 +70,7 @@ public class Util {
     
     private static final Set<String> ABBREVIATED_TYPES = new HashSet<String>();
     static {
+        ABBREVIATED_TYPES.add("ceylon.language::Callable");
         ABBREVIATED_TYPES.add("ceylon.language::Empty");
         ABBREVIATED_TYPES.add("ceylon.language::Entry");
         ABBREVIATED_TYPES.add("ceylon.language::Sequence");
