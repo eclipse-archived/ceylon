@@ -90,10 +90,10 @@ public class LambdaToMethod extends TreeTranslator {
     private LambdaAnalyzerPreprocessor analyzer;
 
     /** map from lambda trees to translation contexts */
-    private Map<JCTree, TranslationContext<?>> contextMap;
+    private Map<JCTree, LambdaAnalyzerPreprocessor.TranslationContext<?>> contextMap;
 
     /** current translation context (visitor argument) */
-    private TranslationContext<?> context;
+    private LambdaAnalyzerPreprocessor.TranslationContext<?> context;
 
     /** info about the current class being processed */
     private KlassInfo kInfo;
@@ -186,12 +186,12 @@ public class LambdaToMethod extends TreeTranslator {
     // <editor-fold defaultstate="collapsed" desc="translate methods">
     @Override
     public <T extends JCTree> T translate(T tree) {
-        TranslationContext<?> newContext = contextMap.get(tree);
+        LambdaAnalyzerPreprocessor.TranslationContext<?> newContext = contextMap.get(tree);
         return translate(tree, newContext != null ? newContext : context);
     }
 
-    <T extends JCTree> T translate(T tree, TranslationContext<?> newContext) {
-        TranslationContext<?> prevContext = context;
+    <T extends JCTree> T translate(T tree, LambdaAnalyzerPreprocessor.TranslationContext<?> newContext) {
+        LambdaAnalyzerPreprocessor.TranslationContext<?> prevContext = context;
         try {
             context = newContext;
             return super.translate(tree);
@@ -201,7 +201,7 @@ public class LambdaToMethod extends TreeTranslator {
         }
     }
 
-    <T extends JCTree> List<T> translate(List<T> trees, TranslationContext<?> newContext) {
+    <T extends JCTree> List<T> translate(List<T> trees, LambdaAnalyzerPreprocessor.TranslationContext<?> newContext) {
         ListBuffer<T> buf = new ListBuffer<>();
         for (T tree : trees) {
             buf.append(translate(tree, newContext));
@@ -213,7 +213,7 @@ public class LambdaToMethod extends TreeTranslator {
         this.make = make;
         this.attrEnv = env;
         this.context = null;
-        this.contextMap = new HashMap<JCTree, TranslationContext<?>>();
+        this.contextMap = new HashMap<JCTree, LambdaAnalyzerPreprocessor.TranslationContext<?>>();
         return translate(cdef);
     }
     // </editor-fold>
@@ -264,7 +264,7 @@ public class LambdaToMethod extends TreeTranslator {
      */
     @Override
     public void visitLambda(JCLambda tree) {
-        LambdaTranslationContext localContext = (LambdaTranslationContext)context;
+        LambdaAnalyzerPreprocessor.LambdaTranslationContext localContext = (LambdaAnalyzerPreprocessor.LambdaTranslationContext)context;
         MethodSymbol sym = localContext.translatedSym;
         MethodType lambdaType = (MethodType) sym.type;
 
@@ -364,7 +364,7 @@ public class LambdaToMethod extends TreeTranslator {
      */
     @Override
     public void visitReference(JCMemberReference tree) {
-        ReferenceTranslationContext localContext = (ReferenceTranslationContext)context;
+        LambdaAnalyzerPreprocessor.ReferenceTranslationContext localContext = (LambdaAnalyzerPreprocessor.ReferenceTranslationContext)context;
 
         //first determine the method symbol to be used to generate the sam instance
         //this is either the method reference symbol, or the bridged reference symbol
@@ -419,7 +419,7 @@ public class LambdaToMethod extends TreeTranslator {
             try {
                 make.at(tree);
 
-                LambdaTranslationContext lambdaContext = (LambdaTranslationContext) context;
+                LambdaAnalyzerPreprocessor.LambdaTranslationContext lambdaContext = (LambdaAnalyzerPreprocessor.LambdaTranslationContext) context;
                 JCTree ltree = lambdaContext.translate(tree);
                 if (ltree != null) {
                     result = ltree;
@@ -436,7 +436,7 @@ public class LambdaToMethod extends TreeTranslator {
 
     @Override
     public void visitVarDef(JCVariableDecl tree) {
-        LambdaTranslationContext lambdaContext = (LambdaTranslationContext)context;
+        LambdaAnalyzerPreprocessor.LambdaTranslationContext lambdaContext = (LambdaAnalyzerPreprocessor.LambdaTranslationContext)context;
         if (context != null && lambdaContext.getSymbolMap(LOCAL_VAR).containsKey(tree.sym)) {
             tree.init = translate(tree.init);
             tree.sym = (VarSymbol) lambdaContext.getSymbolMap(LOCAL_VAR).get(tree.sym);
@@ -746,14 +746,14 @@ public class LambdaToMethod extends TreeTranslator {
     private class MemberReferenceToLambda {
 
         private final JCMemberReference tree;
-        private final ReferenceTranslationContext localContext;
+        private final LambdaAnalyzerPreprocessor.ReferenceTranslationContext localContext;
         private final Symbol owner;
         private final ListBuffer<JCExpression> args = new ListBuffer<>();
         private final ListBuffer<JCVariableDecl> params = new ListBuffer<>();
 
         private JCExpression receiverExpression = null;
 
-        MemberReferenceToLambda(JCMemberReference tree, ReferenceTranslationContext localContext, Symbol owner) {
+        MemberReferenceToLambda(JCMemberReference tree, LambdaAnalyzerPreprocessor.ReferenceTranslationContext localContext, Symbol owner) {
             this.tree = tree;
             this.localContext = localContext;
             this.owner = owner;
@@ -947,7 +947,7 @@ public class LambdaToMethod extends TreeTranslator {
     /**
      * Generate an indy method call to the meta factory
      */
-    private JCExpression makeMetafactoryIndyCall(TranslationContext<?> context,
+    private JCExpression makeMetafactoryIndyCall(LambdaAnalyzerPreprocessor.TranslationContext<?> context,
             int refKind, Symbol refSym, List<JCExpression> indy_args) {
         JCFunctionalExpression tree = context.tree;
         //determine the static bsm args
@@ -1195,10 +1195,10 @@ public class LambdaToMethod extends TreeTranslator {
                     if (tree.sym.hasOuterInstance()) {
                         //if a class is defined within a lambda, the lambda must capture
                         //its enclosing instance (if any)
-                        TranslationContext<?> localContext = context();
+                        LambdaAnalyzerPreprocessor.TranslationContext<?> localContext = context();
                         while (localContext != null) {
                             if (localContext.tree.getTag() == LAMBDA) {
-                                ((LambdaTranslationContext)localContext)
+                                ((LambdaAnalyzerPreprocessor.LambdaTranslationContext)localContext)
                                         .addSymbol(tree.sym.type.getEnclosingType().tsym, CAPTURED_THIS);
                             }
                             localContext = localContext.prev;
@@ -1223,18 +1223,18 @@ public class LambdaToMethod extends TreeTranslator {
                 if (tree.sym.kind == VAR &&
                         tree.sym.owner.kind == MTH &&
                         tree.type.constValue() == null) {
-                    TranslationContext<?> localContext = context();
+                    LambdaAnalyzerPreprocessor.TranslationContext<?> localContext = context();
                     while (localContext != null) {
                         if (localContext.tree.getTag() == LAMBDA) {
                             JCTree block = capturedDecl(localContext.depth, tree.sym);
                             if (block == null) break;
-                            ((LambdaTranslationContext)localContext)
+                            ((LambdaAnalyzerPreprocessor.LambdaTranslationContext)localContext)
                                     .addSymbol(tree.sym, CAPTURED_VAR);
                         }
                         localContext = localContext.prev;
                     }
                 } else if (tree.sym.owner.kind == TYP) {
-                    TranslationContext<?> localContext = context();
+                    LambdaAnalyzerPreprocessor.TranslationContext<?> localContext = context();
                     while (localContext != null) {
                         if (localContext.tree.hasTag(LAMBDA)) {
                             JCTree block = capturedDecl(localContext.depth, tree.sym);
@@ -1242,7 +1242,7 @@ public class LambdaToMethod extends TreeTranslator {
                             switch (block.getTag()) {
                                 case CLASSDEF:
                                     JCClassDecl cdecl = (JCClassDecl)block;
-                                    ((LambdaTranslationContext)localContext)
+                                    ((LambdaAnalyzerPreprocessor.LambdaTranslationContext)localContext)
                                             .addSymbol(cdecl.sym, CAPTURED_THIS);
                                     break;
                                 default:
@@ -1264,16 +1264,16 @@ public class LambdaToMethod extends TreeTranslator {
         private void analyzeLambda(JCLambda tree, JCExpression methodReferenceReceiver) {
             // Translation of the receiver expression must occur first
             JCExpression rcvr = translate(methodReferenceReceiver);
-            LambdaTranslationContext context = analyzeLambda(tree, "mref.stat.1");
+            LambdaAnalyzerPreprocessor.LambdaTranslationContext context = analyzeLambda(tree, "mref.stat.1");
             if (rcvr != null) {
                 context.methodReferenceReceiver = rcvr;
             }
         }
 
-        private LambdaTranslationContext analyzeLambda(JCLambda tree, String statKey) {
+        private LambdaAnalyzerPreprocessor.LambdaTranslationContext analyzeLambda(JCLambda tree, String statKey) {
             List<Frame> prevStack = frameStack;
             try {
-                LambdaTranslationContext context = new LambdaTranslationContext(tree);
+                LambdaAnalyzerPreprocessor.LambdaTranslationContext context = new LambdaAnalyzerPreprocessor.LambdaTranslationContext(tree);
                 if (dumpLambdaToMethodStats) {
                     log.note(tree, statKey, context.needsAltMetafactory(), context.translatedSym);
                 }
@@ -1310,23 +1310,23 @@ public class LambdaToMethod extends TreeTranslator {
             boolean inReferencedClass = currentlyInClass(def);
             boolean isLocal = def.isLocal();
             if ((inReferencedClass && isLocal || lambdaNewClassFilter(context(), tree))) {
-                TranslationContext<?> localContext = context();
+                LambdaAnalyzerPreprocessor.TranslationContext<?> localContext = context();
                 while (localContext != null) {
                     if (localContext.tree.getTag() == LAMBDA) {
-                        ((LambdaTranslationContext)localContext)
+                        ((LambdaAnalyzerPreprocessor.LambdaTranslationContext)localContext)
                                 .addSymbol(tree.type.getEnclosingType().tsym, CAPTURED_THIS);
                     }
                     localContext = localContext.prev;
                 }
             }
             if (context() != null && !inReferencedClass && isLocal) {
-                LambdaTranslationContext lambdaContext = (LambdaTranslationContext)context();
+                LambdaAnalyzerPreprocessor.LambdaTranslationContext lambdaContext = (LambdaAnalyzerPreprocessor.LambdaTranslationContext)context();
                 captureLocalClassDefs(def, lambdaContext);
             }
             super.visitNewClass(tree);
         }
         //where
-            void captureLocalClassDefs(Symbol csym, final LambdaTranslationContext lambdaContext) {
+            void captureLocalClassDefs(Symbol csym, final LambdaAnalyzerPreprocessor.LambdaTranslationContext lambdaContext) {
                 JCClassDecl localCDef = localClassDefs.get(csym);
                 if (localCDef != null && lambdaContext.freeVarProcessedLocalClasses.add(csym)) {
                     BasicFreeVarCollector fvc = lower.new BasicFreeVarCollector() {
@@ -1339,12 +1339,12 @@ public class LambdaToMethod extends TreeTranslator {
                             if (sym.kind == VAR &&
                                     sym.owner.kind == MTH &&
                                     ((VarSymbol)sym).getConstValue() == null) {
-                                TranslationContext<?> localContext = context();
+                                LambdaAnalyzerPreprocessor.TranslationContext<?> localContext = context();
                                 while (localContext != null) {
                                     if (localContext.tree.getTag() == LAMBDA) {
                                         JCTree block = capturedDecl(localContext.depth, sym);
                                         if (block == null) break;
-                                        ((LambdaTranslationContext)localContext).addSymbol(sym, CAPTURED_VAR);
+                                        ((LambdaAnalyzerPreprocessor.LambdaTranslationContext)localContext).addSymbol(sym, CAPTURED_VAR);
                                     }
                                     localContext = localContext.prev;
                                 }
@@ -1381,7 +1381,7 @@ public class LambdaToMethod extends TreeTranslator {
          */
         @Override
         public void visitReference(JCMemberReference tree) {
-            ReferenceTranslationContext rcontext = new ReferenceTranslationContext(tree);
+            LambdaAnalyzerPreprocessor.ReferenceTranslationContext rcontext = new LambdaAnalyzerPreprocessor.ReferenceTranslationContext(tree);
             contextMap.put(tree, rcontext);
             if (rcontext.needsConversionToLambda()) {
                  // Convert to a lambda, and process as such
@@ -1402,12 +1402,12 @@ public class LambdaToMethod extends TreeTranslator {
                          tree.sym.name == names._super)) {
                 // A select of this or super means, if we are in a lambda,
                 // we much have an instance context
-                TranslationContext<?> localContext = context();
+                LambdaAnalyzerPreprocessor.TranslationContext<?> localContext = context();
                 while (localContext != null) {
                     if (localContext.tree.hasTag(LAMBDA)) {
                         JCClassDecl clazz = (JCClassDecl)capturedDecl(localContext.depth, tree.sym);
                         if (clazz == null) break;
-                        ((LambdaTranslationContext)localContext).addSymbol(clazz.sym, CAPTURED_THIS);
+                        ((LambdaAnalyzerPreprocessor.LambdaTranslationContext)localContext).addSymbol(clazz.sym, CAPTURED_THIS);
                     }
                     localContext = localContext.prev;
                 }
@@ -1417,9 +1417,9 @@ public class LambdaToMethod extends TreeTranslator {
 
         @Override
         public void visitVarDef(JCVariableDecl tree) {
-            TranslationContext<?> context = context();
-            LambdaTranslationContext ltc = (context != null && context instanceof LambdaTranslationContext)?
-                    (LambdaTranslationContext)context :
+            LambdaAnalyzerPreprocessor.TranslationContext<?> context = context();
+            LambdaAnalyzerPreprocessor.LambdaTranslationContext ltc = (context != null && context instanceof LambdaAnalyzerPreprocessor.LambdaTranslationContext)?
+                    (LambdaAnalyzerPreprocessor.LambdaTranslationContext)context :
                     null;
             if (ltc != null) {
                 if (frameStack.head.tree.hasTag(LAMBDA)) {
@@ -1477,7 +1477,7 @@ public class LambdaToMethod extends TreeTranslator {
                         return ((JCMethodDecl)frameStack2.head.tree).sym;
                     case LAMBDA:
                         if (!skipLambda)
-                            return ((LambdaTranslationContext)contextMap
+                            return ((LambdaAnalyzerPreprocessor.LambdaTranslationContext)contextMap
                                     .get(frameStack2.head.tree)).translatedSym;
                     default:
                         frameStack2 = frameStack2.tail;
@@ -1603,9 +1603,9 @@ public class LambdaToMethod extends TreeTranslator {
             return null;
         }
 
-        private TranslationContext<?> context() {
+        private LambdaAnalyzerPreprocessor.TranslationContext<?> context() {
             for (Frame frame : frameStack) {
-                TranslationContext<?> context = contextMap.get(frame.tree);
+                LambdaAnalyzerPreprocessor.TranslationContext<?> context = contextMap.get(frame.tree);
                 if (context != null) {
                     return context;
                 }
@@ -1627,7 +1627,7 @@ public class LambdaToMethod extends TreeTranslator {
          * This is used to filter out those new class expressions that need to
          * be qualified with an enclosing tree
          */
-        private boolean lambdaNewClassFilter(TranslationContext<?> context, JCNewClass tree) {
+        private boolean lambdaNewClassFilter(LambdaAnalyzerPreprocessor.TranslationContext<?> context, JCNewClass tree) {
             if (context != null
                     && tree.encl == null
                     && tree.def == null
