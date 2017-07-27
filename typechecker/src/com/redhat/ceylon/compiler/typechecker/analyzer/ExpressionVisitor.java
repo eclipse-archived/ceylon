@@ -1660,6 +1660,16 @@ public class ExpressionVisitor extends Visitor {
     private void refineMethod(Tree.SpecifierStatement that) {
         Function refinedMethod = (Function) that.getRefined();
         Function method = (Function) that.getDeclaration();
+        if(refinedMethod.isAbstraction()){
+            List<Declaration> overloads = refinedMethod.getOverloads();
+            if(overloads.size() == 2){
+                if(overloads.get(0).isCoercionPoint())
+                    refinedMethod = (Function) overloads.get(1);
+                else if(overloads.get(1).isCoercionPoint())
+                    refinedMethod = (Function) overloads.get(0);
+            }
+        }
+
         ClassOrInterface ci = 
                 (ClassOrInterface) 
                     method.getContainer();
