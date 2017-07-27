@@ -923,10 +923,10 @@ public class TypeArgumentInference {
                 
                 Reference arg = appliedReference(smte);
                 
-                if (!smte.getStaticMethodReferencePrimary() &&
-                        reference instanceof Functional && 
-                        paramDec instanceof Functional &&
-                        paramTypedRef!=null) {
+                if (!smte.getStaticMethodReferencePrimary() 
+                        && reference instanceof Functional 
+                        && paramDec instanceof Functional 
+                        && paramTypedRef!=null) {
                     //when we have actual individualized
                     //parameters on both the given function
                     //ref, and the callable parameter to
@@ -1063,10 +1063,10 @@ public class TypeArgumentInference {
 
     private static boolean isArgumentToGenericParameter(
             TypedReference paramTypedRef, Type paramType) {
-        return paramType.resolveAliases()
-                    .isTypeConstructor() ||
-                paramTypedRef != null &&
-                paramTypedRef.getDeclaration().isParameterized();
+        return paramType.resolveAliases().isTypeConstructor() 
+            || paramTypedRef != null 
+                && paramTypedRef.getDeclaration()!=null
+                && paramTypedRef.getDeclaration().isParameterized();
     }
 
     /**
@@ -1605,7 +1605,10 @@ public class TypeArgumentInference {
     private List<TypeParameter> 
     getTypeParametersAccountingForTypeConstructor(
             Declaration dec) {
-        if (dec.isParameterized()) {
+        if (dec==null) {
+            return null;
+        }
+        else if (dec.isParameterized()) {
             Generic generic = (Generic) dec;
             return generic.getTypeParameters();
         }

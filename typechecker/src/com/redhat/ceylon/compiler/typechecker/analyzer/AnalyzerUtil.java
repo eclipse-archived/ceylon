@@ -1434,8 +1434,9 @@ public class AnalyzerUtil {
                 Tree.SimpleType s = 
                         (Tree.SimpleType) t;
                 if (s.getTypeArgumentList()==null) {
+                    TypeDeclaration std = s.getDeclarationModel();
                     if (typeParam!=null || 
-                            s.getDeclarationModel().isParameterized()) {
+                            std!=null && std.isParameterized()) {
                         pt.setTypeConstructor(true);
                         pt.setTypeConstructorParameter(typeParam);
                     }

@@ -248,10 +248,10 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type type = that.getType();
         if (e==null) {
             Tree.Type ret = 
-                    fun.isDeclaredVoid() && 
-                    !(type instanceof Tree.VoidModifier) ? 
-                            new Tree.VoidModifier(null) : 
-                            type;
+                    type instanceof Tree.VoidModifier 
+                        || !fun.isDeclaredVoid() ? 
+                            type : 
+                            new Tree.VoidModifier(null);
             Tree.Type rt = beginReturnScope(ret);
             Declaration od = 
                     beginReturnDeclaration(fun);
@@ -271,34 +271,35 @@ public class ExpressionVisitor extends Visitor {
                 checkAssignable(t, that.getType().getTypeModel(), e, 
                         "expression type must be assignable to specified return type");
             }*/
-            if (type instanceof Tree.VoidModifier &&
-                    !isSatementExpression(e)) {
+            if (type instanceof Tree.VoidModifier 
+                    && !isSatementExpression(e)) {
                 e.addError("anonymous function is declared void so specified expression must be a statement");
             }
         }
         if (fun.isDeclaredVoid()) {
             fun.setType(unit.getAnythingType());            
         }
-        TypedReference reference = fun.getTypedReference();
-        Type fullType;
-        //if the anonymous function has type parameters,
-        //then the type of the expression is a type 
-        //constructor, so create a fake type alias
-        if (fun.isParameterized()) {
-            Scope scope = that.getScope();
-            fullType = 
-                    genericFunctionType(fun, scope, fun, 
-                            reference, unit);
-        }
-        else {
-            fullType = reference.getFullType();
-        }
-        that.setTypeModel(fullType);
+        that.setTypeModel(funType(that, fun));
         Tree.TypeParameterList tpl = 
                 that.getTypeParameterList();
         if (tpl!=null) {
             checkNotJvm(tpl, 
                     "type functions are not supported on the JVM: anonymous function is generic (remove type parameters)");
+        }
+    }
+
+    private Type funType(Tree.FunctionArgument that, Function fun) {
+        //if the anonymous function has type parameters,
+        //then the type of the expression is a type 
+        //constructor, so create a fake type alias
+        TypedReference reference = fun.getTypedReference();
+        if (fun.isParameterized()) {
+            Scope scope = that.getScope();
+            return genericFunctionType(fun, 
+                    scope, fun, reference, unit);
+        }
+        else {
+            return reference.getFullType();
         }
     }
     
@@ -4164,7 +4165,7 @@ public class ExpressionVisitor extends Visitor {
                 reference.getTypeArguments();
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
-        if (dec.isParameterized()) {
+        if (dec!=null && dec.isParameterized()) {
             //a generic declaration
             if (explicit) {
                 return getTypeArguments(tas, receiverType, 
@@ -4698,18 +4699,8 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.TypedArgument) arg;
             TypedDeclaration argDec = 
                     typedArg.getDeclarationModel();
-            TypedReference argRef = 
-                    argDec.getTypedReference();
-            if (argDec.isParameterized()) {
-                argType = 
-                        genericFunctionType(
-                                (Generic) argDec, 
-                                arg.getScope(), //TODO!!! 
-                                argDec, argRef, unit);
-            }
-            else {
-                argType = argRef.getFullType();
-            }
+            argType = 
+                    argumentType(arg.getScope(), argDec);
             checkArgumentToVoidParameter(param, typedArg);
             if (!dynamic 
                     && isTypeUnknown(argType)
@@ -4718,36 +4709,59 @@ public class ExpressionVisitor extends Visitor {
                         param.getName() + "'");
             }
         }
-        TypedReference paramRef = 
-                reference.getTypedParameter(param);
+        
         FunctionOrValue paramModel = param.getModel();
-        Type paramType;
+        if (paramModel!=null) {
+            TypedReference paramRef = 
+                    reference.getTypedParameter(param);
+            Type paramType = 
+                    paramType(arg.getScope(), 
+                            paramRef, paramModel);
+            if (!isTypeUnknown(argType) && 
+                    !isTypeUnknown(paramType)) {
+                Node node;
+                if (arg instanceof Tree.SpecifiedArgument) {
+                    Tree.SpecifiedArgument specifiedArg = 
+                            (Tree.SpecifiedArgument) arg;
+                    node = specifiedArg.getSpecifierExpression();
+                }
+                else {
+                    node = arg;
+                }
+                checkAssignable(argType, paramType, node,
+                        "named argument must be assignable to parameter " + 
+                                argdesc(param, reference), 
+                        2100);
+            }
+        }
+    }
+
+    private Type paramType(Scope argScope, 
+            TypedReference paramRef, 
+            FunctionOrValue paramModel) {
         if (paramModel.isParameterized()) {
-            paramType = 
-                    genericFunctionType(
-                            (Generic) paramModel, 
-                            arg.getScope(), //TODO!!! 
-                            paramModel, paramRef, unit);
+            return genericFunctionType(
+                    (Generic) paramModel, 
+                    argScope, //TODO!!! 
+                    paramModel, paramRef, unit);
         }
         else {
-            paramType = paramRef.getFullType();
+            return paramRef.getFullType();
         }
+    }
 
-        if (!isTypeUnknown(argType) && 
-                !isTypeUnknown(paramType)) {
-            Node node;
-            if (arg instanceof Tree.SpecifiedArgument) {
-                Tree.SpecifiedArgument specifiedArg = 
-                        (Tree.SpecifiedArgument) arg;
-                node = specifiedArg.getSpecifierExpression();
-            }
-            else {
-                node = arg;
-            }
-            checkAssignable(argType, paramType, node,
-                    "named argument must be assignable to parameter " + 
-                            argdesc(param, reference), 
-                    2100);
+    private Type argumentType(Scope argScope, 
+            TypedDeclaration argDec) {
+        TypedReference argRef = 
+                argDec.getTypedReference();
+        if (argDec.isParameterized()) {
+            return genericFunctionType(
+                    (Generic) argDec, 
+                    argScope, //TODO!!! 
+                    argDec, argRef, unit);
+        }
+        else {
+            return argRef.getFullType();
         }
     }
 
@@ -4815,8 +4829,8 @@ public class ExpressionVisitor extends Visitor {
             if (i>=argCount) {
                 if (isRequired(param)) {
                     Node errorNode = 
-                            that instanceof Tree.Annotation && 
-                            args.isEmpty() ? 
+                            that instanceof Tree.Annotation 
+                                && args.isEmpty() ? 
                                     that : pal;
                     StringBuilder message = 
                             new StringBuilder();
@@ -5276,22 +5290,14 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkPositionalArgument(Parameter p, 
             Reference pr, Tree.ListedArgument a) {
-        FunctionOrValue model = p.getModel();
-        if (model!=null) {
+        FunctionOrValue paramModel = p.getModel();
+        if (paramModel!=null) {
+            a.setParameter(p);
             TypedReference paramRef = 
                     pr.getTypedParameterWithWildcardCaputure(p);
-            a.setParameter(p);
-            Type paramType;
-            if (model.isParameterized()) {
-                paramType = 
-                        genericFunctionType(
-                                (Generic) model, 
-                                a.getScope(), //TODO!!! 
-                                model, paramRef, unit);
-            }
-            else {
-                paramType = paramRef.getFullType();
-            }
+            Type paramType = 
+                    paramType(a.getScope(), 
+                            paramRef, paramModel);
             Type at = a.getTypeModel();
             if (!isTypeUnknown(at) && 
                 !isTypeUnknown(paramType)) {
@@ -6955,13 +6961,13 @@ public class ExpressionVisitor extends Visitor {
     private void checkExtendsClauseReference(
             Tree.BaseMemberOrTypeExpression that,
             Declaration member) {
-        if (inExtendsClause &&
-                constructorClass!=null &&
-                member!=null &&
-                member.getContainer()
-                    .equals(constructorClass) &&
-                !member.isStatic() &&
-                !isConstructor(member)) {
+        if (inExtendsClause 
+                && constructorClass!=null 
+                && member!=null 
+                && member.getContainer()
+                    .equals(constructorClass) 
+                && !member.isStatic() 
+                && !isConstructor(member)) {
             that.addError("reference to class member from constructor extends clause");
         }
     }
@@ -6969,8 +6975,9 @@ public class ExpressionVisitor extends Visitor {
     private void visitGenericBaseMemberReference(
             Tree.StaticMemberOrTypeExpression that,
             TypedDeclaration member) {
-        if (member.isParameterized() && member instanceof Function) {
-            Generic generic = (Generic) member;
+        if (member instanceof Function 
+                && member.isParameterized()) {
+            Function generic = (Function) member;
             Scope scope = that.getScope();
             Type outerType = 
                     scope.getDeclaringType(member);
@@ -7101,8 +7108,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.QualifiedMemberExpression that,
             Type receiverType,
             TypedDeclaration member) {
-        if (member.isParameterized() && member instanceof Function) {
-            Generic generic = (Generic) member;
+        if (member instanceof Function
+                && member.isParameterized()) {
+            Function generic = (Function) member;
             Scope scope = that.getScope();
             TypedReference target = 
                     receiverType.getTypedMember(member, 
@@ -7139,8 +7147,8 @@ public class ExpressionVisitor extends Visitor {
         //to allow qualified refs to Java static members
         //without type arguments to the qualifying type
         if (isStaticReference(that)) {
-            if (member!=null &&
-                    !explicitTypeArguments(member, tas)) {
+            if (member!=null 
+                    && !explicitTypeArguments(member, tas)) {
                 that.addError("type arguments could not be inferred: '" +
                         member.getName(unit) + "' is generic");
             }
@@ -7156,9 +7164,9 @@ public class ExpressionVisitor extends Visitor {
             TypeDeclaration type = 
                     (TypeDeclaration) 
                         smte.getDeclaration();
-            if (type!=null && 
-                    !explicitTypeArguments(type, typeArgs) &&
-                    typeArgs.getTypeModels()==null) { //nothing inferred
+            if (type!=null 
+                    && !explicitTypeArguments(type, typeArgs) 
+                    && typeArgs.getTypeModels()==null) { //nothing inferred
                 Declaration declaration = 
                         smte.getDeclaration();
                 Generic dec = (Generic) declaration;
@@ -7181,20 +7189,14 @@ public class ExpressionVisitor extends Visitor {
                     smte.getDeclaration();
             Tree.TypeArguments qtas = 
                     smte.getTypeArguments();
-            if (!explicitTypeArguments(qtd, qtas)
-                    && qtd.isParameterized() 
-                    && !qtd.isJava()) {
-                if (!explicitTypeArguments(member, tas)) {
-                    Generic dec = (Generic) qtd;
-                    that.addError("missing explicit type arguments to generic qualifying type: '" + 
-                            qtd.getName(unit) +
-                            "' declares type parameters " + 
-                            typeParameterList(dec));
-                }
-                else {
+            if (qtd!=null
+                    && qtd.isParameterized()
+                    && !qtd.isJava()
+                    && !explicitTypeArguments(qtd, qtas)) {
+                Generic dec = (Generic) qtd;
+                if (explicitTypeArguments(member, tas)) {
                     Type functionType = 
-                            genericFunctionType(
-                                    (Generic) qtd,
+                            genericFunctionType(dec,
                                     that.getScope(),
                                     member,
                                     that.getTarget(),
@@ -7204,6 +7206,12 @@ public class ExpressionVisitor extends Visitor {
                             "type functions are not supported on the JVM: '" + 
                             qtd.getName(unit) + 
                             "' is generic (specify explicit type arguments)");
+                }
+                else {
+                    that.addError("missing explicit type arguments to generic qualifying type: '" + 
+                            qtd.getName(unit) +
+                            "' declares type parameters " + 
+                            typeParameterList(dec));
                 }
             }
         }
@@ -7640,8 +7648,9 @@ public class ExpressionVisitor extends Visitor {
     private void visitGenericBaseTypeReference(
             Tree.StaticMemberOrTypeExpression that,
             TypeDeclaration type) {
-        if (type.isParameterized() && type instanceof Class) {
-            Generic generic = (Generic) type;
+        if (type instanceof Class
+                && type.isParameterized()) {
+            Class generic = (Class) type;
             Scope scope = that.getScope();
             Type outerType = scope.getDeclaringType(type);
             Type target = 
@@ -8001,8 +8010,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.QualifiedTypeExpression that,
             Type outerType,
             TypeDeclaration type) {
-        if (type.isParameterized() && type instanceof Class) {
-            Generic generic = (Generic) type;
+        if (type instanceof Class
+                && type.isParameterized()) {
+            Class generic = (Class) type;
             Scope scope = that.getScope();
             Type target =
                     outerType.getTypeMember(type, 
