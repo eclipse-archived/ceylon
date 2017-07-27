@@ -12,6 +12,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingC
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isGeneric;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
@@ -1442,16 +1443,6 @@ public class AnalyzerUtil {
                 }
             }
             return pt.isTypeConstructor();
-        }
-    }
-
-    static boolean isGeneric(Declaration member) {
-        if (member instanceof Generic) {
-            Generic g = (Generic) member;
-            return !g.getTypeParameters().isEmpty();
-        }
-        else {
-            return false;
         }
     }
 

@@ -429,8 +429,8 @@ public abstract class TypeDeclaration extends Declaration
             return true;
         }
         if (hasMatchingSignature(candidate, signature, variadic)) {
-            return !hasMatchingSignature(result, signature, variadic) || 
-                    strictlyBetterMatch(candidate, result);
+            return !hasMatchingSignature(result, signature, variadic) 
+                || strictlyBetterMatch(candidate, result);
         }
         return false; //asymmetric!!
     }

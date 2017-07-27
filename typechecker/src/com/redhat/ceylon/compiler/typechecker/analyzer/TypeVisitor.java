@@ -19,6 +19,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDecla
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeForWrongBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
@@ -44,7 +45,6 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -390,8 +390,7 @@ public class TypeVisitor extends Visitor {
                         null, false, unit);
             }
             if (type==null) {
-                if (!isNativeForWrongBackend(
-                        scope.getScopedBackends())) {
+                if (!isNativeForWrongBackend(scope, unit)) {
                     that.addError("type is not defined: '" 
                             + name + "'" 
                             + correctionMessage(name, scope, 
@@ -485,8 +484,7 @@ public class TypeVisitor extends Visitor {
                         getTypeMember(d, name, 
                                 null, false, unit, scope);
                 if (type==null) {
-                    if (!isNativeForWrongBackend(
-                            scope.getScopedBackends())) {
+                    if (!isNativeForWrongBackend(scope, unit)) {
                         if (d.isMemberAmbiguous(name, unit, null, false)) {
                             that.addError("member type declaration is ambiguous: '" + 
                                     name + "' for type '" + 
@@ -1685,7 +1683,4 @@ public class TypeVisitor extends Visitor {
         return hdr;
     }
     
-    private boolean isNativeForWrongBackend(Backends backends) {
-        return ModelUtil.isNativeForWrongBackend(backends, unit.getSupportedBackends());
-    }
 }

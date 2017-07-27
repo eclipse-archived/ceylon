@@ -740,16 +740,15 @@ public class RefinementVisitor extends Visitor {
                 type.getRefinedMember(name, 
                         signature, variadic);
         boolean legallyOverloaded = 
-                !isOverloadedVersion(member) ||
-                isOverloadedVersion(root) ||
-                member.isNative();
-        if (root == null || root.equals(member) || 
-                root.isNative() && member.isNative()) {
+                member.isNative()
+                || !isOverloadedVersion(member)
+                || isOverloadedVersion(root);
+        if (root == null 
+                || root.equals(member) 
+                || root.isNative() && member.isNative()) {
             member.setRefinedDeclaration(member);
             if (member.isActual() 
-                    && !isNativeForWrongBackend(
-                            member.getScopedBackends(),
-                            member.getUnit().getSupportedBackends())) {
+                    && !isNativeForWrongBackend(member)) {
                 that.addError(
                         "actual member does not refine any inherited member: "
                                 + message(member)

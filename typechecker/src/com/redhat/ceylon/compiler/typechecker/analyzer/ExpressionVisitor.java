@@ -23,7 +23,6 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getUn
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
@@ -60,7 +59,9 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isCompletelyVisible;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isGeneric;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeForWrongBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
@@ -1287,9 +1288,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type type = that.getType();
         if (type!=null) {
             Type t = type.getTypeModel();
-            if (type instanceof Tree.LocalModifier &&
-                    !isNativeForWrongBackend(
-                            dec.getScopedBackends())) {
+            if (type instanceof Tree.LocalModifier 
+                    && !isNativeForWrongBackend(dec, unit)) {
                 if (dec.isParameter() && !dec.isInferred()) {
                     type.addError(
                             "parameter may not have inferred type: '" + 
@@ -7004,10 +7004,9 @@ public class ExpressionVisitor extends Visitor {
                         that.getEllipsis(),
                         that.getUnit());
         if (member==null) {
-            if (!dynamic &&
-                    !isNativeForWrongBackend(
-                            scope.getScopedBackends()) &&
-                    error) {
+            if (!dynamic 
+                    && !isNativeForWrongBackend(scope, unit) 
+                    && error) {
                 that.addError(
                         "function or value is not defined: '" 
                             + name + "'" 
@@ -7384,12 +7383,11 @@ public class ExpressionVisitor extends Visitor {
                             ptr.getFullType(wrap(ptr.getType(), 
                                     receivingType, that)));
             Scope scope = that.getScope();
-            if (!dynamic && 
-                    !isNativeForWrongBackend(
-                            scope.getScopedBackends()) &&
-                    !isAbstraction(member) && 
-                    isTypeUnknown(fullType) &&
-                    !hasError(that)) {
+            if (!dynamic 
+                    && !isNativeForWrongBackend(scope, unit) 
+                    && !isAbstraction(member) 
+                    && isTypeUnknown(fullType) 
+                    && !hasError(that)) {
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type
                 String rtname = 
@@ -7592,12 +7590,11 @@ public class ExpressionVisitor extends Visitor {
                     accountForGenericFunctionRef(direct, 
                             tal, outerType, typeArgs, 
                             pr.getFullType());
-            if (!dynamic && 
-                    !isNativeForWrongBackend(
-                            scope.getScopedBackends()) &&
-                    !isAbstraction(member) && 
-                    isTypeUnknown(fullType) && 
-                    !hasError(that)) {
+            if (!dynamic 
+                    && !isNativeForWrongBackend(scope, unit) 
+                    && !isAbstraction(member) 
+                    && isTypeUnknown(fullType) 
+                    && !hasError(that)) {
                 that.addError(
                         "could not determine type of function or value reference: '" +
                         member.getName(unit) + "'" + 
@@ -7683,10 +7680,9 @@ public class ExpressionVisitor extends Visitor {
                         that.getEllipsis(), 
                         that.getUnit());
         if (type==null) {
-            if (error &&
-                    !dynamic &&
-                    !isNativeForWrongBackend(
-                            scope.getScopedBackends())) {
+            if (error 
+                    && !dynamic 
+                    && !isNativeForWrongBackend(scope, unit)) {
                 that.addError(
                         "type is not defined: '" + name + "'"
                             + correctionMessage(name, scope, 
@@ -10777,7 +10773,4 @@ public class ExpressionVisitor extends Visitor {
         return dec;
     }
     
-    private boolean isNativeForWrongBackend(Backends backends) {
-        return ModelUtil.isNativeForWrongBackend(backends, unit.getSupportedBackends());
-    }
 }
