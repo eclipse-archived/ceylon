@@ -196,11 +196,15 @@ void callables() {
     fun3(10);
 }
 
-class Clazz {
+class Generic<H> {
     shared static T generic<T>(T t) => t;
+    shared static Object notgeneric(Object t) => t;
     shared new () {}
+    shared new create(H h) {}
 }
 
 void testClazz() {
-    @type:"<T> => T(T)" value ref = Clazz.generic;
+    @error value ref0 = Generic.generic;
+    @type:"<T>=>T(T)" value ref1 = Generic<Object>.generic;
+    @type:"<H>=>Object(Object)" value ref2 = Generic.notgeneric;
 }
