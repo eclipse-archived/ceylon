@@ -52,10 +52,11 @@ public class ConditionGenerator {
             Tree.Variable variable = null;
             Tree.Destructure destruct = null;
             if (cond instanceof ExistsOrNonemptyCondition) {
-                if (((ExistsOrNonemptyCondition) cond).getVariable() instanceof Tree.Variable) {
-                    variable = (Tree.Variable)((ExistsOrNonemptyCondition) cond).getVariable();
-                } else if (((ExistsOrNonemptyCondition) cond).getVariable() instanceof Tree.Destructure) {
-                    destruct = (Tree.Destructure)((ExistsOrNonemptyCondition) cond).getVariable();
+                ExistsOrNonemptyCondition enc = (ExistsOrNonemptyCondition) cond;
+                if (enc.getVariable() instanceof Tree.Variable) {
+                    variable = (Tree.Variable)enc.getVariable();
+                } else if (enc.getVariable() instanceof Tree.Destructure) {
+                    destruct = (Tree.Destructure)enc.getVariable();
                 }
             } else if (cond instanceof IsCondition) {
                 variable = ((IsCondition) cond).getVariable();
@@ -198,7 +199,8 @@ public class ConditionGenerator {
     private void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName,
                                        final boolean forAssert) {
         if (condition instanceof ExistsOrNonemptyCondition) {
-            if (((ExistsOrNonemptyCondition) condition).getNot()) {
+            ExistsOrNonemptyCondition enc = (ExistsOrNonemptyCondition) condition;
+            if (enc.getNot()) {
                 gen.out("!");
             }
             if (condition instanceof Tree.NonemptyCondition) {
@@ -209,9 +211,10 @@ public class ConditionGenerator {
             specialConditionRHS(variableRHS, varName);
             gen.out(")");
         } else {
-            Tree.Type type = ((IsCondition) condition).getType();
+            IsCondition ic = (IsCondition) condition;
+            Tree.Type type = ic.getType();
             gen.generateIsOfType(variableRHS, null, type.getTypeModel(),
-                    varName, ((IsCondition)condition).getNot(), forAssert);
+                    varName, ic.getNot(), forAssert);
         }
     }
 
