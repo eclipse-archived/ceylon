@@ -14,7 +14,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.areConsistentS
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.contains;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isGeneric;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 
 import java.util.ArrayList;
@@ -637,7 +636,7 @@ public class InheritanceVisitor extends Visitor {
             TypeDeclaration caseTypeDec) {
         if (caseTypeDec instanceof ClassOrInterface 
                 && ct instanceof Tree.SimpleType 
-                && isGeneric(caseTypeDec)) {
+                && caseTypeDec.isParameterized()) {
             Tree.SimpleType t = (Tree.SimpleType) ct;
             Tree.TypeArgumentList tal = 
                     t.getTypeArgumentList();

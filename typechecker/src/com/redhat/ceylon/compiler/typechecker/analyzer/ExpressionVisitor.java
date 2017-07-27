@@ -59,7 +59,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isCompletelyVisible;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isGeneric;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeForWrongBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
@@ -285,7 +284,7 @@ public class ExpressionVisitor extends Visitor {
         //if the anonymous function has type parameters,
         //then the type of the expression is a type 
         //constructor, so create a fake type alias
-        if (isGeneric(fun)) {
+        if (fun.isParameterized()) {
             Scope scope = that.getScope();
             fullType = 
                     genericFunctionType(fun, scope, fun, 
@@ -1881,7 +1880,7 @@ public class ExpressionVisitor extends Visitor {
                 checkType(type, 
                         that.getSpecifierExpression());
             }
-            if (isGeneric(model)) {
+            if (model.isParameterized()) {
                 checkNotJvm(that,
                         "type functions are not supported on the JVM: '" + 
                         model.getName() + 
@@ -4165,7 +4164,7 @@ public class ExpressionVisitor extends Visitor {
                 reference.getTypeArguments();
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
-        if (isGeneric(dec)) {
+        if (dec.isParameterized()) {
             //a generic declaration
             if (explicit) {
                 return getTypeArguments(tas, receiverType, 
@@ -4701,7 +4700,7 @@ public class ExpressionVisitor extends Visitor {
                     typedArg.getDeclarationModel();
             TypedReference argRef = 
                     argDec.getTypedReference();
-            if (isGeneric(argDec)) {
+            if (argDec.isParameterized()) {
                 argType = 
                         genericFunctionType(
                                 (Generic) argDec, 
@@ -4723,7 +4722,7 @@ public class ExpressionVisitor extends Visitor {
                 reference.getTypedParameter(param);
         FunctionOrValue paramModel = param.getModel();
         Type paramType;
-        if (isGeneric(paramModel)) {
+        if (paramModel.isParameterized()) {
             paramType = 
                     genericFunctionType(
                             (Generic) paramModel, 
@@ -5283,7 +5282,7 @@ public class ExpressionVisitor extends Visitor {
                     pr.getTypedParameterWithWildcardCaputure(p);
             a.setParameter(p);
             Type paramType;
-            if (isGeneric(model)) {
+            if (model.isParameterized()) {
                 paramType = 
                         genericFunctionType(
                                 (Generic) model, 
@@ -6970,7 +6969,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitGenericBaseMemberReference(
             Tree.StaticMemberOrTypeExpression that,
             TypedDeclaration member) {
-        if (isGeneric(member) && member instanceof Function) {
+        if (member.isParameterized() && member instanceof Function) {
             Generic generic = (Generic) member;
             Scope scope = that.getScope();
             Type outerType = 
@@ -7108,7 +7107,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.QualifiedMemberExpression that,
             Type receiverType,
             TypedDeclaration member) {
-        if (isGeneric(member) && member instanceof Function) {
+        if (member.isParameterized() && member instanceof Function) {
             Generic generic = (Generic) member;
             Scope scope = that.getScope();
             TypedReference target = 
@@ -7189,7 +7188,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArguments qtas = 
                     smte.getTypeArguments();
             if (!explicitTypeArguments(qtd, qtas)
-                    && isGeneric(qtd) 
+                    && qtd.isParameterized() 
                     && !qtd.isJava()) {
                 if (!explicitTypeArguments(member, tas)) {
                     Generic dec = (Generic) qtd;
@@ -7647,7 +7646,7 @@ public class ExpressionVisitor extends Visitor {
     private void visitGenericBaseTypeReference(
             Tree.StaticMemberOrTypeExpression that,
             TypeDeclaration type) {
-        if (isGeneric(type) && type instanceof Class) {
+        if (type.isParameterized() && type instanceof Class) {
             Generic generic = (Generic) type;
             Scope scope = that.getScope();
             Type outerType = scope.getDeclaringType(type);
@@ -8011,7 +8010,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.QualifiedTypeExpression that,
             Type outerType,
             TypeDeclaration type) {
-        if (isGeneric(type) && type instanceof Class) {
+        if (type.isParameterized() && type instanceof Class) {
             Generic generic = (Generic) type;
             Scope scope = that.getScope();
             Type target =
@@ -8213,8 +8212,8 @@ public class ExpressionVisitor extends Visitor {
 
     private boolean explicitTypeArguments
             (Declaration dec, Tree.TypeArguments tal) {
-        return tal instanceof Tree.TypeArgumentList ||
-                !dec.isParameterized();
+        return tal instanceof Tree.TypeArgumentList 
+            || !dec.isParameterized();
     }
     
     private boolean typeConstructorArgumentsInferrable(
@@ -9540,7 +9539,7 @@ public class ExpressionVisitor extends Visitor {
         if (dec==null) {
             return false;
         }
-        else if (isGeneric(dec)) {
+        else if (dec.isParameterized()) {
             if (typeArguments==null) {
                 return false;
             }

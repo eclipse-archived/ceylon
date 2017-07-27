@@ -13,7 +13,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalInter
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isGeneric;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.typeParametersAsArgList;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
@@ -1067,7 +1066,7 @@ public class TypeArgumentInference {
         return paramType.resolveAliases()
                     .isTypeConstructor() ||
                 paramTypedRef != null &&
-                isGeneric(paramTypedRef.getDeclaration());
+                paramTypedRef.getDeclaration().isParameterized();
     }
 
     /**
@@ -1606,7 +1605,7 @@ public class TypeArgumentInference {
     private List<TypeParameter> 
     getTypeParametersAccountingForTypeConstructor(
             Declaration dec) {
-        if (isGeneric(dec)) {
+        if (dec.isParameterized()) {
             Generic generic = (Generic) dec;
             return generic.getTypeParameters();
         }
@@ -1635,7 +1634,7 @@ public class TypeArgumentInference {
         }
         else {
             List<Type> list;
-            if (isGeneric(dec)) {
+            if (dec.isParameterized()) {
                 Generic generic = (Generic) dec;
                 list = typeParametersAsArgList(generic);
             }

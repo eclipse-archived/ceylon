@@ -12,7 +12,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingC
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isGeneric;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
@@ -1436,7 +1435,7 @@ public class AnalyzerUtil {
                         (Tree.SimpleType) t;
                 if (s.getTypeArgumentList()==null) {
                     if (typeParam!=null || 
-                            isGeneric(s.getDeclarationModel())) {
+                            s.getDeclarationModel().isParameterized()) {
                         pt.setTypeConstructor(true);
                         pt.setTypeConstructorParameter(typeParam);
                     }
@@ -1519,7 +1518,7 @@ public class AnalyzerUtil {
 
     static boolean involvesTypeParams(Declaration dec, 
             Type type) {
-        if (isGeneric(dec)) {
+        if (dec!=null && dec.isParameterized()) {
             Generic g = (Generic) dec;
             return type.involvesTypeParameters(g);
         }
@@ -1531,12 +1530,12 @@ public class AnalyzerUtil {
     static TypeDeclaration unwrapAliasedTypeConstructor(
             TypeDeclaration dec) {
         TypeDeclaration d = dec;
-        while (!isGeneric(d) && d.isAlias()) {
+        while (!d.isParameterized() && d.isAlias()) {
             Type et = d.getExtendedType();
             if (et==null) break;
             et = et.resolveAliases();
             d = et.getDeclaration();
-            if (et.isTypeConstructor() && isGeneric(d)) {
+            if (et.isTypeConstructor() && d.isParameterized()) {
                 return d;
             }
         }
@@ -1545,12 +1544,12 @@ public class AnalyzerUtil {
 
     static Type unwrapAliasedTypeConstructor(Type type) {
         TypeDeclaration d = type.getDeclaration();
-        while (!isGeneric(d) && d.isAlias()) {
+        while (!d.isParameterized() && d.isAlias()) {
             Type et = d.getExtendedType();
             if (et==null) break;
             d = et.getDeclaration();
             et = et.resolveAliases();
-            if (et.isTypeConstructor() && isGeneric(d)) {
+            if (et.isTypeConstructor() && d.isParameterized()) {
                 return et;
             }
         }

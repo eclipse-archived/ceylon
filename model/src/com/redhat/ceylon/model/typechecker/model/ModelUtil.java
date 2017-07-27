@@ -2343,16 +2343,6 @@ public class ModelUtil {
         return abstractionClass;
     }
     
-    public static boolean isGeneric(Declaration member) {
-        if (member instanceof Generic) {
-            Generic g = (Generic) member;
-            return !g.getTypeParameters().isEmpty();
-        }
-        else {
-            return false;
-        }
-    }
-
     public static boolean isTypeUnknown(Type type) {
         return type==null 
             || type.getDeclaration()==null 
