@@ -7078,28 +7078,22 @@ public class ExpressionVisitor extends Visitor {
                             receiverType, member, typeArgs, 
                             tal);
                 }
-                if (that.getStaticMethodReference()) {
-                    handleStaticReferenceImplicitTypeArguments(
-                            that);
-                }
-                //otherwise infer type arguments later
             }
             else {
-                if (that.getStaticMethodReference()) {
-                    handleStaticReferenceImplicitTypeArguments(
-                            that);
+                if (primary instanceof Tree.Package) {
+                    visitGenericBaseMemberReference(that, 
+                            member);
                 }
                 else {
-                    if (primary instanceof Tree.Package) {
-                        visitGenericBaseMemberReference(that, 
-                                member);
-                    }
-                    else {
-                        visitGenericQualifiedMemberReference(
-                                that, receiverType, member);
-                    }
+                    visitGenericQualifiedMemberReference(
+                            that, receiverType, member);
                 }
             }
+            if (that.getStaticMethodReference()) {
+                handleStaticReferenceImplicitTypeArguments(
+                        that);
+            }
+            //otherwise infer type arguments later
         }
     }
 
@@ -7981,18 +7975,9 @@ public class ExpressionVisitor extends Visitor {
                             receiverType, type, typeArgs, 
                             tal);
                 }
-                if (that.getStaticMethodReference()) {
-                    handleStaticReferenceImplicitTypeArguments(
-                            that);
-                }
-                //otherwise infer type arguments later
             }
             else {
-                if (that.getStaticMethodReference()) {
-                    handleStaticReferenceImplicitTypeArguments(
-                            that);
-                }
-                else if (!that.getStaticMethodReferencePrimary()) {
+                if (!that.getStaticMethodReferencePrimary()) {
                     if (primary instanceof Tree.Package) {
                         visitGenericBaseTypeReference(that, 
                                 type);
@@ -8003,6 +7988,12 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
+            if (that.getStaticMethodReference()) {
+                handleStaticReferenceImplicitTypeArguments(
+                        that);
+            }
+            //otherwise infer type arguments later
+
         }
     }
 

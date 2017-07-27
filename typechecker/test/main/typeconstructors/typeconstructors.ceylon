@@ -195,3 +195,12 @@ void callables() {
     fun2(10);
     fun3(10);
 }
+
+class Clazz {
+    shared static T generic<T>(T t) => t;
+    shared new () {}
+}
+
+void testClazz() {
+    @type:"<T> => T(T)" value ref = Clazz.generic;
+}
