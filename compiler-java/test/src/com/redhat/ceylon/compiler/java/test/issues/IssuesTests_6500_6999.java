@@ -208,7 +208,15 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     public void testBug6746() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6746", "bug67xx/Bug6746.ceylon");
     }
-    
+
+    @Test
+    public void testBug6747() {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile("bug67xx/Bug6747Java.java");
+        compareWithJavaSource("bug67xx/Bug6747");
+    }
+
     @Test
     public void testBug6769() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6769", "bug67xx/Bug6769.ceylon");

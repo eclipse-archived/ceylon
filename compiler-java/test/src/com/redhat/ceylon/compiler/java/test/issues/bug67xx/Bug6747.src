@@ -1,0 +1,28 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug67xx;
+
+public final class bug6747_ {
+    
+    private bug6747_() {
+    }
+    
+    public static void bug6747() {
+        final .ceylon.language.Callable<? extends .java.lang.Object> cons = (.ceylon.language.Callable<? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        .com.redhat.ceylon.compiler.java.test.issues.bug67xx.Bug6747Java.load(2, -1, "", new .java.util.function.Consumer<.java.lang.String[]>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String[] $ceylontmp$arg0 = (.java.lang.String[])(.java.lang.String[])$param$0;
+                return cons.$call$((.java.lang.Object)$ceylontmp$arg0);
+            }
+            
+            @.java.lang.Override
+            public void accept(final .java.lang.String[] arg0) {
+                $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6747_.bug6747();
+    }
+}
