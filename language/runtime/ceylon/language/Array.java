@@ -153,23 +153,11 @@ public final class Array<Element>
             final TypeDescriptor $reifiedElement,
             final Iterable<? extends Element,?> elements) {
         
-        if (elements instanceof ceylon.language.String
-                && !$reifiedElement.containsNull()
-                && $reifiedElement.getArrayElementClass()
-                    == ceylon.language.Character.class) {
-            return createArrayFromString((ceylon.language.String) elements);
-        }
-        
-        if (elements instanceof Array) {
-            return createArrayFromArray($reifiedElement, 
-                    (Array<? extends Element>) elements);
-        }
-        
         if (elements instanceof List) {
             return createArrayFromList($reifiedElement, 
                     (List<? extends Element>) elements);
         }
-
+        
         final ArrayList<Element> list = new ArrayList<Element>();
         Iterator<?> iterator = elements.iterator();
         java.lang.Object elem;
@@ -280,28 +268,32 @@ public final class Array<Element>
 
     }
     
-    private static <Element> java.lang.Object createArrayFromString(
-            final ceylon.language.String elements) {
-
-        int size = Util.toInt(elements.getSize());
-
-        int[] array = new int[size];
-        java.lang.String string = elements.toString();
-        for (int i=0, offset = 0; i<size; i++) {
-            int codePoint = string.codePointAt(offset);
-            offset += java.lang.Character.charCount(codePoint);
-            array[i] = codePoint;
-        }
-        return array;
-    }
-
     private static <Element> java.lang.Object createArrayFromList(
             final TypeDescriptor $reifiedElement,
             final List<? extends Element> elements) {
         
-        Iterator<?> iterator = elements.iterator();
-        final int size = (int) elements.getSize();
+        if (elements instanceof Array) {
+            return createArrayFromArray($reifiedElement, 
+                    (Array<? extends Element>) elements);
+        }
         
+        int size = Util.toInt(elements.getSize());
+        
+        if (elements instanceof ceylon.language.String
+                && !$reifiedElement.containsNull()
+                && $reifiedElement.getArrayElementClass()
+                    == ceylon.language.Character.class) {
+            int[] array = new int[size];
+            java.lang.String string = elements.toString();
+            for (int i=0, offset = 0; i<size; i++) {
+                int codePoint = string.codePointAt(offset);
+                offset += java.lang.Character.charCount(codePoint);
+                array[i] = codePoint;
+            }
+            return array;
+        }
+        
+        Iterator<?> iterator = elements.iterator();
         switch (elementType($reifiedElement)) {
         case CeylonString:
             //note: we don't unbox strings in an Array<String?>
