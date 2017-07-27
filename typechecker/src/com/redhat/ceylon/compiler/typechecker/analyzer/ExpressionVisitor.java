@@ -4862,20 +4862,12 @@ public class ExpressionVisitor extends Visitor {
                             getTypeUnknownError(pt));
                 }
                 if (arg instanceof Tree.SpreadArgument) {
-                    if (pr.getDeclaration().isCoercionPoint()
-                            && param.getType().isCallable()) {
-                        arg.addUnsupportedError("lambda conversions with spread arguments not supported");
-                    }
                     checkSpreadArgument(pr, param, arg, 
                             (Tree.SpreadArgument) arg, 
                             params.subList(i, paramsSize));
                     break;
                 }
                 else if (arg instanceof Tree.Comprehension) {
-                    if (pr.getDeclaration().isCoercionPoint()
-                            && param.getType().isCallable()) {
-                        arg.addUnsupportedError("lambda conversions with conprehensions not supported");
-                    }
                     if (param.isSequenced()) {
                         checkComprehensionPositionalArgument(
                                 param, pr, 
@@ -4981,6 +4973,10 @@ public class ExpressionVisitor extends Visitor {
             Parameter p, Tree.PositionalArgument a, 
             Tree.SpreadArgument arg, 
             List<Parameter> params) {
+        if (pr.getDeclaration().isCoercionPoint()
+                && isCallableVariadic(p)) {
+            arg.addUnsupportedError("lambda conversions with spread arguments not supported");
+        }
         a.setParameter(p);
         Type rat = arg.getTypeModel();
         if (!isTypeUnknown(rat)
@@ -5241,9 +5237,22 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private boolean isCallableVariadic(Parameter p) {
+        Type type = p.getType();
+        return p.isSequenced()
+            && type!=null
+            && (type.isSequence() || type.isSequential())
+            && unit.getSequentialElementType(type)
+                   .isCallable();
+    }
+    
     private void checkComprehensionPositionalArgument(
             Parameter p, Reference pr, Tree.Comprehension c, 
             boolean atLeastOne) {
+        if (pr.getDeclaration().isCoercionPoint()
+                && isCallableVariadic(p)) {
+            c.addUnsupportedError("lambda conversions with conprehensions not supported");
+        }
         c.setParameter(p);
         Tree.InitialComprehensionClause icc = 
                 c.getInitialComprehensionClause();
