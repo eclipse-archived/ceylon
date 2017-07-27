@@ -210,6 +210,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     }
 
     @Test
+    public void testBug6782() {
+        compareWithJavaSource("bug67xx/Bug6782");
+    }
+
+    @Test
     public void testBug6747() {
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);

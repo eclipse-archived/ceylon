@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug67xx;
+
+public final class bug6782_ {
+    
+    private bug6782_() {
+    }
+    
+    public static void bug6782() {
+        final .java.lang.SecurityManager securityManager = .java.lang.System.getSecurityManager();
+        
+        final class o_ extends .java.lang.SecurityManager implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private o_() {
+                super();
+                this.checkMemberAccess$specifier$ = (
+                    let
+                    {
+                        final .java.lang.SecurityManager $instance$ = .com.redhat.ceylon.compiler.java.Util.checkNull(securityManager);
+                    }
+                    returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Class.class, new .com.redhat.ceylon.compiler.java.metadata.Variance[]{.com.redhat.ceylon.compiler.java.metadata.Variance.OUT}, .ceylon.language.Object.$TypeDescriptor$)), .ceylon.language.Integer.$TypeDescriptor$), "Anything(Class<out Object>?, Integer)", (short)-1){
+                        
+                        @.java.lang.Override
+                        public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                            final .java.lang.Class $ceylontmp$arg0 = (.java.lang.Class<? extends .java.lang.Object>)(.java.lang.Class)$param$0;
+                            final int $ceylontmp$arg1 = .com.redhat.ceylon.compiler.java.Util.toInt(((.ceylon.language.Integer)$param$1).longValue());
+                            return (
+                                let
+                                {
+                                    $instance$.checkMemberAccess($ceylontmp$arg0, $ceylontmp$arg1);
+                                }
+                                returning null;
+                            );
+                        }
+                    };
+                );
+            }
+            private final .ceylon.language.Callable<? extends .java.lang.Object> checkMemberAccess$specifier$;
+            
+            @.java.lang.Override
+            public final void checkMemberAccess(final .java.lang.Class arg0, final int arg1) {
+                checkMemberAccess$specifier$.$call$((.java.lang.Class<? extends .java.lang.Object>)arg0, .ceylon.language.Integer.instance(arg1));
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6782_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+            }
+        }
+        final o_ o = new o_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6782_.bug6782();
+    }
+}
