@@ -1203,7 +1203,7 @@ public class CallableBuilder {
                     arg = gen.expressionGen().applyErasureAndBoxing(arg, simpleParamType, 
                             !(CodegenUtil.isUnBoxed(param.getModel())
                                     || unboxedString), 
-                            BoxingStrategy.BOXED,
+                            unboxedString ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED,
                             argumentType);
                 }
                 args.append(arg);

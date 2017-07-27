@@ -204,6 +204,10 @@ public class ExpressionTransformer extends AbstractTransformer {
     private Naming.SyntheticName memberPrimary = null;
     private ClassOrInterface withinSuperInvocation = null;
     private ClassOrInterface withinDefaultParameterExpression = null;
+    /**
+     * This is set when we're coercing a FunctionArgument to an FI that doesn't care about null returns
+     */
+    private Function coercedFunctionalInterfaceNeedsNoNullChecks;
 
     private Type expectedType;
     private boolean coerced;
@@ -287,7 +291,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         nonWideningType = propagateOptionality(declaration.getType(), nonWideningType);
         BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(nonWideningTypedRef.getDeclaration());
         int flags = 0;
-        if(declaration.hasUncheckedNullType())
+        if(declaration.hasUncheckedNullType()
+                || declaration == coercedFunctionalInterfaceNeedsNoNullChecks)
             flags = ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL;
         if (CodegenUtil.downcastForSmall(expr, declaration)) 
             flags |= ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK;
@@ -479,11 +484,20 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     JCExpression transform(Tree.FunctionArgument functionArg) {
         Function model = functionArg.getDeclarationModel();
+        TypedReference functionalInterface = gen().checkForFunctionalInterface(expectedType);
+        int flags = 0;
+        // even if we are a Callable<X>, if the FI returns void don't check for non-null return types
+        if(functionalInterface != null
+                && Decl.isUnboxedVoid(functionalInterface.getDeclaration()))
+            flags |= EXPR_TARGET_ACCEPTS_NULL;
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
         boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
+        Function prevCoercedFunctionalInterfaceNeedsNoNullChecks = expressionGen().coercedFunctionalInterfaceNeedsNoNullChecks;
         try {
             statementGen().noExpressionlessReturn = isAnything(model.getType());
+            expressionGen().coercedFunctionalInterfaceNeedsNoNullChecks = 
+                    (flags & EXPR_TARGET_ACCEPTS_NULL) != 0 ? model : null;
             if (functionArg.getBlock() != null) {
                 body = statementGen().transformBlock(functionArg.getBlock());
                 if (!functionArg.getBlock().getDefinitelyReturns()) {
@@ -495,12 +509,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             } else {
                 Tree.Expression expr = functionArg.getExpression();
-                JCExpression transExpr = expressionGen().transformExpression(expr);
+                JCExpression transExpr = expressionGen().transformExpression(expr, flags);
                 JCReturn returnStat = make().Return(transExpr);
                 body = List.<JCStatement>of(returnStat);
             }
         } finally {
             expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
+            expressionGen().coercedFunctionalInterfaceNeedsNoNullChecks = prevCoercedFunctionalInterfaceNeedsNoNullChecks;
             statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
         }
 
