@@ -3525,6 +3525,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             boolean coerced = invocation.isParameterCoerced(argIndex);
             if(coerced){
                 flags |=  ExpressionTransformer.EXPR_IS_COERCED;
+                if(invocation.isParameterJavaVariadic(argIndex)
+                        && type.isSequential()){
+                    type = typeFact().getSequentialElementType(type);
+                }
             }
             JCExpression ret = transformExpression(expr, 
                     boxingStrategy, 

@@ -935,7 +935,11 @@ class PositionalInvocation extends DirectInvocation {
             Tree.Expression expr = ((Tree.ListedArgument) arg).getExpression();
             if (expr.getTerm() instanceof FunctionArgument) {
                 FunctionArgument farg = (FunctionArgument)expr.getTerm();
-                return gen.expressionGen().transform(farg, getParameterType(argIndex));
+                Type parameterType = getParameterType(argIndex);
+                if(isParameterJavaVariadic(argIndex) && parameterType.isSequential()){
+                    parameterType = gen.typeFact().getSequentialElementType(parameterType);
+                }
+                return gen.expressionGen().transform(farg, parameterType);
             }
         }
         // special case for comprehensions which are not expressions
