@@ -1,0 +1,62 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug71xx;
+
+public final class bug7112_ {
+    
+    private bug7112_() {
+    }
+    
+    public static void bug7112() {
+        final .java.util.HashMap<.java.lang.String, .ceylon.language.Float> javaHashMap = new .java.util.HashMap<.java.lang.String, .ceylon.language.Float>();
+        javaHashMap.put(new .java.lang.String("hello"), .ceylon.language.Float.instance(5.0));
+        javaHashMap.forEach(new .java.util.function.BiConsumer<.java.lang.String, .ceylon.language.Float>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .java.lang.String jstr = (.java.lang.String)$param$0;
+                final double num = ((.ceylon.language.Float)$param$1).doubleValue();
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print(jstr);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .java.lang.String arg0, final .ceylon.language.Float arg1) {
+                $call$(arg0, .com.redhat.ceylon.compiler.java.Util.checkNull(arg1));
+            }
+        });
+        final .java.util.HashMap<.java.lang.String, .ceylon.language.Float> javaHashMap1 = new .java.util.HashMap<.java.lang.String, .ceylon.language.Float>();
+        .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(javaHashMap.entrySet()).stream()).forEach(new .java.util.function.Consumer<.java.util.Map.Entry<.java.lang.String, .ceylon.language.Float>>(){
+            
+            public .ceylon.language.Float $call$(final .java.lang.Object $param$0) {
+                final .java.util.Map.Entry<.java.lang.String, .ceylon.language.Float> entry = (.java.util.Map.Entry<.java.lang.String, .ceylon.language.Float>)(.java.util.Map.Entry)$param$0;
+                return javaHashMap1.put(.com.redhat.ceylon.compiler.java.Util.checkNull(entry).getKey(), .com.redhat.ceylon.compiler.java.Util.checkNull(entry).getValue());
+            }
+            
+            @.java.lang.Override
+            public void accept(final .java.util.Map.Entry<.java.lang.String, .ceylon.language.Float> arg0) {
+                $call$(arg0);
+            }
+        });
+        javaHashMap1.clear();
+        .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(javaHashMap.entrySet()).stream()).forEach(new .java.util.function.Consumer<.java.util.Map.Entry<.java.lang.String, .ceylon.language.Float>>(){
+            
+            public .ceylon.language.Float $call$(final .java.lang.Object $param$0) {
+                final .java.util.Map.Entry<.java.lang.String, .ceylon.language.Float> entry = (.java.util.Map.Entry<.java.lang.String, .ceylon.language.Float>)(.java.util.Map.Entry)$param$0;
+                return javaHashMap1.put(.com.redhat.ceylon.compiler.java.Util.checkNull(entry).getKey(), .com.redhat.ceylon.compiler.java.Util.checkNull(entry).getValue());
+            }
+            
+            @.java.lang.Override
+            public void accept(final .java.util.Map.Entry<.java.lang.String, .ceylon.language.Float> arg0) {
+                $call$(arg0);
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug71xx.bug7112_.bug7112();
+    }
+}
