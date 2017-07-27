@@ -676,6 +676,7 @@ public class RefinementVisitor extends Visitor {
         if (name==null) {
             return;
         }
+        
         if (member instanceof Setter) {
             Setter setter = (Setter) member;
             Value getter = setter.getGetter();
@@ -683,6 +684,7 @@ public class RefinementVisitor extends Visitor {
             member.setRefinedDeclaration(rd);
             return;
         }
+        
         ClassOrInterface type = 
                 (ClassOrInterface) 
                     member.getContainer();
@@ -732,7 +734,13 @@ public class RefinementVisitor extends Visitor {
             checkOverloadedParameters(that, member);
         }
         
+        checkRefinement(that, member, type);
+    }
+
+    private void checkRefinement(Tree.Declaration that, 
+            Declaration member, ClassOrInterface type) {
         Unit unit = that.getUnit();
+        String name = member.getName();
         
         List<Type> signature = getSignature(member);
         boolean variadic = isVariadic(member);
@@ -865,8 +873,9 @@ public class RefinementVisitor extends Visitor {
                         checkTypes = false;
                     }
                     else if (refined instanceof TypedDeclaration) {
-                        if (((TypedDeclaration) refined).isVariable() && 
-                            !((TypedDeclaration) member).isVariable()) {
+                        TypedDeclaration rtd = (TypedDeclaration) refined;
+                        TypedDeclaration mtd = (TypedDeclaration) member;
+                        if (rtd.isVariable() && !mtd.isVariable()) {
                             if (member instanceof Value) {
                                 that.addError(
                                         "non-variable attribute refines a variable attribute: " 
@@ -949,9 +958,7 @@ public class RefinementVisitor extends Visitor {
                         p.getScope()
                          .getMemberOrParameter(unit, aname, 
                                  null, false);
-                if (ad!=null && 
-                        "java.lang::overloaded"
-                            .equals(ad.getQualifiedNameString())) {
+                if (ad!=null && isOverloadedAnnotation(ad)) {
                     marked = true;
                 }
             }
@@ -980,6 +987,11 @@ public class RefinementVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    private static boolean isOverloadedAnnotation(Declaration ad) {
+        return "java.lang::overloaded"
+                .equals(ad.getQualifiedNameString());
     }
 
     private void checkOverloadedParameters(
@@ -1511,8 +1523,7 @@ public class RefinementVisitor extends Visitor {
                     refiningFunctionOrValue.isSmall();
             boolean refinedSmall = 
                     refinedFunctionOrValue.isSmall();
-            if (refiningSmall
-                    && !refinedSmall) {
+            if (refiningSmall && !refinedSmall) {
                 that.addUsageWarning(Warning.smallIgnored, 
                         "small annotation on actual member " 
                         + message(refiningDeclaration) 
