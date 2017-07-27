@@ -4863,12 +4863,20 @@ public class ExpressionVisitor extends Visitor {
                             getTypeUnknownError(pt));
                 }
                 if (arg instanceof Tree.SpreadArgument) {
+                    if (pr.getDeclaration().isCoercionPoint()
+                            && param.getType().isCallable()) {
+                        arg.addUnsupportedError("lambda conversions with spread arguments not supported");
+                    }
                     checkSpreadArgument(pr, param, arg, 
                             (Tree.SpreadArgument) arg, 
                             params.subList(i, paramsSize));
                     break;
                 }
                 else if (arg instanceof Tree.Comprehension) {
+                    if (pr.getDeclaration().isCoercionPoint()
+                            && param.getType().isCallable()) {
+                        arg.addUnsupportedError("lambda conversions with conprehensions not supported");
+                    }
                     if (param.isSequenced()) {
                         checkComprehensionPositionalArgument(
                                 param, pr, 
