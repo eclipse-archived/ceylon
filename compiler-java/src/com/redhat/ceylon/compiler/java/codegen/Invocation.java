@@ -1257,6 +1257,11 @@ class CallableInvocation extends DirectInvocation {
         if(!isCallableToFunctionalInterfaceBridge)
             super.addReifiedArguments(result);
     }
+    
+    @Override
+    public boolean isIndirect() {
+        return true;
+    }
 }
 
 /**

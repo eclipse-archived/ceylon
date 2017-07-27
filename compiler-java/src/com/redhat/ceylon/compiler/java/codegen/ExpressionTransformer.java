@@ -3791,9 +3791,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
             if (invocation.isIndirect()
+                    && invocation.getNumParameters() > numArguments
                     && invocation.isParameterSequenced(numArguments)
                     && !invocation.isArgumentSpread(numArguments-1)
-                    && ((IndirectInvocation)invocation).getNumParameters() > numArguments) {
+                    ) {
                 // Calling convention for indirect variadic invocation's requires
                 // explicit variadic argument (can't use the overloading trick)
                 result = result.append(new ExpressionAndType(makeEmptyAsSequential(true), make().Erroneous()));
