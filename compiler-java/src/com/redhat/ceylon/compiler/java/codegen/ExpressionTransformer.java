@@ -2187,9 +2187,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         }
         if(op.getTerm() instanceof Tree.QualifiedMemberExpression){
-            JCExpression ret = checkForByteLiterals((Tree.QualifiedMemberExpression)op.getTerm());
+            JCExpression ret = checkForByteLiterals((Tree.QualifiedMemberExpression)op.getTerm(), true);
             if(ret != null)
-                return at(op).Unary(JCTree.Tag.NEG, ret);
+                return ret;
         }
         return transformOverridableUnaryOperator(op, op.getUnit().getInvertableDeclaration());
     }
@@ -7621,7 +7621,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         ret = checkForCharacterAsInteger(expr);
         if(ret != null)
             return ret;
-        ret = checkForByteLiterals(expr);
+        ret = checkForByteLiterals(expr, false);
         if(ret != null)
             return ret;
         return null;
@@ -7660,7 +7660,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return null;
     }
 
-    private JCExpression checkForByteLiterals(Tree.QualifiedMemberExpression expr) {
+    private JCExpression checkForByteLiterals(Tree.QualifiedMemberExpression expr, boolean negative) {
         // must be a call on Integer
         Tree.Term left = expr.getPrimary();
         if(left == null || !isCeylonInteger(left.getTypeModel()))
@@ -7682,6 +7682,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         at(expr);
         try{
             long value = literalValue((Tree.NaturalLiteral) left).longValue();
+            if(negative)
+                value = -value;
             // in the case of -128 to 127 we don't need to cast to byte by using an int literal, but only for
             // assignment, not for method calls, so it's simpler to always cast
             return make().TypeCast(syms().byteType, make().Literal(value));
