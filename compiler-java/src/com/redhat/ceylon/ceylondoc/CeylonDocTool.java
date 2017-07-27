@@ -892,16 +892,20 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 markup.around("script src='" + getResourceUrl(pkg, "ceylondoc.js") + "' type='text/javascript'"); 
                 markup.close("head");
                 markup.open("body", "pre data-language='ceylon' style='font-family: Inconsolata, Monaco, Courier, monospace'");
-                // XXX source char encoding
-                BufferedReader input = new BufferedReader(new InputStreamReader(pu.getUnitFile().getInputStream()));
-                try{
+
+                String encoding = getEncoding();
+                if (encoding == null) {
+                    encoding = CeylonConfig.get(DefaultToolOptions.DEFAULTS_ENCODING);
+                }
+                InputStreamReader isr = encoding != null ?
+                    new InputStreamReader(pu.getUnitFile().getInputStream(), encoding) :
+                    new InputStreamReader(pu.getUnitFile().getInputStream());
+                try (BufferedReader input = new BufferedReader(isr)) {
                     String line = input.readLine();
                     while (line != null) {
                         markup.text(line, "\n");
                         line = input.readLine();
                     }
-                } finally {
-                    input.close();
                 }
                 markup.close("pre", "body", "html");
             } finally {
