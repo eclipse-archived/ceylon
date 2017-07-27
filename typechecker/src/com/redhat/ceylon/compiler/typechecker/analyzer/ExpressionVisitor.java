@@ -5241,7 +5241,7 @@ public class ExpressionVisitor extends Visitor {
         return p.isSequenced()
             && type!=null
             && (type.isSequence() || type.isSequential())
-            && unit.getSequentialElementType(type)
+            && unit.getDefiniteType(unit.getSequentialElementType(type))
                    .isCallable();
     }
     

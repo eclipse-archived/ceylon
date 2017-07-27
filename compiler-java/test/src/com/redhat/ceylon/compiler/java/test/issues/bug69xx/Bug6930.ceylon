@@ -10,7 +10,7 @@ void bug6930() {
     Bug6930MweJava("test", 
         (ActionEvent event) => process.writeLine("listener called"),
         (ActionEvent event) => process.writeLine("listener called"));
-    //@error
-    //Bug6930MweJava("test", *listeners);
     Bug6930MweJava("test", listener);
+    @error
+    Bug6930MweJava("test", *listeners);
 }
