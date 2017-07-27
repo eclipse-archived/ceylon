@@ -1200,10 +1200,14 @@ public class CallableBuilder {
                     boolean unboxedString = gen.isJavaStringExactly(simpleParamType);
                     if(unboxedString)
                         simpleParamType = gen.typeFact().getStringType();
+                    BoxingStrategy boxingStrategy = BoxingStrategy.BOXED;
+                    // in rare cases we don't want boxes
+                    if(unboxedString && gen.isJavaStringExactly(argumentType))
+                        boxingStrategy = BoxingStrategy.UNBOXED;
                     arg = gen.expressionGen().applyErasureAndBoxing(arg, simpleParamType, 
                             !(CodegenUtil.isUnBoxed(param.getModel())
                                     || unboxedString), 
-                            unboxedString ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED,
+                            boxingStrategy,
                             argumentType);
                 }
                 args.append(arg);
