@@ -37,6 +37,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
+import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** A convenience class to help with the handling of certain type declarations. */
@@ -115,14 +116,15 @@ public class TypeUtils {
                 t = (TypeDeclaration)t.getContainer();
             }
             gen.out(qualifiedTypeContainer(node, imported, t, gen));
-            boolean isAnonCallable = t.isAnonymous() && t.getExtendedType() != null &&
-                    t.getExtendedType().getDeclaration() != null &&
-                    t.getExtendedType().getDeclaration().equals(t.getUnit().getCallableDeclaration());
-            boolean _init = (!imported && pt.getDeclaration().isDynamic()) || t.isAnonymous();
+            boolean isAnonCallable = t.isAnonymous() 
+                    && t.getExtendedType() != null 
+                    && t.getExtendedType().isCallable();
+            boolean _init = !imported && pt.getDeclaration().isDynamic() || t.isAnonymous();
             if (_init && !pt.getDeclaration().isToplevel()) {
                 Declaration dynintc = ModelUtil.getContainingClassOrInterface(node.getScope());
-                if (dynintc == null || dynintc instanceof Scope==false ||
-                        !ModelUtil.contains((Scope)dynintc, pt.getDeclaration())) {
+                if (dynintc == null 
+                        || !(dynintc instanceof Scope) 
+                        || !ModelUtil.contains((Scope)dynintc, pt.getDeclaration())) {
                     _init=false;
                 }
             }
@@ -160,7 +162,7 @@ public class TypeUtils {
             ClassOrInterface parent = (ClassOrInterface)t.getContainer();
             final List<ClassOrInterface> parents = new ArrayList<>(3);
             parents.add(0, parent);
-            while (parent != scope && parent.getContainer() instanceof ClassOrInterface) {
+            while (parent != scope && parent.isClassOrInterfaceMember()) {
                 parent = (ClassOrInterface)parent.getContainer();
                 parents.add(0, parent);
             }
@@ -174,8 +176,9 @@ public class TypeUtils {
                     if (!first) {
                         if (p.isStatic()) {
                             sb.append("$st$.");
-                        } else if (p.getContainer() != scope &&
-                                p.getContainer() instanceof ClassOrInterface && gen.opts.isOptimize()) {
+                        } else if (p.getContainer() != scope 
+                                && p.isClassOrInterfaceMember() 
+                                && gen.opts.isOptimize()) {
                             sb.append("$$.prototype.");
                         }
                     }
@@ -185,8 +188,9 @@ public class TypeUtils {
             }
             if (t.isStatic()) {
                 sb.append("$st$.");
-            } else if (t.getContainer() != scope && t.getContainer() instanceof ClassOrInterface &&
-                    gen.opts.isOptimize()) {
+            } else if (t.getContainer() != scope 
+                    && t.isClassOrInterfaceMember() 
+                    && gen.opts.isOptimize()) {
                 sb.append("$$.prototype.");
             }
         }
@@ -470,7 +474,7 @@ public class TypeUtils {
     }
 
     public static boolean isUnknown(Declaration d) {
-        return d == null || d.getQualifiedNameString().equals("UnknownType");
+        return d == null || d instanceof UnknownType;
     }
 
     public static void spreadArrayCheck(final Tree.Term term, final GenerateJsVisitor gen) {

@@ -7,11 +7,18 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 
-import com.redhat.ceylon.model.typechecker.model.*;
-import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.Package;
 import org.antlr.runtime.CommonToken;
 
 import com.redhat.ceylon.cmr.impl.NpmRepository;
@@ -32,26 +39,46 @@ import com.redhat.ceylon.compiler.typechecker.tree.CustomTree.GuardedVariable;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeGetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ExtendedType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.InterfaceDefinition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDefinition;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ParameterDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassAlias;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Import;
+import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.IntersectionType;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.Referenceable;
+import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.Specification;
+import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class GenerateJsVisitor extends Visitor {
 
@@ -292,56 +319,60 @@ public class GenerateJsVisitor extends Visitor {
                 }
             }, this);
             endLine(true);
-            if (md.getImportModuleList() != null && !md.getImportModuleList().getImportModules().isEmpty()) {
-                out("ex$.$mod$imps=function(){return{");
-                if (!opts.isMinify())endLine();
-                boolean first=true;
-                for (final Tree.ImportModule im : md.getImportModuleList().getImportModules()) {
-                    final StringBuilder path=new StringBuilder("'");
-                    if (im.getName()!=null) {
-                        path.append(im.getName());
-                    }
-                    else {
-                        throw new CompilerErrorException("Invalid imported module");
-                    }
-                    final String qv = im.getVersion().getText();
-                    path.append('/').append(qv.substring(1, qv.length()-1)).append("'");
-                    if (first)first=false;else{out(",");endLine();}
-                    out(path.toString(), ":");
-                    TypeUtils.outputAnnotationsFunction(im.getAnnotationList(), 
-                            new TypeUtils.AnnotationFunctionHelper(){
-                        @Override
-                        public String getPathToModelDoc() {
-                            return null;
+            if (md.getImportModuleList() != null) {
+                List<Tree.ImportModule> importModules = md.getImportModuleList().getImportModules();
+                if (!importModules.isEmpty()) {
+                    out("ex$.$mod$imps=function(){return{");
+                    if (!opts.isMinify())endLine();
+                    boolean first=true;
+                    for (final Tree.ImportModule im : importModules) {
+                        final StringBuilder path=new StringBuilder("'");
+                        if (im.getName()!=null) {
+                            path.append(im.getName());
                         }
-                        @Override
-                        public String getPackedAnnotationsKey() {
-                            return null;
+                        else {
+                            throw new CompilerErrorException("Invalid imported module");
                         }
-                        @Override
-                        public String getAnnotationsKey() {
-                            return null;
-                        }
-                        @Override
-                        public List<Annotation> getAnnotations() {
-                            if (im.getImportPath().getModel() instanceof Module) {
-                                return ((Module)im.getImportPath().getModel()).getAnnotations();
+                        final String qv = im.getVersion().getText();
+                        path.append('/').append(qv.substring(1, qv.length()-1)).append("'");
+                        if (first)first=false;else{out(",");endLine();}
+                        out(path.toString(), ":");
+                        TypeUtils.outputAnnotationsFunction(im.getAnnotationList(), 
+                                new TypeUtils.AnnotationFunctionHelper(){
+                            @Override
+                            public String getPathToModelDoc() {
+                                return null;
                             }
-                            return null;
-                        }
-                        @Override
-                        public Object getAnnotationSource() {
-                            return im;
-                        }
-                        @Override
-                        public String getAnPath() {
-                            return null;
-                        }
-                    }, this);
+                            @Override
+                            public String getPackedAnnotationsKey() {
+                                return null;
+                            }
+                            @Override
+                            public String getAnnotationsKey() {
+                                return null;
+                            }
+                            @Override
+                            public List<Annotation> getAnnotations() {
+                                Referenceable model = im.getImportPath().getModel();
+                                if (model instanceof Module) {
+                                    return ((Module)model).getAnnotations();
+                                }
+                                return null;
+                            }
+                            @Override
+                            public Object getAnnotationSource() {
+                                return im;
+                            }
+                            @Override
+                            public String getAnPath() {
+                                return null;
+                            }
+                        }, this);
+                    }
+                    if (!opts.isMinify())endLine();
+                    out("};};");
+                    if (!opts.isMinify())endLine();
                 }
-                if (!opts.isMinify())endLine();
-                out("};};");
-                if (!opts.isMinify())endLine();
             }
         }
         if (!that.getPackageDescriptors().isEmpty()) {
@@ -411,9 +442,10 @@ public class GenerateJsVisitor extends Visitor {
         String ptypes = null;
         //Check if this is the first parameter list
         if (that.getScope() instanceof Function && that.getModel().isFirst()) {
-            if (((Function)that.getScope()).getTypeParameters() != null &&
-                    !((Function)that.getScope()).getTypeParameters().isEmpty()) {
-                ptypes = names.typeArgsParamName((Function)that.getScope());
+            Function fun = (Function)that.getScope();
+            List<TypeParameter> typeParameters = fun.getTypeParameters();
+            if (typeParameters != null && !typeParameters.isEmpty()) {
+                ptypes = names.typeArgsParamName(fun);
             }
         }
         for (Tree.Parameter param: that.getParameters()) {
@@ -441,10 +473,11 @@ public class GenerateJsVisitor extends Visitor {
         }
         for (Tree.Statement s2 : stmts) {
             if (s2 instanceof Tree.SpecifierStatement) {
+                Tree.SpecifierStatement ss = (Tree.SpecifierStatement)s2;
                 if (cnstr instanceof Tree.Constructor) {
-                    specifierStatement(((Tree.Constructor)cnstr).getConstructor(), (Tree.SpecifierStatement)s2);
+                    specifierStatement(((Tree.Constructor)cnstr).getConstructor(), ss);
                 } else if (cnstr instanceof Tree.Enumerated) {
-                    specifierStatement(((Tree.Enumerated)cnstr).getEnumerated(), (Tree.SpecifierStatement)s2);
+                    specifierStatement(((Tree.Enumerated)cnstr).getEnumerated(), ss);
                 }
             } else {
                 s2.visit(this);
@@ -533,6 +566,7 @@ public class GenerateJsVisitor extends Visitor {
         }
         return found;
     }
+    
     private Import findImport(Declaration d, Tree.ImportMemberOrType imot) {
         Import found = null;
         Import imp = imot.getImportModel();
@@ -593,9 +627,10 @@ public class GenerateJsVisitor extends Visitor {
                 if (scope instanceof Specification) {
                     scope = ModelUtil.getRealScope(scope.getContainer());
                 }
-                final boolean isMember = scope instanceof ClassOrInterface ||
-                        (scope instanceof Declaration && (((Declaration)scope).isClassOrInterfaceMember()
-                                || ((Declaration)scope).isParameter()));
+                final boolean isMember = scope instanceof ClassOrInterface 
+                        || scope instanceof Declaration 
+                            && (((Declaration)scope).isClassOrInterfaceMember() 
+                                    || ((Declaration)scope).isParameter());
                 if (isMember) {
                     n.visit(this);
                 }
@@ -613,7 +648,8 @@ public class GenerateJsVisitor extends Visitor {
         private boolean check(final Scope origScope) {
             Scope s = origScope;
             while (s != null) {
-                if (s == prototypeOwner || (s instanceof TypeDeclaration && prototypeOwner.inherits((TypeDeclaration)s))) {
+                if (s == prototypeOwner 
+                        || s instanceof TypeDeclaration && prototypeOwner.inherits((TypeDeclaration)s)) {
                     refs = true;
                     if (prototypeOwner.isAnonymous() && prototypeOwner.isMember()) {
                         outerRefs=true;
@@ -680,9 +716,10 @@ public class GenerateJsVisitor extends Visitor {
             dname = dname.substring(0, dname.length()-7);
         }
         if (that instanceof Tree.Constructor) {
-            String cname = ((Class)((Tree.Constructor)that).getDeclarationModel().getContainer()).getName();
+            Function dec = ((Tree.Constructor)that).getDeclarationModel();
+            String cname = ((Class)dec.getContainer()).getName();
             out("//Constructor ", cname, ".",
-                    that.getDeclarationModel().getName() == null ? "<default>" : that.getDeclarationModel().getName());
+                    dec.getName() == null ? "<default>" : dec.getName());
         } else {
             out("//", dname, " ", that.getDeclarationModel().getName());
         }
@@ -889,9 +926,10 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             out(aliasedName, "(");
         }
-        if (ext.getInvocationExpression().getPositionalArgumentList() != null) {
-            ext.getInvocationExpression().getPositionalArgumentList().visit(this);
-            if (!ext.getInvocationExpression().getPositionalArgumentList().getPositionalArguments().isEmpty()) {
+        Tree.PositionalArgumentList posArgs = ext.getInvocationExpression().getPositionalArgumentList();
+        if (posArgs != null) {
+            posArgs.visit(this);
+            if (!posArgs.getPositionalArguments().isEmpty()) {
                 out(",");
             }
         } else {
@@ -913,7 +951,7 @@ public class GenerateJsVisitor extends Visitor {
         TypeUtils.encodeForRuntime(that, d, this);
         endLine(true);
         share(d);
-        if ((aliased instanceof Class && ((Class)aliased).hasConstructors()) || (aliased instanceof Constructor)) {
+        if (aliased instanceof Class && ((Class)aliased).hasConstructors() || aliased instanceof Constructor) {
             Class ac = aliased instanceof Constructor ? (Class)((Constructor)aliased).getContainer() :
                 (Class)aliased;
             for (Declaration cm : ac.getMembers()) {
@@ -921,9 +959,10 @@ public class GenerateJsVisitor extends Visitor {
                     Constructor cons = (Constructor)cm;
                     final String constructorName = aname + names.constructorSeparator(cons) + names.name(cons);
                     out("function ", constructorName, "(");
-                    ArrayList<String> pnames = new ArrayList<>(cons.getFirstParameterList().getParameters().size()+1);
+                    List<Parameter> parameters = cons.getFirstParameterList().getParameters();
+                    ArrayList<String> pnames = new ArrayList<>(parameters.size()+1);
                     boolean first=true;
-                    for (int i=0;i<cons.getFirstParameterList().getParameters().size();i++) {
+                    for (int i=0;i<parameters.size();i++) {
                         final String pname = names.createTempVariable();
                         pnames.add(pname);
                         if (first) {
@@ -1003,14 +1042,14 @@ public class GenerateJsVisitor extends Visitor {
         ArrayList<Parameter> plist = null;
         final boolean isAbstractNative = TypeUtils.makeAbstractNative(d);
         final String typename = names.name(d);
-        final boolean overrideToString =  d.getDirectMember("toString", null, true) == null;
+        final boolean overrideToString = d.getDirectMember("toString", null, true) == null;
         if (enter) {
             enter = !statements.isEmpty() | overrideToString;
             if (d instanceof Class) {
-                ParameterList _pl = ((Class)d).getParameterList();
-                if (_pl != null) {
-                    plist = new ArrayList<>(_pl.getParameters().size());
-                    plist.addAll(_pl.getParameters());
+                ParameterList cpl = ((Class)d).getParameterList();
+                if (cpl != null) {
+                    plist = new ArrayList<>(cpl.getParameters().size());
+                    plist.addAll(cpl.getParameters());
                     enter |= !plist.isEmpty();
                 }
             }
@@ -1041,8 +1080,9 @@ public class GenerateJsVisitor extends Visitor {
                             out(names.name(d), ".$st$={};");
                         }
                     }
-                    if (s instanceof Tree.ClassOrInterface == false && !(s instanceof Tree.AttributeDeclaration &&
-                            ((Tree.AttributeDeclaration)s).getDeclarationModel().isParameter())) {
+                    if (!(s instanceof Tree.ClassOrInterface) 
+                            && !(s instanceof Tree.AttributeDeclaration 
+                                && ((Tree.AttributeDeclaration)s).getDeclarationModel().isParameter())) {
                         addToPrototype(d, s, plist, initDeferrer);
                     }
                 }
@@ -1052,10 +1092,11 @@ public class GenerateJsVisitor extends Visitor {
                     } else if (s instanceof Tree.Enumerated) {
                         //Add a simple attribute which really returns the singleton from the class
                         final Tree.Enumerated vc = (Tree.Enumerated)s;
-                        defineAttribute(names.self(d), names.name(vc.getDeclarationModel()));
-                        out("{return ", typename, names.constructorSeparator(vc.getDeclarationModel()),
-                                names.name(vc.getDeclarationModel()), "();},undefined,");
-                        TypeUtils.encodeForRuntime(vc, vc.getDeclarationModel(), vc.getAnnotationList(), this);
+                        Value vcd = vc.getDeclarationModel();
+                        defineAttribute(names.self(d), names.name(vcd));
+                        out("{return ", typename, names.constructorSeparator(vcd),
+                                names.name(vcd), "();},undefined,");
+                        TypeUtils.encodeForRuntime(vc, vcd, vc.getAnnotationList(), this);
                         out(");");
                     }
                 }
@@ -1085,8 +1126,8 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     void generateAttributeForParameter(Node node, Class d, Parameter p) {
-        if (p.getDeclaration() instanceof Function &&
-                ((Function)p.getDeclaration()).getTypeDeclaration() instanceof Constructor) {
+        if (p.getDeclaration() instanceof Function 
+                && ModelUtil.isConstructor(p.getDeclaration())) {
             return;
         }
         final FunctionOrValue pdec = p.getModel();
@@ -1118,28 +1159,28 @@ public class GenerateJsVisitor extends Visitor {
     private void addToPrototype(ClassOrInterface d, final Tree.Statement s, List<Parameter> params, InitDeferrer initDeferrer) {
         ClassOrInterface oldPrototypeOwner = prototypeOwner;
         prototypeOwner = d;
-        if (s instanceof MethodDefinition) {
-            addMethodToPrototype(d, (MethodDefinition)s);
-        } else if (s instanceof MethodDeclaration) {
+        if (s instanceof Tree.MethodDefinition) {
+            addMethodToPrototype(d, (Tree.MethodDefinition)s);
+        } else if (s instanceof Tree.MethodDeclaration) {
             //Don't even bother with nodes that have errors
             if (errVisitor.hasErrors(s))return;
-            FunctionHelper.methodDeclaration(d, (MethodDeclaration) s, this, verboseStitcher);
-        } else if (s instanceof AttributeGetterDefinition) {
-            addGetterToPrototype(d, (AttributeGetterDefinition)s);
-        } else if (s instanceof AttributeDeclaration) {
-            AttributeGenerator.addGetterAndSetterToPrototype(d, (AttributeDeclaration) s, this, verboseStitcher);
-        } else if (s instanceof ClassDefinition) {
-            addClassToPrototype(d, (ClassDefinition) s, initDeferrer);
-        } else if (s instanceof InterfaceDefinition) {
-            addInterfaceToPrototype(d, (InterfaceDefinition) s, initDeferrer);
+            FunctionHelper.methodDeclaration(d, (Tree.MethodDeclaration) s, this, verboseStitcher);
+        } else if (s instanceof Tree.AttributeGetterDefinition) {
+            addGetterToPrototype(d, (Tree.AttributeGetterDefinition)s);
+        } else if (s instanceof Tree.AttributeDeclaration) {
+            AttributeGenerator.addGetterAndSetterToPrototype(d, (Tree.AttributeDeclaration) s, this, verboseStitcher);
+        } else if (s instanceof Tree.ClassDefinition) {
+            addClassToPrototype(d, (Tree.ClassDefinition) s, initDeferrer);
+        } else if (s instanceof Tree.InterfaceDefinition) {
+            addInterfaceToPrototype(d, (Tree.InterfaceDefinition) s, initDeferrer);
         } else if (s instanceof Tree.ObjectDefinition) {
             addObjectToPrototype(d, (Tree.ObjectDefinition) s, initDeferrer);
         } else if (s instanceof Tree.ClassDeclaration) {
             addClassDeclarationToPrototype(d, (Tree.ClassDeclaration) s);
-        } else if (s instanceof InterfaceDeclaration) {
-            addInterfaceDeclarationToPrototype(d, (InterfaceDeclaration) s);
-        } else if (s instanceof SpecifierStatement) {
-            addSpecifierToPrototype(d, (SpecifierStatement) s);
+        } else if (s instanceof Tree.InterfaceDeclaration) {
+            addInterfaceDeclarationToPrototype(d, (Tree.InterfaceDeclaration) s);
+        } else if (s instanceof Tree.SpecifierStatement) {
+            addSpecifierToPrototype(d, (Tree.SpecifierStatement) s);
         } else if (s instanceof Tree.TypeAliasDeclaration) {
             addAliasDeclarationToPrototype(d, (Tree.TypeAliasDeclaration)s);
         }
@@ -1221,7 +1262,8 @@ public class GenerateJsVisitor extends Visitor {
             return;
         }
         // To accept this object it is either not native or native for this backend
-        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) || NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript))) {
+        if (!(NativeUtil.isForBackend(that, Backend.JavaScript) 
+                || NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript))) {
             return;
         }
         Value d = that.getDeclarationModel();
@@ -1289,7 +1331,8 @@ public class GenerateJsVisitor extends Visitor {
             return true;
         } else {
             if (!(d instanceof ClassOrInterface || n instanceof Tree.MethodDefinition
-                    || (n instanceof Tree.MethodDeclaration && ((Tree.MethodDeclaration)n).getSpecifierExpression() != null)
+                    || (n instanceof Tree.MethodDeclaration 
+                            && ((Tree.MethodDeclaration)n).getSpecifierExpression() != null)
                     || n instanceof Tree.AttributeGetterDefinition
                     || (n instanceof Tree.AttributeDeclaration
                             && ((Tree.AttributeDeclaration)n).getSpecifierOrInitializerExpression() != null))) {
@@ -1345,7 +1388,7 @@ public class GenerateJsVisitor extends Visitor {
         if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
         final Function d = that.getDeclarationModel();
         if (!((opts.isOptimize() && d.isClassOrInterfaceMember()) ||
-                (TypeUtils.isNativeExternal(d) && compiler.isCompilingLanguageModule()))) {
+                TypeUtils.isNativeExternal(d) && compiler.isCompilingLanguageModule())) {
             comment(that);
             initDefaultedParameters(that.getParameterLists().get(0), that);
             FunctionHelper.methodDefinition(that, this, true, verboseStitcher);
@@ -1359,14 +1402,14 @@ public class GenerateJsVisitor extends Visitor {
     /** Get the specifier expression for a Parameter, if one is available. */
     SpecifierOrInitializerExpression getDefaultExpression(final Tree.Parameter param) {
         final SpecifierOrInitializerExpression expr;
-        if (param instanceof ParameterDeclaration || param instanceof Tree.InitializerParameter) {
-            MethodDeclaration md = null;
-            if (param instanceof ParameterDeclaration) {
-                Tree.TypedDeclaration td = ((ParameterDeclaration) param).getTypedDeclaration();
+        if (param instanceof Tree.ParameterDeclaration || param instanceof Tree.InitializerParameter) {
+            Tree.MethodDeclaration md = null;
+            if (param instanceof Tree.ParameterDeclaration) {
+                Tree.TypedDeclaration td = ((Tree.ParameterDeclaration) param).getTypedDeclaration();
                 if (td instanceof AttributeDeclaration) {
-                    expr = ((AttributeDeclaration) td).getSpecifierOrInitializerExpression();
-                } else if (td instanceof MethodDeclaration) {
-                    md = (MethodDeclaration)td;
+                    expr = ((Tree.AttributeDeclaration) td).getSpecifierOrInitializerExpression();
+                } else if (td instanceof Tree.MethodDeclaration) {
+                    md = (Tree.MethodDeclaration)td;
                     expr = md.getSpecifierExpression();
                 } else {
                     param.addUnexpectedError("Don't know what to do with TypedDeclaration " + td.getClass().getName(), Backend.JavaScript);
@@ -1405,12 +1448,16 @@ public class GenerateJsVisitor extends Visitor {
                 out("{");
                 initSelf(expr);
                 out("return ");
-                if (param instanceof ParameterDeclaration &&
-                        ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
-                    // function parameter defaulted using "=>"
-                    FunctionHelper.singleExprFunction(
-                            ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
-                            expr.getExpression(), null, true, true, this);
+                if (param instanceof Tree.ParameterDeclaration) {
+                    Tree.TypedDeclaration node = ((Tree.ParameterDeclaration)param).getTypedDeclaration();
+                    if (node instanceof Tree.MethodDeclaration) {
+                        // function parameter defaulted using "=>"
+                        FunctionHelper.singleExprFunction(
+                                ((Tree.MethodDeclaration)node).getParameterLists(),
+                                expr.getExpression(), null, true, true, this);
+                    } else if (!isNaturalLiteral(expr.getExpression().getTerm())) {
+                        expr.visit(this);
+                    }
                 } else if (!isNaturalLiteral(expr.getExpression().getTerm())) {
                     expr.visit(this);
                 }
@@ -1480,8 +1527,8 @@ public class GenerateJsVisitor extends Visitor {
                 out(";}");
                 endLine();
             }
-            if ((typeDecl != null && typeDecl instanceof ClassAlias==false) && (pd.getModel().isJsCaptured() ||
-                    pd.getDeclaration() instanceof Class)) {
+            if (typeDecl != null && !(typeDecl instanceof ClassAlias)
+                    && (pd.getModel().isJsCaptured() || pd.getDeclaration() instanceof Class)) {
                 out(names.self(typeDecl), ".", names.valueName(pd.getModel()), "=", paramName);
                 if (!opts.isOptimize() && pd.isHidden()) { //belt and suspenders...
                     out(";", names.self(typeDecl), ".", paramName, "=", paramName);
@@ -1494,12 +1541,16 @@ public class GenerateJsVisitor extends Visitor {
 
     void generateParameterExpression(Tree.Parameter param, SpecifierOrInitializerExpression expr,
             Scope m) {
-        if (param instanceof ParameterDeclaration &&
-                ((ParameterDeclaration)param).getTypedDeclaration() instanceof MethodDeclaration) {
-            // function parameter defaulted using "=>"
-            FunctionHelper.singleExprFunction(
-                    ((MethodDeclaration)((ParameterDeclaration)param).getTypedDeclaration()).getParameterLists(),
-                    expr.getExpression(), m, false, true, this);
+        if (param instanceof Tree.ParameterDeclaration) {
+            Tree.TypedDeclaration node = ((Tree.ParameterDeclaration)param).getTypedDeclaration();
+            if (node instanceof Tree.MethodDeclaration) {
+                // function parameter defaulted using "=>"
+                FunctionHelper.singleExprFunction(
+                        ((Tree.MethodDeclaration)node).getParameterLists(),
+                        expr.getExpression(), m, false, true, this);
+            } else {
+                expr.visit(this);
+            }
         } else {
             expr.visit(this);
         }
@@ -1510,7 +1561,7 @@ public class GenerateJsVisitor extends Visitor {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         Function d = that.getDeclarationModel();
-        if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
+        if (!opts.isOptimize() || !d.isClassOrInterfaceMember()) return;
         comment(that);
         initDefaultedParameters(that.getParameterLists().get(0), that);
         if (d.isStatic()) {
@@ -1533,7 +1584,7 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(final Tree.AttributeGetterDefinition that) {
         if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
         Value d = that.getDeclarationModel();
-        if (opts.isOptimize()&&d.isClassOrInterfaceMember()) return;
+        if (opts.isOptimize() && d.isClassOrInterfaceMember()) return;
         comment(that);
         if (AttributeGenerator.defineAsProperty(d)) {
             defineAttribute(names.self((TypeDeclaration)d.getContainer()), names.name(d));
@@ -1580,7 +1631,7 @@ public class GenerateJsVisitor extends Visitor {
     private void addGetterToPrototype(TypeDeclaration outer,
             final Tree.AttributeGetterDefinition that) {
         Value d = that.getDeclarationModel();
-        if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
+        if (!opts.isOptimize() || !d.isClassOrInterfaceMember()) return;
         comment(that);
         defineAttribute(d.isStatic() ? names.name(outer)+".$st$" : names.self(outer),
                 names.name(d));
@@ -1617,7 +1668,7 @@ public class GenerateJsVisitor extends Visitor {
     Tree.AttributeSetterDefinition associatedSetterDefinition(
             final Value valueDecl) {
         final Setter setter = valueDecl.getSetter();
-        if ((setter != null) && (currentStatements != null)) {
+        if (setter != null && currentStatements != null) {
             for (Statement stmt : currentStatements) {
                 if (stmt instanceof AttributeSetterDefinition) {
                     final AttributeSetterDefinition setterDef =
@@ -1648,7 +1699,7 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(final Tree.AttributeSetterDefinition that) {
         if (errVisitor.hasErrors(that) || !TypeUtils.acceptNative(that))return;
         Setter d = that.getDeclarationModel();
-        if ((opts.isOptimize()&&d.isClassOrInterfaceMember()) ||
+        if (opts.isOptimize() && d.isClassOrInterfaceMember() ||
                 AttributeGenerator.defineAsProperty(d)) return;
         comment(that);
         out("function ", names.setter(d.getGetter()), "(", names.name(d.getParameter()), ")");
@@ -1712,7 +1763,7 @@ public class GenerateJsVisitor extends Visitor {
         } else if (!d.isStatic()) {
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
-            final boolean addGetter = (specInitExpr != null) || (param != null) || !d.isMember()
+            final boolean addGetter = specInitExpr != null || param != null || !d.isMember()
                     || d.isVariable() || d.isLate();
             boolean setterGend=false;
             if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
@@ -1953,7 +2004,7 @@ public class GenerateJsVisitor extends Visitor {
         boolean outer = false;
         if (opts.isOptimize()) {
             Scope scope = that.getScope();
-            while ((scope != null) && !(scope instanceof TypeDeclaration)) {
+            while (scope != null && !(scope instanceof TypeDeclaration)) {
                 scope = scope.getContainer();
             }
             if (scope != null && ((TypeDeclaration)scope).isClassOrInterfaceMember()) {
@@ -1976,13 +2027,16 @@ public class GenerateJsVisitor extends Visitor {
     /** Tells whether a declaration can be accessed directly (using its name) or
      * through its getter. */
     boolean accessDirectly(Declaration d) {
-        return directAccess.contains(d) || !accessThroughGetter(d) || d.isParameter();
+        return directAccess.contains(d) 
+            || !accessThroughGetter(d) 
+            || d.isParameter();
     }
 
     private boolean accessThroughGetter(Declaration d) {
-        return (d instanceof FunctionOrValue) && !(d instanceof Function)
-                && !AttributeGenerator.defineAsProperty(d)
-                && !d.isDynamic();
+        return d instanceof FunctionOrValue 
+            && !(d instanceof Function)
+            && !AttributeGenerator.defineAsProperty(d)
+            && !d.isDynamic();
     }
     
     void supervisit(final Tree.QualifiedMemberOrTypeExpression that) {
@@ -2005,7 +2059,7 @@ public class GenerateJsVisitor extends Visitor {
             //looks like checking for signature is a good way (not THE way though; named arg calls don't have signature)
             FunctionHelper.generateCallable(that, null, this);
         } else if (that.getStaticMethodReference() && d!=null) {
-            if (d instanceof Value && ((Value)d).getTypeDeclaration() instanceof Constructor) {
+            if (d instanceof Value && ModelUtil.isConstructor(d)) {
                 Constructor cnst = (Constructor)((Value)d).getTypeDeclaration();
                 if (cnst.getTypescriptEnum() != null && cnst.getTypescriptEnum().matches("[0-9.-]+")) {
                     out(cnst.getTypescriptEnum());
@@ -2141,7 +2195,7 @@ public class GenerateJsVisitor extends Visitor {
         }
         boolean metaGetter = false;
         Scope scope = getSuperMemberScope(node);
-        if (opts.isOptimize() && (scope != null) && !isConstructor) {
+        if (opts.isOptimize() && scope != null && !isConstructor) {
             sb.append("getT$all()['")
                 .append(scope.getQualifiedNameString())
                 .append("']");
@@ -2152,7 +2206,7 @@ public class GenerateJsVisitor extends Visitor {
             sb.append(".$$.prototype.");
             metaGetter = true;
         }
-        final String member = (accessThroughGetter(decl) && !accessDirectly(decl))
+        final String member = accessThroughGetter(decl) && !accessDirectly(decl)
                 ? (setter ? names.setter(decl) : names.getter(decl, metaGetter)) : names.name(decl);
         if (!isConstructor && ModelUtil.isConstructor(decl)) {
             sb.append(names.name((Declaration)decl.getContainer())).append(names.constructorSeparator(decl));
@@ -2208,13 +2262,14 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     public void visit(final Tree.Dynamic that) {
-        if (that.getNamedArgumentList() == null) {
+        Tree.NamedArgumentList argList = that.getNamedArgumentList();
+        if (argList == null) {
             out("[]");
-        } else if (that.getNamedArgumentList().getSequencedArgument()==null &&
-                that.getNamedArgumentList().getNamedArguments().isEmpty()) {
+        } else if (argList.getSequencedArgument()==null &&
+                argList.getNamedArguments().isEmpty()) {
             out("{}");
         } else {
-            invoker.nativeObject(that.getNamedArgumentList());
+            invoker.nativeObject(argList);
         }
     }
 
@@ -2347,8 +2402,9 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(final Tree.SpecifierStatement that) {
         // A lazy specifier expression in a class/interface should go into the
         // prototype in prototype style, so don't generate them here.
-        if (!(opts.isOptimize() && (that.getSpecifierExpression() instanceof LazySpecifierExpression)
-                && (that.getScope().getContainer() instanceof TypeDeclaration))) {
+        if (!(opts.isOptimize() 
+                && that.getSpecifierExpression() instanceof LazySpecifierExpression
+                && that.getScope().getContainer() instanceof TypeDeclaration)) {
             specifierStatement(null, that);
         }
     }
@@ -2398,12 +2454,14 @@ public class GenerateJsVisitor extends Visitor {
                 out(smte.getIdentifier().getText());
             } else {
                 term.visit(this);
-                if (term instanceof BaseMemberExpression &&
-                        ((BaseMemberExpression)term).getDeclaration() instanceof Value) {
-                    Value v = (Value)((BaseMemberExpression)term).getDeclaration();
-                    if (v.isMember()) {
-                        //Assignment to dynamic member
-                        out("_");
+                if (term instanceof BaseMemberExpression) {
+                    Declaration dec = ((BaseMemberExpression)term).getDeclaration();
+                    if (dec instanceof Value) {
+                        Value v = (Value)dec;
+                        if (v.isMember()) {
+                            //Assignment to dynamic member
+                            out("_");
+                        }
                     }
                 }
             }
@@ -2449,7 +2507,8 @@ public class GenerateJsVisitor extends Visitor {
             else if (outer != null) {
                 // "attr = expr;" in a prototype definition
                 //since #451 we now generate an attribute here
-                if (outer instanceof Constructor || (bmeDecl.isMember() && (bmeDecl instanceof Value) && bmeDecl.isActual())) {
+                if (outer instanceof Constructor 
+                        || bmeDecl.isMember() && bmeDecl instanceof Value && bmeDecl.isActual()) {
                     assignment(outer, bmeDecl, expr);
                 }
             }
@@ -2461,7 +2520,8 @@ public class GenerateJsVisitor extends Visitor {
                     BmeGenerator.generateMemberAccess(smte, new GenerateCallback() {
                         @Override public void generateValue() {
                             int boxType = boxUnboxStart(expr.getTerm(), moval);
-                            if (isInDynamicBlock() && !ModelUtil.isTypeUnknown(moval.getType())
+                            if (isInDynamicBlock() 
+                                    && !ModelUtil.isTypeUnknown(moval.getType())
                                     && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
                                 TypeUtils.generateDynamicCheck(expr, moval.getType(), GenerateJsVisitor.this, false,
                                         expr.getTypeModel().getTypeArguments());
@@ -2544,7 +2604,7 @@ public class GenerateJsVisitor extends Visitor {
                 } else {
                     // Specifier for some other attribute, or for a method.
                     if (opts.isOptimize() 
-                            || (bmeDecl.isMember() && (bmeDecl instanceof Function))) {
+                            || bmeDecl.isMember() && bmeDecl instanceof Function) {
                         qualify(specStmt, bmeDecl);
                     }
                     out(names.name(bmeDecl), "=");
@@ -2553,9 +2613,11 @@ public class GenerateJsVisitor extends Visitor {
                         TypeUtils.generateDynamicCheck(expr, ((FunctionOrValue) bmeDecl).getType(), this, false,
                                 expr.getTypeModel().getTypeArguments());
                     } else {
-                        if (expr.getTerm() instanceof Tree.FunctionArgument &&
-                                (((Tree.FunctionArgument)expr.getTerm()).getDeclarationModel()).isAnonymous()) {
-                            (((Tree.FunctionArgument)expr.getTerm()).getDeclarationModel()).setRefinedDeclaration(moval);
+                        if (expr.getTerm() instanceof Tree.FunctionArgument) {
+                            Function fun = ((Tree.FunctionArgument) expr.getTerm()).getDeclarationModel();
+                            if (fun.isAnonymous()) {
+                                fun.setRefinedDeclaration(moval);
+                            }
                         }
                         specStmt.getSpecifierExpression().visit(this);
                     }
@@ -2714,8 +2776,10 @@ public class GenerateJsVisitor extends Visitor {
                 if (scope instanceof Value && !(ModelUtil.getRealScope(scope) instanceof ClassOrInterface)) {
                     scope = ModelUtil.getRealScope(scope.getContainer());
                 }
-                if ((scope != null) && (that instanceof Tree.ClassDeclaration
-                        || that instanceof Tree.InterfaceDeclaration || that instanceof Tree.Constructor)) {
+                if ((scope != null) 
+                        && (that instanceof Tree.ClassDeclaration
+                         || that instanceof Tree.InterfaceDeclaration 
+                         || that instanceof Tree.Constructor)) {
                     // class/interface aliases have no own "this"
                     scope = scope.getContainer();
                 }
@@ -2796,7 +2860,7 @@ public class GenerateJsVisitor extends Visitor {
             }
         }
         else if (d != null) {
-            if (isMember && (d.isShared() || inProto || (!d.isParameter() && AttributeGenerator.defineAsProperty(d)))) {
+            if (isMember && (d.isShared() || inProto || !d.isParameter() && AttributeGenerator.defineAsProperty(d))) {
                 TypeDeclaration id = d instanceof TypeAlias ? (TypeDeclaration)d :
                     that.getScope().getInheritingDeclaration(d);
                 if (id==null) {
@@ -2837,7 +2901,8 @@ public class GenerateJsVisitor extends Visitor {
         if (p1.getModule()== null)
             return (p2.getModule()!=null &&
                     (!p2.getModule().isNative() ||
-                        p2.getModule().getNativeBackends().supports(Backend.JavaScript)));
+                        p2.getModule().getNativeBackends()
+                            .supports(Backend.JavaScript)));
         return !p1.getModule().equals(p2.getModule());
     }
 
@@ -3207,8 +3272,9 @@ public class GenerateJsVisitor extends Visitor {
                 BmeGenerator.generateMemberAccess(lhsQME, new GenerateCallback() {
                     @Override public void generateValue() {
                         out(getLHS, ".", functionName, "(");
-                        if (!isNaturalLiteral(that.getRightTerm())) {
-                            that.getRightTerm().visit(GenerateJsVisitor.this);
+                        Tree.Term term = that.getRightTerm();
+                        if (!isNaturalLiteral(term)) {
+                            term.visit(GenerateJsVisitor.this);
                         }
                         out(")");
                     }
@@ -3347,8 +3413,8 @@ public class GenerateJsVisitor extends Visitor {
    }
 
    boolean hasSimpleGetterSetter(Declaration decl) {
-       return (isInDynamicBlock() && TypeUtils.isUnknown(decl)) ||
-               !((decl instanceof Value && ((Value)decl).isTransient()) || (decl instanceof Setter) || decl.isFormal());
+       return isInDynamicBlock() && TypeUtils.isUnknown(decl) 
+           || !(decl instanceof Value && ((Value)decl).isTransient() || decl instanceof Setter || decl.isFormal());
    }
 
    @Override public void visit(final Tree.PostfixIncrementOp that) {
@@ -3472,10 +3538,14 @@ public class GenerateJsVisitor extends Visitor {
             if (!first) {
                 out("]");
             }
-        } else if (type.getDeclaration() != null && type.getDeclaration().getContainer() != null) {
-            Declaration d = ModelUtil.getContainingDeclarationOfScope(type.getDeclaration().getContainer());
-            if (d != null && d instanceof Function && !((Function)d).getTypeParameters().isEmpty()) {
-                out(",", names.typeArgsParamName((Function)d));
+        } else if (type.getDeclaration() != null) {
+            Scope container = type.getDeclaration().getContainer();
+            if (container != null) {
+                Declaration d = ModelUtil.getContainingDeclarationOfScope(container);
+                if (d != null && d instanceof Function 
+                        && !((Function)d).getTypeParameters().isEmpty()) {
+                    out(",", names.typeArgsParamName((Function)d));
+                }
             }
         }
         out(")");
@@ -3632,7 +3702,7 @@ public class GenerateJsVisitor extends Visitor {
     /** Encloses the block in a function, IF NEEDED. */
     void encloseBlockInFunction(final Tree.Block block, final boolean markBlock,
             final Set<Value> capturedValues) {
-        boolean wrap = (capturedValues != null && !capturedValues.isEmpty())
+        boolean wrap = capturedValues != null && !capturedValues.isEmpty()
                 || new BlockWithCaptureVisitor(block).hasCapture();
         if (markBlock) {
             beginBlock();
@@ -3747,7 +3817,9 @@ public class GenerateJsVisitor extends Visitor {
                 for (Tree.Annotation ann : annotationList.getAnnotations()) {
                     BaseMemberExpression bme = (BaseMemberExpression)ann.getPrimary();
                     if ("doc".equals(bme.getDeclaration().getName())) {
-                        Tree.ListedArgument arg = (Tree.ListedArgument) ann.getPositionalArgumentList().getPositionalArguments().get(0);
+                        Tree.ListedArgument arg = 
+                                (Tree.ListedArgument) 
+                                    ann.getPositionalArgumentList().getPositionalArguments().get(0);
                         return arg.getExpression().getTerm().getText();
                     }
                 }
