@@ -171,7 +171,7 @@ public class AnnotationModelVisitor extends Visitor {
             //super.visit(p);
             Tree.SpecifierOrInitializerExpression defaultArgument = Decl.getDefaultArgument(p);
             if (defaultArgument != null) {
-                defaultedParameter(defaultArgument);
+                defaultedParameter(defaultArgument, acp);
             }
             else if (p.getParameterModel().isSequenced() 
                     && !p.getParameterModel().isAtLeastOne()) {
@@ -183,12 +183,8 @@ public class AnnotationModelVisitor extends Visitor {
     }
     
     
-    public void defaultedParameter(Tree.SpecifierOrInitializerExpression d) {
+    public void defaultedParameter(Tree.SpecifierOrInitializerExpression d, AnnotationConstructorParameter annotationConstructorParameter) {
         if (annotationConstructor != null) {
-            AnnotationConstructorParameter annotationConstructorParameter = 
-                    instantiation.getConstructorParameters().get(
-                            instantiation.getConstructorParameters().size()-1);
-            
             Declaration t = d.getUnit().getTrueValueDeclaration();
             Declaration f = d.getUnit().getFalseValueDeclaration();
             Term term = d.getExpression().getTerm();
