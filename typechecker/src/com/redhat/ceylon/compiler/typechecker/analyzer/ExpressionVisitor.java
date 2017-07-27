@@ -9508,25 +9508,8 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArguments, 
             Tree.TypeArguments tas, 
             Node parent) {
-        boolean explicit = 
-                tas instanceof Tree.TypeArgumentList;
-        boolean typeExpression = 
-                parent instanceof Tree.SimpleType;
-        if (explicit && !typeExpression) {
-            Tree.TypeArgumentList tal = 
-                    (Tree.TypeArgumentList) tas;
-            for (Tree.Type t: tal.getTypes()) {
-                if (t instanceof Tree.StaticType) {
-                    Tree.StaticType st = 
-                            (Tree.StaticType) t;
-                    Tree.TypeVariance var = 
-                            st.getTypeVariance();
-                    if (var!=null) {
-                        var.addError("use-site variance annotation may not occur in value expression");
-                    }
-                }
-            }
-        }
+        checkVarianceAnnotations(tas, parent);
+        
         if (dec==null) {
             return false;
         }
@@ -9564,12 +9547,36 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
+            boolean explicit = 
+                    tas instanceof Tree.TypeArgumentList;
             if (!empty || explicit) {
                 tas.addError("does not accept type arguments: '" + 
                         dec.getName(unit) + 
                         "' is not a generic declaration");
             }
             return empty;
+        }
+    }
+
+    private void checkVarianceAnnotations(Tree.TypeArguments tas, Node parent) {
+        boolean explicit = 
+                tas instanceof Tree.TypeArgumentList;
+        boolean typeExpression = 
+                parent instanceof Tree.SimpleType;
+        if (explicit && !typeExpression) {
+            Tree.TypeArgumentList tal = 
+                    (Tree.TypeArgumentList) tas;
+            for (Tree.Type t: tal.getTypes()) {
+                if (t instanceof Tree.StaticType) {
+                    Tree.StaticType st = 
+                            (Tree.StaticType) t;
+                    Tree.TypeVariance var = 
+                            st.getTypeVariance();
+                    if (var!=null) {
+                        var.addError("use-site variance annotation may not occur in value expression");
+                    }
+                }
+            }
         }
     }
 
