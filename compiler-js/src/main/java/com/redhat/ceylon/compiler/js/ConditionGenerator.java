@@ -83,7 +83,7 @@ public class ConditionGenerator {
                         gen.out(",");
                     }
                     gen.out(varName);
-                    directAccess.add(variable.getDeclarationModel());
+                    directAccess.add(vdecl);
                 }
                 vars.add(new VarHolder(variable, variableRHS, varName, member));
             } else if (destruct != null) {

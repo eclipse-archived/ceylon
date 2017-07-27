@@ -1015,7 +1015,7 @@ public class TypeUtils {
                 final TypeDeclaration std = st.getDeclaration(); //teeheehee
                 if (!first)gen.out(",");
                 first=false;
-                if (isConstructor(std)) {
+                if (ModelUtil.isConstructor(std)) {
                     if (std.isAnonymous()) {
                         //Value constructor
                         gen.out(gen.getNames().name(d), ".", gen.getNames().valueConstructorName(std));
@@ -1535,11 +1535,6 @@ public class TypeUtils {
             r.add(st.getTypeModel().resolveAliases());
         }
         return r;
-    }
-
-    public static boolean isConstructor(Declaration d) {
-        return d instanceof Constructor || (d instanceof FunctionOrValue &&
-                ((FunctionOrValue)d).getTypeDeclaration() instanceof Constructor);
     }
 
     public static Constructor getConstructor(Declaration d) {

@@ -8,12 +8,15 @@ import java.util.Set;
 
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.js.JsCompiler;
+import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -116,8 +119,8 @@ public class JsIdentifierNames {
         if (param == null) { return null; }
         String name = param.getName();
         FunctionOrValue decl = param.getModel();
-        final boolean nonLocal = (decl.isShared() && decl.isMember())
-                || (decl.isToplevel() && decl instanceof Function);
+        final boolean nonLocal = decl.isShared() && decl.isMember()
+                || decl.isToplevel() && decl instanceof Function;
         if (nonLocal) {
             // The identifier might be accessed from other .js files, so it must
             // be reliably reproducible. In most cases simply using the original
@@ -236,8 +239,9 @@ public class JsIdentifierNames {
             // so we can simply disambiguate it with a numeric ID.
             name = "$" + Long.toString(getUID(decl), 36);
         }
-        return String.format("%c%s$", Character.toLowerCase(name.charAt(0)),
-                    name.substring(1));
+        return String.format("%c%s$", 
+                Character.toLowerCase(name.charAt(0)),
+                name.substring(1));
     }
 
     /**
@@ -256,13 +260,14 @@ public class JsIdentifierNames {
      */
     private String nestingSuffix(Declaration decl, final boolean forSelf) {
         String suffix = "";
-        if (decl instanceof TypeDeclaration && (forSelf || !decl.isAnonymous())
-                && !TypeUtils.isConstructor(decl)) {
+        if (decl instanceof TypeDeclaration 
+                && (forSelf || !decl.isAnonymous())
+                && !ModelUtil.isConstructor(decl)) {
             // The generated suffix consists of the names of the enclosing types.
             StringBuilder sb = new StringBuilder();
             // Use the original declaration if it's an overriden class: an overriding
             // member must have the same name as the member it overrides.
-            Scope scope = originalDeclaration(decl).getContainer();
+            Scope scope = ModelUtil.getRealScope(originalDeclaration(decl).getContainer());
             while (scope instanceof TypeDeclaration) {
                 sb.append('$');
                 sb.append(((TypeDeclaration) scope).getName().replaceAll("#", ""));
@@ -289,7 +294,7 @@ public class JsIdentifierNames {
     private String getName(Declaration decl, boolean forGetterSetter, boolean priv) {
         if (decl == null) { return null; }
         String name = decl.getName();
-        if (name == null && TypeUtils.isConstructor(decl)) {
+        if (name == null && ModelUtil.isConstructor(decl)) {
             return "$c$";
         }
         if (name.startsWith("anonymous#")) {
@@ -301,12 +306,16 @@ public class JsIdentifierNames {
         boolean nonLocal = !priv;
         if (nonLocal) {
             // check if it's a shared member or a toplevel function
-            nonLocal = decl.isMember() ? decl.isShared() || decl instanceof TypeDeclaration :
-                decl.isToplevel() && (forGetterSetter || (decl instanceof Function)
-                || (decl instanceof ClassOrInterface) || (decl instanceof TypeAlias));
+            nonLocal = decl.isMember() ? 
+                    decl.isShared() || decl instanceof TypeDeclaration :
+                    decl.isToplevel() 
+                        && (forGetterSetter 
+                                || decl instanceof Function
+                                || decl instanceof ClassOrInterface 
+                                || decl instanceof TypeAlias);
         }
-        if (nonLocal && decl instanceof com.redhat.ceylon.model.typechecker.model.Class
-                && ((com.redhat.ceylon.model.typechecker.model.Class)decl).isAnonymous() && !forGetterSetter) {
+        if (nonLocal && decl instanceof Class
+                && ((Class)decl).isAnonymous() && !forGetterSetter) {
             // A lower-case class name belongs to an object and is not public.
             nonLocal = false;
         }
@@ -319,7 +328,7 @@ public class JsIdentifierNames {
             if (suffix.length() > 0) {
                 // nested type
                 name += suffix;
-            } else if ((!forGetterSetter && !TypeUtils.isConstructor(decl) && reservedWords.contains(name))
+            } else if ((!forGetterSetter && !ModelUtil.isConstructor(decl) && reservedWords.contains(name))
                 || isJsGlobal(decl)) {
                 // JavaScript keyword or global declaration
                 name = "$_" + name;
@@ -331,9 +340,9 @@ public class JsIdentifierNames {
             name = uniquePrivateName(decl, priv);
         }
         //Fix #204 - same top-level declarations in different packages
-        final com.redhat.ceylon.model.typechecker.model.Package declPkg = decl.getUnit().getPackage();
+        final Package declPkg = decl.getUnit().getPackage();
         if (decl.isToplevel() && !declPkg.equals(declPkg.getModule().getRootPackage())) {
-            final com.redhat.ceylon.model.typechecker.model.Package raiz = declPkg.getModule().getRootPackage();
+            final Package raiz = declPkg.getModule().getRootPackage();
             //rootPackage can be null when compiling from IDE
             String rootName = raiz == null ?
                     (declPkg.getModule().isDefaultModule() ? "" : declPkg.getModule().getNameAsString()) :
@@ -415,14 +424,15 @@ public class JsIdentifierNames {
 
     public String constructorSeparator(Declaration c) {
         final Module mod = c.getUnit().getPackage().getModule();
-        if (mod.getJsMajor() > 0 && (mod.getJsMajor() < 9 || (mod.getJsMajor() == 9 && mod.getJsMinor() < 1))) {
+        if (mod.getJsMajor() > 0 && (mod.getJsMajor() < 9 || mod.getJsMajor() == 9 && mod.getJsMinor() < 1)) {
             return "_";
         }
         return "$c_";
     }
 
     public boolean isJsGlobal(Declaration d) {
-        return d.isToplevel() && globals.contains(d.getName()) &&
-                d.getUnit().getPackage().getModule().getJsMajor()==0;
+        return d.isToplevel() 
+            && globals.contains(d.getName()) &&
+            d.getUnit().getPackage().getModule().getJsMajor()==0;
     }
 }
