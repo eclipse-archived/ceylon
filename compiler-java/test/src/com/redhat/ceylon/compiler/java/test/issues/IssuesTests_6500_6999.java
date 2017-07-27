@@ -346,7 +346,13 @@ public class IssuesTests_6500_6999 extends CompilerTests {
                 );
         compile(Arrays.asList("-fully-export-maven-dependencies"), "bug69xx/bug6916/Bug6916.ceylon");
     }
-    
+
+    @Test
+    public void testBug6930() throws Throwable {
+        compile("bug69xx/Bug6930Java.java");
+        compareWithJavaSource("bug69xx/Bug6930");
+    }
+
     @Test
     public void testBug6949() throws Throwable {
         compareWithJavaSource("bug69xx/Bug6949");
