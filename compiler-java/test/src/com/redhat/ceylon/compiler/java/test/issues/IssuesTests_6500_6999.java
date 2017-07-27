@@ -372,6 +372,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     }
 
     @Test
+    public void testBug6957() {
+        compareWithJavaSource("bug69xx/Bug6957");
+    }
+
+    @Test
     public void testBug6959() throws Throwable {
         compileAndRun(Arrays.asList("-res", "test/src/com/redhat/ceylon/compiler/java/test/issues/bug69xx/bug6959resources"), 
                 "com.redhat.ceylon.compiler.java.test.issues.bug69xx.bug6959", 

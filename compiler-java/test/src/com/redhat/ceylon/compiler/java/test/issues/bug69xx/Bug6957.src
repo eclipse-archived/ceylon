@@ -1,0 +1,275 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug69xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class foo_ {
+    
+    private foo_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter$annotation$(name = "")
+    @.com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters$annotation$(
+            name = "",
+            list = {})
+    static void foo() {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter.class)
+public final class withOneDefaultParameter_ {
+    
+    private withOneDefaultParameter_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter withOneDefaultParameter() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$name$0 = .com.redhat.ceylon.compiler.java.test.issues.bug69xx.withOneDefaultParameter_.withOneDefaultParameter$name();
+            }
+            returning withOneDefaultParameter($ceylontmp$name$0);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.StringValue("")
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .java.lang.String withOneDefaultParameter$name() {
+        return "";
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.common.NonNull
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug69xx::AnnotationWithOneDefaultParameter")
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter withOneDefaultParameter(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.common.NonNull
+    final .java.lang.String name) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter(name);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug69xx.withOneDefaultParameter_.withOneDefaultParameter();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+public @interface AnnotationWithOneDefaultParameter$annotation$ {
+    
+    public abstract .java.lang.String name();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug69xx::AnnotationWithOneDefaultParameter,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+public final class AnnotationWithOneDefaultParameter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected AnnotationWithOneDefaultParameter() {
+        super();
+        this.name = null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public AnnotationWithOneDefaultParameter(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter$annotation$ anno) {
+        this(anno.name());
+    }
+    
+    public AnnotationWithOneDefaultParameter(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
+    @.com.redhat.ceylon.common.NonNull
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .java.lang.String name) {
+        this.name = name;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.String name;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.common.NonNull
+    public final .java.lang.String getName() {
+        return this.name;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter.class);
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter$annotation$.class;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                0,
+                1},
+        primary = .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters.class)
+public final class withTwoDefaultParameters_ {
+    
+    private withTwoDefaultParameters_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters withTwoDefaultParameters() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.issues.bug69xx.withTwoDefaultParameters_.withTwoDefaultParameters$name();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$list$2 = .com.redhat.ceylon.compiler.java.test.issues.bug69xx.withTwoDefaultParameters_.withTwoDefaultParameters$list($ceylontmp$name$1);
+            }
+            returning withTwoDefaultParameters($ceylontmp$name$1, $ceylontmp$list$2);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.StringValue("")
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .java.lang.String withTwoDefaultParameters$name() {
+        return "";
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters withTwoDefaultParameters(final .java.lang.String name) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$list$3 = .com.redhat.ceylon.compiler.java.test.issues.bug69xx.withTwoDefaultParameters_.withTwoDefaultParameters$list(name);
+            }
+            returning withTwoDefaultParameters(name, $ceylontmp$list$3);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.StringValue({})
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.String> withTwoDefaultParameters$list(final .java.lang.String name) {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.common.NonNull
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug69xx::AnnotationWithTwoDefaultParameters")
+    public static .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters withTwoDefaultParameters(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.common.NonNull
+    final .java.lang.String name, @.com.redhat.ceylon.compiler.java.metadata.Name("list")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.common.NonNull
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.String> list) {
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters(name, list);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug69xx.withTwoDefaultParameters_.withTwoDefaultParameters();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+public @interface AnnotationWithTwoDefaultParameters$annotation$ {
+    
+    public abstract .java.lang.String name();
+    
+    public abstract .java.lang.String[] list();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<com.redhat.ceylon.compiler.java.test.issues.bug69xx::AnnotationWithTwoDefaultParameters,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+public final class AnnotationWithTwoDefaultParameters implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected AnnotationWithTwoDefaultParameters() {
+        super();
+        this.name = null;
+        this.list = null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public AnnotationWithTwoDefaultParameters(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters$annotation$ anno) {
+        this(anno.name(), .com.redhat.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.list()));
+    }
+    
+    public AnnotationWithTwoDefaultParameters(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
+    @.com.redhat.ceylon.common.NonNull
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .java.lang.String name, @.com.redhat.ceylon.compiler.java.metadata.Name("list")
+    @.com.redhat.ceylon.common.NonNull
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String[]")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.Sequential<? extends .ceylon.language.String> list) {
+        this.name = name;
+        this.list = list;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.String name;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.common.NonNull
+    public final .java.lang.String getName() {
+        return this.name;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .ceylon.language.Sequential<? extends .ceylon.language.String> list;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.common.NonNull
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String[]")
+    public final .ceylon.language.Sequential<? extends .ceylon.language.String> getList() {
+        return this.list;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters.class);
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters$annotation$.class;
+    }
+}
