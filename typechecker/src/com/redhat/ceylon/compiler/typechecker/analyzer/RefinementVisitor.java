@@ -2468,7 +2468,7 @@ public class RefinementVisitor extends Visitor {
         c.addMember(m);
         that.setRefinement(true);
         that.setDeclaration(m);
-        that.setRefined(sm);
+        that.setRefined(root);
         unit.addDeclaration(m);
         Scope scope = that.getScope();
         if (scope instanceof Specification) {
