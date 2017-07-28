@@ -564,7 +564,7 @@ public class JarOutputRepositoryManager {
         
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
             String quotedFileName = JVMModuleUtil.quoteJavaKeywordsInFilename(fileName);
-            String entryName = handleResourceRoot(quotedFileName.replace(File.separatorChar, '/'));
+            String entryName = handleResourceRoot(quotedFileName);
             if (sourceFile != null) {
                 modifiedSourceFiles.add(sourceFile.getPath());
                 // record the class file we produce so that we don't save it from the original jar

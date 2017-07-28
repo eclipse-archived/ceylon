@@ -139,15 +139,21 @@ public class JVMModuleUtil {
         return result;
     }
     
+    /**
+     * @return the given path with Java keywords 
+     *         {@link #quoteIfJavaKeyword(String) quoted} using
+     *         the <code>$</code> character, and path separators 
+     *         canonicalized to forward slashes <code>/</code>
+     */
     public static String quoteJavaKeywordsInFilename(String path) {
         return quoteJavaKeywordsInFilename(new File(path));
     }
     
-    public static String quoteJavaKeywordsInFilename(File file) {
+    private static String quoteJavaKeywordsInFilename(File file) {
         String base;
         // We can't just split on / because windows
         if (file.getParentFile() != null) {
-            base = quoteJavaKeywordsInFilename(file.getParentFile()) + File.separator;
+            base = quoteJavaKeywordsInFilename(file.getParentFile()) + '/';
         } else {
             base = "";
         }
