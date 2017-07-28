@@ -32,6 +32,8 @@ import com.redhat.ceylon.common.log.Logger;
  */
 public class MavenRepositoryBuilder implements RepositoryBuilder {
 
+    private static final String AETHER_REPOSITORY_CLASS = "com.redhat.ceylon.cmr.maven.AetherRepository";
+
     @Override
     public String absolute(File cwd, String token) {
         if (token.equals("aether") || token.equals("aether:") || token.equals("aether:/#")
@@ -90,14 +92,14 @@ public class MavenRepositoryBuilder implements RepositoryBuilder {
                 settingsXml = settings.substring(0, p);
             }
         }
-        Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
+        Class<?> aetherRepositoryClass = Class.forName(AETHER_REPOSITORY_CLASS);
         Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class, String.class);
         CmrRepository repo = (CmrRepository)createRepository.invoke(null, config.log, settingsXml, config.offline, config.timeout, config.currentDirectory);
         return new CmrRepository[] { repo };
     }
 
     public static CmrRepository createMavenRepository(String rootRepository, RepositoryBuilderConfig config) throws Exception {
-        Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
+        Class<?> aetherRepositoryClass = Class.forName(AETHER_REPOSITORY_CLASS);
         Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, String.class, boolean.class, int.class, String.class);
         return (CmrRepository)createRepository.invoke(null, config.log, null, rootRepository, config.offline, config.timeout, config.currentDirectory);
     }
