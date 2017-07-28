@@ -21,24 +21,39 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-impl</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
             <artifactId>aether-transport-file</artifactId>
-            <version>1.0.2.v20150114</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.aether</groupId>
             <artifactId>aether-transport-http</artifactId>
-            <version>1.0.2.v20150114</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.aether</groupId>
             <artifactId>aether-connector-basic</artifactId>
-            <version>1.0.2.v20150114</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
+            <groupId>com.github.lookfirst</groupId>
+            <artifactId>sardine</artifactId>
+            <version>5.1</version>
+        </dependency>
+        <!-- <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+        </dependency> -->
 	</dependencies>
 	<groupId>org.ceylon-lang</groupId>
 	<artifactId>aether-all</artifactId>
@@ -80,6 +95,12 @@
               <relocations>
                 <relocation>
                   <pattern>org.</pattern>
+                  <shadedPattern>com.redhat.ceylon.aether.</shadedPattern>
+                  <excludes>
+                  </excludes>
+                </relocation>
+                <relocation>
+                  <pattern>com.</pattern>
                   <shadedPattern>com.redhat.ceylon.aether.</shadedPattern>
                   <excludes>
                   </excludes>

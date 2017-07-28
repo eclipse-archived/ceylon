@@ -22,18 +22,18 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.httpcomponents.apache.http.ProtocolException;
-import com.redhat.ceylon.httpcomponents.apache.http.client.ClientProtocolException;
-import com.redhat.ceylon.httpcomponents.apache.http.config.Registry;
-import com.redhat.ceylon.httpcomponents.apache.http.config.SocketConfig;
-import com.redhat.ceylon.httpcomponents.apache.http.conn.HttpClientConnectionManager;
-import com.redhat.ceylon.httpcomponents.apache.http.conn.socket.ConnectionSocketFactory;
-import com.redhat.ceylon.httpcomponents.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import com.redhat.ceylon.aether.apache.http.ProtocolException;
+import com.redhat.ceylon.aether.apache.http.client.ClientProtocolException;
+import com.redhat.ceylon.aether.apache.http.config.Registry;
+import com.redhat.ceylon.aether.apache.http.config.SocketConfig;
+import com.redhat.ceylon.aether.apache.http.conn.HttpClientConnectionManager;
+import com.redhat.ceylon.aether.apache.http.conn.socket.ConnectionSocketFactory;
+import com.redhat.ceylon.aether.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
-import com.redhat.ceylon.httpcomponents.github.sardine.DavResource;
-import com.redhat.ceylon.httpcomponents.github.sardine.impl.SardineException;
-import com.redhat.ceylon.httpcomponents.github.sardine.impl.SardineImpl;
-import com.redhat.ceylon.httpcomponents.github.sardine.impl.io.ContentLengthInputStream;
+import com.redhat.ceylon.aether.github.sardine.DavResource;
+import com.redhat.ceylon.aether.github.sardine.impl.SardineException;
+import com.redhat.ceylon.aether.github.sardine.impl.SardineImpl;
+import com.redhat.ceylon.aether.github.sardine.impl.io.ContentLengthInputStream;
 
 /**
  * WebDAV content store.

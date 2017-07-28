@@ -2,7 +2,7 @@ package com.redhat.ceylon.cmr.repository.webdav;
 
 import java.io.InputStream;
 
-import com.redhat.ceylon.httpcomponents.github.sardine.impl.io.ContentLengthInputStream;
+import com.redhat.ceylon.aether.github.sardine.impl.io.ContentLengthInputStream;
 
 public class WebDAVInputStream {
 

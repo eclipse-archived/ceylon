@@ -2,7 +2,7 @@ package com.redhat.ceylon.cmr.repository.webdav;
 
 import java.util.Date;
 
-import com.redhat.ceylon.httpcomponents.github.sardine.DavResource;
+import com.redhat.ceylon.aether.github.sardine.DavResource;
 
 public class WebDAVResource {
 

@@ -16,7 +16,7 @@
 
     <!-- Classpath for the build tools. -->
     <path id="classpath">
-        <pathelement path="${http-support.lib}"/>
+        <pathelement path="${maven-support.lib}"/>
     </path>
 
     <path id="test.run.classpath">

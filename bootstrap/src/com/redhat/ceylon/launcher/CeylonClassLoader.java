@@ -121,10 +121,8 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.tools", version));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION));
-        // Maven support for CMR
+        // Maven and webdav support for CMR
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.aether", "3.3.9")); // optional
-        // For aether and webdav/sardine
-        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.httpcomponents", "4.3.2")); // optional
 
         // For the typechecker
         archives.add(getRepoJar(ceylonRepo, "org.antlr.runtime", "3.4"));

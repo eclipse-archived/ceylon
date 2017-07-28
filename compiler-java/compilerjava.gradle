@@ -41,9 +41,6 @@ dependencies {
 //    <pathelement path="${jboss-logmanager.lib}" />
 //    <pathelement path="${slf4j-simple.lib}" />
 //    <pathelement path="${slf4j-api.lib}" />
-//    <pathelement path="${sardine.lib}" />
-//    <pathelement path="${httpcore.lib}" />
-//    <pathelement path="${httpclient.lib}" />
 }
 
 sourceSets {
