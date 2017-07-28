@@ -1093,24 +1093,18 @@ public class RefinementVisitor extends Visitor {
             Tree.Declaration that, Declaration refining, 
             ClassOrInterface ci, Declaration refined) {
         
-        List<Type> typeArgs;
-        if (refined.isParameterized() && 
-            refining.isParameterized()) {
-            List<TypeParameter> refinedTypeParams = 
-                    refined.getTypeParameters();
-            List<TypeParameter> refiningTypeParams = 
-                    refining.getTypeParameters();
-            checkRefiningMemberTypeParameters(that, 
-                    refining, refined, refinedTypeParams, 
-                    refiningTypeParams);
-            typeArgs = checkRefiningMemberUpperBounds(that, 
+        List<TypeParameter> refinedTypeParams = 
+                refined.getTypeParameters();
+        List<TypeParameter> refiningTypeParams = 
+                refining.getTypeParameters();
+        checkRefiningMemberTypeParameters(that, 
+                refining, refined, refinedTypeParams, 
+                refiningTypeParams);
+        List<Type> typeArgs = 
+                checkRefiningMemberUpperBounds(that, 
                     ci, refined, 
                     refinedTypeParams, 
                     refiningTypeParams);
-        }
-        else {
-            typeArgs = NO_TYPE_ARGS;
-        }
         
         Type cit = ci.getType();
         Reference refinedMember = 
