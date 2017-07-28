@@ -646,11 +646,17 @@ public class Naming extends NamingBase implements LocalId {
         // get/is with at least one more letter, no parameter and non-void type
         if(((name.length() >= 4 && name.startsWith("get"))
              || name.length() >= 3 && name.startsWith("is"))
+            //TODO: according to #6921 this isn't correct: we should
+            //      be looking at the number of *required* parameters,
+            //      not the total number of parameters
             && method.getFirstParameterList().getParameters().isEmpty()
             && !AbstractTransformer.isAnything(method.getType()))
             return quote(name);
         // set with one parameter and void type
         if((name.length() >= 4 && name.startsWith("set"))
+            //TODO: according to #6921 this isn't correct: we should
+            //      be looking at the number of *required* parameters,
+            //      not the total number of parameters
            && method.getFirstParameterList().getParameters().size() == 1
            && AbstractTransformer.isAnything(method.getType()))
             return quote(name);
