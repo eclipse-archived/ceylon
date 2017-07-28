@@ -317,19 +317,22 @@ abstract class Invocation {
                 }
             }
             if (isIndirect()) {
-                if (getPrimaryDeclaration() != null
-                        && (Decl.isGetter(getPrimaryDeclaration())
-                                || Decl.isToplevel(getPrimaryDeclaration())
-                                || (Decl.isValueOrSharedOrCapturedParam(getPrimaryDeclaration()) 
-                                        && Decl.isCaptured(getPrimaryDeclaration()) 
-                                        && !Decl.isLocalNotInitializer(getPrimaryDeclaration())))) {
+                Declaration primaryDeclaration = getPrimaryDeclaration();
+                if (primaryDeclaration != null
+                        && (Decl.isGetter(primaryDeclaration)
+                                || Decl.isToplevel(primaryDeclaration)
+                                || (Decl.isValueOrSharedOrCapturedParam(primaryDeclaration) 
+                                        && Decl.isCaptured(primaryDeclaration) 
+                                        && !Decl.isLocalNotInitializer(primaryDeclaration)
+                                        // don't invoke getters for constructor parameters we're getting within a super call
+                                        && !gen.expressionGen().isWithinSuperInvocation(primaryDeclaration.getContainer())))) {
                     // We need to invoke the getter to obtain the Callable
                     actualPrimExpr = gen.make().Apply(null, 
                             gen.naming.makeQualIdent(primaryExpr, selector), 
                             List.<JCExpression>nil());
                 } else if (selector != null) {
                     actualPrimExpr = gen.naming.makeQualIdent(primaryExpr, selector);
-                } else if (getPrimaryDeclaration() == null || !((TypedDeclaration)getPrimaryDeclaration()).getType().isTypeConstructor()) {
+                } else if (primaryDeclaration == null || !((TypedDeclaration)getPrimaryDeclaration()).getType().isTypeConstructor()) {
                     actualPrimExpr = gen.naming.makeQualifiedName(primaryExpr, (TypedDeclaration)getPrimaryDeclaration(), Naming.NA_MEMBER);
                 }
                 actualPrimExpr = unboxCallableIfNecessary(actualPrimExpr, getPrimary());
