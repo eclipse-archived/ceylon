@@ -145,7 +145,8 @@ public abstract class ModuleUtil {
      * Only <code>null</code> or proper Ceylon identifiers are considered valid namespaces
      */
     public static boolean validNamespace(String namespace) {
-        return namespace == null || moduleIdPattern.matcher(namespace).matches();
+        return namespace == null 
+            || moduleIdPattern.matcher(namespace).matches();
     }
 
     /**

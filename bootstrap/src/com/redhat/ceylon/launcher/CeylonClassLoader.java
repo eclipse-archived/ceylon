@@ -122,25 +122,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION));
         // Maven support for CMR
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.api", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.spi", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.util", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.impl", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.connector.basic", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.file", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.http", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "com.google.guava", "20.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.lang3", "3.6")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-artifact", "3.3.9")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-model", "3.3.9")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-model-builder", "3.3.9")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-repository-metadata", "3.3.9")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-builder-support", "3.3.9")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-settings", "3.3.9")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-settings-builder", "3.3.9")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-aether-provider", "3.3.9")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.codehaus.plexus.plexus-interpolation", "1.22")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.codehaus.plexus.plexus-utils", "3.0.22")); // optional
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.aether", "3.3.9")); // optional
 
         // For the typechecker
         archives.add(getRepoJar(ceylonRepo, "org.antlr.runtime", "3.4"));

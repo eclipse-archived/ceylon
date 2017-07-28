@@ -3,9 +3,9 @@ package com.redhat.ceylon.cmr.resolver.aether;
 import java.io.File;
 import java.util.List;
 
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Exclusion;
-import org.eclipse.aether.util.artifact.JavaScopes;
+import com.redhat.ceylon.aether.apache.maven.model.Dependency;
+import com.redhat.ceylon.aether.apache.maven.model.Exclusion;
+import com.redhat.ceylon.aether.eclipse.aether.util.artifact.JavaScopes;
 
 public class DependencyDependencyDescriptor implements DependencyDescriptor {
 

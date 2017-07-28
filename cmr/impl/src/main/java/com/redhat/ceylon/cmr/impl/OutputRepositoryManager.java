@@ -144,6 +144,7 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
 
     @Override
     public boolean isValidNamespace(String namespace) {
-        return namespace == null || DefaultRepository.NAMESPACE.equals(namespace);
+        return namespace == null 
+            || DefaultRepository.NAMESPACE.equals(namespace);
     }
 }

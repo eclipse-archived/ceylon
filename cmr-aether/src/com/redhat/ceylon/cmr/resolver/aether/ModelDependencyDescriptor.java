@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.Model;
-import org.apache.maven.model.Parent;
+import com.redhat.ceylon.aether.apache.maven.model.Dependency;
+import com.redhat.ceylon.aether.apache.maven.model.Model;
+import com.redhat.ceylon.aether.apache.maven.model.Parent;
 
 public class ModelDependencyDescriptor implements DependencyDescriptor {
 

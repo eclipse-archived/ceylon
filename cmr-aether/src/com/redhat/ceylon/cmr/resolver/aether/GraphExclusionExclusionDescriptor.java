@@ -1,6 +1,6 @@
 package com.redhat.ceylon.cmr.resolver.aether;
 
-import org.eclipse.aether.graph.Exclusion;
+import com.redhat.ceylon.aether.eclipse.aether.graph.Exclusion;
 
 public class GraphExclusionExclusionDescriptor implements ExclusionDescriptor {
 

@@ -14,6 +14,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
+import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -283,7 +284,7 @@ public class ModuleValidator {
                 } else {
                     String msg = "unknown import namespace: '" + moduleImport.getNamespace() +
                             "', make sure the proper repository has been enabled";
-                    if (!"maven".equals(moduleImport.getNamespace())) {
+                    if (!MavenRepository.NAMESPACE.equals(moduleImport.getNamespace())) {
                         msg += " (if this is a Maven import make sure to add a 'maven:' prefix)";
                     }
                     moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, msg, true);

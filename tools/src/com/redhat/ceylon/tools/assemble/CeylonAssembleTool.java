@@ -26,6 +26,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
 import com.redhat.ceylon.cmr.impl.IOUtils;
+import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
@@ -330,7 +331,7 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
                                         String name = "modules/" + moduleToPath(module.name) + "/" + module.version + "/" + ar.artifact().getName();
                                         addEntry(zipFile, ar.artifact(), name);
                                     }
-                                } else if (module.artifact.namespace().equals("maven")) {
+                                } else if (module.artifact.namespace().equals(MavenRepository.NAMESPACE)) {
                                     String name = "maven/" + moduleToPath(module.name) + "/" + module.version + "/" + file.getName();
                                     addEntry(zipFile, file, name);
                                     // Copy the Maven artifact's pom file as well

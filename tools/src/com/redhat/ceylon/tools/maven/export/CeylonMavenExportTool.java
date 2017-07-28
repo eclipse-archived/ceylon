@@ -702,10 +702,8 @@ public class CeylonMavenExportTool extends ModuleLoadingTool {
     }
 
     private String getDependencyPropertyName(String name) {
-        if(name.startsWith("org.apache.maven."))
-            return "org.apache.maven";
-        else if(name.startsWith("org.eclipse.aether."))
-            return "org.eclipse.aether";
+        if(name.startsWith("com.redhat.ceylon.aether."))
+            return "com.redhat.ceylon.aether";
         else
             return name.replace(':', '.');
     }

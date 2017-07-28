@@ -1,6 +1,6 @@
 package com.redhat.ceylon.cmr.resolver.aether;
 
-import org.apache.maven.model.Exclusion;
+import com.redhat.ceylon.aether.apache.maven.model.Exclusion;
 
 public class ExclusionExclusionDescriptor implements ExclusionDescriptor {
 

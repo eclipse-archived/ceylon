@@ -2,16 +2,10 @@ package com.redhat.ceylon.module.loader.test;
 
 import java.util.Map;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.DependencyOverride;
-import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
-import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
 import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.module.loader.BaseRuntimeModuleLoaderImpl;
 

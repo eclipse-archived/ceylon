@@ -26,57 +26,57 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
-import org.apache.maven.settings.Activation;
-import org.apache.maven.settings.Mirror;
-import org.apache.maven.settings.Profile;
-import org.apache.maven.settings.Proxy;
-import org.apache.maven.settings.Repository;
-import org.apache.maven.settings.Server;
-import org.apache.maven.settings.Settings;
-import org.apache.maven.settings.building.DefaultSettingsBuilder;
-import org.apache.maven.settings.building.DefaultSettingsBuilderFactory;
-import org.apache.maven.settings.building.DefaultSettingsBuildingRequest;
-import org.apache.maven.settings.building.SettingsBuildingException;
-import org.apache.maven.settings.building.SettingsBuildingRequest;
-import org.apache.maven.settings.building.SettingsBuildingResult;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.eclipse.aether.ConfigurationProperties;
-import org.eclipse.aether.DefaultRepositorySystemSession;
-import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.artifact.Artifact;
-import org.eclipse.aether.artifact.DefaultArtifact;
-import org.eclipse.aether.collection.CollectRequest;
-import org.eclipse.aether.collection.DependencyCollectionContext;
-import org.eclipse.aether.collection.DependencySelector;
-import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
-import org.eclipse.aether.graph.DefaultDependencyNode;
-import org.eclipse.aether.graph.Dependency;
-import org.eclipse.aether.graph.DependencyFilter;
-import org.eclipse.aether.graph.DependencyNode;
-import org.eclipse.aether.impl.DefaultServiceLocator;
-import org.eclipse.aether.repository.LocalRepository;
-import org.eclipse.aether.repository.RemoteRepository;
-import org.eclipse.aether.repository.RepositoryPolicy;
-import org.eclipse.aether.resolution.ArtifactRequest;
-import org.eclipse.aether.resolution.ArtifactResolutionException;
-import org.eclipse.aether.resolution.DependencyRequest;
-import org.eclipse.aether.resolution.DependencyResolutionException;
-import org.eclipse.aether.resolution.VersionRangeRequest;
-import org.eclipse.aether.resolution.VersionRangeResolutionException;
-import org.eclipse.aether.resolution.VersionRangeResult;
-import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
-import org.eclipse.aether.spi.connector.transport.TransporterFactory;
-import org.eclipse.aether.transport.file.FileTransporterFactory;
-import org.eclipse.aether.transport.http.HttpTransporterFactory;
-import org.eclipse.aether.util.artifact.JavaScopes;
-import org.eclipse.aether.util.repository.AuthenticationBuilder;
-import org.eclipse.aether.util.repository.DefaultAuthenticationSelector;
-import org.eclipse.aether.util.repository.DefaultMirrorSelector;
-import org.eclipse.aether.util.repository.DefaultProxySelector;
-import org.eclipse.aether.version.Version;
+import com.redhat.ceylon.aether.apache.maven.model.Model;
+import com.redhat.ceylon.aether.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import com.redhat.ceylon.aether.apache.maven.repository.internal.MavenRepositorySystemUtils;
+import com.redhat.ceylon.aether.apache.maven.settings.Activation;
+import com.redhat.ceylon.aether.apache.maven.settings.Mirror;
+import com.redhat.ceylon.aether.apache.maven.settings.Profile;
+import com.redhat.ceylon.aether.apache.maven.settings.Proxy;
+import com.redhat.ceylon.aether.apache.maven.settings.Repository;
+import com.redhat.ceylon.aether.apache.maven.settings.Server;
+import com.redhat.ceylon.aether.apache.maven.settings.Settings;
+import com.redhat.ceylon.aether.apache.maven.settings.building.DefaultSettingsBuilder;
+import com.redhat.ceylon.aether.apache.maven.settings.building.DefaultSettingsBuilderFactory;
+import com.redhat.ceylon.aether.apache.maven.settings.building.DefaultSettingsBuildingRequest;
+import com.redhat.ceylon.aether.apache.maven.settings.building.SettingsBuildingException;
+import com.redhat.ceylon.aether.apache.maven.settings.building.SettingsBuildingRequest;
+import com.redhat.ceylon.aether.apache.maven.settings.building.SettingsBuildingResult;
+import com.redhat.ceylon.aether.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import com.redhat.ceylon.aether.eclipse.aether.ConfigurationProperties;
+import com.redhat.ceylon.aether.eclipse.aether.DefaultRepositorySystemSession;
+import com.redhat.ceylon.aether.eclipse.aether.RepositorySystem;
+import com.redhat.ceylon.aether.eclipse.aether.artifact.Artifact;
+import com.redhat.ceylon.aether.eclipse.aether.artifact.DefaultArtifact;
+import com.redhat.ceylon.aether.eclipse.aether.collection.CollectRequest;
+import com.redhat.ceylon.aether.eclipse.aether.collection.DependencyCollectionContext;
+import com.redhat.ceylon.aether.eclipse.aether.collection.DependencySelector;
+import com.redhat.ceylon.aether.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
+import com.redhat.ceylon.aether.eclipse.aether.graph.DefaultDependencyNode;
+import com.redhat.ceylon.aether.eclipse.aether.graph.Dependency;
+import com.redhat.ceylon.aether.eclipse.aether.graph.DependencyFilter;
+import com.redhat.ceylon.aether.eclipse.aether.graph.DependencyNode;
+import com.redhat.ceylon.aether.eclipse.aether.impl.DefaultServiceLocator;
+import com.redhat.ceylon.aether.eclipse.aether.repository.LocalRepository;
+import com.redhat.ceylon.aether.eclipse.aether.repository.RemoteRepository;
+import com.redhat.ceylon.aether.eclipse.aether.repository.RepositoryPolicy;
+import com.redhat.ceylon.aether.eclipse.aether.resolution.ArtifactRequest;
+import com.redhat.ceylon.aether.eclipse.aether.resolution.ArtifactResolutionException;
+import com.redhat.ceylon.aether.eclipse.aether.resolution.DependencyRequest;
+import com.redhat.ceylon.aether.eclipse.aether.resolution.DependencyResolutionException;
+import com.redhat.ceylon.aether.eclipse.aether.resolution.VersionRangeRequest;
+import com.redhat.ceylon.aether.eclipse.aether.resolution.VersionRangeResolutionException;
+import com.redhat.ceylon.aether.eclipse.aether.resolution.VersionRangeResult;
+import com.redhat.ceylon.aether.eclipse.aether.spi.connector.RepositoryConnectorFactory;
+import com.redhat.ceylon.aether.eclipse.aether.spi.connector.transport.TransporterFactory;
+import com.redhat.ceylon.aether.eclipse.aether.transport.file.FileTransporterFactory;
+import com.redhat.ceylon.aether.eclipse.aether.transport.http.HttpTransporterFactory;
+import com.redhat.ceylon.aether.eclipse.aether.util.artifact.JavaScopes;
+import com.redhat.ceylon.aether.eclipse.aether.util.repository.AuthenticationBuilder;
+import com.redhat.ceylon.aether.eclipse.aether.util.repository.DefaultAuthenticationSelector;
+import com.redhat.ceylon.aether.eclipse.aether.util.repository.DefaultMirrorSelector;
+import com.redhat.ceylon.aether.eclipse.aether.util.repository.DefaultProxySelector;
+import com.redhat.ceylon.aether.eclipse.aether.version.Version;
 
 /**
  * Aether utils.
@@ -176,7 +176,7 @@ public class AetherResolverImpl implements AetherResolver {
         			auth.addUsername(proxy.getUsername());
         		if(proxy.getPassword() != null)
         			auth.addPassword(proxy.getPassword());
-				org.eclipse.aether.repository.Proxy p = new org.eclipse.aether.repository.Proxy(proxy.getProtocol(), proxy.getHost(), 
+				com.redhat.ceylon.aether.eclipse.aether.repository.Proxy p = new com.redhat.ceylon.aether.eclipse.aether.repository.Proxy(proxy.getProtocol(), proxy.getHost(), 
 						proxy.getPort(), auth.build() );
 				proxySelector.add(p , proxy.getNonProxyHosts());
         	}
@@ -218,7 +218,7 @@ public class AetherResolverImpl implements AetherResolver {
             RemoteRepository.Builder remoteRepo = new RemoteRepository.Builder( repo.getId(), repo.getLayout(), repo.getUrl() );
 
             // policies
-            org.apache.maven.settings.RepositoryPolicy repoReleasePolicy = repo.getReleases();
+            com.redhat.ceylon.aether.apache.maven.settings.RepositoryPolicy repoReleasePolicy = repo.getReleases();
             if(repoReleasePolicy != null){
                 String updatePolicy = repoReleasePolicy.getUpdatePolicy();
                 // This is the default anyway and saves us a message on STDERR
@@ -229,7 +229,7 @@ public class AetherResolverImpl implements AetherResolver {
                 remoteRepo.setReleasePolicy(releasePolicy );
             }
             
-            org.apache.maven.settings.RepositoryPolicy repoSnapshotPolicy = repo.getSnapshots();
+            com.redhat.ceylon.aether.apache.maven.settings.RepositoryPolicy repoSnapshotPolicy = repo.getSnapshots();
             if(repoSnapshotPolicy != null){
                 String updatePolicy = repoSnapshotPolicy.getUpdatePolicy();
                 // This is the default anyway and saves us a message on STDERR

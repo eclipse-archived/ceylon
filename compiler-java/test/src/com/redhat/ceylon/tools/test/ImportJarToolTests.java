@@ -631,9 +631,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         			"--missing-dependency-packages", "org.apache.logkit/1.0.1=org.apache.log.**"
         			));
         }
-        if(module.startsWith("org.codehaus.plexus")
-        		|| module.startsWith("org.eclipse.aether")
-        		|| module.startsWith("org.apache.maven")){
+        if(module.startsWith("com.redhat.ceylon.aether")){
         	options.addAll(0, Arrays.asList("--ignore-annotations"));
         }
         tool = pluginFactory.bindArguments(model, getMainTool(), options);
