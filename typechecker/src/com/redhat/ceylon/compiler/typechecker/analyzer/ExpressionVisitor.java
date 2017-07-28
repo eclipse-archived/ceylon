@@ -84,6 +84,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TuplePattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
@@ -1323,7 +1324,8 @@ public class ExpressionVisitor extends Visitor {
             if (primary instanceof Tree.QualifiedMemberExpression ||
                 primary instanceof Tree.BaseMemberExpression) {
                 Tree.MemberOrTypeExpression mte = 
-                        (Tree.MemberOrTypeExpression) primary;
+                        (Tree.MemberOrTypeExpression) 
+                            primary;
                 if (primary.getTypeModel()!=null && 
                         mte.getDeclaration()!=null) {
                     Type pt = primary.getTypeModel();
@@ -1551,19 +1553,19 @@ public class ExpressionVisitor extends Visitor {
             
 //            if (!that.getRefinement()) {
                 Type lhst = lhs.getTypeModel();
-                if (lhs==me 
-                        && d instanceof Function 
-                        && !lhst.isTypeConstructor()) {
-                    //if the declaration of the method has
-                    //defaulted parameters, we should ignore
-                    //that when determining if the RHS is
-                    //an acceptable implementation of the
-                    //method
-                    //TODO: this is a pretty nasty way to
-                    //      handle the problem
-                    lhst = eraseDefaultedParameters(lhst);
-                }
                 if (!isTypeUnknown(lhst)) {
+                    if (lhs==me 
+                            && d instanceof Function 
+                            && !lhst.isTypeConstructor()) {
+                        //if the declaration of the method has
+                        //defaulted parameters, we should ignore
+                        //that when determining if the RHS is
+                        //an acceptable implementation of the
+                        //method
+                        //TODO: this is a pretty nasty way to
+                        //      handle the problem
+                        lhst = eraseDefaultedParameters(lhst);
+                    }
                     TypedDeclaration member = 
                             that.getRefinement() ? 
                                     that.getRefined() : td;
@@ -1628,15 +1630,17 @@ public class ExpressionVisitor extends Visitor {
         return type;
     }
     
-    static Reference getRefinedMemberReference(FunctionOrValue d, 
+    static Reference getRefinedMemberReference(
+            FunctionOrValue refinement, 
             ClassOrInterface classOrInterface) {
         TypeDeclaration td = 
                 (TypeDeclaration) 
-                    d.getContainer();
+                    refinement.getContainer();
         Type supertype = 
                 classOrInterface.getType()
                     .getSupertype(td);
-        return d.appliedReference(supertype, NO_TYPE_ARGS);
+        return refinement.appliedReference(supertype, 
+                NO_TYPE_ARGS);
     }
     
     private void refineAttribute(Tree.SpecifierStatement that) {
@@ -1744,7 +1748,7 @@ public class ExpressionVisitor extends Visitor {
                                 typeNode = type;
                             }
                         }
-                        checkIsExactlyForInterop(that.getUnit(),
+                        checkIsExactlyForInterop(unit,
                                 refinedParameters.isNamedParametersSupported(),
                                 parameterType, 
                                 refinedParameterType, 
@@ -1754,12 +1758,14 @@ public class ExpressionVisitor extends Visitor {
                                 + "' declared by '" + ci.getName() 
                                 + "' is different to type of corresponding parameter " 
                                 + message(refinedMethod, refinedParameter));
-                        if (refinedParameter.isSequenced() && !parameter.isSequenced()) {
+                        if (refinedParameter.isSequenced() 
+                                && !parameter.isSequenced()) {
                             param.addError("parameter must be variadic: parameter " 
                                     + message(refinedMethod, refinedParameter)
                                     + " is variadic");
                         }
-                        if (!refinedParameter.isSequenced() && parameter.isSequenced()) {
+                        if (!refinedParameter.isSequenced() 
+                                && parameter.isSequenced()) {
                             param.addError("parameter may not be variadic: parameter " 
                                     + message(refinedMethod, refinedParameter)
                                     + " is not variadic");
@@ -1786,6 +1792,8 @@ public class ExpressionVisitor extends Visitor {
             FunctionOrValue methodOrValue,
             ClassOrInterface refiningType, 
             List<Declaration> interveningRefinements) {
+        //accumulate an intersection of the types of
+        //everything it refines
         List<Type> refinedTypes = new ArrayList<Type>();
         //don't check this one here because it is
         //separately checked in visit(SpecifierStatement)
@@ -1793,41 +1801,51 @@ public class ExpressionVisitor extends Visitor {
                 getRefinedMemberReference(
                         refinedMethodOrValue, 
                         refiningType);
-        addToIntersection(refinedTypes, 
-                refinedProducedReference.getType(), 
-                unit);
-        for (Declaration refinement: interveningRefinements) {
-            if (refinement instanceof FunctionOrValue
+        intersectReturnType(refinedTypes, 
+                refinedProducedReference);
+        boolean allHaveNulls = 
+                hasNullReturnValues(refinedMethodOrValue);
+        for (Declaration intervening: interveningRefinements) {
+            if (intervening instanceof FunctionOrValue
                     //this one is directly checked from visit(SpecifierStatement)
                     //which correctly handles defaulted parameters 
                     //and assignments of generic function references
                     //TODO: do we need to handle those complicating
                     //      factors here as well?
-                    && !refinedMethodOrValue.equals(refinement)) {
-                checkRefinement(that, refiningType, refinedTypes, 
-                        (FunctionOrValue) refinement);
+                    && !refinedMethodOrValue.equals(intervening)) {
+                FunctionOrValue refinement = 
+                        (FunctionOrValue) 
+                            intervening;
+                Reference refinedMember = 
+                        getRefinedMemberReference(refinement, 
+                                refiningType);
+                allHaveNulls = allHaveNulls 
+                        && hasNullReturnValues(refinement);
+                intersectReturnType(refinedTypes, refinedMember);
+                checkIntermediateRefinement(that,
+                        refinement, refinedMember);
             }
         }
         Type it = canonicalIntersection(refinedTypes, unit);
+        if (allHaveNulls && !unit.isOptionalType(it)) {
+            methodOrValue.setUncheckedNullType(true);
+            Term lhs = that.getBaseMemberExpression();
+            //TODO: this is pretty ugly, think of something better!
+            lhs.setTypeModel(unit.getOptionalType(lhs.getTypeModel()));
+        }
         methodOrValue.setType(it);
         return refinedProducedReference;
     }
 
-    private void checkRefinement(Tree.SpecifierStatement that, 
-            ClassOrInterface refiningType,
-            List<Type> refinedTypes,
-            FunctionOrValue refinement) {
-        Tree.SpecifierExpression rhs = 
-                that.getSpecifierExpression();
-        Reference refinedMember = 
-                getRefinedMemberReference(refinement, 
-                        refiningType);
-        addToIntersection(refinedTypes, 
-                refinedMember.getType(), 
-                unit);
+    private void checkIntermediateRefinement(
+            Tree.SpecifierStatement that,
+            FunctionOrValue refinement,
+            Reference refinedMember) {
         Type requiredType = 
                 getRequiredSpecifiedType(that, 
                         refinedMember);
+        Tree.SpecifierExpression rhs = 
+                that.getSpecifierExpression();
         if (rhs!=null && 
                 !isTypeUnknown(requiredType)) {
             checkType(requiredType, refinement, rhs, 2100);
@@ -1843,6 +1861,19 @@ public class ExpressionVisitor extends Visitor {
                         refinement.getName() + "' of '" +
                         container.getName(unit));
         }
+    }
+
+    private boolean hasNullReturnValues(FunctionOrValue refinement) {
+        return refinement.hasUncheckedNullType() 
+            || unit.isOptionalType(refinement.getType());
+    }
+
+    private void intersectReturnType(
+            List<Type> refinedTypes, 
+            Reference refinedProducedReference) {
+        addToIntersection(refinedTypes, 
+                refinedProducedReference.getType(), 
+                unit);
     }
 
     private Type getRequiredSpecifiedType(
