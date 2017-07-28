@@ -67,11 +67,11 @@ final class javaIterableInFor_ {
         if (doforelse$12) {
             sum = 0L;
         }
-        loop_5: for (.ceylon.language.String s$iterator$$21 : strings) {
+        loop_5: for (.ceylon.language.String s$iterator$$21 : (.java.lang.Iterable<.ceylon.language.String>)(.java.lang.Iterable)strings) {
             final .java.lang.String s = ((.ceylon.language.String)s$iterator$$21).toString();
             sum += .ceylon.language.String.hashCode(.com.redhat.ceylon.compiler.java.Util.checkNull(s));
         }
-        loop_6: for (.java.lang.String s$iterator$$24 : jstrings) {
+        loop_6: for (.java.lang.String s$iterator$$24 : (.java.lang.Iterable<.java.lang.String>)(.java.lang.Iterable)jstrings) {
             final .java.lang.String s = (.java.lang.String)s$iterator$$24;
             sum += .com.redhat.ceylon.compiler.java.Util.checkNull(s).hashCode();
         }

@@ -16,7 +16,7 @@ class ExceptionAttributes implements .com.redhat.ceylon.compiler.java.runtime.mo
         final .java.lang.String message2 = .com.redhat.ceylon.compiler.java.Util.throwableMessage(e);
         .ceylon.language.Sequential<? extends .java.lang.Throwable> s = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(e);
         e.addSuppressed(new .ceylon.language.Exception());
-        e.addSuppressed(new .ceylon.language.Exception());
+        e.addSuppressed((.java.lang.Throwable)new .ceylon.language.Exception());
         final .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyThrowable me = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionAttributes.MyThrowable();
         me.addSuppressed(me);
         s = .com.redhat.ceylon.compiler.java.Util.suppressedExceptions(me);

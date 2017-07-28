@@ -205,7 +205,7 @@ final class javaIterableInForComprehension_ {
                 };
             }
         }));
-        .com.redhat.ceylon.compiler.java.test.interop.assertSameElements_.<.ceylon.language.String>assertSameElements(.ceylon.language.String.$TypeDescriptor$, strings, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+        .com.redhat.ceylon.compiler.java.test.interop.assertSameElements_.<.ceylon.language.String>assertSameElements(.ceylon.language.String.$TypeDescriptor$, (.java.lang.Iterable<.ceylon.language.String>)(.java.lang.Iterable)strings, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -235,7 +235,7 @@ final class javaIterableInForComprehension_ {
                 };
             }
         }));
-        .com.redhat.ceylon.compiler.java.test.interop.assertSameElements_.<.java.lang.String>assertSameElements(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), jstrings, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.java.lang.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .ceylon.language.Null.$TypeDescriptor$){
+        .com.redhat.ceylon.compiler.java.test.interop.assertSameElements_.<.java.lang.String>assertSameElements(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), (.java.lang.Iterable<.java.lang.String>)(.java.lang.Iterable)jstrings, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.ConstantIterable<.java.lang.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .ceylon.language.Null.$TypeDescriptor$, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.java.lang.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class)){

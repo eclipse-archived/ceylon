@@ -49,7 +49,7 @@ final class bug2289_ {
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> defines3 = (
             let
             {
-                final .ceylon.language.Map<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = mm;
+                final .ceylon.language.Map<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = (.ceylon.collection.MapMutator<? super .java.lang.Object, ? super .ceylon.language.Usable>)(.ceylon.collection.MapMutator)mm;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Object.$TypeDescriptor$), "Boolean(Object)", (short)-1){
                 

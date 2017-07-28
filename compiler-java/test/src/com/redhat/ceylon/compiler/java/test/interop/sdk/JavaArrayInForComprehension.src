@@ -430,7 +430,7 @@ final class javaArrayInForComprehension_ {
                         $iterator$0 = 0;
                     }
                     private int $iterator$0;
-                    private final int[] $array$0 = .com.redhat.ceylon.compiler.java.test.interop.sdk.toArray_.<int[], .ceylon.language.Integer>toArray(.com.redhat.ceylon.compiler.java.language.IntArray.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequential)_123);
+                    private final int[] $array$0 = (int[]).com.redhat.ceylon.compiler.java.test.interop.sdk.toArray_.<int[], .ceylon.language.Integer>toArray(.com.redhat.ceylon.compiler.java.language.IntArray.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequential)_123);
                     private long s;
                     private boolean s$exhausted$;
                     
@@ -466,7 +466,7 @@ final class javaArrayInForComprehension_ {
                         $iterator$0 = 0;
                     }
                     private int $iterator$0;
-                    private final .ceylon.language.String[] $array$0 = .com.redhat.ceylon.compiler.java.test.interop.sdk.toArray_.<.ceylon.language.String[], .ceylon.language.String>toArray(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Sequential)abc);
+                    private final .ceylon.language.String[] $array$0 = (.ceylon.language.String[])(.ceylon.language.String[]).com.redhat.ceylon.compiler.java.test.interop.sdk.toArray_.<.ceylon.language.String[], .ceylon.language.String>toArray(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Sequential)abc);
                     private .java.lang.String s;
                     private boolean s$exhausted$;
                     
@@ -502,7 +502,7 @@ final class javaArrayInForComprehension_ {
                         $iterator$0 = 0;
                     }
                     private int $iterator$0;
-                    private final .java.lang.String[] $array$0 = .com.redhat.ceylon.compiler.java.test.interop.sdk.toArray_.<.java.lang.String[], .java.lang.String>toArray(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), (.ceylon.language.Sequential)jabc);
+                    private final .java.lang.String[] $array$0 = (.java.lang.String[])(.java.lang.String[]).com.redhat.ceylon.compiler.java.test.interop.sdk.toArray_.<.java.lang.String[], .java.lang.String>toArray(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), (.ceylon.language.Sequential)jabc);
                     private .java.lang.String s;
                     private boolean s$exhausted$;
                     

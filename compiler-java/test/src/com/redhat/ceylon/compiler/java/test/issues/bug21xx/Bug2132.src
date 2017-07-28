@@ -11,7 +11,7 @@ public final class bug2132_ {
         final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner dateInner2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter.dateInner());
         final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner dateInner3 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter.dateInner());
         final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner dateInner4 = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.DateInnerFactory().dateInner());
-        final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner dateInner5 = .com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.DateInnerFactory().dateInner());
+        final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner dateInner5 = (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter<.java.util.Date>.Inner)(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.GenericOuter.Inner).com.redhat.ceylon.compiler.java.Util.checkNull(new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.DateInnerFactory().dateInner());
     }
     
     public static void main(.java.lang.String[] args) {

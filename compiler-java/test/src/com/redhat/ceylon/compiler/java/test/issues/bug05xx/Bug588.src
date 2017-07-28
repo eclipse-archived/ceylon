@@ -21,7 +21,7 @@ final class bug588_ {
         loop_0: while (isTuple$3 ? i$4 < length$5 : !((elem$1 = c$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
             if (isTuple$3) elem$1 = iterable$2.getFromFirst(i$4++);
             final .ceylon.language.Comparable<? super .ceylon.language.String> c = (.ceylon.language.Comparable<? super .ceylon.language.String>)(.ceylon.language.Comparable)elem$1;
-            .ceylon.language.print_.print((.ceylon.language.String)(.ceylon.language.Comparable)c);
+            .ceylon.language.print_.print((.ceylon.language.String)c);
         }
     }
 }

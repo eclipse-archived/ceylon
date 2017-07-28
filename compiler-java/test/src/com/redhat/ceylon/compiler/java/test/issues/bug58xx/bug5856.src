@@ -51,7 +51,7 @@ class Bug5856 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             }
             
             public boolean touches(final ActualEdge edge) {
-                return ((.com.redhat.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph<ActualNode, ActualEdge>.Edge)(.com.redhat.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.Edge)edge).touches((ActualNode)(.com.redhat.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.Node)this);
+                return ((.com.redhat.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph<ActualNode, ActualEdge>.Edge)(.com.redhat.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.Edge)edge).touches((ActualNode)this);
             }
             
             @.java.lang.Override
