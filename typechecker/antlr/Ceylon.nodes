@@ -277,7 +277,8 @@
 
 "A method or attribute body containing statements and declarations."
 ^(BLOCK:BODY
-    boolean definitelyReturns;)
+    boolean definitelyReturns;
+    boolean definitelyBreaksOrContinues;)
 
 "A class body."
 ^(CLASS_BODY:BODY)

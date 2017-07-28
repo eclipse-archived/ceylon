@@ -340,6 +340,7 @@ public class ControlFlowVisitor extends Visitor {
     public void visit(Tree.Block that) {
         super.visit(that);
         that.setDefinitelyReturns(definitelyReturns);
+        that.setDefinitelyBreaksOrContinues(definitelyBreaksOrContinues);
     }
     
     @Override

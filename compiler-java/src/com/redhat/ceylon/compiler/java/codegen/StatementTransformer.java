@@ -4625,9 +4625,11 @@ public class StatementTransformer extends AbstractTransformer {
         public abstract JCStatement transformSwitch(Node node, Tree.SwitchClause switchClause, Tree.SwitchCaseList caseList, 
                                                     String tmpVar, Tree.Term outerExpression, Type expectedType);
         
-        protected boolean isDefinitelyReturns(CaseClause caseClause) {
-            if(caseClause.getBlock() != null)
-                return caseClause.getBlock().getDefinitelyReturns();
+        protected boolean isDefinitelyReturnsOrBreaks(CaseClause caseClause) {
+            Tree.Block block = caseClause.getBlock();
+            if(block != null)
+                return block.getDefinitelyReturns()
+                    || block.getDefinitelyBreaksOrContinues();
             // expressions don't return
             return false;
         }
@@ -4687,7 +4689,7 @@ public class StatementTransformer extends AbstractTransformer {
                 Tree.Term term = exprs.get(exprs.size()-1).getTerm();
                 JCBlock block = transformCaseClauseBlock(caseClause, tmpVar, outerExpression, expectedType);
                 List<JCStatement> stmts = List.<JCStatement>nil();
-                if (!isDefinitelyReturns(caseClause)) {
+                if (!isDefinitelyReturnsOrBreaks(caseClause)) {
                     stmts = stmts.prepend(make().Break(label));
                 }
                 stmts = stmts.prepend(block);
