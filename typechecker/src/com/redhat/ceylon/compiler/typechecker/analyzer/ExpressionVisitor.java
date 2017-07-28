@@ -1535,7 +1535,8 @@ public class ExpressionVisitor extends Visitor {
                     && d instanceof Function) {
                 Function f = (Function) d;
                 Tree.Expression se = rhs.getExpression();
-                if (f.isDeclaredVoid() && !isSatementExpression(se)) {
+                if (f.isDeclaredVoid() 
+                        && !isSatementExpression(se)) {
                     rhs.addError(
                             "function is declared void so specified expression must be a statement: '" + 
                             d.getName(unit) + 
@@ -1550,8 +1551,9 @@ public class ExpressionVisitor extends Visitor {
             
 //            if (!that.getRefinement()) {
                 Type lhst = lhs.getTypeModel();
-                if (lhs==me && d instanceof Function &&
-                        !lhst.isTypeConstructor()) {
+                if (lhs==me 
+                        && d instanceof Function 
+                        && !lhst.isTypeConstructor()) {
                     //if the declaration of the method has
                     //defaulted parameters, we should ignore
                     //that when determining if the RHS is
@@ -1626,7 +1628,7 @@ public class ExpressionVisitor extends Visitor {
         return type;
     }
     
-    static Reference getRefinedMember(FunctionOrValue d, 
+    static Reference getRefinedMemberReference(FunctionOrValue d, 
             ClassOrInterface classOrInterface) {
         TypeDeclaration td = 
                 (TypeDeclaration) 
@@ -1782,17 +1784,15 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierStatement that, 
             FunctionOrValue refinedMethodOrValue, 
             FunctionOrValue methodOrValue,
-            ClassOrInterface ci, 
+            ClassOrInterface refiningType, 
             List<Declaration> interveningRefinements) {
-        Tree.SpecifierExpression rhs = 
-                that.getSpecifierExpression();
+        List<Type> refinedTypes = new ArrayList<Type>();
+        //don't check this one here because it is
+        //separately checked in visit(SpecifierStatement)
         Reference refinedProducedReference = 
-                getRefinedMember(refinedMethodOrValue, ci);
-        List<Type> refinedTypes = 
-                new ArrayList<Type>();
-//        Type type = 
-//                getRequiredSpecifiedType(that, 
-//                        refinedProducedReference);
+                getRefinedMemberReference(
+                        refinedMethodOrValue, 
+                        refiningType);
         addToIntersection(refinedTypes, 
                 refinedProducedReference.getType(), 
                 unit);
@@ -1804,36 +1804,45 @@ public class ExpressionVisitor extends Visitor {
                     //TODO: do we need to handle those complicating
                     //      factors here as well?
                     && !refinedMethodOrValue.equals(refinement)) {
-                FunctionOrValue rmv = 
-                        (FunctionOrValue) 
-                            refinement;
-                Reference refinedMember = 
-                        getRefinedMember(rmv, ci);
-                addToIntersection(refinedTypes, 
-                        refinedMember.getType(), 
-                        unit);
-                Type requiredType = 
-                        getRequiredSpecifiedType(that, 
-                                refinedMember);
-                if (rhs!=null && 
-                        !isTypeUnknown(requiredType)) {
-                    checkType(requiredType, rmv, rhs, 2100);
-                }
-                if (!refinement.isDefault() && 
-                        !refinement.isFormal()) {
-                    Declaration container = 
-                            (Declaration) 
-                                refinement.getContainer();
-                    that.getBaseMemberExpression()
-                        .addError("shortcut refinement refines non-formal, non-default member: '" +
-                                refinement.getName() + "' of '" +
-                                container.getName(unit));
-                }
+                checkRefinement(that, refiningType, refinedTypes, 
+                        (FunctionOrValue) refinement);
             }
         }
         Type it = canonicalIntersection(refinedTypes, unit);
         methodOrValue.setType(it);
         return refinedProducedReference;
+    }
+
+    private void checkRefinement(Tree.SpecifierStatement that, 
+            ClassOrInterface refiningType,
+            List<Type> refinedTypes,
+            FunctionOrValue refinement) {
+        Tree.SpecifierExpression rhs = 
+                that.getSpecifierExpression();
+        Reference refinedMember = 
+                getRefinedMemberReference(refinement, 
+                        refiningType);
+        addToIntersection(refinedTypes, 
+                refinedMember.getType(), 
+                unit);
+        Type requiredType = 
+                getRequiredSpecifiedType(that, 
+                        refinedMember);
+        if (rhs!=null && 
+                !isTypeUnknown(requiredType)) {
+            checkType(requiredType, refinement, rhs, 2100);
+        }
+        
+        if (!refinement.isDefault() && 
+            !refinement.isFormal()) {
+            Declaration container = 
+                    (Declaration) 
+                        refinement.getContainer();
+            that.getBaseMemberExpression()
+                .addError("shortcut refinement refines non-formal, non-default member: '" +
+                        refinement.getName() + "' of '" +
+                        container.getName(unit));
+        }
     }
 
     private Type getRequiredSpecifiedType(
@@ -1936,12 +1945,18 @@ public class ExpressionVisitor extends Visitor {
                        checkAssignableToOneOf(t, 
                                declaredType, 
                                optionalDeclaredType, 
-                               sie, message, code);
+                               sie, 
+                               message 
+                               + " with runtime null checking", 
+                               code);
                     }
                     else {
                         checkAssignable(t, 
                                 declaredType, 
-                                sie, message, code);
+                                sie, 
+                                message 
+                                + " with strict null checking", 
+                                code);
                     }
                 }
             }

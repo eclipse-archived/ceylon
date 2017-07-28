@@ -12,7 +12,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTy
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.hasUncheckedNullType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMemberReference;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.erasedType;
@@ -2181,7 +2181,7 @@ public class RefinementVisitor extends Visitor {
         final Value root = 
                 refined instanceof Value ? 
                         (Value) refined : sv;
-        final Reference rv = getRefinedMember(sv, c);
+        final Reference rv = getRefinedMemberReference(sv, c);
         if (!sv.isFormal() && !sv.isDefault()
                 && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
             that.addError("inherited attribute may not be assigned in initializer and is neither formal nor default so may not be refined: " + 
@@ -2286,7 +2286,7 @@ public class RefinementVisitor extends Visitor {
             that.addError("inherited method is neither formal nor default so may not be refined: " + 
                     message(sm), 510);
         }
-        final Reference rm = getRefinedMember(sm,c);
+        final Reference rm = getRefinedMemberReference(sm,c);
         Function m = new Function();
         m.setName(name);
         List<Tree.ParameterList> paramLists;
