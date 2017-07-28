@@ -106,4 +106,9 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     public void bug7121(){
         compile("bug71xx/bug7121.ceylon");
     }
+
+    @Test
+    public void bug7125(){
+        compile("bug71xx/Bug7125Java.java", "bug71xx/bug7125.ceylon");
+    }
 }
