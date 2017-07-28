@@ -365,7 +365,7 @@ public class AetherTestCase extends AbstractAetherTest {
     public void testOptionalDependency() throws Throwable {
         Repository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        ArtifactResult result = manager.getArtifactResult("com.google.guava:guava", "18.0");
+        ArtifactResult result = manager.getArtifactResult("com.google.guava:guava", "22.0");
         Assert.assertNotNull(result);
         Assert.assertEquals(result.name(), "com.google.guava:guava");
         File artifact = result.artifact();

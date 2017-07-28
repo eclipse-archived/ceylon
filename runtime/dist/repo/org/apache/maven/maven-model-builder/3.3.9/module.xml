@@ -33,6 +33,6 @@
         <module name="org.apache.maven.maven-builder-support" slot="3.3.9" export="true"/>
         <module name="org.codehaus.plexus.plexus-utils" slot="3.0.22"/>
         <module name="org.codehaus.plexus.plexus-interpolation" slot="1.22" export="true"/>
-        <module name="com.google.guava" slot="18.0"/>
+        <module name="com.google.guava" slot="22.0"/>
     </dependencies>
 </module>
