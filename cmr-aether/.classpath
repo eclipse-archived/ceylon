@@ -20,6 +20,6 @@
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/transport/http/1.1.0/org.eclipse.aether.transport.http-1.1.0.jar"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/eclipse/aether/util/1.1.0/org.eclipse.aether.util-1.1.0.jar"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/apache/commons/lang3/3.6/org.apache.commons.lang3-3.6.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/com/google/guava/22.0/com.google.guava-22.0.jar"/>
+	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/com/google/guava/20.0/com.google.guava-20.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

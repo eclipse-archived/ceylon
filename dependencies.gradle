@@ -45,7 +45,7 @@ ext {
 //plexus-interpolation.lib=${runtime.repo.path}/org/codehaus/plexus/plexus-interpolation/1.22/org.codehaus.plexus.plexus-interpolation-1.22.jar
 //plexus-utils.lib=${runtime.repo.path}/org/codehaus/plexus/plexus-utils/3.0.22/org.codehaus.plexus.plexus-utils-3.0.22.jar
 //
-//guava.lib=${runtime.repo.path}/com/google/guava/22.0/com.google.guava-22.0.jar
+//guava.lib=${runtime.repo.path}/com/google/guava/20.0/com.google.guava-20.0.jar
 //commons-lang3.lib=${runtime.repo.path}/org/apache/commons/lang3/3.6/org.apache.commons.lang3-3.6.jar
 //
 //maven-support.lib=${aether-api.lib}:${aether-spi.lib}:${aether-util.lib}:${aether-impl.lib}:\

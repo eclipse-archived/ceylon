@@ -22,14 +22,14 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="com.google.guava" slot="22.0">
+<module xmlns="urn:jboss:module:1.0" name="com.google.guava" slot="20.0">
     <properties>
         <property name="groupId" value="com.google.guava"/>
         <property name="artifactId" value="guava"/>
     </properties>
 
     <resources>
-        <resource-root path="com.google.guava-22.0.jar"/>
+        <resource-root path="com.google.guava-20.0.jar"/>
     </resources>
     <dependencies>
         <module name="java.base" slot="7" export="true"/>

@@ -129,7 +129,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.connector.basic", "1.1.0")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.file", "1.1.0")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.http", "1.1.0")); // optional
-        archives.add(getRepoJar(ceylonRepo, "com.google.guava", "22.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "com.google.guava", "20.0")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.commons.lang3", "3.6")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-artifact", "3.3.9")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-model", "3.3.9")); // optional

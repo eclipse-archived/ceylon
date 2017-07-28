@@ -33,7 +33,7 @@
         <module name="org.apache.maven.maven-artifact" slot="3.3.9"/>
         <module name="org.apache.maven.maven-repository-metadata" slot="3.3.9"/>
         <module name="org.codehaus.plexus.plexus-utils" slot="3.0.22"/>
-        <module name="com.google.guava" slot="22.0"/>
+        <module name="com.google.guava" slot="20.0"/>
         <module name="org.eclipse.aether.api" slot="1.1.0" export="true"/>
         <module name="org.eclipse.aether.impl" slot="1.1.0" export="true"/>
         <module name="org.eclipse.aether.spi" slot="1.1.0"/>
