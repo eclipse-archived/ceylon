@@ -367,6 +367,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     }
 
     @Test
+    public void testBug6947() throws Throwable {
+        compareWithJavaSource("bug69xx/Bug6947");
+    }
+
+    @Test
     public void testBug6949() throws Throwable {
         compareWithJavaSource("bug69xx/Bug6949");
     }

@@ -1,0 +1,97 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug69xx;
+
+class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Inner() {
+        super();
+    }
+    
+    Inner(final .ceylon.language.Callable<? extends .java.lang.Object> arg) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Inner.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.Inner.class);
+}
+class Outer extends .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Inner {
+    
+    protected Outer() {
+        super();
+        this.arg = null;
+    }
+    
+    Outer(final .ceylon.language.Callable<? extends .java.lang.Object> arg) {
+        super(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long num = ((.ceylon.language.Integer)$param$0).longValue();
+                return arg.$call$();
+            }
+        });
+        this.arg = arg;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> arg;
+    
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getArg$priv$() {
+        return this.arg;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Outer.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug69xx.Outer.class);
+}
+final class temp_ {
+    
+    private temp_() {
+    }
+    
+    static void temp() {
+    }
+}
+final class mwe_ {
+    
+    private mwe_() {
+    }
+    
+    static void mwe() {
+        new .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Outer(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug69xx.temp_.temp();
+                    }
+                    returning null;
+                );
+            }
+        });
+        final .ceylon.language.Callable<? extends .java.lang.Object> arg = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.issues.bug69xx.temp_.temp();
+                    }
+                    returning null;
+                );
+            }
+        };
+        final .ceylon.language.Callable<? extends .java.lang.Object> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long num = ((.ceylon.language.Integer)$param$0).longValue();
+                return arg.$call$();
+            }
+        };
+    }
+}
