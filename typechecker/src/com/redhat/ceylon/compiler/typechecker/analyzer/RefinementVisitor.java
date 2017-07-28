@@ -53,7 +53,6 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.LazyType;
@@ -1095,12 +1094,12 @@ public class RefinementVisitor extends Visitor {
             ClassOrInterface ci, Declaration refined) {
         
         List<Type> typeArgs;
-        if (refined instanceof Generic && 
-            refining instanceof Generic) {
+        if (refined.isParameterized() && 
+            refining.isParameterized()) {
             List<TypeParameter> refinedTypeParams = 
-                    ((Generic) refined).getTypeParameters();
+                    refined.getTypeParameters();
             List<TypeParameter> refiningTypeParams = 
-                    ((Generic) refining).getTypeParameters();
+                    refining.getTypeParameters();
             checkRefiningMemberTypeParameters(that, 
                     refining, refined, refinedTypeParams, 
                     refiningTypeParams);

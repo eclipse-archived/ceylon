@@ -23,6 +23,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Generic;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -224,7 +225,8 @@ public class TypeUtils {
                         final HashSet<TypeParameter> parenttp = new HashSet<>();
                         while (scope != null) {
                             if (scope instanceof Generic) {
-                                for (TypeParameter tp : ((Generic)scope).getTypeParameters()) {
+                                Generic g = (Generic) scope;
+                                for (TypeParameter tp : g.getTypeParameters()) {
                                     parenttp.add(tp);
                                 }
                             }
@@ -234,11 +236,9 @@ public class TypeUtils {
                         targs.putAll(pt.getTypeArguments());
                         Declaration cd = ModelUtil.getContainingDeclaration(pt.getDeclaration());
                         while (cd != null) {
-                            if (cd instanceof Generic) {
-                                for (TypeParameter tp : ((Generic)cd).getTypeParameters()) {
-                                    if (parenttp.contains(tp)) {
-                                        targs.put(tp, tp.getType());
-                                    }
+                            for (TypeParameter tp : cd.getTypeParameters()) {
+                                if (parenttp.contains(tp)) {
+                                    targs.put(tp, tp.getType());
                                 }
                             }
                             cd = ModelUtil.getContainingDeclaration(cd);
@@ -468,8 +468,9 @@ public class TypeUtils {
     public static Map<TypeParameter, Type> wrapAsIterableArguments(Type pt) {
         HashMap<TypeParameter, Type> r = new HashMap<TypeParameter, Type>();
         final TypeDeclaration iterable = pt.getDeclaration().getUnit().getIterableDeclaration();
-        r.put(iterable.getTypeParameters().get(0), pt);
-        r.put(iterable.getTypeParameters().get(1), pt.getDeclaration().getUnit().getNullType());
+        List<TypeParameter> typeParameters = iterable.getTypeParameters();
+        r.put(typeParameters.get(0), pt);
+        r.put(typeParameters.get(1), pt.getDeclaration().getUnit().getNullType());
         return r;
     }
 
@@ -884,7 +885,7 @@ public class TypeUtils {
     public static void encodeForRuntime(final Node that, final Declaration d, final GenerateJsVisitor gen,
             final RuntimeMetamodelAnnotationGenerator annGen) {
         gen.out("function(){return{mod:$CCMM$");
-        List<TypeParameter> tparms = d instanceof Generic ? ((Generic)d).getTypeParameters() : null;
+        List<TypeParameter> tparms = d instanceof Generic ? d.getTypeParameters() : null;
         List<Type> satisfies = null;
         List<Type> caseTypes = null;
         if (d instanceof Class) {
@@ -902,13 +903,13 @@ public class TypeUtils {
             satisfies = _cd.getSatisfiedTypes();
             caseTypes = _cd.getCaseTypes();
 
-        } else if (d instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
-
-            satisfies = ((com.redhat.ceylon.model.typechecker.model.Interface) d).getSatisfiedTypes();
-            caseTypes = ((com.redhat.ceylon.model.typechecker.model.Interface) d).getCaseTypes();
-            if (((com.redhat.ceylon.model.typechecker.model.Interface) d).isAlias()) {
+        } else if (d instanceof Interface) {
+            Interface _id = (Interface) d;
+            satisfies = _id.getSatisfiedTypes();
+            caseTypes = _id.getCaseTypes();
+            if (_id.isAlias()) {
                 ArrayList<Type> s2 = new ArrayList<>(satisfies.size()+1);
-                s2.add(((com.redhat.ceylon.model.typechecker.model.Interface) d).getExtendedType());
+                s2.add(_id.getExtendedType());
                 s2.addAll(satisfies);
                 satisfies = s2;
             }
@@ -930,7 +931,7 @@ public class TypeUtils {
                 gen.out(",", MetamodelGenerator.KEY_PARAMS, ":");
                 //Parameter types of the first parameter list
                 encodeParameterListForRuntime(false, that, ((Function)d).getFirstParameterList(), gen);
-                tparms = ((Function) d).getTypeParameters();
+                tparms = d.getTypeParameters();
             }
 
         } else if (d instanceof Constructor) {
@@ -1598,9 +1599,11 @@ public class TypeUtils {
     }
 
     public static boolean isStaticWithGenericContainer(Declaration d) {
-        if (d != null && d.isStatic() && d.getContainer() instanceof Generic) {
-            Generic c = (Generic)d.getContainer();
-            return c.getTypeParameters() != null && !c.getTypeParameters().isEmpty();
+        if (d != null 
+                && d.isStatic() 
+                && d.getContainer() instanceof Generic) {
+            Generic c = (Generic) d.getContainer();
+            return c.isParameterized();
         }
         return false;
     }

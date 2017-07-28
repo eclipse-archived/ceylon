@@ -271,20 +271,18 @@ public class TypeArgumentVisitor extends Visitor {
     @Override
     public void visit(Tree.SimpleType that) {
         super.visit(that);
-        Tree.TypeArgumentList tal = 
-                that.getTypeArgumentList();
-        TypeDeclaration dec = that.getDeclarationModel();
-        Type type = that.getTypeModel();
-        if (dec!=null && type!=null) {
-            List<TypeParameter> params = 
-                    dec.getTypeParameters();
-            if (tal==null 
-                    && !params.isEmpty() 
+        if (that.getTypeArgumentList()==null) {
+            TypeDeclaration dec = that.getDeclarationModel();
+            Type type = that.getTypeModel();
+            if (dec!=null && type!=null 
+                    && dec.isParameterized() 
                     && !type.isTypeConstructor() 
                     && !that.getMetamodel() 
                     && !(that.getStaticTypePrimary() 
                             && dec.isJava())) {
                 String name = dec.getName(that.getUnit());
+                List<TypeParameter> params = 
+                        dec.getTypeParameters();
                 if (!params.get(0).isDefaulted()) {
                     StringBuilder paramList = 
                             new StringBuilder();
@@ -300,7 +298,6 @@ public class TypeArgumentVisitor extends Visitor {
                     that.addError("missing type arguments to generic type: '" + 
                             name + "' declares type parameters " + 
                             paramList);
-   
                 }
                 else {
                     that.addUsageWarning(Warning.syntaxDeprecation,

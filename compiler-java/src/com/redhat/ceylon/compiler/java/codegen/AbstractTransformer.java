@@ -1237,10 +1237,8 @@ public abstract class AbstractTransformer implements Transformation {
 
         Type refinedContainerType = typedReference.getQualifyingType().getSupertype(refinedContainer);
         ArrayList<Type> typeArgs = new ArrayList<Type>();
-        if (typedReference.getDeclaration() instanceof Generic) {
-            for (TypeParameter tp : ((Generic)typedReference.getDeclaration()).getTypeParameters()) {
-                typeArgs.add(typedReference.getTypeArguments().get(tp));
-            }
+        for (TypeParameter tp : typedReference.getDeclaration().getTypeParameters()) {
+            typeArgs.add(typedReference.getTypeArguments().get(tp));
         }
         return refinedDeclaration.appliedTypedReference(refinedContainerType, typeArgs);
     }
@@ -2207,7 +2205,7 @@ public abstract class AbstractTransformer implements Transformation {
         for (int i = qualifyingTypes.size()-1 ; i >= 0 ; i--) {
             Reference qualifiedType = qualifyingTypes.get(i);
             Map<TypeParameter, Type> tas = qualifiedType.getTypeArguments();
-            java.util.List<TypeParameter> tps = ((Generic)qualifiedType.getDeclaration()).getTypeParameters();
+            java.util.List<TypeParameter> tps = qualifiedType.getDeclaration().getTypeParameters();
             // add any type params for this type
             if (tps != null) {
                 int index = 0;
@@ -4937,16 +4935,14 @@ public abstract class AbstractTransformer implements Transformation {
                 Declaration enclosingDeclaration = getDeclarationContainer(declaration);
                 if(enclosingDeclaration instanceof TypedDeclaration){
                     // must be in scope
-                    if(enclosingDeclaration instanceof Generic 
-                            && !((Generic) enclosingDeclaration).getTypeParameters().isEmpty())
+                    if(enclosingDeclaration.isParameterized())
                         return false;
                     // look up the containers
                     declaration = enclosingDeclaration;
                 }else if(enclosingDeclaration instanceof TypeDeclaration){
                     // must be in scope
                     // we can't optimise if that container has type arguments as they are not provided
-                    if(enclosingDeclaration instanceof Generic 
-                            && !((Generic) enclosingDeclaration).getTypeParameters().isEmpty())
+                    if(enclosingDeclaration.isParameterized())
                         return false;
                     // look up the containers
                     declaration = enclosingDeclaration;
@@ -4970,7 +4966,7 @@ public abstract class AbstractTransformer implements Transformation {
     private boolean canUseFastFailTypeTest(Type type) {
         if(type.getDeclaration() instanceof ClassOrInterface == false)
             return false;
-        boolean isRaw = !type.getDeclaration().getTypeParameters().isEmpty();
+        boolean isRaw = type.getDeclaration().isParameterized();
         Type qualifyingType = type.getQualifyingType();
         if(qualifyingType == null
             // ignore qualifying types of static java declarations
@@ -4990,11 +4986,10 @@ public abstract class AbstractTransformer implements Transformation {
                     declaration = enclosingDeclaration;
                 }else if(enclosingDeclaration instanceof TypeDeclaration){
                     // must be in scope
-                    // we can't do instanceof on a local whose outer types contain type parameters, unless the local is raw
-                    if(enclosingDeclaration instanceof Generic
-                            && local
-                            && !isRaw
-                            && !((Generic) enclosingDeclaration).getTypeParameters().isEmpty())
+                    // we can't do instanceof on a local whose outer types 
+                    // contain type parameters, unless the local is raw
+                    if(enclosingDeclaration.isParameterized()
+                            && local && !isRaw)
                         return false;
                     // look up the containers
                     declaration = enclosingDeclaration;
@@ -5774,8 +5769,7 @@ public abstract class AbstractTransformer implements Transformation {
                 Declaration enclosingDeclaration = getDeclarationContainer(declaration);
                 if(enclosingDeclaration instanceof TypedDeclaration){
                     // must be in scope
-                    if(enclosingDeclaration instanceof Generic 
-                            && !((Generic) enclosingDeclaration).getTypeParameters().isEmpty())
+                    if(enclosingDeclaration.isParameterized())
                         return true;
                     // look up the containers
                     declaration = enclosingDeclaration;
@@ -5995,9 +5989,9 @@ public abstract class AbstractTransformer implements Transformation {
     * @return true if all these conditions are met.
     */
     public boolean needsRawCastForMixinSuperCall(TypeDeclaration declaration, Type type) {
-        return !declaration.getTypeParameters().isEmpty()
-                && hasVariantTypeParameters(declaration)
-                && declarationAppearsInInvariantPosition(declaration, type.resolveAliases());
+        return declaration.isParameterized()
+            && hasVariantTypeParameters(declaration)
+            && declarationAppearsInInvariantPosition(declaration, type.resolveAliases());
     }
     
     private boolean declarationAppearsInInvariantPosition(TypeDeclaration declaration, Type type) {

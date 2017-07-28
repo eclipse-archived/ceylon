@@ -836,8 +836,9 @@ public class InheritanceVisitor extends Visitor {
     private String getCaseTypeExplanation(TypeDeclaration td, 
             Type type) {
         String message = "case type must be a subtype of enumerated type";
-        if (!td.getTypeParameters().isEmpty() &&
-                type.getDeclaration().inherits(td)) {
+        if (td.isParameterized() 
+                && type.getDeclaration()
+                    .inherits(td)) {
             message += " for every type argument of the generic enumerated type";
         }
         return message;

@@ -774,8 +774,8 @@ public class TypeHierarchyVisitor extends Visitor {
                                 //TODO: I think this case never occurs, because getMember() always
                                 //      returns null in the case of an ambiguity
                                 List<Type> typeArgs = new ArrayList<Type>();
-                                if (d instanceof Generic) {
-                                    for (TypeParameter refinedTypeParam: ((Generic) d).getTypeParameters()) {
+                                if (d.isParameterized()) {
+                                    for (TypeParameter refinedTypeParam: d.getTypeParameters()) {
                                         typeArgs.add(refinedTypeParam.getType());
                                     }
                                 }

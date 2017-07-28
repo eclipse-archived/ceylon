@@ -2673,8 +2673,8 @@ public abstract class DeclarationVisitor extends Visitor {
                 scope.getDirectMember(name, null, false);
         if (p==null && scope instanceof Generic) {
             //TODO: just look at the most recent
-            Generic g = (Generic) scope;
-            p = searchForTypeParameter(name, g);
+            p = searchForTypeParameter(name, 
+                    (Generic) scope);
         }
         that.setDeclarationModel(p);
         if (p==null) {
@@ -2961,8 +2961,7 @@ public abstract class DeclarationVisitor extends Visitor {
                                 getDeclaration();
                         List<TypeParameter> tps = 
                                 dec.getTypeParameters();
-                        Type ot = 
-                                outerType.getTypeModel();
+                        Type ot = outerType.getTypeModel();
                         return getTypeArgumentMap(dec, ot, 
                                 AnalyzerUtil.getTypeArguments(
                                         tal, ot, tps));
@@ -2974,8 +2973,7 @@ public abstract class DeclarationVisitor extends Visitor {
                     TypeDeclaration dec = getDeclaration();
                     List<TypeParameter> tps = 
                             dec.getTypeParameters();
-                    Type ot = 
-                            outerType.getTypeModel();
+                    Type ot = outerType.getTypeModel();
                     return getVarianceMap(dec, ot, 
                             AnalyzerUtil.getVariances(tal, tps));
                 }

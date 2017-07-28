@@ -89,7 +89,6 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -4505,28 +4504,21 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     boolean erasesTypeArguments(Reference producedReference) {
-        java.util.List<TypeParameter> tps = null;
-        Declaration declaration = producedReference.getDeclaration();
-        if (declaration instanceof Generic) {
-            tps = ((Generic)declaration).getTypeParameters();
-        }
-        if (tps != null) {
-            for (TypeParameter tp : tps) {
-                Type ta = producedReference.getTypeArguments().get(tp);
-                java.util.List<Type> bounds = null;
-                boolean needsCastForBounds = false;
-                if(!tp.getSatisfiedTypes().isEmpty()){
-                    bounds = new ArrayList<Type>(tp.getSatisfiedTypes().size());
-                    for(Type bound : tp.getSatisfiedTypes()){
-                        // substitute the right type arguments
-                        bound = substituteTypeArgumentsForTypeParameterBound(producedReference, bound);
-                        bounds.add(bound);
-                        needsCastForBounds |= needsCast(ta, bound, false, false, false);
-                    }
+        for (TypeParameter tp : producedReference.getDeclaration().getTypeParameters()) {
+            Type ta = producedReference.getTypeArguments().get(tp);
+            java.util.List<Type> bounds = null;
+            boolean needsCastForBounds = false;
+            if(!tp.getSatisfiedTypes().isEmpty()){
+                bounds = new ArrayList<Type>(tp.getSatisfiedTypes().size());
+                for(Type bound : tp.getSatisfiedTypes()){
+                    // substitute the right type arguments
+                    bound = substituteTypeArgumentsForTypeParameterBound(producedReference, bound);
+                    bounds.add(bound);
+                    needsCastForBounds |= needsCast(ta, bound, false, false, false);
                 }
-                if (willEraseToObject(ta) || needsCastForBounds) {
-                    return true;
-                }
+            }
+            if (willEraseToObject(ta) || needsCastForBounds) {
+                return true;
             }
         }
         return false;

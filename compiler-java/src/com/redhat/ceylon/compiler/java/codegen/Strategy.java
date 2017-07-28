@@ -38,7 +38,6 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -521,10 +520,10 @@ class Strategy {
             if (original instanceof ClassAlias
                     || decl.isStatic() && isCeylon(decl)) {
                 ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters(original, (Declaration)container));
-                copyDown.addAll(((Generic)decl).getTypeParameters());
+                copyDown.addAll(decl.getTypeParameters());
                 return copyDown;
             } else {
-                return ((Function)decl).getTypeParameters();
+                return decl.getTypeParameters();
             }
         } else if (decl instanceof ClassAlias) {
             // TODO

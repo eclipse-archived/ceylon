@@ -5,7 +5,6 @@ import static com.redhat.ceylon.model.typechecker.model.SiteVariance.OUT;
 import static java.lang.Character.charCount;
 import static java.lang.Character.isLowerCase;
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 
@@ -1075,10 +1074,7 @@ public class ModelUtil {
         boolean containsFunctionOrValueInterface
                 = containsFunctionOrValueInterface(receivingType);
         while (true) {
-            if (declaration instanceof Generic) {
-                Generic g = (Generic) declaration;
-                count += g.getTypeParameters().size();
-            }
+            count += declaration.getTypeParameters().size();
             if (declaration.isClassOrInterfaceMember()) {
                 declaration = 
                         (Declaration) 
@@ -1161,7 +1157,7 @@ public class ModelUtil {
             Declaration declaration,
             int count) {
         List<TypeParameter> typeParameters = 
-                getTypeParameters(declaration);
+                declaration.getTypeParameters();
         Map<TypeParameter,Type> map = 
                 new HashMap<TypeParameter,Type>
                     (count);
@@ -1261,7 +1257,7 @@ public class ModelUtil {
             }
         }
         List<TypeParameter> typeParameters = 
-                getTypeParameters(declaration);
+                declaration.getTypeParameters();
         for (int i=0; 
                 i<typeParameters.size() && 
                 i<variances.size(); 
@@ -1326,17 +1322,6 @@ public class ModelUtil {
         return count;
     }*/
 
-    public static List<TypeParameter> getTypeParameters(
-            Declaration declaration) {
-        if (declaration instanceof Generic) {
-            Generic g = (Generic) declaration;
-            return g.getTypeParameters();
-        }
-        else {
-            return emptyList();
-        }
-    }
-    
     static <T> List<T> list(List<T> list, T element) {
         List<T> result = new ArrayList<T>(list.size()+1);
         result.addAll(list);
@@ -1666,7 +1651,7 @@ public class ModelUtil {
             }
         }
         if (pd.isFinal()) {
-            if (pd.getTypeParameters().isEmpty() 
+            if (!pd.isParameterized() 
                     && !q.isUnknown()) {
                 Type qq = replaceTypeParameters(q, unit);
                 if (!qq.involvesTypeParameters() 
@@ -1680,7 +1665,7 @@ public class ModelUtil {
             }
         }
         if (qd.isFinal()) {
-            if (qd.getTypeParameters().isEmpty() 
+            if (!qd.isParameterized() 
                     && !p.isUnknown()) {
                 Type pp = replaceTypeParameters(p, unit);
                 if (!pp.involvesTypeParameters() 
@@ -2027,8 +2012,8 @@ public class ModelUtil {
         String an = ad.getQualifiedNameString();
         String bn = bd.getQualifiedNameString();
         if (an.equals(bn)
-                && ad.getTypeParameters().isEmpty()
-                && bd.getTypeParameters().isEmpty())
+                && !ad.isParameterized()
+                && !bd.isParameterized())
             return a;
         if (a.isAnything()) {
             // everything is an Anything
@@ -2919,20 +2904,22 @@ public class ModelUtil {
      * 
      * @see Declaration#getTypeParametersAsArguments
      */
-    public static List<Type> typeParametersAsArgList(Generic dec) {
-        List<TypeParameter> params = 
-                dec.getTypeParameters();
-        if (params.isEmpty()) {
+    public static List<Type> typeParametersAsArgList(Declaration dec) {
+        if (dec.isParameterized()) {
+            List<TypeParameter> params = 
+                    dec.getTypeParameters();
+            int size = params.size();
+            List<Type> paramsAsArgs = 
+                    new ArrayList<Type>(size);
+            for (int i=0; i<size; i++) {
+                TypeParameter param = params.get(i);
+                paramsAsArgs.add(param.getType());
+            }
+            return paramsAsArgs;
+        }
+        else {
             return NO_TYPE_ARGS;
         }
-        int size = params.size();
-        List<Type> paramsAsArgs = 
-                new ArrayList<Type>(size);
-        for (int i=0; i<size; i++) {
-            TypeParameter param = params.get(i);
-            paramsAsArgs.add(param.getType());
-        }
-        return paramsAsArgs;
     }
     
     /**
@@ -3382,7 +3369,7 @@ public class ModelUtil {
     }
 
     public static Type genericFunctionType(
-            Generic generic, Scope scope, 
+            Declaration generic, Scope scope, 
             Declaration member, Reference reference, 
             Unit unit) {
         List<TypeParameter> typeParameters = 

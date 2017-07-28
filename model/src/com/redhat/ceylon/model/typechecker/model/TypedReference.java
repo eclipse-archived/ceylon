@@ -80,31 +80,28 @@ public class TypedReference extends Reference {
                 .append(".");
         }
         name.append(dec.getName());
-        if (dec instanceof Generic) {
-            Generic g = (Generic) dec;
+        if (dec.isParameterized()) {
             List<TypeParameter> typeParameters = 
-                    g.getTypeParameters();
-            if (!typeParameters.isEmpty()) {
-                name.append("<");
-                Map<TypeParameter, Type> args = 
-                        getTypeArguments();
-                for (int i=0, l=typeParameters.size(); 
-                        i<l; i++) {
-                    if (i!=0) {
-                        name.append(",");
-                    }
-                    TypeParameter typeParam = 
-                            typeParameters.get(i);
-                    Type arg = args.get(typeParam);
-                    if (arg==null) {
-                        name.append("unknown");
-                    }
-                    else {
-                        name.append(arg.asString());
-                    }
+                    dec.getTypeParameters();
+            name.append("<");
+            Map<TypeParameter, Type> args = 
+                    getTypeArguments();
+            for (int i=0, l=typeParameters.size(); 
+                    i<l; i++) {
+                if (i!=0) {
+                    name.append(",");
                 }
-                name.append(">");
+                TypeParameter typeParam = 
+                        typeParameters.get(i);
+                Type arg = args.get(typeParam);
+                if (arg==null) {
+                    name.append("unknown");
+                }
+                else {
+                    name.append(arg.asString());
+                }
             }
+            name.append(">");
         }
         return name.toString();
     }

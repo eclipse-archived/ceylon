@@ -82,9 +82,8 @@ public abstract class Reference {
     fillInDefaultTypeArguments(Declaration declaration,
             final Map<TypeParameter, Type> typeArguments) {
         Map<TypeParameter, Type> typeArgs = typeArguments;
-        Generic g = (Generic) declaration;
         List<TypeParameter> typeParameters = 
-                g.getTypeParameters();
+                declaration.getTypeParameters();
         for (int i=0, l=typeParameters.size(); 
                 i<l; i++) {
             TypeParameter typeParam = 
@@ -118,28 +117,11 @@ public abstract class Reference {
      */
     public List<Type> getTypeArgumentList() {
         Declaration declaration = getDeclaration();
-        if (declaration instanceof Generic) {
-            Generic g = (Generic) declaration;
-            List<TypeParameter> typeParameters = 
-                    g.getTypeParameters();
-            if (typeParameters.isEmpty()) {
-                return NO_TYPE_ARGS;
-            }
-            else {
-    //            if (TypeCache.isEnabled()) {
-    //                if (typeArgumentList==null) {
-    //                    typeArgumentList = 
-    //                            getTypeArgumentListInternal();
-    //                }
-    //                return typeArgumentList;
-    //            }
-    //            else {
-                return getTypeArgumentList(
-                        declaration.getUnit(),
-                        typeParameters,
-                        getTypeArguments());
-            }
-    //        }
+        if (declaration.isParameterized()) {
+            return getTypeArgumentList(
+                    declaration.getUnit(),
+                    declaration.getTypeParameters(),
+                    getTypeArguments());
         }
         else {
             return NO_TYPE_ARGS;
@@ -266,19 +248,15 @@ public abstract class Reference {
      */
     private void captureWildcards(TypedReference parameter) {
         Declaration declaration = getDeclaration();
-        if (declaration instanceof Generic
-                && declaration.isJava()) {
-            Generic g = (Generic) declaration;
-            if (!g.getTypeParameters().isEmpty()) {
-                Map<TypeParameter, SiteVariance> capturedWildcards =
-                        new HashMap<TypeParameter, SiteVariance>(1);
-                for (TypeParameter tp: g.getTypeParameters()) {
-                    if (canCaptureWildcard(tp)) {
-                        capturedWildcards.put(tp, SiteVariance.OUT);
-                    }
+        if (declaration.isJava() && declaration.isParameterized()) {
+            Map<TypeParameter, SiteVariance> capturedWildcards =
+                    new HashMap<TypeParameter, SiteVariance>(1);
+            for (TypeParameter tp: declaration.getTypeParameters()) {
+                if (canCaptureWildcard(tp)) {
+                    capturedWildcards.put(tp, SiteVariance.OUT);
                 }
-                parameter.setCapturedWildcards(capturedWildcards);
             }
+            parameter.setCapturedWildcards(capturedWildcards);
         }
     }
     

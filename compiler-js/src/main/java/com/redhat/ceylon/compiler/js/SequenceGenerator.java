@@ -124,9 +124,11 @@ public class SequenceGenerator {
                     gen.memberAccess(that, "e"), ".apply(e,a);},");
             if (that.getTypeArguments() != null && that.getTypeArguments().getTypeModels()!=null
                     && !that.getTypeArguments().getTypeModels().isEmpty()) {
-                TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
-                        ((Generic)that.getDeclaration()).getTypeParameters(),
-                        that.getTypeArguments().getTypeModels()), gen, true, null);
+                TypeUtils.printTypeArguments(that, 
+                        TypeUtils.matchTypeParametersWithArguments(
+                            that.getDeclaration().getTypeParameters(),
+                            that.getTypeArguments().getTypeModels()), 
+                        gen, true, null);
             } else {
                 gen.out("undefined");
             }

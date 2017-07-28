@@ -9,7 +9,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.strictlyBetterMatch;
-import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,11 +93,6 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
 
-    @Override
-    public List<TypeParameter> getTypeParameters() {
-        return emptyList();
-    }
-    
     @Override
     public void setTypeParameters(List<TypeParameter> params) {
         throw new UnsupportedOperationException();

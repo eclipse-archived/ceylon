@@ -537,8 +537,7 @@ public class ImportVisitor extends Visitor {
     private boolean isStaticNonGeneric(Declaration dec, 
             TypeDeclaration outer) {
         return dec.isStatic() 
-                && (outer.isJava() || 
-                    outer.getTypeParameters().isEmpty()); 
+            && (outer.isJava() || !outer.isParameterized()); 
     }
 
     private void addImport(Tree.ImportMemberOrType member, 

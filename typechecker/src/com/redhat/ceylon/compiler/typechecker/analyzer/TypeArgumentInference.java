@@ -30,7 +30,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -1063,10 +1062,9 @@ public class TypeArgumentInference {
 
     private static boolean isArgumentToGenericParameter(
             TypedReference paramTypedRef, Type paramType) {
-        return paramType.resolveAliases().isTypeConstructor() 
-            || paramTypedRef != null 
-                && paramTypedRef.getDeclaration()!=null
-                && paramTypedRef.getDeclaration().isParameterized();
+        return paramType.resolveAliases().isTypeConstructor()
+            || paramTypedRef != null
+            && paramTypedRef.getDeclaration().isParameterized();
     }
 
     /**
@@ -1286,7 +1284,7 @@ public class TypeArgumentInference {
     List<Type> getInferredTypeArgsForReference(
             Tree.InvocationExpression that,
             Declaration invoked,
-            Generic generic, Type receiverType) {
+            Declaration generic, Type receiverType) {
         if (invoked instanceof Functional) {
             Functional functional = (Functional) invoked;
             List<ParameterList> parameterLists = 
@@ -1609,8 +1607,7 @@ public class TypeArgumentInference {
             return null;
         }
         else if (dec.isParameterized()) {
-            Generic generic = (Generic) dec;
-            return generic.getTypeParameters();
+            return dec.getTypeParameters();
         }
         else if (dec instanceof Value) {
             Value value = (Value) dec;
@@ -1638,8 +1635,7 @@ public class TypeArgumentInference {
         else {
             List<Type> list;
             if (dec.isParameterized()) {
-                Generic generic = (Generic) dec;
-                list = typeParametersAsArgList(generic);
+                list = typeParametersAsArgList(dec);
             }
             else {
                 list = NO_TYPE_ARGS;

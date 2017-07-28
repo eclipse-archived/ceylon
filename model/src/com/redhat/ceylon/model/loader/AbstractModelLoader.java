@@ -4140,7 +4140,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     scope = (TypeDeclaration)decl;
                 }
                 TypeDeclaration typeDecl = (TypeDeclaration) scope;
-                return !typeDecl.getTypeParameters().isEmpty() && type.getTypeArguments().isEmpty();
+                return typeDecl.isParameterized() 
+                    && type.getTypeArguments().isEmpty();
             }
             try{
                 return type.isRaw();
@@ -5842,7 +5843,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                             TypeMirror type, Scope scope, TypeMappingMode mode, 
                                             Set<TypeDeclaration> rawDeclarationsSeen) {
         List<TypeMirror> javacTypeArguments = type.getTypeArguments();
-        boolean hasTypeParameters = !declaration.getTypeParameters().isEmpty();
+        boolean hasTypeParameters = declaration.isParameterized();
         boolean hasTypeArguments = !javacTypeArguments.isEmpty();
         boolean isRaw = !hasTypeArguments && hasTypeParameters;
         // if we have type arguments or type parameters (raw)

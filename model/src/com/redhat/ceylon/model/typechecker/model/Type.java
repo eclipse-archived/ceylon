@@ -337,16 +337,18 @@ public class Type extends Reference {
     }
 
     private static boolean isNotGeneric(TypeDeclaration dec) {
-        if (!dec.getTypeParameters().isEmpty()) {
+        if (dec.isParameterized()) {
             return false;
         }
-        if (dec.isClassOrInterfaceMember()) {
+        else if (dec.isClassOrInterfaceMember()) {
             TypeDeclaration outer = 
                     (TypeDeclaration) 
                         dec.getContainer();
             return isNotGeneric(outer);
         }
-        return true;
+        else {
+            return true;
+        }
     }
     
     private boolean isExactlyInternal(Type type) {
@@ -606,9 +608,11 @@ public class Type extends Reference {
                 getDeclaration()
                     .getUnit()
                     .getTupleDeclaration();
-        TypeParameter elem = td.getTypeParameters().get(0);
-        TypeParameter first = td.getTypeParameters().get(1);
-        TypeParameter rest = td.getTypeParameters().get(2);
+        List<TypeParameter> typeParameters = 
+                td.getTypeParameters();
+        TypeParameter elem = typeParameters.get(0);
+        TypeParameter first = typeParameters.get(1);
+        TypeParameter rest = typeParameters.get(2);
         Type t1 = this;
         Type t2 = type;
         while (true) {
@@ -1017,9 +1021,11 @@ public class Type extends Reference {
                 getDeclaration()
                     .getUnit()
                     .getTupleDeclaration();
-        TypeParameter elem = td.getTypeParameters().get(0);
-        TypeParameter first = td.getTypeParameters().get(1);
-        TypeParameter rest = td.getTypeParameters().get(2);
+        List<TypeParameter> typeParameters = 
+                td.getTypeParameters();
+        TypeParameter elem = typeParameters.get(0);
+        TypeParameter first = typeParameters.get(1);
+        TypeParameter rest = typeParameters.get(2);
         Type t1 = this;
         Type t2 = type;
         while (true) {
@@ -1809,13 +1815,14 @@ public class Type extends Reference {
     }
 
     private boolean isSimpleSupertypeLookup(TypeDeclaration dec) {
-        return dec instanceof ClassOrInterface &&
-                !isUnion() && !isIntersection() &&
-                dec.getTypeParameters().isEmpty() &&
-                !dec.isClassOrInterfaceMember() &&
-                //this is for the runtime which uses 
-                //qualifying types in a strange way
-                getQualifyingType()==null;
+        return dec instanceof ClassOrInterface 
+            && !isUnion() 
+            && !isIntersection() 
+            && !dec.isParameterized() 
+            && !dec.isClassOrInterfaceMember() 
+            //this is for the runtime which uses 
+            //qualifying types in a strange way
+            && getQualifyingType()==null;
     }
     
     private boolean hasUnderlyingType() {
@@ -2650,7 +2657,8 @@ public class Type extends Reference {
      */
     public boolean isWellDefined() {
         List<TypeParameter> tps = 
-                getDeclaration().getTypeParameters();
+                getDeclaration()
+                    .getTypeParameters();
         Type qt = getQualifyingType();
         if (qt!=null && 
                 !qt.isWellDefined()) {
@@ -3710,43 +3718,42 @@ public class Type extends Reference {
      */
     Type narrowToUpperBounds() {
         TypeDeclaration declaration = getDeclaration();
-        if (declaration instanceof ClassOrInterface) {
+        if (declaration instanceof ClassOrInterface
+                && declaration.isParameterized()) {
             List<TypeParameter> params = 
                     declaration.getTypeParameters();
-            if (!params.isEmpty()) {
-                List<Type> args = getTypeArgumentList();
-                List<Type> bounded =
-                        new ArrayList<Type>
-                            (args.size());
-                boolean found = false;
-                for (int i=0, 
-                        s1 = params.size(),
-                        s2 = args.size();
-                        i<s1 && i<s2; 
-                        i++) {
-                    TypeParameter tp = params.get(i);
-                    Type arg = args.get(i);
-                    if (isCovariant(tp)) {
-                        Type bound =
-                                intersectionOfSupertypes(tp)
-                                    .substitute(this);
-                        if (!arg.isSubtypeOf(bound)) {
-                            arg = intersectionType(bound, arg, 
-                                    declaration.getUnit());
-                            found = true;
-                        }
+            List<Type> args = getTypeArgumentList();
+            List<Type> bounded =
+                    new ArrayList<Type>
+                        (args.size());
+            boolean found = false;
+            for (int i=0, 
+                    s1 = params.size(),
+                    s2 = args.size();
+                    i<s1 && i<s2; 
+                    i++) {
+                TypeParameter tp = params.get(i);
+                Type arg = args.get(i);
+                if (isCovariant(tp)) {
+                    Type bound =
+                            intersectionOfSupertypes(tp)
+                                .substitute(this);
+                    if (!arg.isSubtypeOf(bound)) {
+                        arg = intersectionType(bound, arg, 
+                                declaration.getUnit());
+                        found = true;
                     }
-                    bounded.add(arg);
                 }
-                if (found) {
-                    Type type = 
-                            declaration.appliedType(
-                                    getQualifyingType(), 
-                                    bounded);
-                    type.setVarianceOverrides(
-                            getVarianceOverrides());
-                    return type;
-                }
+                bounded.add(arg);
+            }
+            if (found) {
+                Type type = 
+                        declaration.appliedType(
+                                getQualifyingType(), 
+                                bounded);
+                type.setVarianceOverrides(
+                        getVarianceOverrides());
+                return type;
             }
         }
         return this;
@@ -3963,11 +3970,10 @@ public class Type extends Reference {
     private Type resolveAliasesInternal() {
         TypeDeclaration dec = getDeclaration();
         Unit unit = dec.getUnit();
-        if (dec instanceof ClassOrInterface &&
-                getQualifyingType()==null &&
-                !dec.isAlias() &&
-                dec.getTypeParameters()
-                    .isEmpty()) {
+        if (dec instanceof ClassOrInterface 
+                && getQualifyingType()==null 
+                && !dec.isAlias() 
+                && !dec.isParameterized()) {
             return this;
         }
         else if (isTypeConstructor()) {
@@ -4648,17 +4654,17 @@ public class Type extends Reference {
             }
             return canonicalIntersection(list, unit);
         }
+        else if (!dec.isParameterized()) {
+            // we have variance overrides from a 
+            // qualifying type 
+            // optimize, since no work to do
+            return type;
+        }
         else {
-            List<Type> args = 
-                    type.getTypeArgumentList();
             List<TypeParameter> params = 
                     dec.getTypeParameters();
-            if (params.isEmpty()) {
-                // we have variance overrides from a 
-                // qualifying type 
-                // optimize, since no work to do
-                return type;
-            }
+            List<Type> args = 
+                    type.getTypeArgumentList();
             List<Type> resultArgs = 
                     new ArrayList<Type>
                         (args.size());
@@ -4850,46 +4856,45 @@ public class Type extends Reference {
 //        if (td instanceof TypeParameter) { 
 //            return true;
 //        }
-        if (knownType!=null) {
-            if (td instanceof ClassOrInterface) {
-                Unit unit = td.getUnit();
-                List<TypeParameter> tps = 
-                        td.getTypeParameters();
-                List<Type> args;
-                Map<TypeParameter,SiteVariance> vars;
-                if (tps.isEmpty()) {
-                    args = NO_TYPE_ARGS;
-                    vars = EMPTY_VARIANCE_MAP;
+        if (knownType!=null 
+                && td instanceof ClassOrInterface) {
+            Unit unit = td.getUnit();
+            List<TypeParameter> tps = 
+                    td.getTypeParameters();
+            List<Type> args;
+            Map<TypeParameter,SiteVariance> vars;
+            if (tps.isEmpty()) {
+                args = NO_TYPE_ARGS;
+                vars = EMPTY_VARIANCE_MAP;
+            }
+            else {
+                args = new ArrayList<Type>();
+                vars = new HashMap<TypeParameter,SiteVariance>();
+                for (TypeParameter tp: tps) {
+                    args.add(unit.getAnythingType());
+                    vars.put(tp, OUT);
                 }
-                else {
-                    args = new ArrayList<Type>();
-                    vars = new HashMap<TypeParameter,SiteVariance>();
-                    for (TypeParameter tp: tps) {
-                        args.add(unit.getAnythingType());
-                        vars.put(tp, OUT);
-                    }
+            }
+            Type type = td.appliedType(null, args);
+            type.setVarianceOverrides(vars);
+            if (intersectionType(knownType, type, unit)
+                    .isSubtypeOf(this)) {
+                return false;
+            }
+            
+            TypeDeclaration ktd = knownType.getDeclaration();
+            Type pst = td.getType().getSupertype(ktd);
+            if (pst!=null) {
+                boolean allOccur = true;
+                for (TypeParameter tp: td.getTypeParameters()) {
+                    allOccur = allOccur
+                            //TODO: is this exactly correct?
+                            && pst.involvesDeclaration(tp);
                 }
-                Type type = td.appliedType(null, args);
-                type.setVarianceOverrides(vars);
-                if (intersectionType(knownType, type, unit)
-                        .isSubtypeOf(this)) {
-                    return false;
-                }
-                
-                TypeDeclaration ktd = knownType.getDeclaration();
-                Type pst = td.getType().getSupertype(ktd);
-                if (pst!=null) {
-                    boolean allOccur = true;
-                    for (TypeParameter tp: td.getTypeParameters()) {
-                        allOccur = allOccur
-                                //TODO: is this exactly correct?
-                                && pst.involvesDeclaration(tp);
-                    }
-                    if (allOccur) {
-                        Type st = getSupertype(ktd);
-                        if (st!=null && knownType.isSubtypeOf(st)) {
-                            return false;
-                        }
+                if (allOccur) {
+                    Type st = getSupertype(ktd);
+                    if (st!=null && knownType.isSubtypeOf(st)) {
+                        return false;
                     }
                 }
             }

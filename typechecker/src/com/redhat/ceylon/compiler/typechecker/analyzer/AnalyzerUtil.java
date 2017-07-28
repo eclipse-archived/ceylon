@@ -1435,8 +1435,8 @@ public class AnalyzerUtil {
                         (Tree.SimpleType) t;
                 if (s.getTypeArgumentList()==null) {
                     TypeDeclaration std = s.getDeclarationModel();
-                    if (typeParam!=null || 
-                            std!=null && std.isParameterized()) {
+                    if (std!=null && std.isParameterized() 
+                            || typeParam!=null) {
                         pt.setTypeConstructor(true);
                         pt.setTypeConstructorParameter(typeParam);
                     }
@@ -1520,8 +1520,7 @@ public class AnalyzerUtil {
     static boolean involvesTypeParams(Declaration dec, 
             Type type) {
         if (dec!=null && dec.isParameterized()) {
-            Generic g = (Generic) dec;
-            return type.involvesTypeParameters(g);
+            return type.involvesTypeParameters((Generic) dec);
         }
         else {
             return false;

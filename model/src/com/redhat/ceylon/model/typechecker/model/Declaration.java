@@ -117,26 +117,23 @@ public abstract class Declaration
             Declaration d = (Declaration) c;
             name = d.toStringName() + "." + name;
         }
-        if (this instanceof Generic) {
-            Generic g = (Generic) this;
+        if (isParameterized()) {
             List<TypeParameter> typeParams = 
-                    g.getTypeParameters();
-            if (!typeParams.isEmpty()) {
-                StringBuilder params = new StringBuilder();
-                params.append("<");
-                boolean first = true;
-                for (TypeParameter tp: typeParams) {
-                    if (first) {
-                        first = false;
-                    }
-                    else {
-                        params.append(",");
-                    }
-                    params.append(tp.getName());
+                    getTypeParameters();
+            StringBuilder params = new StringBuilder();
+            params.append("<");
+            boolean first = true;
+            for (TypeParameter tp: typeParams) {
+                if (first) {
+                    first = false;
                 }
-                params.append(">");
-                name += params;
+                else {
+                    params.append(",");
+                }
+                params.append(tp.getName());
             }
+            params.append(">");
+            name += params;
         }
         return name;
     }
@@ -813,6 +810,10 @@ public abstract class Declaration
         this.actualCompleter = actualCompleter;
     }
     
+    public List<TypeParameter> getTypeParameters() {
+        return emptyList();
+    }
+    
     /**
      * Get the type parameters of this declaration as their
      * own arguments. Note: what is returned is different to 
@@ -832,27 +833,21 @@ public abstract class Declaration
      * @see ModelUtil#typeParametersAsArgList
      */
     Map<TypeParameter, Type> getTypeParametersAsArguments() {
-        if (this instanceof Generic) {
-            Generic g = (Generic) this;
+        if (isParameterized()) {
             List<TypeParameter> typeParameters = 
-                    g.getTypeParameters();
-            if (typeParameters.isEmpty()) {
-                return EMPTY_TYPE_ARG_MAP;
-            }
-            else {
-                Map<TypeParameter,Type> typeArgs = 
-                        new HashMap<TypeParameter,Type>();
-                for (TypeParameter p: typeParameters) {
-                    Type pta = new Type();
-                    if (p.isTypeConstructor()) {
-                        pta.setTypeConstructor(true);
-                        pta.setTypeConstructorParameter(p);
-                    }
-                    pta.setDeclaration(p);
-                    typeArgs.put(p, pta);
+                    getTypeParameters();
+            Map<TypeParameter,Type> typeArgs = 
+                    new HashMap<TypeParameter,Type>();
+            for (TypeParameter p: typeParameters) {
+                Type pta = new Type();
+                if (p.isTypeConstructor()) {
+                    pta.setTypeConstructor(true);
+                    pta.setTypeConstructorParameter(p);
                 }
-                return typeArgs;
+                pta.setDeclaration(p);
+                typeArgs.put(p, pta);
             }
+            return typeArgs;
         }
         else {
             return EMPTY_TYPE_ARG_MAP;

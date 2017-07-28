@@ -108,11 +108,11 @@ public class BmeGenerator {
         List<TypeParameter> tparams = null;
         Declaration declaration = expr.getDeclaration();
         if (declaration instanceof Generic) {
-            tparams = ((Generic)declaration).getTypeParameters();
+            tparams = declaration.getTypeParameters();
         }
-        else if (declaration instanceof TypedDeclaration &&
-                ((TypedDeclaration)declaration).getType()!=null &&
-                ((TypedDeclaration)declaration).getType().isTypeConstructor()) {
+        else if (declaration instanceof TypedDeclaration 
+                && ((TypedDeclaration)declaration).getType()!=null 
+                && ((TypedDeclaration)declaration).getType().isTypeConstructor()) {
             tparams = ((TypedDeclaration)declaration).getType().getDeclaration().getTypeParameters();
         }
         else {
@@ -241,17 +241,16 @@ public class BmeGenerator {
             boolean wrap = false;
             String pname = null;
             List<Parameter> params = null;
-            TypeDeclaration td = null;
-            if ((forceReference || !that.getDirectlyInvoked()) && d instanceof TypeDeclaration) {
-                td = (TypeDeclaration)d;
-                if (td.getTypeParameters() != null && td.getTypeParameters().size() > 0) {
+            if ((forceReference || !that.getDirectlyInvoked()) 
+                    && d instanceof TypeDeclaration) {
+                if (d.isParameterized()) {
                     wrap = true;
                     pname = gen.getNames().createTempVariable();
                     gen.out("function(");
-                    if (td instanceof Class) {
-                        params = ((Class)td).getParameterList().getParameters();
-                    } else if (td instanceof Constructor) {
-                        params = ((Constructor)td).getFirstParameterList().getParameters();
+                    if (d instanceof Class) {
+                        params = ((Class)d).getParameterList().getParameters();
+                    } else if (d instanceof Constructor) {
+                        params = ((Constructor)d).getFirstParameterList().getParameters();
                     }
                     for (int i=0;i<params.size(); i++) {
                         if (i>0)gen.out(",");
@@ -283,8 +282,10 @@ public class BmeGenerator {
                 }
                 List<Type> targs = that.getTypeArguments() == null ? null :
                     that.getTypeArguments().getTypeModels();
-                TypeUtils.printTypeArguments(that, TypeUtils.matchTypeParametersWithArguments(
-                        td.getTypeParameters(), targs), gen, false, null);
+                TypeUtils.printTypeArguments(that, 
+                        TypeUtils.matchTypeParametersWithArguments(
+                                d.getTypeParameters(), targs), 
+                        gen, false, null);
                 gen.out(");}");
             }
         }

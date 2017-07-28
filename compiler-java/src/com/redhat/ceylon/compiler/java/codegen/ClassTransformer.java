@@ -505,10 +505,8 @@ public class ClassTransformer extends AbstractTransformer {
             Declaration formalMember = unrefined.getDeclaration();//classModel.getMember(memberName, null, false);
             String errorMessage  = "formal member '"+formalMember.getName()+"' of '"+((TypeDeclaration)formalMember.getContainer()).getName()+"' not implemented in class hierarchy";
             java.util.List<Type> params = new java.util.ArrayList<Type>();
-            if (formalMember instanceof Generic) {
-                for (TypeParameter tp: ((Generic) formalMember).getTypeParameters()) {
-                    params.add(tp.getType());
-                }
+            for (TypeParameter tp: formalMember.getTypeParameters()) {
+                params.add(tp.getType());
             }
             if (formalMember instanceof Value) {
                 addRefinedThrowerAttribute(classBuilder, errorMessage, def, classModel,
@@ -5592,7 +5590,7 @@ public class ClassTransformer extends AbstractTransformer {
             } else {
                 java.util.List<TypeParameter> copiedTypeParameters = null;
                 if(container instanceof Generic) {
-                    copiedTypeParameters = ((Generic) container).getTypeParameters();
+                    copiedTypeParameters = container.getTypeParameters();
                     if(copiedTypeParameters != null)
                         addTypeParameterSubstitution(copiedTypeParameters);
                 }

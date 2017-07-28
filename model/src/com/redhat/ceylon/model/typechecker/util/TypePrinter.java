@@ -714,9 +714,9 @@ public class TypePrinter {
                 pt.getTypeArgumentList();
         List<TypeParameter> params = 
                 ptd.getTypeParameters();
-        if (!pt.isTypeConstructor() && 
-                printTypeParameters(pt) && 
-                !args.isEmpty()) {
+        if (!pt.isTypeConstructor() 
+                && printTypeParameters(pt) 
+                && !args.isEmpty()) {
             ptn.append(lt());
             boolean first = true;
             for (int i=0; 

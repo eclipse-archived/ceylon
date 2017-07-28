@@ -52,7 +52,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDecla
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeParameters;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
@@ -3434,8 +3433,7 @@ public class ExpressionVisitor extends Visitor {
         else {
             tas = null;
         }
-        Generic fun = (Generic) dec;
-        List<TypeParameter> tps = fun.getTypeParameters();
+        List<TypeParameter> tps = dec.getTypeParameters();
         if (isPackageQualified(mte)) {
             Tree.QualifiedMemberOrTypeExpression qmte = 
                     (Tree.QualifiedMemberOrTypeExpression) 
@@ -4169,12 +4167,12 @@ public class ExpressionVisitor extends Visitor {
             //a generic declaration
             if (explicit) {
                 return getTypeArguments(tas, receiverType, 
-                        getTypeParameters(dec));
+                        dec.getTypeParameters());
             }
             else {
                 List<Type> typeArgs = 
                         getInferredTypeArguments(that, 
-                            reference, (Generic) dec, 
+                            reference, dec, 
                             receiverType);
                 /*if (typeArgs==null) {
                     reference.addError("type arguments could not be inferred: '" +
@@ -4253,7 +4251,7 @@ public class ExpressionVisitor extends Visitor {
             //this is the reference to the thing we're
             //inferring type arguments for
             Tree.StaticMemberOrTypeExpression reference, 
-            Generic generic, Type receiverType) {
+            Declaration generic, Type receiverType) {
         Tree.Term primary =
                 unwrapExpressionUntilTerm(that.getPrimary());
         if (primary instanceof Tree.StaticMemberOrTypeExpression) {
@@ -4741,7 +4739,7 @@ public class ExpressionVisitor extends Visitor {
             FunctionOrValue paramModel) {
         if (paramModel.isParameterized()) {
             return genericFunctionType(
-                    (Generic) paramModel, 
+                    paramModel, 
                     argScope, //TODO!!! 
                     paramModel, paramRef, unit);
         }
@@ -4756,7 +4754,7 @@ public class ExpressionVisitor extends Visitor {
                 argDec.getTypedReference();
         if (argDec.isParameterized()) {
             return genericFunctionType(
-                    (Generic) argDec, 
+                    argDec, 
                     argScope, //TODO!!! 
                     argDec, argRef, unit);
         }
@@ -6937,7 +6935,7 @@ public class ExpressionVisitor extends Visitor {
             else if (explicitTypeArguments(member, tal)) {
                 typeArgs = 
                         getTypeArguments(tal, null, 
-                                getTypeParameters(member));
+                                member.getTypeParameters());
             }
             else {
                 typeArgs = 
@@ -7066,7 +7064,7 @@ public class ExpressionVisitor extends Visitor {
             else if (explicitTypeArguments(member, tal)) {
                 typeArgs = 
                         getTypeArguments(tal, receiverType, 
-                                getTypeParameters(member));
+                                member.getTypeParameters());
             }
             else {
                 typeArgs = 
@@ -7169,11 +7167,10 @@ public class ExpressionVisitor extends Visitor {
                     && typeArgs.getTypeModels()==null) { //nothing inferred
                 Declaration declaration = 
                         smte.getDeclaration();
-                Generic dec = (Generic) declaration;
                 smte.addError("missing type arguments to generic type qualifying static reference: '" + 
                         declaration.getName(unit) + 
                         "' declares type parameters " + 
-                        typeParameterList(dec));
+                        typeParameterList(declaration));
             }
         }
         
@@ -7185,18 +7182,18 @@ public class ExpressionVisitor extends Visitor {
             Tree.StaticMemberOrTypeExpression smte =
                     (Tree.StaticMemberOrTypeExpression) 
                         primary;
-            Declaration qtd = 
+            Declaration qualifyingType = 
                     smte.getDeclaration();
             Tree.TypeArguments qtas = 
                     smte.getTypeArguments();
-            if (qtd!=null
-                    && qtd.isParameterized()
-                    && !qtd.isJava()
-                    && !explicitTypeArguments(qtd, qtas)) {
-                Generic dec = (Generic) qtd;
+            if (qualifyingType!=null
+                    && qualifyingType.isParameterized()
+                    && !qualifyingType.isJava()
+                    && !explicitTypeArguments(qualifyingType, qtas)) {
                 if (explicitTypeArguments(member, tas)) {
                     Type functionType = 
-                            genericFunctionType(dec,
+                            genericFunctionType(
+                                    qualifyingType,
                                     that.getScope(),
                                     member,
                                     that.getTarget(),
@@ -7204,20 +7201,20 @@ public class ExpressionVisitor extends Visitor {
                     that.setTypeModel(functionType);
                     checkNotJvm(that, 
                             "type functions are not supported on the JVM: '" + 
-                            qtd.getName(unit) + 
+                            qualifyingType.getName(unit) + 
                             "' is generic (specify explicit type arguments)");
                 }
                 else {
                     that.addError("missing explicit type arguments to generic qualifying type: '" + 
-                            qtd.getName(unit) +
+                            qualifyingType.getName(unit) +
                             "' declares type parameters " + 
-                            typeParameterList(dec));
+                            typeParameterList(qualifyingType));
                 }
             }
         }
     }
 
-    private StringBuilder typeParameterList(Generic dec) {
+    private static StringBuilder typeParameterList(Declaration dec) {
         StringBuilder paramList = 
                 new StringBuilder();
         for (TypeParameter tp: 
@@ -9594,8 +9591,7 @@ public class ExpressionVisitor extends Visitor {
             Type receiver, Declaration dec, 
             List<Type> typeArguments,
             Tree.TypeArguments tas, Node parent) {
-        Generic g = (Generic) dec;
-        List<TypeParameter> params = g.getTypeParameters();
+        List<TypeParameter> params = dec.getTypeParameters();
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
         int min = 0;
@@ -9610,9 +9606,9 @@ public class ExpressionVisitor extends Visitor {
         }
         
         boolean enforceConstraints = 
-                modelLiteral ||
-                !(parent instanceof Tree.SimpleType) ||
-                ((Tree.SimpleType) parent).getInherited();
+                modelLiteral 
+                || !(parent instanceof Tree.SimpleType) 
+                || ((Tree.SimpleType) parent).getInherited();
 
         int max = params.size();
         int args = typeArguments.size();
@@ -9749,7 +9745,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else {
             if (explicit) {
-                StringBuilder paramList = typeParameterList(g);
+                StringBuilder paramList = typeParameterList(dec);
                 String help;
                 if (args<min) {
                     help = " requires at least " + min + 
@@ -10560,7 +10556,7 @@ public class ExpressionVisitor extends Visitor {
                 if (explicitTypeArguments(method, tal)) {
                     List<Type> typeArgs = 
                             getTypeArguments(tal, outerType, 
-                                    getTypeParameters(method));
+                                    method.getTypeParameters());
                     if (tal!=null) {
                         tal.setTypeModels(typeArgs);
                     }

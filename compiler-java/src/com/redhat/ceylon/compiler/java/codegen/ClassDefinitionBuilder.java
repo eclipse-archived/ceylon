@@ -49,7 +49,6 @@ import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
-import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -553,9 +552,8 @@ public class ClassDefinitionBuilder
         if(companionBuilder == null)
             return null;
         // make sure we get fields and init code for reified params
-        if(decl instanceof Generic) {
-            companionBuilder.reifiedTypeParameters(((Generic)decl).getTypeParameters());
-        }
+        companionBuilder.reifiedTypeParameters(decl.getTypeParameters());
+
         Type thisType = decl.getType();
         companionBuilder.field(PRIVATE | FINAL, 
                 "$this", 
@@ -563,9 +561,8 @@ public class ClassDefinitionBuilder
                 null, false, gen.makeAtIgnore());
         MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode(decl.isDeprecated());
         ctor.ignoreModelAnnotations();
-        if(decl instanceof Generic) {
-            ctor.reifiedTypeParameters(((Generic)decl).getTypeParameters());
-        }
+        ctor.reifiedTypeParameters(decl.getTypeParameters());
+
         ctor.modifiers(decl.isShared() ? PUBLIC : 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, "$this");
         pdb.type(new TransformedType(gen.makeJavaType(thisType), null, gen.makeAtNonNull()));
@@ -578,9 +575,8 @@ public class ClassDefinitionBuilder
                                 gen.naming.makeQuotedThis())));
         ctor.body(bodyStatements.toList());
         
-        if(decl instanceof Generic
-                && !((Generic)decl).getTypeParameters().isEmpty()) {
-            companionBuilder.addRefineReifiedTypeParametersMethod(((Generic)decl).getTypeParameters());
+        if(decl.isParameterized()) {
+            companionBuilder.addRefineReifiedTypeParametersMethod(decl.getTypeParameters());
         }
         return companionBuilder;
     }

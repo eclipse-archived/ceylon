@@ -236,15 +236,13 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
                 writeConstantValue((Value) d);
             }
             if( d instanceof Generic ) {
-                Generic f = (Generic) d;
-                writeTypeParameters(f.getTypeParameters(), d);
+                writeTypeParameters(d.getTypeParameters(), d);
             }
             if( d instanceof Functional ) {
                 writeParameterList((Functional) d, d);
             }
             if( d instanceof Generic ) {
-                Generic f = (Generic) d;
-                writeTypeParametersConstraints(f.getTypeParameters(), d);
+                writeTypeParametersConstraints(d.getTypeParameters(), d);
             }
             if (d instanceof Value) {
                 Setter setter = ((Value) d).getSetter();

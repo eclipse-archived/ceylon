@@ -509,7 +509,7 @@ public class TypeGenerator {
                         gen.out(gen.getNames().name(typeDecl), ".call(",
                                 gen.getNames().self(ModelUtil.getContainingClassOrInterface(d.getContainer())), ",");
                     }
-                    if (typeDecl.getTypeParameters() != null && !typeDecl.getTypeParameters().isEmpty()) {
+                    if (typeDecl.isParameterized()) {
                         TypeUtils.printTypeArguments(that, st.getTypeArguments(), gen, d.isToplevel(), null);
                         gen.out(",");
                     }
