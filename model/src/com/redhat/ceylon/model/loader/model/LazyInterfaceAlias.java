@@ -117,7 +117,7 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
 
     @Override
     public boolean isParameterized() {
-        load();
+        loadTypeParams();
         return super.isParameterized();
     }
 

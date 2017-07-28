@@ -197,12 +197,6 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
     }
 
     @Override
-    public boolean isParameterized() {
-        load();
-        return super.isParameterized();
-    }
-
-    @Override
     public String getQualifiedNameString() {
 //        load();
         return super.getQualifiedNameString();

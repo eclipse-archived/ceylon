@@ -45,6 +45,11 @@ public class FunctionOrValueInterface extends Interface {
                 ? ((Generic) declaration).getTypeParameters() 
                 : Collections.<TypeParameter>emptyList();
     }
+    
+    @Override
+    public boolean isParameterized() {
+        return declaration.isParameterized();
+    }
 
     @Override
     public Unit getUnit() {

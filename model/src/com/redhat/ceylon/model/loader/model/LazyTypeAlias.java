@@ -125,7 +125,7 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
 
     @Override
     public boolean isParameterized() {
-        load();
+        loadTypeParams();
         return super.isParameterized();
     }
 

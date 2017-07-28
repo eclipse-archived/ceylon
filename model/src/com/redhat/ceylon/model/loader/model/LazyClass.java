@@ -197,7 +197,7 @@ public class LazyClass extends Class implements LazyContainer {
 
     @Override
     public boolean isParameterized() {
-        load();
+        loadTypeParams();
         return super.isParameterized();
     }
 
