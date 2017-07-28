@@ -185,6 +185,11 @@ public class ExpressionTransformer extends AbstractTransformer {
      */
     public static final int EXPR_IS_COERCED = 1 << 11;
 
+    /**
+     * Use this when you want to force casting
+     */
+    public static final int EXPR_FORCE_CAST = 1 << 12;
+
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
         // get an initialisation error
@@ -604,6 +609,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 boolean expectedTypeHasConstrainedTypeParameters = (flags & EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS) != 0;
                 boolean expectedTypeHasDependentCovariantTypeParameters = (flags & EXPR_EXPECTED_TYPE_HAS_DEPENDENT_COVARIANT_TYPE_PARAMETERS) != 0;
                 boolean downCast = (flags & EXPR_DOWN_CAST) != 0;
+                boolean forceCast = (flags & EXPR_FORCE_CAST) != 0;
                 int companionFlags = (flags & EXPR_WANTS_COMPANION) != 0 ? AbstractTransformer.JT_COMPANION : 0;
 
                 // special case for returning Null expressions
@@ -615,7 +621,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                             || (flags & EXPR_IS_NOT_BASE_MEMBER) != 0
                             // include a cast even for null for interop and disambiguating bw overloads and null values
                             // of different types using the "of" operator
-                            || downCast){
+                            || downCast
+                            // also add casts if we really want them
+                            || forceCast){
                         // in some cases we may have an instance of Null, which is of type java.lang.Object, being
                         // returned in a context where we expect a String? (aka ceylon.language.String) so even though
                         // the instance at hand will really be null, we need a up-cast to it
@@ -630,6 +638,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = make().TypeCast(targetType, result);
                 }else if(// expression was forcibly erased
                          exprErased
+                         // we want to cast
+                         || forceCast
                          // expression type cannot be trusted to be true, most probably because we had to satisfy Java type parameter
                          // bounds that are different from what we think the expression type should be
                          || exprUntrustedType
@@ -2126,7 +2136,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (expectedType.isExactlyNothing()) {
             expectedType = typeFact().getNothingType();
         }
-        return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType, EXPR_DOWN_CAST);
+        return transformExpression(op.getTerm(), CodegenUtil.getBoxingStrategy(op), expectedType, EXPR_FORCE_CAST);
     }
 
     public JCExpression transform(Tree.IsOp op) {
