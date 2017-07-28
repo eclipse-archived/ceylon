@@ -68,11 +68,7 @@
         <pathelement path="${jboss-logmanager.lib}" />
         <pathelement path="${slf4j-simple.lib}" />
         <pathelement path="${slf4j-api.lib}" />
-        <pathelement path="${sardine.lib}" />
-        <pathelement path="${httpcore.lib}" />
-        <pathelement path="${httpclient.lib}" />
-        <pathelement path="${commons-codec.lib}" />
-        <pathelement path="${commons-logging.lib}" />
+        <pathelement path="${http-support.lib}" />
         <pathelement path="${json.lib}" />
     </path>
 

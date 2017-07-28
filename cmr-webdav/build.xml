@@ -16,9 +16,7 @@
 
     <!-- Classpath for the build tools. -->
     <path id="classpath">
-        <pathelement path="${sardine.lib}"/>
-        <pathelement path="${httpclient.lib}"/>
-        <pathelement path="${httpcore.lib}"/>
+        <pathelement path="${http-support.lib}"/>
     </path>
 
     <path id="test.run.classpath">

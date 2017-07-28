@@ -123,6 +123,8 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION));
         // Maven support for CMR
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.aether", "3.3.9")); // optional
+        // For aether and webdav/sardine
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.httpcomponents", "4.3.2")); // optional
 
         // For the typechecker
         archives.add(getRepoJar(ceylonRepo, "org.antlr.runtime", "3.4"));
@@ -131,18 +133,12 @@ public class CeylonClassLoader extends URLClassLoader {
         // For the "doc" tool
         archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.3.4"));
         archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.13"));
+        
         // For the --out http:// functionality of the compiler (sardine)
         if(includeSlf4j){
-            archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1")); // optional
             archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.7.25")); // optional
             archives.add(getRepoJar(ceylonRepo, "org.slf4j.simple", "1.7.25")); // optional
         }
-
-        // For aether and webdav/sardine
-        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.3.2")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.3.2")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.2")); // optional
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.10")); // optional
 
         return archives;
     }
