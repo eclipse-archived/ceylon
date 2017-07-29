@@ -165,7 +165,8 @@ public class ModelUtil {
     }
     
     public static boolean isDefaultConstructor(Declaration d) {
-        return d instanceof Constructor && d.getName()==null;
+        return d instanceof Constructor 
+            && d.getName()==null;
     }
     
     public static boolean isAbstraction(Declaration d) {
@@ -173,13 +174,10 @@ public class ModelUtil {
     }
 
     public static boolean notOverloaded(Declaration d) {
-        if (d==null || !d.isFunctional()) {
-            return true;
-        }
-        else {
-            return !d.isOverloaded() 
-                 || d.isAbstraction();
-        }
+        return d==null
+            || !d.isFunctional()
+            || !d.isOverloaded() 
+            || d.isAbstraction();
     }
     
     public static boolean isOverloadedVersion(Declaration decl) {
