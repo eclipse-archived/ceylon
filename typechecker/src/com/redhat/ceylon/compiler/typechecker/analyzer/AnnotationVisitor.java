@@ -1158,11 +1158,11 @@ public class AnnotationVisitor extends Visitor {
     @Override public void visit(Tree.MemberOrTypeExpression that) {
         super.visit(that);
         Declaration dec = that.getDeclaration();
-        if (!that.getStaticMethodReferencePrimary() &&
-                isAbstraction(dec)) {
+        if (!that.getStaticMethodReferencePrimary() 
+                && isAbstraction(dec)) {
             Unit unit = that.getUnit();
-            if (that.getStaticMethodReference() && 
-                    !dec.isStatic()) {
+            if (that.getStaticMethodReference() 
+                    && !dec.isStatic()) {
                 that.addError("ambiguous static reference to overloaded method or class: '" +
                         dec.getName(unit) + "' is overloaded");
             }
