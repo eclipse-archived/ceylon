@@ -2,8 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/slf4j/api/1.7.25/org.slf4j.api-1.7.25.jar"/>
-	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/slf4j/simple/1.7.25/org.slf4j.simple-1.7.25.jar"/>
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/com/redhat/ceylon/aether/3.3.9/com.redhat.ceylon.aether-3.3.9.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

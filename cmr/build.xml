@@ -54,8 +54,6 @@
         <pathelement path="${hamcrest.lib}"/>
         <pathelement path="${maven-support.lib}"/>
         <pathelement path="${json.lib}" />
-        <pathelement path="${slf4j-api.lib}"/>
-        <pathelement path="${slf4j-simple.lib}"/>
     </path>
 
     <!-- ################################################################## -->

@@ -132,7 +132,6 @@
                   <exclude>org.codehaus.plexus:plexus-component-annotations</exclude>
                   <exclude>org.sonatype.plexus:plexus-sec-dispatcher</exclude>
                   <exclude>org.sonatype.plexus:plexus-cipher</exclude>
-                  <!-- <exclude>org.slf4j:*</exclude> -->
                 </excludes>
               </artifactSet>
               <filters>

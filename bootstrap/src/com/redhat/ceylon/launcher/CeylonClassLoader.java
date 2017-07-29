@@ -5,19 +5,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.jar.JarFile;
 
 import com.redhat.ceylon.common.Versions;
 
@@ -92,7 +89,6 @@ public class CeylonClassLoader extends URLClassLoader {
         // Determine the necessary folders
         File ceylonHome = LauncherUtil.determineHome();
         File ceylonRepo = LauncherUtil.determineRepo(ceylonHome);
-        boolean includeSlf4j = LauncherUtil.isIncludeSlf4j();
 
         // Perform some sanity checks
         checkFolders(ceylonHome, ceylonRepo);
@@ -101,27 +97,30 @@ public class CeylonClassLoader extends URLClassLoader {
 
         // List all the necessary Ceylon JARs and CARs
         String version = LauncherUtil.determineSystemVersion();
-        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.compiler.java", version));
         archives.add(getRepoCar(ceylonRepo, "ceylon.language", version));
         archives.add(getRepoJar(ceylonRepo, "ceylon.runtime", version));
-        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.compiler.js", version));
-        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.typechecker", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.common", version));
-        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.cli", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.model", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.typechecker", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.compiler.java", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.compiler.js", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.cli", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.tool.provider", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.tools", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.langtools.classfile", version));
+        
+        //CMR
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-loader", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-aether", version)); // optional
-        // sardine depends on slf4j
-        if(includeSlf4j)
-            archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-webdav", version)); // optional
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-webdav", version)); // optional
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-javascript", version)); // optional
-        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.langtools.classfile", version));
-        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.tool.provider", version));
-        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.tools", version));
+        
+        //JBoss Modules
         archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION));
-        // Maven and webdav support for CMR
+        
+        // Maven, HTTP, and WebDAV support used by CMR
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.aether", "3.3.9")); // optional
 
         // For the typechecker
@@ -132,12 +131,6 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.3.4"));
         archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.13"));
         
-        // For the --out http:// functionality of the compiler (sardine)
-        if(includeSlf4j){
-            archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.7.25")); // optional
-            archives.add(getRepoJar(ceylonRepo, "org.slf4j.simple", "1.7.25")); // optional
-        }
-
         return archives;
     }
 

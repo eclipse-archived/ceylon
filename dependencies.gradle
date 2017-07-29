@@ -1,7 +1,6 @@
 ext {
     mavenVer       = '3.3.9'
     mavenAetherVer = '1.1.0'
-    slf4jVer       = '1.7.25'
     bndVer         = '3.2.0'
     osgiVer        = '4.3.1'
 
@@ -28,8 +27,6 @@ ext {
     osgiBndDep              = "biz.aQute.bnd:biz.aQute.bnd:${bndVer}"
     osgiBndAntDep           = "biz.aQute.bnd:org.osgi.impl.bundle.repoindex.ant:${bndVer}"
     sardineDep              = 'com.github.lookfirst:sardine:5.1'
-    slf4jApiDep             = "org.slf4j:slf4j-api:${slf4jVer}"
-    slf4jSimpleDep          = "org.slf4j:slf4j-simple:${slf4jVer}"
     txtmarkDep              = 'com.github.rjeschke:txtmark:0.13'
 }
 

@@ -20,7 +20,6 @@ public abstract class Constants {
     public static final String ENV_CEYLON_VERSION = "CEYLON_VERSION";
 
     public static final String ENV_CEYLON_TERM_COLORS = "CEYLON_TERM_COLORS";
-    public static final String ENV_CEYLON_INCLUDE_SLF4J = "CEYLON_INCLUDE_SLF4J";
 
     public static final String PROP_CEYLON_SYSTEM_VERSION = "ceylon.system.version";
 

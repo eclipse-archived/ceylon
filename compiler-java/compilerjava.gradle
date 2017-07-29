@@ -39,8 +39,6 @@ dependencies {
 //    <pathelement path="${maven-support.lib}" />
 //    <pathelement path="${shrinkwrap-maven-uberjar.lib}" />
 //    <pathelement path="${jboss-logmanager.lib}" />
-//    <pathelement path="${slf4j-simple.lib}" />
-//    <pathelement path="${slf4j-api.lib}" />
 }
 
 sourceSets {

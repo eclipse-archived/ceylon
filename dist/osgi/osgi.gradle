@@ -369,7 +369,6 @@ task osgiP2 ( type : AntCeylonP2Task ) {
 //    addModule 'com.redhat.ceylon.dist.repo', "${project.version}${versionQualifier}"
     addModule 'ceylon.bootstrap', project.version
     addModule 'ceylon.runtime', project.version
-    addModule 'org.slf4j.simple', slf4jVer
     addModule 'com.redhat.ceylon.tool.provider', project.version
     addModule 'com.redhat.ceylon.compiler.java', project.version
     addModule 'com.redhat.ceylon.compiler.js', project.version
@@ -451,7 +450,6 @@ task publishInternal ( type : Copy ) {
             <module name="com.redhat.ceylon.dist.repo" version="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
             <module name="ceylon.bootstrap" version="${module.ceylon.bootstrap.version}"/>
             <module name="ceylon.runtime" version="${module.ceylon.runtime.version}"/>
-            <module name="org.slf4j.simple" version="1.7.25"/>
             <module name="com.redhat.ceylon.tool.provider" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
             <module name="com.redhat.ceylon.compiler.java" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
             <module name="com.redhat.ceylon.compiler.js" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
