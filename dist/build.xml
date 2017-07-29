@@ -812,7 +812,7 @@ Use this when NOT doing a release!">
                                     <if> 
                                     	<and>
                                             <contains string="@{moduleName}" substring="ceylon"/>
-                                    	    <not><equals string="@{moduleName}" substring="com.redhat.ceylon.aether"/></not>
+                                    	    <not><equals arg1="@{moduleName}" arg2="com.redhat.ceylon.aether"/></not>
                                         </and>
                                         <then>
                                             <ceylon-osgi-version propertyName="depOsgiVersion" ceylonVersion="@{moduleSlot}" addTimeStamp="false"/>
