@@ -11,6 +11,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.redhat.ceylon.aether.eclipse.aether.graph.DependencyNode;
+import com.redhat.ceylon.aether.eclipse.aether.graph.Exclusion;
 import com.redhat.ceylon.aether.eclipse.aether.util.artifact.JavaScopes;
 
 public class DependencyNodeDependencyDescriptor implements DependencyDescriptor {
@@ -26,7 +27,7 @@ public class DependencyNodeDependencyDescriptor implements DependencyDescriptor 
 	    }
 	    if(node.getDependency() != null){
 	        exclusions = new ArrayList<>(node.getDependency().getExclusions().size());
-	        for(com.redhat.ceylon.aether.eclipse.aether.graph.Exclusion x : node.getDependency().getExclusions()){
+	        for(Exclusion x : node.getDependency().getExclusions()){
 	            exclusions.add(new GraphExclusionExclusionDescriptor(x));
 	        }
 	    }

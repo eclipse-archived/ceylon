@@ -176,9 +176,11 @@ public class AetherResolverImpl implements AetherResolver {
         			auth.addUsername(proxy.getUsername());
         		if(proxy.getPassword() != null)
         			auth.addPassword(proxy.getPassword());
-				com.redhat.ceylon.aether.eclipse.aether.repository.Proxy p = new com.redhat.ceylon.aether.eclipse.aether.repository.Proxy(proxy.getProtocol(), proxy.getHost(), 
-						proxy.getPort(), auth.build() );
-				proxySelector.add(p , proxy.getNonProxyHosts());
+				proxySelector.add(
+				        new com.redhat.ceylon.aether.eclipse.aether.repository.Proxy(
+				                proxy.getProtocol(), proxy.getHost(), proxy.getPort(), 
+				                auth.build() ), 
+				        proxy.getNonProxyHosts());
         	}
         }
 		session.setProxySelector(proxySelector);
