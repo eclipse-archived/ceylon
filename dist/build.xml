@@ -714,7 +714,7 @@ Use this when NOT doing a release!">
                 <or>
                     <and>
                     <contains string="${module.dir.relative}" substring="ceylon"/>
-                    <not><contains string="${module.dir.relative}" substring="aether"/></not>
+                    <not><contains string="${module.dir.relative}" substring="com/redhat/ceylon/aether"/></not>
                     </and>
                 </or>
             </not>
@@ -762,7 +762,7 @@ Use this when NOT doing a release!">
             <or>
                 <and>
                     <contains string="${module.dir.relative}" substring="ceylon"/>
-                    <not><contains string="${module.dir.relative}" substring="aether"/></not>
+                    <not><contains string="${module.dir.relative}" substring="com/redhat/ceylon/aether"/></not>
                 </and>
                 <contains string="${module.dir.relative}" substring="logmanager"/>
                 <not><isset property="hasOsgiMetadata"/></not>
@@ -809,8 +809,11 @@ Use this when NOT doing a release!">
                                             <var name="Require-Bundle" value="${Require-Bundle}," />
                                         </then>
                                     </if>
-                                    <if>
-                                        <contains string="@{moduleName}" substring="ceylon"/>
+                                    <if> 
+                                    	<and>
+                                            <contains string="@{moduleName}" substring="ceylon"/>
+                                    	    <not><equals string="@{moduleName}" substring="com.redhat.ceylon.aether"/></not>
+                                        </and>
                                         <then>
                                             <ceylon-osgi-version propertyName="depOsgiVersion" ceylonVersion="@{moduleSlot}" addTimeStamp="false"/>
                                             <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=${depOsgiVersion}" />
