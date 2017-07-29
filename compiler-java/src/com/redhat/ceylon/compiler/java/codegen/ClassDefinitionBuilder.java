@@ -78,6 +78,7 @@ public class ClassDefinitionBuilder
     private boolean isLocal = false;
     
     private boolean hasConstructors = false;
+    private boolean isAbstraction = false;
     
     private Set<String> usedConstructorNames = new HashSet<>();
     
@@ -388,7 +389,9 @@ public class ClassDefinitionBuilder
         if (!isAlias) {
             this.thisType = thisType;
             this.extendingType = extendingType;
-            this.hasConstructors = ((Class)thisType.getDeclaration()).hasConstructors() || ((Class)thisType.getDeclaration()).hasEnumerated();
+            Class cl = (Class)thisType.getDeclaration();
+            this.hasConstructors = cl.hasConstructors() || cl.hasEnumerated();
+            this.isAbstraction = cl.isAbstraction();
         }
         return this;
     }
@@ -459,11 +462,12 @@ public class ClassDefinitionBuilder
             if (hasConstructors || thisType != null) {
                 Type exType = extendingType;
                 if (extendingType != null
-                        && extendingType.getDeclaration().isNativeHeader()) {
+                        && extendingType.getDeclaration()
+                                .isNativeHeader()) {
                     exType = extendingType.getExtendedType();
                 }
                 ret = ret.prependList(gen.makeAtClass(thisType, exType, 
-                        hasConstructors));
+                        hasConstructors && !isAbstraction));
             }
             ret = ret.prependList(this.annotations.toList());
         }
@@ -628,7 +632,11 @@ public class ClassDefinitionBuilder
 
     public ClassDefinitionBuilder forDefinition(ClassOrInterface def) {
         this.forDefinition = def;
-        this.hasConstructors = def instanceof Class && (((Class)def).hasConstructors() || ((Class)def).hasEnumerated());
+        if (def instanceof Class) {
+            Class cl = (Class)def;
+            this.hasConstructors = cl.hasConstructors() || cl.hasEnumerated();
+            this.isAbstraction = cl.isAbstraction();
+        }
         return this;
     }
 

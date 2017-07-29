@@ -73,7 +73,12 @@ public class LazyPackage extends Package {
     
     private Declaration getDirectMember(String name, List<Type> signature, boolean ellipsis, boolean tryAlternates) {
 //        System.err.println("getMember "+name+" "+signature+" "+ellipsis);
-        boolean canCache = (signature == null && !ellipsis);
+
+        List<Declaration> sourceDeclarations = super.getMembers();
+        Declaration dec = lookupMember(sourceDeclarations, name, signature, ellipsis);
+        if (dec!=null) return dec;
+
+        boolean canCache = signature == null && !ellipsis;
         if(canCache){
             if(cache.containsKey(name)) {
                 Declaration cachedDeclaration = cache.get(name);
@@ -121,7 +126,8 @@ public class LazyPackage extends Package {
 
                 // only get it from the classpath if we're not compiling it, unless
                 // it happens to be a java source
-                if(classSymbol != null && (!classSymbol.isLoadedFromSource() || classSymbol.isJavaSource())) {
+                if(classSymbol != null 
+                        && (!classSymbol.isLoadedFromSource() || classSymbol.isJavaSource())) {
                     d = modelLoader.convertToDeclaration(module, className, DeclarationType.VALUE);
                     if (d instanceof Class) {
                         Class c = (Class) d;
@@ -209,8 +215,7 @@ public class LazyPackage extends Package {
     public String getQualifiedName(final String pkgName, String name) {
         // no need to quote the name itself as java keywords are lower-cased and we append a _ to every
         // lower-case toplevel so they can never be java keywords
-        String className = pkgName.isEmpty() ? name : JVMModuleUtil.quoteJavaKeywords(pkgName) + "." + name;
-        return className;
+        return pkgName.isEmpty() ? name : JVMModuleUtil.quoteJavaKeywords(pkgName) + "." + name;
     }
     
     // FIXME: This is only here for wildcard imports, and we should be able to make it lazy like the rest
