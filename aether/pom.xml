@@ -21,6 +21,21 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-api</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-spi</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
+            <artifactId>aether-util</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.aether</groupId>
             <artifactId>aether-impl</artifactId>
             <version>1.1.0</version>
         </dependency>
@@ -44,7 +59,23 @@
             <artifactId>sardine</artifactId>
             <version>5.1</version>
         </dependency>
-        <!-- <dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.2</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.6</version>
+        </dependency>
+        <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
@@ -53,7 +84,23 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.10</version>
-        </dependency> -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.5</version>
+        </dependency>
 	</dependencies>
 	<groupId>org.ceylon-lang</groupId>
 	<artifactId>aether-all</artifactId>
@@ -81,7 +128,11 @@
               </transformers>
               <artifactSet>
                 <excludes>
-                  <exclude>org.slf4j:*</exclude>
+                  <exclude>commons-logging:commons-logging</exclude>
+                  <exclude>org.codehaus.plexus:plexus-component-annotations</exclude>
+                  <exclude>org.sonatype.plexus:plexus-sec-dispatcher</exclude>
+                  <exclude>org.sonatype.plexus:plexus-cipher</exclude>
+                  <!-- <exclude>org.slf4j:*</exclude> -->
                 </excludes>
               </artifactSet>
               <filters>
