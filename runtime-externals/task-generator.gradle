@@ -36,7 +36,7 @@ ext.createTasksFor = { File baseFile,File jarFile, File depsDestination, Task ch
         ceylon {
             seedFrom jarFile
             moduleLocation {moduleTask.destinationFile}
-            forceNewOsgiManifest relativePath.matches(~/.+[\\\/](logmanager|slf4j)[\\\/].+/)
+            forceNewOsgiManifest relativePath.matches(~/.+[\\\/]logmanager[\\\/].+/)
         }
 
         from moduleTask, {

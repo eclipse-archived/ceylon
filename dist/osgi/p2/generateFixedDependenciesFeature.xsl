@@ -25,9 +25,9 @@ by the @authors tag, 2011.
    </license>
       
       
-      <xsl:for-each select="/*[local-name()='repository']/*[local-name()='resource']">
-         <xsl:variable name="bundleName" select="./*[(local-name()='capability') and (@namespace='osgi.identity')]/*[(local-name()='attribute') and (@name='osgi.identity')]/@value"/>      
-            <xsl:if test="not(contains($bundleName, 'ceylon')) and ($bundleName != 'org.slf4j.simple')">
+   <xsl:for-each select="/*[local-name()='repository']/*[local-name()='resource']">
+       <xsl:variable name="bundleName" select="./*[(local-name()='capability') and (@namespace='osgi.identity')]/*[(local-name()='attribute') and (@name='osgi.identity')]/@value"/>      
+            <xsl:if test="not(contains($bundleName, 'ceylon'))">
    <plugin
          id="{$bundleName}"
          download-size="{./*[(local-name()='capability') and (@namespace='osgi.content')]/*[(local-name()='attribute') and (@name='size')]/@value}"
