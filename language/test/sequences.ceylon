@@ -86,8 +86,7 @@ void test_nullsingleton() {
     check(singleton.defines(0), "nullsingleton defines");
     check(!singleton.defines(1), "nullsingleton defines");
     check(singleton.string=="[<null>]", "nullsingleton string");
-    // Because Singleton(null) != Singleton(null) since null hasn't equals() 
-    //check(singleton.reversed==singleton, "nullsingleton reversed");
+    check(singleton.reversed==singleton, "nullsingleton reversed");
     check(singleton nonempty, "nullsingleton nonempty");
     if (nonempty singleton) {
         check(!(singleton.first exists), "nullsingleton first");
@@ -238,10 +237,17 @@ shared void arraySequence() {
     check(abc[2] exists, "abc[2]");
     check(!(abc[3] exists), "abc[3]");
     
-    check(abc.reversed.string=="[c, b, a]", "abc.reverse ``abc.reversed``");
+    check(abc.reversed==["c", "b", "a"], "abc.reverse ``abc.reversed``");
     check(abc.reversed.reversed==abc, "abc.reverse.reverse");
     check(abc.reversed.string=="[c, b, a]", "abc.reversed ``abc.reversed``");
     check(abc.reversed.reversed.sequence()==abc, "abc.reversed.reversed");
+    
+    check(abc.reversed.span(1, 2)==["b", "a"], "abc.reverse.span ``abc.reversed.span(1, 2)``");
+    check(abc.reversed.span(0, 1)==["c", "b"], "abc.reverse.span ``abc.reversed.span(0, 1)``");
+    check(abc.reversed.span(2, 10)==["a"], "abc.reverse.span ``abc.reversed.span(2, 10)``");
+    check(abc.reversed.measure(1, 2)==["b", "a"], "abc.reverse.measure ``abc.reversed.measure(1, 2)``");
+    check(abc.reversed.measure(0, 1)==["c"], "abc.reverse.measure ``abc.reversed.measure(0, 1)``");
+    check(abc.reversed.measure(2, 10)==["a"], "abc.reverse.measure ``abc.reversed.measure(2, 10)``");
     
     check(abc.span(-1,-1)=={}, "abc.span(-1,-1)");
     check(abc.span(-1, 0)=={"a"}.sequence(), "abc.span(-1,0)");

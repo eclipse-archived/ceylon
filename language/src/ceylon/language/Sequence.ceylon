@@ -277,16 +277,18 @@ shared sealed interface Sequence<out Element=Anything>
         
         reversed => outer;
         
+        function outerIndex(Integer index) => size-1-index;
+        
         getFromFirst(Integer index) 
-                => outer.getFromFirst(size-1-index);
+                => outer.getFromFirst(outerIndex(index));
         
         span(Integer from, Integer to) 
-                => outer[to..from];
+                => outer[outerIndex(from)..outerIndex(to)];
         
         iterator() 
                 => let (outerList = outer) 
             object satisfies Iterator<Element> {
-                variable value index = outerList.size-1;
+                variable value index = outerIndex(0);
                 next() => index<0 
                     then finished 
                     else outerList.getElement(index--);
