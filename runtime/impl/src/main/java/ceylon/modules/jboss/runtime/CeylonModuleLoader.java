@@ -78,6 +78,7 @@ public class CeylonModuleLoader extends ModuleLoader
     private static final ModuleIdentifier MODULES;
     private static final ModuleIdentifier LOGMANAGER;
     private static final ModuleIdentifier RUNTIME;
+    private static final ModuleIdentifier ANTLR_ANTLR;
 //    private static final ModuleIdentifier ANTLR_STRINGTEMPLATE;
     private static final ModuleIdentifier ANTLR_RUNTIME;
     private static final ModuleIdentifier CLI;
@@ -112,6 +113,7 @@ public class CeylonModuleLoader extends ModuleLoader
         MODULES = ModuleIdentifier.create("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION);
         LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION);
         RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
+        ANTLR_ANTLR = ModuleIdentifier.create("org.antlr.antlr", "2.7.7");
         ANTLR_RUNTIME = ModuleIdentifier.create("org.antlr.runtime", "3.4");
         MARKDOWN_PAPERS = ModuleIdentifier.create("org.tautua.markdownpapers.core", "1.3.4");
 
@@ -131,6 +133,7 @@ public class CeylonModuleLoader extends ModuleLoader
         BOOTSTRAP.add(LOGMANAGER);
         BOOTSTRAP.add(RUNTIME);
         BOOTSTRAP.add(ANTLR_RUNTIME);
+        BOOTSTRAP.add(ANTLR_ANTLR);
         
         BOOTSTRAP_OPTIONAL = new HashSet<>();
         BOOTSTRAP_OPTIONAL.add(MARKDOWN_PAPERS);
