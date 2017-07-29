@@ -182,4 +182,122 @@ shared void lists() {
     check(["hello", "hello", null, "bye"].frequencies()==map {"hello"->2, "bye"->1}, "frequencies");
     check((0..5).tabulate((i) => i^2)==map{0->0, 1->1, 2->4, 3->9, 4->16, 5->25}, "tabulate");
     
+    mappedArraySequence();
+    
 }
+
+shared void mappedArraySequence() {
+    value abc = {"A", "B", "C"}.sequence().mapElements((i, s)=>s.lowercased);
+    check(3==abc.size, "abc.size");
+    check(!abc.empty, "abc.empty");
+    check(2==(abc.lastIndex else -10), "abc.lastIndex");
+    
+    check("a"==(abc.first else -10), "abc.first");
+    check({"b", "c"}.sequence()==abc.rest, "abc.rest");
+    check({"c"}.sequence()==abc.rest.rest, "abc.rest.rest");
+    check({}==abc.rest.rest.rest, "abc.rest.rest.rest");
+    
+    check(abc.defines(0), "abc.defines(0)");
+    check(abc.defines(1), "abc.defines(1)");
+    check(abc.defines(2), "abc.defines(2)");
+    check(!abc.defines(3), "abc.defines(3)");
+    
+    check((abc[0] else -10)=="a", "abc[0]");
+    check(abc[1] exists, "abc[1]");
+    check(abc[2] exists, "abc[2]");
+    check(!(abc[3] exists), "abc[3]");
+    
+    check(abc.reversed==["c", "b", "a"], "abc.reverse ``abc.reversed``");
+    check(abc.reversed.reversed==abc, "abc.reverse.reverse");
+    check(abc.reversed.string=="{ c, b, a }", "abc.reversed ``abc.reversed``");
+    check(abc.reversed.reversed.sequence()==abc, "abc.reversed.reversed");
+    
+    check(abc.reversed.span(1, 2)==["b", "a"], "abc.reverse.span ``abc.reversed.span(1, 2)``");
+    check(abc.reversed.span(0, 1)==["c", "b"], "abc.reverse.span ``abc.reversed.span(0, 1)``");
+    check(abc.reversed.span(2, 10)==["a"], "abc.reverse.span ``abc.reversed.span(2, 10)``");
+    check(abc.reversed.measure(1, 2)==["b", "a"], "abc.reverse.measure ``abc.reversed.measure(1, 2)``");
+    check(abc.reversed.measure(0, 1)==["c"], "abc.reverse.measure ``abc.reversed.measure(0, 1)``");
+    check(abc.reversed.measure(2, 10)==["a"], "abc.reverse.measure ``abc.reversed.measure(2, 10)``");
+    
+    check(abc.span(-1,-1)=={}, "abc.span(-1,-1)");
+    check(abc.span(-1, 0)=={"a"}.sequence(), "abc.span(-1,0)");
+    check(abc.span(-1, 1)=={"a", "b"}.sequence() , "abc.span(-1,1)");
+    check(abc.span(-1, 2)==abc, "abc.span(-1,2)");
+    check(abc.span(-1, 3)==abc, "abc.span(-1,3)");
+    
+    check(abc.span(0,-1)=={"a"}.sequence(), "abc.span(0,-1)");
+    check(abc.span(0, 0)=={"a"}.sequence(), "abc.span(0,0)");
+    check(abc.span(0, 1)=={"a", "b"}.sequence() , "abc.span(0,1)");
+    check(abc.span(0, 2)==abc, "abc.span(0,2)");
+    check(abc.span(0, 3)==abc, "abc.span(0,3)");
+    
+    check(abc.span(1,-1)=={"b", "a"}.sequence(), "abc.span(1,-1)");
+    check(abc.span(1, 0)=={"b", "a"}.sequence(), "abc.span(1,0)");
+    check(abc.span(1, 1)=={"b"}.sequence() , "abc.span(1,1)");
+    check(abc.span(1, 2)=={"b", "c"}.sequence(), "abc.span(1,2)");
+    check(abc.span(1, 3)=={"b", "c"}.sequence(), "abc.span(1,3)");
+    
+    check(abc.span(2,-1)=={"c", "b", "a"}.sequence(), "abc.span(2,-1)");
+    check(abc.span(2, 0)=={"c", "b", "a"}.sequence(), "abc.span(2,0)");
+    check(abc.span(2, 1)=={"c", "b"}.sequence() , "abc.span(2,1)");
+    check(abc.span(2, 2)=={"c"}.sequence(), "abc.span(2,2)");
+    check(abc.span(2, 3)=={"c"}.sequence(), "abc.span(2,3)");
+    
+    check(abc.span(3,-1)=={"c", "b", "a"}.sequence(), "abc.span(3,-1) ``abc.span(3,-1)``");
+    check(abc.span(3, 0)=={"c", "b", "a"}.sequence(), "abc.span(3,0)");
+    check(abc.span(3, 1)=={"c", "b"}.sequence() , "abc.span(3,1)");
+    check(abc.span(3, 2)=={"c"}.sequence(), "abc.span(3,1)");
+    check(abc.span(3, 3)=={}, "abc.span(3,3)");
+    
+    check(abc.spanFrom(-1)==abc, "abc.spanFrom(-1)");
+    check(abc.spanFrom(0)==abc, "abc.spanFrom(0)");
+    check(abc.spanFrom(1)=={"b", "c"}.sequence() , "abc.spanFrom(1)");
+    check(abc.spanFrom(2)=={"c"}.sequence(), "abc.spanFrom(2)");
+    check(abc.spanFrom(3)=={}, "abc.spanFrom(3)");
+    
+    check(abc.spanTo(-1)=={}, "abc.spanTo(-1)");
+    check(abc.spanTo(0)=={"a"}.sequence(), "abc.spanTo(0)");
+    check(abc.spanTo(1)=={"a", "b"}.sequence() , "abc.spanTo(1)");
+    check(abc.spanTo(2)==abc, "abc.spanTo(2)");
+    check(abc.spanTo(3)==abc, "abc.spanTo(3)");
+    
+    
+    check(abc.measure(-1,-1)=={}, "abc.measure(-1,-1)");
+    check(abc.measure(-1, 0)=={}, "abc.measure(-1,0)");
+    check(abc.measure(-1, 1)=={} , "abc.measure(-1,1)");
+    check(abc.measure(-1, 2)=={"a"}.sequence(), "abc.measure(-1,2)");
+    check(abc.measure(-1, 3)=={"a", "b"}.sequence(), "abc.measure(-1,3)");
+    
+    check(abc.measure(0,-1)=={}, "abc.measure(0,-1)");
+    check(abc.measure(0, 0)=={}, "abc.measure(0,0)");
+    check(abc.measure(0, 1)=={"a"}.sequence() , "abc.measure(0,1)");
+    check(abc.measure(0, 2)=={"a", "b"}.sequence(), "abc.measure(0,2)");
+    check(abc.measure(0, 3)==abc, "abc.measure(0,3)");
+    
+    check(abc.measure(1,-1)=={}, "abc.measure(1,-1)");
+    check(abc.measure(1, 0)=={}, "abc.measure(1,0)");
+    check(abc.measure(1, 1)=={"b"}.sequence() , "abc.measure(1,1)");
+    check(abc.measure(1, 2)=={"b", "c"}.sequence(), "abc.measure(1,2)");
+    check(abc.measure(1, 3)=={"b", "c"}.sequence(), "abc.measure(1,3)");
+    
+    check(abc.measure(2,-1)=={}, "abc.measure(2,-1)");
+    check(abc.measure(2, 0)=={}, "abc.measure(2,0)");
+    check(abc.measure(2, 1)=={"c"}.sequence() , "abc.measure(2,1)");
+    check(abc.measure(2, 2)=={"c"}.sequence(), "abc.measure(2,2)");
+    check(abc.measure(2, 3)=={"c"}.sequence(), "abc.measure(2,3)");
+    
+    check(abc.measure(3,-1)=={}, "abc.measure(3,-1)");
+    check(abc.measure(3, 0)=={}, "abc.measure(3,0)");
+    check(abc.measure(3, 1)=={} , "abc.measure(3,1)");
+    check(abc.measure(3, 2)=={}, "abc.measure(3,1)");
+    check(abc.measure(3, 3)=={}, "abc.measure(3,3)");
+    
+    check(abc.reversed.rest==["b","a"], "abc.reversed.rest");
+    check(abc.reversed==["c","b","a"], "abc.reversed");
+    check((abc.reversed.first else -10)=="c", "abc.reversed.first");
+    check((abc.reversed.last else -10)=="a", "abc.reversed.last");
+    
+    check(abc.reduce((Anything a, Anything b) => null) is Null, "array seq reduce null #1");
+    check({null}.sequence().reduce((Anything a, Anything b) => "") is Null, "array seq reduce null #2");
+}
+
