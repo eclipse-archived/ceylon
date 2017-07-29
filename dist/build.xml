@@ -196,10 +196,10 @@ Some super-charged ant tasks:
         <antcall target="ide-quick"/>
     </target>
     <target name="ide-quick">
-    	<echo message="Deleting ${eclipse.project.path}/required-bundle-proxies"/>
-    	<delete includeemptydirs="true" failonerror="false" verbose="true" defaultexcludes="false">
-    	    <fileset dir="${eclipse.project.path}/required-bundle-proxies" includes="**/*" defaultexcludes="false"/>
-    	</delete>
+        <echo message="Deleting ${eclipse.project.path}/required-bundle-proxies"/>
+        <delete includeemptydirs="true" failonerror="false" verbose="true" defaultexcludes="false">
+            <fileset dir="${eclipse.project.path}/required-bundle-proxies" includes="**/*" defaultexcludes="false"/>
+        </delete>
         <foreach list="${moddirs}"
                  target="ide-item"
                  param="project.item.name"
@@ -663,7 +663,7 @@ Use this when NOT doing a release!">
             <zipfileset src="${module.jar}.bnd.jar" includes="META-INF/MANIFEST.MF" unless:set="jigsaw"/>
         </jar>
         <copy file="${module.jar}.result" tofile="${module.jar}" overwrite="true" force="true"/>
-    	
+        
         <property file="../common/common-build.properties" />
         <path id="compiler.classpath">
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
@@ -672,11 +672,11 @@ Use this when NOT doing a release!">
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
             <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar"/>
-        	<pathelement location="${jboss-modules.lib}"/>
+            <pathelement location="${jboss-modules.lib}"/>
         </path>
-    	<java classname="com.redhat.ceylon.compiler.java.tools.Java9Util" classpathref="compiler.classpath" if:set="jigsaw">
-    		<arg value="${module.jar}"/>
-    	</java>
+        <java classname="com.redhat.ceylon.compiler.java.tools.Java9Util" classpathref="compiler.classpath" if:set="jigsaw">
+            <arg value="${module.jar}"/>
+        </java>
 
         <pathconvert property="module.sha1" setonempty="false" if:set="module.jar">
             <fileset file="${ceylon.dist.dir}/repo/${module.dir.relative}/${module.jar.name}" />
@@ -712,7 +712,10 @@ Use this when NOT doing a release!">
         <if>
             <not>
                 <or>
+                    <and>
                     <contains string="${module.dir.relative}" substring="ceylon"/>
+                    <not><contains string="${module.dir.relative}" substring="aether"/></not>
+                    </and>
                 </or>
             </not>
             <then>
@@ -755,133 +758,136 @@ Use this when NOT doing a release!">
             </else>
         </if>
 
-    	<if>
+        <if>
             <or>
-		        <contains string="${module.dir.relative}" substring="ceylon"/>
+                <and>
+                    <contains string="${module.dir.relative}" substring="ceylon"/>
+                    <not><contains string="${module.dir.relative}" substring="aether"/></not>
+                </and>
                 <contains string="${module.dir.relative}" substring="logmanager"/>
-		        <not><isset property="hasOsgiMetadata"/></not>
+                <not><isset property="hasOsgiMetadata"/></not>
             </or>
-	        <then>
-                <echo>Adding / udating the OSGI metadata in ${module.jar}</echo>
-		        <var name="Require-Bundle" value=""/>
-		        <xmltask source="${module.descriptor.file}" standalone="true">
-		            <call path="/*[local-name()='module']/*[local-name()='dependencies']/*[local-name()='module']">
-		                <param name="moduleName" path="@name" default="unknown"/>
-		                <param name="moduleSlot" path="@slot" default="0.0.0"/>
-		                <param name="moduleExport" path="@export" default="false"/>
-		                <param name="moduleOptional" path="@optional" default="false"/>
-		                <actions>
-		                    <if>
-		                        <not>
-		                            <or>
-		                                <equals arg1="@{moduleName}" arg2="java.base"/>
-		                                <equals arg1="@{moduleName}" arg2="java.compiler"/>
-		                                <equals arg1="@{moduleName}" arg2="java.logging"/>
-		                                <equals arg1="@{moduleName}" arg2="javax.xml"/>
-		                            	<equals arg1="@{moduleName}" arg2="java.instrument"/>
-		                                <equals arg1="@{moduleName}" arg2="javax.jaxws"/>
-		                                <equals arg1="@{moduleName}" arg2="java.desktop"/>
-		                                <equals arg1="@{moduleName}" arg2="java.prefs"/>
-		                                <equals arg1="@{moduleName}" arg2="oracle.jdk.base"/>
-		                                <equals arg1="@{moduleName}" arg2="java.jdbc"/>
-		                                <equals arg1="@{moduleName}" arg2="javax.script"/>
-		                                <equals arg1="@{moduleName}" arg2="java.auth.kerberos"/>
-		                                <equals arg1="@{moduleName}" arg2="java.tls"/>
-		                                <equals arg1="@{moduleName}" arg2="java.management"/>
-		                                <and>
-		                                    <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
-		                                    <equals arg1="@{moduleName}" arg2="ceylon.language"/>
-		                                </and>
-		                            </or>
-		                        </not>
-		                        <then>
-		                            <if>
-		                                <not>
-		                                    <equals arg1="${Require-Bundle}" arg2=""/>
-		                                </not>
-		                                <then>
-		                                    <var name="Require-Bundle" value="${Require-Bundle}," />
-		                                </then>
-		                            </if>
-		                            <if>
+            <then>
+                <echo>Adding / updating the OSGI metadata in ${module.jar}</echo>
+                <var name="Require-Bundle" value=""/>
+                <xmltask source="${module.descriptor.file}" standalone="true">
+                    <call path="/*[local-name()='module']/*[local-name()='dependencies']/*[local-name()='module']">
+                        <param name="moduleName" path="@name" default="unknown"/>
+                        <param name="moduleSlot" path="@slot" default="0.0.0"/>
+                        <param name="moduleExport" path="@export" default="false"/>
+                        <param name="moduleOptional" path="@optional" default="false"/>
+                        <actions>
+                            <if>
+                                <not>
+                                    <or>
+                                        <equals arg1="@{moduleName}" arg2="java.base"/>
+                                        <equals arg1="@{moduleName}" arg2="java.compiler"/>
+                                        <equals arg1="@{moduleName}" arg2="java.logging"/>
+                                        <equals arg1="@{moduleName}" arg2="javax.xml"/>
+                                        <equals arg1="@{moduleName}" arg2="java.instrument"/>
+                                        <equals arg1="@{moduleName}" arg2="javax.jaxws"/>
+                                        <equals arg1="@{moduleName}" arg2="java.desktop"/>
+                                        <equals arg1="@{moduleName}" arg2="java.prefs"/>
+                                        <equals arg1="@{moduleName}" arg2="oracle.jdk.base"/>
+                                        <equals arg1="@{moduleName}" arg2="java.jdbc"/>
+                                        <equals arg1="@{moduleName}" arg2="javax.script"/>
+                                        <equals arg1="@{moduleName}" arg2="java.auth.kerberos"/>
+                                        <equals arg1="@{moduleName}" arg2="java.tls"/>
+                                        <equals arg1="@{moduleName}" arg2="java.management"/>
+                                        <and>
+                                            <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
+                                            <equals arg1="@{moduleName}" arg2="ceylon.language"/>
+                                        </and>
+                                    </or>
+                                </not>
+                                <then>
+                                    <if>
+                                        <not>
+                                            <equals arg1="${Require-Bundle}" arg2=""/>
+                                        </not>
+                                        <then>
+                                            <var name="Require-Bundle" value="${Require-Bundle}," />
+                                        </then>
+                                    </if>
+                                    <if>
                                         <contains string="@{moduleName}" substring="ceylon"/>
-		                                <then>
+                                        <then>
                                             <ceylon-osgi-version propertyName="depOsgiVersion" ceylonVersion="@{moduleSlot}" addTimeStamp="false"/>
-		                                    <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=${depOsgiVersion}" />
-	                                	</then>
-		                            	<else>
-		                                    <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=@{moduleSlot}" />
-		                            	</else>
-		                            </if>
-		                            <if>
-		                                <equals arg1="@{moduleExport}" arg2="true"/>
-		                                <then>
-		                                    <var name="Require-Bundle" value="${Require-Bundle};visibility:=reexport" />
-		                                </then>
-		                            </if>
-		                            <if>
-		                            	<or>
-		                                    <equals arg1="@{moduleOptional}" arg2="true"/>
-		                                    <and>
-		                                        <equals arg1="${Bundle-SymbolicName}" arg2="ceylon.bootstrap"/>
-		                                        <equals arg1="@{moduleName}" arg2="ceylon.runtime"/>
-		                                    </and>
-		                        		</or>
-		                                <then>
-		                                    <var name="Require-Bundle" value="${Require-Bundle};resolution:=optional" />
-		                                </then>
-		                            </if>
-		                        </then>
-		                    </if>
-		                </actions>
-		            </call>
-		        </xmltask>
-	        <!--
-	            	<if>
-		            <equals arg1="${Bundle-SymbolicName}"  arg2="ceylon.language"/>
-		            <then>
-		                <var name="Require-Bundle" value="${Require-Bundle},com.redhat.ceylon.dist;bundle-version=${module(slot)};visibility:=reexport" />
-		            </then>
-		        </if>
-	        -->
-		        <tempfile property="bundleDefinitionFile"/>
-		        <echo file="${bundleDefinitionFile}">Bundle-SymbolicName: ${Bundle-SymbolicName}${line.separator}</echo>
-		        <echo file="${bundleDefinitionFile}" append="true">Bundle-Version: ${newBundleVersion}${line.separator}</echo>
-		        <echo file="${bundleDefinitionFile}" append="true">Export-Package: !about.html, !licenses, !settings.xml, *;version="${Bundle-Version}"${line.separator}</echo>
-		        <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
-		        <if>
-		            <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
-		            <then>
-		                <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${module.ceylon.language.osgi.version},com.redhat.ceylon.compiler.java.*;bundle-version=${module.com.redhat.ceylon.compiler.osgi.version}${line.separator}</echo>
-		            </then>
-			
-		        </if>
-		        <if>
-			        <or>
-		                <equals arg1="${Bundle-SymbolicName}"  arg2="com.redhat.ceylon.compiler.java"/>
-		                <equals arg1="${Bundle-SymbolicName}"  arg2="com.redhat.ceylon.model"/>
-			        </or>
-		            <then>
-		                <echo file="${bundleDefinitionFile}" append="true">Import-Package: javax.lang.model.*${line.separator}</echo>
-		            </then>
-		            <else>
-		                <echo file="${bundleDefinitionFile}" append="true">-removeheaders: Import-Package${line.separator}</echo>
-		            </else>
-		        </if>
-		        <echo file="${bundleDefinitionFile}" append="true">-nouses: true${line.separator}</echo>
-		        <if>
-		            <not>
-		                <equals arg1="${Require-Bundle}" arg2=""/>
-		            </not>
-		            <then>
-		                <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
-		            </then>
-		        </if>
-		        <bndwrap exceptions="true" force="true"  jars="${module.jar}" output="${module.jar}.bnd.jar" definitions="${bundleDefinitionFile}" unless:set="jigsaw">
-		        </bndwrap>
-		        <delete file="${bundleDefinitionFile}"/>
-	        </then>
-	        <else>
+                                            <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=${depOsgiVersion}" />
+                                        </then>
+                                        <else>
+                                            <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=@{moduleSlot}" />
+                                        </else>
+                                    </if>
+                                    <if>
+                                        <equals arg1="@{moduleExport}" arg2="true"/>
+                                        <then>
+                                            <var name="Require-Bundle" value="${Require-Bundle};visibility:=reexport" />
+                                        </then>
+                                    </if>
+                                    <if>
+                                        <or>
+                                            <equals arg1="@{moduleOptional}" arg2="true"/>
+                                            <and>
+                                                <equals arg1="${Bundle-SymbolicName}" arg2="ceylon.bootstrap"/>
+                                                <equals arg1="@{moduleName}" arg2="ceylon.runtime"/>
+                                            </and>
+                                        </or>
+                                        <then>
+                                            <var name="Require-Bundle" value="${Require-Bundle};resolution:=optional" />
+                                        </then>
+                                    </if>
+                                </then>
+                            </if>
+                        </actions>
+                    </call>
+                </xmltask>
+            <!--
+                    <if>
+                    <equals arg1="${Bundle-SymbolicName}"  arg2="ceylon.language"/>
+                    <then>
+                        <var name="Require-Bundle" value="${Require-Bundle},com.redhat.ceylon.dist;bundle-version=${module(slot)};visibility:=reexport" />
+                    </then>
+                </if>
+            -->
+                <tempfile property="bundleDefinitionFile"/>
+                <echo file="${bundleDefinitionFile}">Bundle-SymbolicName: ${Bundle-SymbolicName}${line.separator}</echo>
+                <echo file="${bundleDefinitionFile}" append="true">Bundle-Version: ${newBundleVersion}${line.separator}</echo>
+                <echo file="${bundleDefinitionFile}" append="true">Export-Package: !about.html, !licenses, !settings.xml, *;version="${Bundle-Version}"${line.separator}</echo>
+                <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
+                <if>
+                    <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
+                    <then>
+                        <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${module.ceylon.language.osgi.version},com.redhat.ceylon.compiler.java.*;bundle-version=${module.com.redhat.ceylon.compiler.osgi.version}${line.separator}</echo>
+                    </then>
+            
+                </if>
+                <if>
+                    <or>
+                        <equals arg1="${Bundle-SymbolicName}"  arg2="com.redhat.ceylon.compiler.java"/>
+                        <equals arg1="${Bundle-SymbolicName}"  arg2="com.redhat.ceylon.model"/>
+                    </or>
+                    <then>
+                        <echo file="${bundleDefinitionFile}" append="true">Import-Package: javax.lang.model.*${line.separator}</echo>
+                    </then>
+                    <else>
+                        <echo file="${bundleDefinitionFile}" append="true">-removeheaders: Import-Package${line.separator}</echo>
+                    </else>
+                </if>
+                <echo file="${bundleDefinitionFile}" append="true">-nouses: true${line.separator}</echo>
+                <if>
+                    <not>
+                        <equals arg1="${Require-Bundle}" arg2=""/>
+                    </not>
+                    <then>
+                        <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
+                    </then>
+                </if>
+                <bndwrap exceptions="true" force="true"  jars="${module.jar}" output="${module.jar}.bnd.jar" definitions="${bundleDefinitionFile}" unless:set="jigsaw">
+                </bndwrap>
+                <delete file="${bundleDefinitionFile}"/>
+            </then>
+            <else>
                 <echo>Reusing existing OSGI metadata for ${module.jar}</echo>
                 <jar destfile="${module.jar}.bnd.jar" filesetmanifest="merge">
                     <zipfileset src="${module.jar}" includes="**"/>
@@ -889,7 +895,7 @@ Use this when NOT doing a release!">
                         <attribute name="Bundle-Version" value="${newBundleVersion}"/>
                     </manifest>
                 </jar>
-	        </else>
+            </else>
         </if>
     </target>
 
