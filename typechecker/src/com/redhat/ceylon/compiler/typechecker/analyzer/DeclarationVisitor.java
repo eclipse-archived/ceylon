@@ -955,6 +955,8 @@ public abstract class DeclarationVisitor extends Visitor {
                 overload.setOverloaded(true);
                 overload.setExtendedType(abstraction.getType());
                 overload.setParameterList(cc.getParameterList());
+                overload.setNativeBackends(abstraction.getNativeBackends());
+                overload.setFinal(abstraction.isFinal());
                 overloads.add(overload);
                 unit.addDeclaration(overload);
                 scope.addMember(overload);
