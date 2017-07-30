@@ -1258,163 +1258,210 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private Declaration createDeclaration(Declaration container, ClassMirror classMirror,
             DeclarationType declarationType, List<Declaration> decls) {
-        Declaration decl = null;
-        Declaration hdr = null;
         
         checkBinaryCompatibility(classMirror);
         
-        ClassType type = getClassType(classMirror);
         boolean isCeylon = classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null;
         boolean isNativeHeaderMember = container != null && container.isNativeHeader();
         
+        ClassType type = getClassType(classMirror);
         try{
             // make it
             switch(type){
             case ATTRIBUTE:
-                decl = makeToplevelAttribute(classMirror, isNativeHeaderMember);
-                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
-                if (isCeylon && shouldCreateNativeHeader(decl, container)) {
-                    hdr = makeToplevelAttribute(classMirror, true);
-                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                }
-                break;
+                return createAttribute(container, classMirror, decls, isCeylon, isNativeHeaderMember);
             case METHOD:
-                decl = makeToplevelMethod(classMirror, isNativeHeaderMember);
-                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
-                if (isCeylon && shouldCreateNativeHeader(decl, container)) {
-                    hdr = makeToplevelMethod(classMirror, true);
-                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                }
-                break;
+                return createMethod(container, classMirror, decls, isCeylon, isNativeHeaderMember);
             case OBJECT:
-                // we first make a class
-                Declaration objectClassDecl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
-                setNonLazyDeclarationProperties(objectClassDecl, classMirror, classMirror, classMirror, true);
-                if (isCeylon && shouldCreateNativeHeader(objectClassDecl, container)) {
-                    Declaration hdrobj = makeLazyClass(classMirror, null, null, true);
-                    setNonLazyDeclarationProperties(hdrobj, classMirror, classMirror, classMirror, true);
-                    decls.add(initNativeHeader(hdrobj, objectClassDecl));
-                }
-                decls.add(objectClassDecl);
-                // then we make a value for it, if it's not an inline object expr
-                if(objectClassDecl.isNamed()){
-                    Declaration objectDecl = makeToplevelAttribute(classMirror, isNativeHeaderMember);
-                    setNonLazyDeclarationProperties(objectDecl, classMirror, classMirror, classMirror, true);
-                    if (isCeylon && shouldCreateNativeHeader(objectDecl, container)) {
-                        Declaration hdrobj = makeToplevelAttribute(classMirror, true);
-                        setNonLazyDeclarationProperties(hdrobj, classMirror, classMirror, classMirror, true);
-                        decls.add(initNativeHeader(hdrobj, objectDecl));
-                    }
-                    decls.add(objectDecl);
-                    // which one did we want?
-                    decl = declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
-                }else{
-                    decl = objectClassDecl;
-                }
-                break;
+                return createObject(container, classMirror, declarationType, decls, isCeylon, isNativeHeaderMember);
             case CLASS:
                 if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null){
-                    decl = makeClassAlias(classMirror);
-                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
-                }else if(classMirror.getAnnotation(CEYLON_TYPE_ALIAS_ANNOTATION) != null){
-                    decl = makeTypeAlias(classMirror);
-                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
-                }else{
-                    final List<MethodMirror> constructors = getClassConstructors(classMirror, classMirror, constructorOnly);
-                    if (!constructors.isEmpty()) {
-                        Boolean hasConstructors = hasConstructors(classMirror);
-                        if (constructors.size() > 1) {
-                            if (hasConstructors == null || !hasConstructors) {
-                                decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
-                            } else {
-                                decl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
-                                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                                if (isCeylon && shouldCreateNativeHeader(decl, container)) {
-                                    hdr = makeLazyClass(classMirror, null, null, true);
-                                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                                }
-                            }
-                        } else {
-                            if (hasConstructors == null || !hasConstructors) {
-                                // single constructor
-                                MethodMirror constructor = constructors.get(0);
-                                // if the class and constructor have different visibility, we pretend there's an overload of one
-                                // if it's a ceylon class we don't care that they don't match sometimes, like for inner classes
-                                // where the constructor is protected because we want to use an accessor, in this case the class
-                                // visibility is to be used
-                                // Same for coercion
-                                if(isCeylon 
-                                        || (getJavaVisibility(classMirror) == getJavaVisibility(constructor)
-                                            && !isCoercedMethod(constructor))){
-                                    decl = makeLazyClass(classMirror, null, constructor, isNativeHeaderMember);
-                                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                                    if (isCeylon && shouldCreateNativeHeader(decl, container)) {
-                                        hdr = makeLazyClass(classMirror, null, constructor, true);
-                                        setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                                    }
-                                }else{
-                                    decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
-                                }
-                            } else {
-                                decl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
-                                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                                if (isCeylon && shouldCreateNativeHeader(decl, container)) {
-                                    hdr = makeLazyClass(classMirror, null, null, true);
-                                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                                }
-                            }
-                        }
-                    } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
-                        // objects don't need overloading stuff
-                        decl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
-                        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                        if (isCeylon && shouldCreateNativeHeader(decl, container)) {
-                            hdr = makeLazyClass(classMirror, null, null, true);
-                            setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                        }
-                    } else {
-                        // no visible constructors
-                        decl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
-                        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                        if (isCeylon && shouldCreateNativeHeader(decl, container)) {
-                            hdr = makeLazyClass(classMirror, null, null, true);
-                            setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                        }
-                    }
-                    if (!isCeylon) {
-                        setSealedFromConstructorMods(decl, constructors);
-                    }
+                    return createClassAlias(classMirror, decls);
                 }
-                break;
+                else if(classMirror.getAnnotation(CEYLON_TYPE_ALIAS_ANNOTATION) != null){
+                    return createTypeAlias(classMirror, decls);
+                }
+                else{
+                    return createClass(container, classMirror, decls, isCeylon, isNativeHeaderMember);
+                }
             case INTERFACE:
-                boolean isAlias = classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null;
-                if(isAlias){
-                    decl = makeInterfaceAlias(classMirror);
-                }else{
-                    decl = makeLazyInterface(classMirror, isNativeHeaderMember);
+                if(classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION) != null) {
+                    return createInterfaceAlias(container, classMirror, decls, isCeylon, isNativeHeaderMember);
                 }
-                setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                if (!isAlias && isCeylon && shouldCreateNativeHeader(decl, container)) {
-                    hdr = makeLazyInterface(classMirror, true);
-                    setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+                else {
+                    return createInterface(container, classMirror, decls, isCeylon, isNativeHeaderMember);
                 }
-                break;
+            default:
+                return null;
             }
         }catch(ModelResolutionException x){
-            // FIXME: this may not be the best thing to do, perhaps we should have an erroneous Class,Interface,Function
+            // FIXME: this may not be the best thing to do, perhaps 
+            // we should have an erroneous Class,Interface,Function
             // etc, like javac's model does?
-            decl = logModelResolutionException(x, null, "Failed to load declaration "+classMirror).getDeclaration();
-        }
-
-        // objects have special handling above
-        if (type != ClassType.OBJECT){
-            if (hdr != null) {
-                decls.add(initNativeHeader(hdr, decl));
-            }
-            decls.add(decl);
+            Declaration decl = logModelResolutionException(x, null, "Failed to load declaration "+classMirror).getDeclaration();
+            return addHeaderAndDeclaration(decls, decl, null);
         }
         
-        return hdr != null ? hdr : decl;
+    }
+    
+    private Declaration createTypeAlias(ClassMirror classMirror, List<Declaration> decls) {
+        Declaration decl = makeTypeAlias(classMirror);
+        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
+        return addHeaderAndDeclaration(decls, decl, null);
+    }
+    
+    private Declaration createClassAlias(ClassMirror classMirror, List<Declaration> decls) {
+        Declaration decl = makeClassAlias(classMirror);
+        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
+        return addHeaderAndDeclaration(decls, decl, null);
+    }
+    
+    private Declaration createClass(Declaration container, ClassMirror classMirror, List<Declaration> decls, boolean isCeylon, boolean isNativeHeaderMember) {
+        Declaration decl;
+        Declaration hdr = null;
+        final List<MethodMirror> constructors = getClassConstructors(classMirror, classMirror, constructorOnly);
+        if (!constructors.isEmpty()) {
+            Boolean hasConstructors = hasConstructors(classMirror);
+            if (constructors.size() > 1) {
+                if (hasConstructors == null || !hasConstructors) {
+                    decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
+                } else {
+                    decl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
+                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+                    if (isCeylon && shouldCreateNativeHeader(decl, container)) {
+                        hdr = makeLazyClass(classMirror, null, null, true);
+                        setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+                    }
+                }
+            } else {
+                if (hasConstructors == null || !hasConstructors) {
+                    // single constructor
+                    MethodMirror constructor = constructors.get(0);
+                    // if the class and constructor have different visibility, we pretend there's an overload of one
+                    // if it's a ceylon class we don't care that they don't match sometimes, like for inner classes
+                    // where the constructor is protected because we want to use an accessor, in this case the class
+                    // visibility is to be used
+                    // Same for coercion
+                    if(isCeylon 
+                            || (getJavaVisibility(classMirror) == getJavaVisibility(constructor)
+                                && !isCoercedMethod(constructor))){
+                        decl = makeLazyClass(classMirror, null, constructor, isNativeHeaderMember);
+                        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+                        if (isCeylon && shouldCreateNativeHeader(decl, container)) {
+                            hdr = makeLazyClass(classMirror, null, constructor, true);
+                            setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+                        }
+                    }else{
+                        decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
+                    }
+                } else {
+                    decl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
+                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+                    if (isCeylon && shouldCreateNativeHeader(decl, container)) {
+                        hdr = makeLazyClass(classMirror, null, null, true);
+                        setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+                    }
+                }
+            }
+        } else if(isCeylon && classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION) != null) {
+            // objects don't need overloading stuff
+            decl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
+            setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+            if (isCeylon && shouldCreateNativeHeader(decl, container)) {
+                hdr = makeLazyClass(classMirror, null, null, true);
+                setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+            }
+        } else {
+            // no visible constructors
+            decl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
+            setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+            if (isCeylon && shouldCreateNativeHeader(decl, container)) {
+                hdr = makeLazyClass(classMirror, null, null, true);
+                setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+            }
+        }
+        if (!isCeylon) {
+            setSealedFromConstructorMods(decl, constructors);
+        }
+        return addHeaderAndDeclaration(decls, decl, hdr);
+    }
+    
+    private Declaration createInterface(Declaration container, ClassMirror classMirror, List<Declaration> decls, boolean isCeylon, boolean isNativeHeaderMember) {
+        Declaration decl = makeLazyInterface(classMirror, isNativeHeaderMember);
+        Declaration hdr = null;
+        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+        if (isCeylon && shouldCreateNativeHeader(decl, container)) {
+            hdr = makeLazyInterface(classMirror, true);
+            setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+        }
+        return addHeaderAndDeclaration(decls, decl, hdr);
+    }
+    
+    private Declaration createInterfaceAlias(Declaration container, ClassMirror classMirror, List<Declaration> decls, boolean isCeylon, boolean isNativeHeaderMember) {
+        Declaration decl = makeInterfaceAlias(classMirror);
+        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
+        return addHeaderAndDeclaration(decls, decl, null);
+    }
+    
+    private Declaration createMethod(Declaration container, ClassMirror classMirror, List<Declaration> decls, boolean isCeylon, boolean isNativeHeaderMember) {
+        Declaration decl = makeToplevelMethod(classMirror, isNativeHeaderMember);
+        Declaration hdr = null;
+        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
+        if (isCeylon && shouldCreateNativeHeader(decl, container)) {
+            hdr = makeToplevelMethod(classMirror, true);
+            setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+        }
+        return addHeaderAndDeclaration(decls, decl, hdr);
+    }
+    
+    private Declaration createAttribute(Declaration container, ClassMirror classMirror, List<Declaration> decls, boolean isCeylon, boolean isNativeHeaderMember) {
+        Declaration decl = makeToplevelAttribute(classMirror, isNativeHeaderMember);
+        Declaration hdr = null;
+        setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, true);
+        if (isCeylon && shouldCreateNativeHeader(decl, container)) {
+            hdr = makeToplevelAttribute(classMirror, true);
+            setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
+        }
+        return addHeaderAndDeclaration(decls, decl, hdr);
+    }
+    
+    private Declaration addHeaderAndDeclaration(List<Declaration> decls, Declaration decl, Declaration hdr) {
+        decls.add(decl);
+        if (hdr == null) {
+            return decl;
+        } else {
+            decls.add(initNativeHeader(hdr, decl));
+            return hdr;
+        }
+    }
+    
+    
+    private Declaration createObject(Declaration container, ClassMirror classMirror, DeclarationType declarationType, List<Declaration> decls, boolean isCeylon, boolean isNativeHeaderMember) {
+        // we first make a class
+        Declaration objectClassDecl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
+        setNonLazyDeclarationProperties(objectClassDecl, classMirror, classMirror, classMirror, true);
+        if (isCeylon && shouldCreateNativeHeader(objectClassDecl, container)) {
+            Declaration hdrobj = makeLazyClass(classMirror, null, null, true);
+            setNonLazyDeclarationProperties(hdrobj, classMirror, classMirror, classMirror, true);
+            decls.add(initNativeHeader(hdrobj, objectClassDecl));
+        }
+        decls.add(objectClassDecl);
+        
+        // then we make a value for it, if it's not an inline object expr
+        if(objectClassDecl.isNamed()){
+            Declaration objectDecl = makeToplevelAttribute(classMirror, isNativeHeaderMember);
+            setNonLazyDeclarationProperties(objectDecl, classMirror, classMirror, classMirror, true);
+            if (isCeylon && shouldCreateNativeHeader(objectDecl, container)) {
+                Declaration hdrobj = makeToplevelAttribute(classMirror, true);
+                setNonLazyDeclarationProperties(hdrobj, classMirror, classMirror, classMirror, true);
+                decls.add(initNativeHeader(hdrobj, objectDecl));
+            }
+            decls.add(objectDecl);
+            // which one did we want?
+            return declarationType == DeclarationType.TYPE ? objectClassDecl : objectDecl;
+        }else{
+            return objectClassDecl;
+        }
     }
     
     private ClassType getClassType(ClassMirror classMirror) {
@@ -3759,7 +3806,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             type = obtainType(methodMirror.getReturnType(), methodMirror, method, module,
                               "method '"+methodMirror.getName()+"'", klass);
         
-        switch(getUncheckedNullPolicy(isCeylon, methodMirror.getReturnType(), methodMirror)){
+        NullStatus nullPolicy = getUncheckedNullPolicy(isCeylon, methodMirror.getReturnType(), methodMirror);
+        switch(nullPolicy){
         case Optional:
             if(!isCeylon){
                 type = makeOptionalTypePreserveUnderlyingType(type, module);
@@ -4051,7 +4099,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             value.setType(enumValueType.getType());
             value.setUncheckedNullType(false);
         } else {
-            switch(getUncheckedNullPolicy(isCeylon, fieldMirror.getType(), fieldMirror)){
+            NullStatus nullPolicy = getUncheckedNullPolicy(isCeylon, fieldMirror.getType(), fieldMirror);
+            switch(nullPolicy){
             case Optional:
                 if(!isCeylon){
                     type = makeOptionalTypePreserveUnderlyingType(type, module);
@@ -4182,7 +4231,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // special case for hash attributes which we want to pretend are of type long internally
         if(value.isShared() && methodName.equals("hash"))
             type.setUnderlyingType("long");
-        switch(getUncheckedNullPolicy(isCeylon, methodMirror.getReturnType(), methodMirror)){
+        NullStatus nullPolicy = getUncheckedNullPolicy(isCeylon, methodMirror.getReturnType(), methodMirror);
+        switch(nullPolicy){
         case Optional:
             if(!isCeylon){
                 type = makeOptionalTypePreserveUnderlyingType(type, module);
@@ -4657,7 +4707,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             
             ParameterList pl = new ParameterList();
             int count = 0;
-            List<VariableMirror> functionalParameters = functionalMethod.getParameters();
+//            List<VariableMirror> functionalParameters = functionalMethod.getParameters();
             for(TypeMirror parameterType : functionalInterfaceType.getParameterTypes()){
                 Type modelParameterType = 
                         obtainType(moduleScope, parameterType, scope, 
