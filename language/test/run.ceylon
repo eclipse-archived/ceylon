@@ -49,6 +49,8 @@ void runTests() {
     print("Types & satisfying interfaces");
     types();
     testSatisfaction();
+    print("Statics");
+    testStatic();
     print("Use-site variance");
     testUseSiteVariance();
     print("Exceptions");
