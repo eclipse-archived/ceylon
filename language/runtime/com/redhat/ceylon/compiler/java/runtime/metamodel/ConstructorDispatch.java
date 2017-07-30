@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.IntArray;
-import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Jpa;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.CallableConstructorDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ClassDeclarationImpl;
@@ -34,7 +33,6 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.model.Applicable;
 import ceylon.language.meta.model.ClassModel;
-import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.InvocationException;
 
 /**
@@ -317,7 +315,7 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
         final Constructor<?>[] defaultedMethods = new Constructor[dispatch.length];
         String ctorName = freeConstructor == null ? null : freeConstructor.declaration.getName();
         outer: for(Constructor<?> constr : javaClass.getDeclaredConstructors()) {
-            if (constr.isAnnotationPresent(Jpa.class)) {
+            if (constr.isAnnotationPresent(Jpa.class) || constr.isAnnotationPresent(Ignore.class)) {
                 continue;
             }
             int numTypeParameters = 0;

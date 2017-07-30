@@ -2204,12 +2204,6 @@ public final class String
             instance(value.substring(value.offsetByCodePoints(0, 1)));
     }
 
-    @Override
-    public String getExceptLast() {
-        return value.isEmpty() ? this :
-            instance(value.substring(0, value.offsetByCodePoints(value.length(), -1)));
-    }
-
     @Ignore
     public static java.lang.String getRest(java.lang.String value) {
         return value.isEmpty() ? "" :
@@ -2217,10 +2211,9 @@ public final class String
     }
     
     @Ignore
-    public static java.lang.String 
+    public static Iterable<? extends Character,?> 
     getExceptLast(java.lang.String value) {
-        return value.isEmpty() ? "" :
-            value.substring(0, value.offsetByCodePoints(value.length(), -1));
+    	return instance(value).getExceptLast();
     }
 
     @Override
@@ -3217,6 +3210,11 @@ public final class String
     public Set<? extends Character> elements() {
         return $ceylon$language$Iterable$impl().elements();
     }*/
+
+    @Override @Ignore
+    public Iterable<? extends Character, ? extends java.lang.Object> getExceptLast() {
+        return $ceylon$language$Iterable$impl().getExceptLast();
+    }
 
     @Override @Ignore
     public Iterable<? extends Entry<? extends Integer, ? extends Character>, ? extends java.lang.Object> getIndexed() {
