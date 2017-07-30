@@ -1442,6 +1442,9 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         if (v.isLate()) {
+            if (lazy) {
+                that.addError("late attribute should specify initial value using '='");
+            }
             if (v.isFormal()) {
                 that.addError("formal attribute may not be annotated 'late'");
             }

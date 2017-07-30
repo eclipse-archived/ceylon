@@ -70,3 +70,9 @@ class LateMutation() {
         @error x+=1;
     }
 }
+
+class LateMembers() {
+    late value s0 = "";
+    @error late value s1 => "";
+    @error late value s2 { return ""; }
+}
