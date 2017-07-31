@@ -1820,4 +1820,9 @@ public class ModelLoaderTests extends CompilerTests {
         compile("Bug6803.java");
         compile("bug6803test.ceylon");
     }
+
+    @Test
+    public void loadConstructors(){
+        verifyCompilerClassLoading("Constructors.ceylon");
+    }
 }
