@@ -1801,10 +1801,12 @@ public class ExpressionVisitor extends Visitor {
                 getRefinedMemberReference(
                         refinedMethodOrValue, 
                         refiningType);
-        intersectReturnType(refinedTypes, 
-                refinedProducedReference);
+        Type refinedType = 
+                refinedProducedReference.getType();
         boolean allHaveNulls = 
-                hasNullReturnValues(refinedMethodOrValue);
+                hasNullReturnValues(refinedType, 
+                        refinedMethodOrValue);
+        intersectReturnType(refinedTypes, refinedType);
         for (Declaration intervening: interveningRefinements) {
             if (intervening instanceof FunctionOrValue
                     //this one is directly checked from visit(SpecifierStatement)
@@ -1819,9 +1821,11 @@ public class ExpressionVisitor extends Visitor {
                 Reference refinedMember = 
                         getRefinedMemberReference(refinement, 
                                 refiningType);
+                Type type = refinedMember.getType();
                 allHaveNulls = allHaveNulls 
-                        && hasNullReturnValues(refinement);
-                intersectReturnType(refinedTypes, refinedMember);
+                        && hasNullReturnValues(type, 
+                                refinement);
+                intersectReturnType(refinedTypes, type);
                 checkIntermediateRefinement(that,
                         refinement, refinedMember);
             }
@@ -1863,33 +1867,33 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private boolean hasNullReturnValues(FunctionOrValue refinement) {
-        return refinement.hasUncheckedNullType() 
-            || unit.isOptionalType(refinement.getType());
+    private boolean hasNullReturnValues(
+            Type refinedType, 
+            FunctionOrValue declaration) {
+        return declaration.hasUncheckedNullType() 
+            || unit.isOptionalType(refinedType);
     }
 
     private void intersectReturnType(
             List<Type> refinedTypes, 
-            Reference refinedProducedReference) {
-        addToIntersection(refinedTypes, 
-                refinedProducedReference.getType(), 
-                unit);
+            Type refinedType) {
+        addToIntersection(refinedTypes, refinedType, unit);
     }
 
     private Type getRequiredSpecifiedType(
             Tree.SpecifierStatement that,
             Reference refinedMember) {
-        Type t = refinedMember.getFullType();
+        Type type = refinedMember.getFullType();
         Tree.Term term = that.getBaseMemberExpression();
         if (term instanceof Tree.ParameterizedExpression) {
             Tree.ParameterizedExpression pe = 
                     (Tree.ParameterizedExpression) term;
             int pls = pe.getParameterLists().size();
-            for (int i=0; !isTypeUnknown(t) && i<pls; i++) {
-                t = unit.getCallableReturnType(t);
+            for (int i=0; !isTypeUnknown(type) && i<pls; i++) {
+                type = unit.getCallableReturnType(type);
             }
         }
-        return t;
+        return type;
     }
     
     @Override public void visit(Tree.TypeParameterDeclaration that) {
