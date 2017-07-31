@@ -69,7 +69,7 @@
         <comment><para>Note: Ceylon does not need a special syntax for <literal>Boolean</literal> 
         literal values, since <literal>Boolean</literal> is just a class with the cases 
         <literal>true</literal> and <literal>false</literal>. Likewise, <literal>null</literal> 
-        is just the singleton value of an anonymous class.</para></comment>
+        is just the singleton value of class <literal>Null</literal>.</para></comment>
         
         <synopsis>Literal: IntegerLiteral | FloatLiteral | CharacterLiteral | StringLiteral | VerbatimStringLiteral</synopsis>
         
