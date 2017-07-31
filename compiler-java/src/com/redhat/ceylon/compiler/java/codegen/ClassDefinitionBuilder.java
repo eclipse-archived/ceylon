@@ -467,7 +467,7 @@ public class ClassDefinitionBuilder
                     exType = extendingType.getExtendedType();
                 }
                 ret = ret.prependList(gen.makeAtClass(thisType, exType, 
-                        hasConstructors && !isAbstraction));
+                        hasConstructors));
             }
             ret = ret.prependList(this.annotations.toList());
         }

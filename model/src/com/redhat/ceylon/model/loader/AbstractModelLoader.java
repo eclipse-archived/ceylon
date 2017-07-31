@@ -1319,20 +1319,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private Declaration createClass(Declaration container, ClassMirror classMirror, List<Declaration> decls, boolean isCeylon, boolean isNativeHeaderMember) {
         Declaration decl;
         Declaration hdr = null;
-        final List<MethodMirror> constructors = getClassConstructors(classMirror, classMirror, constructorOnly);
+        final List<MethodMirror> constructors = getClassConstructors(classMirror, classMirror, overloadedConstructorOnly);
         if (!constructors.isEmpty()) {
             Boolean hasConstructors = hasConstructors(classMirror);
             if (constructors.size() > 1) {
-                if (hasConstructors == null || !hasConstructors) {
-                    decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
-                } else {
-                    decl = makeLazyClass(classMirror, null, null, isNativeHeaderMember);
-                    setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
-                    if (isCeylon && shouldCreateNativeHeader(decl, container)) {
-                        hdr = makeLazyClass(classMirror, null, null, true);
-                        setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
-                    }
-                }
+                // only handle overloads here, the named constructors will be added to the abstraction
+                // class on completion
+                decl = makeOverloadedConstructor(constructors, classMirror, decls, isCeylon);
             } else {
                 if (hasConstructors == null || !hasConstructors) {
                     // single constructor
@@ -1696,7 +1689,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return methodMirror.isConstructor();
         }
     };
-    
+
+    MethodMirrorFilter overloadedConstructorOnly = new MethodMirrorFilter() {
+        @Override
+        public boolean accept(MethodMirror methodMirror) {
+            return methodMirror.isConstructor()
+                    && methodMirror.getAnnotation(CEYLON_NAME_ANNOTATION) == null;
+        }
+    };
+
+    MethodMirrorFilter namedConstructorOnly = new MethodMirrorFilter() {
+        @Override
+        public boolean accept(MethodMirror methodMirror) {
+            return methodMirror.isConstructor()
+                    && methodMirror.getAnnotation(CEYLON_NAME_ANNOTATION) != null;
+        }
+    };
+
     class ValueConstructorGetter implements MethodMirrorFilter{
         private ClassMirror classMirror;
 
@@ -2821,7 +2830,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         boolean isNativeHeaderMember = klass.isNativeHeader();
         
         // now that everything has containers, do the inner classes
-        if(klass instanceof Class == false || !((Class)klass).isOverloaded()){
+        if(klass instanceof Class == false || !klass.isOverloaded()){
             // this will not load inner classes of overloads, but that's fine since we want them in the
             // abstracted super class (the real one)
             addInnerClasses(klass, classMirror);
@@ -2838,10 +2847,20 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // Set up enumerated constructors before looking at getters,
         // because the type of the getter is the constructor's type
         Boolean hasConstructors = hasConstructors(classMirror);
-        if (hasConstructors != null && hasConstructors) {
+        // only add constructors to the abstraction class
+        if (hasConstructors != null && hasConstructors && !klass.isOverloaded()) {
             HashMap<String, MethodMirror> m = new HashMap<>();
+            MethodMirrorFilter methodFilter;
+            // if we're an abstraction we already assigned every nameless constructor to a class
+            // if not, and we have constructors, we may have a single nameless constructor to
+            // collect
+            if(klass.isAbstraction()) {
+                methodFilter = namedConstructorOnly;
+            }else{
+                methodFilter = constructorOnly;
+            }
             // Get all the java constructors...
-            for (MethodMirror ctorMirror : getClassConstructors(classMirror, classMirror, constructorOnly)) {
+            for (MethodMirror ctorMirror : getClassConstructors(classMirror, classMirror, methodFilter)) {
                 m.put(getCtorName(ctorMirror), ctorMirror);
             }
             for (MethodMirror ctor : getClassConstructors(
