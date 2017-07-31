@@ -1953,7 +1953,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 if(packagePart.startsWith(modulePackagePrefix) || packagePart.equals(module.getNameAsString())){
                                     Package pkg = module.getPackage(packagePart);
                                     if(pkg instanceof LazyPackage){
-                                        Declaration memberFromSource = ((LazyPackage) pkg).getDirectMemberFromSource(namePart, Backends.JAVA);
+                                        Declaration memberFromSource = ((LazyPackage) pkg).getDirectMemberFromSource(namePart, null, false, Backends.JAVA);
                                         if(memberFromSource != null){
                                             if(qualified != null){
                                                 for(String path : qualified){

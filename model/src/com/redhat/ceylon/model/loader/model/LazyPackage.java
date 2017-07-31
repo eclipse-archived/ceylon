@@ -1,8 +1,20 @@
 package com.redhat.ceylon.model.loader.model;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.JVMModuleUtil;
-import com.redhat.ceylon.common.NonNull;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.model.loader.NamingBase;
@@ -17,19 +29,6 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
 
 /**
  * Represents a lazy Package declaration.
@@ -73,10 +72,6 @@ public class LazyPackage extends Package {
     
     private Declaration getDirectMember(String name, List<Type> signature, boolean ellipsis, boolean tryAlternates) {
 //        System.err.println("getMember "+name+" "+signature+" "+ellipsis);
-
-        List<Declaration> sourceDeclarations = super.getMembers();
-        Declaration dec = lookupMember(sourceDeclarations, name, signature, ellipsis);
-        if (dec!=null) return dec;
 
         boolean canCache = signature == null && !ellipsis;
         if(canCache){
@@ -141,10 +136,10 @@ public class LazyPackage extends Package {
                     }
                     // if we're not looking for a backend, or we found the right backend, fine
                     // if not, keep looking
-                    if (d != null && isForBackend(d, backends))
+                    if (d != null && ModelUtil.isForBackend(d, backends))
                         return d;
                 }
-                d = getDirectMemberFromSource(name, backends);
+                d = getDirectMemberFromSource(name, signature, ellipsis, backends);
                 
                 if (d == null
                         && tryAlternates
@@ -195,21 +190,9 @@ public class LazyPackage extends Package {
         });
     }
 
-    private boolean isForBackend(@NonNull Declaration d, @NonNull Backends backends) {
-        return backends.none() 
-            || d.getNativeBackends().none() 
-            || backends.supports(d.getNativeBackends());
-    }
-
-    public Declaration getDirectMemberFromSource(String name, Backends backends) {
-        for (Declaration d: super.getMembers()) {
-            if (ModelUtil.isResolvable(d) /* && d.isShared() */ 
-            && ModelUtil.isNamed(name, d)
-            && isForBackend(d, backends)) {
-                return d;
-            }
-        }
-        return null;
+    public Declaration getDirectMemberFromSource(String name, List<Type> signature, boolean ellipsis, Backends backends) {
+        List<Declaration> sourceDeclarations = super.getMembers();
+        return lookupMember(sourceDeclarations, name, signature, ellipsis, false, backends);
     }
 
     public String getQualifiedName(final String pkgName, String name) {
