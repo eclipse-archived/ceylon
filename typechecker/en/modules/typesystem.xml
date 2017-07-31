@@ -1905,8 +1905,8 @@ interface NumberLiteral
                 </listitem-->
             </itemizedlist>
             
-            <para>In a <literal>shared</literal> attribute declaration that is not
-            variable:</para>
+            <para>In a <literal>shared</literal> attribute declaration that is 
+            neither variable nor <literal>late</literal>:</para>
             
             <itemizedlist>
                 <listitem>
@@ -1915,7 +1915,7 @@ interface NumberLiteral
             </itemizedlist>
             
             <para>In a <literal>shared</literal> reference declaration that is 
-            variable:</para>
+            either variable or <literal>late</literal>:</para>
             
             <itemizedlist>
                 <listitem>

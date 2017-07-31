@@ -59,7 +59,7 @@ public class TypeArgumentVisitor extends Visitor {
     @Override public void visit(Tree.TypedDeclaration that) {
         TypedDeclaration dec = that.getDeclarationModel();
         if (!(that instanceof Tree.Variable)) {
-            check(that.getType(), dec.isVariable(), dec);
+            check(that.getType(), dec.isVariable() || dec.isLate(), dec);
         }
         if (dec.isParameter()) {
             flip();
@@ -253,19 +253,19 @@ public class TypeArgumentVisitor extends Visitor {
                 }
                 String typename = 
                         type.asString(that.getUnit());
-                that.addError(var + 
-                        " type parameter '" + tp.getName() + 
-                        "' of '" + declaration.getName() +
-                        "' appears in " + loc + 
-                        " location in type: '" + typename + 
-                        "'");
+                that.addError(var 
+                        + " type parameter '" + tp.getName() 
+                        + "' of '" + declaration.getName() 
+                        + "' occurs at a " + loc 
+                        + " location in type: '" + typename 
+                        + "'");
             }
         }
     }
 
     private boolean isConstructorClass(Declaration declaration) {
-        return constructorClass!=null &&
-            declaration.equals(constructorClass);
+        return constructorClass!=null 
+            && declaration.equals(constructorClass);
     }
     
     @Override
