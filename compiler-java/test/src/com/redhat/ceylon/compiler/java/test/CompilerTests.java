@@ -860,10 +860,14 @@ public abstract class CompilerTests {
     
     
     protected Object run(String main, ModuleWithArtifact... modules) {
-        return run(main, new Class<?>[]{}, new Object[]{}, modules);
+        return run(main, false, modules);
     }
-    
-    protected Object run(String main, Class<?>[] sig, Object[] args, ModuleWithArtifact... modules) {
+
+    protected Object run(String main, boolean dynamicMetamodel, ModuleWithArtifact... modules) {
+        return run(main, dynamicMetamodel, new Class<?>[]{}, new Object[]{}, modules);
+    }
+
+    protected Object run(String main, boolean dynamicMetamodel, Class<?>[] sig, Object[] args, ModuleWithArtifact... modules) {
         synchronized(RUN_LOCK){
             // the module initialiser code needs to run in a protected section because the language module Util is not loaded by
             // the test classloader but by our own classloader, which may be shared with other tests running in parallel, so if
@@ -873,7 +877,7 @@ public abstract class CompilerTests {
             try{
                 // make sure we load the stuff from the Car
 
-                loader = getClassLoader(main, modules);
+                loader = getClassLoader(main, dynamicMetamodel, modules);
                 String mainClass = main;
                 String mainMethod = main.replaceAll("^.*\\.", "");
                 if (JvmBackendUtil.isInitialLowerCase(mainMethod)) {
@@ -957,16 +961,26 @@ public abstract class CompilerTests {
 
     protected URLClassLoader getClassLoader(String main,
             ModuleWithArtifact... modules) throws MalformedURLException {
+        return getClassLoader(main, false, modules);
+    }
+    
+    protected URLClassLoader getClassLoader(String main,
+            boolean dynamicMetamodel,
+            ModuleWithArtifact... modules) throws MalformedURLException {
         assert Thread.holdsLock(RUN_LOCK) : "getClassLoader() must be called from within a synchronized(RUN_LOCK) block";
         List<URL> urls = getClassPathAsUrls(modules);
         System.err.println("Running " + main +" with classpath" + urls);
         URLClassLoader loader = new URLClassLoader(urls.toArray(new URL[urls.size()]));
         // set up the runtime module system
         Metamodel.resetModuleManager();
-        Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
-        Metamodel.loadModule("com.redhat.ceylon.model", TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(MODEL_MODULE_CAR)), loader);
-        for (ModuleWithArtifact module : modules) {
-            Metamodel.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
+        if(dynamicMetamodel){
+            Metamodel.getModuleManager().getModelLoader().setDefaultClassLoader(loader);
+        }else{
+            Metamodel.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(LANGUAGE_MODULE_CAR)), loader);
+            Metamodel.loadModule("com.redhat.ceylon.model", TypeChecker.LANGUAGE_MODULE_VERSION, makeArtifactResult(new File(MODEL_MODULE_CAR)), loader);
+            for (ModuleWithArtifact module : modules) {
+                Metamodel.loadModule(module.module, module.version, makeArtifactResult(module.file), loader);
+            }
         }
         return loader;
     }

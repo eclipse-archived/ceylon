@@ -333,7 +333,17 @@ public class IssuesTests_6500_6999 extends CompilerTests {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug68xx.bug6855",
                 "bug68xx/Bug6855.ceylon");
     }
-    
+
+    @Test
+    public void testBug6884() throws Throwable {
+        compile(Arrays.asList("-res", "test/src/com/redhat/ceylon/compiler/java/test/issues/bug68xx/bug6884resources"), 
+                "bug68xx/bug6884/test.ceylon",
+                "bug68xx/bug6884resources/com/redhat/ceylon/compiler/java/test/issues/bug68xx/bug6884/test.txt");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug68xx.bug6884.run",
+                true,
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug68xx.bug6884", "1"));
+    }
+
     @Test
     public void testBug6909() throws Throwable {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug69xx.bug6909",
