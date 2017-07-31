@@ -99,6 +99,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
+import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 import ceylon.language.Annotated;
 import ceylon.language.Anything;
@@ -1297,6 +1298,12 @@ public class Metamodel {
     public static ceylon.language.meta.declaration.Module findLoadedModule(String name, String version) {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
         com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.findLoadedModule(name, version);
+        if(module == null && !moduleManager.isManualMetamodelSetup()){
+            com.redhat.ceylon.model.typechecker.model.Module newModule = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(name), version);
+            moduleManager.getModelLoader().lazyLoadModule(newModule);
+            if(newModule.isAvailable())
+                module = newModule;
+        }
         // consider it optional to get null rather than exception
         return module != null ? getOrCreateMetamodel(null, module, null, true) : null;
     }

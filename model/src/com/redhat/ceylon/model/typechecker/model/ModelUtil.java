@@ -19,6 +19,7 @@ import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.common.NonNull;
 import com.redhat.ceylon.model.loader.model.LazyElement;
 
 
@@ -156,6 +157,12 @@ public class ModelUtil {
         return declaration==null ? null : 
             declaration.appliedType(null, 
                     asList(typeArguments));
+    }
+
+    public static boolean isForBackend(@NonNull Declaration d, @NonNull Backends backends) {
+        return backends.none() 
+            || d.getNativeBackends().none() 
+            || backends.supports(d.getNativeBackends());
     }
 
     public static boolean isResolvable(Declaration declaration) {
@@ -2196,12 +2203,48 @@ public class ModelUtil {
             List<Declaration> members, String name,
             List<Type> signature, boolean variadic,
             boolean onlyExactMatches) {
+        return lookupMember(members, name, signature,
+                variadic, onlyExactMatches, null);
+    }
+    
+    /**
+     * Find the member which best matches the given signature
+     * among the given list of members. In the case that
+     * there are multiple matching declarations, attempt to
+     * return the "best" match, according to some ad-hoc 
+     * rules that roughly follow how Java resolves 
+     * overloaded methods.
+     * 
+     * @param members a list of members to search
+     * @param name the name of the member to find
+     * @param signature the parameter types to match, or
+     *        null if we're not matching on parameter types
+     * @param variadic true of we want to find a declaration
+     *        which supports varags, or false otherwise
+     * @param onlyExactMatches only consider exact matches
+     *        if a signature is provided. This means that if
+     *        true, members whose signature does not match
+     *        will not be returned. If the signature is null
+     *        this parameter has no effect as the signature
+     *        will not be checked.
+     * @param backends if non-null, will check that the member
+     *        is valid for the given backends.
+     *        
+     * @return the best matching declaration
+     */
+    public static Declaration lookupMember(
+            List<Declaration> members, String name,
+            List<Type> signature, boolean variadic,
+            boolean onlyExactMatches,
+            Backends backends) {
         List<Declaration> results = null;
         Declaration result = null;
         Declaration inexactMatch = null;
         for (int i=0, size=members.size(); i<size ; i++) {
             Declaration d = members.get(i);
-            if (isResolvable(d) && isNamed(name, d)) {
+            if (isResolvable(d) 
+                    && isNamed(name, d)
+                    && (backends == null || isForBackend(d, backends))){
                 if (signature==null) {
                     //special case that is only needed
                     //because sometimes the generated 

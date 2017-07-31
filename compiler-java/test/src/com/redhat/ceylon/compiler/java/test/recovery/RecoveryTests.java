@@ -80,7 +80,7 @@ public class RecoveryTests extends CompilerTests {
             }
         };
         try {
-            run(main, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact(main));
+            run(main, false, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact(main));
             if (expectedError != null) {
                 Assert.fail("Expected execution to throw " + UnresolvedCompilationError.class.getName());
             }
@@ -112,7 +112,7 @@ public class RecoveryTests extends CompilerTests {
                 return null;
             }
         };
-        run(main, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact(main));
+        run(main, false, new Class[]{Callable.class}, new Object[]{c}, getDestModuleWithArtifact(main));
         ArrayList<ceylon.language.Integer> expect = new ArrayList<ceylon.language.Integer>();
         for (int ii : sequence) {
             expect.add(ceylon.language.Integer.instance(ii));

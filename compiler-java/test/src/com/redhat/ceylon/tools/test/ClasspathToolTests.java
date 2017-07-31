@@ -101,19 +101,6 @@ public class ClasspathToolTests extends AbstractToolTests {
     }
 
     @Test
-    public void testModuleNameAlone() throws Exception {
-        ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
-        Assert.assertNotNull(model);
-        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                toolOptions("com.google.guava"));
-        StringBuilder b = new StringBuilder();
-        tool.setOut(b);
-        tool.run();
-        String cp = b.toString();
-        Assert.assertTrue(cp.contains("ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"));
-    }
-
-    @Test
     public void testModuleNameWithBadVersion() throws Exception {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);

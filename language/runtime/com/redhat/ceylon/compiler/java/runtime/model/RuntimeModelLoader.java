@@ -285,7 +285,17 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
     @Override
     public void lazyLoadModule(Module module) {
         if(isDynamicMetamodel()){
-            loadCompiledModule(module);
+            if(loadCompiledModule(module)){
+                String pkgName = module.getNameAsString();
+                ClassMirror moduleClass = findModuleClass(module, pkgName);
+                Class<?> klass = ((ReflectionClass)moduleClass).klass;
+                String path = klass.getProtectionDomain().getCodeSource().getLocation().getPath();
+                Unit u = new Unit();
+                // FIXME: find path name?
+                u.setFilename(path);
+                u.setFullPath(path);
+                module.setUnit(u);
+            }
         }
     }
 

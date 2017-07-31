@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.IntArray;
+import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Jpa;
@@ -33,6 +35,7 @@ import ceylon.language.Sequential;
 import ceylon.language.empty_;
 import ceylon.language.meta.model.Applicable;
 import ceylon.language.meta.model.ClassModel;
+import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.InvocationException;
 
 /**
@@ -315,9 +318,15 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
         final Constructor<?>[] defaultedMethods = new Constructor[dispatch.length];
         String ctorName = freeConstructor == null ? null : freeConstructor.declaration.getName();
         outer: for(Constructor<?> constr : javaClass.getDeclaredConstructors()) {
-            if (constr.isAnnotationPresent(Jpa.class) || constr.isAnnotationPresent(Ignore.class)) {
+            if (constr.isAnnotationPresent(Jpa.class)) {
                 continue;
             }
+            // only ignore hand-written ignore annotations otherwise we're ignoring defaulted constructors
+            // which we don't want to
+            Ignore ignoreAnnotation = constr.getAnnotation(Ignore.class);
+            if(ignoreAnnotation != null
+                    && ignoreAnnotation.handWritten())
+                continue;
             int numTypeParameters = 0;
             int ii = 0;
             boolean jvmVarargs = MethodHandleUtil.isJvmVarargsMethodOrConstructor(constr);
