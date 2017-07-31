@@ -76,3 +76,8 @@ class LateMembers() {
     @error late value s1 => "";
     @error late value s2 { return ""; }
 }
+
+class LateVariance<out T>() {
+    late T t1;
+    @error shared late T t2;
+}
