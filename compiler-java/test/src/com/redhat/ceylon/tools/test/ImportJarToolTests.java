@@ -633,6 +633,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         }
         if(module.startsWith("org.codehaus.plexus")
         		|| module.startsWith("org.eclipse.aether")
+        		|| module.startsWith("com.google.guava")
         		|| module.startsWith("org.apache.maven")){
         	options.addAll(0, Arrays.asList("--ignore-annotations"));
         }
