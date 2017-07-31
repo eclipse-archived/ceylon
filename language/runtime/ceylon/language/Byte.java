@@ -59,7 +59,7 @@ public final class Byte implements
         value = (byte) congruent;
     }
     
-    @Ignore
+    @Ignore(handWritten = true)
     public Byte(byte value) {
         this.value = value;
     }

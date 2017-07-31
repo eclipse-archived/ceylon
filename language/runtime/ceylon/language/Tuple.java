@@ -107,7 +107,7 @@ public final class Tuple<Element, First extends Element,
      * array will <strong>never</strong> be modified after the call)
      */
     @SuppressWarnings("unchecked")
-    @Ignore
+    @Ignore(handWritten = true)
     public Tuple(@Ignore TypeDescriptor $reifiedElement, 
             java.lang.Object[] array, 
             Sequential<? extends Element> rest, 
@@ -153,7 +153,7 @@ public final class Tuple<Element, First extends Element,
         this($reifiedElement, makeArray(first, rest), makeRest(rest));
     }
     
-    @Ignore
+    @Ignore(handWritten = true)
     private Tuple(TypeDescriptor $reifiedElement, java.lang.Object[] array,
             Sequential<? extends Element> rest) {
         this($reifiedElement, array, rest, false);
@@ -186,7 +186,7 @@ public final class Tuple<Element, First extends Element,
     }
     
     @SuppressWarnings("unchecked")
-    @Ignore
+    @Ignore(handWritten = true)
     public Tuple(TypeDescriptor $reifiedElement, 
             java.lang.Object[] elements) {
         this($reifiedElement, elements, 

@@ -97,7 +97,7 @@ public final class Array<Element>
     private final ArrayType elementType;
 
     
-    @Ignore
+    @Ignore(handWritten = true)
     public Array(final TypeDescriptor $reifiedElement, 
             int size, Element element) {
         this($reifiedElement, 

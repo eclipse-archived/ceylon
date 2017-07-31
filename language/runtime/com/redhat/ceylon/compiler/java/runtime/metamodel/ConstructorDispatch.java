@@ -14,6 +14,7 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.IntArray;
 import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Jpa;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.CallableConstructorDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ClassDeclarationImpl;
@@ -320,6 +321,12 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
             if (constr.isAnnotationPresent(Jpa.class)) {
                 continue;
             }
+            // only ignore hand-written ignore annotations otherwise we're ignoring defaulted constructors
+            // which we don't want to
+            Ignore ignoreAnnotation = constr.getAnnotation(Ignore.class);
+            if(ignoreAnnotation != null
+                    && ignoreAnnotation.handWritten())
+                continue;
             int numTypeParameters = 0;
             int ii = 0;
             boolean jvmVarargs = MethodHandleUtil.isJvmVarargsMethodOrConstructor(constr);

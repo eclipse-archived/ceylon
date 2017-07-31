@@ -101,7 +101,7 @@ public final class String
         }
     }
 
-    @Ignore
+    @Ignore(handWritten = true)
     public String(final java.lang.String string) {
         value = string;
     }
