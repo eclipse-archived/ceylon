@@ -4281,7 +4281,7 @@ public class StatementTransformer extends AbstractTransformer {
 
     /**
      * Determines whether the {@code CatchClause}s contain any 
-     * intersections or parameterised exception types. If so, the
+     * intersections or parameterized exception types. If so, the
      * we have to transform the {@code CatchClause}s using 
      * {@link #transformCatchesIfElseIf(java.util.List)}, otherwise we can
      * let the JVM do the heavy lifting an use 
@@ -4292,8 +4292,9 @@ public class StatementTransformer extends AbstractTransformer {
             Type type = catchClause.getCatchVariable().getVariable().getType().getTypeModel();
             if (isOrContainsError(type)) {
                 return false;
-            }
-            if (type.getDeclaration().isParameterized()) {
+            } else if (type.isTypeParameter())  {
+                return false;
+            } else if (type.getDeclaration().isParameterized()) {
                 // e.g. E<T>
                 return false;
             } else if (typeFact().isIntersection(type)) {
@@ -4396,18 +4397,19 @@ public class StatementTransformer extends AbstractTransformer {
      * {@code catch} clause to have the most specific Java Exception type
      * applicable to all the Ceylon Exception types in the list.</p>
      * 
-     * <p><strong>Note:</strong> This method can return parameterised types
+     * <p><strong>Note:</strong> This method can return parameterized types
      * whose parameters are taken from their declaration (i.e. there's 
      * no corresponding Java type parameter in scope). That should be OK, 
      * because we're only interested in catching the raw type.</p>
      */
     private Type intersectionOfCatchClauseTypes(
             java.util.List<Tree.CatchClause> catchClauses) {
-        Type result = typeFact().getNothingType();
+        java.util.List<Type> list = new ArrayList<Type>(catchClauses.size());
         for (Tree.CatchClause catchClause : catchClauses) {
             Type pt = catchClause.getCatchVariable().getVariable().getType().getTypeModel().resolveAliases();
-            result = ModelUtil.unionType(result, exceptionSupertype(pt), typeFact());
+            ModelUtil.addToUnion(list, exceptionSupertype(pt));
         }
+        Type result = ModelUtil.union(list, typeFact());
         if (typeFact().isUnion(result)) {
             return result.getSupertype(typeFact().getThrowableDeclaration());
         }
@@ -4415,26 +4417,35 @@ public class StatementTransformer extends AbstractTransformer {
     }
 
     private Type exceptionSupertype(Type pt) {
-        Type result = typeFact().getNothingType();
         if (typeFact().isUnion(pt)) {
+            java.util.List<Type> list = new ArrayList<Type>(pt.getCaseTypes().size());
             for (Type t : pt.getCaseTypes()) {
-                result = ModelUtil.unionType(result, exceptionSupertype(t), typeFact());
+                ModelUtil.addToUnion(list, exceptionSupertype(t));
             }
+            return ModelUtil.union(list, typeFact());
         } else if (typeFact().isIntersection(pt)) {
+            java.util.List<Type> list = new ArrayList<Type>(pt.getSatisfiedTypes().size());
             for (Type t : pt.getSatisfiedTypes()) {
                 if (t.isSubtypeOf(typeFact().getThrowableType())) {
-                    result = ModelUtil.unionType(result, exceptionSupertype(t), typeFact());
+                    ModelUtil.addToUnion(list, exceptionSupertype(t));
                 }
             }
+            return ModelUtil.union(list, typeFact());
+        } else if (pt.isTypeParameter()) {
+            return exceptionSupertype(ModelUtil.intersectionOfSupertypes(pt.getDeclaration()));
         } else if (pt.isSubtypeOf(typeFact().getThrowableType())) {
             if (pt.getDeclaration().isParameterized()) {
                 // We do this to avoid ending up with a union ExG<Foo>|ExG<Bar>
                 // when we're actually going to go raw, so ExG would be fine
                 return pt.getDeclaration().getType();
             }
-            return pt;
-        } 
-        return result;
+            else {
+                return pt;
+            }
+        }
+        else {
+            return typeFact().getNothingType();
+        }
     }
     
     private int transformLocalFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
