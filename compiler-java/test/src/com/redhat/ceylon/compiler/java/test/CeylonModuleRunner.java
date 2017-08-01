@@ -121,13 +121,14 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             
             Set<String> removeAtRuntime = new HashSet<String>();
             Collections.addAll(removeAtRuntime, testModule.removeAtRuntime());
-            compileAndRun(srcDir, resDir, outRepo, modules, testModule.dependencies(), 
+            if(compileAndRun(srcDir, resDir, outRepo, modules, testModule.dependencies(), 
                           testModule.options(), removeAtRuntime, 
                           testModule.modulesUsingCheckFunction(),
-                          testModule.modulesUsingCheckModule());
-            
-            for(ModuleSpecifier module : testModule.runModulesInNewJvm()){
-                makeModuleRunnerInNewJvm(module);
+                          testModule.modulesUsingCheckModule())){
+
+                for(ModuleSpecifier module : testModule.runModulesInNewJvm()){
+                    makeModuleRunnerInNewJvm(module);
+                }
             }
         } catch (RuntimeException e) {
             throw e;
@@ -202,7 +203,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         Assert.assertTrue(exit == 0);
     }
 
-    private void compileAndRun(File srcDir, File resDir, File outRepo, String[] modules, String[] dependencies, 
+    private boolean compileAndRun(File srcDir, File resDir, File outRepo, String[] modules, String[] dependencies, 
             String[] options, Set<String> removeAtRuntime, 
             String[] modulesUsingCheckFunction, String[] modulesUsingCheckModule) throws Exception {
         // Compile all the .ceylon files into a .car
@@ -244,6 +245,8 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             for(Runner errorRunner : errorRunners){
                 children.put(errorRunner, errorRunner.getDescription());
             }
+            // absolutely no point going on if we have errors
+            return false;
         }
         // remove what we need for runtime
         for(String module : removeAtRuntime){
@@ -255,6 +258,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             postCompile(context, listener, module, srcDir, dependencies, removeAtRuntime,
                     modulesUsingCheckFunction, modulesUsingCheckModule);
         }
+        return true;
     }
     
     private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir, String[] dependencies, Set<String> removeAtRuntime, 
