@@ -3188,6 +3188,13 @@ public class Check {
             log.error(select.pos(), "ceylon.static.interface.method.call");
         }
     }
+    
+    // Ceylon
+    void checkStaticInterfaceMethod(JCMethodDecl method){
+        if (!allowStaticInterfaceCalls) {
+            log.error(method.pos(), "ceylon.static.interface.method.definition");
+        }
+    }
 
     void checkDeprecated(final DiagnosticPosition pos, final Symbol other, final Symbol s) {
         if ((s.flags() & DEPRECATED) != 0 &&

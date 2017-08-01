@@ -1031,6 +1031,10 @@ public class Attr extends JCTree.Visitor {
                     }
                 }
 
+                if((owner.flags() & INTERFACE) != 0
+                        && m.isStatic())
+                    chk.checkStaticInterfaceMethod(tree);
+                
                 // Attribute all type annotations in the body
                 memberEnter.typeAnnotate(tree.body, localEnv, m, null);
                 annotate.flush();
