@@ -33,7 +33,11 @@
     </resources>
 
     <dependencies>
-        <module name="org.antlr.stringtemplate" slot="3.2.1" export="true"/>
         <module name="java.base" slot="7" export="true"/>
     </dependencies>
+
+    <exports>
+        <!-- Uses stringtemplates -->
+        <exclude path="org/antlr/runtime/tree/DOTTreeGenerator*"/>
+    </exports>
 </module>
