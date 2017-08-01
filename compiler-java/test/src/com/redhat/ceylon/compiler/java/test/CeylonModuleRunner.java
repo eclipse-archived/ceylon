@@ -68,6 +68,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 import com.redhat.ceylon.javax.tools.DiagnosticListener;
+import com.redhat.ceylon.langtools.tools.javac.main.Main.Result;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
@@ -238,7 +239,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         for(String module : dependencies)
             args.add(module);
         
-        compiler.compile(args.toArray(new String[args.size()]), context);
+        Result result = compiler.compile(args.toArray(new String[args.size()]), context);
 
         TreeSet<CompilerError> errors = listener.get(Kind.ERROR);
         if(!errors.isEmpty()){
@@ -246,6 +247,16 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             for (final CompilerError compileError : errors) {
                 createFailingTest(errorRunners, compileError.filename, new CompilationException(compileError.toString()));
             }
+            for(Runner errorRunner : errorRunners){
+                children.put(errorRunner, errorRunner.getDescription());
+            }
+            // absolutely no point going on if we have errors
+            return false;
+        }
+        // for invalid options we don't get errors from the listener
+        if(!result.isOK()){
+            List<Runner> errorRunners = new LinkedList<Runner>();
+            createFailingTest(errorRunners, "Invalid option?", new CompilationException("Invalid option? Check stdout."));
             for(Runner errorRunner : errorRunners){
                 children.put(errorRunner, errorRunner.getDescription());
             }
