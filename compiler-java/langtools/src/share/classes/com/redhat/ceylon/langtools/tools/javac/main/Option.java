@@ -50,6 +50,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Log.PrefixKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.StringUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 import static com.redhat.ceylon.langtools.tools.javac.main.Option.ChoiceKind.*;
@@ -209,6 +210,16 @@ public enum Option {
             Target target = Target.lookup(operand);
             if (target == null) {
                 helper.error("err.invalid.target", operand);
+                return true;
+            }
+            if(target == Target.JDK1_8
+                    && !JDKUtils.jdk.providesVersion(JDKUtils.JDK.JDK8.version)){
+                helper.error("err.invalid.target.on.this.jvm", operand, JDKUtils.jdk);
+                return true;
+            }
+            if(target == Target.JDK1_9
+                    && !JDKUtils.jdk.providesVersion(JDKUtils.JDK.JDK9.version)){
+                helper.error("err.invalid.target.on.this.jvm", operand, JDKUtils.jdk);
                 return true;
             }
             return super.process(helper, option, operand);
