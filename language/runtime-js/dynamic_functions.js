@@ -125,10 +125,10 @@ function dre$$(object, type, loc, stack) {
                 } else {
                   var mm=getrtmm$$(type.t);
                   if (mm && mm.sts) {
-                    for (var i=0;i<mm.sts.length;i++) {
-                      if (mm.sts[i].a && mm.sts[i].a[_t]) {
-                        object.$$targs$$[_t]=mm.sts[i].a[_t];
-                        _t=mm.sts[i].a[_t]; break;
+                    for (var j=0;j<mm.sts.length;j++) {
+                      if (mm.sts[j].a && mm.sts[j].a[_t]) {
+                        object.$$targs$$[_t]=mm.sts[j].a[_t];
+                        _t=mm.sts[j].a[_t]; break;
                       }
                     }
                   }
