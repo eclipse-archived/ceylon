@@ -118,7 +118,10 @@ public class CeylonConfigTool extends CeylonBaseTool {
                     return finder.loadUserConfig();
                 }
                 if (local) {
-                    return finder.loadConfigFromFile(finder.findLocalConfig(applyCwd(new File("."))));
+                    File config = finder.findLocalConfig(applyCwd(new File(".")));
+                    if(config == null)
+                        return new CeylonConfig();
+                    return finder.loadConfigFromFile(config);
                 }
             } catch (FileNotFoundException ex) {
                 return new CeylonConfig();
