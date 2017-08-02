@@ -204,7 +204,7 @@ public class MavenExportToolTests extends AbstractToolTests {
         assertFileContainsLine(completePomFile, "      <artifactId>ceylon-all</artifactId>");
         // shade
         assertFileContainsLine(completePomFile, "                  <include>org.ceylon-lang:*</include>");
-        assertFileContainsLine(completePomFile, "                  <include>org.apache.httpcomponents:httpclient</include>");
+        assertFileContainsLine(completePomFile, "                  <include>org.antlr:antlr-runtime</include>");
     }
 
     @Test
