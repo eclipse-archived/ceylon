@@ -29,7 +29,29 @@
 
     <dependencies>
         <module name="java.base" slot="7" export="true"/>
-        <module name="java.tls" slot="7"/>
+        <module name="java.tls" slot="7" export="true"/>
     </dependencies>
-    
+    <exports>
+        <!-- Uses Ant -->
+        <exclude path="com/redhat/ceylon/aether/github/sardine/ant/**"/>
+        
+        <!-- Uses Servlet -->
+        <exclude path="com/redhat/ceylon/aether/apache/commons/logging/impl/ServletContextCleaner*"/>
+        <!-- These would require extra optional deps that we don't want to include in the distrib -->
+        <exclude path="com/redhat/ceylon/aether/apache/commons/logging/impl/AvalonLogger*"/>
+        <exclude path="com/redhat/ceylon/aether/apache/commons/logging/impl/Log4JLogger*"/>
+        <exclude path="com/redhat/ceylon/aether/apache/commons/logging/impl/LogKitLogger*"/>
+        
+        <!-- Uses Guice -->
+        <exclude path="com/redhat/ceylon/aether/apache/maven/repository/internal/MavenAetherModule*"/>
+        
+        <!-- Uses Plexus Components -->
+        <exclude path="com/redhat/ceylon/aether/apache/maven/settings/crypto/DefaultSettingsDecrypter*"/>
+        
+        <!-- Uses Guice -->
+        <exclude path="com/redhat/ceylon/aether/eclipse/aether/impl/guice/AetherModule*"/>
+        <exclude path="com/redhat/ceylon/aether/eclipse/aether/impl/AetherModule*"/>
+        <!-- Uses javax.inject -->
+        <exclude path="com/redhat/ceylon/aether/eclipse/aether/internal/impl/LoggerFactoryProvider*"/>
+    </exports>
 </module>

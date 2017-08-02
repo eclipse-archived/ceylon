@@ -157,6 +157,10 @@
                   <pattern>org.</pattern>
                   <shadedPattern>com.redhat.ceylon.aether.</shadedPattern>
                   <excludes>
+                    <exclude>org.ietf.jgss.*</exclude>
+                    <exclude>org.w3c.dom.*</exclude>
+                    <exclude>org.xml.sax.*</exclude>
+                    <exclude>org.xml.sax.helpers.*</exclude>
                   </excludes>
                 </relocation>
                 <relocation>
