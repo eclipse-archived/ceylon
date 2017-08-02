@@ -68,6 +68,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 import com.redhat.ceylon.javax.tools.DiagnosticListener;
+import com.redhat.ceylon.langtools.tools.javac.main.Main.Result;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
@@ -121,13 +122,14 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             
             Set<String> removeAtRuntime = new HashSet<String>();
             Collections.addAll(removeAtRuntime, testModule.removeAtRuntime());
-            compileAndRun(srcDir, resDir, outRepo, modules, testModule.dependencies(), 
+            if(compileAndRun(srcDir, resDir, outRepo, modules, testModule.dependencies(), 
                           testModule.options(), removeAtRuntime, 
                           testModule.modulesUsingCheckFunction(),
-                          testModule.modulesUsingCheckModule());
-            
-            for(ModuleSpecifier module : testModule.runModulesInNewJvm()){
-                makeModuleRunnerInNewJvm(module);
+                          testModule.modulesUsingCheckModule())){
+
+                for(ModuleSpecifier module : testModule.runModulesInNewJvm()){
+                    makeModuleRunnerInNewJvm(module);
+                }
             }
         } catch (RuntimeException e) {
             throw e;
@@ -202,7 +204,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         Assert.assertTrue(exit == 0);
     }
 
-    private void compileAndRun(File srcDir, File resDir, File outRepo, String[] modules, String[] dependencies, 
+    private boolean compileAndRun(File srcDir, File resDir, File outRepo, String[] modules, String[] dependencies, 
             String[] options, Set<String> removeAtRuntime, 
             String[] modulesUsingCheckFunction, String[] modulesUsingCheckModule) throws Exception {
         // Compile all the .ceylon files into a .car
@@ -233,7 +235,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         for(String module : dependencies)
             args.add(module);
         
-        compiler.compile(args.toArray(new String[args.size()]), context);
+        Result result = compiler.compile(args.toArray(new String[args.size()]), context);
 
         TreeSet<CompilerError> errors = listener.get(Kind.ERROR);
         if(!errors.isEmpty()){
@@ -244,6 +246,18 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             for(Runner errorRunner : errorRunners){
                 children.put(errorRunner, errorRunner.getDescription());
             }
+            // absolutely no point going on if we have errors
+            return false;
+        }
+        // for invalid options we don't get errors from the listener
+        if(!result.isOK()){
+            List<Runner> errorRunners = new LinkedList<Runner>();
+            createFailingTest(errorRunners, "Invalid option?", new CompilationException("Invalid option? Check stdout."));
+            for(Runner errorRunner : errorRunners){
+                children.put(errorRunner, errorRunner.getDescription());
+            }
+            // absolutely no point going on if we have errors
+            return false;
         }
         // remove what we need for runtime
         for(String module : removeAtRuntime){
@@ -255,6 +269,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
             postCompile(context, listener, module, srcDir, dependencies, removeAtRuntime,
                     modulesUsingCheckFunction, modulesUsingCheckModule);
         }
+        return true;
     }
     
     private void postCompile(Context context, ErrorCollector listener, String moduleName, File srcDir, String[] dependencies, Set<String> removeAtRuntime, 
