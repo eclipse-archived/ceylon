@@ -1865,7 +1865,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         mdb.resultType(new TransformedType(make().Type(syms().objectType), null, makeAtNonNull()));
         /*
-         * public void $set$(Object reference, Object instance) {
+         * public void $get$(Object reference, Object instance) {
          *     switch((String)reference) {
          *     case ("attr1")
          *           return ...;
@@ -1978,9 +1978,20 @@ public class ClassTransformer extends AbstractTransformer {
                 result = makeReassignFinalField(fieldType, fieldName, newValue);
             }*/
         }
-        result = expressionGen().applyErasureAndBoxing(result, value.getType(), 
-                !CodegenUtil.isUnBoxed(value) , 
-                BoxingStrategy.BOXED, value.getType());
+
+        BoxingStrategy boxingStrategy = useJavaBox(value, value.getType()) ? BoxingStrategy.JAVA : BoxingStrategy.BOXED;
+        if (boxingStrategy == BoxingStrategy.JAVA && !isJavaString(value.getType())) {
+            result = make().Conditional(
+                    make().Binary(JCTree.Tag.EQ, result, makeNull()), 
+                    makeNull(), 
+                    // FIXME!!!
+                    boxType(unboxJavaType(result, value.getType()),
+                            simplifyType(value.getType())));
+        }else{
+            result = expressionGen().applyErasureAndBoxing(result, value.getType(), 
+                    !CodegenUtil.isUnBoxed(value) , 
+                    boxingStrategy, value.getType());
+        }
         return result;
     }
     
@@ -2086,9 +2097,24 @@ public class ClassTransformer extends AbstractTransformer {
         Naming.SyntheticName n = naming.synthetic(Unfix.instance);
         JCExpression newValue = make().TypeCast(makeJavaType(value.getType(), JT_NO_PRIMITIVES), n.makeIdent());
         if (isValueType) {
+            // FIXME: check strings
+            BoxingStrategy boxingStrategy = useJavaBox(value, value.getType())
+                    ? BoxingStrategy.JAVA 
+                    : CodegenUtil.getBoxingStrategy(value);
+            Type simpleType = simplifyType(value.getType());
             newValue = expressionGen().applyErasureAndBoxing(newValue, 
-                    value.getType(), true, CodegenUtil.getBoxingStrategy(value), 
-                    value.getType());
+                    simpleType, true, boxingStrategy, 
+                    simpleType);
+            if(boxingStrategy == BoxingStrategy.JAVA
+                    && isOptional(value.getType())
+                    && !isJavaString(simpleType)) {
+                    newValue = make().Conditional(
+                            make().Binary(JCTree.Tag.EQ, 
+                                    n.makeIdent(), 
+                                    makeNull()),
+                            makeNull(),
+                            newValue);
+            }
         } else {
             // We need to obtain the instance from the reference
             // but we don't need the instance to be fully deserialized
