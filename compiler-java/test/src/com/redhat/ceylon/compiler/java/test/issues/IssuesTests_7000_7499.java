@@ -111,4 +111,9 @@ public class IssuesTests_7000_7499 extends CompilerTests {
     public void bug7125(){
         compile("bug71xx/Bug7125Java.java", "bug71xx/bug7125.ceylon");
     }
+
+    @Test
+    public void bug7186(){
+        compareWithJavaSource(Arrays.asList("-ee"), "bug71xx/bug7186.src", "bug71xx/bug7186.ceylon");
+    }
 }
