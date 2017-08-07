@@ -94,6 +94,8 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                 module.addImport(imp);
             }
             model.remove("$mod-deps");
+            
+            overrideModuleImports(module, artifact);
         }
         ((JsonModule)module).setModel(model);
         ((JsonModule)module).loadDeclarations();

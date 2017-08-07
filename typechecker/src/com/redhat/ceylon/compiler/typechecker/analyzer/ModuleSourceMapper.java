@@ -14,8 +14,12 @@ import java.util.TreeMap;
 import java.util.WeakHashMap;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
@@ -405,5 +409,31 @@ public class ModuleSourceMapper {
     }
 
     public void preResolveDependenciesIfRequired(RepositoryManager repositoryManager) {
+    }
+
+    protected void overrideModuleImports(Module module, ArtifactResult artifact) {
+        Overrides overrides = getContext().getRepositoryManager().getOverrides();
+        if (overrides != null) {
+            Set<ModuleDependencyInfo> existingModuleDependencies = new HashSet<>();
+            for (ModuleImport i : module.getImports()) {
+                Module m = i.getModule();
+                if (m != null) {
+                    existingModuleDependencies.add(new ModuleDependencyInfo(i.getNamespace(), m.getNameAsString(),
+                            m.getVersion(), i.isOptional(), i.isExport(), i.getNativeBackends()));
+                }
+            }
+            ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), 
+                    artifact.groupId(), artifact.artifactId(), artifact.classifier(), null, existingModuleDependencies);
+            ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);
+            List<ModuleImport> newModuleImports = new ArrayList<>();
+            for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
+                Module dependency = getModuleManager().getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
+                Backends backends = dependency.getNativeBackends();
+                ModuleImport newImport = new ModuleImport(dep.getNamespace(), dependency, dep.isOptional(), dep.isExport(), backends);
+                newModuleImports.add(newImport);
+            }
+            module.overrideImports(newModuleImports);
+        }
+        
     }
 }
