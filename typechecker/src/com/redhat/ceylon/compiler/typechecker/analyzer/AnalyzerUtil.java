@@ -1179,10 +1179,25 @@ public class AnalyzerUtil {
     }
     
     static String message(Declaration dec) {
-        return "'" 
-                + dec.getName() 
-                + "'" 
-                + messageQualifier(dec);
+    	String name = dec.getName();
+		if (name==null) {
+    		if (isConstructor(dec)
+    				&& dec.isClassMember()) {
+    			Class c = (Class) dec.getContainer();
+    			return "default constructor of '" 
+    					+ c.getName() 
+    					+ "'";
+    		}
+    		else {
+    			return "";
+    		}
+    	}
+    	else {
+	        return "'" 
+	                + name 
+	                + "'" 
+	                + messageQualifier(dec);
+    	}
     }
     
     static String message(Declaration dec, 
