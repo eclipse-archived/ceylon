@@ -1116,26 +1116,12 @@ public final class String
 
         @Override
         public boolean contains(java.lang.Object element) {
-            int index;
-            if (element instanceof String) {
-                index = value.indexOf(((String)element).value, start);
-            }
-            else if (element instanceof Character) {
-                index = value.indexOf(((Character)element).codePoint, start);
+            if (element instanceof Character) {
+                int index = value.indexOf(((Character)element).codePoint, start);
+                return index>=0 && value.codePointCount(start, index) <= to;
             }
             else {
                 return false;
-            }
-            if (index<0) {
-                return false;
-            }
-            else {
-                int extraLen = 0;
-                if (element instanceof String) {
-                    // check the end of the match, not the start
-                    extraLen = ((String)element).value.length() - 1;
-                }
-                return value.codePointCount(start, index + extraLen) <= to;
             }
         }
 
