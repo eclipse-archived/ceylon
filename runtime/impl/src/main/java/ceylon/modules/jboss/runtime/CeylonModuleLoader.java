@@ -111,7 +111,7 @@ public class CeylonModuleLoader extends ModuleLoader
         MODULES = ModuleIdentifier.create("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION);
         LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION);
         RUNTIME = ModuleIdentifier.create("ceylon.runtime", defaultVersion);
-        ANTLR_RUNTIME = ModuleIdentifier.create("org.antlr.runtime", "3.4");
+        ANTLR_RUNTIME = ModuleIdentifier.create("org.antlr.runtime", "3.5.2");
         MARKDOWN_PAPERS = ModuleIdentifier.create("org.tautua.markdownpapers.core", "1.3.4");
 
         CEYLON_RUNTIME_PATH = ModuleVersion.class.getPackage().getName().replace(".", "/");

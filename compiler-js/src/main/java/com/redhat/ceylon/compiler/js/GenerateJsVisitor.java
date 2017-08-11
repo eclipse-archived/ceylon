@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import org.antlr.runtime.CommonToken;
+import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.cmr.impl.NpmRepository;
 import com.redhat.ceylon.common.Backend;
@@ -89,7 +89,7 @@ public class GenerateJsVisitor extends Visitor {
     private final RetainedVars retainedVars = new RetainedVars();
     final ConditionGenerator conds;
     private final InvocationGenerator invoker;
-    private final List<CommonToken> tokens;
+    private final List<Token> tokens;
     private final ErrorVisitor errVisitor = new ErrorVisitor();
     private int dynblock;
     private int exitCode = 0;
@@ -176,7 +176,7 @@ public class GenerateJsVisitor extends Visitor {
     private final JsOutput jsout;
 
     public GenerateJsVisitor(JsCompiler compiler, JsOutput out, Options options, JsIdentifierNames names,
-            List<CommonToken> tokens) throws IOException {
+            List<Token> tokens) throws IOException {
         this.compiler = compiler;
         this.jsout = out;
         this.opts = options;

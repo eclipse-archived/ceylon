@@ -124,7 +124,7 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.aether", "3.3.9")); // optional
 
         // For the typechecker
-        archives.add(getRepoJar(ceylonRepo, "org.antlr.runtime", "3.4"));
+        archives.add(getRepoJar(ceylonRepo, "org.antlr.runtime", "3.5.2"));
         // For the JS backend
         archives.add(getRepoJar(ceylonRepo, "net.minidev.json-smart", "1.3.1"));
         // For the "doc" tool

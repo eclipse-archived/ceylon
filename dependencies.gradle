@@ -6,7 +6,7 @@ ext {
 
     antDep                  = 'org.apache.ant:ant:1.8.2'
     antContribDep           = 'ant-contrib:ant-contrib:1.0b3'
-    antlrDep                = 'org.antlr:antlr:3.4' // complete
+    antlrDep                = 'org.antlr:antlr:3.5.2' // complete
     apacheCommonsCodecDep   = 'commons-codec:commons-codec:1.10'
     apacheCommonsLoggingDep = 'commons-logging:commons-logging:1.2'
     jbossDep                = 'org.jboss.modules:jboss-modules:1.4.4.Final'

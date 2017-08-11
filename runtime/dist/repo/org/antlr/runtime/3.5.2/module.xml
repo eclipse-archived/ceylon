@@ -22,14 +22,14 @@
   ~ 02110-1301 USA, or see the FSF site: http://www.fsf.org.
   -->
 
-<module xmlns="urn:jboss:module:1.0" name="org.antlr.runtime" slot="3.4">
+<module xmlns="urn:jboss:module:1.0" name="org.antlr.runtime" slot="3.5.2">
     <properties>
         <property name="groupId" value="org.antlr"/>
         <property name="artifactId" value="antlr-runtime"/>
     </properties>
 
     <resources>
-        <resource-root path="org.antlr.runtime-3.4.jar"/>
+        <resource-root path="org.antlr.runtime-3.5.2.jar"/>
     </resources>
 
     <dependencies>

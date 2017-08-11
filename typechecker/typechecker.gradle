@@ -10,7 +10,7 @@ dependencies {
     compile project(':common')
     compile project(':model')
     compile project(':cmr')
-    antlr 'org.antlr:antlr:3.4'
+    antlr 'org.antlr:antlr:3.5.2'
 }
 
 sourceSets {

@@ -8,6 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-cli"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-typechecker"/>
-	<classpathentry kind="lib" path="/ceylon-dist/dist/repo/org/antlr/runtime/3.4/org.antlr.runtime-3.4.jar"/>
+	<classpathentry kind="lib" path="/ceylon/lib/antlr-complete-3.5.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

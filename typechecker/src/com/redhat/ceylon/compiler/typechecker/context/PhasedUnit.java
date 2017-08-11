@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 import java.util.List;
 
-import org.antlr.runtime.CommonToken;
+import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AliasVisitor;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnnotationVisitor;
@@ -72,7 +72,7 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
     private WeakReference<ModuleSourceMapper> moduleSourceMapperRef;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
-    private List<CommonToken> tokens;
+    private List<Token> tokens;
     private ModuleVisitor moduleVisitor;
     private Tree.ModuleDescriptor moduleDescriptor;
     private VirtualFile srcDir;
@@ -100,7 +100,7 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
             ModuleManager moduleManager, 
             ModuleSourceMapper moduleManagerUtil, 
             Context context, 
-            List<CommonToken> tokenStream) {
+            List<Token> tokenStream) {
         this.rootNode = rootNode;
         this.pkg = p;
         this.unitFile = unitFile;
@@ -516,7 +516,7 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
         return rootNode;
     }
 
-    public List<CommonToken> getTokens() {
+    public List<Token> getTokens() {
         return tokens;
     }
 
