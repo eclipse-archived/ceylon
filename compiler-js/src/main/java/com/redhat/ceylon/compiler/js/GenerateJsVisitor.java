@@ -89,7 +89,7 @@ public class GenerateJsVisitor extends Visitor {
     private final RetainedVars retainedVars = new RetainedVars();
     final ConditionGenerator conds;
     private final InvocationGenerator invoker;
-    private final List<Token> tokens;
+    private final List<? extends Token> tokens;
     private final ErrorVisitor errVisitor = new ErrorVisitor();
     private int dynblock;
     private int exitCode = 0;
@@ -175,8 +175,9 @@ public class GenerateJsVisitor extends Visitor {
 
     private final JsOutput jsout;
 
-    public GenerateJsVisitor(JsCompiler compiler, JsOutput out, Options options, JsIdentifierNames names,
-            List<Token> tokens) throws IOException {
+    public GenerateJsVisitor(JsCompiler compiler, JsOutput out, 
+    		Options options, JsIdentifierNames names,
+            List<? extends Token> tokens) throws IOException {
         this.compiler = compiler;
         this.jsout = out;
         this.opts = options;
@@ -3793,7 +3794,8 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 out(",'");
                 for (int i = cond.getToken().getTokenIndex();
-                        i <= cond.getEndToken().getTokenIndex(); i++) {
+                        i <= cond.getEndToken().getTokenIndex(); 
+                		i++) {
                     out(JsUtils.escapeStringLiteral(tokens.get(i).getText()));
                 }
                 out("']");

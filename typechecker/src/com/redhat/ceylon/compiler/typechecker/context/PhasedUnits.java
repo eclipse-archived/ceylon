@@ -124,11 +124,9 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
             CommonTokenStream tokenStream = new CommonTokenStream(lexer);
             CeylonParser parser = new CeylonParser(tokenStream);
             Tree.CompilationUnit cu = parser.compilationUnit();
-            List<Token> tokens = new ArrayList<Token>(tokenStream.getTokens().size()); 
-            tokens.addAll(tokenStream.getTokens());
             PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, 
                     moduleSourceMapper.getCurrentPackage(), moduleManager, moduleSourceMapper,
-                    context, tokens);
+                    context, new ArrayList<Token>(tokenStream.getTokens()));
             addPhasedUnit(file, phasedUnit);
 
             List<LexError> lexerErrors = lexer.getErrors();

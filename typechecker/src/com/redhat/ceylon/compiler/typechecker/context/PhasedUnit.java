@@ -8,6 +8,7 @@ import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.AliasVisitor;
@@ -72,7 +73,7 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
     private WeakReference<ModuleSourceMapper> moduleSourceMapperRef;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
-    private List<Token> tokens;
+    private List<? extends Token> tokens;
     private ModuleVisitor moduleVisitor;
     private Tree.ModuleDescriptor moduleDescriptor;
     private VirtualFile srcDir;
@@ -100,7 +101,7 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
             ModuleManager moduleManager, 
             ModuleSourceMapper moduleManagerUtil, 
             Context context, 
-            List<Token> tokenStream) {
+            List<? extends Token> tokenStream) {
         this.rootNode = rootNode;
         this.pkg = p;
         this.unitFile = unitFile;
@@ -516,8 +517,9 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
         return rootNode;
     }
 
-    public List<Token> getTokens() {
-        return tokens;
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<CommonToken> getTokens() {
+        return (List) tokens;
     }
 
     public boolean isScanningDeclarations() {
