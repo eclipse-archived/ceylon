@@ -2340,31 +2340,35 @@ public class RefinementVisitor extends Visitor {
                     v.setScope(m);
                     l.getParameters().add(vp);
                     v.setType(new LazyType(unit) {
+                        private Type type() {
+                            return rm.getTypedParameter(p)
+                                    .getFullType();
+                        }
                         @Override
                         public Type initQualifyingType() {
-                            return rm.getTypedParameter(p)
-                                    .getFullType()
-                                    .getQualifyingType();
+                            Type type = type();
+                            return type==null ? null :
+                                type.getQualifyingType();
                         }
                         @Override
                         public Map<TypeParameter,Type> 
                         initTypeArguments() {
-                            return rm.getTypedParameter(p)
-                                    .getFullType()
-                                    .getTypeArguments();
+                            Type type = type();
+                            return type==null ? null :
+                                type.getTypeArguments();
                         }
                         @Override
                         public TypeDeclaration initDeclaration() {
-                            return rm.getTypedParameter(p)
-                                    .getFullType()
-                                    .getDeclaration();
+                            Type type = type();
+                            return type==null ? null :
+                                type.getDeclaration();
                         }
                         @Override
                         public Map<TypeParameter, SiteVariance> 
                         getVarianceOverrides() {
-                            return rm.getTypedParameter(p)
-                                    .getFullType()
-                                    .getVarianceOverrides();
+                            Type type = type();
+                            return type==null ? null :
+                                type.getVarianceOverrides();
                         }
                     });
                 }
@@ -2481,7 +2485,8 @@ public class RefinementVisitor extends Visitor {
                              .getType(),
                             getUnit());
                 }
-                IntersectionType it = new IntersectionType(getUnit()); 
+                IntersectionType it = 
+                        new IntersectionType(getUnit()); 
                 it.setSatisfiedTypes(list);
                 return it.canonicalize().getType();
             }
