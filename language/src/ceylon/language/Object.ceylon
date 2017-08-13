@@ -58,10 +58,11 @@ shared abstract class Object()
      
      Note that an implementation of `equals()` that always
      returns [[false]] does satisfy the constraints given
-     above. Therefore, in very rare cases where there is no 
-     reasonable definition of value equality for a class, 
-     for example, [[function references|Callable]], it is 
-     acceptable for `equals()` to be defined to return 
+     above, as long as the class does _not_ inherit 
+     [[Identifiable]]. Therefore, in very rare cases where 
+     there is no reasonable definition of value equality for 
+     a class, for example, [[function references|Callable]], 
+     it is acceptable for `equals()` to be defined to return 
      `false` for every argument."
     shared formal Boolean equals(Object that);
     
