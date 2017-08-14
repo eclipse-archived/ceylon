@@ -719,7 +719,7 @@ shared native final class String
     "Determines if this string is longer than the given
      [[length]]. This is a more efficient operation than
      `string.size>length`, since it does not require 
-     complete iteration of the underlying UTF-16 encoded
+     complete iteration of the underlying UTF-16-encoded
      native string."
     see (`value size`)
     shared actual native Boolean longerThan(Integer length) {
@@ -737,7 +737,7 @@ shared native final class String
     "Determines if this string is shorter than the given
      [[length]]. This is a more efficient operation than
      `string.size>length`, since it does not require 
-     complete iteration of the underlying UTF-16 encoded
+     complete iteration of the underlying UTF-16-encoded
      native string."
     see (`value size`)
     shared actual native Boolean shorterThan(Integer length) {
