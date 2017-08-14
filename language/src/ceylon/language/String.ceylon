@@ -473,7 +473,8 @@ shared native final class String
      string:
      
          string.lastIndex == string.size-1"
-    shared actual Integer? lastIndex => size>0 then size-1;
+    shared actual Integer? lastIndex 
+            => !characters.empty then characters.size-1;
     
     "An iterator for the characters of the string."
     shared actual native Iterator<Character> iterator()
