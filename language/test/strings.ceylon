@@ -704,17 +704,17 @@ shared void strings() {
     check("abcd".sublist(2, runtime.maxIntegerValue)=="cd".sequence(), "string sublist 10");
     check("abcd".sublist(1,10).sublist(1, runtime.maxIntegerValue)=="cd".sequence(), "string sublist 11");
     check('2' in "111122".sublist(3,4), "string sublist c1");
-    check('1' in "111122".sublist(3,4), "string sublist c1");
-    check('2' in "111122".sublist(4,5), "string sublist c2");
-    check(!('1' in "111122".sublist(4,5)), "string sublist c2");
-    check('2' in "111122".sublist(4,6), "string sublist c3");
-    check(!('1' in "111122".sublist(4,6)), "string sublist c2");
-    check('2' in "111122".sublist(5,6), "string sublist c4");
-    check(!('1' in "111122".sublist(5,6)), "string sublist c2");
-    check("111122".sublist(3,4).size==2, "string sublist c1");
-    check("111122".sublist(4,5).size==2, "string sublist c2");
-    check("111122".sublist(4,6).size==2, "string sublist c3");
-    check("111122".sublist(5,6).size==1, "string sublist c4");
+    check('1' in "111122".sublist(3,4), "string sublist c2");
+    check('2' in "111122".sublist(4,5), "string sublist c3");
+    check(!('1' in "111122".sublist(4,5)), "string sublist c4");
+    check('2' in "111122".sublist(4,6), "string sublist c5");
+    check(!('1' in "111122".sublist(4,6)), "string sublist c6");
+    check('2' in "111122".sublist(5,6), "string sublist c7");
+    check(!('1' in "111122".sublist(5,6)), "string sublist c8");
+    check("111122".sublist(3,4).size==2, "string sublist c9");
+    check("111122".sublist(4,5).size==2, "string sublist c10");
+    check("111122".sublist(4,6).size==2, "string sublist c11");
+    check("111122".sublist(5,6).size==1, "string sublist c12");
     
     check("".indexesWhere((c) => true).size == 0);
     check("12345".indexesWhere((c) => true).size == 5);
