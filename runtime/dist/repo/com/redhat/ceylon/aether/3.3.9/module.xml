@@ -44,7 +44,7 @@
                 <path name="org/w3c/dom"/>
                 <path name="org/xml/sax"/>
                 <path name="org/xml/sax/helpers"/>
-                 <path name="sun/misc"/>
+                <path name="sun/misc"/>
             </paths>
         </system>
     </dependencies>
