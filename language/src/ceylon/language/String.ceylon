@@ -1,6 +1,7 @@
 """A string of characters. Each character in the string 
    is a [[32-bit Unicode character|Character]]. The 
-   internal UTF-16 encoding is hidden from clients.
+   UTF-16 encoding of the underlying native string is 
+   hidden from clients.
    
    Literal strings may be written between double quotes:
    
@@ -48,12 +49,13 @@
    
        String { for (s in "hello world") if (s.letter) s.uppercased }
    
-   Since a `String` has an underlying UTF-16 encoding, 
-   certain operations are expensive, requiring iteration 
-   of the characters of the string. In particular, 
-   [[size]] requires iteration of the whole string, and 
-   `get()`, `span()`, and `measure()` require iteration 
-   from the beginning of the string to the given index."""
+   Since a `String` has an underlying UTF-16-encoded 
+   native string, certain operations are expensive, 
+   requiring iteration of the characters of the string. 
+   In particular, [[size]] requires iteration of the 
+   whole string, and `get()`, `span()`, and `measure()` 
+   require iteration from the beginning of the string to 
+   the given index."""
 by ("Gavin")
 tagged("Basic types", "Strings")
 shared native final class String
@@ -74,10 +76,14 @@ shared native final class String
     "The characters that form this string."
     {Character*} characters;
     
+    "Capture the given stream of characters as a stream
+     backed by an immutable native String."
+    native {Character*} capture({Character*} characters);
+    
     "A new string with the given [[characters]]."
     shared native new ({Character*} characters) 
             extends Object() {
-        this.characters = characters;
+        this.characters = capture(characters);
     }
     
     "This string, with all characters in lowercase.
@@ -194,13 +200,16 @@ shared native final class String
                 limit);
     
     "The first character in the string."
-    shared actual native Character? first;
+    shared actual native Character? first
+            => characters.first;
     
     "The last character in the string."
-    shared actual native Character? last;
+    shared actual native Character? last
+            => characters.last;
     
     "The rest of the string, without its first character."
-    shared actual native String rest;
+    shared actual native String rest
+            => String(characters.rest);
     
     "A sequence containing all indexes of this string."
     shared actual native Integer[] keys => 0:size;
@@ -371,7 +380,8 @@ shared native final class String
      `string.span(to, from)` may be written as 
      `string[from..to]`."
     shared actual native String span(Integer from, 
-                                     Integer to);
+                                     Integer to)
+            => String(characters.take(to).skip(from));
     
     "A string containing the characters of this string 
      from the given [[start index|from]] inclusive to 
@@ -453,7 +463,7 @@ shared native final class String
      [[shorterThan]] is highly recommended."
     see (`function longerThan`, `function shorterThan`)
     aliased ("length")
-    shared actual native Integer size;
+    shared actual native Integer size => characters.size;
     
     "The index of the last character in the string, or 
      `null` if the string has no characters. Note that 
@@ -463,11 +473,11 @@ shared native final class String
      string:
      
          string.lastIndex == string.size-1"
-    shared actual Integer? lastIndex 
-            => if (size==0) then null else size-1;
+    shared actual Integer? lastIndex => size>0 then size-1;
     
     "An iterator for the characters of the string."
-    shared actual native Iterator<Character> iterator();
+    shared actual native Iterator<Character> iterator()
+            => characters.iterator();
     
     "Returns the character at the given [[index]] in the 
      string, or `null` if the index is before the start 
@@ -486,7 +496,8 @@ shared native final class String
          if it falls within the range `0:size`. The 
          index `0` refers to the first character in the
          string."
-        Integer index);
+        Integer index)
+            => characters.getFromFirst(index);
     
     "Get the character at the specified index, where the 
      string is indexed from the _end_ of the string, or 
@@ -499,7 +510,8 @@ shared native final class String
          if it falls within the range `0:size`. The 
          index `0` refers to the last character in the
          string."
-        Integer index);
+        Integer index)
+            => super.getFromLast(index);
     
     "Determines if the given object is a `String` and, 
      if so, if it occurs as a substring of this string, 
@@ -549,7 +561,8 @@ shared native final class String
      Using the [[addition operator|Summable.plus]], 
      `string.plus(otherString)` may be written as
      `string + otherString`."
-    shared actual native String plus(String other);
+    shared actual native String plus(String other)
+            => String(characters.chain(other.characters));
     
     "Returns a string formed by repeating this string 
      the given number of [[times]], or the empty string 
@@ -704,15 +717,39 @@ shared native final class String
     
     "Determines if this string is longer than the given
      [[length]]. This is a more efficient operation than
-     `string.size>length`."
+     `string.size>length`, since it does not require 
+     complete iteration of the underlying UTF-16 encoded
+     native string."
     see (`value size`)
-    shared actual native Boolean longerThan(Integer length);
+    shared actual native Boolean longerThan(Integer length) {
+        variable value index = 0;
+        for (_ in characters) {
+            if (index++ > length) {
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+    }
     
     "Determines if this string is shorter than the given
      [[length]]. This is a more efficient operation than
-     `string.size>length`."
+     `string.size>length`, since it does not require 
+     complete iteration of the underlying UTF-16 encoded
+     native string."
     see (`value size`)
-    shared actual native Boolean shorterThan(Integer length);
+    shared actual native Boolean shorterThan(Integer length) {
+        variable value index = 0;
+        for (_ in characters) {
+            if (index++ >= length) {
+                return false;
+            }
+        }
+        else {
+            return true;
+        }
+    }
     
     "Determines if the given object is a `String`, and 
      if so, if this string has the same [[length|size]], 
@@ -750,7 +787,16 @@ shared native final class String
     
     "A hash code for this `String`, computed from its 
      UTF-16 code units."
-    shared actual native Integer hash;
+    shared actual native Integer hash {
+        variable small value hash = 0;
+        for (char in this) {
+            //TODO: this is not quite correct, should
+            //      break the char into UTF-16 units 
+            hash *= 31;
+            hash += char.hash;
+        }
+        return hash;
+    }
     
     "This string."
     shared actual String string => this;
@@ -759,7 +805,7 @@ shared native final class String
      is, if it has zero [[size]]. This is a _much_ more 
      efficient operation than `string.size==0`."
     see (`value size`)
-    shared actual native Boolean empty;
+    shared actual native Boolean empty => characters.empty;
     
     "This string."
     shared actual String coalesced => this;
@@ -972,6 +1018,8 @@ shared native final class String
     shared actual native Boolean notLargerThan(String other)
             => super.notLargerThan(other);
     
+    //operations inherited from List
+    
     shared actual native List<Character> sublist(Integer from, Integer to)
             => super.sublist(from, to);
     shared actual native List<Character> sublistFrom(Integer from)
@@ -979,32 +1027,61 @@ shared native final class String
     shared actual native List<Character> sublistTo(Integer to)
             => super.sublistTo(to);
     
-    shared actual native {Integer*} indexesWhere(Boolean selecting(Character element));
-    shared actual native Integer? firstIndexWhere(Boolean selecting(Character element));
-    shared actual native Integer? lastIndexWhere(Boolean selecting(Character element));
+    shared actual native {Integer*} indexesWhere(Boolean selecting(Character element))
+            => super.indexesWhere(selecting);
+    shared actual native Integer? firstIndexWhere(Boolean selecting(Character element))
+            => super.firstIndexWhere(selecting);
+    shared actual native Integer? lastIndexWhere(Boolean selecting(Character element))
+            => super.lastIndexWhere(selecting);
     
-    shared actual native {Integer*} occurrences(Character element, Integer from, Integer length);
-    shared actual native {Integer*} inclusions(List<Character> sublist, Integer from);
+    //operations inherited from SearchableList
     
-    shared actual native Boolean occurs(Character element, Integer from, Integer length);
-    shared actual native Boolean occursAt(Integer index, Character element);
-    shared actual native Boolean includes(List<Character> sublist, Integer from);
-    shared actual native Boolean includesAt(Integer index, List<Character> sublist);
+    shared actual native {Integer*} occurrences(Character element, Integer from, Integer length)
+            => super.occurrences(element, from, length);
+    shared actual native {Integer*} inclusions(List<Character> sublist, Integer from)
+            => super.inclusions(sublist, from);
+    
+    shared actual native Boolean occurs(Character element, Integer from, Integer length)
+            => super.occurs(element, from, length);
+    shared actual native Boolean occursAt(Integer index, Character element)
+            => super.occursAt(index, element);
+    shared actual native Boolean includes(List<Character> sublist, Integer from)
+            => super.includes(sublist, from);
+    shared actual native Boolean includesAt(Integer index, List<Character> sublist)
+            => super.includesAt(index, sublist);
         
-    shared actual native Integer? firstOccurrence(Character element, Integer from, Integer length);
-    shared actual native Integer? lastOccurrence(Character element, Integer from, Integer length);
-    shared actual native Integer? firstInclusion(List<Character> sublist, Integer from);
-    shared actual native Integer? lastInclusion(List<Character> sublist, Integer from);
-        
-    shared actual native void each(void step(Character element));
-    shared actual native Integer count(Boolean selecting(Character element));
-    shared actual native Boolean every(Boolean selecting(Character element));
-    shared actual native Boolean any(Boolean selecting(Character element));
+    shared actual native Integer? firstOccurrence(Character element, Integer from, Integer length)
+            => super.firstOccurrence(element, from, length);
+    shared actual native Integer? lastOccurrence(Character element, Integer from, Integer length)
+            => super.lastOccurrence(element, from, length);
+    shared actual native Integer? firstInclusion(List<Character> sublist, Integer from)
+            => super.firstInclusion(sublist, from);
+    shared actual native Integer? lastInclusion(List<Character> sublist, Integer from)
+            => super.firstInclusion(sublist, from);
+    
+    //operations inherited from Iterable
+    
+    shared actual native void each(void step(Character element))
+            => characters.each(step);
+    shared actual native Integer count(Boolean selecting(Character element))
+            => characters.count(selecting);
+    shared actual native Boolean every(Boolean selecting(Character element))
+            => characters.every(selecting);
+    shared actual native Boolean any(Boolean selecting(Character element))
+            => characters.any(selecting);
+    
     shared actual native Result|Character|Null reduce<Result>
-            (Result accumulating(Result|Character partial, Character element));
-    shared actual native Character? find(Boolean selecting(Character element));
-    shared actual native Character? findLast(Boolean selecting(Character element));
-    shared actual native <Integer->Character>? locate(Boolean selecting(Character element));
-    shared actual native <Integer->Character>? locateLast(Boolean selecting(Character element));
-    shared actual native {<Integer->Character>*} locations(Boolean selecting(Character element));
+            (Result accumulating(Result|Character partial, Character element))
+            => characters.reduce(accumulating);
+    shared actual native Character? find(Boolean selecting(Character element))
+            => characters.find(selecting);
+    shared actual native Character? findLast(Boolean selecting(Character element))
+            => characters.findLast(selecting);
+    
+    shared actual native <Integer->Character>? locate(Boolean selecting(Character element))
+            => characters.locate(selecting);
+    shared actual native <Integer->Character>? locateLast(Boolean selecting(Character element))
+            => characters.locateLast(selecting);
+    shared actual native {<Integer->Character>*} locations(Boolean selecting(Character element))
+            => characters.locations(selecting);
 }
