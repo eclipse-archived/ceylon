@@ -119,9 +119,8 @@ shared interface List<out Element=Anything>
     "Determines if this list contains the given value.
      Returns `true` for every element of this list."
     shared actual default Boolean contains(Object element) {
-        for (index in 0:size) {
-            if (exists elem = getFromFirst(index), 
-                    elem==element) {
+        for (elem in this) {
+            if (exists elem, elem==element) {
                 return true;
             }
         }
@@ -721,7 +720,7 @@ shared interface List<out Element=Anything>
                     from = Integer.largest(from+this.from,this.from);
                     to = Integer.smallest(to+this.from,this.to);
                 };
-                
+        
         span(Integer from, Integer to)
                 => from <= to 
                 then outer.span {
