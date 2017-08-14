@@ -353,15 +353,17 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     private int usedIn(List<Statement> stmts) {
         for(Tree.Statement stmt : stmts){
             // count declarations as usage
-            if(stmt instanceof Tree.TypedDeclaration
-                    && ((Tree.TypedDeclaration) stmt).getDeclarationModel() == declaration)
-                return 1;
+            if (stmt instanceof Tree.TypedDeclaration){
+                Tree.TypedDeclaration td = (Tree.TypedDeclaration)stmt;
+                if (td.getDeclarationModel() == declaration)
+                    return 1;
+            }
             stmt.visit(this);
             if(declaration.isCaptured())
                 break;
         }
         boolean used = declaration.isCaptured();
-        FunctionOrValue fov = ((FunctionOrValue)declaration);
+        FunctionOrValue fov = (FunctionOrValue)declaration;
         fov.setCaptured(false);
         if(fov instanceof Value){
             Value val = (Value) fov;
@@ -396,19 +398,18 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     
     
     @Override public void visit(Tree.AttributeDeclaration that) {
-        super.visit(that);
-        final SpecifierOrInitializerExpression specifier = that.getSpecifierOrInitializerExpression();
+        final SpecifierOrInitializerExpression specifier = 
+                that.getSpecifierOrInitializerExpression();
         Value model = that.getDeclarationModel();
+        boolean lse = inLazySpecifierExpression;
         if (specifier != null 
-                && (specifier instanceof Tree.LazySpecifierExpression
-                        || model.isLate())) {
-            boolean cs = enterCapturingScope();
-            if (model.isLate() && model.isClassMember()) {
-                model.setCaptured(true);
-            }
-            specifier.visit(this);
-            exitCapturingScope(cs);
-        }   
+                && model.isLate()
+                && model.isClassMember()) {
+            model.setCaptured(true);
+            inLazySpecifierExpression = true;
+        }
+        super.visit(that);
+        inLazySpecifierExpression = lse;
     }
     
     @Override public void visit(Tree.AttributeGetterDefinition that) {
