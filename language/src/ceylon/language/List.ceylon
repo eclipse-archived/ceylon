@@ -118,16 +118,9 @@ shared interface List<out Element=Anything>
     
     "Determines if this list contains the given value.
      Returns `true` for every element of this list."
-    shared actual default Boolean contains(Object element) {
-        for (elem in this) {
-            if (exists elem, elem==element) {
-                return true;
-            }
-        }
-        else {
-            return false;
-        }
-    }
+    shared actual default Boolean contains(Object element) 
+            //TODO: delete this unnecessary refinement
+            => super.contains(element);
     
     "The rest of the list, without the first element.
      
