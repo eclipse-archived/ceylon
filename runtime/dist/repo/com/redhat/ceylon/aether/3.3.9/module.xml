@@ -30,6 +30,23 @@
     <dependencies>
         <module name="java.base" slot="7" export="true"/>
         <module name="java.tls" slot="7" export="true"/>
+        <module name="javax.xml" slot="7" export="true"/>
+        <system export="true">
+            <paths>
+                <path name="javax/xml"/>
+                <path name="javax/xml/bind"/>
+                <path name="javax/xml/namespace"/>
+                <path name="javax/xml/parsers"/>
+                <path name="javax/xml/stream"/>
+                <path name="javax/xml/transform"/>
+                <path name="javax/xml/transform/dom"/>
+                <path name="javax/xml/transform/stream"/>
+                <path name="org/w3c/dom"/>
+                <path name="org/xml/sax"/>
+                <path name="org/xml/sax/helpers"/>
+                 <path name="sun/misc"/>
+            </paths>
+        </system>
     </dependencies>
     <exports>
         <!-- Uses Ant -->
