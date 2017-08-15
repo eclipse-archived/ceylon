@@ -246,8 +246,8 @@ public class Repositories {
                 // https://modules.ceylon-lang.org
                 return new SimpleRepository(REPO_NAME_REMOTE, Constants.REPO_URL_CEYLON, null);
             } else if (REPO_NAME_MAVEN.equals(repoName)) {
-                // aether:
-                return new SimpleRepository(REPO_NAME_MAVEN, "aether:", null);
+                // maven:
+                return new SimpleRepository(REPO_NAME_MAVEN, "maven:", null);
             } else if (REPO_NAME_NPM.equals(repoName)) {
                 // npm:
                 return new SimpleRepository(REPO_NAME_NPM, "npm:", null);
