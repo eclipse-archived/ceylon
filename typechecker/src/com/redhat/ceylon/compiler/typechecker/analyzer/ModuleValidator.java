@@ -10,11 +10,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
-import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -282,12 +283,30 @@ public class ModuleValidator {
                         listener.retrievingModuleArtifactSuccess(module, artifact);
                     }
                 } else {
-                    String msg = "unknown import namespace: '" + moduleImport.getNamespace() +
-                            "', make sure the proper repository has been enabled";
-                    if (!MavenRepository.NAMESPACE.equals(moduleImport.getNamespace())) {
-                        msg += " (if this is a Maven import make sure to add a 'maven:' prefix)";
+                    StringBuilder msg = 
+                            new StringBuilder()
+                                .append("unknown import namespace: '")
+                                .append(moduleImport.getNamespace())
+                                .append("' should be one of ");
+                    TreeSet<String> namespaces = new TreeSet<String>();
+                    for (CmrRepository repo: repositoryManager.getRepositories()) {
+                        namespaces.add(repo.getNamespace());
                     }
-                    moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, msg, true);
+                    boolean first = true;
+                    for (String namespace: namespaces) {
+                        if (first) {
+                            first = false;
+                        }
+                        else {
+                            msg.append(", ");
+                        }
+                        msg.append("'").append(namespace).append("'");
+                    }
+//                    if (!MavenRepository.NAMESPACE.equals(moduleImport.getNamespace())) {
+//                        msg += " (if this is a Maven import make sure to add a 'maven:' prefix)";
+//                    }
+                    moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, 
+                            dependencyTree, msg.toString(), true);
                 }
                 alreadySearchedArtifacts.put(module, artifact);
                 firstTime = true;
