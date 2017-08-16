@@ -132,7 +132,6 @@
                 <Bundle-Version>3.3.9</Bundle-Version>
                 <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
                 <Bundle-License>http://www.apache.org/licenses/LICENSE-2.0.txt</Bundle-License>
-                <Export-Package>com.redhat.ceylon.aether.*</Export-Package>
                 </manifestEntries>
                 </transformer>
               </transformers>
