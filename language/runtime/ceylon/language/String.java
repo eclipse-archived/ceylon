@@ -192,6 +192,7 @@ public final class String
         return value.equalsIgnoreCase(that);
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return value.hashCode();
@@ -246,6 +247,7 @@ public final class String
         return value + otherValue;
     }
 
+    @Transient
     @Override
     @TypeInfo("ceylon.language::Integer")
     @AliasesAnnotation$annotation$(aliases = "length")
@@ -275,6 +277,7 @@ public final class String
         return (length == 0) ? null : Integer.instance(length - 1);
     }
 
+    @Transient
     @Override
     public boolean getEmpty() {
         return value.isEmpty();
@@ -1542,6 +1545,7 @@ public final class String
         return value.substring(start, end);
     }
 
+    @Transient
     @Override
     public String span(@Name("from") final Integer from,
                        @Name("to") final Integer to) {
@@ -2184,6 +2188,7 @@ public final class String
         return instance(string);
     }
 
+    @Transient
     @Override
     public String getRest() {
         return value.isEmpty() ? this :
@@ -2202,6 +2207,7 @@ public final class String
     	return instance(value).getExceptLast();
     }
 
+    @Transient
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character getFirst() {
@@ -2217,6 +2223,7 @@ public final class String
         }
     }
 
+    @Transient
     @Override
     @TypeInfo("ceylon.language::Null|ceylon.language::Character")
     public Character getLast() {
