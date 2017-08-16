@@ -1545,7 +1545,6 @@ public final class String
         return value.substring(start, end);
     }
 
-    @Transient
     @Override
     public String span(@Name("from") final Integer from,
                        @Name("to") final Integer to) {
