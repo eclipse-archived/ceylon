@@ -125,13 +125,7 @@
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                 <manifestEntries>
-                <Bundle-Name>Ceylon Aether, HTTP, and WebDAV dependencies</Bundle-Name>
-                <Bundle-Description>A shaded fat jar including Aether, HTTP components, Sardine, and all dependencies.</Bundle-Description>
-                <Bundle-Vendor>Ceylon Project</Bundle-Vendor>
-                <Bundle-SymbolicName>com.redhat.ceylon.aether</Bundle-SymbolicName>
-                <Bundle-Version>3.3.9</Bundle-Version>
-                <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
-                <Bundle-License>http://www.apache.org/licenses/LICENSE-2.0.txt</Bundle-License>
+                <!-- Keep empty so the build works and adds entries. There must be an empty manifest. -->
                 </manifestEntries>
                 </transformer>
               </transformers>
