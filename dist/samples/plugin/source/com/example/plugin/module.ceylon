@@ -19,5 +19,5 @@ license("http://www.apache.org/licenses/LICENSE-2.0")
 native("jvm")
 module com.example.plugin "1.0" {
     shared import java.base "7";
-    shared import com.redhat.ceylon.cli "1.3.3-SNAPSHOT"/*@CEYLON_VERSION@*/;
+    shared import com.redhat.ceylon.cli "1.3.4-SNAPSHOT"/*@CEYLON_VERSION@*/;
 }
