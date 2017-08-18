@@ -367,6 +367,9 @@ Use this when NOT doing a release!">
         <mkdir dir="${ceylon.dist.dir}/bin"/>
         <copy todir="${ceylon.dist.dir}/bin">
             <fileset dir="${basedir}/bin" />
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
+            </filterset>
         </copy>
     </target>
 
