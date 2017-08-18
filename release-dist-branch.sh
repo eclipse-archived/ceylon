@@ -25,6 +25,7 @@ replace common/src/com/redhat/ceylon/common/Versions.java
 replace language/src/ceylon/language/module.ceylon
 replace language/src/ceylon/language/language.ceylon
 replace language/test/process.ceylon
+replace dist/samples/plugin/source/com/example/plugin/module.ceylon
 
 perl -pi -e "s/ceylon\.version=.*/ceylon.version=$CEYLON_NEW_VERSION/" common-build.properties
 perl -pi -e "s/ceylon\.osgi\.version=.*/ceylon.osgi.version=$CEYLON_NEW_VERSION_MAJOR.$CEYLON_NEW_VERSION_MINOR.$CEYLON_NEW_VERSION_RELEASE.osgi-$CEYLON_NEW_VERSION_OSGI_QUALIFIER/" common-build.properties
