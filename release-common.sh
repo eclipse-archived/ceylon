@@ -51,3 +51,9 @@ replace() {
   perl -pi -e "s|\"[^\"]+\"((/\*)?\@CEYLON_VERSION_NAME\@(\*/)?)|\"$CEYLON_NEW_VERSION_NAME\"\${1}|" $1
 }
 
+JDK_VERSION=$(java -version 2>&1 | sed -n ';s/.* version "\([0-9]*\)\(\.\([0-9]*\)\.\)\?.*"/\1\3/p;')
+if test "$JDK_VERSION" != "17"
+then
+  echo "You must release on JDK7"
+  exit 1
+fi
