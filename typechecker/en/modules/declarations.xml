@@ -2289,7 +2289,7 @@ else {
     order(String x, String y) => x&lt;=&gt;y;
 }</programlisting>
         
-        <programlisting>Comparison format(Integer x);
+        <programlisting>String format(Integer x);
 switch (base)
 case (decimal) {
     format = (Integer i) => i.string; 
