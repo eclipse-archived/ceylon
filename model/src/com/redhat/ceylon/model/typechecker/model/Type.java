@@ -4645,9 +4645,37 @@ public class Type extends Reference {
         return isClassOrInterface() || isTypeParameter();
     }
     
-    public int getMemoisedHashCode() {
-        if (hashCode == 0) {
-            int ret = 17;
+    private int getMemoisedHashCode() {
+        int ret = 17;
+        if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type f = ta.get(first);
+                ret = (37*ret) + (f!=null ? f.hashCode() : 0);
+                Type r = ta.get(rest);
+                if (r==null) {
+                    break;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    ret = (37*ret) + r.hashCode();
+                    break;
+                }
+            }
+        }
+        else {
             Type qualifyingType = 
                     getQualifyingType();
             ret = (37 * ret) + 
@@ -4674,12 +4702,9 @@ public class Type extends Reference {
                                     typeArgument.hashCode() : 0);
                 }
             }
-            ret = (37 * ret) + 
-                    varianceOverrides.hashCode();
-
-            hashCode = ret;
         }
-        return hashCode;
+        ret = (37 * ret) + varianceOverrides.hashCode();
+        return ret;
     }
     
     private Map<TypeParameter,SiteVariance> collectVarianceOverrides() {
@@ -4896,7 +4921,10 @@ public class Type extends Reference {
     
     @Override
     public int hashCode() {
-        return getMemoisedHashCode();
+        if (hashCode == 0) {
+            hashCode = getMemoisedHashCode();
+        }
+        return hashCode;
     }
 
     @Override
@@ -4909,6 +4937,7 @@ public class Type extends Reference {
             return false;
         }
         Type other = (Type) obj;
+        
         Type qA = getQualifyingType();
         Type qB = other.getQualifyingType();
         if (qA!=qB && (qA==null || qB==null || !qA.equals(qB))) {
@@ -4920,28 +4949,80 @@ public class Type extends Reference {
             return false;
         }
         
-        Map<TypeParameter, Type> typeArgumentsA = 
-                getTypeArguments();
-        Map<TypeParameter, Type> typeArgumentsB = 
-                other.getTypeArguments();
-        if (typeArgumentsA.size() != typeArgumentsB.size()) {
-            return false;
-        }
-        if (!typeArgumentsA.isEmpty()) {
-            List<TypeParameter> typeParametersA = 
-                    aDecl.getTypeParameters();
-            for (int i=0, l=typeParametersA.size(); i<l; i++) {
-                TypeParameter typeParameter = 
-                        typeParametersA.get(i);
-                Type typeArgumentA = 
-                        typeArgumentsA.get(typeParameter);
-                Type typeArgumentB = 
-                        typeArgumentsB.get(typeParameter);
-                if (typeArgumentA!=typeArgumentB &&
-                        (typeArgumentA==null || 
-                         typeArgumentB==null || 
-                            !typeArgumentA.equals(typeArgumentB))) {
+        if (isTuple() && other.isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            
+            Type a = this;
+            Type b = other;
+            while (true) {
+                Map<TypeParameter, Type> typeArgumentsA = 
+                        a.getTypeArguments();
+                Map<TypeParameter, Type> typeArgumentsB = 
+                        b.getTypeArguments();
+                
+                Type eA = typeArgumentsA.get(elem);
+                Type eB = typeArgumentsB.get(elem);
+                Type fA = typeArgumentsA.get(first);
+                Type fB = typeArgumentsB.get(first);
+                if (eA!=eB &&
+                        (eA==null || eB==null 
+                            || !eA.equals(eB))) {
                     return false;
+                }
+                if (fA!=fB &&
+                        (fA==null || fB==null 
+                            || !fA.equals(fB))) {
+                    return false;
+                }
+                Type rA = typeArgumentsA.get(rest);
+                Type rB = typeArgumentsB.get(rest);
+                if (eA==eB) {
+                    return true;
+                }
+                else if (eA==null || eB==null) {
+                    return false;
+                }
+                else if (rA.isTuple() && rB.isTuple()) {
+                    a = rA;
+                    b = rB;
+                }
+                else {
+                    return rA.equals(rB);
+                }
+            }
+        }
+        else {
+            Map<TypeParameter, Type> typeArgumentsA = 
+                    getTypeArguments();
+            Map<TypeParameter, Type> typeArgumentsB = 
+                    other.getTypeArguments();            
+            if (typeArgumentsA.size() != typeArgumentsB.size()) {
+                return false;
+            }
+            if (!typeArgumentsA.isEmpty()) {
+                List<TypeParameter> typeParametersA = 
+                        aDecl.getTypeParameters();
+                for (int i=0, l=typeParametersA.size(); i<l; i++) {
+                    TypeParameter typeParameter = 
+                            typeParametersA.get(i);
+                    Type typeArgumentA = 
+                            typeArgumentsA.get(typeParameter);
+                    Type typeArgumentB = 
+                            typeArgumentsB.get(typeParameter);
+                    if (typeArgumentA!=typeArgumentB &&
+                            (typeArgumentA==null || 
+                             typeArgumentB==null || 
+                                !typeArgumentA.equals(typeArgumentB))) {
+                        return false;
+                    }
                 }
             }
         }
