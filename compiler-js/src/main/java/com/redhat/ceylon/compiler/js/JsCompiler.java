@@ -614,9 +614,12 @@ public class JsCompiler {
 
     private Collection<File> filterForModule(List<File> files, List<File> roots, String moduleName) {
         ArrayList<File> result = new ArrayList<File>(files.size());
+        String moduleNamePath = moduleName.replace('.', File.separatorChar);
         for (File f : files) {
             String rel = FileUtil.relativeFile(roots, f.getPath());
-            if (rel.startsWith(moduleName + "/") || rel.startsWith(moduleName + "\\")
+            if (rel.startsWith(moduleNamePath + "/") || rel.startsWith(moduleNamePath + "\\")
+                    // FIXME: this is wrong because default modules can contain resources in sub-folders
+                    // as long as they don't belong to other modules
                     || ("default".equals(moduleName) && !(rel.contains("/") || rel.contains("\\")))) {
                 result.add(f);
             }
