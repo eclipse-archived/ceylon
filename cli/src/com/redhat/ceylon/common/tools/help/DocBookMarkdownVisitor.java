@@ -284,7 +284,8 @@ public class DocBookMarkdownVisitor implements Visitor {
         append("<");
         append(node.getName());
         TagAttributeList atts = node.getAttributeList();
-        atts.accept(this);
+        if(atts != null)
+            atts.accept(this);
 
         if(node.getBody().jjtGetNumChildren() == 0) {
             append("/>");
