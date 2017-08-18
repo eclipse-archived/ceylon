@@ -174,11 +174,11 @@ public class SerializationHelper {
     }
 
     /** Recursively add all the type arguments from extended and satisfied types. */
-    private static void setDeserializedTypeArguments(final com.redhat.ceylon.model.typechecker.model.Class root,
+    private static boolean setDeserializedTypeArguments(final com.redhat.ceylon.model.typechecker.model.Class root,
             Type pt, boolean first, final Node that, final String ni, final GenerateJsVisitor gen,
             final Set<TypeDeclaration> decs) {
         if (pt == null) {
-            return;
+            return first;
         }
         final boolean start=decs.isEmpty();
         final List<Type> sats = start ? root.getSatisfiedTypes() : pt.getSatisfiedTypes();
@@ -196,7 +196,7 @@ public class SerializationHelper {
                     TypeUtils.typeNameOrList(that, tp.getValue(), gen, false);
                 }
                 decs.add(pt.getDeclaration());
-                setDeserializedTypeArguments(root, pt, first, that, ni, gen, decs);
+                first = setDeserializedTypeArguments(root, pt, first, that, ni, gen, decs);
             }
             pt = pt.getExtendedType();
         }
@@ -214,12 +214,13 @@ public class SerializationHelper {
                 }
                 decs.add(sat.getDeclaration());
             }
-            setDeserializedTypeArguments(root, sat, first, that, ni, gen, decs);
+            first = setDeserializedTypeArguments(root, sat, first, that, ni, gen, decs);
         }
         if (!first && start) {
             gen.out("});");
             gen.endLine();
         }
+        return first;
     }
 
     static List<Value> serializableValues(com.redhat.ceylon.model.typechecker.model.Class d) {
