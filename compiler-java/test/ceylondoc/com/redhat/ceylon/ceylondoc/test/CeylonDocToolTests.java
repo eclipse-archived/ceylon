@@ -580,7 +580,7 @@ public class CeylonDocToolTests {
 
         CeylonDocTool tool = tool(Arrays.asList(new File("../../ceylon-sdk/source")),
                 new String[0],
-                "../../ceylon-sdk/overrides.xml",
+                null,
                 Collections.<File>emptyList(),
                 Arrays.asList(fullModuleNames), true, false, false);
         tool.setIncludeNonShared(false);
@@ -645,7 +645,6 @@ public class CeylonDocToolTests {
                 +languageModule.getAbsolutePath());
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{
-                "ceylon/http/server/internal/JavaHelper.java",
                 "ceylon/interop/java/internal/javaBooleanArray_.java",
                 "ceylon/interop/java/internal/javaByteArray_.java",
                 "ceylon/interop/java/internal/javaCharArray_.java",
@@ -659,7 +658,6 @@ public class CeylonDocToolTests {
                 "ceylon/interop/java/internal/synchronize_.java",
                 "ceylon/transaction/internal/RecoveryHelper.java",
                 "ceylon/transaction/internal/RecoveryXAResource.java",
-                "ceylon/test/engine/internal/Workaround.java",
         };
         List<String> qualifiedNames = new ArrayList<String>(fileNames.length);
         for(String name : fileNames){

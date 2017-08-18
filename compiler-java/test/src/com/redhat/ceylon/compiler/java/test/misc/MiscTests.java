@@ -353,7 +353,6 @@ public class MiscTests extends CompilerTests {
                 Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk",
                         "-sysrep", getSysRepPath(),
                         "-suppress-warnings", "ceylonNamespace",
-                        "-overrides", "../../ceylon-sdk/overrides.xml",
                         "-cp", getClassPathAsPath()), 
                         moduleNames, null);
         Boolean result = task.call();
