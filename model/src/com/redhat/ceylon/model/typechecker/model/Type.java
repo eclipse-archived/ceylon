@@ -1015,7 +1015,66 @@ public class Type extends Reference {
             decDepth();
         }
     }
-
+    
+    public boolean involvesTypeAliases() {
+        if (getDeclaration().isAlias()) {
+            return true;
+        }
+        else if (isNothing()) {
+            return false;
+        }
+        else if (isUnion() || isIntersection()) {
+            //we need to canonicalize!
+            return true;
+        }
+        else if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type e = ta.get(elem);
+                Type f = ta.get(first);
+                Type r = ta.get(rest);
+                if (e!=null && e.involvesTypeAliases() ||
+                    f!=null && f.involvesTypeAliases()) {
+                    return true;
+                }
+                if (r==null) {
+                    return false;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    return r.involvesTypeAliases();
+                }
+            }
+        }
+        else {
+            for (Type at: getTypeArgumentList()) {
+                if (at!=null && 
+                        at.involvesTypeAliases()) {
+                    return true;
+                }
+            }
+            Type qt = getQualifyingType();
+            if (qt!=null && 
+                    qt.involvesTypeAliases()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     private boolean isSubtypeOfTuple(Type type) {
         TypeDeclaration td = 
                 getDeclaration()
@@ -2701,6 +2760,38 @@ public class Type extends Reference {
         else if (isNothing()) {
             return false;
         }
+        else if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type e = ta.get(elem);
+                Type f = ta.get(first);
+                Type r = ta.get(rest);
+                if (e!=null && e.containsUnknowns() ||
+                    f!=null && f.containsUnknowns()) {
+                    return true;
+                }
+                if (r==null) {
+                    return false;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    return r.containsUnknowns();
+                }
+            }
+        }
         else {
             TypeDeclaration dec = getDeclaration();
             if (!dec.isJava() || !dec.isStatic()) {
@@ -3979,6 +4070,9 @@ public class Type extends Reference {
         else if (isTypeConstructor()) {
             return this;
         }
+        else if (!involvesTypeAliases()) {
+            return this;
+        }
         else if (dec instanceof UnionType) {
             List<Type> caseTypes = 
                     getCaseTypes();
@@ -4115,6 +4209,38 @@ public class Type extends Reference {
                 }
             }
         }
+        else if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type e = ta.get(elem);
+                Type f = ta.get(first);
+                Type r = ta.get(rest);
+                if (e!=null && e.involvesTypeParameters() ||
+                    f!=null && f.involvesTypeParameters()) {
+                    return true;
+                }
+                if (r==null) {
+                    return false;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    return r.involvesTypeParameters();
+                }
+            }
+        }
         else {
             for (Type at: getTypeArgumentList()) {
                 if (at!=null && 
@@ -4154,6 +4280,38 @@ public class Type extends Reference {
             for (Type st: getSatisfiedTypes()) {
                 if (st.involvesTypeParameters(params)) {
                     return true;
+                }
+            }
+        }
+        else if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type e = ta.get(elem);
+                Type f = ta.get(first);
+                Type r = ta.get(rest);
+                if (e!=null && e.involvesTypeParameters(params) ||
+                    f!=null && f.involvesTypeParameters(params)) {
+                    return true;
+                }
+                if (r==null) {
+                    return false;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    return r.involvesTypeParameters(params);
                 }
             }
         }

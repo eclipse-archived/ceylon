@@ -1759,7 +1759,8 @@ public class ModelUtil {
         Map<TypeParameter,Type> resultArgs = null;
         for (Map.Entry<TypeParameter,Type> e: typeArgs.entrySet()) {
             Type arg = e.getValue();
-            if (arg.involvesTypeParameters()) {
+            if (arg!=null 
+                    && arg.involvesTypeParameters()) {
                 TypeParameter tp = e.getKey();
                 if (resultArgs==null) {
                     resultArgs = 
