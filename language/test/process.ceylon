@@ -28,7 +28,7 @@ shared void testProcess() {
     process.flushError();
     
     //language object
-    check(language.version=="1.3.3-SNAPSHOT"/*@CEYLON_VERSION@*/, "language.version");
+    check(language.version=="1.3.3"/*@CEYLON_VERSION@*/, "language.version");
     check(language.majorVersion==1/*@CEYLON_VERSION_MAJOR@*/, "language.majorVersion");
     check(language.minorVersion==3/*@CEYLON_VERSION_MINOR@*/, "language.minorVersion");
     check(language.releaseVersion==3/*@CEYLON_VERSION_RELEASE@*/, "language.releaseVersion");

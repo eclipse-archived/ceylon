@@ -2,7 +2,7 @@ package com.redhat.ceylon.common;
 
 public class Versions {
     
-    // The current version is Ceylon "1.3.3-SNAPSHOT"@CEYLON_VERSION@ "Contents May Differ REL"@CEYLON_VERSION_NAME@
+    // The current version is Ceylon "1.3.3"@CEYLON_VERSION@ "Contents May Differ"@CEYLON_VERSION_NAME@
     // This comment is here so this file will show up in searches for the current version number
     
     /****************************************************************************************************
@@ -46,8 +46,8 @@ public class Versions {
      */
     public static final int CEYLON_VERSION_RELEASE = 3/*@CEYLON_VERSION_RELEASE@*/;
     
-    public static final String CEYLON_VERSION_QUALIFIER = "SNAPSHOT"/*@CEYLON_VERSION_QUALIFIER@*/;
-    private static final String _CEYLON_VERSION_QUALIFIER = "-SNAPSHOT"/*@CEYLON_VERSION_PREFIXED_QUALIFIER@*/;
+    public static final String CEYLON_VERSION_QUALIFIER = ""/*@CEYLON_VERSION_QUALIFIER@*/;
+    private static final String _CEYLON_VERSION_QUALIFIER = ""/*@CEYLON_VERSION_PREFIXED_QUALIFIER@*/;
     
     // SHA1 of current HEAD at moment of compilation
     public static final String CURRENT_COMMIT_ID = "@commit@";
@@ -60,7 +60,7 @@ public class Versions {
     /**
      * The release code name.
      */
-    public static final String CEYLON_VERSION_NAME = "Contents May Differ REL"/*@CEYLON_VERSION_NAME@*/;
+    public static final String CEYLON_VERSION_NAME = "Contents May Differ"/*@CEYLON_VERSION_NAME@*/;
     
     /**
      * The version number + code name description string.

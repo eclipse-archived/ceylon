@@ -25,7 +25,7 @@ module com.redhat.ceylon.compiler.java.test.interop.sdk "1" {
     import oracle.jdk.httpserver "7";
     import javax.annotation "7";
     import java.management "7";
-    import ceylon.interop.java "1.3.3-SNAPSHOT";
+    import ceylon.interop.java "1.3.3";
     import javax.inject "1";
     import maven:"javax.validation:validation-api" "1.1.0.Final";
     import maven:"javax.ws.rs:javax.ws.rs-api" "2.0.1";

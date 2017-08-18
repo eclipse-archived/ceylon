@@ -10,8 +10,8 @@ final class bug1277_ {
     }
     
     @.ceylon.language.SeeAnnotation$annotations$({
-            @.ceylon.language.SeeAnnotation$annotation$(programElements = "::1.3.3-SNAPSHOT:ceylon.language"),
-            @.ceylon.language.SeeAnnotation$annotation$(programElements = "::1.3.3-SNAPSHOT:ceylon.language:meta")})
+            @.ceylon.language.SeeAnnotation$annotation$(programElements = "::1.3.3:ceylon.language"),
+            @.ceylon.language.SeeAnnotation$annotation$(programElements = "::1.3.3:ceylon.language:meta")})
     static void bug1277() {
     }
 }
