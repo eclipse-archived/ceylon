@@ -2876,7 +2876,7 @@ print(greeting);</programlisting>
             forward-declared.</para>
         
             <para>Every <literal>formal</literal> attribute must explicitly specify a type. 
-            It may not be declared using the keyword <literal>function</literal>.</para>
+            It may not be declared using the keyword <literal>value</literal>.</para>
         
             <para>A toplevel attribute may not be annotated <literal>formal</literal> or
             <literal>default</literal>.</para>
