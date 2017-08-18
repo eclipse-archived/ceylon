@@ -1888,15 +1888,49 @@ public class Type extends Reference {
         if (getUnderlyingType() != null) {
             return true;
         }
-        List<Type> tal = getTypeArgumentList();
-        for (int i=0, size=tal.size(); 
-                i<size; i++) {
-            Type ta = tal.get(i);
-            if (ta!=null && ta.hasUnderlyingType()) {
-                return true;
+        else if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type e = ta.get(elem);
+                Type f = ta.get(first);
+                Type r = ta.get(rest);
+                if (e!=null && e.hasUnderlyingType() ||
+                    f!=null && f.hasUnderlyingType()) {
+                    return true;
+                }
+                if (r==null) {
+                    return false;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    return r.hasUnderlyingType();
+                }
             }
         }
-        return false;
+        else {
+            List<Type> tal = getTypeArgumentList();
+            for (int i=0, size=tal.size(); 
+                    i<size; i++) {
+                Type ta = tal.get(i);
+                if (ta!=null && ta.hasUnderlyingType()) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     
     private static final class SupertypeCriteria 
@@ -2528,6 +2562,47 @@ public class Type extends Reference {
                         errors);
             }
         }
+        else if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type e = ta.get(elem);
+                Type f = ta.get(first);
+                Type r = ta.get(rest);
+                if (e!=null) {
+                    e.checkDecidability(
+                            covariant, contravariant, 
+                            errors);
+                }
+                if (f!=null) {
+                    f.checkDecidability(
+                            covariant, contravariant, 
+                            errors);
+                }
+                if (r==null) {
+                    return;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    r.checkDecidability(
+                            covariant, contravariant, 
+                            errors);
+                    return;
+                }
+            }
+        }
         else {
             TypeDeclaration declaration = getDeclaration();
             for (TypeParameter tp: 
@@ -2715,24 +2790,58 @@ public class Type extends Reference {
      * garbage nulls?
      */
     public boolean isWellDefined() {
-        List<TypeParameter> tps = 
-                getDeclaration()
-                    .getTypeParameters();
-        Type qt = getQualifyingType();
-        if (qt!=null && 
-                !qt.isWellDefined()) {
-            return false;
-        }
-        List<Type> tas = getTypeArgumentList();
-        for (int i=0; i<tps.size(); i++) {
-            Type at = tas.get(i);
-            TypeParameter tp = tps.get(i);
-            if ((!tp.isDefaulted() && at==null) || 
-                    (at!=null && !at.isWellDefined())) {
-                return false;
+        if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type e = ta.get(elem);
+                Type f = ta.get(first);
+                Type r = ta.get(rest);
+                if (e!=null && !e.isWellDefined() ||
+                    f!=null && !f.isWellDefined()) {
+                    return false;
+                }
+                if (r==null) {
+                    return true;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    return r.isWellDefined();
+                }
             }
         }
-        return true;
+        else {
+            List<TypeParameter> tps = 
+                    getDeclaration()
+                        .getTypeParameters();
+            Type qt = getQualifyingType();
+            if (qt!=null && 
+                    !qt.isWellDefined()) {
+                return false;
+            }
+            List<Type> tas = getTypeArgumentList();
+            for (int i=0; i<tps.size(); i++) {
+                Type at = tas.get(i);
+                TypeParameter tp = tps.get(i);
+                if ((!tp.isDefaulted() && at==null) || 
+                        (at!=null && !at.isWellDefined())) {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     /**
@@ -2836,6 +2945,7 @@ public class Type extends Reference {
                     return error;
                 }
             }
+            return null;
         }
         else if (isIntersection()) {
             for (Type st: getSatisfiedTypes()) {
@@ -2846,9 +2956,55 @@ public class Type extends Reference {
                     return error;
                 }
             }
+            return null;
         }
         else if (isNothing()) {
             return null;
+        }
+        else if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type e = ta.get(elem);
+                Type f = ta.get(first);
+                Type r = ta.get(rest);
+                if (e!=null) {
+                    String error = 
+                            e.getFirstUnknownTypeError(
+                                    includeSuperTypes);
+                    if (error!=null) {
+                        return error;
+                    }
+                }
+                if (f!=null) {
+                    String error = 
+                            f.getFirstUnknownTypeError(
+                                    includeSuperTypes);
+                    if (error!=null) {
+                        return error;
+                    }
+                }
+                if (r==null) {
+                    return null;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    return r.getFirstUnknownTypeError(
+                            includeSuperTypes);
+                }
+            }
         }
         else {
             if (includeSuperTypes) {
@@ -2892,8 +3048,8 @@ public class Type extends Reference {
                     }
                 }
             }
+            return null;
         }
-        return null;
     }
 
     public boolean involvesDeclaration(Declaration d) {
@@ -2909,6 +3065,7 @@ public class Type extends Reference {
         return involvesDeclaration(td, 
                 new ArrayList<Type>());
     }
+    
     private boolean involvesDeclaration(TypeDeclaration td,
             List<Type> visited) {
         if (isUnknown()) {
@@ -2940,16 +3097,52 @@ public class Type extends Reference {
             if (getDeclaration().equals(td)) {
                 return true;
             }
-            Type qt = getQualifyingType();
-            if (qt!=null && 
-                    qt.involvesDeclaration(td, visited)) {
-                return true;
+            else if (isTuple()) {
+                TypeDeclaration tpd = 
+                        getDeclaration()
+                            .getUnit()
+                            .getTupleDeclaration();
+                List<TypeParameter> typeParameters = 
+                        tpd.getTypeParameters();
+                TypeParameter elem = typeParameters.get(0);
+                TypeParameter first = typeParameters.get(1);
+                TypeParameter rest = typeParameters.get(2);
+                Type t = this;
+                while (true) {
+                    Map<TypeParameter, Type> ta = 
+                            t.getTypeArguments();
+                    Type e = ta.get(elem);
+                    Type f = ta.get(first);
+                    Type r = ta.get(rest);
+                    if (e==null || //take note!
+                            e.involvesDeclaration(td, visited) ||
+                        f==null || //take note!
+                            f.involvesDeclaration(td, visited)) {
+                        return true;
+                    }
+                    if (r==null) {
+                        return true;
+                    }
+                    else if (r.isTuple()) {
+                        t = r;
+                    }
+                    else {
+                        return r.involvesDeclaration(td, visited);
+                    }
+                }
             }
-            List<Type> tas = getTypeArgumentList();
-            for (Type at: tas) {
-                if (at==null || //take note!
-                        at.involvesDeclaration(td, visited)) {
+            else {
+                Type qt = getQualifyingType();
+                if (qt!=null && 
+                        qt.involvesDeclaration(td, visited)) {
                     return true;
+                }
+                List<Type> tas = getTypeArgumentList();
+                for (Type at: tas) {
+                    if (at==null || //take note!
+                            at.involvesDeclaration(td, visited)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -2984,6 +3177,7 @@ public class Type extends Reference {
         else if (isNothing()) {
             return false;
         }
+        //TODO: optimize for Tuple
         else {
             TypeDeclaration dec = getDeclaration();
             if (!covariant && !contravariant && 
@@ -3056,6 +3250,7 @@ public class Type extends Reference {
         else if (isNothing()) {
             return false;
         }
+        //TODO: optimize for Tuple
         else {
             TypeDeclaration dec = getDeclaration();
             if (covariant && dec.equals(tp)) {
@@ -3112,6 +3307,7 @@ public class Type extends Reference {
         else if (isNothing()) {
             return false;
         }
+        //TODO: optimize for Tuple
         else {
             TypeDeclaration dec = getDeclaration();
             if (!covariant && dec.equals(tp)) {
@@ -5061,6 +5257,37 @@ public class Type extends Reference {
                 t.collectDeclarations(results);
             }
         }
+        else if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type e = ta.get(elem);
+                Type f = ta.get(first);
+                Type r = ta.get(rest);
+                if (e!=null) e.collectDeclarations(results);
+                if (f!=null) f.collectDeclarations(results);
+                if (r==null) {
+                    return;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    r.collectDeclarations(results);
+                    return;
+                }
+            }
+        }
         else {
             results.add(d);
             for (Type t: getTypeArgumentList()) {
@@ -5072,11 +5299,59 @@ public class Type extends Reference {
     }
     
     public boolean isReified() {
-        TypeDeclaration td = getDeclaration();
-        if (td instanceof TypeParameter) {
-            TypeParameter tp = (TypeParameter) td;
+        TypeDeclaration dec = getDeclaration();
+        if (isTypeParameter()) {
+            TypeParameter tp = 
+                    (TypeParameter) 
+                        dec;
             if (!tp.isReified()) {
                 return false;
+            }
+        }
+        else if (isUnion()) {
+            for (Type t: dec.getCaseTypes()) { 
+                if (!t.isReified()) {
+                    return false;
+                }
+            }
+        }
+        else if (isIntersection()) {
+            for (Type t: dec.getSatisfiedTypes()) { 
+                if (!t.isReified()) {
+                    return false;
+                }
+            }
+        }
+        else if (isTuple()) {
+            TypeDeclaration td = 
+                    getDeclaration()
+                        .getUnit()
+                        .getTupleDeclaration();
+            List<TypeParameter> typeParameters = 
+                    td.getTypeParameters();
+            TypeParameter elem = typeParameters.get(0);
+            TypeParameter first = typeParameters.get(1);
+            TypeParameter rest = typeParameters.get(2);
+            Type t = this;
+            while (true) {
+                Map<TypeParameter, Type> ta = 
+                        t.getTypeArguments();
+                Type e = ta.get(elem);
+                Type f = ta.get(first);
+                Type r = ta.get(rest);
+                if (e!=null && !e.isReified() ||
+                    f!=null && !f.isReified()) {
+                    return false;
+                }
+                if (r==null) {
+                    return true;
+                }
+                else if (r.isTuple()) {
+                    t = r;
+                }
+                else {
+                    return r.isReified();
+                }
             }
         }
         else {
