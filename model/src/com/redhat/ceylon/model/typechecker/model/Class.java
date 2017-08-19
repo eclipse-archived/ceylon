@@ -1,14 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.ABSTRACT;
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.ABSTRACTION;
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.ANONYMOUS;
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.CONSTRUCTORS;
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.ENUMERATED;
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.FINAL;
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.NO_NAME;
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.OVERLOADED;
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.SERIALIZABLE;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.*;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
