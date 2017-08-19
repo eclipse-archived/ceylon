@@ -1,7 +1,9 @@
 package com.redhat.ceylon.model.typechecker.model;
 
 import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.JAVA_ENUM;
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ConstructorFlags.*;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ConstructorFlags.ABSTRACT;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ConstructorFlags.ABSTRACTION;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ConstructorFlags.OVERLOADED;
 import static com.redhat.ceylon.model.typechecker.model.DeclarationKind.CONSTRUCTOR;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -302,8 +304,17 @@ public class Constructor extends TypeDeclaration implements Functional {
                     params.append(", ");
                 }
                 if (p.getType()!=null) {
-                    params.append(p.getType().asString());
-                    params.append(" ");
+                    Type type;
+                    FunctionOrValue model = p.getModel();
+                    if (model.isFunctional()) {
+                        type = model.getTypedReference()
+                                .getFullType();
+                    }
+                    else {
+                        type = model.getType();
+                    }
+                    params.append(type.asString())
+                          .append(" ");
                 }
                 params.append(p.getName());
             }
