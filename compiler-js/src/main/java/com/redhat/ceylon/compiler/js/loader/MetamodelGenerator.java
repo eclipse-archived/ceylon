@@ -95,6 +95,13 @@ public class MetamodelGenerator {
         this.module = module;
         model.put("$mod-name", module.getNameAsString());
         model.put("$mod-version", module.getVersion());
+        for (Annotation a : module.getAnnotations()) {
+            List<String> args = a.getPositionalArguments();
+            if (args != null && !args.isEmpty() 
+                    && a.getName().equals("label")) {
+            	model.put("$mod-label", args.get(0));
+            }
+        }
         model.put("$mod-bin", Versions.JS_BINARY_MAJOR_VERSION+"."+Versions.JS_BINARY_MINOR_VERSION);
         if (module.isNative()) {
             List<String> backends = new ArrayList<>(1);

@@ -129,7 +129,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         final Set<ModuleDependencyInfo> infos = getDependencies(moduleInfo, dependencies, moduleName, version, 
                 groupId, artifactId, overrides);
 
-        ModuleInfo ret = new ModuleInfo(moduleName, version, groupId, artifactId, null, null, infos);
+        ModuleInfo ret = new ModuleInfo(null, moduleName, version, groupId, artifactId, null, null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(moduleName, version, ret);
         return ret;
@@ -221,6 +221,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         
         String doc = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "doc");
         String license = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "license");
+        String label = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "label");
         Object[] by = (Object[])ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "by");
         Object[] dependencies = (Object[])ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "dependencies");
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
@@ -238,10 +239,11 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
                 artifactId = moduleName;
         }
 
-        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, 
+        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, 
                 getVersionFromFilename(moduleName, moduleArchive.getName()),
                 groupId, artifactId);
         mvd.setDoc(doc);
+        mvd.setLabel(label);
         mvd.setLicense(license);
         if (by != null) {
         	for(Object author : by){
@@ -384,7 +386,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         }
         
         if (overrides != null) {
-            result = overrides.applyOverrides(module, version, new ModuleInfo(module, version, groupId, artifactId, 
+            result = overrides.applyOverrides(module, version, new ModuleInfo(null, module, version, groupId, artifactId, 
                     null, null, result)).getDependencies();
         }
         
@@ -416,6 +418,9 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
             return false;
         String doc = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "doc");
         if (doc != null && matches(doc, query))
+            return true;
+        String label = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "label");
+        if (label != null && matches(label, query))
             return true;
         String license = (String)ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "license");
         if (license != null && matches(license, query))

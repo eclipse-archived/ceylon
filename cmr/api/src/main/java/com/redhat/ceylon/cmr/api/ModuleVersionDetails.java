@@ -1,6 +1,5 @@
 package com.redhat.ceylon.cmr.api;
 
-import java.util.Arrays;
 import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Set;
@@ -12,6 +11,7 @@ import com.redhat.ceylon.common.MiscUtil;
 public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     private String namespace;
     private String module;
+    private String label;
     private String version;
     private String doc;
     private String license;
@@ -38,20 +38,21 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     }
 
     // THis constructor is only used by the unit tests
-    public ModuleVersionDetails(String namespace, String module, String version,
-            String doc, String license, String... by) {
-        this(namespace, module, version, null, null);
-        this.doc = doc;
-        this.license = license;
-        this.authors.addAll(Arrays.asList(by));
-    }
+//    public ModuleVersionDetails(String namespace, String module, String version,
+//            String doc, String license, String... by) {
+//        this(namespace, module, version, null, null);
+//        this.doc = doc;
+//        this.license = license;
+//        this.authors.addAll(Arrays.asList(by));
+//    }
 
     public ModuleVersionDetails(String namespace, String module, String version, 
-            String groupId, String artifactId,
-            String doc, String license, Set<String> authors, 
+            String groupId, String artifactId, 
+            String label, String doc, String license, Set<String> authors, 
             Set<ModuleDependencyInfo> dependencies, Set<ModuleVersionArtifact> artifactTypes,
             boolean remote, String origin) {
         this(namespace, module, version, groupId, artifactId);
+        this.label = label;
         this.doc = doc;
         this.license = license;
         this.authors.addAll(authors);
@@ -68,7 +69,7 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     public String getModule() {
         return module;
     }
-
+    
     public String getVersion() {
         return version;
     }
@@ -92,6 +93,14 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
 
     public void setLicense(String license) {
         this.license = license;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public boolean isRemote() {
@@ -172,8 +181,8 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
         }
         ModuleVersionDetails other = (ModuleVersionDetails)obj;
         return Objects.equals(namespace, other.namespace)
-                && Objects.equals(module, other.module)
-                && Objects.equals(version, other.version);
+            && Objects.equals(module, other.module)
+            && Objects.equals(version, other.version);
     }
 
     @Override
@@ -192,6 +201,7 @@ public class ModuleVersionDetails implements Comparable<ModuleVersionDetails> {
     public String toString() {
         return "ModuleVersionDetails[ "
                 + module + "/" + version
+                + ", label: " + label
                 + ", doc: " + ((doc != null) ? ((doc.length() > 10) ? doc.substring(0, 10) + "..." : doc) : null)
                 + ", license: " + license
                 + ", by: " + authors

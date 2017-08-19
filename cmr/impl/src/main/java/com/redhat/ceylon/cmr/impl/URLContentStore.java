@@ -568,7 +568,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         p.moveToOpenTag("results");
         
         while(p.moveToOptionalOpenTag("module-version")){
-            String module = null, version = null, doc = null, license = null, groupId = null, artifactId = null;
+            String module = null, version = null, doc = null, license = null, label = null, groupId = null, artifactId = null;
             authors.clear();
             dependencies.clear();
             types.clear();
@@ -587,6 +587,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     artifactId = p.contents();
                 }else if(p.isOpenTag("license")){
                     license = p.contents();
+                }else if(p.isOpenTag("label")){
+                    label = p.contents();
                 }else if(p.isOpenTag("authors")){
                     authors.add(p.contents());
                 }else if(p.isOpenTag("dependency")){
@@ -609,11 +611,15 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     newVersion.setDoc(doc);
                 if(license != null && !license.isEmpty())
                     newVersion.setLicense(license);
+                if(label != null && !label.isEmpty())
+                    newVersion.setLabel(label);
                 if(!authors.isEmpty())
                     newVersion.getAuthors().addAll(authors);
-                if(overrides != null)
-                    dependencies = overrides.applyOverrides(module, version, new ModuleInfo(module, version, 
-                            groupId, artifactId, null, null, dependencies)).getDependencies();
+                if(overrides != null) {
+					final ModuleInfo info = new ModuleInfo(null, module, version, 
+                            groupId, artifactId, null, null, dependencies);
+					dependencies = overrides.applyOverrides(module, version, info).getDependencies();
+				}
                 if(!dependencies.isEmpty())
                     newVersion.getDependencies().addAll(dependencies);
                 if(!types.isEmpty())
@@ -747,7 +753,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
         }
         int resultCount = 0;
         while(p.moveToOptionalOpenTag("module")){
-            String module = null, doc = null, license = null, groupId = null, artifactId = null;
+            String module = null, doc = null, license = null, label = null, groupId = null, artifactId = null;
             authors.clear();
             versions.clear();
             dependencies.clear();
@@ -770,6 +776,8 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     doc = p.contents();
                 }else if(p.isOpenTag("license")){
                     license = p.contents();
+                }else if(p.isOpenTag("label")){
+                    label = p.contents();
                 }else if(p.isOpenTag("authors")){
                     authors.add(p.contents());
                 }else if(p.isOpenTag("dependency")){
@@ -791,6 +799,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
                     ModuleVersionDetails mvd = new ModuleVersionDetails(null, module, v, groupId, artifactId);
                     mvd.setDoc(doc);
                     mvd.setLicense(license);
+                    mvd.setLabel(label);
                     mvd.getAuthors().addAll(authors);
                     mvd.getDependencies().addAll(dependencies);
                     mvd.getArtifactTypes().addAll(types);

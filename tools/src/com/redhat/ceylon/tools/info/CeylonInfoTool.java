@@ -527,6 +527,9 @@ public class CeylonInfoTool extends RepoUsingTool {
         newline();
         msg("module.name").append(module.getName()).newline();
         msg("module.version").append(version.getVersion()).newline();
+        if (version.getLabel() != null) {
+        	msg("module.label").append(version.getLabel()).newline();
+        }
         outputArtifacts(version.getArtifactTypes());
         msg("module.available").msg((version.isRemote() ? "available.remote" : "available.local")).newline();
         if (version.getOrigin() != null) {

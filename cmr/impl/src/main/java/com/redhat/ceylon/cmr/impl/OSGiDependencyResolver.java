@@ -110,7 +110,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
         for (String bundle : bundles) {
             infos.add(parseModuleInfo(bundle));
         }
-        ModuleInfo ret = new ModuleInfo(name, version,
+        ModuleInfo ret = new ModuleInfo(null, name, version,
                 // FIXME: does OSGi store this?
                 ModuleUtil.getMavenGroupIdIfMavenModule(name),
                 ModuleUtil.getMavenArtifactIdIfMavenModule(name),

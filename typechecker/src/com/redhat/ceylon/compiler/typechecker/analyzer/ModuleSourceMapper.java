@@ -422,8 +422,10 @@ public class ModuleSourceMapper {
                             m.getVersion(), i.isOptional(), i.isExport(), i.getNativeBackends()));
                 }
             }
-            ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), 
-                    artifact.groupId(), artifact.artifactId(), artifact.classifier(), null, existingModuleDependencies);
+            ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.namespace(), 
+            		artifact.name(), artifact.version(), 
+                    artifact.groupId(), artifact.artifactId(), artifact.classifier(), 
+                    null, existingModuleDependencies);
             ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);
             List<ModuleImport> newModuleImports = new ArrayList<>();
             for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {

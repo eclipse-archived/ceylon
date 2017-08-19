@@ -741,6 +741,11 @@ public class Main {
                 name = (String)moduleName;
                 version = (String)moduleVersion;
 
+//                Object moduleLabel = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "label");
+//                if(moduleLabel instanceof String == false)
+//                    throw new IOException("Invalid module annotation");
+//                String label = (String)moduleLabel;
+                
                 String groupId, artifactId;
                 groupId = (String) ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "group");
                 if(groupId != null){
@@ -917,6 +922,7 @@ public class Main {
         }
         
         private Module loadOsgiJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
+        	String label = null;
             // first verify that it is indeed for the module we're looking for
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
@@ -935,6 +941,7 @@ public class Main {
                     name = bundleName;
                     version = bundleVersion;
                 }
+                label = attributes.getValue(OsgiUtil.OsgiManifest.Bundle_Name); //TODO: what to do with this!?
             }finally{
                 inputStream.close();
             }

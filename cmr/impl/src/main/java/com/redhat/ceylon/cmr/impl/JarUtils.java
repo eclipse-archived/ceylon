@@ -85,7 +85,7 @@ public final class JarUtils extends AbstractDependencyResolverAndModuleInfoReade
     @Override
     public ModuleVersionDetails readModuleInfo(String moduleName, String version, File moduleArchive, boolean includeMembers, Overrides overrides) {
         ModuleInfo info = getDependencies(moduleArchive, moduleName, version, overrides);
-        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, version, info != null ? info.getGroupId() : null, info != null ? info.getArtifactId() : null);
+        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, version, info != null ? info.getGroupId() : null, info != null ? info.getArtifactId() : null);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
         if (info != null) {
             mvd.getDependencies().addAll(info.getDependencies());

@@ -102,8 +102,9 @@ public class ModuleVersionReader {
         String version = mdr.getModuleVersion();
         // PS In case the module descriptor was found but could not be parsed
         // we'll create an invalid details object
-        ModuleVersionDetails mvd = new ModuleVersionDetails(null, module != null ? module : "", version != null ? version : "",
+        ModuleVersionDetails mvd = new ModuleVersionDetails(module != null ? module : "", version != null ? version : "",
                 mdr.getModuleGroupId(), mdr.getModuleArtifactId());
+        mvd.setLabel(mdr.getModuleLabel());
         mvd.setLicense(mdr.getModuleLicense());
         List<String> by = mdr.getModuleAuthors();
         if (by != null) {
