@@ -1017,11 +1017,11 @@ public class Type extends Reference {
         }
     }
     
-    public boolean involvesTypeAliases() {
+    private boolean involvesTypeAliases() {
         if (getDeclaration().isAlias()) {
             return true;
         }
-        else if (isNothing()) {
+        else if (isNothing() || isTypeConstructor()) {
             return false;
         }
         else if (isUnion() || isIntersection()) {
@@ -1061,19 +1061,26 @@ public class Type extends Reference {
             }
         }
         else {
-            for (Type at: getTypeArgumentList()) {
-                if (at!=null && 
-                        at.involvesTypeAliases()) {
-                    return true;
-                }
-            }
-            Type qt = getQualifyingType();
-            if (qt!=null && 
-                    qt.involvesTypeAliases()) {
-                return true;
-            }
+            //TODO: why on earth is this incorrect?!
+            //      this doesn't work, due to some 
+            //      funny business in the Java backend
+            //      that shows up in Java interop
+//            for (Type at: getTypeArgumentList()) {
+//                if (at!=null && 
+//                        at.involvesTypeAliases()) {
+//                    return true;
+//                }
+//            }
+//            Type qt = getQualifyingType();
+//            if (qt!=null && 
+//                    qt.involvesTypeAliases()) {
+//                return true;
+//            }
+//            //we need to erase out these settings
+//            return isRaw() || hasUnderlyingType();
+            return true;
         }
-        return false;
+        
     }
     
     private boolean isSubtypeOfTuple(Type type) {
@@ -4264,16 +4271,17 @@ public class Type extends Reference {
     private Type resolveAliasesInternal() {
         TypeDeclaration dec = getDeclaration();
         Unit unit = dec.getUnit();
-        if (dec instanceof ClassOrInterface 
+        if ((dec instanceof ClassOrInterface || 
+             dec instanceof TypeParameter)
                 && getQualifyingType()==null 
                 && !dec.isAlias() 
                 && !dec.isParameterized()) {
             return this;
         }
-        else if (isTypeConstructor()) {
+        else if (!involvesTypeAliases()) {
             return this;
         }
-        else if (!involvesTypeAliases()) {
+        else if (isTypeConstructor()|| isNothing()) {
             return this;
         }
         else if (dec instanceof UnionType) {
