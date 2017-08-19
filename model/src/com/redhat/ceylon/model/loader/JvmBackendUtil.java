@@ -710,7 +710,7 @@ public class JvmBackendUtil {
             public String name() {
                 return name;
             }
-
+            
             @Override
             public String artifactId() {
                 return ModuleUtil.getMavenArtifactIdIfMavenModule(name);

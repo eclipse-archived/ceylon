@@ -8,6 +8,7 @@ import java.util.jar.Manifest;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -50,6 +51,7 @@ public class OsgiUtil {
      */
     public static class OsgiManifest extends CeylonManifest {
         
+        public static final Attributes.Name Bundle_Name = new Attributes.Name("Bundle-Name");
         public static final Attributes.Name Bundle_SymbolicName = new Attributes.Name("Bundle-SymbolicName"); 
         public static final Attributes.Name Bundle_Version = new Attributes.Name("Bundle-Version"); 
         public static final Attributes.Name Bundle_ManifestVersion = new Attributes.Name("Bundle-ManifestVersion"); 
@@ -88,7 +90,14 @@ public class OsgiUtil {
             Manifest manifest = super.build();
             Attributes main = manifest.getMainAttributes();
             main.put(Bundle_ManifestVersion, "2");
-
+            
+            for (Annotation a : module.getAnnotations()) {
+                List<String> args = a.getPositionalArguments();
+                if (args != null && !args.isEmpty() 
+                        && a.getName().equals("label")) {
+                    main.put(Bundle_Name, args.get(0));
+                }
+            }
             main.put(Bundle_SymbolicName, module.getNameAsString());
             main.put(Bundle_Version, OsgiVersion.withTimestamp(OsgiVersion.fromCeylonVersion(module.getVersion())));
 
@@ -122,7 +131,8 @@ public class OsgiUtil {
         }
 
         private boolean isJavaCapabilityRequired(Attributes main) {
-            return main.containsKey(Bundle_RequiredExecutionEnvironment) || main.containsKey(Require_Capability);
+            return main.containsKey(Bundle_RequiredExecutionEnvironment) 
+                || main.containsKey(Require_Capability);
         }
 
         private void applyRequireJavaCapability(Attributes main) {

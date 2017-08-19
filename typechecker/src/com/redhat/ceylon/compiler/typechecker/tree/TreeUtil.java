@@ -115,7 +115,7 @@ public class TreeUtil {
         if (pal!=null) {
             List<Tree.PositionalArgument> args = 
                     pal.getPositionalArguments();
-            if (!args.isEmpty()) {
+            if (args.size()>index) {
                 Tree.PositionalArgument arg = args.get(index);
                 if (arg instanceof Tree.ListedArgument) {
                     Tree.ListedArgument la = 
@@ -130,7 +130,7 @@ public class TreeUtil {
         if (nal!=null) {
             List<Tree.NamedArgument> args = 
                     nal.getNamedArguments();
-            if (!args.isEmpty()) {
+            if (args.size()>index) {
                 Tree.SpecifiedArgument arg = 
                         (Tree.SpecifiedArgument)
                             args.get(index);

@@ -98,6 +98,13 @@ public enum LanguageAnnotation {
             return Collections.singletonList(anno);
         }
     },
+    LABEL("label", 0, AbstractModelLoader.CEYLON_LANGUAGE_LABEL_ANNOTATION) {
+        public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
+            Annotation anno = new Annotation(name);
+            anno.addPositionalArgument((String)mirror.getValue("name"));
+            return Collections.singletonList(anno);
+        }
+    },
     DEPRECATED("deprecated", 0, AbstractModelLoader.CEYLON_LANGUAGE_DEPRECATED_ANNOTATION) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
             Annotation anno = new Annotation(name);

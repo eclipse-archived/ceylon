@@ -580,7 +580,7 @@ public class Main {
                     ModuleSpec mod = moduleFromCeylonRepoFile(file);
                     if(mod != null){
                         return loadFromResolver(file, moduleXmlExternalDescriptor, XmlDependencyResolver.INSTANCE, 
-                                mod.getName(), mod.getVersion(), Type.JBOSS_MODULES);
+                                mod.getName(), mod.getVersion(), Type.JBOSS_MODULES, null);
                     }
                 }
                 File modulePropertiesExternalDescriptor = new File(file.getParentFile(), MODULE_PROPERTIES);
@@ -588,7 +588,7 @@ public class Main {
                     ModuleSpec mod = moduleFromCeylonRepoFile(file);
                     if(mod != null){
                         return loadFromResolver(file, modulePropertiesExternalDescriptor, PropertiesDependencyResolver.INSTANCE, 
-                                mod.getName(), mod.getVersion(), Type.JBOSS_MODULES);
+                                mod.getName(), mod.getVersion(), Type.JBOSS_MODULES, null);
                     }
                 }
 
@@ -733,6 +733,11 @@ public class Main {
                 name = (String)moduleName;
                 version = (String)moduleVersion;
 
+//                Object moduleLabel = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "label");
+//                if(moduleLabel instanceof String == false)
+//                    throw new IOException("Invalid module annotation");
+//                String label = (String)moduleLabel;
+                
                 String groupId, artifactId;
                 groupId = (String) ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "group");
                 if(groupId != null){
@@ -829,15 +834,15 @@ public class Main {
 
         private Module loadJBossModuleJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, 
                 DependencyResolver dependencyResolver, String name, String version) throws IOException {
-            return loadFromResolver(file, zipFile, moduleDescriptor, dependencyResolver, name, version, Type.JBOSS_MODULES);
+            return loadFromResolver(file, zipFile, moduleDescriptor, dependencyResolver, name, version, Type.JBOSS_MODULES, null);
         }
         
         private Module loadFromResolver(File file, ZipFile zipFile, ZipEntry moduleDescriptor, 
                                         DependencyResolver dependencyResolver, String name, String version,
-                                        Type moduleType) throws IOException {
+                                        Type moduleType, String label) throws IOException {
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
-        		return loadFromResolver(file, inputStream, dependencyResolver, name, version, moduleType);
+        		return loadFromResolver(file, inputStream, dependencyResolver, name, version, moduleType, label);
             }finally{
                 inputStream.close();
             }
@@ -845,17 +850,17 @@ public class Main {
 
         private Module loadFromResolver(File file, File moduleDescriptor, 
         		DependencyResolver dependencyResolver, String name, String version,
-        		Type moduleType) throws IOException {
+        		Type moduleType, String label) throws IOException {
         	InputStream inputStream = new FileInputStream(moduleDescriptor);
         	try{
-        		return loadFromResolver(file, inputStream, dependencyResolver, name, version, moduleType);
+        		return loadFromResolver(file, inputStream, dependencyResolver, name, version, moduleType, label);
         	}finally{
         		inputStream.close();
         	}
         }
 
         private Module loadFromResolver(File file, InputStream inputStream, DependencyResolver dependencyResolver,
-				String name, String version, Type moduleType) throws IOException {
+				String name, String version, Type moduleType, String label) throws IOException {
     		ModuleInfo moduleInfo = dependencyResolver.resolveFromInputStream(inputStream, name, version, overrides);
     		if (moduleInfo != null) {
     		    if(name != null && moduleInfo.getName() != null && !name.equals(moduleInfo.getName()))
@@ -886,13 +891,13 @@ public class Main {
         private Module loadMavenJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
             if(MavenResolver == null)
                 return null;
-            return loadFromResolver(file, zipFile, moduleDescriptor, MavenResolver, name, version, Type.MAVEN);
+            return loadFromResolver(file, zipFile, moduleDescriptor, MavenResolver, name, version, Type.MAVEN, null);
         }
 
         private Module loadMavenJar(File file, File moduleDescriptor, String name, String version) throws IOException {
             if(MavenResolver == null)
                 return null;
-            return loadFromResolver(file, moduleDescriptor, MavenResolver, name, version, Type.MAVEN);
+            return loadFromResolver(file, moduleDescriptor, MavenResolver, name, version, Type.MAVEN, null);
         }
 
         private Module loadDefaultJar(File file) throws IOException {
@@ -908,6 +913,7 @@ public class Main {
         }
         
         private Module loadOsgiJar(File file, ZipFile zipFile, ZipEntry moduleDescriptor, String name, String version) throws IOException {
+        	String label = null;
             // first verify that it is indeed for the module we're looking for
             InputStream inputStream = zipFile.getInputStream(moduleDescriptor);
             try{
@@ -925,10 +931,11 @@ public class Main {
                     name = bundleName;
                     version = bundleVersion;
                 }
+                label = attributes.getValue(OsgiUtil.OsgiManifest.Bundle_Name);
             }finally{
                 inputStream.close();
             }
-            return loadFromResolver(file, zipFile, moduleDescriptor, OSGiDependencyResolver.INSTANCE, name, version, Type.OSGi);
+            return loadFromResolver(file, zipFile, moduleDescriptor, OSGiDependencyResolver.INSTANCE, name, version, Type.OSGi, label);
         }
     }
     

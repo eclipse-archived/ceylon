@@ -121,7 +121,7 @@ public class MavenUtils {
                 }
             }
         }
-        return new ModuleInfo(modName, modVersion, modGroupId, modArtifactId, null, null, ret);
+        return new ModuleInfo(MavenRepository.NAMESPACE, modName, modVersion, modGroupId, modArtifactId, null, null, ret);
     }
 
     static String getText(Element element, String childName){

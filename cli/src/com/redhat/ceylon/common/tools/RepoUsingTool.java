@@ -371,7 +371,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             if (result != null) {
                 if (forceCompilation || checkCompilation) {
                     String v = result.version() != null ? result.version() : "unversioned";
-                    versions = Collections.singletonList(new ModuleVersionDetails(null, name, v, result.groupId(), result.groupId()));
+                    versions = Collections.singletonList(new ModuleVersionDetails(name, v, result.groupId(), result.groupId()));
                 } else {
                     return (result.version() != null) ? result.version() : "";
                 }

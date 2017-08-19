@@ -120,6 +120,7 @@ public class HerdTestCase extends AbstractTest {
     public final static ModuleDetails ceylonCollectionDetails =
             new ModuleDetails("ceylon",
                     "ceylon.collection", 
+                    "Ceylon Collections",
                     "Collection documentation", 
                     "Apache Software License 2.0", 
                     set(STEF, TOM, "Enrique Zamudio"), 
@@ -131,6 +132,7 @@ public class HerdTestCase extends AbstractTest {
     public final static ModuleDetails frEpardaudTestDetails =
             new ModuleDetails("ceylon",
                     "fr.epardaud.test", 
+                    null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -142,6 +144,7 @@ public class HerdTestCase extends AbstractTest {
     public final static ModuleDetails frEpardaudJavaDetails =
             new ModuleDetails("ceylon",
                     "fr.epardaud.java", 
+                    null, 
                     "", 
                     "", 
                     set(), 
@@ -153,6 +156,7 @@ public class HerdTestCase extends AbstractTest {
     public final static ModuleDetails frEpardaudTest2Details =
             new ModuleDetails("ceylon",
                     "fr.epardaud.test2", 
+                    null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -164,6 +168,7 @@ public class HerdTestCase extends AbstractTest {
     public final static ModuleDetails frEpardaudTest2DetailsAll =
             new ModuleDetails("ceylon",
                     "fr.epardaud.test2", 
+                    null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -175,6 +180,7 @@ public class HerdTestCase extends AbstractTest {
     public final static ModuleDetails frEpardaudTest2DetailsJs =
             new ModuleDetails("ceylon",
                     "fr.epardaud.test2", 
+                    null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -186,6 +192,7 @@ public class HerdTestCase extends AbstractTest {
     public final static ModuleDetails frEpardaudTest2DetailsJvm =
             new ModuleDetails("ceylon",
                     "fr.epardaud.test2", 
+                    null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -196,7 +203,8 @@ public class HerdTestCase extends AbstractTest {
                     "The Herd");
     public final static ModuleDetails frEpardaudTest2DetailsJvmApi1 =
             new ModuleDetails("ceylon",
-                    "fr.epardaud.test2", 
+                    "fr.epardaud.test2",
+                    null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -344,7 +352,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     public static final ModuleVersionDetails frEpardaudTest2_03 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "0.3", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "0.3", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -354,7 +362,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest2_04 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "0.4", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "0.4", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -364,7 +372,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest2_10 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "1.0", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "1.0", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -375,7 +383,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest2_12 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "1.2", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "1.2", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -386,7 +394,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest2_12Api1 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "1.2", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "1.2", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -395,7 +403,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest_12 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.2", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.2", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -406,7 +414,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest_13 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.3", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.3", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -416,7 +424,7 @@ public class HerdTestCase extends AbstractTest {
                             ART_SRC),
                     true, HERD_ORIGIN);
     public static final ModuleVersionDetails frEpardaudTest_14 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.4", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.4", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -426,7 +434,7 @@ public class HerdTestCase extends AbstractTest {
                             ART_SRC),
                     true, HERD_ORIGIN);
     public static final ModuleVersionDetails frEpardaudTest_15 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.5", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.5", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -436,7 +444,7 @@ public class HerdTestCase extends AbstractTest {
                             ART_SRC),
                     true, HERD_ORIGIN);
     public static final ModuleVersionDetails frEpardaudTest_16 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.6", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.6", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -446,7 +454,7 @@ public class HerdTestCase extends AbstractTest {
                             ART_SRC),
                     true, HERD_ORIGIN);
     public static final ModuleVersionDetails frEpardaudTest_17 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.7", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.7", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -457,7 +465,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest_23 =                 
-            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "2.3", null, null, 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "2.3", null, null, null, 
                     SUPER_DOC, 
                     ASL, 
                     set(STEF, TOM), 
@@ -727,16 +735,16 @@ public class HerdTestCase extends AbstractTest {
     public void testHerdAndRepoSearch() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 ceylonCollectionDetails,
-                new ModuleDetails("ceylon", "com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".CAR", 3, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "com.acme.helloworld", "Hello World", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".CAR", 3, 0)), true, "The Herd"),
                 frEpardaudJavaDetails,
                 frEpardaudTestDetails,
                 frEpardaudTest2DetailsJvm,
-                new ModuleDetails("ceylon", "hello", null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
-                new ModuleDetails("ceylon", "hello2", "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
-                new ModuleDetails("ceylon", "moduletest", null, "GPLv2", set("The Ceylon Team"), set("0.1"), deps(hello), types(art(".CAR", 3, 0)), true, "The Herd"),
-                new ModuleDetails("ceylon", "old-jar", null, null, set(), set("1.2.CR1"), deps(moduletest_shopt), types(art(".JAR")), true, "The Herd"),
-                new ModuleDetails("ceylon", "older-jar", null, null, set(), set("12-b3"), deps(moduletest_shopt), types(art(".JAR")), true, "The Herd"),
-                new ModuleDetails("ceylon", "test-jar", null, null, set(), set("0.1"), deps(), types(art(".JAR")), true, "The Herd"),
+                new ModuleDetails("ceylon", "hello", null, null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "hello2", null, "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "moduletest", null, null, "GPLv2", set("The Ceylon Team"), set("0.1"), deps(hello), types(art(".CAR", 3, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "old-jar", null, null, null, set(), set("1.2.CR1"), deps(moduletest_shopt), types(art(".JAR")), true, "The Herd"),
+                new ModuleDetails("ceylon", "older-jar", null, null, null, set(), set("12-b3"), deps(moduletest_shopt), types(art(".JAR")), true, "The Herd"),
+                new ModuleDetails("ceylon", "test-jar", null, null, null, set(), set("0.1"), deps(), types(art(".JAR")), true, "The Herd"),
         };
         testSearchResults("", Type.JVM, expected, getDualRepositoryManager());
     }
@@ -745,7 +753,7 @@ public class HerdTestCase extends AbstractTest {
     public void testHerdAndRepoSearchPaged1() throws Exception {
         ModuleDetails[] expected = new ModuleDetails[]{
                 ceylonCollectionDetails,
-                new ModuleDetails("ceylon", "com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".CAR", 3, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "com.acme.helloworld", "Hello World", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".CAR", 3, 0)), true, "The Herd"),
                 frEpardaudJavaDetails,
         };
         testSearchResults("", Type.JVM, expected, 0L, 3L, getDualRepositoryManager());
@@ -771,9 +779,9 @@ public class HerdTestCase extends AbstractTest {
         // second page
         expected = new ModuleDetails[]{
                 frEpardaudTest2DetailsJvm,
-                new ModuleDetails("ceylon", "hello", null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
-                new ModuleDetails("ceylon", "hello2", "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
-                new ModuleDetails("ceylon", "moduletest", null, "GPLv2", set("The Ceylon Team"), set("0.1"), deps(hello), types(art(".CAR", 3, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "hello", null, null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "hello2", null, "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "moduletest", null, null, "GPLv2", set("The Ceylon Team"), set("0.1"), deps(hello), types(art(".CAR", 3, 0)), true, "The Herd"),
         };
         results = testSearchResults("ceylon", Type.JVM, expected, 0L, 6L, getDualRepositoryManager(), pagingInfo);
 
@@ -790,7 +798,7 @@ public class HerdTestCase extends AbstractTest {
                 ceylonCollectionDetails,
                 frEpardaudTestDetails,
                 frEpardaudTest2DetailsJvm,
-                new ModuleDetails("ceylon", "hello", null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "hello", null, null, ASL, set("The Ceylon Team"), set("1.2.1"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
         };
         ModuleSearchResult results2 = testSearchResults("ceylon", Type.JVM, expected2, 0L, 4L, getDualRepositoryManager());
 
@@ -804,8 +812,8 @@ public class HerdTestCase extends AbstractTest {
 
         // second page
         expected2 = new ModuleDetails[]{
-                new ModuleDetails("ceylon", "hello2", "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
-                new ModuleDetails("ceylon", "moduletest", null, "GPLv2", set("The Ceylon Team"), set("0.1"), deps(hello), types(art(".CAR", 3, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "hello2", null, "A test", ASL, set("The Ceylon Team"), set("1.0.0"), deps(langmod), types(art(".CAR", 8, 0)), true, "The Herd"),
+                new ModuleDetails("ceylon", "moduletest", null, null, "GPLv2", set("The Ceylon Team"), set("0.1"), deps(hello), types(art(".CAR", 3, 0)), true, "The Herd"),
         };
         results2 = testSearchResults("ceylon", Type.JVM, expected2, 0L, 4L, getDualRepositoryManager(), pagingInfo2);
 

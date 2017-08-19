@@ -25,6 +25,7 @@ import java.util.Set;
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public final class ModuleInfo {
+    private String namespace;
     private String filter;
     private String name;
     private String version;
@@ -33,8 +34,10 @@ public final class ModuleInfo {
     private String classifier;
     private Set<ModuleDependencyInfo> dependencies;
 
-    public ModuleInfo(String name, String version, String groupId, String artifactId, String classifier,
+    public ModuleInfo(String namespace, String name, String version, 
+            String groupId, String artifactId, String classifier,
             String filter, Set<ModuleDependencyInfo> dependencies) {
+        this.namespace = namespace;
         this.name = name;
         this.version = version;
         this.groupId = groupId;
@@ -42,6 +45,10 @@ public final class ModuleInfo {
         this.classifier = classifier;
         this.filter = filter;
         this.dependencies = dependencies;
+    }
+    
+    public String getNamespace() {
+        return namespace;
     }
     
     public String getName(){
@@ -79,9 +86,9 @@ public final class ModuleInfo {
 
         ModuleInfo that = (ModuleInfo) o;
         return Objects.equals(filter, that.filter)
-                && Objects.equals(name, that.name)
-                && Objects.equals(version, that.version)
-                && dependencies.equals(that.dependencies);
+            && Objects.equals(name, that.name)
+            && Objects.equals(version, that.version)
+            && dependencies.equals(that.dependencies);
     }
 
     @Override

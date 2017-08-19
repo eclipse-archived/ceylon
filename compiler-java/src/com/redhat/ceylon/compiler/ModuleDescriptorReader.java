@@ -143,11 +143,27 @@ class ModuleDescriptorReader {
     
     /**
      * Gets the module name
-     * @return The module version, or null if no version could be found
+     * @return The module name, or null if no name could be found
      */
     public String getModuleName() {
         return moduleDescriptor.getNameAsString();
     }
+    
+    /**
+     * Gets the module label
+     * @return The module label, or null if no label could be found
+     */
+    public String getModuleLabel() {
+        for (Annotation ann : moduleDescriptor.getAnnotations()) {
+            if (ann.getName().equals("label")) {
+                List<String> args = ann.getPositionalArguments();
+                if (args != null && !args.isEmpty()) {
+                    return removeQuotes(args.get(0));
+                }
+            }
+        }
+        return null;
+    }    
     
     /**
      * Gets the module backends

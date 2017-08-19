@@ -150,7 +150,7 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
                 major = Integer.parseInt(bin);
             }
         }
-        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, version, null, null);
+        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, version, null, null);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, major, minor));
         mvd.getDependencies().addAll(dependencies);
 
@@ -168,6 +168,9 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
             for (Map<String, Object> annot : annotations) {
                 if (annot.containsKey("doc")) {
                     mvd.setDoc(asString(annot.get("doc")));
+                }
+                if (annot.containsKey("label")) {
+                    mvd.setLabel(asString(annot.get("label")));
                 }
                 if (annot.containsKey("license")) {
                     mvd.setLicense(asString(annot.get("license")));
@@ -211,7 +214,7 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
 
     private ModuleInfo getModuleInfo(Object obj, String moduleName, String version, Overrides overrides) {
         if (obj == null) {
-            return new ModuleInfo(moduleName, version, null, null, null, null, Collections.<ModuleDependencyInfo>emptySet());
+            return new ModuleInfo(null, moduleName, version, null, null, null, null, Collections.<ModuleDependencyInfo>emptySet());
         }
         if (!(obj instanceof Iterable)) {
             throw new RuntimeException("Expected something Iterable");
@@ -237,7 +240,7 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
             String modName = ModuleUtil.getModuleNameFromUri(depUri);
             deps.add(new ModuleDependencyInfo(namespace, modName, ModuleUtil.moduleVersion(module), optional, exported, Backends.JS));
         }
-        ModuleInfo result = new ModuleInfo(moduleName, version, null, null, null, null, deps);
+        ModuleInfo result = new ModuleInfo(null, moduleName, version, null, null, null, null, deps);
         if(overrides != null)
             result = overrides.applyOverrides(moduleName, version, result);
         return result;
@@ -249,6 +252,8 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
         if (mvd.getDoc() != null && matches(mvd.getDoc(), query))
             return true;
         if (mvd.getLicense() != null && matches(mvd.getLicense(), query))
+            return true;
+        if (mvd.getLabel() != null && matches(mvd.getLabel(), query))
             return true;
         for (String author : mvd.getAuthors()) {
             if (matches(author, query))

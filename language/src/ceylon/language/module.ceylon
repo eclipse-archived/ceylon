@@ -26,6 +26,7 @@
  other Ceylon module, and may not be explicitly imported.
  
  [spec]: http://ceylon-lang.org/documentation/current/spec"
+label ("Ceylon Language Module")
 by ("Gavin King", "Tom Bentley", "Tako Schotanus",
    "Stephane Epardaud", "Enrique Zamudio")
 license ("http://www.apache.org/licenses/LICENSE-2.0.html")
