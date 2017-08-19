@@ -1930,12 +1930,12 @@ else {
                 <listitem>
                     <para>in the case of a condition which is not negated, a type which is not 
                     a subtype of the specified type, but whose intersection with the specified 
-                    type is not exactly <literal>Nothing</literal>, except</para>
+                    type is not exactly <literal>Nothing</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>in the case of a negated condition, a type whose intersection with the 
                     specified type is not exactly <literal>Nothing</literal>, and which is not a 
-                    supertype of the specified type, or</para>
+                    supertype of the specified type.</para>
                 </listitem>
             </itemizedlist>
             
