@@ -1,6 +1,14 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.*;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.ABSTRACT;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.ABSTRACTION;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.ANONYMOUS;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.CONSTRUCTORS;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.ENUMERATED;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.FINAL;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.NO_NAME;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.OVERLOADED;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.SERIALIZABLE;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
@@ -562,7 +570,8 @@ public class Class extends ClassOrInterface implements Functional {
     public boolean isSequentialType() {
         if (sequentialType==0) {
             sequentialType = 
-                    isSequentialTypeInternal() ? 1 : -1;
+                    isSequentialTypeInternal() ? 
+                            1 : -1;
         }
         return sequentialType>0;
     }
@@ -571,13 +580,20 @@ public class Class extends ClassOrInterface implements Functional {
     public boolean isSequenceType() {
         if (sequenceType==0) {
             sequenceType = 
-                    isSequenceTypeInternal() ? 1 : -1;
+                    isSequenceTypeInternal() ? 
+                            1 : -1;
         }
         return sequenceType>0;
     }
 
+    private boolean inLanguagePackage() {
+        return getUnit()
+                .getPackage()
+                .isLanguagePackage();
+    }
+    
     private boolean isSequentialTypeInternal() {
-        if (!getUnit().getPackage().isLanguagePackage()) {
+        if (!inLanguagePackage()) {
             return false;
         }
         else if (isAnything() || isObject() || 
@@ -603,9 +619,9 @@ public class Class extends ClassOrInterface implements Functional {
             return false;
         }
     }
-    
+
     private boolean isSequenceTypeInternal() {
-        if (!getUnit().getPackage().isLanguagePackage()) {
+        if (!inLanguagePackage()) {
             return false;
         }
         else if (isAnything() || isObject() || 
@@ -647,14 +663,18 @@ public class Class extends ClassOrInterface implements Functional {
                     params.append(", ");
                 }
                 FunctionOrValue model = p.getModel();
-                if (model!=null && model.getType()!=null) {
+                if (model!=null 
+                        && model.getType()!=null) {
+                    Type type;
                     if (model.isFunctional()) {
-                        params.append(model.getTypedReference().getFullType().asString());
+                        type = model.getTypedReference()
+                                .getFullType();
                     }
                     else {
-                        params.append(model.getType().asString());
+                        type = model.getType();
                     }
-                    params.append(" ");
+                    params.append(type.asString())
+                          .append(" ");
                 }
                 params.append(p.getName());
             }

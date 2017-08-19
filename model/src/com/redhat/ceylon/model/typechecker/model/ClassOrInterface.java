@@ -205,14 +205,14 @@ public abstract class ClassOrInterface extends TypeDeclaration {
             return false;
         }
         if (isToplevel()) {
-            return b.isToplevel() &&
-                    getQualifiedNameString()
+            return b.isToplevel() 
+                && getQualifiedNameString()
                         .equals(b.getQualifiedNameString());
         }
         else {
-            return !b.isToplevel() &&
-                    getContainer().equals(b.getContainer()) && 
-                    Objects.equals(getName(), b.getName());
+            return !b.isToplevel() 
+                && getContainer().equals(b.getContainer()) 
+                && Objects.equals(getName(), b.getName());
         }
     }
     
@@ -225,7 +225,8 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         for (Declaration m : getMembers()) {
             m.setDynamic(true);
             if (m instanceof ClassOrInterface) {
-                ((ClassOrInterface)m).makeMembersDynamic();
+                ClassOrInterface ci = (ClassOrInterface) m;
+                ci.makeMembersDynamic();
             }
         }
     }

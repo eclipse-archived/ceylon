@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.context.TypeCache.NULL_VALUE;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
@@ -837,8 +838,8 @@ public class Type extends Reference {
         
         //otherwise we need to resolve aliases
         //and canonicalize the types
-        return type!=null && 
-                resolveAliases()
+        return type!=null 
+            && resolveAliases()
                     .isSubtypeOfInternal(
                             type.resolveAliases());
     }
@@ -1216,8 +1217,8 @@ public class Type extends Reference {
                         otherDec.appliedType(
                                 otherQualifyingType,
                                 paramsAsArgs);
-                return appliedType.isExactly(otherAppliedType) &&
-                        hasExactSameUpperBounds(type,
+                return appliedType.isExactly(otherAppliedType) 
+                    && hasExactSameUpperBounds(type,
                                 paramsAsArgs);
             }
             else {
@@ -1261,8 +1262,8 @@ public class Type extends Reference {
                         otherDec.appliedType(
                                 otherQualifyingType, 
                                 paramsAsArgs);
-                return appliedType.isSubtypeOf(otherAppliedType) &&
-                        acceptsUpperBounds(type, 
+                return appliedType.isSubtypeOf(otherAppliedType) 
+                    && acceptsUpperBounds(type, 
                                 paramsAsArgs);
             }
             else {
@@ -1762,18 +1763,18 @@ public class Type extends Reference {
         if (isWellDefined() && 
                 addToSupertypes(this, list)) {
             Type extendedType = getExtendedType();
-            if (extendedType!=null && 
-                    !extendedType.isNothing() &&
-                    !extendedType.isUnion()) {
+            if (extendedType!=null 
+                    && !extendedType.isNothing() 
+                    && !extendedType.isUnion()) {
                 extendedType.getSupertypes(list);
             }
             List<Type> satisfiedTypes = getSatisfiedTypes();
             for (int i=0, l=satisfiedTypes.size(); 
                     i<l; i++) {
                 Type satisfiedType = satisfiedTypes.get(i);
-                if (satisfiedType!=null &&
-                        !satisfiedType.isNothing() &&
-                        !satisfiedType.isUnion()) {
+                if (satisfiedType!=null 
+                        && !satisfiedType.isNothing() 
+                        && !satisfiedType.isUnion()) {
                     satisfiedType.getSupertypes(list);
                 }
             }
@@ -1786,8 +1787,8 @@ public class Type extends Reference {
         for (Type et: list) {
             TypeDeclaration std = st.getDeclaration();
             TypeDeclaration etd = et.getDeclaration();
-            if (std.equals(etd) && //return both a type and its self type
-                    st.isExactlyInternal(et)) {
+            if (std.equals(etd) //return both a type and its self type 
+                    && st.isExactlyInternal(et)) {
                 return false;
             }
         }
@@ -1821,10 +1822,12 @@ public class Type extends Reference {
         }
         boolean canCache = canCacheSupertype(dec);
         if (canCache) {
-            TypeCache cache = dec.getUnit().getCache();
+            TypeCache cache = 
+                    dec.getUnit().getCache();
             Type ret = cache.get(this, dec);
             if (ret != null) {
-                return ret == TypeCache.NULL_VALUE ? null : ret;
+                return ret == NULL_VALUE ? 
+                        null : ret;
             }
         }
         
@@ -1857,8 +1860,12 @@ public class Type extends Reference {
         }
         
         if (canCache) {
-            TypeCache cache = dec.getUnit().getCache();
-            cache.put(this, dec, superType == null ? TypeCache.NULL_VALUE : superType);
+            TypeCache cache = 
+                    dec.getUnit().getCache();
+            cache.put(this, dec, 
+                    superType == null ? 
+                            NULL_VALUE : 
+                            superType);
         }
         return superType;
     }
@@ -1867,10 +1874,10 @@ public class Type extends Reference {
         boolean complexType = 
                 dec instanceof UnionType || 
                 dec instanceof IntersectionType;
-        return !complexType && 
-                !hasUnderlyingType() && 
-                collectVarianceOverrides().isEmpty() &&
-                TypeCache.isEnabled();
+        return !complexType 
+            && !hasUnderlyingType() 
+            && collectVarianceOverrides().isEmpty() 
+            && TypeCache.isEnabled();
     }
 
     private boolean isSimpleSupertypeLookup(TypeDeclaration dec) {
@@ -1941,9 +1948,9 @@ public class Type extends Reference {
         }
         @Override
         public boolean satisfies(TypeDeclaration type) {
-            return !(type instanceof UnionType) && 
-                   !(type instanceof IntersectionType) && 
-                   type.equals(dec);
+            return !(type instanceof UnionType) 
+                && !(type instanceof IntersectionType) 
+                && type.equals(dec);
         }
         @Override
         public boolean isMemberLookup() {

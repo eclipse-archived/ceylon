@@ -212,10 +212,10 @@ public abstract class TypeDeclaration extends Declaration
             List<Declaration> members = 
                     new ArrayList<Declaration>();
             for (Declaration d: getMembers()) {
-                if (d.isShared() &&
-                        d.getName()!=null && 
-                        d.getName().equals(name) &&
-                        isResolvable(d)) {
+                if (d.isShared() 
+                        && d.getName()!=null 
+                        && d.getName().equals(name) 
+                        && isResolvable(d)) {
                     members.add(d);
                 }
             }
@@ -540,7 +540,8 @@ public abstract class TypeDeclaration extends Declaration
                     getMemberInternal(name, 
                             signature, variadic, 
                             true);
-            if (sd.getMember()!=null || sd.isAmbiguous()) {
+            if (sd.getMember()!=null 
+                    || sd.isAmbiguous()) {
                 return sd;
             }
         }
@@ -564,7 +565,8 @@ public abstract class TypeDeclaration extends Declaration
                     getSupertypeDeclaration(name, 
                             signature, variadic, 
                             onlyExactMatches, false);
-            if (sd.getMember()!=null || sd.isAmbiguous()) {
+            if (sd.getMember()!=null 
+                    || sd.isAmbiguous()) {
                 return sd;
             }
         }
@@ -593,8 +595,8 @@ public abstract class TypeDeclaration extends Declaration
                         signature, variadic, 
                         onlyExactMatches);
         if (dec!=null) {
-            if (signature!=null && 
-                    dec.isAbstraction()) {
+            if (signature!=null 
+                    && dec.isAbstraction()) {
                 // look for a supertype declaration that 
                 // matches the given signature better
                 Declaration supertype = 
@@ -602,8 +604,8 @@ public abstract class TypeDeclaration extends Declaration
                                 signature, variadic, 
                                 onlyExactMatches, true)
                                 .getMember();
-                if (supertype!=null && 
-                        !supertype.isAbstraction()) {
+                if (supertype!=null 
+                        && !supertype.isAbstraction()) {
                     return supertype;
                 }
             }
@@ -698,7 +700,8 @@ public abstract class TypeDeclaration extends Declaration
                                     member.getName(), 
                                     signature, 
                                     variadic);
-                    return dm!=null && dm.equals(member);
+                    return dm!=null 
+                        && dm.equals(member);
                 }
             }
             @Override
@@ -706,8 +709,10 @@ public abstract class TypeDeclaration extends Declaration
             	return false;
             }
         };
-        return getType()
-                .getSupertype(new Criteria())!=null;
+        Type supertype = 
+                getType()
+                    .getSupertype(new Criteria());
+        return supertype!=null;
     }
     
     static class SupertypeDeclaration {
@@ -747,12 +752,12 @@ public abstract class TypeDeclaration extends Declaration
                         type.getDirectMember(name, 
                                 signature, variadic, 
                                 onlyExactMatches);
-                if (dm!=null && 
-                        dm.isShared() &&
-                        isResolvable(dm) &&
-                        (includeInheritedConstructors ||
-//                       !dm.isStatic() &&
-                         !isConstructor(dm))) {
+                if (dm!=null 
+                        && dm.isShared() 
+                        && isResolvable(dm) 
+                        && (includeInheritedConstructors ||
+//                          !dm.isStatic() &&
+                            !isConstructor(dm))) {
                     // only accept abstractions if we 
                     // don't have a signature
                     return !dm.isAbstraction() || 
@@ -777,9 +782,9 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration dm = 
                         type.getDirectMember(name, 
                                 null, false);
-                if (dm!=null && 
-                        dm.isShared() && 
-                        isResolvable(dm)) {
+                if (dm!=null 
+                        && dm.isShared() 
+                        && isResolvable(dm)) {
                     // only accept abstractions
                     return dm.isAbstraction();
                 }
@@ -803,14 +808,14 @@ public abstract class TypeDeclaration extends Declaration
                         type.getDirectMember(name, 
                                 signature, variadic, 
                                 onlyExactMatches);
-                if (dm!=null && 
-                        dm.isShared() &&
-                        isResolvable(dm)) {
+                if (dm!=null 
+                        && dm.isShared() 
+                        && isResolvable(dm)) {
                     //ignore formals, to allow for Java's
                     //refinement model
-                    return !dm.isFormal() &&
-                            (!dm.isAbstraction() || 
-                            signature == null);
+                    return !dm.isFormal() 
+                        && (!dm.isAbstraction() 
+                            || signature == null);
                 }
                 else {
                     return false;
@@ -889,10 +894,10 @@ public abstract class TypeDeclaration extends Declaration
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
             }
-            if (isResolvable(dec) && 
-                    dec.isShared() && 
-            		!isOverloadedVersion(dec) &&
-                    isNameMatching(startingWith, dec) ) {
+            if (isResolvable(dec) 
+                    && dec.isShared() 
+                    && !isOverloadedVersion(dec) 
+                    && isNameMatching(startingWith, dec) ) {
                 boolean already = false;
                 for (Import i: imports) {
                     if (i.getDeclaration().equals(dec)) {
@@ -926,8 +931,8 @@ public abstract class TypeDeclaration extends Declaration
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
             }
-            if (isResolvable(dec) && 
-                    !isOverloadedVersion(dec) ) {
+            if (isResolvable(dec) 
+                    && !isOverloadedVersion(dec) ) {
                 if (isNameMatching(startingWith, dec)) {
                     result.put(dec.getName(unit), 
                             new DeclarationWithProximity(dec, 
@@ -970,10 +975,10 @@ public abstract class TypeDeclaration extends Declaration
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
             }
-            if (isResolvable(member) && 
-                    !isOverloadedVersion(member) &&
-                (member.isShared() || 
-                        ModelUtil.contains(member.getScope(), 
+            if (isResolvable(member) 
+                    && !isOverloadedVersion(member) 
+                    && (member.isShared() 
+                        || ModelUtil.contains(member.getScope(), 
                                 scope))) {
                 if (isNameMatching(startingWith, member)) {
                     result.put(member.getName(unit), 
@@ -1006,8 +1011,8 @@ public abstract class TypeDeclaration extends Declaration
                     e.getValue();
             DeclarationWithProximity existing = 
                     result.get(name);
-            if (existing==null || 
-                    !existing.getDeclaration()
+            if (existing==null 
+                    || !existing.getDeclaration()
                         .refines(current.getDeclaration())) {
                 result.put(name, current);
             }
