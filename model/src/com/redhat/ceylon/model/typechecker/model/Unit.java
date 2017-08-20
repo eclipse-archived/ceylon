@@ -1708,11 +1708,15 @@ public class Unit implements LanguageModuleProvider, ImportScope {
             && !intersectionType(getEmptyType(), 
                     pt, this)
                 .isNothing()
-            && !intersectionType(getSequentialBottomType(), 
+            && !intersectionType(getSequenceBottomType(), 
                     pt, this)
                 .isNothing();
     }
 
+    public Type getSequenceBottomType() {
+        return getSequenceType(getNothingType());
+    }
+    
     public Type getSequentialBottomType() {
         return getSequentialType(getNothingType());
     }

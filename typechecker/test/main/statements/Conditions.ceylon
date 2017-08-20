@@ -183,4 +183,20 @@ void elseWithTypeParameter<T>(T t, T[] ts) {
     else {
         [T+] ss = ts;
     }
+    @warn:"redundantNarrowing"
+    if (nonempty int = []) {
+        @type:"Nothing" value nut = int;
+    }
+    @warn:"redundantNarrowing" 
+    if (nonempty int = [1]) {
+        @type:"[Integer]" value nut = int;
+    }
+    @warn:"redundantNarrowing"
+    if (exists int = null) {
+        @type:"Nothing" value nut = int;
+    }
+    @warn:"redundantNarrowing" 
+    if (exists int = 1) {
+        @type:"Integer" value nut = int;
+    }
 }

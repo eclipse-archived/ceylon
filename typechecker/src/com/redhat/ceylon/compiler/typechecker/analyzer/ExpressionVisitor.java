@@ -1096,30 +1096,30 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkPossiblyEmpty(Type type, Tree.Term term, Node that) {
         if (!isTypeUnknown(type) 
-        		&& !unit.isPossiblyEmptyType(type)) {
-		    String message = 
-		    		"expression type is not a possibly-empty sequential type: '" 
-		    				+ type.asString(unit) + "' ";
-		    if (!unit.isSequentialType(unit.getDefiniteType(type))) {
-		    	that.addError(message + "' is not a subtype of 'Anything[]?'");
-		    }
-		    else {
-			    if (type.isSubtypeOf(unit.getOptionalType(
-			    		unit.getSequenceType(unit.getAnythingType())))) {
-			    	message += " cannot be empty";
-			    }
-			    else if (type.isSubtypeOf(unit.getEmptyType())) {
-			    	message += " is always empty";
-			    }
-			    else if (type.isSubtypeOf(unit.getNullType())) {
-			    	message += " is always null";
-			    }
-			    else if (type.isSubtypeOf(unit.getOptionalType(unit.getEmptyType()))) {
-			    	message += " is always empty or null";
-			    }
-			    that.addUsageWarning(Warning.redundantNarrowing, message);
-		    }
-		}
+                && !unit.isPossiblyEmptyType(type)) {
+            String message = 
+                    "expression type is not a possibly-empty sequential type: '" 
+                            + type.asString(unit) + "' ";
+            if (!unit.isSequentialType(unit.getDefiniteType(type))) {
+                that.addError(message + "' is not a subtype of 'Anything[]?'");
+            }
+            else {
+                if (type.isSubtypeOf(unit.getOptionalType(
+                        unit.getSequenceType(unit.getAnythingType())))) {
+                    message += " cannot be empty";
+                }
+                else if (type.isSubtypeOf(unit.getEmptyType())) {
+                    message += " is always empty";
+                }
+                else if (type.isSubtypeOf(unit.getNullType())) {
+                    message += " is always null";
+                }
+                else if (type.isSubtypeOf(unit.getOptionalType(unit.getEmptyType()))) {
+                    message += " is always empty or null";
+                }
+                that.addUsageWarning(Warning.redundantNarrowing, message);
+            }
+        }
     }
     
     private void checkOptional(Type type, Tree.Term term, Node that) {
@@ -1127,13 +1127,13 @@ public class ExpressionVisitor extends Visitor {
                 !unit.isOptionalType(type) && 
                 !hasUncheckedNulls(term)) {
             String message = 
-            		"expression type is not optional: '" 
-            				+ type.asString(unit) + "'";
+                    "expression type is not optional: '" 
+                            + type.asString(unit) + "'";
             if (type.isSubtypeOf(unit.getObjectType())) {
-            	message += " cannot be null";
+                message += " cannot be null";
             }
             else if (type.isSubtypeOf(unit.getNullType())) {
-            	message += " is always null";
+                message += " is always null";
             }
             that.addUsageWarning(Warning.redundantNarrowing, message);
         }
@@ -2699,11 +2699,9 @@ public class ExpressionVisitor extends Visitor {
         if (ex!=null) {
             Type expressionType = ex.getTypeModel();
             if (!isTypeUnknown(expressionType)) {
-                if (unit.isOptionalType(expressionType)) {
-                    expressionType = 
-                            unit.getDefiniteType(
-                                    expressionType);
-                }
+                expressionType = 
+                        unit.getDefiniteType(
+                                expressionType);
                 local.setTypeModel(expressionType);
                 that.getDeclarationModel()
                     .setType(expressionType);
@@ -2718,10 +2716,11 @@ public class ExpressionVisitor extends Visitor {
         Value dec = that.getDeclarationModel();
         Tree.Expression ex = se.getExpression();
         if (ex!=null) {
-            Type et = ex.getTypeModel();
-            if (!isTypeUnknown(et)) {
+            Type expressionType = ex.getTypeModel();
+            if (!isTypeUnknown(expressionType)) {
                 nullType = 
-                        intersectionType(et, nullType, unit);
+                        intersectionType(expressionType, 
+                                nullType, unit);
             }
             handleUncheckedNulls(local, ex, dec);
         }
@@ -2736,7 +2735,9 @@ public class ExpressionVisitor extends Visitor {
         if (ex!=null) {
             Type expressionType = ex.getTypeModel();
             if (!isTypeUnknown(expressionType)) {
-                if (unit.isPossiblyEmptyType(expressionType)) {
+                if (unit.isSequentialType(
+                        unit.getDefiniteType(
+                                expressionType))) {
                     expressionType = 
                             unit.getNonemptyDefiniteType(
                                     expressionType);
