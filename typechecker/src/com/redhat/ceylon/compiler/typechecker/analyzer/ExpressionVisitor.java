@@ -1095,48 +1095,47 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void checkEmpty(Type type, Tree.Term term, Node that) {
-        if (!isTypeUnknown(type)) {
-            if (!unit.isSequentialType(unit.getDefiniteType(type))) {
-                that.addError("expression must be a possibly-empty sequential type: '" + 
-                        type.asString(unit) + 
-                        "' is not a subtype of 'Anything[]?'");
-            }
-            else if (!unit.isPossiblyEmptyType(type)) {
-                String explanation = "";
-                if (type.isSubtypeOf(unit.getOptionalType(
-                		unit.getSequenceType(unit.getAnythingType())))) {
-                    explanation = " cannot be empty";
-                }
-                else if (type.isSubtypeOf(unit.getEmptyType())) {
-                    explanation = " is always empty";
-                }
-                else if (type.isSubtypeOf(unit.getNullType())) {
-                    explanation = " is always null";
-                }
-                else if (type.isSubtypeOf(unit.getOptionalType(unit.getEmptyType()))) {
-                    explanation = " is always empty or null";
-                }
-                that.addUsageWarning(Warning.redundantNarrowing,
-                        "expression type is not a possibly-empty sequential type: '" + 
-                        type.asString(unit) + "' " + explanation);
-            }
-        }
+        if (!isTypeUnknown(type) 
+        		&& !unit.isPossiblyEmptyType(type)) {
+		    String message = 
+		    		"expression type is not a possibly-empty sequential type: '" 
+		    				+ type.asString(unit) + "' ";
+		    if (!unit.isSequentialType(unit.getDefiniteType(type))) {
+		    	that.addError(message + "' is not a subtype of 'Anything[]?'");
+		    }
+		    else {
+			    if (type.isSubtypeOf(unit.getOptionalType(
+			    		unit.getSequenceType(unit.getAnythingType())))) {
+			    	message += " cannot be empty";
+			    }
+			    else if (type.isSubtypeOf(unit.getEmptyType())) {
+			    	message += " is always empty";
+			    }
+			    else if (type.isSubtypeOf(unit.getNullType())) {
+			    	message += " is always null";
+			    }
+			    else if (type.isSubtypeOf(unit.getOptionalType(unit.getEmptyType()))) {
+			    	message += " is always empty or null";
+			    }
+			    that.addUsageWarning(Warning.redundantNarrowing, message);
+		    }
+		}
     }
     
     private void checkOptional(Type type, Tree.Term term, Node that) {
         if (!isTypeUnknown(type) && 
                 !unit.isOptionalType(type) && 
                 !hasUncheckedNulls(term)) {
-            String explanation = "";
+            String message = 
+            		"expression type is not optional: '" 
+            				+ type.asString(unit) + "'";
             if (type.isSubtypeOf(unit.getObjectType())) {
-                explanation = " cannot be null";
+            	message += " cannot be null";
             }
             else if (type.isSubtypeOf(unit.getNullType())) {
-                explanation = " is always null";
+            	message += " is always null";
             }
-            that.addUsageWarning(Warning.redundantNarrowing,
-                    "expression type is not optional: '" +
-                    type.asString(unit) + "'" + explanation);
+            that.addUsageWarning(Warning.redundantNarrowing, message);
         }
     }
 
