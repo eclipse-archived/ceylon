@@ -1701,24 +1701,21 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     }
     
     public boolean isPossiblyEmptyType(Type pt) {
+        Type defType = getDefiniteType(pt);
         //must be a subtype of Sequential<Anything>
-        return isSequentialType(getDefiniteType(pt))
+        return isSequentialType(defType)
         //must have non-empty intersection with Empty
         //and non-empty intersection with Sequence<Nothing>
             && !intersectionType(getEmptyType(), 
-                    pt, this)
+                    defType, this)
                 .isNothing()
-            && !intersectionType(getSequenceBottomType(), 
-                    pt, this)
+            && !intersectionType(getSequenceTopType(), 
+                    defType, this)
                 .isNothing();
     }
 
-    public Type getSequenceBottomType() {
-        return getSequenceType(getNothingType());
-    }
-    
-    public Type getSequentialBottomType() {
-        return getSequentialType(getNothingType());
+    public Type getSequenceTopType() {
+        return getSequenceType(getAnythingType());
     }
     
     public boolean isCallableType(Type pt) {

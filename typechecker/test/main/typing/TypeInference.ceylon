@@ -160,5 +160,5 @@ void testObjectNarrowing<T>() {
     @type:"Entry<Basic,Basic>" value entry = foo->foo;
     @type:"Iterable<Basic,Nothing>" value iterable = {foo};
     @type:"Tuple<Basic,Basic,Empty>" value tuple = [foo];
-    @error if (is Category foo) {}
+    @warn:"redundantNarrowing" if (is Category foo) {}
 }

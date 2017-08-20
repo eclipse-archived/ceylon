@@ -437,7 +437,7 @@ void isTest<Args>(Anything[] x, Args y)
     [Integer*] xs = [];
     [Integer+] ys = [1];
     if (is String[] xs) {}
-    @error if (is String[] ys) {}
+    @warn:"redundantNarrowing" if (is String[] ys) {}
 }
 
 void unionWithUseSiteCoverage(Set<Anything>|Integer set) {
