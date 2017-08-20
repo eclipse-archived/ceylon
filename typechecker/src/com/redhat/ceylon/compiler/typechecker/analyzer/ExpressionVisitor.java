@@ -1034,7 +1034,7 @@ public class ExpressionVisitor extends Visitor {
             checkOptional(t, term, that);
         }
         else if (that instanceof Tree.NonemptyCondition) {
-            checkEmpty(t, term, that);
+            checkPossiblyEmpty(t, term, that);
         }
     }
 
@@ -1094,7 +1094,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkEmpty(Type type, Tree.Term term, Node that) {
+    private void checkPossiblyEmpty(Type type, Tree.Term term, Node that) {
         if (!isTypeUnknown(type) 
         		&& !unit.isPossiblyEmptyType(type)) {
 		    String message = 
@@ -6354,7 +6354,7 @@ public class ExpressionVisitor extends Visitor {
     }
     
     private void visitNonemptyOperator(Tree.Nonempty that) {
-        checkEmpty(type(that), that.getTerm(), that);
+        checkPossiblyEmpty(type(that), that.getTerm(), that);
         that.setTypeModel(unit.getBooleanType());
     }
     
