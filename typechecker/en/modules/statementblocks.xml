@@ -2065,7 +2065,7 @@ if (is Usable tx) { ... }</programlisting>
                 <listitem>
                     <para>in the case of a nonemptiness condition or a negated nonemptiness 
                     condition, a subtype of <literal>Anything[]?</literal> whose intersection with 
-                    <literal>[]</literal> is not exactly <literal>Nothing</literal>, and whose 
+                    <literal>[]?</literal> is not exactly <literal>Nothing</literal>, and whose 
                     intersection with <literal>[Nothing+]</literal> is not exactly 
                     <literal>Nothing</literal>.</para>
                 </listitem>
@@ -2088,7 +2088,7 @@ if (is Usable tx) { ... }</programlisting>
                     instantiation <literal>E[]?</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para><literal>!nonempty x</literal> is equivalent to <literal>is [] x</literal>.</para>
+                    <para><literal>!nonempty x</literal> is equivalent to <literal>is []? x</literal>.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2165,7 +2165,7 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
-                    by the compiler as having type <literal>T&amp;[]</literal> inside the block or 
+                    by the compiler as having type <literal>T&amp;[]?</literal> inside the block or 
                     expression that immediately follows the condition, where the conditional 
                     expression is of type <literal>T</literal> and <literal>T</literal> has the 
                     principal instantiation <literal>E[]?</literal>, and, if this is the only 
