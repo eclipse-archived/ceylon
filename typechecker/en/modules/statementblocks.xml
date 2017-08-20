@@ -2066,7 +2066,7 @@ if (is Usable tx) { ... }</programlisting>
                     <para>in the case of a nonemptiness condition or a negated nonemptiness 
                     condition, a subtype of <literal>Anything[]?</literal> whose intersection with 
                     <literal>[]</literal> is not exactly <literal>Nothing</literal>, and whose 
-                    intersection with <literal>[Nothing+]</literal> is not exactly 
+                    intersection with <literal>[Anything+]</literal> is not exactly 
                     <literal>Nothing</literal>.</para>
                 </listitem>
             </itemizedlist>
