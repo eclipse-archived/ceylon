@@ -861,7 +861,8 @@ public class ExpressionVisitor extends Visitor {
                                     " (expression is already of the specified type)");
                         }
                         else if (checkType.isSubtypeOf(type)) {
-                            that.addError("condition tests assignability to bottom type 'Nothing': '" + 
+                            that.addUsageWarning(Warning.redundantNarrowing,
+                                    "condition tests assignability to bottom type 'Nothing': '" + 
                                     knownType.asString(unit) + 
                                     "' is a subtype of '" + 
                                     type.asString(unit) + "'");
@@ -893,7 +894,7 @@ public class ExpressionVisitor extends Visitor {
                             type.asString(unit));*/
                 }
                 else {
-                    that.addError(
+                    that.addUsageWarning(Warning.redundantNarrowing,
                             "condition tests assignability to bottom type 'Nothing': intersection of '" +
                             knownType.asString(unit) + 
                             "' and '" + 
