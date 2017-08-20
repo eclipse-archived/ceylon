@@ -1257,10 +1257,10 @@ shared interface Iterable<out Element=Anything,
             };
     };
     
-    "A stream containing whose elements are pairs (2-tuples)
-     comprising an element of this stream paired with the 
+    "A stream whose elements are pairs (2-tuples)
+     comprising each element of this stream paired with the 
      next element in the stream. The resulting stream has
-     one fewer elements than this stream. If this stream has
+     one fewer element than this stream. If this stream has
      exactly one element, the resulting stream is empty.
      
      For example, the expression
