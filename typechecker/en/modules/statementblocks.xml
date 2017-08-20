@@ -867,8 +867,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>For a type declaration, the qualifying type is the full
-                    qualified type the qualifies the type name.</para>
+                    <para>For a type declaration, the qualifying type is the fully
+                    qualified type that qualifies the type name.</para>
                 </listitem>
                 <listitem>
                     <para>For a value reference or callable reference, the 
@@ -879,8 +879,8 @@ Integer f(Integer n) => n+package.n;</programlisting>
                     type of the qualifying base or member expression.</para>
                 </listitem>
                 <listitem>
-                    <para>For a static reference, the qualifying type is the full 
-                    qualified type the qualifies the type or member name.</para>
+                    <para>For a static reference, the qualifying type is the fully 
+                    qualified type that qualifies the type or member name.</para>
                 </listitem>
             </itemizedlist>
                     
@@ -1930,12 +1930,12 @@ else {
                 <listitem>
                     <para>in the case of a condition which is not negated, a type which is not 
                     a subtype of the specified type, but whose intersection with the specified 
-                    type is not exactly <literal>Nothing</literal>, except</para>
+                    type is not exactly <literal>Nothing</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>in the case of a negated condition, a type whose intersection with the 
                     specified type is not exactly <literal>Nothing</literal>, and which is not a 
-                    supertype of the specified type, or</para>
+                    supertype of the specified type.</para>
                 </listitem>
             </itemizedlist>
             
