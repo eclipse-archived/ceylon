@@ -2083,7 +2083,7 @@ if (is Usable tx) { ... }</programlisting>
                     <para><literal>!exists x</literal> is equivalent to <literal>is Null x</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>nonempty x</literal> is equivalent to <literal>!is []? x</literal>,
+                    <para><literal>nonempty x</literal> is equivalent to <literal>!is []? x</literal>
                     (and to <literal>is [E+] x</literal> where <literal>x</literal> is an expression 
                     whose type has the principal instantiation <literal>E[]?</literal>), and</para>
                 </listitem>
