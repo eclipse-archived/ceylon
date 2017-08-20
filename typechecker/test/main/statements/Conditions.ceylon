@@ -200,3 +200,57 @@ void elseWithTypeParameter<T>(T t, T[] ts) {
         @type:"Integer" value nut = int;
     }
 }
+
+void tryNullOrNonEmpty1([String+]? nullOrNonEmpty) {
+    if(!is []? nullOrNonEmpty) {
+        @type:"[String+]"
+        value n = nullOrNonEmpty;
+    }
+    else {
+        @type:"Null"
+        value n = nullOrNonEmpty;
+    }
+    if(nonempty nullOrNonEmpty) {
+        @type:"[String+]"
+        value n = nullOrNonEmpty;
+    }
+    else {
+        @type:"Null"
+        value n = nullOrNonEmpty;
+    }
+    if(!nonempty nullOrNonEmpty) {
+        @type:"Null"
+        value n = nullOrNonEmpty;
+    }
+    else {
+        @type:"[String+]"
+        value n = nullOrNonEmpty;
+    }
+}
+
+void tryNullOrNonEmpty2([String*]? nullOrNonEmpty) {
+    if(!is []? nullOrNonEmpty) {
+        @type:"[String+]" 
+        value n = nullOrNonEmpty;
+    }
+    else {
+        @type:"[]?" 
+        value n = nullOrNonEmpty;
+    }
+    if(nonempty nullOrNonEmpty) {
+        @type:"[String+]"
+        value n = nullOrNonEmpty;
+    }
+    else {
+        @type:"[]?"
+        value n = nullOrNonEmpty;
+    }
+    if(!nonempty nullOrNonEmpty) {
+        @type:"[]?"
+        value n = nullOrNonEmpty;
+    }
+    else {
+        @type:"[String+]"
+        value n = nullOrNonEmpty;
+    }
+}
