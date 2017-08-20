@@ -1103,7 +1103,8 @@ public class ExpressionVisitor extends Visitor {
             }
             else if (!unit.isPossiblyEmptyType(type)) {
                 String explanation = "";
-                if (type.isSubtypeOf(unit.getSequenceType(unit.getAnythingType()))) {
+                if (type.isSubtypeOf(unit.getOptionalType(
+                		unit.getSequenceType(unit.getAnythingType())))) {
                     explanation = " cannot be empty";
                 }
                 else if (type.isSubtypeOf(unit.getEmptyType())) {
@@ -1111,6 +1112,9 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (type.isSubtypeOf(unit.getNullType())) {
                     explanation = " is always null";
+                }
+                else if (type.isSubtypeOf(unit.getOptionalType(unit.getEmptyType()))) {
+                    explanation = " is always empty or null";
                 }
                 that.addUsageWarning(Warning.redundantNarrowing,
                         "expression type is not a possibly-empty sequential type: '" + 
