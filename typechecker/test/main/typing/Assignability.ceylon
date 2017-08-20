@@ -198,17 +198,17 @@ class Assignability() {
     @warn:"redundantNarrowing" if (something.hello exists) {}
     @warn:"redundantNarrowing" if (exists h = something.hello) {}
     
-    @error if (is Y something) {
+    @warn:"redundantNarrowing" if (is Y something) {
         @error print(something.name);
     }
 
-    @error if (is Y y = something) {
+    @warn:"redundantNarrowing" if (is Y y = something) {
         @error print(y.name);
     }
     
     @error if (X() is Y) {}
     @warn:"redundantNarrowing" if (X() is Object ) {}
-    @error if (is Y x = X()) {}
+    @warn:"redundantNarrowing" if (is Y x = X()) {}
     @warn:"redundantNarrowing" if (is Object x = X()) {}
     
     X[]? seq = null;
