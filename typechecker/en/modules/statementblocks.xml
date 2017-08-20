@@ -2158,15 +2158,15 @@ if (is Usable tx) { ... }</programlisting>
             <itemizedlist>
                 <listitem>
                     <para>if the condition has a pattern, it must be a pattern variable, and the
-                    patterned type is <literal>T&amp;[]?</literal>, where the specifier expression is 
-                    of type <literal>T</literal> and <literal>T</literal> has the principal 
+                    patterned type is <literal>T&amp;[]?</literal>, where the specifier expression 
+                    is of type <literal>T</literal> and <literal>T</literal> has the principal 
                     instantiation <literal>E[]?</literal>, and the declared type of the variable,
                     if any, must be <literal>[]</literal>, or</para>
                 </listitem>
                 <listitem>
                     <para>if the condition contains a value reference, the value will be treated 
-                    by the compiler as having type <literal>T&amp;[]?</literal> inside the block or 
-                    expression that immediately follows the condition, where the conditional 
+                    by the compiler as having type <literal>T&amp;[]?</literal> inside the block 
+                    or expression that immediately follows the condition, where the conditional 
                     expression is of type <literal>T</literal> and <literal>T</literal> has the 
                     principal instantiation <literal>E[]?</literal>, and, if this is the only 
                     condition in the condition list, as having the type <literal>T&amp;[E+]</literal> 
