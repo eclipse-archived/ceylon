@@ -254,3 +254,17 @@ void tryNullOrNonEmpty2([String*]? nullOrNonEmpty) {
         value n = nullOrNonEmpty;
     }
 }
+
+void testForBug(String[]? nonArray) {
+    if(!nonempty emptyArray = nonArray) {
+        @type:"[]?" value ea = emptyArray;
+        @error print(emptyArray.size);
+    }
+    if(!nonempty []? emptyArray = nonArray) {
+        @type:"[]?" value ea = emptyArray;
+        @error print(emptyArray.size);
+    }
+    if(!nonempty @error [] emptyArray = nonArray) {
+        print(emptyArray.size);
+    }
+}

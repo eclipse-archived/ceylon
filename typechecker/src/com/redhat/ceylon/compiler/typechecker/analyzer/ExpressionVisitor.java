@@ -2029,9 +2029,9 @@ public class ExpressionVisitor extends Visitor {
         if (type!=null && 
                 !(type instanceof Tree.LocalModifier)) {
             Type vt = type.getTypeModel();
+            Type nullType = unit.getNullType();
             if (!isTypeUnknown(vt)) {
-                Type nt = not ?
-                        unit.getNullType() :
+                Type nt = not ? nullType :
                         unit.getObjectType();
                 String message = not ?
                         "specified type must be the null type" :
@@ -2045,8 +2045,7 @@ public class ExpressionVisitor extends Visitor {
                     if (set!=null) {
                         if (!isTypeUnknown(vt) && 
                                 !isTypeUnknown(set)) {
-                            Type net = not ?
-                                    unit.getNullType() :
+                            Type net = not ? nullType :
                                     unit.getDefiniteType(set);
                             checkAssignable(net, vt, se, 
                                     "specified expression must be assignable to declared type after narrowing");
@@ -2062,10 +2061,22 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type type = var.getType();
         if (type!=null && 
                 !(type instanceof Tree.LocalModifier)) {
+            Type emptyType = unit.getEmptyType();
+            if (se!=null) {
+                Tree.Expression e = se.getExpression();
+                if (e!=null) {
+                    Type set = e.getTypeModel();
+                    Type nullType = unit.getNullType();
+                    if (!isTypeUnknown(set) 
+                            && !intersectionType(set, nullType, unit)
+                                .isNothing()) {
+                        emptyType = unit.getOptionalType(emptyType);
+                    }
+                }
+            }
             Type vt = type.getTypeModel();
             if (!isTypeUnknown(vt)) {
-                Type nt = not ?
-                        unit.getEmptyType() :
+                Type nt = not ? emptyType :
                         unit.getSequenceType(unit.getAnythingType());
                 String message = not ?
                         "specified type must be the empty sequence type" :
@@ -2078,8 +2089,7 @@ public class ExpressionVisitor extends Visitor {
                     Type set = e.getTypeModel();
                     if (!isTypeUnknown(vt) && 
                             !isTypeUnknown(set)) {
-                        Type net = not ?
-                                unit.getEmptyType() :
+                        Type net = not ? emptyType :
                                 unit.getNonemptyDefiniteType(set);
                         checkAssignable(net, vt, se, 
                                 "specified expression must be assignable to declared type after narrowing");
