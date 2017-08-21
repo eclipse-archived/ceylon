@@ -9414,14 +9414,24 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (ci instanceof Tree.MatchCase) {
             Tree.MatchCase mc = (Tree.MatchCase) ci;
+            Tree.MatchList ml = 
+                    mc.getExpressionList();
             List<Tree.Expression> es = 
-                    mc.getExpressionList()
-                        .getExpressions();
+                    ml.getExpressions();
+            List<Tree.Type> ts = 
+                    ml.getTypes();
             List<Type> list = 
-                    new ArrayList<Type>(es.size());
+                    new ArrayList<Type>
+                    (es.size() + ts.size());
             for (Tree.Expression e: es) {
                 if (e.getTypeModel()!=null) {
                     addToUnion(list, e.getTypeModel());
+                }
+            }
+            for (Tree.Type t: ts) {
+                Type tm = t.getTypeModel();
+                if (tm!=null) {
+                    addToUnion(list, tm);
                 }
             }
             return union(list, unit);
@@ -9440,11 +9450,15 @@ public class ExpressionVisitor extends Visitor {
         else if (ci instanceof Tree.MatchCase) {
             Tree.MatchCase mc = 
                     (Tree.MatchCase) ci;
+            Tree.MatchList ml = 
+                    mc.getExpressionList();
             List<Tree.Expression> es = 
-                    mc.getExpressionList()
-                        .getExpressions();
+                    ml.getExpressions();
+            List<Tree.Type> ts = 
+                    ml.getTypes();
             List<Type> list = 
-                    new ArrayList<Type>(es.size());
+                    new ArrayList<Type>
+                    (es.size() + ts.size());
             for (Tree.Expression e: es) {
                 if (e.getTypeModel()!=null) {
                     Tree.Term term = e.getTerm();
@@ -9452,6 +9466,12 @@ public class ExpressionVisitor extends Visitor {
                         addToUnion(list, 
                                 e.getTypeModel());
                     }
+                }
+            }
+            for (Tree.Type t: ts) {
+                Type tm = t.getTypeModel();
+                if (tm!=null) {
+                    addToUnion(list, tm);
                 }
             }
             return union(list, unit);
@@ -9470,18 +9490,28 @@ public class ExpressionVisitor extends Visitor {
         else if (ci instanceof Tree.MatchCase) {
             Tree.MatchCase mc = 
                     (Tree.MatchCase) ci;
+            Tree.MatchList ml = 
+                    mc.getExpressionList();
             List<Tree.Expression> es = 
-                    mc.getExpressionList()
-                        .getExpressions();
+                    ml.getExpressions();
+            List<Tree.Type> ts = 
+                    ml.getTypes();
             List<Type> list = 
-                    new ArrayList<Type>(es.size());
+                    new ArrayList<Type>
+                    (es.size() + ts.size());
             for (Tree.Expression e: es) {
-                if (e.getTypeModel()!=null) {
+                Type tm = e.getTypeModel();
+                if (tm!=null) {
                     Tree.Term term = e.getTerm();
                     if (isEnumCase(term)) {
-                        addToUnion(list, 
-                                e.getTypeModel());
+                        addToUnion(list, tm);
                     }
+                }
+            }
+            for (Tree.Type t: ts) {
+                Type tm = t.getTypeModel();
+                if (tm!=null) {
+                    addToUnion(list, tm);
                 }
             }
             return union(list, unit);
@@ -9492,9 +9522,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private boolean isLiteralCase(Tree.Term term) {
-        return term instanceof Tree.Literal ||
-              term instanceof Tree.Tuple ||
-              term instanceof Tree.NegativeOp;
+        return term instanceof Tree.Literal 
+            || term instanceof Tree.Tuple 
+            || term instanceof Tree.NegativeOp;
     }
     
     @Override

@@ -2070,12 +2070,24 @@ dynamicArguments returns [NamedArgumentList namedArgumentList]
       { $namedArgumentList.setEndToken($RBRACKET); }
     ;
 
-valueCaseList returns [ExpressionList expressionList]
-    : { $expressionList = new ExpressionList(null); }
-      ie1=intersectionExpression 
+valueCase returns [Expression expression, Type type]
+    : (intersectionType (COMMA|UNION_OP|RPAREN)) =>
+      intersectionType 
+      { $type=$intersectionType.type; }
+    | 
+      ie=intersectionExpression 
       { Expression e = new Expression(null);
-        e.setTerm($ie1.term);
-        $expressionList.addExpression(e); }
+        e.setTerm($ie.term);
+        $expression=e; }
+    ;
+
+valueCaseList returns [MatchList expressionList]
+    : { $expressionList = new MatchList(null); }
+      ie1=valueCase 
+      { if ($ie1.expression!=null)
+            $expressionList.addExpression($ie1.expression);
+        if ($ie1.type!=null)
+            $expressionList.addType($ie1.type); }
       ( 
         (
           c=COMMA 
@@ -2087,12 +2099,13 @@ valueCaseList returns [ExpressionList expressionList]
           { $expressionList.setEndToken($u); }
         )
         (
-          ie2=intersectionExpression
-          { if ($ie2.term!=null) {
-                Expression e = new Expression(null);
-                e.setTerm($ie2.term);
-                $expressionList.addExpression(e);
-                $expressionList.setEndToken(null); } }
+          ie2=valueCase
+          { if ($ie2.expression!=null)
+                $expressionList.addExpression($ie2.expression);
+            if ($ie2.type!=null)
+                $expressionList.addType($ie2.type);
+            if ($ie2.expression!=null || $ie2.type!=null)
+                $expressionList.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); } //TODO: sometimes it should be RPAREN!
         )
