@@ -7,9 +7,9 @@
 
 cd ../ceylon
 
-#log "Building distrib sdk"
-#docker pull ceylon/ceylon-build-sdk 2>&1 >> $LOG_FILE || fail "Docker pull"
-#docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build-sdk $CEYLON_RELEASE_VERSION 2>&1 >> $LOG_FILE || fail "Docker build SDK"
+log "Building distrib sdk"
+docker pull ceylon/ceylon-build-sdk 2>&1 >> $LOG_FILE || fail "Docker pull"
+docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build-sdk $CEYLON_RELEASE_VERSION 2>&1 >> $LOG_FILE || fail "Docker build SDK"
 
 log "Creating Herd upload"
 echo -n "Enter Herd user name: "
