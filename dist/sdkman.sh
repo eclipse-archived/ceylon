@@ -15,7 +15,7 @@ if [[ "$1" == "candidate" ]]; then
 
 	curl -X POST -H "consumer_key: $KEY" -H "consumer_token: $TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d "{\"candidate\":\"ceylon\",\"version\":\"$VERSION\",\"url\":\"https://downloads.ceylon-lang.org/cli/ceylon-$VERSION.zip\"}" https://vendors.sdkman.io/release
 
-	curl -X PUT -H "consumer_key: $KEY" -H "consumer_token: $TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d "{\"candidate\":\"ceylon\",\"default\":\"$VERSION\"}" https://vendors.sdkman.io/default
+	curl -X PUT -H "consumer_key: $KEY" -H "consumer_token: $TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d "{\"candidate\":\"ceylon\",\"version\":\"$VERSION\"}" https://vendors.sdkman.io/default
 
 elif [[ "$1" == "announce" ]]; then
 
