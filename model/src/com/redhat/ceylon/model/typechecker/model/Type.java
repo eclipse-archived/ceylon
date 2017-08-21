@@ -1019,10 +1019,13 @@ public class Type extends Reference {
     
     private boolean involvesTypeAliases() {
         TypeDeclaration dec = getDeclaration();
-        if (dec.isAlias()) {
+        if (isTypeConstructor()) { //this case must come first!
+            return false;
+        }
+        else if (dec.isAlias()) { //this case must come next!
             return true;
         }
-        else if (isSimple() || isTypeConstructor()) {
+        else if (isSimple()) {
             return false;
         }
         else if (!getVarianceOverrides().isEmpty()) {
