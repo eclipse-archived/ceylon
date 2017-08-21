@@ -1018,20 +1018,27 @@ public class Type extends Reference {
     }
     
     private boolean involvesTypeAliases() {
-        if (getDeclaration().isAlias()) {
+        TypeDeclaration dec = getDeclaration();
+        if (dec.isAlias()) {
             return true;
         }
-        else if (isNothing() || isTypeConstructor()) {
+        else if (isSimple() || isTypeConstructor()) {
             return false;
         }
-        else if (isUnion() || isIntersection()) {
+        else if (!getVarianceOverrides().isEmpty()) {
+            //I do not understand why this is 
+            //necessary, but it's needed to compile
+            //the SDK
+            return true;
+        }
+        else if (dec instanceof UnionType ||
+                 dec instanceof IntersectionType) {
             //we need to canonicalize!
             return true;
         }
-        else if (isTuple()) {
+        else if (dec.isTuple()) {
             TypeDeclaration td = 
-                    getDeclaration()
-                        .getUnit()
+                    dec.getUnit()
                         .getTupleDeclaration();
             List<TypeParameter> typeParameters = 
                     td.getTypeParameters();
@@ -1060,27 +1067,38 @@ public class Type extends Reference {
                 }
             }
         }
+//        else if (isExactlyNothing()) {
+//            return true;
+//        }
         else {
-            //TODO: why on earth is this incorrect?!
-            //      this doesn't work, due to some 
-            //      funny business in the Java backend
-            //      that shows up in Java interop
-//            for (Type at: getTypeArgumentList()) {
-//                if (at!=null && 
-//                        at.involvesTypeAliases()) {
-//                    return true;
-//                }
-//            }
-//            Type qt = getQualifyingType();
-//            if (qt!=null && 
-//                    qt.involvesTypeAliases()) {
-//                return true;
-//            }
-//            //we need to erase out these settings
-//            return isRaw() || hasUnderlyingType();
-            return true;
+            for (Type at: getTypeArgumentList()) {
+                if (at!=null && 
+                        at.involvesTypeAliases()) {
+                    return true;
+                }
+            }
+            Type qt = getQualifyingType();
+            if (qt!=null && 
+                    qt.involvesTypeAliases()) {
+                return true;
+            }
+            return false;
         }
         
+    }
+
+    private boolean isSimple() {
+        TypeDeclaration dec = getDeclaration();
+        if (dec instanceof NothingType) {
+            return true; 
+        }
+        else {
+            return (dec instanceof ClassOrInterface || 
+                    dec instanceof TypeParameter)
+                && getQualifyingType()==null 
+                && !dec.isAlias() 
+                && !dec.isParameterized();
+        }
     }
     
     private boolean isSubtypeOfTuple(Type type) {
@@ -4271,17 +4289,7 @@ public class Type extends Reference {
     private Type resolveAliasesInternal() {
         TypeDeclaration dec = getDeclaration();
         Unit unit = dec.getUnit();
-        if ((dec instanceof ClassOrInterface || 
-             dec instanceof TypeParameter)
-                && getQualifyingType()==null 
-                && !dec.isAlias() 
-                && !dec.isParameterized()) {
-            return this;
-        }
-        else if (!involvesTypeAliases()) {
-            return this;
-        }
-        else if (isTypeConstructor()|| isNothing()) {
+        if (!involvesTypeAliases()) {
             return this;
         }
         else if (dec instanceof UnionType) {
