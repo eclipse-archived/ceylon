@@ -512,7 +512,8 @@
     
 ^(CASE_ITEM)
 ^(MATCH_CASE:CASE_ITEM
-    MATCH_LIST expressionList)
+    MATCH_LIST expressionList
+    VARIABLE?)
 ^(IS_CASE:CASE_ITEM
     TYPE
     VARIABLE?)
