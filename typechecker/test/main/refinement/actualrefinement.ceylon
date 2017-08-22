@@ -51,3 +51,28 @@ shared void rund() {
 class Ee() extends Dd() {
     shared actual default value i => "";
 }
+
+class WithoutError() {
+    @type:"Boolean" shared actual function equals(Object x) => false;
+    @type:"String" shared actual value string => "";
+}
+
+
+class WithInferenceAndFatArrow() {
+    @error shared actual function equals(Object x) => 1;
+    @error shared actual value string => 1;
+}
+
+class WithShortcutRefinement() {
+    @error equals(Object x) => 1;
+    @error string => 1;
+}
+
+class WithInferenceAndReturn() {
+    shared actual function equals(Object x) {
+        @error return 1;
+    }
+    shared actual value string {
+        @error return 1;
+    }
+}
