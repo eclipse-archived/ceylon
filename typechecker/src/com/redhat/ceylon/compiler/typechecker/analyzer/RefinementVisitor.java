@@ -840,83 +840,7 @@ public class RefinementVisitor extends Visitor {
                     legallyOverloaded = true;
                 }
                 found = true;
-                boolean checkTypes = true;
-                if (member instanceof Function) {
-                    if (!(refined instanceof Function)) {
-                        that.addError(
-                                "refined declaration is not a method: " 
-                                + message(member) 
-                                + " refines " 
-                                + message(refined));
-                        checkTypes = false;
-                    }
-                }
-                else if (member instanceof Class) {
-                    if (!(refined instanceof Class)) {
-                        that.addError(
-                                "refined declaration is not a class: " 
-                                + message(member) 
-                                + " refines " 
-                                + message(refined));
-                        checkTypes = false;
-                    }
-                }
-                else if (member instanceof TypedDeclaration) {
-                    if (refined instanceof Class || 
-                        refined instanceof Function) {
-                        that.addError(
-                                "refined declaration is not an attribute: " 
-                                + message(member) 
-                                + " refines " 
-                                + message(refined));
-                        checkTypes = false;
-                    }
-                    else if (refined instanceof TypedDeclaration) {
-                        TypedDeclaration rtd = (TypedDeclaration) refined;
-                        TypedDeclaration mtd = (TypedDeclaration) member;
-                        if (rtd.isVariable() && !mtd.isVariable()) {
-                            if (member instanceof Value) {
-                                that.addError(
-                                        "non-variable attribute refines a variable attribute: " 
-                                        + message(member) 
-                                        + " refines variable " 
-                                        + message(refined) 
-                                        + " and so must be 'variable' or have a setter", 
-                                        804);
-                            }
-                            else {
-                                //TODO: this message seems like it's not quite right
-                                that.addError(
-                                        "non-variable attribute refines a variable attribute: " 
-                                        + message(member) 
-                                        + " refines variable " 
-                                        + message(refined));
-                            }
-                        }
-                    }
-                }
-                if (!member.isActual()) {
-                    that.addError(
-                            "non-actual member collides with an inherited member: " 
-                            + message(member) 
-                            + " refines " 
-                            + message(refined) 
-                            + " but is not annotated 'actual'", 
-                            600);
-                }
-                else if (!refined.isDefault() && !refined.isFormal()) {
-                    that.addError(
-                            "member refines a non-default, non-formal member: " 
-                            + message(member) 
-                            + " refines " 
-                            + message(refined) 
-                            + " which is not annotated 'formal' or 'default'", 
-                            500);
-                }
-                if (checkTypes && !type.isInconsistentType()) {
-                    checkRefinedTypeAndParameterTypes(that, 
-                            member, type, refined);
-                }
+                checkRefiningMember(that, refined, member, type);
             }
             if (!found) {
                 if (member instanceof Function && 
@@ -1042,6 +966,89 @@ public class RefinementVisitor extends Visitor {
                     }
                 }
             }
+        }
+    }
+
+    private void checkRefiningMember(
+            Tree.Declaration that, 
+            Declaration refined, Declaration member,
+            ClassOrInterface type) {
+        boolean checkTypes = true;
+        if (member instanceof Function) {
+            if (!(refined instanceof Function)) {
+                that.addError(
+                        "refined declaration is not a method: " 
+                        + message(member) 
+                        + " refines " 
+                        + message(refined));
+                checkTypes = false;
+            }
+        }
+        else if (member instanceof Class) {
+            if (!(refined instanceof Class)) {
+                that.addError(
+                        "refined declaration is not a class: " 
+                        + message(member) 
+                        + " refines " 
+                        + message(refined));
+                checkTypes = false;
+            }
+        }
+        else if (member instanceof TypedDeclaration) {
+            if (refined instanceof Class || 
+                refined instanceof Function) {
+                that.addError(
+                        "refined declaration is not an attribute: " 
+                        + message(member) 
+                        + " refines " 
+                        + message(refined));
+                checkTypes = false;
+            }
+            else if (refined instanceof TypedDeclaration) {
+                TypedDeclaration rtd = (TypedDeclaration) refined;
+                TypedDeclaration mtd = (TypedDeclaration) member;
+                if (rtd.isVariable() && !mtd.isVariable()) {
+                    if (member instanceof Value) {
+                        that.addError(
+                                "non-variable attribute refines a variable attribute: " 
+                                + message(member) 
+                                + " refines variable " 
+                                + message(refined) 
+                                + " and so must be 'variable' or have a setter", 
+                                804);
+                    }
+                    else {
+                        //TODO: this message seems like it's not quite right
+                        that.addError(
+                                "non-variable attribute refines a variable attribute: " 
+                                + message(member) 
+                                + " refines variable " 
+                                + message(refined));
+                    }
+                }
+            }
+        }
+        if (!member.isActual()) {
+            that.addError(
+                    "non-actual member collides with an inherited member: " 
+                    + message(member) 
+                    + " refines " 
+                    + message(refined) 
+                    + " but is not annotated 'actual'", 
+                    600);
+        }
+        else if (!refined.isDefault() && !refined.isFormal()) {
+            that.addError(
+                    "member refines a non-default, non-formal member: " 
+                    + message(member) 
+                    + " refines " 
+                    + message(refined) 
+                    + " which is not annotated 'formal' or 'default'", 
+                    500);
+        }
+        if (checkTypes && !type.isInconsistentType()) {
+            checkRefinedTypeAndParameterTypes(that, 
+                    member, type, refined);
         }
     }
 
@@ -1258,12 +1265,10 @@ public class RefinementVisitor extends Visitor {
         int refiningSize = refiningTypeParams.size();
         int refinedSize = refinedTypeParams.size();
         if (refiningSize!=refinedSize) {
-            StringBuilder message = new StringBuilder();
-            message.append("refining member does not have the same number of type parameters as refined member: ") 
-                    .append(message(dec))
-                    .append(" refines ")
-                    .append(message(refined));
-            that.addError(message.toString());
+            that.addError("refining member does not have the same number of type parameters as refined member: "
+                    + message(dec)
+                    + " refines "
+                    + message(refined));
         }
     }
 

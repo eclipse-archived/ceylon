@@ -372,7 +372,8 @@ public class TypeHierarchyVisitor extends Visitor {
             Declaration directMember = 
                     type.declaration.getDirectMember(name, null, false);
             boolean isMemberRefined = 
-                    directMember!=null && directMember.isShared(); //&& !(directMember instanceof Parameter);
+                    directMember!=null && 
+                    directMember.isShared(); //&& !(directMember instanceof Parameter);
             isMemberRefined = isMemberRefined && 
                     type.declaration.getInheritedMembers(name)
                         .contains(declarationOfSupertypeMember);

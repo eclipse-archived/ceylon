@@ -266,22 +266,22 @@ class Strategy {
         if (model instanceof Class) {
             Class cls = (Class)model;
             return !cls.isAbstract()
-                    && !cls.isStatic()
-                    && (Decl.isRefinableMemberClass(cls) 
-                        || 
-                        // If shared, generate an instantiator so that BC is 
-                        // preserved should the member class later become refinable
-                        (Decl.isCeylon(cls)
-                                && model.isMember()
-                                && cls.isShared()
-                                && !cls.isAnonymous()));
+                && !cls.isStatic()
+                && (Decl.isRefinableMemberClass(cls) 
+                    || 
+                    // If shared, generate an instantiator so that BC is 
+                    // preserved should the member class later become refinable
+                    (Decl.isCeylon(cls)
+                            && model.isMember()
+                            && cls.isShared()
+                            && !cls.isAnonymous()));
         } else if (Decl.isConstructor(model)) {
             Constructor ctor = Decl.getConstructor(model);
             Class cls = Decl.getConstructedClass(ctor);
             return cls.isMember()
-                    && cls.isShared()
-                    && !cls.isStatic()
-                    && ctor.isShared();
+                && cls.isShared()
+                && !cls.isStatic()
+                && ctor.isShared();
         } else {
             return false;
         }
@@ -410,8 +410,8 @@ class Strategy {
     private static boolean isNullary(Class superClass) {
         ParameterList parameterList = superClass.getParameterList();
         return parameterList != null 
-                && parameterList.getParameters() != null 
-                && parameterList.getParameters().isEmpty();
+            && parameterList.getParameters() != null 
+            && parameterList.getParameters().isEmpty();
     }
     
     /**
