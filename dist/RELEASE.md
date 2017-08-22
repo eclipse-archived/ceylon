@@ -133,6 +133,7 @@ NB: To be able to sign packages the user running the docker command for generati
  - If everything went ok run `./build.sh --push`
  - Edit the [Full Description](https://hub.docker.com/r/ceylon/s2i-ceylon/), adding a new image/tag line and moving the `latest` tag
  - Update the `README.md` to be the same as the full description
+ - Edit the [image-streams.json](https://github.com/ceylon-docker/s2i-ceylon/blob/master/image-streams.json) file and add the new version (copy an older version and change it) and update the `"latest"` section with the new version.
  - Commit all changes
 
 ## ceylon-docker/source-runner
