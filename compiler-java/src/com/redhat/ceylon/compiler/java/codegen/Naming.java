@@ -627,7 +627,7 @@ public class Naming extends NamingBase implements LocalId {
     
     private static String quoteMethodNameIfProperty(Function method) {
         String name = method.getName();
-        if (!method.isShared()) {
+        if (!method.isSharedOrActual()) {
             name = suffixName(Suffix.$priv$, name);
         }
         // Toplevel methods keep their original name because their names might be mangled

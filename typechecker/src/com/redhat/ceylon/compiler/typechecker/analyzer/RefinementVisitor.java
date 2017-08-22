@@ -18,6 +18,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersect
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.erasedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningSharedRefinements;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
@@ -159,7 +160,7 @@ public class RefinementVisitor extends Visitor {
             
             boolean member = 
                     dec.isClassOrInterfaceMember() &&
-                    dec.isShared() &&
+                    dec.isSharedOrActual() &&
                     !isConstructor(dec) &&
                     !(dec instanceof TypeParameter); //TODO: what about nested interfaces and abstract classes?!            
             if (member) {
@@ -1135,7 +1136,9 @@ public class RefinementVisitor extends Visitor {
             checkRefinedMemberDynamicallyTyped(refined, 
                     refinedMemberDec, typeNode);
         }
-        else if (refinedMemberIsVariable(refinedMemberDec)) {
+        else if (refinedMemberIsVariable(refinedMemberDec)
+                || !refining.isShared() 
+                && (refining.isFormal() || refining.isDefault())) {
             checkRefinedMemberTypeExactly(refiningMember, 
                     refinedMember, typeNode, refined, refining);
         }
@@ -1414,10 +1417,13 @@ public class RefinementVisitor extends Visitor {
         Type refiningType = refiningMember.getType();
         Type refinedType = refinedMember.getType();
         if (!isTypeUnknown(refinedType)) {
-            if (that instanceof Tree.LocalModifier) {
+            if (that instanceof Tree.LocalModifier
+                    && refined.isShared()) {
                 //infer the type of an actual member 
                 //by taking the intersection of all 
-                //members it refines
+                //shared members it refines (no need
+                //to consider unshared refinements
+                //since they can't narrow the type)
                 //NOTE: feature not blessed by the spec!
                 TypedDeclaration td = 
                         (TypedDeclaration) 
@@ -1458,6 +1464,16 @@ public class RefinementVisitor extends Visitor {
             }
         }
     }
+    
+    private String explanation(Declaration member) {
+        if (member instanceof Value 
+                && ((Value)member).isVariable()) {
+            return "variable ";
+        }
+        else {
+            return "";
+        }
+    }
 
     private void checkRefinedMemberTypeExactly(
             Reference refiningMember, 
@@ -1485,26 +1501,31 @@ public class RefinementVisitor extends Visitor {
                 else {
                     checkIsExactly(refiningType, 
                             refinedType, that,
-                            "inferred type of member must be exactly the same as type of variable refined member: " + 
-                            message(refined), 
+                            "inferred type of member must be exactly the same as type of "
+                            + explanation(refined)
+                            + "refined member: " 
+                            + message(refined), 
                             9000);
                 }
                 return;
             }
+            String message = 
+                    "type of member must be exactly the same as type of "
+                    + explanation(refined)
+                    + "refined member: " 
+                    + message(refined);
             if (hasUncheckedNullType(refinedMember)) {
                 Type optionalRefinedType = 
                         unit.getOptionalType(refinedType);
                 checkIsExactlyOneOf(refiningType, 
                         refinedMember.getType(), 
                         optionalRefinedType, that, 
-                        "type of member must be exactly the same as type of variable refined member: " + 
-                        message(refined));
+                        message);
             }
             else {
                 checkIsExactly(refiningType, 
                         refinedType, that,
-                        "type of member must be exactly the same as type of variable refined member: " + 
-                        message(refined), 
+                        message, 
                         9000);
             }
         }
@@ -1609,20 +1630,17 @@ public class RefinementVisitor extends Visitor {
             }
         }
         else if (!dec.isShared() && mayBeShared) {
-            if (dec.isActual()) {
-                that.addError("actual declaration must be shared: '" + 
-                        name + "'", 
-                        701);
-            }
-            if (dec.isFormal()) {
-                that.addError("formal declaration must be shared: '" + 
-                        name + "'", 
-                        702);
-            }
-            if (dec.isDefault()) {
-                that.addError("default declaration must be shared: '" + 
-                        name + "'", 
-                        703);
+            if (!dec.isActual()) {
+                if (dec.isFormal()) {
+                    that.addError("formal declaration must be shared or actual: '" + 
+                            name + "'", 
+                            702);
+                }
+                if (dec.isDefault()) {
+                    that.addError("default declaration must be shared or actual: '" + 
+                            name + "'", 
+                            703);
+                }
             }
         }
         else {
@@ -2232,7 +2250,7 @@ public class RefinementVisitor extends Visitor {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rv.getType());
                 for (Declaration d: 
-                    getInterveningRefinements(name, 
+                    getInterveningSharedRefinements(name, 
                         null, false, root, c, ci)) {
                     addToIntersection(list,
                             c.getType()
@@ -2486,7 +2504,7 @@ public class RefinementVisitor extends Visitor {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rm.getType());
                 for (Declaration d: 
-                    getInterveningRefinements(name, 
+                    getInterveningSharedRefinements(name, 
                         signature, variadic, root, c, ci)) {
                     addToIntersection(list,
                             c.getType()

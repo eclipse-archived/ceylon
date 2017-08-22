@@ -259,7 +259,7 @@ class Strategy {
      */
     public static boolean onlyOnCompanion(Declaration model) {
         return Decl.withinInterface(model)
-            && (model instanceof ClassOrInterface || !model.isShared());
+            && (model instanceof ClassOrInterface || !model.isSharedOrActual());
     }
     
     static boolean generateInstantiator(Declaration model) {
@@ -271,15 +271,15 @@ class Strategy {
                     || 
                     // If shared, generate an instantiator so that BC is 
                     // preserved should the member class later become refinable
-                    (Decl.isCeylon(cls)
-                            && model.isMember()
-                            && cls.isShared()
-                            && !cls.isAnonymous()));
+                    Decl.isCeylon(cls)
+                        && model.isMember()
+                        && cls.isSharedOrActual()
+                        && !cls.isAnonymous());
         } else if (Decl.isConstructor(model)) {
             Constructor ctor = Decl.getConstructor(model);
             Class cls = Decl.getConstructedClass(ctor);
             return cls.isMember()
-                && cls.isShared()
+                && cls.isSharedOrActual()
                 && !cls.isStatic()
                 && ctor.isShared();
         } else {

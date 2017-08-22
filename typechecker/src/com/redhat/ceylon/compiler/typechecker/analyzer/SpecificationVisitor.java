@@ -1690,9 +1690,15 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private String explanation() {
-        return declaration.isShared() ? 
-                " is shared" : 
-                " is captured";
+        if (declaration.isShared()) {
+            return " is shared";
+        }
+        else if (declaration.isActual()) {
+            return " is actual";
+        }
+        else {
+            return " is captured";
+        }
     }
     
     @Override
@@ -1763,7 +1769,7 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private boolean isSharedDeclarationUninitialized() {
-        return (declaration.isShared() || 
+        return (declaration.isSharedOrActual() || 
                 declaration.getOtherInstanceAccess()) 
             && !declaration.isFormal() 
             && !declaration.isJavaNative() 
@@ -1773,7 +1779,7 @@ public class SpecificationVisitor extends Visitor {
     }
     
     private boolean isCapturedDeclarationUninitialized() {
-        return (declaration.isShared() || 
+        return (declaration.isSharedOrActual() ||
                 declaration.getOtherInstanceAccess() ||
                 usedInDeclarationSection) 
             && !definedInDeclarationSection 

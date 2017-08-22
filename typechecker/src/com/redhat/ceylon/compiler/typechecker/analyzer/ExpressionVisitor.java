@@ -5,6 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyForInterop;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correctionMessage;
@@ -1287,14 +1288,7 @@ public class ExpressionVisitor extends Visitor {
         Value val = that.getDeclarationModel();
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
-        if (!val.isActual() 
-                // Note: actual members have a completely 
-                //       different type inference approach, 
-                //       implemented in 
-                //       accountForIntermediateRefinements()
-                || isTypeUnknown(val.getType())) {
-            inferType(that, sie);
-        }
+        inferTypeAccountingForRefinement(that, val, sie);
         Tree.Type type = that.getType();
         if (type!=null) {
             Type t = type.getTypeModel();
@@ -1326,6 +1320,59 @@ public class ExpressionVisitor extends Visitor {
                 .getModel()
                 .setType(val.getType());
         }
+    }
+
+    private void inferTypeAccountingForRefinement(
+            Tree.AttributeDeclaration that, Value dec,
+            Tree.SpecifierOrInitializerExpression sie) {
+        if (dec.isActual() && dec.getType()!=null) {
+            //actual members have a completely 
+            //different type inference approach,
+            //implemented in RefinementVisitor
+            if (!dec.isShared()) {
+                //in the case that it's unshared,
+                //we require that both approaches
+                //give exactly the same result
+                inferType(that, sie);
+                checkUnsharedRefinement(dec, sie, 
+                        that.getType());
+            }
+        }
+        else if (isTypeUnknown(dec.getType())) {
+            inferType(that, sie);
+        }
+    }
+
+    private void inferFunctionTypeAccountingForRefinement(
+            Tree.MethodDeclaration that, Function fun,
+            Tree.Expression e, Tree.SpecifierExpression se) {
+        Type declaredType = fun.getType();
+        if (fun.isActual() && declaredType!=null) { 
+            //actual members have a completely 
+            //different type inference approach,
+            //implemented in RefinementVisitor
+            if (!fun.isShared()) {
+                //in the case that it's unshared,
+                //we require that both approaches
+                //give exactly the same result
+                inferFunctionType(that, e);
+                checkUnsharedRefinement(fun, se, that.getType());
+            }
+        }
+        else if (isTypeUnknown(declaredType)) {
+            inferFunctionType(that, e);
+        }
+    }
+
+    private void checkUnsharedRefinement(TypedDeclaration dec, 
+            Node sie, Tree.Type declaredType) {
+        checkIsExactly(dec.getType(), 
+                declaredType.getTypeModel(), sie, 
+                "inferred type of unshared refinement '"
+                + dec.getName(unit)
+                + "' must be exactly the same as type of refined member (make '"
+                + dec.getName(unit)
+                + "' shared or declare its type explicitly)");
     }
     
     @Override public void visit(Tree.ParameterizedExpression that) {
@@ -1824,19 +1871,21 @@ public class ExpressionVisitor extends Visitor {
                     //TODO: do we need to handle those complicating
                     //      factors here as well?
                     && !refinedMethodOrValue.equals(intervening)) {
-                FunctionOrValue refinement = 
-                        (FunctionOrValue) 
-                            intervening;
-                Reference refinedMember = 
-                        getRefinedMemberReference(refinement, 
-                                refiningType);
-                Type type = refinedMember.getType();
-                allHaveNulls = allHaveNulls 
-                        && hasNullReturnValues(type, 
-                                refinement);
-                intersectReturnType(refinedTypes, type);
-                checkIntermediateRefinement(that,
-                        refinement, refinedMember);
+                if (intervening.isShared()) {
+                    FunctionOrValue refinement = 
+                            (FunctionOrValue) 
+                                intervening;
+                    Reference refinedMember = 
+                            getRefinedMemberReference(refinement, 
+                                    refiningType);
+                    Type type = refinedMember.getType();
+                    allHaveNulls = allHaveNulls 
+                            && hasNullReturnValues(type, 
+                                    refinement);
+                    intersectReturnType(refinedTypes, type);
+                    checkIntermediateRefinement(that,
+                            refinement, refinedMember);
+                }
             }
         }
         Type it = canonicalIntersection(refinedTypes, unit);
@@ -2143,6 +2192,11 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnScope(rt, val);
         endReturnDeclaration(od);
+        if (type!=null 
+                && val.isActual() 
+                && !val.isShared()) {
+            checkUnsharedRefinement(val, that, type);
+        }
         Setter setter = val.getSetter();
         if (setter!=null) {
             setter.getParameter()
@@ -2219,15 +2273,7 @@ public class ExpressionVisitor extends Visitor {
         if (se!=null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
-                if (!fun.isActual() 
-                        // Note: actual members have a completely 
-                        //       different type inference approach, 
-                        //       implemented in 
-                        //       accountForIntermediateRefinements()
-                        //       & RV.checkRefinedMemberTypeAssignable()
-                        || isTypeUnknown(fun.getType())) {
-                    inferFunctionType(that, e);
-                }
+                inferFunctionTypeAccountingForRefinement(that, fun, e, se);
                 if (type!=null && 
                         !(type instanceof Tree.DynamicModifier)) {
                     checkFunctionType(e, type, se);
@@ -2265,6 +2311,11 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         endReturnScope(rt, fun);
         endReturnDeclaration(od);
+        if (type!=null 
+                && fun.isActual() 
+                && !fun.isShared()) {
+            checkUnsharedRefinement(fun, that, type);
+        }
         if (type instanceof Tree.LocalModifier) {
             if (isTypeUnknown(type.getTypeModel())) {
                 type.addError("function type could not be inferred");

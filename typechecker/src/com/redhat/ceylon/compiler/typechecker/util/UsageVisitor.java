@@ -85,7 +85,7 @@ public class UsageVisitor extends Visitor {
         Backends bs = declaration.getNativeBackends();
         if (declaration!=null && 
                 declaration.getName()!=null &&
-                !declaration.isShared() && 
+                !declaration.isSharedOrActual() && 
                 !declaration.isToplevel() && 
                 !rc.isReferenced(declaration) &&
                 !declaration.isParameter() &&

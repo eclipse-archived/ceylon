@@ -510,7 +510,7 @@ public class CeylonTransformer extends AbstractTransformer {
         AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
                 .wrapped(this, attrName, declarationModel, declarationModel.isToplevel(), 
                         memoized ? initialValue : null);
-        builder.is(Flags.PUBLIC, declarationModel.isShared());
+        builder.is(Flags.PUBLIC, declarationModel.isSharedOrActual());
         if (isJavaStrictfp(declarationModel)) {
             builder.is(Flags.STRICTFP, true);
         }
@@ -646,7 +646,7 @@ public class CeylonTransformer extends AbstractTransformer {
                     typeExpr,
                     attrClassName, 
                     attrClassName, 
-                    declarationModel.isShared(), 
+                    declarationModel.isSharedOrActual(), 
                     initialValue));
         } else {
             if (expressionError != null) {

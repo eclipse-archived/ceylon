@@ -1908,14 +1908,14 @@ class NamedArgumentInvocation extends Invocation {
                 // a member method
                 thisType = gen.makeJavaType(target.getQualifyingType(), 
                         JT_NO_PRIMITIVES 
-                        | (primaryDec.isInterfaceMember() && !primaryDec.isShared() 
+                        | (primaryDec.isInterfaceMember() && !primaryDec.isSharedOrActual() 
                                 ? JT_COMPANION : 0));
                 TypeDeclaration outer = Decl.getOuterScopeOfMemberInvocation((StaticMemberOrTypeExpression) getPrimary(), primaryDec);
                 if (outer instanceof Interface
-                        && primaryDec.isShared()) {
+                        && primaryDec.isSharedOrActual()) {
                     defaultedParameterInstance = gen.naming.makeQuotedThis();
                 } else {
-                    defaultedParameterInstance = gen.naming.makeQualifiedThis(gen.makeJavaType(((TypeDeclaration)outer).getType(), JT_NO_PRIMITIVES | (primaryDec.isInterfaceMember() && !primaryDec.isShared() ? JT_COMPANION : 0)));
+                    defaultedParameterInstance = gen.naming.makeQualifiedThis(gen.makeJavaType(((TypeDeclaration)outer).getType(), JT_NO_PRIMITIVES | (primaryDec.isInterfaceMember() && !primaryDec.isSharedOrActual() ? JT_COMPANION : 0)));
                 }
             } else {
                 // a local or toplevel function
@@ -1968,7 +1968,7 @@ class NamedArgumentInvocation extends Invocation {
             } else {
                 int jtFlags = JT_NO_PRIMITIVES;
                 if (getPrimary() instanceof QualifiedTypeExpression
-                        && !getPrimaryDeclaration().isShared()
+                        && !getPrimaryDeclaration().isSharedOrActual()
                         && type.getDeclaration() instanceof Interface) {
                     jtFlags |= JT_COMPANION;
                 } else if (

@@ -5292,7 +5292,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 result = transformSuperOf(expr, expr.getPrimary(), exprDec.getName());
             } else if (isThis(primary)
                     && !exprDec.isCaptured() 
-                    && !exprDec.isShared()
+                    && !exprDec.isSharedOrActual()
                     && Decl.getDeclarationScope(expr.getScope()) instanceof Constructor) {
                 result = null;
             } else if (Decl.isJavaStaticOrInterfacePrimary(primary)) {
@@ -5896,7 +5896,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 VarianceCastResult varianceCastResult = getVarianceCastResult(targetType, declarationContainerType);
                 // if we are within a comprehension body, or if we need a variance cast
                 if(isWithinSyntheticClassBody() || varianceCastResult != null){
-                    if (decl.isShared() && outer instanceof Interface) {
+                    if (decl.isSharedOrActual() && outer instanceof Interface) {
                         // always prefer qualified
                         qualExpr = makeQualifiedDollarThis(declarationContainerType);
                     } else {
@@ -6000,7 +6000,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // this is only for interface containers
                 && declContainer instanceof Interface
                 // we only ever need the $impl if the declaration is not shared
-                && !decl.isShared()
+                && !decl.isSharedOrActual()
                 && (!(expr instanceof Tree.QualifiedMemberExpression)
                 || !isSuperOrSuperOf(((Tree.QualifiedMemberExpression)expr).getPrimary()))){
             Interface declaration = (Interface) declContainer;
@@ -6067,7 +6067,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             while (scope != null){
                 // Is it being used in an interface (=> impl)
                 if(scope instanceof Interface && ((Interface) scope).getType().isSubtypeOf(scope.getDeclaringType(decl))) {
-                    return decl.isShared();
+                    return decl.isSharedOrActual();
                 }
                 scope = scope.getContainer();
             }

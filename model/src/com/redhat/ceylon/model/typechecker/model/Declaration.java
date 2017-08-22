@@ -460,6 +460,10 @@ public abstract class Declaration
         return false;
     }
     
+    public boolean isSharedOrActual() {
+        return isShared() || isActual();
+    }
+    
     /**
      * Get a produced reference for this declaration
      * by binding explicit or inferred type arguments
@@ -703,7 +707,8 @@ public abstract class Declaration
                             getContainer();
                 return other.getName()!=null && getName()!=null 
                     && other.getName().equals(getName()) 
-                    && isShared() && other.isShared() 
+                    && isSharedOrActual() 
+                    && other.isSharedOrActual()
                     //&& other.getDeclarationKind()==getDeclarationKind()
                     && type.isMember(other);
             }

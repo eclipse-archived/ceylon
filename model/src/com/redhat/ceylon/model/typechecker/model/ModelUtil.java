@@ -2796,13 +2796,25 @@ public class ModelUtil {
         return getInterveningRefinements(dec.getName(), 
                 getSignature(dec),
                 isVariadic(dec),
-                root, bottom, top);
+                root, bottom, top,
+                true);
+    }
+    
+    public static List<Declaration> getInterveningSharedRefinements(
+            String name, List<Type> signature, boolean variadic,
+            Declaration root,
+            TypeDeclaration bottom, TypeDeclaration top) {
+        return getInterveningRefinements(name, 
+                signature, variadic, 
+                root, bottom, top, 
+                false);
     }
     
     public static List<Declaration> getInterveningRefinements(
             String name, List<Type> signature, boolean variadic,
             Declaration root,
-            TypeDeclaration bottom, TypeDeclaration top) {
+            TypeDeclaration bottom, TypeDeclaration top,
+            boolean includeUnshared) {
         boolean rootOverloaded = isOverloadedVersion(root);
         List<Declaration> result = 
                 new ArrayList<Declaration>(2);
@@ -2816,7 +2828,9 @@ public class ModelUtil {
                                 signature, variadic,
                                 rootOverloaded);
                 if (member!=null 
-                        && member.isShared() 
+                        && (includeUnshared ? 
+                                member.isSharedOrActual() : 
+                                member.isShared()) 
                         && !isAbstraction(member)) {
                     TypeDeclaration td = 
                             (TypeDeclaration) 
@@ -3303,7 +3317,7 @@ public class ModelUtil {
     public static boolean isCaptured(Declaration decl) {
         // Shared elements are implicitly captured although 
         // the typechecker doesn't mark them that way
-        return decl.isCaptured() || decl.isShared();
+        return decl.isCaptured() || decl.isSharedOrActual();
     }
 
     public static boolean isNonTransientValue(Declaration decl) {

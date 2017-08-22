@@ -566,7 +566,7 @@ public class ClassDefinitionBuilder
         MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode(decl.isDeprecated());
         ctor.ignoreModelAnnotations();
         ctor.reifiedTypeParameters(decl.getTypeParameters());
-        ctor.modifiers(decl.isShared() ? PUBLIC : 0);
+        ctor.modifiers(decl.isSharedOrActual() ? PUBLIC : 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, "$this");
         pdb.type(new TransformedType(gen.makeJavaType(thisType), null, gen.makeAtNonNull()));
         // ...initialize the $this field from a ctor parameter...
