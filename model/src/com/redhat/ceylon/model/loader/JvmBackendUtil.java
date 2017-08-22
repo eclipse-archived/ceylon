@@ -96,7 +96,7 @@ public class JvmBackendUtil {
             name = mirror.getName();
             name = name.isEmpty() ? name : NamingBase.stripLeadingDollar(name);
             if (mirror instanceof ClassMirror
-                    && JvmBackendUtil.isInitialLowerCase(name)
+                    && isInitialLowerCase(name)
                     && name.endsWith("_")
                     && mirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null) {
                 name = name.substring(0, name.length()-1);
@@ -107,7 +107,7 @@ public class JvmBackendUtil {
 
     public static boolean isSubPackage(String moduleName, String pkgName) {
         return pkgName.equals(moduleName)
-                || pkgName.startsWith(moduleName+".");
+            || pkgName.startsWith(moduleName+".");
     }
 
     /**
@@ -146,8 +146,8 @@ public class JvmBackendUtil {
      */
     public static boolean isValue(Declaration decl) {
         return (decl instanceof Value)
-                && !((Value)decl).isParameter()
-                && !((Value)decl).isTransient();
+            && !((Value)decl).isParameter()
+            && !((Value)decl).isTransient();
     }
 
     /**
@@ -302,9 +302,9 @@ public class JvmBackendUtil {
 
     public static boolean createMethod(FunctionOrValue model) {
         return model instanceof Function
-                && model.isParameter()
-                && model.isClassMember()
-                && (model.isShared() || model.isCaptured());
+            && model.isParameter()
+            && model.isClassMember()
+            && ModelUtil.isCaptured(model);
     }
 
     public static boolean supportsReified(Declaration declaration){
@@ -337,7 +337,7 @@ public class JvmBackendUtil {
     
     public static boolean isCompanionClassNeeded(TypeDeclaration decl) {
         return decl instanceof Interface 
-                && BooleanUtil.isNotFalse(((Interface)decl).isCompanionClassNeeded());
+            && BooleanUtil.isNotFalse(((Interface)decl).isCompanionClassNeeded());
     }
 
     /**
@@ -346,11 +346,11 @@ public class JvmBackendUtil {
      */
     public static boolean isBoxedVariable(TypedDeclaration attr) {
         return (ModelUtil.isNonTransientValue(attr)
-                && ModelUtil.isLocalNotInitializer(attr)
-                && ((attr.isVariable() && attr.isCaptured())
-                        // self-captured objects must also be boxed like variables
-                        || attr.isSelfCaptured()))
-                || (attr instanceof Value && ModelUtil.isEnumeratedConstructorInLocalVariable((Value) attr));
+            && ModelUtil.isLocalNotInitializer(attr)
+            && ((attr.isVariable() && attr.isCaptured())
+                    // self-captured objects must also be boxed like variables
+                    || attr.isSelfCaptured()))
+            || (attr instanceof Value && ModelUtil.isEnumeratedConstructorInLocalVariable((Value) attr));
     }
 
     private static String getArrayName(TypeDeclaration decl) {
@@ -448,8 +448,8 @@ public class JvmBackendUtil {
     
     public static boolean definesPackage(String path) {
         return path.toLowerCase().endsWith(".class")
-                // skip Java 9 module descriptors
-                && !path.equals("module-info.class");
+            // skip Java 9 module descriptors
+            && !path.equals("module-info.class");
     }
 
     public static void writeStaticMetamodel(File outputFolder, List<ArtifactResult> entries, JdkProvider jdkProvider, String metaInfEntry) throws IOException {

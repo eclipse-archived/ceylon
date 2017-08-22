@@ -1247,7 +1247,7 @@ public class ClassTransformer extends AbstractTransformer {
                     null, false, expressionGen().transformAnnotations(OutputElement.FIELD, memberTree));
             classBuilder.getInitBuilder().init(make().Exec(make().Assign(naming.makeQualIdent(naming.makeThis(), decl.getName()), naming.makeName(value, Naming.NA_IDENT))));
         } else if (parameterTree instanceof Tree.ValueParameterDeclaration
-                && (value.isShared() || value.isCaptured())) {
+                && ModelUtil.isCaptured(value)) {
             makeFieldForParameter(classBuilder, decl, memberTree);
             AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl.getModel());
             adb.modifiers(classGen().modifierTransformation().getterSetter(decl.getModel(), false));
@@ -1319,22 +1319,23 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private void transformParameter(ParameterizedBuilder<?> classBuilder, 
             Tree.Parameter p, Parameter param, Tree.TypedDeclaration member) {
-        JCExpression type = makeJavaType(param.getModel(), param.getType(), 0);
+        FunctionOrValue model = param.getModel();
+        JCExpression type = makeJavaType(model, param.getType(), 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, param);
 //        pdb.at(p);
         pdb.aliasName(Naming.getAliasedParameterName(param));
-        if (Naming.aliasConstructorParameterName(param.getModel())) {
-            naming.addVariableSubst(param.getModel(), Naming.suffixName(Suffix.$param$, param.getName()));
+        if (Naming.aliasConstructorParameterName(model)) {
+            naming.addVariableSubst(model, Naming.suffixName(Suffix.$param$, param.getName()));
         }
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
         pdb.type(new TransformedType(type, 
-                makeJavaTypeAnnotations(param.getModel()),
-                makeNullabilityAnnotations(param.getModel())));
+                makeJavaTypeAnnotations(model),
+                makeNullabilityAnnotations(model)));
         pdb.modifiers(modifierTransformation().transformClassParameterDeclFlags(param));
-        if (!(param.getModel().isShared() || param.getModel().isCaptured())) {
+        if (!ModelUtil.isCaptured(model)) {
             // We load the model for shared parameters from the corresponding member
-            pdb.modelAnnotations(param.getModel().getAnnotations());
+            pdb.modelAnnotations(model.getAnnotations());
         }
         if (member != null) {
             pdb.userAnnotations(expressionGen().transformAnnotations(OutputElement.PARAMETER, member));
@@ -1559,7 +1560,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (!value.isTransient()
                     && !value.isFormal()
                     && !ModelUtil.isConstructor(value)
-                    && (value.isShared() || value.isCaptured())) {
+                    && ModelUtil.isCaptured(value)) {
                 return true;
             }
         } /*else if (member instanceof Function) {
@@ -5667,7 +5668,7 @@ public class ClassTransformer extends AbstractTransformer {
             objectClassBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
             if (def instanceof Tree.ObjectDefinition
                     && klass.isMember()
-                    && (klass.isShared() || klass.isCaptured() || model.isCaptured())) {
+                    && (ModelUtil.isCaptured(klass) || model.isCaptured())) {
                 addWriteReplace(klass, objectClassBuilder);
             }
         }

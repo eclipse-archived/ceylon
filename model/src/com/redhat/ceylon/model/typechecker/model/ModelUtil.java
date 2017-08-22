@@ -3301,7 +3301,8 @@ public class ModelUtil {
     }
 
     public static boolean isCaptured(Declaration decl) {
-        // Shared elements are implicitly captured although the typechecker doesn't mark them that way
+        // Shared elements are implicitly captured although 
+        // the typechecker doesn't mark them that way
         return decl.isCaptured() || decl.isShared();
     }
 

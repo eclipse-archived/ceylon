@@ -1679,10 +1679,7 @@ public class SpecificationVisitor extends Visitor {
                     Node d = getDeclaration(that);
                     if (d==null) d = that;
                     d.addError("must be definitely specified by class initializer: " + 
-                                message(declaration) + 
-                                (declaration.isShared() ? 
-                                        " is shared" : 
-                                        " is captured"), 
+                                message(declaration) + explanation(), 
                                 1401);
                 }
             }
@@ -1690,6 +1687,12 @@ public class SpecificationVisitor extends Visitor {
         else {
             super.visit(that);
         }
+    }
+
+    private String explanation() {
+        return declaration.isShared() ? 
+                " is shared" : 
+                " is captured";
     }
     
     @Override
@@ -1749,41 +1752,35 @@ public class SpecificationVisitor extends Visitor {
         if (!specificationDisabled && 
                 isSharedDeclarationUninitialized()) {
             that.addError("must be definitely specified by class initializer: " +
-                    message(declaration) + 
-                    (declaration.isShared() ? 
-                            " is shared" : 
-                            " is captured"));
+                    message(declaration) + explanation());
         }
         else if (that.getDeclaration()==declaration.getContainer() &&
                 isCapturedDeclarationUninitialized()) {
             that.addError("must be definitely specified by class initializer: " +
-                    message(declaration) + 
-                    (declaration.isShared() ? 
-                            " is shared" : 
-                            " is captured"));
+                    message(declaration) + explanation());
         }
         exit();
     }
 
     private boolean isSharedDeclarationUninitialized() {
         return (declaration.isShared() || 
-                declaration.getOtherInstanceAccess()) && 
-                !declaration.isFormal() &&
-                !declaration.isJavaNative() && 
-                !isNativeHeader(declaration) &&
-                !isLate() &&
-                !definitely;
+                declaration.getOtherInstanceAccess()) 
+            && !declaration.isFormal() 
+            && !declaration.isJavaNative() 
+            && !isNativeHeader(declaration) 
+            && !isLate() 
+            && !definitely;
     }
     
     private boolean isCapturedDeclarationUninitialized() {
         return (declaration.isShared() || 
                 declaration.getOtherInstanceAccess() ||
-                usedInDeclarationSection) &&
-                !definedInDeclarationSection &&
-                !declaration.isFormal() && 
-                !isNativeHeader(declaration) &&
-                !isLate() &&
-                !definitely;
+                usedInDeclarationSection) 
+            && !definedInDeclarationSection 
+            && !declaration.isFormal() 
+            && !isNativeHeader(declaration) 
+            && !isLate() 
+            && !definitely;
     }
     
     @Override

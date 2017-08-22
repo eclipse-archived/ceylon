@@ -207,7 +207,7 @@ public class AnnotationUtil {
                 if (declarationModel.isParameter()) {
                     result.add(PARAMETER);
                 }
-                if (declarationModel.isShared() || declarationModel.isCaptured()) {
+                if (ModelUtil.isCaptured(declarationModel)) {
                     result.add(GETTER);
                     if (!(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
                         result.add(FIELD);

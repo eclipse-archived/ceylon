@@ -1072,7 +1072,7 @@ public class Naming extends NamingBase implements LocalId {
         } else if (decl instanceof Setter) {
             builder.select(getSetterName(decl.getName()));
         } else if (decl instanceof Function
-                && ((!decl.isParameter() || decl.isShared() || decl.isCaptured())
+                && ((!decl.isParameter() || ModelUtil.isCaptured(decl))
                         // if we want it aliased, it means we're in a constructor and we don't want
                         // the member name ever for parameters, so let's never fall into that branch and skip
                         // to the next one
@@ -1089,8 +1089,8 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     public static boolean isJavaInterop(Declaration decl) {
-        return decl instanceof Class &&
-                "java.lang::Types".equals(decl.getQualifiedNameString());
+        return decl instanceof Class 
+            && "java.lang::Types".equals(decl.getQualifiedNameString());
     }
     
     private <R> void addNamesForWrapperClass(TypeDeclarationBuilder<R> builder, TypedDeclaration decl, int namingOptions) {

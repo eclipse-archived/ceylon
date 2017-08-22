@@ -36,7 +36,6 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -250,8 +249,7 @@ class Strategy {
      * for a FunctionalParameter 
      */
     static boolean createMethod(Parameter parameter) {
-        FunctionOrValue model = parameter.getModel();
-        return JvmBackendUtil.createMethod(model);
+        return JvmBackendUtil.createMethod(parameter.getModel());
     }
 
     /**
@@ -261,8 +259,7 @@ class Strategy {
      */
     public static boolean onlyOnCompanion(Declaration model) {
         return Decl.withinInterface(model)
-                && (model instanceof ClassOrInterface
-                        || !Decl.isShared(model));
+            && (model instanceof ClassOrInterface || !Decl.isShared(model));
     }
     
     static boolean generateInstantiator(Declaration model) {
@@ -307,16 +304,16 @@ class Strategy {
      * {@code actual} then {@code java.lang.Object} should be used.
      */
     static boolean useBoxedVoid(Function m) {
-        return m.isMember() &&
-            (m.isDefault() || m.isFormal() || m.isActual()) &&
-            m.getType().isAnything() &&
-            Decl.isCeylon((TypeDeclaration)m.getRefinedDeclaration().getContainer());
+        return m.isMember() 
+            && (m.isDefault() || m.isFormal() || m.isActual()) 
+            && m.getType().isAnything() 
+            && Decl.isCeylon((TypeDeclaration)m.getRefinedDeclaration().getContainer());
     }
 
     public static boolean hasDelegatedDpm(Class cls) {
-        return Decl.isRefinableMemberClass(cls.getRefinedDeclaration()) &&
-            Strategy.defaultParameterMethodOnOuter(cls) &&
-            Decl.withinInterface(cls.getRefinedDeclaration());
+        return Decl.isRefinableMemberClass(cls.getRefinedDeclaration()) 
+            && Strategy.defaultParameterMethodOnOuter(cls) 
+            && Decl.withinInterface(cls.getRefinedDeclaration());
     }
 
     /**

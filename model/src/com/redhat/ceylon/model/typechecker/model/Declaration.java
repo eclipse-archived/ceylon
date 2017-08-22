@@ -701,11 +701,11 @@ public abstract class Declaration
                 ClassOrInterface type = 
                         (ClassOrInterface) 
                             getContainer();
-                return other.getName()!=null && getName()!=null &&
-                        other.getName().equals(getName()) && 
-                        isShared() && other.isShared() &&
-                        //other.getDeclarationKind()==getDeclarationKind() &&
-                        type.isMember(other);
+                return other.getName()!=null && getName()!=null 
+                    && other.getName().equals(getName()) 
+                    && isShared() && other.isShared() 
+                    //&& other.getDeclarationKind()==getDeclarationKind()
+                    && type.isMember(other);
             }
             else {
                 return false;
@@ -799,7 +799,8 @@ public abstract class Declaration
     }
 
     public boolean sameKind(Declaration m) {
-        return m!=null && m.getModelClass()==getModelClass();
+        return m!=null 
+            && m.getModelClass()==getModelClass();
     }
 
     public DeclarationCompleter getActualCompleter() {

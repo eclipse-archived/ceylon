@@ -5243,10 +5243,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     JCExpression transformQualifiedMemberPrimary(Tree.QualifiedMemberOrTypeExpression expr) {
+        Declaration exprDec = expr.getDeclaration();
         if(expr.getTarget() == null)
             return makeErroneous(expr, "compiler bug: "
                     // make sure we don't die of a missing declaration too
-                    + (expr.getDeclaration() != null ? expr.getDeclaration().getName() : expr)
+                    + (exprDec != null ? exprDec.getName() : expr)
                     + " has a null target");
 
         // do not consider the primary to be an invocation since in foo.x() we're invoking x, not foo.
@@ -5256,7 +5257,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // only useful for the typechecker resolving
             
             Tree.Primary primary = expr.getPrimary();
-            if (Decl.isConstructor(expr.getDeclaration())) {
+            if (Decl.isConstructor(exprDec)) {
 //                Constructor ctor = Decl.getConstructor(expr.getDeclaration());
                 if (primary instanceof Tree.QualifiedMemberOrTypeExpression) {
                     // foo.Class.Ctor => foo
@@ -5288,10 +5289,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (isSuper(primary)) {
                 result = transformSuper(expr);
             } else if (isSuperOf(primary)) {
-                result = transformSuperOf(expr, expr.getPrimary(), expr.getDeclaration().getName());
+                result = transformSuperOf(expr, expr.getPrimary(), exprDec.getName());
             } else if (isThis(primary)
-                    && !expr.getDeclaration().isCaptured() 
-                    && !expr.getDeclaration().isShared()
+                    && !exprDec.isCaptured() 
+                    && !exprDec.isShared()
                     && Decl.getDeclarationScope(expr.getScope()) instanceof Constructor) {
                 result = null;
             } else if (Decl.isJavaStaticOrInterfacePrimary(primary)) {
@@ -5680,7 +5681,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     // (Value inside a Class) where we might refer to JavaBean properties
                     selector = naming.selector((TypedDeclaration)decl);
                 }
-            } else if (decl.isCaptured() || decl.isShared()) {
+            } else if (ModelUtil.isCaptured(decl)) {
                 TypedDeclaration typedDecl = ((TypedDeclaration)decl);
                 TypeDeclaration typeDecl = typedDecl.getType().getDeclaration();
                 mustUseField = Decl.isBoxedVariable((TypedDeclaration)decl);
@@ -6564,23 +6565,27 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else if(leftTerm instanceof Tree.QualifiedMemberExpression) {
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
+            Tree.Primary primary = qualified.getPrimary();
             if (isPackageQualified(qualified)) {
                 lhs = null;
-            } else if (isSuper(qualified.getPrimary())) {
+            } else if (isSuper(primary)) {
                 lhs = transformSuper(qualified);
-            } else if (isSuperOf(qualified.getPrimary())) {
-                lhs = transformSuperOf(qualified, qualified.getPrimary(), qualified.getDeclaration().getName());
-            } else if (isThis(qualified.getPrimary())
-                    && !qualified.getDeclaration().isCaptured() 
-                    && !qualified.getDeclaration().isShared() ) {
-                lhs = null;
-            } else if (!qualified.getDeclaration().isStatic()) {
-                lhs = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
-                if (Decl.isPrivateAccessRequiringUpcast(qualified)) {
-                    lhs = makePrivateAccessUpcast(qualified, lhs);
-                }
             } else {
-                lhs = makeJavaType(((ClassOrInterface)qualified.getDeclaration().getContainer()).getType(), JT_RAW);
+                Declaration qualifiedDec = qualified.getDeclaration();
+                if (isSuperOf(primary)) {
+                    lhs = transformSuperOf(qualified, primary, qualifiedDec.getName());
+                } else if (isThis(primary)
+                        && !qualifiedDec.isCaptured() 
+                        && !qualifiedDec.isShared() ) {
+                    lhs = null;
+                } else if (!qualifiedDec.isStatic()) {
+                    lhs = transformExpression(primary, BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
+                    if (Decl.isPrivateAccessRequiringUpcast(qualified)) {
+                        lhs = makePrivateAccessUpcast(qualified, lhs);
+                    }
+                } else {
+                    lhs = makeJavaType(((ClassOrInterface)qualifiedDec.getContainer()).getType(), JT_RAW);
+                }
             }
         } else if(leftTerm instanceof Tree.ParameterizedExpression) {
             lhs = null;
@@ -6624,7 +6629,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
         } else if (decl instanceof Function && Decl.isDeferred(decl)) {
         } else if ((decl.isVariable() || decl.isLate()) && (Decl.isClassAttribute(decl))) {
-        } else if (decl.isVariable() && (decl.isCaptured() || decl.isShared())) {
+        } else if (decl.isVariable() && ModelUtil.isCaptured(decl)) {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
                 
@@ -6717,7 +6722,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
                 }
             }
-        } else if (decl.isVariable() && (decl.isCaptured() || decl.isShared())) {
+        } else if (decl.isVariable() && ModelUtil.isCaptured(decl)) {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
                 varExpr = naming.makeName(decl, Naming.NA_Q_LOCAL_INSTANCE | Naming.NA_MEMBER | Naming.NA_SETTER);
@@ -6758,7 +6763,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     return true;
                 }
             }
-        } else if (decl.isVariable() && (decl.isCaptured() || decl.isShared())) {
+        } else if (decl.isVariable() && ModelUtil.isCaptured(decl)) {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
                 return false;

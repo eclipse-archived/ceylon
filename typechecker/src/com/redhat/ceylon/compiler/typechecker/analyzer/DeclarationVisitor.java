@@ -1454,7 +1454,7 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         if (v.isFormal() && sie!=null) {
-            that.addError("formal attributes may not have a value", 
+            that.addError("formal attribute may not have a value", 
                     1102);
         }
         Tree.Type type = that.getType();

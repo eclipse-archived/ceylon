@@ -37,6 +37,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -132,7 +133,7 @@ public class LocalTypeVisitor extends Visitor {
         if(stmt instanceof Tree.AttributeDeclaration
                 && ((Tree.AttributeDeclaration) stmt).getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression){
             Value model = ((Tree.AttributeDeclaration) stmt).getDeclarationModel();
-            return !model.isCaptured() && !model.isShared();
+            return !ModelUtil.isCaptured(model);
         }
         if(stmt instanceof Tree.SpecifierStatement
             && ((Tree.SpecifierStatement) stmt).getSpecifierExpression() instanceof Tree.LazySpecifierExpression){
@@ -180,7 +181,7 @@ public class LocalTypeVisitor extends Visitor {
     }
 
     private boolean isMemberInInitialiser(Declaration model) {
-        if(model.isShared() || model.isCaptured())
+        if(ModelUtil.isCaptured(model))
             return false;
         if(model instanceof ClassOrInterface)
             return false;
