@@ -1,4 +1,4 @@
-"Given a [[stream]] of streams, return a transposed 
+"Given a stream of [[streams]], return a transposed 
  stream of streams, where the nth element of the 
  transposed stream is a stream comprising the nth 
  elements of the given streams, padded with `null`s. 
