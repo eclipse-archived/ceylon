@@ -52,14 +52,47 @@ class Ee() extends Dd() {
     shared actual default value i => "";
 }
 
-class WithoutError() {
-    @type:"Boolean" shared actual function equals(Object x) => false;
-    @type:"String" shared actual value string => "";
+class WithoutError1() {
+    @type:"Boolean" 
+    shared actual function equals(Object x) => false;
+    @type:"String" 
+    shared actual value string => "";
+}
+
+class WithoutError2() {
+    @type:"Boolean"
+    shared actual function equals(Object x) {
+        return true;
+    }
+    @type:"String"
+    shared actual value string {
+        return "";
+    }
+}
+
+class WithoutError3() {
+    @type:"Boolean"
+    shared actual function equals(Object x) {
+        return nothing;
+    }
+    @type:"String"
+    shared actual value string {
+        return nothing;
+    }
+}
+
+class WithoutError4() {
+    @type:"Boolean" 
+    shared actual function equals(Object x) => nothing;
+    @type:"String" 
+    shared actual value string => nothing;
 }
 
 
 class WithInferenceAndFatArrow() {
+    @type:"Boolean" 
     @error shared actual function equals(Object x) => 1;
+    @type:"String" 
     @error shared actual value string => 1;
 }
 
@@ -69,9 +102,11 @@ class WithShortcutRefinement() {
 }
 
 class WithInferenceAndReturn() {
+    @type:"Boolean" 
     shared actual function equals(Object x) {
         @error return 1;
     }
+    @type:"String" 
     shared actual value string {
         @error return 1;
     }
