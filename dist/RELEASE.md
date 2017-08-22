@@ -123,7 +123,17 @@ NB: To be able to sign packages the user running the docker command for generati
  - If everything went ok run `./build.sh --push`
  - Edit the [Full Description](https://hub.docker.com/r/ceylon/ceylon/), adding a new image/tag line and moving the `latest` tag
  - Update the `README.md` to be the same as the full description
- - Commit all changes
+ - Commit and push all changes
+
+## ceylon-docker/source-runner
+
+ - Check out [ceylon-docker/source-runner](https://github.com/ceylon-docker/source-runner)
+ - Edit the `build.sh` and add the new version to the front of the `VERSIONS` list and change the `LATEST` value
+ - Run `./build.sh --build`
+ - If everything went ok run `./build.sh --push`
+ - Edit the [Full Description](https://hub.docker.com/r/ceylon/source-runner/), adding a new image/tag line and moving the `latest` tag
+ - Update the `README.md` to be the same as the full description
+ - Commit and push all changes
 
 ## ceylon-docker/s2i-ceylon
 
@@ -134,18 +144,21 @@ NB: To be able to sign packages the user running the docker command for generati
  - Edit the [Full Description](https://hub.docker.com/r/ceylon/s2i-ceylon/), adding a new image/tag line and moving the `latest` tag
  - Update the `README.md` to be the same as the full description
  - Edit the [image-streams.json](https://github.com/ceylon-docker/s2i-ceylon/blob/master/image-streams.json) file and add the new version (copy an older version and change it) and update the `"latest"` section with the new version.
+ - Commit and push all changes
+
+## ceylon/ceylon-examples-web
+
+This example project is used by the above `ceylon-docker/s2i-ceylon` project
+
+ - Check out [ceylon/ceylon-examples-web](https://github.com/ceylon/ceylon-examples-web)
+ - Make sure you're using the correct Ceylon version that you are releasing before continuing!
+ - In the project folder run `ceylon bootstrap --force`
+ - Now look for references to the old version in all the files and change them to the new version
+ - **IMPORTANT**: take special care with the `web-content/js/graph.js` file! Read the comment carefully. The list of Ceylon versions there should contain **all** the **old** versions that are compatible with the current release!
  - Commit all changes
-
-## ceylon-docker/source-runner
-
- - Check out [ceylon-docker/source-runner](https://github.com/ceylon-docker/source-runner)
- - Edit the `build.sh` and add the new version to the front of the `VERSIONS` list and change the `LATEST` value
- - Run `./build.sh --build`
- - If everything went ok run `./build.sh --push`
- - Edit the [Full Description](https://hub.docker.com/r/ceylon/source-runner/), adding a new image/tag line and moving the `latest` tag
- - Update the `README.md` to be the same as the full description
- - Commit all changes
-
+ - Add a tag for the new version
+ - Push everything (including tags)
+ 
 # Publishing to the Herd
 
 *This depends on the ceylon/ceylon Docker image!*
