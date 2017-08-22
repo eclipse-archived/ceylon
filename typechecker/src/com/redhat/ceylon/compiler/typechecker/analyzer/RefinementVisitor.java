@@ -1410,6 +1410,10 @@ public class RefinementVisitor extends Visitor {
         Type refinedType = refinedMember.getType();
         if (!isTypeUnknown(refinedType)) {
             if (that instanceof Tree.LocalModifier) {
+                //infer the type of an actual member 
+                //by taking the intersection of all 
+                //members it refines
+                //NOTE: feature not blessed by the spec!
                 TypedDeclaration td = 
                         (TypedDeclaration) 
                             refining;

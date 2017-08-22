@@ -676,7 +676,7 @@ public abstract class DeclarationVisitor extends Visitor {
             abstraction.getOverloads()
                 .add(model);
             return abstraction.isActual() 
-                    && !model.isActual();
+                && !model.isActual();
         }
         else {
             String name = model.getName();
