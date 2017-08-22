@@ -3071,11 +3071,6 @@ public class ExpressionVisitor extends Visitor {
                     if (at!=null) {
                         Type et = returnType.getTypeModel();
                         if (returnType instanceof Tree.LocalModifier) {
-                            Tree.LocalModifier local = 
-                                    (Tree.LocalModifier) 
-                                        returnType;
-                            handleUncheckedNulls(local, e, 
-                                    returnDeclaration);
                             if (returnDeclaration.isActual()) {
                                 if (!isTypeUnknown(et) 
                                         && !isTypeUnknown(at)) {
@@ -3119,11 +3114,11 @@ public class ExpressionVisitor extends Visitor {
     private void inferReturnType(Type et, Type at, 
             Tree.Expression e) {
         if (at!=null) {
-//            Tree.LocalModifier local = 
-//                    (Tree.LocalModifier) 
-//                        returnType;
-//            handleUncheckedNulls(local, e, 
-//                    returnDeclaration);
+            Tree.LocalModifier local = 
+                    (Tree.LocalModifier) 
+                        returnType;
+            handleUncheckedNulls(local, e, 
+                    returnDeclaration);
             at = unit.denotableType(at);
             if (et==null || et.isSubtypeOf(at)) {
                 returnType.setTypeModel(at);
