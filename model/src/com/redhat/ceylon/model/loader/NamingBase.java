@@ -1,13 +1,19 @@
 package com.redhat.ceylon.model.loader;
 
-import com.redhat.ceylon.common.JVMModuleUtil;
+import static com.redhat.ceylon.common.JVMModuleUtil.quoteIfJavaKeyword;
+import static com.redhat.ceylon.model.loader.JvmBackendUtil.isBoxedVariable;
+import static com.redhat.ceylon.model.loader.JvmBackendUtil.isValue;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getConstructedClass;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isLocalToInitializer;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.withinClassOrInterface;
+
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -260,38 +266,42 @@ public class NamingBase {
     public static String getGetterName(Declaration decl, boolean indirect) {
         // always use the refined decl
         decl = decl.getRefinedDeclaration();
-        if (decl instanceof FieldValue){
+        if (decl instanceof FieldValue) {
             return ((FieldValue)decl).getRealName();
         }
         if (decl instanceof JavaBeanValue && !indirect) {
             return ((JavaBeanValue)decl).getGetterName();
         }
         
-        boolean enumeratedConstructor = (decl instanceof Value
-                                         && ((Value)decl).getType() != null
-                                         && ((Value)decl).getType().getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor);
-        if (ModelUtil.withinClassOrInterface(decl) 
-                && (!ModelUtil.isLocalToInitializer(decl) || enumeratedConstructor || decl.isStatic()) 
+        boolean enumeratedConstructor = false;
+        if (decl instanceof Value) {
+            Type type = ((Value)decl).getType();
+            enumeratedConstructor = type != null
+                && type.getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor;
+        }
+        if (withinClassOrInterface(decl) 
+                && (!isLocalToInitializer(decl) || enumeratedConstructor || decl.isStatic()) 
                 && !indirect) {
-            if(enumeratedConstructor) {
-                Class constructedClass = ModelUtil.getConstructedClass(decl);
+            if (enumeratedConstructor) {
+                Class constructedClass = getConstructedClass(decl);
                 // See CeylonVisitor.transformSingletonConstructor for that logic
                 if(constructedClass.isToplevel() || constructedClass.isClassMember())
                     return getGetterName(((Class)decl.getContainer()).getName() + "$" + decl.getName());
                 return name(Unfix.ref);
             }
             return getErasedGetterName(decl);
-        } else if (decl instanceof TypedDeclaration && JvmBackendUtil.isBoxedVariable((TypedDeclaration)decl)) {
+        } else if (decl instanceof TypedDeclaration 
+                && isBoxedVariable((TypedDeclaration)decl)) {
             return name(Unfix.ref);
         } else {
             return name(Unfix.get_);
         }
     }
 
-    public static String getSetterName(Declaration decl){
+    public static String getSetterName(Declaration decl) {
         // use the refined decl except when the current declaration is variable and the refined isn't
         Declaration refinedDecl = decl.getRefinedDeclaration();
-        if (JvmBackendUtil.isValue(decl) && JvmBackendUtil.isValue(refinedDecl)) {
+        if (isValue(decl) && isValue(refinedDecl)) {
             Value v = (Value)decl;
             Value rv = (Value)refinedDecl;
             if (!v.isVariable() || rv.isVariable()) {
@@ -308,14 +318,15 @@ public class NamingBase {
                 // one it will not. This is also used for late setters...
                 && ((JavaBeanValue)decl).getSetterName() != null) {
             return ((JavaBeanValue)decl).getSetterName();
-        } else if (ModelUtil.withinClassOrInterface(decl) && !ModelUtil.isLocalToInitializer(decl)
+        } else if (withinClassOrInterface(decl) && !isLocalToInitializer(decl)
                 || decl.isStatic()) {
             String setterName = getSetterName(decl.getName());
             if (decl.isMember() && !decl.isShared()) {
                 setterName = suffixName(Suffix.$priv$, setterName);
             }
             return setterName;
-        } else if (decl instanceof TypedDeclaration && JvmBackendUtil.isBoxedVariable((TypedDeclaration)decl)) {
+        } else if (decl instanceof TypedDeclaration 
+                && isBoxedVariable((TypedDeclaration)decl)) {
             return name(Unfix.ref);
         }  else {
             return name(Unfix.set_);
@@ -325,7 +336,8 @@ public class NamingBase {
     private static String getErasedGetterName(Declaration decl) {
         String property = decl.getName();
         // ERASURE
-        if (!(decl instanceof Value) || ((Value)decl).isShared()) {
+        if (!(decl instanceof Value) 
+                || ((Value)decl).isShared()) {
             if ("hash".equals(property)) {
                 return "hashCode";
             } else if ("string".equals(property)) {
@@ -374,10 +386,10 @@ public class NamingBase {
      */
     public static String getJavaAttributeName(String getterName) {
         if (getterName.startsWith("get") || getterName.startsWith("set")) {
-            return NamingBase.getJavaBeanName(getterName.substring(3));
+            return getJavaBeanName(getterName.substring(3));
         } else if (getterName.startsWith("is")) {
             // Starts with "is"
-            return NamingBase.getJavaBeanName(getterName.substring(2));
+            return getJavaBeanName(getterName.substring(2));
         } else if (getterName.equals("hashCode")) {
             // Starts with "is"
             return "hash";
@@ -392,7 +404,7 @@ public class NamingBase {
     public static String getValueConstructorFieldNameAsString(Value singletonModel) {
         Class clz = (Class)singletonModel.getContainer();
         if (clz.isToplevel()) {
-            return JVMModuleUtil.quoteIfJavaKeyword(singletonModel.getName());
+            return quoteIfJavaKeyword(singletonModel.getName());
         }
         else {
             return prefixName(Prefix.$instance$, clz.getName(), singletonModel.getName());

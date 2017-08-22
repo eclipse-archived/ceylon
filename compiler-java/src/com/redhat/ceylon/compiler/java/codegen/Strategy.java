@@ -227,7 +227,7 @@ class Strategy {
     }
     
     public static boolean useField(Value attr) {
-        return !Decl.withinInterface(attr) && Decl.isCaptured(attr) 
+        return !Decl.withinInterface(attr) && ModelUtil.isCaptured(attr) 
             || attr.isStatic();
     }
     
@@ -259,7 +259,7 @@ class Strategy {
      */
     public static boolean onlyOnCompanion(Declaration model) {
         return Decl.withinInterface(model)
-            && (model instanceof ClassOrInterface || !Decl.isShared(model));
+            && (model instanceof ClassOrInterface || !model.isShared());
     }
     
     static boolean generateInstantiator(Declaration model) {

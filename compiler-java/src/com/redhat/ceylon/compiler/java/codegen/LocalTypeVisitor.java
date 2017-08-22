@@ -251,8 +251,7 @@ public class LocalTypeVisitor extends Visitor {
         // stop at locals and private non-captured transient members which end up having a
         // locall getter for them
         if(!(model.isMember() 
-                && !model.isShared()
-                && !model.isCaptured()
+                && !ModelUtil.isCaptured(model)
                 && model.isTransient()))
             super.visit(that);
     }

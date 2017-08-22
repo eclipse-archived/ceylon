@@ -286,11 +286,7 @@ public class Decl {
     }
     
     public static boolean isShared(Tree.Declaration decl) {
-        return isShared(decl.getDeclarationModel());
-    }
-    
-    public static boolean isShared(Declaration decl) {
-        return decl.isShared();
+        return decl.getDeclarationModel().isShared();
     }
     
     public static boolean isSmall(Tree.Declaration decl) {
@@ -298,18 +294,14 @@ public class Decl {
     }
     
     public static boolean isSmall(Declaration decl) {
-        return (decl instanceof FunctionOrValue) 
+        return decl instanceof FunctionOrValue
             && ((FunctionOrValue)decl).isSmall();
     }
     
     public static boolean isCaptured(Tree.Declaration decl) {
-        return isCaptured(decl.getDeclarationModel());
+        return ModelUtil.isCaptured(decl.getDeclarationModel());
     }
     
-    public static boolean isCaptured(Declaration decl) {
-        return ModelUtil.isCaptured(decl);
-    }
-
     public static boolean isAbstract(Tree.ClassOrInterface decl) {
         return decl.getDeclarationModel().isAbstract();
     }
@@ -323,13 +315,9 @@ public class Decl {
     }
 
     public static boolean isActual(Tree.Declaration decl) {
-        return isActual(decl.getDeclarationModel());
+        return decl.getDeclarationModel().isActual();
     }
     
-    public static boolean isActual(Declaration decl) {
-        return decl.isActual();
-    }
-
     public static boolean isTransient(Tree.AttributeDeclaration decl) {
         return decl.getDeclarationModel().isTransient();
     }
@@ -663,7 +651,7 @@ public class Decl {
     }
 
     public static boolean isAnnotationClass(Declaration declarationModel) {
-        return (declarationModel instanceof Class)
+        return declarationModel instanceof Class
             && containsAnnotationAnnotation(declarationModel);
     }
 
@@ -754,9 +742,6 @@ public class Decl {
         return decl instanceof Value
             && ((Value)decl).isParameter();
     }
-    
-
-    
     
     public static boolean isEnumeratedTypeWithAnonCases(Type parameterType) {
         if (parameterType.isBoolean()) {

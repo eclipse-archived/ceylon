@@ -3593,9 +3593,9 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.attribute(getter);
             }
             if (generateInCompanionClass) {
+                Interface container = (Interface)decl.getDeclarationModel().getContainer();
                 // Generate getter in companion class
-                classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer())
-                        .attribute(makeGetter(decl, true, null));
+                classBuilder.getCompanionBuilder(container).attribute(makeGetter(decl, true, null));
             }
             if (Decl.isVariable(decl) || Decl.isLate(decl)) {
                 if (generateInClassOrInterface) {
@@ -3603,9 +3603,9 @@ public class ClassTransformer extends AbstractTransformer {
                     classBuilder.attribute(makeSetter(decl, false, memoizedInitialValue));
                 }
                 if (generateInCompanionClass) {
+                    Interface container = (Interface)decl.getDeclarationModel().getContainer();
                     // Generate setter in companion class
-                    classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer())
-                            .attribute(makeSetter(decl, true, null));
+                    classBuilder.getCompanionBuilder(container).attribute(makeSetter(decl, true, null));
                 }
             }
         }
@@ -4070,7 +4070,8 @@ public class ClassTransformer extends AbstractTransformer {
         Value model = decl.getDeclarationModel();
         AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
             .getter(this, attrName, model, memoizedInitialValue);
-        if(!model.isInterfaceMember() || (model.isShared() ^ forCompanion))
+        if(!model.isInterfaceMember() 
+                || (model.isShared() ^ forCompanion))
             getter.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, decl));
         else
             getter.ignoreAnnotations();
@@ -4109,7 +4110,7 @@ public class ClassTransformer extends AbstractTransformer {
         naming.clearSubstitutions(model);
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
-        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def), isJavaStrictfp(model));
+        ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, model.isShared(), isJavaStrictfp(model));
         // Make sure it's Java Serializable (except toplevels which we never instantiate)
         if(!model.isToplevel())
             builder.introduce(make().QualIdent(syms().serializableType.tsym));
@@ -4280,7 +4281,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             // Transform the declaration to the target interface
             // but only if it's shared and not java native
-            if (Decl.isShared(model)
+            if (model.isShared()
                     && !model.isJavaNative()) {
                 result = transformMethod(def, 
                         true,
@@ -5713,7 +5714,7 @@ public class ClassTransformer extends AbstractTransformer {
                     .userAnnotationsSetter(makeAtIgnore())
                     .immutable()
                     .initialValue(makeNewClass(naming.makeName(model, Naming.NA_FQ | Naming.NA_WRAPPER)), BoxingStrategy.BOXED)
-                    .is(PUBLIC, Decl.isShared(klass))
+                    .is(PUBLIC, klass.isShared())
                     .is(STATIC, true);
             if (annotated != null) {
                 builder.fieldAnnotations(expressionGen().transformAnnotations(OutputElement.FIELD, annotated));
@@ -5760,7 +5761,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
         } else if (model != null && Decl.withinClassOrInterface(model)) {
-            boolean generateGetter = Decl.isCaptured(model);
+            boolean generateGetter = ModelUtil.isCaptured(model);
             JCExpression type = makeJavaType(klass.getType());
             if (generateGetter) {
                 int modifiers = TRANSIENT | PRIVATE | (model.isStatic() ? STATIC : 0);

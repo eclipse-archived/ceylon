@@ -645,7 +645,9 @@ public class CeylonTransformer extends AbstractTransformer {
             return builder.buildWithWrapperClass(classBuilder).append(makeLocalIdentityInstance(
                     typeExpr,
                     attrClassName, 
-                    attrClassName, declarationModel.isShared(), initialValue));
+                    attrClassName, 
+                    declarationModel.isShared(), 
+                    initialValue));
         } else {
             if (expressionError != null) {
                 builder.initialValueError(expressionError);

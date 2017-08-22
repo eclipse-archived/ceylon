@@ -213,10 +213,11 @@ public class CallableBuilder {
                         primaryType = gen.typeFact().getOptionalType(primaryType);
                     }
                     JCExpression primaryExpr = gen.expressionGen().transformQualifiedMemberPrimary(qmte);
+                    Declaration dec = qmte.getDeclaration();
                     if (Decl.isPrivateAccessRequiringCompanion(qmte)) {
-                        primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)qmte.getDeclaration().getContainer());
+                        primaryExpr = gen.naming.makeCompanionAccessorCall(primaryExpr, (Interface)dec.getContainer());
                     }
-                    Type varType = qmte.getDeclaration().isShared() ? primaryType : Decl.getPrivateAccessType(qmte);
+                    Type varType = dec.isShared() ? primaryType : Decl.getPrivateAccessType(qmte);
                     
                     if (qmte.getPrimary().getUnboxed() == false) {
                         varTypeFlags |= JT_NO_PRIMITIVES;

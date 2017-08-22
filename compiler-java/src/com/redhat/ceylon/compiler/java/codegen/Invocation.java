@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
@@ -53,7 +54,6 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
-import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -64,6 +64,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -322,7 +323,7 @@ abstract class Invocation {
                         && (Decl.isGetter(primaryDeclaration)
                                 || Decl.isToplevel(primaryDeclaration)
                                 || (Decl.isValueOrSharedOrCapturedParam(primaryDeclaration) 
-                                        && Decl.isCaptured(primaryDeclaration) 
+                                        && ModelUtil.isCaptured(primaryDeclaration) 
                                         && !Decl.isLocalNotInitializer(primaryDeclaration)
                                         // don't invoke getters for constructor parameters we're getting within a super call
                                         && !gen.expressionGen().isWithinSuperInvocation(primaryDeclaration.getContainer())))) {
@@ -1906,7 +1907,8 @@ class NamedArgumentInvocation extends Invocation {
             if (Decl.withinClassOrInterface(primaryDec)) {
                 // a member method
                 thisType = gen.makeJavaType(target.getQualifyingType(), 
-                        JT_NO_PRIMITIVES | (primaryDec.isInterfaceMember() && !primaryDec.isShared() 
+                        JT_NO_PRIMITIVES 
+                        | (primaryDec.isInterfaceMember() && !primaryDec.isShared() 
                                 ? JT_COMPANION : 0));
                 TypeDeclaration outer = Decl.getOuterScopeOfMemberInvocation((StaticMemberOrTypeExpression) getPrimary(), primaryDec);
                 if (outer instanceof Interface
