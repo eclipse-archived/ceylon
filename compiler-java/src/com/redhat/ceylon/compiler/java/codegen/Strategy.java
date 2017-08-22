@@ -268,13 +268,12 @@ class Strategy {
             return !cls.isAbstract()
                 && !cls.isStatic()
                 && (Decl.isRefinableMemberClass(cls) 
-                    || 
                     // If shared, generate an instantiator so that BC is 
                     // preserved should the member class later become refinable
-                    (Decl.isCeylon(cls)
+                    || Decl.isCeylon(cls)
                             && model.isMember()
                             && cls.isShared()
-                            && !cls.isAnonymous()));
+                            && !cls.isAnonymous());
         } else if (Decl.isConstructor(model)) {
             Constructor ctor = Decl.getConstructor(model);
             Class cls = Decl.getConstructedClass(ctor);
