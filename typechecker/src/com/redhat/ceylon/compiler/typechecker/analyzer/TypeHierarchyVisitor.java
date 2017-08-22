@@ -363,19 +363,19 @@ public class TypeHierarchyVisitor extends Visitor {
 
     private boolean isMemberRefined(List<Type> orderedTypes, int index, 
             String name, Type.Members currentTypeMembers) {
-        int size = orderedTypes.size();
         Declaration declarationOfSupertypeMember = 
                 getMemberDeclaration(currentTypeMembers);
-        for (int subIndex = size-1 ; subIndex>index;subIndex--) {
+        for (int subIndex = orderedTypes.size()-1; 
+                subIndex>index; subIndex--) {
             Type type = orderedTypes.get(subIndex);
             //has a direct member and supertype as inherited members
             Declaration directMember = 
                     type.declaration.getDirectMember(name, null, false);
             boolean isMemberRefined = 
                     directMember!=null && 
-                    directMember.isShared(); //&& !(directMember instanceof Parameter);
-            isMemberRefined = isMemberRefined && 
-                    type.declaration.getInheritedMembers(name)
+                    directMember.isShared() && 
+                    type.declaration
+                        .getInheritedMembers(name)
                         .contains(declarationOfSupertypeMember);
             if (isMemberRefined) {
                 return true;
@@ -482,7 +482,7 @@ public class TypeHierarchyVisitor extends Visitor {
 
     private static boolean isJavaInterfaceMember(Declaration formal) {
         return formal.isInterfaceMember() 
-                && formal.isJava();
+            && formal.isJava();
     }
 
     private void addUnimplementedFormal(Class clazz, Declaration member) {
@@ -500,9 +500,9 @@ public class TypeHierarchyVisitor extends Visitor {
 
     //accumulate all members of a type hierarchy
     private Type buildAggregatedType(List<Type> orderedTypes) {
-        int size = orderedTypes.size();
         Type aggregation = new Type();
-        for (int index = size-1; index>=0; index--) {
+        for (int index = orderedTypes.size()-1; 
+                index>=0; index--) {
             Type current = orderedTypes.get(index);
             for (Type.Members currentMembers:
                     current.membersByName.values()) {
@@ -561,8 +561,8 @@ public class TypeHierarchyVisitor extends Visitor {
             List<com.redhat.ceylon.model.typechecker.model.Type> signature, 
             boolean variadic, Declaration concrete) {
         return formal.getName().equals(concrete.getName())
-                && isDefinedInJava(concrete)
-                && (!overloaded || hasMatchingSignature(concrete, signature, variadic));
+            && isDefinedInJava(concrete)
+            && (!overloaded || hasMatchingSignature(concrete, signature, variadic));
     }
 
     //sort type hierarchy from most abstract to most concrete
@@ -773,7 +773,9 @@ public class TypeHierarchyVisitor extends Visitor {
         }
         else {
             Declaration rd = d.getRefinedDeclaration();
-            return rd!=null && !rd.equals(d) && isDefinedInJava(rd);
+            return rd!=null 
+                && !rd.equals(d) 
+                && isDefinedInJava(rd);
         }
     }
 
