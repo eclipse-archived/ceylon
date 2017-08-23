@@ -4863,6 +4863,14 @@ public class Type extends Reference {
         return getDeclaration().isCallable();
     }
 
+    public boolean isException() {
+        return getDeclaration().isException();
+    }
+
+    public boolean isThrowable() {
+        return getDeclaration().isThrowable();
+    }
+
     boolean isDeclaredType() {
         return isClassOrInterface() || isTypeParameter();
     }

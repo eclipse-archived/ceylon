@@ -56,6 +56,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -340,8 +341,8 @@ public class CallableBuilder {
         final ParameterList parameterList = methodClassOrCtor.getFirstParameterList();
         Type type = typeModel;
         JCExpression target;
-        boolean memberClassCtorRef = Decl.getConstructor((Declaration)methodClassOrCtor) != null
-                && !Decl.getConstructedClass((Declaration)methodClassOrCtor).isToplevel()
+        boolean memberClassCtorRef = ModelUtil.getConstructor((Declaration)methodClassOrCtor) != null
+                && !ModelUtil.getConstructedClass((Declaration)methodClassOrCtor).isToplevel()
                 && qmte.getPrimary() instanceof Tree.QualifiedTypeExpression
                 ;
         boolean hasOuter = !(Decl.isConstructor((Declaration)methodClassOrCtor)
@@ -368,8 +369,8 @@ public class CallableBuilder {
         Type accessType = gen.getParameterTypeOfCallable(typeModel, 0);
         boolean needsCast = false;
         if (Decl.isConstructor((Declaration)methodClassOrCtor)) {
-            Constructor ctor = Decl.getConstructor((Declaration)methodClassOrCtor);
-            Class cls = Decl.getConstructedClass(ctor);
+            Constructor ctor = ModelUtil.getConstructor((Declaration)methodClassOrCtor);
+            Class cls = ModelUtil.getConstructedClass(ctor);
             if (Strategy.generateInstantiator(ctor)) {
                 needsCast = Strategy.isInstantiatorUntyped(ctor);
                 callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, cls));
@@ -414,10 +415,10 @@ public class CallableBuilder {
         }
         
         if (Decl.isConstructor((Declaration)methodClassOrCtor)
-                && !Decl.isDefaultConstructor(Decl.getConstructor((Declaration)methodClassOrCtor))
+                && !Decl.isDefaultConstructor(ModelUtil.getConstructor((Declaration)methodClassOrCtor))
                 && !Decl.isJavaArrayWith((Constructor)methodClassOrCtor)) {
             // invoke the param class ctor
-            Constructor ctor = Decl.getConstructor((Declaration)methodClassOrCtor);
+            Constructor ctor = ModelUtil.getConstructor((Declaration)methodClassOrCtor);
             callBuilder.argument(gen.naming.makeNamedConstructorName(ctor, false));
         }
         for (Parameter parameter : parameterList.getParameters()) {

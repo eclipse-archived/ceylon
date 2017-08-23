@@ -1327,7 +1327,7 @@ public class Metamodel {
     }
     
     public static boolean isCeylon(com.redhat.ceylon.model.typechecker.model.ClassOrInterface declaration){
-        return JvmBackendUtil.isCeylon(declaration);
+        return ModelUtil.isCeylonDeclaration(declaration);
     }
 
     public static TypeDescriptor getTypeDescriptorForArguments(com.redhat.ceylon.model.typechecker.model.Unit unit, 

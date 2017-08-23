@@ -135,7 +135,7 @@ public class CeylonTransformer extends AbstractTransformer {
         
         List<JCTree> defs = makeDefs(t);
         
-        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation> nil(), pkg, defs, null, null, null, null, t, phasedUnit);
+        JCCompilationUnit topLev = new CeylonCompilationUnit(List.<JCTree.JCAnnotation>nil(), pkg, defs, null, null, null, null, t, phasedUnit);
 
         topLev.lineMap = getMap();
         topLev.sourcefile = file;
@@ -448,7 +448,7 @@ public class CeylonTransformer extends AbstractTransformer {
             Tree.AttributeSetterDefinition sdef = (Tree.AttributeSetterDefinition)decl;
             block = sdef.getBlock();
             expression = sdef.getSpecifierExpression();
-            if (Decl.isLocal(decl)) {
+            if (Decl.isLocal(decl.getDeclarationModel())) {
                 declarationModel = ((Tree.AttributeSetterDefinition)decl).getDeclarationModel().getParameter().getModel();
             }
         } else {
@@ -488,7 +488,9 @@ public class CeylonTransformer extends AbstractTransformer {
                     && !(expression instanceof Tree.LazySpecifierExpression)) {
                 if (expression != null) {
                     boxingStrategy = useJavaBox(declarationModel, declarationModel.getType()) 
-                            && javaBoxExpression(expression.getExpression().getTypeModel(), declarationModel.getType()) ? BoxingStrategy.JAVA : CodegenUtil.getBoxingStrategy(declarationModel);
+                            && javaBoxExpression(expression.getExpression().getTypeModel(), declarationModel.getType()) ? 
+                                    BoxingStrategy.JAVA : 
+                                    CodegenUtil.getBoxingStrategy(declarationModel);
                     initialValue = expressionGen().transform(
                             expression, 
                             boxingStrategy,
@@ -534,7 +536,7 @@ public class CeylonTransformer extends AbstractTransformer {
         }
         
         // For late-bound getters we only generate a declaration
-        if (block == null && expression == null && !Decl.isToplevel(declarationModel)) {
+        if (block == null && expression == null && !declarationModel.isToplevel()) {
             JCExpression typeExpr = makeJavaType(getGetterInterfaceType(declarationModel));
             JCTree.JCVariableDecl var = makeVar(attrClassName, typeExpr, null);
             classBuilder.restoreClassBuilder();
@@ -542,18 +544,16 @@ public class CeylonTransformer extends AbstractTransformer {
         }
         
         // Set the local declarations annotation
+        List<JCAnnotation> scopeAnnotations = null;
         if(decl != null){
-            List<JCAnnotation> scopeAnnotations;
-            if(Decl.isToplevel(declarationModel) && setterDecl != null){
-                scopeAnnotations = makeAtLocalDeclarations(decl, setterDecl);
-            }else{
-                scopeAnnotations = makeAtLocalDeclarations(decl);
-            }
+            scopeAnnotations = declarationModel.isToplevel() && setterDecl != null ? 
+                            makeAtLocalDeclarations(decl, setterDecl) : 
+                            makeAtLocalDeclarations(decl);
             builder.classAnnotations(scopeAnnotations);
         }else if(block != null){
-            List<JCAnnotation> scopeAnnotations = makeAtLocalDeclarations(block);
-            builder.classAnnotations(scopeAnnotations);
+            scopeAnnotations = makeAtLocalDeclarations(block);
         }
+        if (scopeAnnotations!=null) builder.classAnnotations(scopeAnnotations);
 
         // Remember the setter class if we generate a getter
         if(Decl.isGetter(declarationModel)
@@ -575,7 +575,7 @@ public class CeylonTransformer extends AbstractTransformer {
             JCBlock setterBlock = makeSetterBlock(declarationModel, block, expression);
             builder.setterBlock(setterBlock);
             builder.skipGetter();
-            if(Decl.isLocal(decl)){
+            if(Decl.isLocal(decl.getDeclarationModel())){
                 // we need to find back the Setter model for local setters, because 
                 // in transformAttribute(Tree.TypedDeclaration decl, Tree.AttributeSetterDefinition setterDecl)
                 // we turn the declaration model from the Setter to its single parameter
@@ -587,17 +587,14 @@ public class CeylonTransformer extends AbstractTransformer {
         } else {
             if (Decl.isValue(declarationModel)) {
                 // For local and toplevel value attributes
-                if (!declarationModel.isVariable() && !(declarationModel.isLate())) {
+                if (!declarationModel.isVariable() && !declarationModel.isLate()) {
                     builder.immutable();
                 }
             } else {
                 // For local and toplevel getters
-                boolean prevSyntheticClassBody;
-                if (Decl.isLocal(declarationModel)) {
-                    prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
-                } else {
-                    prevSyntheticClassBody = expressionGen().isWithinSyntheticClassBody();
-                }
+                boolean prevSyntheticClassBody = Decl.isLocal(declarationModel) ? 
+                        expressionGen().withinSyntheticClassBody(true) : 
+                        expressionGen().isWithinSyntheticClassBody();
                 JCBlock getterBlock = makeGetterBlock(declarationModel, block, expression);
                 prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
                 builder.getterBlock(getterBlock);

@@ -35,7 +35,7 @@ public class DeferredVisitor extends Visitor {
     }
 
     private boolean isDeferredOrParamInitialized(Tree.AnyMethod def) {
-        return !Decl.isFormal(def)
+        return !def.getDeclarationModel().isFormal()
             && !def.getDeclarationModel().isJavaNative()
             && !def.getDeclarationModel().isParameter()
             && def instanceof Tree.MethodDeclaration

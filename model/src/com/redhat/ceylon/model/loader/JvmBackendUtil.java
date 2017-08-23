@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.loader;
 
+import static com.redhat.ceylon.model.loader.AbstractModelLoader.CEYLON_CEYLON_ANNOTATION;
+import static com.redhat.ceylon.model.loader.AbstractModelLoader.CEYLON_NAME_ANNOTATION;
 import static com.redhat.ceylon.model.loader.NamingBase.stripLeadingDollar;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getClassOrInterfaceContainer;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
@@ -71,12 +73,15 @@ import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class JvmBackendUtil {
+    
     public static boolean isInitialLowerCase(String name) {
-        return !name.isEmpty() && isLowerCase(name.codePointAt(0));
+        return !name.isEmpty() 
+            && isLowerCase(name.codePointAt(0));
     }
 
     public static boolean isLowerCase(int codepoint) {
-        return Character.isLowerCase(codepoint) || codepoint == '_';
+        return Character.isLowerCase(codepoint) 
+            || codepoint == '_';
     }
 
     public static String getName(List<String> parts){
@@ -92,7 +97,7 @@ public class JvmBackendUtil {
 
     public static String getMirrorName(AnnotatedMirror mirror) {
         String name;
-        AnnotationMirror annot = mirror.getAnnotation(AbstractModelLoader.CEYLON_NAME_ANNOTATION);
+        AnnotationMirror annot = mirror.getAnnotation(CEYLON_NAME_ANNOTATION);
         if (annot != null) {
             name = (String)annot.getValue();
         } else {
@@ -101,7 +106,7 @@ public class JvmBackendUtil {
             if (mirror instanceof ClassMirror
                     && isInitialLowerCase(name)
                     && name.endsWith("_")
-                    && mirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null) {
+                    && mirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null) {
                 name = name.substring(0, name.length()-1);
             }
         }
@@ -148,7 +153,7 @@ public class JvmBackendUtil {
      * @return true if the declaration is a value
      */
     public static boolean isValue(Declaration decl) {
-        return (decl instanceof Value)
+        return decl instanceof Value
             && !((Value)decl).isParameter()
             && !((Value)decl).isTransient();
     }
@@ -159,19 +164,16 @@ public class JvmBackendUtil {
      * @return true if the declaration is a method
      */
     public static boolean isMethod(Declaration decl) {
-        return (decl instanceof Function)
+        return decl instanceof Function
             && !((Function)decl).isParameter();
-    }
-
-    public static boolean isCeylon(TypeDeclaration declaration) {
-        return ModelUtil.isCeylonDeclaration(declaration);
     }
 
     public static Declaration getTopmostRefinedDeclaration(Declaration decl){
         return getTopmostRefinedDeclaration(decl, null);
     }
 
-    public static Declaration getTopmostRefinedDeclaration(Declaration decl, Map<Function, Function> methodOverrides){
+    public static Declaration getTopmostRefinedDeclaration(Declaration decl, 
+            Map<Function, Function> methodOverrides){
         if (decl instanceof FunctionOrValue
                 && ((FunctionOrValue)decl).isParameter()
                 && decl.getContainer() instanceof Class) {
@@ -313,7 +315,7 @@ public class JvmBackendUtil {
     public static boolean supportsReified(Declaration declaration){
         if(declaration instanceof ClassOrInterface){
             // Java constructors don't support reified type arguments
-            return isCeylon((TypeDeclaration) declaration);
+            return ModelUtil.isCeylonDeclaration((TypeDeclaration) declaration);
         }else if(declaration instanceof Function){
             if (((Function)declaration).isParameter()) {
                 // those can never be parameterised
@@ -332,7 +334,7 @@ public class JvmBackendUtil {
             return supportsReified(container);
         }else if(declaration instanceof Constructor){
             // Java constructors don't support reified type arguments
-            return isCeylon((Constructor) declaration);
+            return ModelUtil.isCeylonDeclaration((Constructor) declaration);
         }else{
             return false;
         }

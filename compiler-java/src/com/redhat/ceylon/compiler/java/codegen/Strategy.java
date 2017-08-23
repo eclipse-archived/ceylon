@@ -97,7 +97,7 @@ class Strategy {
             decl = (Declaration) decl.getContainer();
         } 
         if (Decl.isConstructor(decl)) {
-            decl = Decl.getConstructedClass(decl);
+            decl = ModelUtil.getConstructedClass(decl);
         }
         
         if ((decl instanceof Function || decl instanceof Class) 
@@ -106,7 +106,7 @@ class Strategy {
             return DefaultParameterMethodOwner.STATIC;
         } else if (isInnerClass(decl)) {
             // Only inner classes have their default value methods on their outer
-            return Decl.getClassOrInterfaceContainer(decl, false) instanceof Class ? 
+            return ModelUtil.getClassOrInterfaceContainer(decl, false) instanceof Class ? 
                     DefaultParameterMethodOwner.OUTER : 
                     DefaultParameterMethodOwner.OUTER_COMPANION;
         }
@@ -129,8 +129,8 @@ class Strategy {
             elem = (Declaration)elem.getContainer();
         }
         return elem instanceof Class
-                && !elem.isToplevel()
-                && !Decl.isLocalNotInitializer(elem);
+            && !elem.isToplevel()
+            && !ModelUtil.isLocalNotInitializer(elem);
     }
     
     public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {
@@ -139,11 +139,11 @@ class Strategy {
     
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
         return decl instanceof Function
-                && !Decl.isConstructor(decl)
-                && !decl.isParameter()
-                && !Decl.withinInterface(decl)
-                && !decl.isToplevel()
-                && !decl.isStatic();
+            && !Decl.isConstructor(decl)
+            && !decl.isParameter()
+            && !decl.isInterfaceMember()
+            && !decl.isToplevel()
+            && !decl.isStatic();
     }
     
     public static boolean hasDefaultParameterValueMethod(Parameter param) {
@@ -179,9 +179,9 @@ class Strategy {
             }
         }
         return def instanceof Tree.AnyClass 
-                && Decl.isToplevel(def) 
-                && Decl.isShared(def)
-                && !Decl.isAbstract(def)
+                && def.getDeclarationModel().isToplevel() 
+                && def.getDeclarationModel().isShared()
+                && !def.getDeclarationModel().isAbstract()
                 && !def.getDeclarationModel().isNativeHeader()
                 && hasNoRequiredParameters((Class)def.getDeclarationModel());
     }
@@ -211,29 +211,30 @@ class Strategy {
      * @param def
      */
     public static boolean generateMain(Tree.AnyMethod def) {
-        return  Decl.isToplevel(def)
-                && Decl.isShared(def)
+        return  def.getDeclarationModel().isToplevel()
+                && def.getDeclarationModel().isShared()
                 && hasNoRequiredParameters(def.getDeclarationModel());
     }
     
     public static boolean generateThisDelegates(Tree.AnyMethod def) {
-        return Decl.withinInterface(def.getDeclarationModel())
+        return def.getDeclarationModel().isInterfaceMember()
             && def instanceof MethodDeclaration
             && ((MethodDeclaration) def).getSpecifierExpression() == null;
     }
 
     public static boolean needsOuterMethodInCompanion(ClassOrInterface model) {
-        return Decl.withinClassOrInterface(model);
+        return model.isClassOrInterfaceMember();
     }
     
     public static boolean useField(Value attr) {
-        return !Decl.withinInterface(attr) && ModelUtil.isCaptured(attr) 
+        return !attr.isInterfaceMember() && ModelUtil.isCaptured(attr) 
             || attr.isStatic();
     }
     
     
     public static boolean createField(Parameter p, Value v) {
-        return !Decl.withinInterface(v) && (p == null || useField(v));
+        return !v.isInterfaceMember() 
+            && (p == null || useField(v));
     }
     
     /**
@@ -258,7 +259,7 @@ class Strategy {
      * interface itself.
      */
     public static boolean onlyOnCompanion(Declaration model) {
-        return Decl.withinInterface(model)
+        return model.isInterfaceMember()
             && (model instanceof ClassOrInterface || !model.isShared());
     }
     
@@ -270,13 +271,13 @@ class Strategy {
                 && (Decl.isRefinableMemberClass(cls) 
                     // If shared, generate an instantiator so that BC is 
                     // preserved should the member class later become refinable
-                    || Decl.isCeylon(cls)
+                    || ModelUtil.isCeylonDeclaration(cls)
                             && model.isMember()
                             && cls.isShared()
                             && !cls.isAnonymous());
         } else if (Decl.isConstructor(model)) {
-            Constructor ctor = Decl.getConstructor(model);
-            Class cls = Decl.getConstructedClass(ctor);
+            Constructor ctor = ModelUtil.getConstructor(model);
+            Class cls = ModelUtil.getConstructedClass(ctor);
             return cls.isMember()
                 && cls.isShared()
                 && !cls.isStatic()
@@ -306,13 +307,13 @@ class Strategy {
         return m.isMember() 
             && (m.isDefault() || m.isFormal() || m.isActual()) 
             && m.getType().isAnything() 
-            && Decl.isCeylon((TypeDeclaration)m.getRefinedDeclaration().getContainer());
+            && ModelUtil.isCeylonDeclaration((TypeDeclaration)m.getRefinedDeclaration().getContainer());
     }
 
     public static boolean hasDelegatedDpm(Class cls) {
         return Decl.isRefinableMemberClass(cls.getRefinedDeclaration()) 
             && Strategy.defaultParameterMethodOnOuter(cls) 
-            && Decl.withinInterface(cls.getRefinedDeclaration());
+            && cls.getRefinedDeclaration().isInterfaceMember();
     }
 
     /**
@@ -444,7 +445,7 @@ class Strategy {
                 && !(c instanceof ClassAlias)) {
             List<Parameter> parameters = null;
             if (c.hasConstructors()) {
-                Constructor defaultConstructor = Decl.getDefaultConstructor(c);
+                Constructor defaultConstructor = c.getDefaultConstructor();
                 if (defaultConstructor != null
                         && defaultConstructor.getParameterList() != null) {
                     parameters = defaultConstructor.getParameterList().getParameters();
@@ -499,10 +500,10 @@ class Strategy {
     
     private static List<TypeParameter> getEffectiveTypeParameters(Declaration original, Declaration decl) {
         if (Decl.isConstructor(original)) {
-            original = Decl.getConstructedClass(original);
+            original = ModelUtil.getConstructedClass(original);
         }
         if (Decl.isConstructor(decl)) {
-            decl = Decl.getConstructedClass(decl);
+            decl = ModelUtil.getConstructedClass(decl);
         }
         Scope container = decl.getContainer();
         if (decl instanceof Value) {

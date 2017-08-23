@@ -73,6 +73,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.tools.classpath.CeylonClasspathTool;
 
@@ -541,7 +542,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
                             Identifier identifier = ca.getIdentifier();
                             if ("test".equals(identifier.getToken().getText())) {
                                 final com.redhat.ceylon.model.typechecker.model.Declaration decl = that.getDeclarationModel();
-                                if (moduleName.isEmpty() || Decl.getModule(decl).getNameAsString().equals(moduleName)) {
+                                if (moduleName.isEmpty() || ModelUtil.getModule(decl).getNameAsString().equals(moduleName)) {
                                     boolean added = false;
                                     if (testClassName != null || decl.isToplevel()) {
                                         if (decl instanceof com.redhat.ceylon.model.typechecker.model.Function) {

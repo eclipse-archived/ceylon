@@ -14,6 +14,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -132,7 +133,7 @@ public class EeVisitor extends Visitor {
     public void visit(Tree.Constructor that) {
         super.visit(that);
         if (containsEeAnnotation(that.getAnnotationList().getAnnotations())) {
-            setModifier(Decl.getConstructedClass(that.getDeclarationModel()), EE);
+            setModifier(ModelUtil.getConstructedClass(that.getDeclarationModel()), EE);
         }
     }
     
@@ -142,7 +143,7 @@ public class EeVisitor extends Visitor {
         if (containsEeAnnotation(that.getAnnotationList().getAnnotations())) {
             TypedDeclaration attribute = that.getDeclarationModel();
             if (attribute.isMember()) {
-                setModifier(Decl.getClassOrInterfaceContainer(attribute), EE);
+                setModifier(ModelUtil.getClassOrInterfaceContainer(attribute), EE);
             } else if (attribute.isToplevel()) {
                 setModifier(attribute, EE);
             }
@@ -155,7 +156,7 @@ public class EeVisitor extends Visitor {
         if (containsEeAnnotation(that.getAnnotationList().getAnnotations())) {
             Function method = that.getDeclarationModel();
             if (method.isMember()) {
-                setModifier(Decl.getClassOrInterfaceContainer(method), EE);
+                setModifier(ModelUtil.getClassOrInterfaceContainer(method), EE);
             } else if (method.isToplevel()) {
                 setModifier(method, EE);
             }
@@ -202,8 +203,8 @@ public class EeVisitor extends Visitor {
     public boolean isEeMode(Declaration d) {
         d = Decl.getToplevelDeclarationContainer(d);
         if (eeOption
-                || eeModeModules.contains(Decl.getModule(d))
-                || eeModePackages.contains(Decl.getPackage(d))) {
+                || eeModeModules.contains(ModelUtil.getModule(d))
+                || eeModePackages.contains(ModelUtil.getPackage(d))) {
             return true;
         }
         Integer mods = eeModeDecls.get(d);

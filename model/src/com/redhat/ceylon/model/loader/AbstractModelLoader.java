@@ -4353,7 +4353,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // we never consider Interface and other stuff, since we never register the actualCompleter for them
             if(decl instanceof Class){
                 // Java member classes are never actual 
-                if(!JvmBackendUtil.isCeylon((Class)decl))
+                if(!ModelUtil.isCeylonDeclaration((Class)decl))
                     return;
                 // we already set the actual bit for member classes, we just need the refined decl
                 if(decl.isActual()){
@@ -4391,7 +4391,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 
                 // now that we know the refined declaration, we can check for reified type param support
                 // for Ceylon methods
-                if(decl instanceof JavaMethod && JvmBackendUtil.isCeylon(klass)){
+                if(decl instanceof JavaMethod && ModelUtil.isCeylonDeclaration(klass)){
                     if(!methodMirror.getTypeParameters().isEmpty()
                             // because this requires the refined decl, we defer this check until we've set it, to not trigger
                             // lazy loading just to check.
@@ -5992,7 +5992,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
 
                     // record use-site variance if required
-                    if(!JvmBackendUtil.isCeylon(declaration) && siteVariance != null){
+                    if(!ModelUtil.isCeylonDeclaration(declaration) && siteVariance != null){
                         // lazy alloc
                         if(siteVarianceMap == null)
                             siteVarianceMap = new HashMap<TypeParameter,SiteVariance>();

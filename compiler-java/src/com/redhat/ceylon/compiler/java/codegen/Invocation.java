@@ -261,7 +261,7 @@ abstract class Invocation {
             Tree.BaseTypeExpression type = (Tree.BaseTypeExpression)getPrimary();
             Declaration declaration = type.getDeclaration();
             if (Strategy.generateInstantiator(declaration)) {
-                if (Decl.withinInterface(declaration)) {
+                if (declaration.isInterfaceMember()) {
                     if (primaryExpr != null) {
                         // if we have some other primary then respect that
                         actualPrimExpr = primaryExpr;
@@ -289,8 +289,8 @@ abstract class Invocation {
                 Tree.QualifiedMemberOrTypeExpression type = (Tree.QualifiedMemberOrTypeExpression)getPrimary();
                 Declaration declaration = type.getDeclaration();
                 if (Decl.isConstructor(declaration)) {
-                    Class constructedClass = Decl.getConstructedClass(declaration);
-                    if (Decl.withinInterface(constructedClass)) {
+                    Class constructedClass = ModelUtil.getConstructedClass(declaration);
+                    if (constructedClass.isInterfaceMember()) {
                         if (Strategy.generateInstantiator(declaration)) {
                             // Stef: this is disgusting and some of that logic has to be duplicated for base member/type
                             // expressions. it reeks of special-cases that should not be
@@ -321,10 +321,10 @@ abstract class Invocation {
                 Declaration primaryDeclaration = getPrimaryDeclaration();
                 if (primaryDeclaration != null
                         && (Decl.isGetter(primaryDeclaration)
-                                || Decl.isToplevel(primaryDeclaration)
+                                || primaryDeclaration.isToplevel()
                                 || (Decl.isValueOrSharedOrCapturedParam(primaryDeclaration) 
                                         && ModelUtil.isCaptured(primaryDeclaration) 
-                                        && !Decl.isLocalNotInitializer(primaryDeclaration)
+                                        && !ModelUtil.isLocalNotInitializer(primaryDeclaration)
                                         // don't invoke getters for constructor parameters we're getting within a super call
                                         && !gen.expressionGen().isWithinSuperInvocation(primaryDeclaration.getContainer())))) {
                     // We need to invoke the getter to obtain the Callable
@@ -409,7 +409,7 @@ abstract class Invocation {
     protected Constructor getConstructorFromPrimary(
             Declaration primaryDeclaration) {
         if (Decl.isConstructor(primaryDeclaration)) {
-            primaryDeclaration = Decl.getConstructor(primaryDeclaration);
+            primaryDeclaration = ModelUtil.getConstructor(primaryDeclaration);
         }
         if (primaryDeclaration instanceof Constructor) {
             return (Constructor)primaryDeclaration;
@@ -424,8 +424,8 @@ abstract class Invocation {
                 return null;
             }
         } else if (primaryDeclaration instanceof Class
-                && Decl.getDefaultConstructor((Class)primaryDeclaration) != null) {
-            return Decl.getDefaultConstructor((Class)primaryDeclaration);
+                && ((Class)primaryDeclaration).getDefaultConstructor() != null) {
+            return ((Class)primaryDeclaration).getDefaultConstructor();
         } else {
             return null;
         }
@@ -1904,7 +1904,7 @@ class NamedArgumentInvocation extends Invocation {
         if (getPrimary() instanceof Tree.BaseMemberExpression
                 && !gen.expressionGen().isWithinSyntheticClassBody()) {
             Declaration primaryDec = getPrimaryDeclaration();
-            if (Decl.withinClassOrInterface(primaryDec)) {
+            if (primaryDec.isClassOrInterfaceMember()) {
                 // a member method
                 thisType = gen.makeJavaType(target.getQualifyingType(), 
                         JT_NO_PRIMITIVES 

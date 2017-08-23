@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.java.codegen.ClassTransformer;
 import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 
 
 public class Errors {
@@ -123,7 +124,7 @@ public class Errors {
     public HasErrorException getFirstErrorBlock(Tree.Statement blockStatement) {
         if (blockStatement instanceof Tree.Declaration) {
             HasErrorException r =  declarationVisitor.getFirstErrorMessage((Tree.Declaration)blockStatement);
-            if (r == null && Decl.isLocal((Tree.Declaration)blockStatement)) {
+            if (r == null && Decl.isLocal(((Tree.Declaration)blockStatement).getDeclarationModel())) {
                 r = expressionVisitor.getFirstErrorMessage(blockStatement);
             }
             return annotateBrokenness(r);
@@ -136,7 +137,7 @@ public class Errors {
     
     public HasErrorException getFirstErrorInitializer(Tree.Statement classBodyStatement) {
         if (classBodyStatement instanceof Tree.Declaration
-                && Decl.isLocalToInitializer((Tree.Declaration)classBodyStatement)) {
+                && ModelUtil.isLocalToInitializer(((Tree.Declaration)classBodyStatement).getDeclarationModel())) {
             return annotateBrokenness(declarationVisitor.getFirstErrorMessage((Tree.Declaration)classBodyStatement));
         } else if (classBodyStatement instanceof Tree.ExecutableStatement) {
             // An executable statement

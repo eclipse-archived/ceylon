@@ -499,13 +499,13 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression makeDefaultExprForType(Type type) {
         if (canUnbox(type)) {
             String underlyingType = type.getUnderlyingType();
-            if (isCeylonBoolean(type)) {
+            if (type.isBoolean()) {
                 return makeBoolean(false);
-            } else if (isCeylonFloat(type) && underlyingType == null) {
+            } else if (type.isFloat() && underlyingType == null) {
                 return make().Literal(0.0);
             } else if ("float".equals(underlyingType)) {
                 return make().Literal((float)0.0);
-            }  else if (isCeylonInteger(type) && underlyingType == null) {
+            }  else if (type.isInteger() && underlyingType == null) {
                 return makeLong(0);
             } else if ("long".equals(underlyingType)) {
                 return makeLong(0);
@@ -513,11 +513,11 @@ public abstract class AbstractTransformer implements Transformation {
                 return make().Literal(0);
             } else if ("short".equals(underlyingType)) {
                 return make().TypeCast(make().Type(syms().shortType), make().Literal(0));
-            } else if (isCeylonCharacter(type) && underlyingType == null) {
+            } else if (type.isCharacter() && underlyingType == null) {
                 return make().Literal(0);
             } else if ("char".equals(underlyingType)) {
                 return make().TypeCast(make().Type(syms().charType), make().Literal(0));
-            } else if (isCeylonByte(type)) {
+            } else if (type.isByte()) {
                 return makeByte((byte)0);
             }
         }
@@ -767,19 +767,20 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private boolean isObject(Type type) {
-        return typeFact.getObjectType().isExactly(type);
+        return type!=null && type.isObject();
     }
     
     private boolean isBasic(Type type) {
-        return typeFact.getBasicType().isExactly(type);
+        return type!=null && type.isBasic();
     }
     
     private boolean isIdentifiable(Type type) {
-        return typeFact.getIdentifiableType().isExactly(type);
+        return type!=null && type.isIdentifiable();
     }
     
     public boolean isAlias(Type type) {
-        return type.getDeclaration().isAlias() || typeFact.getDefiniteType(type).getDeclaration().isAlias();
+        return type.getDeclaration().isAlias() 
+            || typeFact.getDefiniteType(type).getDeclaration().isAlias();
     }
 
     /**
@@ -1253,8 +1254,8 @@ public abstract class AbstractTransformer implements Transformation {
 
     public boolean isWidening(Type declType, Type refinedDeclType) {
         return !isCeylonObject(declType)
-                && willEraseToObject(declType)
-                && !willEraseToObject(refinedDeclType);
+            && willEraseToObject(declType)
+            && !willEraseToObject(refinedDeclType);
     }
 
     private boolean isWideningTypeArguments(Type declType, Type refinedDeclType, boolean allowSubtypes) {
@@ -1432,12 +1433,12 @@ public abstract class AbstractTransformer implements Transformation {
         }
         TypeDeclaration decl = type.getDeclaration();
         // All the following types either are Object or erase to Object
-        if (Decl.equal(decl, typeFact.getObjectDeclaration())
-                || Decl.equal(decl, typeFact.getIdentifiableDeclaration())
-                || Decl.equal(decl, typeFact.getBasicDeclaration())
-                || Decl.equal(decl, typeFact.getNullDeclaration())
-                || Decl.equal(decl, typeFact.getNullValueDeclaration().getTypeDeclaration())
-                || Decl.equal(decl, typeFact.getAnythingDeclaration())
+        if (decl.isObject()
+                || decl.isIdentifiable()
+                || decl.isBasic()
+                || decl.isNull()
+                || decl.isNullValue()
+                || decl.isAnything()
                 || type.isNothing()) {
             return true;
         }
@@ -1445,36 +1446,32 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean willEraseToPrimitive(Type type) {
-        return (isCeylonBoolean(type)
-                || isCeylonInteger(type)
-                || isCeylonFloat(type)
-                || isCeylonCharacter(type)
-                || isCeylonByte(type));
+        return type!=null
+            && (type.isBoolean()
+             || type.isInteger()
+             || type.isFloat()
+             || type.isCharacter()
+             || type.isByte());
     }
     
     boolean willEraseToAnnotation(Type type) {
         type = simplifyType(type);
         return type != null 
-                && (type.isExactly(typeFact.getAnnotationDeclaration().getType())
-                        || (type.getDeclaration() instanceof ClassOrInterface 
-                                && type.getDeclaration().equals(typeFact.getConstrainedAnnotationDeclaration())));
+            && (type.isExactly(typeFact.getAnnotationDeclaration().getType())
+                    || (type.getDeclaration() instanceof ClassOrInterface 
+                            && type.getDeclaration().equals(typeFact.getConstrainedAnnotationDeclaration())));
     }
 
     boolean willEraseToException(Type type) {
-        type = simplifyType(type);
-        return type != null && type.isExactly(typeFact.getExceptionType());
+        return type != null && simplifyType(type).isException();
     }
     
     boolean willEraseToThrowable(Type type) {
-        type = simplifyType(type);
-        TypeDeclaration decl = type.getDeclaration();
-        return Decl.equal(decl, typeFact.getThrowableDeclaration());
+        return type != null && simplifyType(type).isThrowable();
     }
     
     boolean willEraseToSequence(Type type) {
-        type = simplifyType(type);
-        TypeDeclaration decl = type.getDeclaration();
-        return Decl.equal(decl, typeFact.getTupleDeclaration());
+        return type != null && simplifyType(type).isTuple();
     }
     
     // keep in sync with MethodDefinitionBuilder.paramType()
@@ -1634,26 +1631,29 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean isCeylonClassOrInterfaceDeclaration(Type type){
-        return type != null && type.isSubtypeOf(typeFact().getClassOrInterfaceDeclarationType());
+        return type != null 
+            && type.isSubtypeOf(typeFact().getClassOrInterfaceDeclarationType());
     }
 
     boolean isCeylonClassOrInterfaceModel(Type type){
-        return type != null && type.getDeclaration().inherits(typeFact().getClassOrInterfaceModelDeclaration());
+        return type != null 
+            && type.getDeclaration()
+                .inherits(typeFact().getClassOrInterfaceModelDeclaration());
     }
 
     boolean isCeylonString(Type type) {
-        return type != null && type.isExactly(typeFact.getStringType());
+        return type != null && type.isString();
     }
     
     boolean isCeylonBoolean(Type type) {
         TypeDeclaration declaration = type.getDeclaration();
         return declaration != null
-                && (type.isExactly(typeFact.getBooleanType())
-                        || isBooleanTrue(declaration)
-                        || Decl.equal(declaration, typeFact.getBooleanTrueClassDeclaration())
-                        || isBooleanFalse(declaration)
-                        || Decl.equal(declaration, typeFact.getBooleanFalseClassDeclaration())
-                        || isTrueFalseUnion(type));
+            && (type.isBoolean() 
+                || declaration.isTrueValue() 
+                || declaration.isFalseValue()
+                || isBooleanTrue(declaration)
+                || isBooleanFalse(declaration)
+                || isTrueFalseUnion(type));
     }
     
     private boolean isTrueFalseUnion(Type type) {
@@ -1668,43 +1668,44 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean isCeylonInteger(Type type) {
-        return type != null && type.isExactly(typeFact.getIntegerType());
+        return type != null && type.isInteger();
     }
     
     boolean isCeylonFloat(Type type) {
-        return type != null && type.isExactly(typeFact.getFloatType());
+        return type != null && type.isFloat();
     }
     
     boolean isCeylonCharacter(Type type) {
-        return type != null && type.isExactly(typeFact.getCharacterType());
+        return type != null && type.isCharacter();
     }
 
     boolean isCeylonByte(Type type) {
-        return type != null && type.isExactly(typeFact.getByteType());
+        return type != null && type.isByte();
     }
 
     boolean isCeylonArray(Type type) {
-        return type.getSupertype(typeFact.getArrayDeclaration()) != null;
+        return type.getDeclaration()
+                .inherits(typeFact.getArrayDeclaration());
     }
     
     boolean isCeylonObject(Type type) {
-        return type != null && type.isExactly(typeFact.getObjectType());
+        return type != null && type.isObject();
     }
     
     boolean isCeylonBasicType(Type type) {
-        return isCeylonString(type)
-            || isCeylonBoolean(type)
-            || isCeylonInteger(type)
-            || isCeylonFloat(type)
-            || isCeylonCharacter(type)
-            || isCeylonByte(type);
+        return type != null 
+            && (type.isString()
+             || type.isBoolean()
+             || type.isInteger()
+             || type.isFloat()
+             || type.isCharacter()
+             || type.isByte());
     }
     
     boolean isCeylonCallable(Type type) {
         // only say yes for exactly Callable, as this is mostly used for erasure of its second type parameter
         // but we want subtypes of Callable such as the metamodel to have those extra type parameters ATM
-        return Decl.equal(type.getDeclaration(), typeFact.getCallableDeclaration());
-//        return type.getDeclaration().getUnit().isCallableType(type);
+        return type!=null && type.isCallable();
     }
 
     boolean isCeylonCallableSubtype(Type type) {
@@ -1716,7 +1717,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isCeylonMetamodelDeclaration(Type type) {
-        return type.isSubtypeOf(typeFact().getMetamodelDeclarationDeclaration().getType());
+        return type.getDeclaration()
+                .inherits(typeFact().getMetamodelDeclarationDeclaration());
     }
 
     boolean isCeylonSequentialMetamodelDeclaration(Type type) {
@@ -2038,7 +2040,7 @@ public abstract class AbstractTransformer implements Transformation {
         // this is required to properly collect all the type parameters for local interfaces
         // which we pull up to the toplevel and capture all the container type parameters
         boolean needsQualifyingTypeArgumentsFromLocalContainers =
-                Decl.isCeylon(simpleType.getDeclaration())
+                ModelUtil.isCeylonDeclaration(simpleType.getDeclaration())
                 && simpleType.getDeclaration() instanceof Interface
                 // this is only valid for interfaces, not for their companion which stay where they are
                 && (flags & JT_COMPANION) == 0;
@@ -2121,7 +2123,7 @@ public abstract class AbstractTransformer implements Transformation {
         if (((flags & JT_RAW) == 0) && hasTypeParameters
                 && !rawSupertype(ceylonType, flags)) {
             // special case for interfaces because we pull them into toplevel types
-            if(Decl.isCeylon(simpleType.getDeclaration())
+            if(ModelUtil.isCeylonDeclaration(simpleType.getDeclaration())
                     && qualifyingTypes != null
                     && qualifyingTypes.size() > 1
                     && simpleType.getDeclaration() instanceof Interface
@@ -2294,8 +2296,8 @@ public abstract class AbstractTransformer implements Transformation {
             return false;
         // can't check subtyping as that class is generic, so check raw type
         return type.isClass()
-                // there are no subtypes of Class
-                && type.getDeclaration().equals(javaClassDeclaration);
+            // there are no subtypes of Class
+            && type.getDeclaration().equals(javaClassDeclaration);
     }
 
     public boolean isJavaArray(Type type) {
@@ -2304,28 +2306,20 @@ public abstract class AbstractTransformer implements Transformation {
         type = simplifyType(type);
         if(type == null)
             return false;
-        return isJavaArray(type.getDeclaration());
+        return Decl.isJavaArray(type.getDeclaration());
     }
 
     public static boolean isJavaInterop(TypeDeclaration decl) {
         return Naming.isJavaInterop(decl);
     }
     
-    public static boolean isJavaArray(TypeDeclaration decl) {
-        return Decl.isJavaArray(decl);
-    }
-
     public boolean isJavaObjectArray(Type type) {
         if(type == null)
             return false;
         type = simplifyType(type);
         if(type == null)
             return false;
-        return isJavaObjectArray(type.getDeclaration());
-    }
-
-    public static boolean isJavaObjectArray(TypeDeclaration decl) {
-        return Decl.isJavaObjectArray(decl);
+        return Decl.isJavaObjectArray(type.getDeclaration());
     }
 
     private JCExpression getJavaArrayElementType(Type type, int flags) {
@@ -2934,7 +2928,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isJavaCtor(Class cls) {
-        return !Decl.isCeylon(cls);
+        return !ModelUtil.isCeylonDeclaration(cls);
     }
 
     Type getTypeForFunctionalParameter(Function fp) {
@@ -4927,7 +4921,7 @@ public abstract class AbstractTransformer implements Transformation {
         Type qualifyingType = type.getQualifyingType();
         if(qualifyingType == null
             // ignore qualifying types of static java declarations
-            && (Decl.isCeylon(type.getDeclaration())
+            && (ModelUtil.isCeylonDeclaration(type.getDeclaration())
                     || !type.getDeclaration().isStatic())){
             Declaration declaration = type.getDeclaration();
             do{
@@ -4970,7 +4964,7 @@ public abstract class AbstractTransformer implements Transformation {
         Type qualifyingType = type.getQualifyingType();
         if(qualifyingType == null
             // ignore qualifying types of static java declarations
-            && (Decl.isCeylon(type.getDeclaration())
+            && (ModelUtil.isCeylonDeclaration(type.getDeclaration())
                     || !type.getDeclaration().isStatic())){
             Declaration declaration = type.getDeclaration();
             boolean local = false;
@@ -5421,21 +5415,21 @@ public abstract class AbstractTransformer implements Transformation {
     public static boolean supportsReified(Declaration declaration){
         if(declaration instanceof ClassOrInterface){
             // Java constructors don't support reified type arguments
-            return Decl.isCeylon((TypeDeclaration) declaration);
+            return ModelUtil.isCeylonDeclaration((TypeDeclaration) declaration);
         }else if(Decl.isConstructor(declaration)){
             // Java constructors don't support reified type arguments
-            return Decl.isCeylon(Decl.getConstructor(declaration));
+            return ModelUtil.isCeylonDeclaration(ModelUtil.getConstructor(declaration));
         }else if(declaration instanceof Function){
             if (((Function)declaration).isParameter()) {
                 // those can never be parameterised
                 return false;
             }
-            if(Decl.isToplevel(declaration))
+            if (declaration.isToplevel())
                 return true;
             // Java methods don't support reified type arguments
             Function m = (Function) CodegenUtil.getTopmostRefinedDeclaration(declaration);
             // See what its container is
-            ClassOrInterface container = Decl.getClassOrInterfaceContainer(m);
+            ClassOrInterface container = ModelUtil.getClassOrInterfaceContainer(m);
             // a method which is not a toplevel and is not a class method, must be a method within method and
             // that must be Ceylon so it supports it
             if(container == null)
@@ -5870,12 +5864,12 @@ public abstract class AbstractTransformer implements Transformation {
 
     public boolean supportsReifiedAlias(ClassOrInterface decl){
         return !decl.isAlias() 
-                && decl.getTypeParameters().isEmpty()
-                && supportsReified(decl)
-                && Decl.isToplevel(decl)
-                // those are not allowed because we can't have statics in them (for a reason I can't understand but
-                // is not worth wasting time on)
-                && !Decl.isTopLevelObjectExpressionType(decl);
+            && decl.isToplevel()
+            && decl.getTypeParameters().isEmpty()
+            && supportsReified(decl)
+            // those are not allowed because we can't have statics in them (for a reason I can't understand but
+            // is not worth wasting time on)
+            && !Decl.isTopLevelObjectExpressionType(decl);
     }
     
     boolean isSequencedAnnotation(Class klass) {

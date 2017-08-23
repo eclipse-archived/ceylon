@@ -5,7 +5,6 @@ import static com.redhat.ceylon.model.loader.JvmBackendUtil.isBoxedVariable;
 import static com.redhat.ceylon.model.loader.JvmBackendUtil.isValue;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getConstructedClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isLocalToInitializer;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.withinClassOrInterface;
 
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
@@ -279,7 +278,7 @@ public class NamingBase {
             enumeratedConstructor = type != null
                 && type.getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor;
         }
-        if (withinClassOrInterface(decl) 
+        if (decl.isClassOrInterfaceMember() 
                 && (!isLocalToInitializer(decl) || enumeratedConstructor || decl.isStatic()) 
                 && !indirect) {
             if (enumeratedConstructor) {
@@ -318,7 +317,7 @@ public class NamingBase {
                 // one it will not. This is also used for late setters...
                 && ((JavaBeanValue)decl).getSetterName() != null) {
             return ((JavaBeanValue)decl).getSetterName();
-        } else if (withinClassOrInterface(decl) && !isLocalToInitializer(decl)
+        } else if (decl.isClassOrInterfaceMember() && !isLocalToInitializer(decl)
                 || decl.isStatic()) {
             String setterName = getSetterName(decl.getName());
             if (decl.isMember() && !decl.isShared()) {

@@ -3280,24 +3280,11 @@ public class ModelUtil {
         }
     }
 
-    /**
-     * Determines whether the declaration's containing scope is a class or interface
-     * @param decl The declaration
-     * @return true if the declaration is within a class or interface
-     */
-    public static boolean withinClassOrInterface(Declaration decl) {
-        return decl.getContainer() instanceof ClassOrInterface;
-    }
-
-    public static boolean withinClass(Declaration decl) {
-        return decl.getContainer() instanceof Class;
-    }
-
     public static boolean isLocalToInitializer(Declaration decl) {
         if (decl instanceof Setter) {
-            decl = ((Setter)decl).getGetter();
+            decl = ((Setter) decl).getGetter();
         }
-        return withinClass(decl) && !isCaptured(decl);
+        return decl.isClassMember() && !isCaptured(decl);
     }
 
     public static boolean isCaptured(Declaration decl) {
@@ -3308,7 +3295,7 @@ public class ModelUtil {
 
     public static boolean isNonTransientValue(Declaration decl) {
         if (decl instanceof Value) {
-            Value value = (Value)decl;
+            Value value = (Value) decl;
             return !value.isTransient();
         }
         else {

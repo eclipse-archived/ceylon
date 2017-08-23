@@ -40,6 +40,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -68,8 +69,8 @@ public class CodegenUtil {
 
     public static boolean isHashAttribute(Declaration model) {
         return model instanceof Value
-            && Decl.withinClassOrInterface(model)
             && model.isShared()
+            && model.isClassOrInterfaceMember()
             && "hash".equals(model.getName());
     }
 
@@ -454,7 +455,7 @@ public class CodegenUtil {
                         Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
                         // are we delegating to a constructor (not a supertype) of the same class (this class)?
                         if (Decl.isConstructor(ete.getDeclaration())
-                                && Decl.getConstructedClass(ete.getDeclaration()).equals(def.getDeclarationModel())) {
+                                && ModelUtil.getConstructedClass(ete.getDeclaration()).equals(def.getDeclarationModel())) {
                             return true;
                         }
                     }
@@ -465,7 +466,7 @@ public class CodegenUtil {
     }
     
     public static boolean downcastForSmall(Tree.Term expr, Declaration decl) {
-        return !expr.getSmall() && (Decl.isSmall(decl)
-            || Decl.isSmall(decl.getRefinedDeclaration()));
+        return !expr.getSmall() 
+            && (Decl.isSmall(decl) || Decl.isSmall(decl.getRefinedDeclaration()));
     }
 }

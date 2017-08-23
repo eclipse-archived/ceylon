@@ -41,7 +41,6 @@ import com.redhat.ceylon.model.typechecker.model.ConditionScope;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -89,24 +88,6 @@ public class Decl {
     
     public static boolean equalModules(Module scope, Module other) {
         return ModelUtil.equalModules(scope, other);
-    }
-    
-    /**
-     * Returns the declaration's container
-     * @param decl The declaration
-     * @return the declaration's container
-     */
-    public static Scope container(Tree.Declaration decl) {
-        return container(decl.getDeclarationModel());
-    }
-
-    /**
-     * Returns the declaration's container
-     * @param decl The declaration
-     * @return the declaration's container
-     */
-    public static Scope container(Declaration decl) {
-        return decl.getContainer();
     }
     
     /**
@@ -177,170 +158,23 @@ public class Decl {
         return JvmBackendUtil.isMethod(decl);
     }
 
-    /**
-     * Determines whether the declaration's containing scope is a method
-     * @param decl The declaration
-     * @return true if the declaration is within a method
-     */
-    public static boolean withinMethod(Tree.Declaration decl) {
-        return withinMethod(decl.getDeclarationModel());
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a getter
-     * @param decl The declaration
-     * @return true if the declaration is within a getter
-     */
-    public static boolean withinGetter(Tree.Declaration decl) {
-        return withinGetter(decl.getDeclarationModel());
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a setter
-     * @param decl The declaration
-     * @return true if the declaration is within a setter
-     */
-    public static boolean withinSetter(Tree.Declaration decl) {
-        return withinSetter(decl.getDeclarationModel());
-    }
-
-    /**
-     * Determines whether the declaration's containing scope is a method
-     * @param decl The declaration
-     * @return true if the declaration is within a method
-     */
-    public static boolean withinMethod(Declaration decl) {
-        return container(decl) instanceof Function;
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a getter
-     * @param decl The declaration
-     * @return true if the declaration is within a getter
-     */
-    public static boolean withinGetter(Declaration decl) {
-        Scope s = container(decl);
-        return isGetter((Declaration)s);
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a setter
-     * @param decl The declaration
-     * @return true if the declaration is within a setter
-     */
-    public static boolean withinSetter(Declaration decl) {
-        return container(decl) instanceof Setter;
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a package
-     * @param decl The declaration
-     * @return true if the declaration is within a package
-     */
-    public static boolean withinPackage(Tree.Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.Package;
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a class
-     * @param decl The declaration
-     * @return true if the declaration is within a class
-     */
-    public static boolean withinClass(Tree.Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.Class;
-    }
-    
-    public static boolean withinClass(Declaration decl) {
-        return ModelUtil.withinClass(decl);
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is an interface
-     * @param decl The declaration
-     * @return true if the declaration is within an interface
-     */
-    public static boolean withinInterface(Tree.Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.Interface;
-    }
-    
-    public static boolean withinInterface(Declaration decl) {
-        return container(decl) instanceof com.redhat.ceylon.model.typechecker.model.Interface;
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a class or interface
-     * @param decl The declaration
-     * @return true if the declaration is within a class or interface
-     */
-    public static boolean withinClassOrInterface(Tree.Declaration decl) {
-        return withinClassOrInterface(decl.getDeclarationModel());
-    }
-    
-    /**
-     * Determines whether the declaration's containing scope is a class or interface
-     * @param decl The declaration
-     * @return true if the declaration is within a class or interface
-     */
-    public static boolean withinClassOrInterface(Declaration decl) {
-        return ModelUtil.withinClassOrInterface(decl);
-    }
-    
-    public static boolean isShared(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isShared();
-    }
-    
-    public static boolean isSmall(Tree.Declaration decl) {
-        return isSmall(decl.getDeclarationModel());
-    }
-    
     public static boolean isSmall(Declaration decl) {
         return decl instanceof FunctionOrValue
             && ((FunctionOrValue)decl).isSmall();
     }
     
-    public static boolean isCaptured(Tree.Declaration decl) {
-        return ModelUtil.isCaptured(decl.getDeclarationModel());
-    }
-    
-    public static boolean isAbstract(Tree.ClassOrInterface decl) {
-        return decl.getDeclarationModel().isAbstract();
-    }
-
-    public static boolean isDefault(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isDefault();
-    }
-
-    public static boolean isFormal(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isFormal();
-    }
-
-    public static boolean isActual(Tree.Declaration decl) {
-        return decl.getDeclarationModel().isActual();
-    }
-    
-    public static boolean isTransient(Tree.AttributeDeclaration decl) {
-        return decl.getDeclarationModel().isTransient();
-    }
-
     public static boolean isTransient(Declaration decl) {
         return decl instanceof FunctionOrValue
             && ((FunctionOrValue)decl).isTransient();
     }
 
-    public static boolean isVariable(Tree.AttributeDeclaration decl) {
-        return decl.getDeclarationModel().isVariable() && !hasSetter(decl);
+    public static boolean isVariable(Value decl) {
+        return decl.isVariable() 
+            && !hasSetter(decl);
     }
     
-    public static boolean hasSetter(Tree.AttributeDeclaration decl) {
-        return decl.getDeclarationModel().getSetter() != null;
-    }
-    
-    public static boolean isLate(Tree.AttributeDeclaration decl) {
-        return isLate(decl.getDeclarationModel());
-    }
-
-    public static boolean isLate(Value model) {
-        return model.isLate();
+    public static boolean hasSetter(Value decl) {
+        return decl.getSetter() != null;
     }
     
     public static boolean isIndirect(Tree.AttributeDeclaration decl) {
@@ -348,18 +182,6 @@ public class Decl {
             && decl.getSpecifierOrInitializerExpression() == null;
     }
 
-    public static boolean isToplevel(Tree.Declaration decl) {
-        return isToplevel(decl.getDeclarationModel());
-    }
-    
-    public static boolean isToplevel(Declaration decl) {
-        return decl.isToplevel();
-    }
-    
-    public static boolean isDeferred(Tree.Declaration decl) {
-        return isDeferred(decl.getDeclarationModel());
-    }
-    
     public static boolean isDeferred(Declaration decl) {
         return decl instanceof Function 
             && ((Function)decl).isDeferred();
@@ -367,62 +189,13 @@ public class Decl {
     
     /**
      * Determines whether the declaration is local to a method,
-     * getter or setter, but <strong>returns {@code false} for a declaration 
-     * local to a Class initializer.</strong>
-     * @param decl The declaration
-     * @return true if the declaration is local
-     */
-    public static boolean isLocalNotInitializer(Tree.Declaration decl) {
-        return isLocalNotInitializer(decl.getDeclarationModel());
-    }
-
-    /**
-     * Determines whether the declaration is local to a method,
-     * getter or setter, but <strong>returns {@code false} for a declaration 
-     * local to a Class initializer.</strong>
-     * @param decl The declaration
-     * @return true if the declaration is local
-     */
-    public static boolean isLocalNotInitializer(Declaration decl) {
-        return ModelUtil.isLocalNotInitializer(decl);
-    }
-    
-    /**
-     * Determines whether the declaration is local to a method,
-     * getter, setter or Class initializer.
-     * @param decl The declaration
-     * @return true if the declaration is local
-     */
-    public static boolean isLocal(Tree.Declaration decl) {
-        return isLocal(decl.getDeclarationModel());
-    }
-
-    /**
-     * Determines whether the declaration is local to a method,
      * getter, setter or Class initializer.
      * @param decl The declaration
      * @return true if the declaration is local
      */
     public static boolean isLocal(Declaration decl) {
-        return isLocalNotInitializer(decl) 
-            || isLocalToInitializer(decl);
-    }
-    
-    /**
-     * Is the given scope a local scope but not an initializer scope?
-     */
-    public static boolean isLocalNotInitializerScope(Scope scope) {
-        return ModelUtil.isLocalNotInitializerScope(scope);
-    }
-    
-    /**
-     * Determines whether the declaration is local or a descendant of a 
-     * local. 
-     * @param decl The declaration
-     * @return true if the decl is local or descendant from a local
-     */
-    public static boolean isAncestorLocal(Tree.Declaration decl) {
-        return isAncestorLocal(decl.getDeclarationModel());
+        return ModelUtil.isLocalNotInitializer(decl) 
+            || ModelUtil.isLocalToInitializer(decl);
     }
     
     /**
@@ -445,26 +218,18 @@ public class Decl {
     }
         
     public static boolean isClassAttribute(Declaration decl) {
-        return withinClassOrInterface(decl)
+        return decl.isClassOrInterfaceMember()
             && (Decl.isValue(decl) || decl instanceof Setter)
             && ModelUtil.isCaptured(decl);
     }
 
     public static boolean isClassParameter(Declaration decl) {
-        return withinClassOrInterface(decl)
+        return decl.isClassOrInterfaceMember()
             && decl instanceof Value
             && ((Value)decl).isParameter()
             && ModelUtil.isCaptured(decl);
     }
 
-    public static boolean isLocalToInitializer(Tree.Declaration decl) {
-        return isLocalToInitializer(decl.getDeclarationModel());
-    }
-    
-    public static boolean isLocalToInitializer(Declaration decl) {
-        return ModelUtil.isLocalToInitializer(decl);
-    }
-    
     public static boolean isOverloaded(Declaration decl) {
         return decl instanceof Functional 
             && decl.isOverloaded();
@@ -480,10 +245,6 @@ public class Decl {
             && declaration.isStatic();
     }
 
-    public static boolean isCeylon(TypeDeclaration declaration) {
-        return JvmBackendUtil.isCeylon(declaration);
-    }
-
     /**
      * Is the declaration a method declared to return {@code void} 
      * (as opposed to a {@code Anything})
@@ -496,42 +257,12 @@ public class Decl {
         return decl.getParameterLists().size() > 1;
     }
     
-    public static ClassOrInterface getClassOrInterfaceContainer(Element decl){
-        return ModelUtil.getClassOrInterfaceContainer(decl);
-    }
-    
-    public static ClassOrInterface getClassOrInterfaceContainer(Element decl, boolean includingDecl){
-        return ModelUtil.getClassOrInterfaceContainer(decl, includingDecl);
-    }
-
-    public static Package getPackage(Declaration decl){
-        return ModelUtil.getPackage(decl);
-    }
-
-    public static Package getPackageContainer(Scope scope){
-        return ModelUtil.getPackageContainer(scope);
-    }
-
-    public static Module getModule(Declaration decl){
-        return ModelUtil.getModule(decl);
-    }
-
-    public static Module getModuleContainer(Scope scope) {
-        return ModelUtil.getModuleContainer(scope);
-    }
-
     public static boolean isValueTypeDecl(Tree.Term decl) {
-        if (decl != null){
-            return isValueTypeDecl(decl.getTypeModel());
-        }
-        return false;
+        return decl != null && isValueTypeDecl(decl.getTypeModel());
     }
     
     public static boolean isValueTypeDecl(TypedDeclaration decl) {
-        if (decl != null){
-            return isValueTypeDecl(decl.getType());
-        }
-        return false;
+        return decl != null && isValueTypeDecl(decl.getType());
     }
 
     public static boolean isValueTypeDecl(Type type) {
@@ -549,7 +280,7 @@ public class Decl {
             && model.isMember()
             && (model.isFormal() || model.isDefault())
             && !model.isAnonymous()
-            && isCeylon((Class)model);
+            && ModelUtil.isCeylonDeclaration((Class)model);
     }
     
     /**
@@ -574,14 +305,6 @@ public class Decl {
      * Determines whether the given attribute should be accessed and assigned 
      * via a {@code VariableBox}
      */
-    public static boolean isBoxedVariable(Tree.AttributeDeclaration attr) {
-        return isBoxedVariable(attr.getDeclarationModel());
-    }
-    
-    /**
-     * Determines whether the given attribute should be accessed and assigned 
-     * via a {@code VariableBox}
-     */
     public static boolean isBoxedVariable(TypedDeclaration attr) {
         return JvmBackendUtil.isBoxedVariable(attr);
     }
@@ -589,17 +312,10 @@ public class Decl {
     public static boolean isObjectValue(TypedDeclaration attr) {
         Type type = attr.getType();
         // Check type because in case of compile errors it can be null
-        if (type != null) {
-            TypeDeclaration typeDecl = type.getDeclaration();
-            return typeDecl.isAnonymous();
-        }
-        return false;
+        return type != null 
+            && type.getDeclaration().isAnonymous();
     }
 
-    public static boolean isAnnotationConstructor(Tree.AnyMethod def) {
-        return isAnnotationConstructor(def.getDeclarationModel());
-    }
-    
     public static boolean isAnnotationConstructor(Declaration def) {
         return def.isToplevel()
             && def instanceof Function
@@ -646,10 +362,6 @@ public class Decl {
         return false;
     }
 
-    public static boolean isAnnotationClass(Tree.ClassOrInterface def) {
-        return isAnnotationClass(def.getDeclarationModel());
-    }
-
     public static boolean isAnnotationClass(Declaration declarationModel) {
         return declarationModel instanceof Class
             && containsAnnotationAnnotation(declarationModel);
@@ -669,15 +381,14 @@ public class Decl {
     }
 
     public static boolean isJavaObjectArray(TypeDeclaration decl) {
-        if(decl instanceof Class == false)
-            return false;
-        Class c = (Class) decl;
-        String name = c.getQualifiedNameString();
-        return name.equals("java.lang::ObjectArray");
+        return decl instanceof Class
+            && decl.getQualifiedNameString()
+                .equals("java.lang::ObjectArray");
     }
 
     public static boolean isAnnotationClassOrConstructor(Declaration container) {
-        return isAnnotationClass(container) || isAnnotationConstructor(container);
+        return isAnnotationClass(container) 
+            || isAnnotationConstructor(container);
     }
     
     public static Tree.SpecifierOrInitializerExpression getDefaultArgument(Tree.Parameter parameter) {
@@ -759,8 +470,7 @@ public class Decl {
     }
     
     public static boolean isAnonCaseOfEnumeratedType(Tree.BaseMemberExpression term) {
-        Declaration decl = term.getDeclaration();
-        return isAnonCaseOfEnumeratedType(decl);
+        return isAnonCaseOfEnumeratedType(term.getDeclaration());
     }
     public static boolean isAnonCaseOfEnumeratedType(Declaration decl) {
     
@@ -785,7 +495,7 @@ public class Decl {
     }
     
     public static boolean isJavaStaticOrInterfacePrimary(Tree.Term term) {
-        if(term instanceof Tree.QualifiedMemberOrTypeExpression == false)
+        if (term instanceof Tree.QualifiedMemberOrTypeExpression == false)
             return false;
         Declaration decl = ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration();
         return decl != null
@@ -893,23 +603,9 @@ public class Decl {
             && !model.isNamed();
     }
 
-    public static Constructor getDefaultConstructor(Class c) {
-        for (Declaration d : c.getMembers()) {
-            if (d instanceof Constructor
-                    && d.getName() == null) {
-                return (Constructor)d;
-            }
-        }
-        return null;
-    }
-    
     public static boolean isDefaultConstructor(Constructor ctor) {
         String name = ctor.getName();
         return name == null || name.isEmpty();
-    }
-    
-    public static Class getConstructedClass(Declaration classOrCtor) {
-        return ModelUtil.getConstructedClass(classOrCtor);
     }
     
     /**
@@ -955,16 +651,6 @@ public class Decl {
         }
     }
     
-    /** Is the given constructor an enumerated ("singleton") constructor */
-    public static boolean isEnumeratedConstructor(Constructor ctor) {
-        return ModelUtil.isEnumeratedConstructor(ctor);
-    }
-    
-    /** Is the given value the result of an enumerated ("singleton") constructor */
-    public static boolean isEnumeratedConstructor(Value value) {
-        return ModelUtil.isEnumeratedConstructor(value);
-    }
-
     public static Declaration getDeclarationScope(Scope scope) {
         while (true) {
             if (scope instanceof Declaration) {
@@ -977,11 +663,11 @@ public class Decl {
     }
     
     public static boolean hasLocalNotInitializerAncestor(Declaration decl){
-        if(isLocalNotInitializer(decl))
+        if (ModelUtil.isLocalNotInitializer(decl))
             return true;
         Scope container = decl.getContainer();
-        while(container != null){
-            if(ModelUtil.isLocalNotInitializerScope(container))
+        while (container != null) {
+            if (ModelUtil.isLocalNotInitializerScope(container))
                 return true;
             container = container.getContainer();
         }
@@ -989,13 +675,9 @@ public class Decl {
     }
 
     public static boolean isConstructor(Declaration decl) {
-        return getConstructor(decl) != null;
+        return ModelUtil.getConstructor(decl) != null;
     }
     
-    public static Constructor getConstructor(Declaration decl) {
-    	return ModelUtil.getConstructor(decl);
-    }
-
     public static Scope getNonSkippedContainer(Declaration decl){
         if(decl instanceof Scope)
             return getNonSkippedContainer((Scope)decl);
@@ -1019,7 +701,8 @@ public class Decl {
 
     public static boolean skipContainer(Scope container) {
         // skip anonymous methods
-        if(container instanceof Function && ((Declaration) container).isAnonymous()){
+        if(container instanceof Function 
+                && ((Declaration) container).isAnonymous()){
             return true;
         }
         if(container instanceof Value
@@ -1066,8 +749,8 @@ public class Decl {
     }
 
     public static boolean isJavaMethod(Function method) {
-        ClassOrInterface container = Decl.getClassOrInterfaceContainer(method);
-        return container != null && !Decl.isCeylon(container);
+        ClassOrInterface container = ModelUtil.getClassOrInterfaceContainer(method);
+        return container != null && !ModelUtil.isCeylonDeclaration(container);
     }
 
     public static Parameter getLastParameterFromFirstParameterList(Function model) {
@@ -1085,7 +768,7 @@ public class Decl {
         // First check whether the expression is captured from an enclosing scope
         TypeDeclaration outer = null;
         // get the ClassOrInterface container of the declaration
-        Scope stop = Decl.getClassOrInterfaceContainer(decl, false);
+        Scope stop = ModelUtil.getClassOrInterfaceContainer(decl, false);
         if (stop instanceof TypeDeclaration) {// reified scope
             Scope scope = expr.getScope();
             while (!(scope instanceof Package)) {
