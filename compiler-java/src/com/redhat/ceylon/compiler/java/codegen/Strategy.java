@@ -56,14 +56,6 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 class Strategy {
     private Strategy() {}
     
-    public static boolean defaultParameterMethodTakesThis(Tree.Declaration decl) {
-        return defaultParameterMethodTakesThis(decl.getDeclarationModel());
-    }
-    
-    public static boolean defaultParameterMethodTakesThis(Declaration decl) {
-        return decl instanceof Function && decl.isToplevel();
-    }
-    
     enum DefaultParameterMethodOwner {
         /** 
          * DPM should be a member of an init companion (used for local class 
@@ -115,6 +107,10 @@ class Strategy {
     }
     
     
+    public static boolean defaultParameterMethodTakesThis(Declaration decl) {
+        return decl instanceof Function && decl.isToplevel();
+    }
+    
     public static boolean defaultParameterMethodStatic(final Declaration odecl) {
         return defaultParameterMethodOwner(odecl) == DefaultParameterMethodOwner.STATIC;
     }
@@ -133,10 +129,6 @@ class Strategy {
             && !ModelUtil.isLocalNotInitializer(elem);
     }
     
-    public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {
-        return defaultParameterMethodOnSelf(decl.getDeclarationModel());
-    }
-    
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
         return decl instanceof Function
             && !Decl.isConstructor(decl)
@@ -151,7 +143,8 @@ class Strategy {
     }
     
     public static boolean hasDefaultParameterOverload(Parameter param) {
-        return param.isDefaulted() || isCeylonVariadicNeedingEmpty(param);
+        return param.isDefaulted() 
+            || isCeylonVariadicNeedingEmpty(param);
     }
     
     private static boolean isCeylonVariadicNeedingEmpty(Parameter param){
@@ -164,7 +157,8 @@ class Strategy {
     }
     
     public static boolean hasEmptyDefaultArgument(Parameter param) {
-        return param.isSequenced() && !param.isAtLeastOne();
+        return param.isSequenced() 
+            && !param.isAtLeastOne();
     }
     
     /**
@@ -178,12 +172,13 @@ class Strategy {
                 return false;
             }
         }
+        ClassOrInterface model = def.getDeclarationModel();
         return def instanceof Tree.AnyClass 
-                && def.getDeclarationModel().isToplevel() 
-                && def.getDeclarationModel().isShared()
-                && !def.getDeclarationModel().isAbstract()
-                && !def.getDeclarationModel().isNativeHeader()
-                && hasNoRequiredParameters((Class)def.getDeclarationModel());
+            && model.isToplevel() 
+            && model.isShared()
+            && !model.isAbstract()
+            && !model.isNativeHeader()
+            && hasNoRequiredParameters((Class)model);
     }
     
     /**
@@ -211,9 +206,10 @@ class Strategy {
      * @param def
      */
     public static boolean generateMain(Tree.AnyMethod def) {
-        return  def.getDeclarationModel().isToplevel()
-                && def.getDeclarationModel().isShared()
-                && hasNoRequiredParameters(def.getDeclarationModel());
+        Function model = def.getDeclarationModel();
+        return model.isToplevel()
+            && model.isShared()
+            && hasNoRequiredParameters(model);
     }
     
     public static boolean generateThisDelegates(Tree.AnyMethod def) {
@@ -235,14 +231,6 @@ class Strategy {
     public static boolean createField(Parameter p, Value v) {
         return !v.isInterfaceMember() 
             && (p == null || useField(v));
-    }
-    
-    /**
-     * Determines whether a method wrapping the Callable should be generated 
-     * for a FunctionalParameter 
-     */
-    static boolean createMethod(Tree.Parameter parameter) {
-        return createMethod(parameter.getParameterModel());
     }
     
     /**
@@ -357,11 +345,6 @@ class Strategy {
         return positionalArguments.size() < 128;
     }
 
-    public static boolean generateJpaCtor(
-            Tree.ClassOrInterface def) {
-        return generateJpaCtor(def.getDeclarationModel());
-    }
-
     static boolean generateJpaCtor(ClassOrInterface declarationModel) {
         if (declarationModel instanceof Class
                 && !(declarationModel instanceof ClassAlias)
@@ -450,11 +433,11 @@ class Strategy {
                         && defaultConstructor.getParameterList() != null) {
                     parameters = defaultConstructor.getParameterList().getParameters();
                 }
-            } else if (c.getParameterList() != null ){
+            } else if (c.getParameterList() != null ) {
                 parameters = c.getParameterList().getParameters();
             }
             return parameters != null 
-                    && (parameters.isEmpty()
+                && (parameters.isEmpty()
                     || parameters.get(0).isDefaulted()
                     || parameters.get(0).isSequenced() && !parameters.get(0).isAtLeastOne());
         }
@@ -464,12 +447,12 @@ class Strategy {
     public static boolean introduceJavaIoSerializable(
             Class cls, Interface ser) {
         return !(cls instanceof ClassAlias)
-                && (Decl.hasOnlyValueConstructors(cls) 
-                    || cls.isAnonymous()
-                    || (cls.getExtendedType() != null
-                        && (cls.getExtendedType().isBasic()
-                         || cls.getExtendedType().isObject())))
-                && !cls.getSatisfiedTypes().contains(ser.getType());
+            && (Decl.hasOnlyValueConstructors(cls) 
+                || cls.isAnonymous()
+                || (cls.getExtendedType() != null
+                    && (cls.getExtendedType().isBasic()
+                     || cls.getExtendedType().isObject())))
+            && !cls.getSatisfiedTypes().contains(ser.getType());
     }
     
     /** Should the given class have a readResolve() method added ?
@@ -480,7 +463,7 @@ class Strategy {
 
     public static boolean useSerializationProxy(Class model) {
         return model.hasEnumerated()
-                && (model.isToplevel() || model.isMember());
+            && (model.isToplevel() || model.isMember());
     }
     
     public static List<TypeParameter> getEffectiveTypeParameters(Declaration decl) {
@@ -573,10 +556,10 @@ class Strategy {
                         || term instanceof Tree.CharLiteral
                         || (term instanceof Tree.NegativeOp
                             && (((Tree.NegativeOp)term).getTerm() instanceof Tree.NaturalLiteral
-                            || ((Tree.NegativeOp)term).getTerm() instanceof Tree.FloatLiteral))
+                             || ((Tree.NegativeOp)term).getTerm() instanceof Tree.FloatLiteral))
                         ||(term instanceof Tree.BaseMemberExpression
                             && (((Tree.BaseMemberExpression)term).getDeclaration().equals(unit.getTrueValueDeclaration())
-                                || ((Tree.BaseMemberExpression)term).getDeclaration().equals(unit.getFalseValueDeclaration())))) {
+                             || ((Tree.BaseMemberExpression)term).getDeclaration().equals(unit.getFalseValueDeclaration())))) {
                 } else {
                     allCtc = false;
                     break;

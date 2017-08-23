@@ -341,7 +341,8 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Now, once all the fields have been added,
         // we can add things which depend on knowing all the fields
-        if (Strategy.generateJpaCtor(def) && plan instanceof Generate) {
+        if (Strategy.generateJpaCtor(model) 
+                && plan instanceof Generate) {
             buildJpaConstructor((Class)model, classBuilder);
         }
         
@@ -377,8 +378,7 @@ public class ClassTransformer extends AbstractTransformer {
             result = classBuilder.build();
         }
         
-        if (model.isToplevel()
-                && isEe(model)) {
+        if (model.isToplevel() && isEe(model)) {
             replaceModifierTransformation(new ModifierTransformation());
         }
         
@@ -501,7 +501,12 @@ public class ClassTransformer extends AbstractTransformer {
         
         for (Reference unrefined : classModel.getUnimplementedFormals()) {
             Declaration formalMember = unrefined.getDeclaration();//classModel.getMember(memberName, null, false);
-            String errorMessage  = "formal member '"+formalMember.getName()+"' of '"+((TypeDeclaration)formalMember.getContainer()).getName()+"' not implemented in class hierarchy";
+            String errorMessage = 
+                    "formal member '"
+                    + formalMember.getName()
+                    + "' of '"
+                    + ((TypeDeclaration)formalMember.getContainer()).getName()
+                    + "' not implemented in class hierarchy";
             java.util.List<Type> params = new java.util.ArrayList<Type>();
             for (TypeParameter tp: formalMember.getTypeParameters()) {
                 params.add(tp.getType());
