@@ -12,11 +12,11 @@ abstract class Classes() {
     shared formal void print(String s);
     
     void callsForward() {
-        @error printLine("Hello world");
+        $error printLine("Hello world");
     }
     
     void printLine(String s) {
-        @error print(s + "\n");
+        $error print(s + "\n");
     }
     
     String upper(String x) {
@@ -25,8 +25,8 @@ abstract class Classes() {
     
     printLine("Hi!");
     
-    @error x = 0;
-    @error y = 0.0;
+    $error x = 0;
+    $error y = 0.0;
     
     interface NestedInterface {
         shared formal String hello;
@@ -45,8 +45,8 @@ abstract class Classes() {
     MemberClass();
         
     printLine(MemberClass().goodbye);
-    @error MemberClass().goodbye = "Foo";
-    @error MemberClass().times = "Foo";
+    $error MemberClass().goodbye = "Foo";
+    $error MemberClass().times = "Foo";
     MemberClass().times = 5;
     
     MemberClass create() {
@@ -59,7 +59,7 @@ abstract class Classes() {
     
     void usesSuperAndThis() {
         void use(Object o) {}
-        @error use(super);
+        $error use(super);
         use(this);
     }
     
@@ -67,6 +67,6 @@ abstract class Classes() {
         return super.string;
     }
     
-    //@error return Classes();
+    //$error return Classes();
     
 }

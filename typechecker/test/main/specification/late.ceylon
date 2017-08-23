@@ -7,7 +7,7 @@ interface Late1 {
 
 class Child() {
     shared late Parent parent;
-    //@error 
+    //$error 
     print(parent);
     shared Parent getParent() => parent;
     shared void setParent(Parent p) => parent = p;
@@ -29,7 +29,7 @@ interface Late2 {
 
 class Child() {
     shared late Parent parent;
-    //@error 
+    //$error 
     print(parent);
     shared Parent getParent() {
         return parent;
@@ -53,31 +53,31 @@ void create() {
 }
 
 class XxX(x) {
-    @error shared late String x;
+    $error shared late String x;
 }
-class YyY(@error shared late String y) {}
+class YyY($error shared late String y) {}
 class ZzZ() {
     shared late String z = "";
 }
-void xXx(@error late String y) {
-    @error late String x;
+void xXx($error late String y) {
+    $error late String x;
 }
 
 class LateMutation() {
     shared late Integer x = 10;
     shared void init() {
-        @error x++;
-        @error x+=1;
+        $error x++;
+        $error x+=1;
     }
 }
 
 class LateMembers() {
     late value s0 = "";
-    @error late value s1 => "";
-    @error late value s2 { return ""; }
+    $error late value s1 => "";
+    $error late value s2 { return ""; }
 }
 
 class LateVariance<out T>() {
     late T t1;
-    @error shared late T t2;
+    $error shared late T t2;
 }

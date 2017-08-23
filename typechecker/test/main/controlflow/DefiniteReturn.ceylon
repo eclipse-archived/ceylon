@@ -158,7 +158,7 @@ interface DefiniteReturn {
             doSomethingElse();
             return;
         }
-        @error doNull();
+        $error doNull();
     }
     
     void voidMethodWithStatementAfterDefiniteThrow() {
@@ -170,7 +170,7 @@ interface DefiniteReturn {
             doSomethingElse();
             throw;
         }
-        @error doNull();
+        $error doNull();
     }
     
     void voidMethodWithReturnInEmptyFor() {
@@ -186,7 +186,7 @@ interface DefiniteReturn {
             doSomething();
             return;
         }
-        @error doNull();
+        $error doNull();
     }
     
     void voidMethodWithReturnInEmptyFor2() {
@@ -206,7 +206,7 @@ interface DefiniteReturn {
             return;
         }
         else {
-            @error doSomethingElse();
+            $error doSomethingElse();
         }
         doNull();
     }
@@ -228,7 +228,7 @@ interface DefiniteReturn {
             return;
         }
         else {
-            @error doSomethingElse();
+            $error doSomethingElse();
             return;
         }
     }
@@ -264,12 +264,12 @@ interface DefiniteReturn {
             return;
         }
         while (testSomething());
-        @error doSomethingElse();
+        $error doSomethingElse();
     }*/
     
     //non-void methods
     
-    @error X methodWithNoReturn() {
+    $error X methodWithNoReturn() {
         doSomething();
         doSomethingElse();
     }
@@ -284,7 +284,7 @@ interface DefiniteReturn {
         throw;
     }
     
-    @error X methodWithReturnInIf() {
+    $error X methodWithReturnInIf() {
         if (testSomething()) {
             doSomething();
             return X();
@@ -292,7 +292,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    @error X methodWithThrowInIf() {
+    $error X methodWithThrowInIf() {
         if (testSomething()) {
             doSomething();
             throw;
@@ -300,7 +300,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    @error X methodWithReturnInIf2() {
+    $error X methodWithReturnInIf2() {
         if (testSomething()) {
             doSomething();
             return X();
@@ -311,7 +311,7 @@ interface DefiniteReturn {
         doNull();
     }
     
-    @error X methodWithThrowInIf2() {
+    $error X methodWithThrowInIf2() {
         if (testSomething()) {
             doSomething();
             throw;
@@ -346,7 +346,7 @@ interface DefiniteReturn {
         throw;
     }
     
-    @error X methodWithReturnInNestedIf() {
+    $error X methodWithReturnInNestedIf() {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
@@ -389,7 +389,7 @@ interface DefiniteReturn {
         }
     }
     
-    @error X methodWithReturnInElse() {
+    $error X methodWithReturnInElse() {
         if (testSomething()) {
             doSomething();
         }
@@ -400,7 +400,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    @error X methodWithThrowInElse() {
+    $error X methodWithThrowInElse() {
         if (testSomething()) {
             doSomething();
         }
@@ -447,7 +447,7 @@ interface DefiniteReturn {
         }
     }
     
-    @error X methodWithReturnInIfAndElseIfOnly() {
+    $error X methodWithReturnInIfAndElseIfOnly() {
         if (testSomething()) {
             doSomething();
             return X();
@@ -460,7 +460,7 @@ interface DefiniteReturn {
         }
     }
     
-    @error X methodWithReturnInIfAndElseOnly() {
+    $error X methodWithReturnInIfAndElseOnly() {
         if (testSomething()) {
             doSomething();
             return X();
@@ -482,7 +482,7 @@ interface DefiniteReturn {
             doSomethingElse();
             return X();
         }
-        @error doNull();
+        $error doNull();
     }
     
     X methodWithStatementAfterDefiniteThrow() {
@@ -494,10 +494,10 @@ interface DefiniteReturn {
             doSomethingElse();
             throw;
         }
-        @error doNull();
+        $error doNull();
     }
     
-    @error X methodWithReturnInEmptyFor() {
+    $error X methodWithReturnInEmptyFor() {
         for (X x in xs) {
             doSomething();
             return X();
@@ -510,7 +510,7 @@ interface DefiniteReturn {
             doSomething();
             return X();
         }
-        @error doNull();
+        $error doNull();
     }
     
     X methodWithReturnInFail() {
@@ -523,7 +523,7 @@ interface DefiniteReturn {
         }
     }
     
-    @error X methodWithReturnInFail2() {
+    $error X methodWithReturnInFail2() {
         for (X x in {X()}) {
             doSomething();
             break;
@@ -540,12 +540,12 @@ interface DefiniteReturn {
             return X();
         }
         else {
-            @error doSomethingElse();
+            $error doSomethingElse();
         }
         doNull();
     }
     
-    @error X methodWithReturnInEmptyFor2() {
+    $error X methodWithReturnInEmptyFor2() {
         for (X x in xs) {
             doSomething();
             return X();
@@ -574,7 +574,7 @@ interface DefiniteReturn {
             return X();
         }
         else {
-            @error doSomethingElse();
+            $error doSomethingElse();
         }
         doNull();
         return X();
@@ -597,12 +597,12 @@ interface DefiniteReturn {
             return X();
         }
         else {
-            @error doSomethingElse();
+            $error doSomethingElse();
             return X();
         }
     }
     
-    @error X methodWithReturnInWhile() {
+    $error X methodWithReturnInWhile() {
         while (testSomething()) {
             doSomething();
             return X();
@@ -633,12 +633,12 @@ interface DefiniteReturn {
             return X();
         }
         while (testSomething());
-        @error doSomethingElse();
+        $error doSomethingElse();
     }*/
     
     //getters
     
-    @error X getterWithNoReturn {
+    $error X getterWithNoReturn {
         doSomething();
         doSomethingElse();
     }
@@ -653,7 +653,7 @@ interface DefiniteReturn {
         throw;
     }
     
-    @error X getterWithReturnInIf {
+    $error X getterWithReturnInIf {
         if (testSomething()) {
             doSomething();
             return X();
@@ -661,7 +661,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    @error X getterWithThrowInIf {
+    $error X getterWithThrowInIf {
         if (testSomething()) {
             doSomething();
             throw;
@@ -669,7 +669,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    @error X getterWithReturnInIf2 {
+    $error X getterWithReturnInIf2 {
         if (testSomething()) {
             doSomething();
             return X();
@@ -680,7 +680,7 @@ interface DefiniteReturn {
         doNull();
     }
     
-    @error X getterWithThrowInIf2 {
+    $error X getterWithThrowInIf2 {
         if (testSomething()) {
             doSomething();
             throw;
@@ -691,7 +691,7 @@ interface DefiniteReturn {
         doNull();
     }
     
-    @error X getterWithReturnInNestedIf {
+    $error X getterWithReturnInNestedIf {
         if (testSomething()) {
             if (testSomething()) {
                 doSomething();
@@ -734,7 +734,7 @@ interface DefiniteReturn {
         }
     }
     
-    @error X getterWithReturnInElse {
+    $error X getterWithReturnInElse {
         if (testSomething()) {
             doSomething();
         }
@@ -745,7 +745,7 @@ interface DefiniteReturn {
         doSomethingElse();
     }
     
-    @error X getterWithThrowInElse {
+    $error X getterWithThrowInElse {
         if (testSomething()) {
             doSomething();
         }
@@ -787,7 +787,7 @@ interface DefiniteReturn {
             doSomethingElse();
             return X();
         }
-        @error doNull();
+        $error doNull();
     }
     
     X getterWithStatementAfterDefiniteThrow {
@@ -799,7 +799,7 @@ interface DefiniteReturn {
             doSomethingElse();
             throw;
         }
-        @error doNull();
+        $error doNull();
     }
     
     X getterWithReturnInFor {
@@ -807,10 +807,10 @@ interface DefiniteReturn {
             doSomething();
             return X();
         }
-        @error doNull();
+        $error doNull();
     }
     
-    @error X getterWithReturnInEmptyFor {
+    $error X getterWithReturnInEmptyFor {
         for (X x in xs) {
             doSomething();
             return X();
@@ -824,12 +824,12 @@ interface DefiniteReturn {
             return X();
         }
         else {
-            @error doSomethingElse();
+            $error doSomethingElse();
         }
         doNull();
     }
     
-    @error X getterWithReturnInEmptyFor2 {
+    $error X getterWithReturnInEmptyFor2 {
         for (X x in xs) {
             doSomething();
             return X();
@@ -846,7 +846,7 @@ interface DefiniteReturn {
             return X();
         }
         else {
-            @error doSomethingElse();
+            $error doSomethingElse();
         }
         doNull();
         return X();
@@ -881,12 +881,12 @@ interface DefiniteReturn {
             return X();
         }
         else {
-            @error doSomethingElse();
+            $error doSomethingElse();
             return X();
         }
     }
     
-    @error X getterWithReturnInWhile {
+    $error X getterWithReturnInWhile {
         while (testSomething()) {
             doSomething();
             return X();
@@ -917,7 +917,7 @@ interface DefiniteReturn {
             return X();
         }
         while (testSomething());
-        @error doSomethingElse();
+        $error doSomethingElse();
     }*/
     
     //setters
@@ -1071,7 +1071,7 @@ interface DefiniteReturn {
             doSomethingElse();
             return;
         }
-        @error doNull();
+        $error doNull();
     }
     
     assign getterWithStatementAfterDefiniteThrow {
@@ -1083,7 +1083,7 @@ interface DefiniteReturn {
             doSomethingElse();
             throw;
         }
-        @error doNull();
+        $error doNull();
     }
     
     assign getterWithReturnInFor {
@@ -1091,7 +1091,7 @@ interface DefiniteReturn {
             doSomething();
             return;
         }
-        @error doNull();
+        $error doNull();
     }
     
     assign getterWithReturnInEmptyFor {
@@ -1108,7 +1108,7 @@ interface DefiniteReturn {
             return;
         }
         else {
-            @error doSomethingElse();
+            $error doSomethingElse();
         }
         doNull();
     }
@@ -1130,7 +1130,7 @@ interface DefiniteReturn {
             return;
         }
         else {
-            @error doSomethingElse();
+            $error doSomethingElse();
             return;
         }
     }
@@ -1177,7 +1177,7 @@ interface DefiniteReturn {
             return;
         }
         while (testSomething());
-        @error doSomethingElse();
+        $error doSomethingElse();
     }*/
     
     //misc combinations
@@ -1217,7 +1217,7 @@ interface DefiniteReturn {
         else {
             return;
         }
-        @error doSomething();
+        $error doSomething();
         void member() {}
     }
     
@@ -1229,7 +1229,7 @@ interface DefiniteReturn {
             throw;
         }
         void member() {}
-        @error return;
+        $error return;
     }
     
     X methodWithNestedMethod() {
@@ -1263,7 +1263,7 @@ interface DefiniteReturn {
     X methodWithNestedClass() {
         class Nested() {
             if (testSomething()) {
-                @error return X();
+                $error return X();
             }
             else {
                 return;
@@ -1275,7 +1275,7 @@ interface DefiniteReturn {
     X getterWithNestedClass {
         class Nested() {
             if (testSomething()) {
-                @error return X();
+                $error return X();
             }
             else {
                 return;
@@ -1309,7 +1309,7 @@ interface DefiniteReturn {
             return;
         }
         finally {}
-        @error testSomething();
+        $error testSomething();
     }
     
     void try2() {
@@ -1327,7 +1327,7 @@ interface DefiniteReturn {
         finally {
             return;
         }
-        @error testSomething();
+        $error testSomething();
     }
     
     void tryFinally2() {
@@ -1348,7 +1348,7 @@ interface DefiniteReturn {
         catch (Exception e) {
             return;
         }
-        @error testSomething();
+        $error testSomething();
     }
     
     void tryCatch2() {
@@ -1379,7 +1379,7 @@ interface DefiniteReturn {
         catch (Exception e) {
             return;
         }
-        @error testSomething();
+        $error testSomething();
     }
     
     void tryCatchCatch2() {
@@ -1407,7 +1407,7 @@ interface DefiniteReturn {
         else {
             return;
         }
-        @error testSomething();
+        $error testSomething();
     }
     
     void switchCase2() {
@@ -1440,7 +1440,7 @@ interface DefiniteReturn {
         testSomething();
     }
     
-    @error Integer testNonemptyRangeFor1() {
+    $error Integer testNonemptyRangeFor1() {
         for (i in 0:10) {
             return i;
         }
@@ -1458,7 +1458,7 @@ interface DefiniteReturn {
         }
     }
     
-    @error Integer testWhileFalse() {
+    $error Integer testWhileFalse() {
         while (false) {
             return 0;
         }

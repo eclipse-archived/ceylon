@@ -14,13 +14,13 @@ class ControlStructures() {
         print(n);
     }
     
-    @warn:"redundantNarrowing" if (is Anything something) {}
-    @warn:"redundantNarrowing" if (is Object something) {}
-    @warn:"redundantNarrowing" if (is String sh = "hello") {}
-    @warn:"redundantNarrowing" if (is Object sh = "hello") {}
+    $warn:"redundantNarrowing" if (is Anything something) {}
+    $warn:"redundantNarrowing" if (is Object something) {}
+    $warn:"redundantNarrowing" if (is String sh = "hello") {}
+    $warn:"redundantNarrowing" if (is Object sh = "hello") {}
     
     variable String? var = "gavin"; 
-    @error if (exists var) {}
+    $error if (exists var) {}
     if (exists vv = var) {}
     
     if (nonempty names) {
@@ -38,7 +38,7 @@ class ControlStructures() {
     }
     
     variable String[] varseq = [];
-    @error if (nonempty varseq) {}
+    $error if (nonempty varseq) {}
     if (nonempty vs = varseq) {}
     
     if (is String something) {
@@ -50,7 +50,7 @@ class ControlStructures() {
     }
     
     variable Object o = "hello";
-    @error if (is String o) {}
+    $error if (is String o) {}
     
     if (name exists && true) {}
     if (names nonempty || true) {}
@@ -66,7 +66,7 @@ class ControlStructures() {
         print(n);
     }*/
     
-    /*for (@error function n in names) {
+    /*for ($error function n in names) {
         print(n);
     }*/
     
@@ -97,15 +97,15 @@ class ControlStructures() {
     }
     FileHandle fh = FileHandle();
     function file() { return fh; }
-    try (@error fh) {}
-    try (@error f = fh) {}
-    try (@error FileHandle f = fh) {}
+    try ($error fh) {}
+    try ($error f = fh) {}
+    try ($error FileHandle f = fh) {}
     try (FileHandle()) {}
     try (f = FileHandle()) {}
     try (FileHandle f = FileHandle()) {}
-    try (@error file()) {}
-    try (@error f = file()) {}
-    try (@error FileHandle f = file()) {}
+    try ($error file()) {}
+    try ($error f = file()) {}
+    try ($error FileHandle f = file()) {}
     
     class DestroyMe satisfies Destroyable {
         shared new createMe() {}
@@ -120,8 +120,8 @@ class ControlStructures() {
         print("hello");
     }
     catch (e) {
-        @type:"String" value msg = e.message;
-        @type:"Null|Throwable" value cause = e.cause;
+        $type:"String" value msg = e.message;
+        $type:"Null|Throwable" value cause = e.cause;
     }
     
     class D<T>(T t) 
@@ -130,14 +130,14 @@ class ControlStructures() {
     }
         
     try (x = D(1), y = D(x)) {
-        @type:"ControlStructures.D<Integer>" 
+        $type:"ControlStructures.D<Integer>" 
         value xx = x;
-        @type:"ControlStructures.D<ControlStructures.D<Integer>>" 
+        $type:"ControlStructures.D<ControlStructures.D<Integer>>" 
         value yy = y;
     }
     
     String x1 = "";
-    try (@error x1 = D(1), y1 = D(x1)) {}
+    try ($error x1 = D(1), y1 = D(x1)) {}
     String y1 = "";
 
     class Exception1() extends Exception() {}
@@ -146,11 +146,11 @@ class ControlStructures() {
     try {
         print("hello");
     }
-    catch (@type:"ControlStructures.Exception1|ControlStructures.Exception2" Exception1|Exception2 e) {
-        @type:"String" value msg = e.message;
-        @type:"Null|Throwable" value cause = e.cause;
+    catch ($type:"ControlStructures.Exception1|ControlStructures.Exception2" Exception1|Exception2 e) {
+        $type:"String" value msg = e.message;
+        $type:"Null|Throwable" value cause = e.cause;
     }
-    catch (@error String estr) {
+    catch ($error String estr) {
         
     }
     
@@ -160,44 +160,44 @@ class ControlStructures() {
     catch (Exception e) {}
     
     try {}
-    catch (@type:"ControlStructures.Exception1" Exception1 e1) {}
-    catch (@error Exception1 e2) {}
+    catch ($type:"ControlStructures.Exception1" Exception1 e1) {}
+    catch ($error Exception1 e2) {}
     
     try {}
     catch (Exception1 e1) {}
     catch (Exception e) {}
-    catch (@error Exception2 e2) {}
+    catch ($error Exception2 e2) {}
     
     try {}
     catch (Exception1|Exception2 e) {}
-    catch (@error Exception2 e2) {}
+    catch ($error Exception2 e2) {}
     
     try {}
     catch (Exception1 e1) {}
-    catch (@error Exception1|Exception2 e) {}
+    catch ($error Exception1|Exception2 e) {}
     
-    @error try ("hello") {}
-    @error try (Exception()) {}
-    try (@error s1 = "hello") {}
-    try (@error e1 = Exception()) {}
-    try (@error Object t1 = Transaction()) {}
-    try (@error Transaction trx) {}
+    $error try ("hello") {}
+    $error try (Exception()) {}
+    try ($error s1 = "hello") {}
+    try ($error e1 = Exception()) {}
+    try ($error Object t1 = Transaction()) {}
+    try ($error Transaction trx) {}
     
     try (f = FileHandle()) {
     	//do something
     	f.tell();
     }
     catch (Exception e) {
-    	@error t.rollbackOnly();
+    	$error t.rollbackOnly();
     }
     finally {
-    	@error t.rollbackOnly();
+    	$error t.rollbackOnly();
     }
     
     Transaction tt = Transaction();
-    try (@error tt) {}
+    try ($error tt) {}
     variable Transaction vtt = Transaction();
-    try (@error vtt) {}
+    try ($error vtt) {}
     
     try (t1 = FileHandle(), 
         FileHandle(), 
@@ -206,7 +206,7 @@ class ControlStructures() {
         FileHandle t4 = t2;
     }
     
-    @error while ("hello") {}
+    $error while ("hello") {}
     
     /*do {
         Boolean test = false;
@@ -220,8 +220,8 @@ class ControlStructures() {
     while (test);*/
 
     /*Boolean test2;
-    @error do {
-        @error test2 = false;
+    $error do {
+        $error test2 = false;
     }
     while (test2);*/
     
@@ -242,12 +242,12 @@ class ControlStructures() {
     switch (v)
     case (is Object|Null) {}
 
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (v)
     case (is Object|Null) {}
     case (null) {}
 
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (v)
     case (is Object|Null) {}
     case (is Null) {}
@@ -255,7 +255,7 @@ class ControlStructures() {
     switch (v)
     case (is Anything) {}
 
-    @error switch (v)
+    $error switch (v)
     case (is Object) {}
     
     Boolean b = true;
@@ -271,7 +271,7 @@ class ControlStructures() {
     case (true) {}
     else {}
 
-    @error switch (b)
+    $error switch (b)
     case (true) {}
     
     switch (b)
@@ -283,7 +283,7 @@ class ControlStructures() {
     case (is String) {}
     case (is Null) {}
     
-    //@error 
+    //$error 
     switch (s)
     case (is Object) {}
     case (is Null) {}
@@ -292,7 +292,7 @@ class ControlStructures() {
     case (is String) {}
     case (null) {}
     
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (s)
     case (is Null) {}
     case (is String) {}
@@ -302,7 +302,7 @@ class ControlStructures() {
     case (is String) {}
     else {}
 
-    @error switch (s)
+    $error switch (s)
     case (is String) {}
 
     if (exists arg=process.arguments[0],
@@ -310,10 +310,10 @@ class ControlStructures() {
         print(arg);
     }
     
-    @error if () {}
-    @error while () {}
-    @error try () {}
-    @error try {}
+    $error if () {}
+    $error while () {}
+    $error try () {}
+    $error try {}
 
 }
 
@@ -346,7 +346,7 @@ void switchOnEmpty([String*] strings, String? maybe) {
 
 shared void unreachableif() {
     while (true) {}
-    @error if (3==1) {} else {}
+    $error if (3==1) {} else {}
 }
 shared void reachableif() {
     while (1==2) {}
@@ -354,7 +354,7 @@ shared void reachableif() {
 }
 shared void unreachablewhile() {
     if (3==1) { throw; } else { return; }
-    @error while (true) {}    
+    $error while (true) {}    
 }
 shared void reachablewhile() {
     if (3==1) { throw; } else {}
@@ -362,10 +362,10 @@ shared void reachablewhile() {
 }
 shared void unreachablefor() {
     if (true) { return; }
-    @error for (c in "hello") {}    
+    $error for (c in "hello") {}    
 }
 shared void reachablefor() {
-    if (false) { /*@error*/ return; } //TODO?
+    if (false) { /*$error*/ return; } //TODO?
     for (c in "hello") {}    
 }
 
@@ -481,7 +481,7 @@ class TestGuards() {
         }
         //TODO: relax this by detecting that 
         //      the body of the loop never breaks
-        @error return int;
+        $error return int;
     }
     
     Integer j2(Integer? int) {
@@ -507,7 +507,7 @@ class TestGuards() {
                 return 0;
             }
         }
-        @error return int;
+        $error return int;
     }
     
     Integer g1(Integer? int) {
@@ -519,7 +519,7 @@ class TestGuards() {
                 return 1;
             }
         }
-        @error return int;
+        $error return int;
     }
     
     Integer g2(Integer? int) {
@@ -531,7 +531,7 @@ class TestGuards() {
                 //return 1;
             }
         }
-        @error return int;
+        $error return int;
     }
     
     Integer h1(Integer? int) {
@@ -544,7 +544,7 @@ class TestGuards() {
                 return 1;
             }
         }
-        @error return int;
+        $error return int;
     }
     
     Integer i1(Integer? int) {
@@ -557,14 +557,14 @@ class TestGuards() {
                 //return 1;
             }
         }
-        @error return int;
+        $error return int;
     }
     
     Integer d1(Integer? int) {
         if (!exists int) {
             print("hello");
         }
-        @error return int;
+        $error return int;
     }
     
     Integer z([Integer*] ints) {

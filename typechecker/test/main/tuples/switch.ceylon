@@ -5,7 +5,7 @@ void testTupleSwitch([Integer,String] pair, Object any) {
     case ([1,"bar"]) {}
     else {}
     
-    @error switch (pair)
+    $error switch (pair)
     case ([0,""]) {}
     case ([1,"foo"]) {}
     case ([1,"bar"]) {}
@@ -18,25 +18,25 @@ void testTupleSwitch([Integer,String] pair, Object any) {
     case ([0,"",'x']) {}
     else {}
     
-    @error switch (any)
+    $error switch (any)
     case ([]) {}
     case ([0,""]) {}
     case ([0,"",'x']) {}
     case ([]) {}
     else {}
     
-    @error switch (any)
+    $error switch (any)
     case ([0,""]) {}
     case ([0,""]) {}
     case ([0,"",'x']) {}
     else {}
     
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (pair)
     case ([0,""]) {}
     case ([Integer i, String s]) {}
     
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (pair)
     case ([0,""]) {}
     case (is [Integer, String]) {}
@@ -48,14 +48,14 @@ void testTupleSwitch([Integer,String] pair, Object any) {
     case ([1, null]) {}
     else {}
     
-    @error switch (any)
+    $error switch (any)
     case ([1, true]) {}
     case ([2, true]) {}
     case ([1, false]) {}
     case ([1, true]) {}
     else {}
     
-    @error switch (any)
+    $error switch (any)
     case ([1, null]) {}
     case ([1, true]) {}
     case ([2, true]) {}
@@ -69,7 +69,7 @@ void testTupleSwitch([Integer,String] pair, Object any) {
     case ([null]) {}
     else {}
     
-    @error switch (any)
+    $error switch (any)
     case ([true]) {}
     case ([true]) {}
     case ([null]) {}
@@ -87,53 +87,53 @@ void testPatterns(
     
     switch (pair)
     case ([Integer i, String s]) {
-        @type:"Integer" value ii = i;
-        @type:"String" value ss = s;
+        $type:"Integer" value ii = i;
+        $type:"String" value ss = s;
     }
     
-    @error switch (pair)
+    $error switch (pair)
     case ([Integer i, String s]) {}
     case ([String s, Integer i]) {}
     
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (pair)
     case ([Integer i, String s]) {}
     case ([Integer i, String s]) {}
     
-    //@error switch (pair)
+    //$error switch (pair)
     //case ([Integer i, s]) {}
     
     switch (something)
     case ([Float x,Float y]) {
-        @type:"Float" value xx = x;
-        @type:"Float" value yy = y;
+        $type:"Float" value xx = x;
+        $type:"Float" value yy = y;
     }
     case ([Float x, Float y, Float z]) {
-        @type:"Float" value xx = x;
-        @type:"Float" value yy = y;
-        @type:"Float" value zz = z;
+        $type:"Float" value xx = x;
+        $type:"Float" value yy = y;
+        $type:"Float" value zz = z;
     }
 
     switch (something)
     case ([Float x,Float* rest]) {
-        @type:"Float" value xx = x;
-        @type:"Float[]" value r = rest;
+        $type:"Float" value xx = x;
+        $type:"Float[]" value r = rest;
     }
     
     switch (entry)
     case (String key->Object item) {
-        @type:"String" value k = key;
-        @type:"Object" value i = item;
+        $type:"String" value k = key;
+        $type:"Object" value i = item;
     }
     case (null) {}
 
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (entry)
     case (String key->Object item) {}
     case (is String->Object) {}
     case (null) {}
     
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (entry)
     case (is String->Object) {}
     case (String key->Object item) {}

@@ -17,7 +17,7 @@ void inference() {
     E<String,Integer> e = E(1, "hello");
     
     class ESL<T>(SSS<T> sss, SL<T> sl) given T satisfies Object => E<SL<T>, SSS<T>>(sss,sl);
-    @type:"ESL<String>" value esl1 = ESL(SSS(Singleton(Singleton("hello"))), SL(["goodbye"]));
+    $type:"ESL<String>" value esl1 = ESL(SSS(Singleton(Singleton("hello"))), SL(["goodbye"]));
     ESL<Integer> esl2 = ESL(SSS(Singleton(Singleton(1))), SL([2,3]));
     Entry<Singleton<Singleton<Singleton<String>>>,Singleton<List<String>>> esl3 = 
             ESL(SSS(Singleton(Singleton("hello"))), SL(["goodbye"]));

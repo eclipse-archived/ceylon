@@ -45,25 +45,25 @@ class ClassBodies() {
     }
     
     class BadWithCircular() {
-        void x() { @error y(); }
+        void x() { $error y(); }
         void y() { x(); }
         String name = "gavin";
     }
     
     object badWithCircular {
-        void x() { @error y(); }
+        void x() { $error y(); }
         void y() { x(); }
         String name = "gavin";
     }
     
     class Bad2WithCircular() {
-        void x() { @error this.y(); }
+        void x() { $error this.y(); }
         void y() { this.x(); }
         String name = "gavin";
     }
     
     object bad2WithCircular {
-        void x() { @error this.y(); }
+        void x() { $error this.y(); }
         void y() { this.x(); }
         String name = "gavin";
     }
@@ -78,7 +78,7 @@ class ClassBodies() {
     
     class BadWithInner() {
         class Inner() {
-            @error x();
+            $error x();
         }
         String x() { return "Hell"; }
         String name = "gavin";
@@ -97,7 +97,7 @@ class ClassBodies() {
     class Bad2WithInner() {
         class Inner() {
             void y() {
-                @error x();
+                $error x();
             }
         }
         String x() { return "Hell"; }
@@ -114,7 +114,7 @@ class ClassBodies() {
     
     object badWithInner {
         class Inner() {
-            @error x();
+            $error x();
         }
         String x() { return "Hell"; }
         String name = "gavin";
@@ -133,7 +133,7 @@ class ClassBodies() {
     object bad2WithInner {
         class Inner() {
             void y() {
-                @error x();
+                $error x();
             }
         }
         String x() { return "Hell"; }
@@ -143,7 +143,7 @@ class ClassBodies() {
     class Good3WithInner() {
         String name = "gavin";
         class Inner() {
-            @type:"String" outer.x();
+            $type:"String" outer.x();
             void x() {}
         }
         String x() { return "Hell"; }
@@ -152,7 +152,7 @@ class ClassBodies() {
     class Bad3WithInner() {
         class Inner() {
             void x() {}
-            @error outer.x();
+            $error outer.x();
         }
         String x() { return "Hell"; }
         String name = "gavin";
@@ -163,7 +163,7 @@ class ClassBodies() {
         class Inner() {
             void x() {}
             void y() {
-                @type:"String" outer.x();
+                $type:"String" outer.x();
             }
         }
         String x() { return "Hell"; }
@@ -173,7 +173,7 @@ class ClassBodies() {
         class Inner() {
             void y() {
                 void x() {}
-                @error outer.x();
+                $error outer.x();
             }
         }
         String x() { return "Hell"; }
@@ -184,7 +184,7 @@ class ClassBodies() {
         String name = "gavin";
         object inner {
             void x() {
-                @type:"String" outer.x();
+                $type:"String" outer.x();
             }
         }
         String x() { return "Hell"; }
@@ -193,7 +193,7 @@ class ClassBodies() {
     object bad8WithInner {
         String name = "gavin";
         object inner {
-            @error outer.x();
+            $error outer.x();
             void x() {}
         }
         String x() { return "Hell"; }
@@ -202,7 +202,7 @@ class ClassBodies() {
     object bad3WithInner {
         object inner {
             void x() {}
-            @error outer.x();
+            $error outer.x();
         }
         String x() { return "Hell"; }
         String name = "gavin";
@@ -212,7 +212,7 @@ class ClassBodies() {
         String name = "gavin";
         object inner {
             void y() {
-                @type:"String" outer.x();
+                $type:"String" outer.x();
             }
             void x() {}
         }
@@ -223,7 +223,7 @@ class ClassBodies() {
         object inner {
             void x() {}
             void y() {
-                @error outer.x();
+                $error outer.x();
             }
         }
         String x() { return "Hell"; }
@@ -241,12 +241,12 @@ class ClassBodies() {
     }
     
     class BadWithThis() {
-        value get { @error return this; }
+        value get { $error return this; }
         String name = "gavin";
     }
     
     object badWithThis {
-        value get { @error return this; }
+        value get { $error return this; }
         String name = "gavin";
     }
     
@@ -263,12 +263,12 @@ class ClassBodies() {
     }
     
     class Bad2WithThis() {
-        void print() { @error outer.print(this); }
+        void print() { $error outer.print(this); }
         String name = "gavin";
     }
     
     object bad2WithThis {
-        void print() { @error outer.print(this); }
+        void print() { $error outer.print(this); }
         String name = "gavin";
     }
     
@@ -288,12 +288,12 @@ class ClassBodies() {
     
     class Bad3WithThis() {
         String name = "gavin";
-        @error value t = this;
+        $error value t = this;
     }
     
     object bad3WithThis {
         String name = "gavin";
-        @error value t = this;
+        $error value t = this;
     }
     
     class Good4WithThis() {
@@ -312,12 +312,12 @@ class ClassBodies() {
     
     class Bad4WithThis() {
         String name = "gavin";
-        @error variable value t = this;
+        $error variable value t = this;
     }
     
     object bad4WithThis {
         String name = "gavin";
-        @error variable value t = this;
+        $error variable value t = this;
     }
     
     class Good5WithThis() {
@@ -339,13 +339,13 @@ class ClassBodies() {
     class Bad5WithThis() {
         String name = "gavin";
         variable Bad5WithThis? t = null;
-        @error t = this;
+        $error t = this;
     }
     
     object bad5WithThis {
         String name = "gavin";
         variable Object? t = null;
-        @error t = this;
+        $error t = this;
     }
     
     class GoodWithOuter() {
@@ -360,7 +360,7 @@ class ClassBodies() {
     class BadWithOuter() {
         class Inner() {
             BadWithOuter o { 
-                @error return outer;
+                $error return outer;
             }
         }
         String name = "gavin";
@@ -378,7 +378,7 @@ class ClassBodies() {
     object badWithOuter {
         object inner {
             value o { 
-                @error return outer;
+                $error return outer;
             }
         }
         String name = "gavin";
@@ -393,7 +393,7 @@ class ClassBodies() {
     
     class Bad2WithOuter() {
         class Inner() {
-            @error print(outer);
+            $error print(outer);
         }
         String name = "gavin";
     }
@@ -410,13 +410,13 @@ class ClassBodies() {
     object bad5WithOuter {
         String name = "gavin";
         object inner {
-            @error print(outer);
+            $error print(outer);
         }
     }
     
     object bad2WithOuter {
         object inner {
-            @error print(outer);
+            $error print(outer);
         }
         String name = "gavin";
     }
@@ -430,7 +430,7 @@ class ClassBodies() {
     
     class Bad3WithOuter() {
         class Inner() {
-            @error value o = outer;
+            $error value o = outer;
         }
         String name = "gavin";
     }
@@ -447,13 +447,13 @@ class ClassBodies() {
     object bad6WithOuter {
         String name = "gavin";
         object inner {
-            @error value o = outer;
+            $error value o = outer;
         }
     }
     
     object bad3WithOuter {
         object inner {
-            @error value o = outer;
+            $error value o = outer;
         }
         String name = "gavin";
     }
@@ -469,7 +469,7 @@ class ClassBodies() {
     class Bad4WithOuter() {
         variable Object? o = null;
         class Inner() {
-            @error o = outer;
+            $error o = outer;
         }
         String name = "gavin";
     }
@@ -488,14 +488,14 @@ class ClassBodies() {
         String name = "gavin";
         variable Object? o = null;
         object inner {
-            @error o = outer;
+            $error o = outer;
         }
     }
     
     object bad4WithOuter {
         variable Object? o = null;
         object inner {
-            @error o = outer;
+            $error o = outer;
         }
         String name = "gavin";
     }
@@ -507,9 +507,9 @@ class ClassBodies() {
     class BadWithSuper() extends Super() {
         void inner() {
             String n = super.name;
-            @error Object o = super;
-            @error print(super);
-            @error return super;
+            $error Object o = super;
+            $error print(super);
+            $error return super;
         }
     }
     
@@ -527,7 +527,7 @@ class ClassBodies() {
     }
     
     class GoodWithUninitialized() {
-        @error String name;
+        $error String name;
     }
     
     class Good2WithUninitialized() {
@@ -550,26 +550,26 @@ class ClassBodies() {
     }
     
     class Good5WithUninitialized() {
-        @error String name;
+        $error String name;
         void method() {
             return;
         }
     }
     
     class Good6WithUninitialized() {
-        @error String name;
+        $error String name;
         String method() {
             //Note: error not really necessary, 
             //      because captured by non-shared
             //      declaration
-            @error return name; 
+            $error return name; 
         }
     }
     
     class Bad7WithUninitialized() {
         String name;
         String method() {
-            @error return name;
+            $error return name;
         }
         method();
     }
@@ -577,7 +577,7 @@ class ClassBodies() {
     class Bad8WithUninitialized() {
         String name;
         String method() {
-            @error return name;
+            $error return name;
         }
         if (false) {
             method();
@@ -585,9 +585,9 @@ class ClassBodies() {
     }
     
     class Bad9WithUninitialized() {
-        @error String name;
+        $error String name;
         String method() {
-            @error return name;
+            $error return name;
         }
         shared String attribute {
             return method();
@@ -597,7 +597,7 @@ class ClassBodies() {
     class Bad10WithUninitialized() {
         String name;
         String method() {
-            @error return name;
+            $error return name;
         }
         void method2() {
             method();
@@ -608,17 +608,17 @@ class ClassBodies() {
     class Bad5WithUninitialized() {
         String name;
         shared String method() {
-            @error return name;
+            $error return name;
         }
         method();
     }
     
     class BadWithUninitialized() {
-        @error shared String name;
+        $error shared String name;
     }
     
     class Bad2WithUninitialized() {
-        @error shared String name;
+        $error shared String name;
         if (false) {
             name = "gavin";
         }
@@ -627,7 +627,7 @@ class ClassBodies() {
     class Bad3WithUninitialized() {
         shared String name;
         if (false) {
-            @error return;
+            $error return;
         }
         name = "gavin";
     }
@@ -636,19 +636,19 @@ class ClassBodies() {
         String s;  
         object inner {
             //TODO: in theory, error not really needed
-            @error s = "hello"; 
+            $error s = "hello"; 
         } 
     }
     
     class Class() {
         interface Interface {
-            @error return;
+            $error return;
         }
     }
     
     void method() {
         interface Interface {
-            @error return;
+            $error return;
         }
     }
     
@@ -663,7 +663,7 @@ class ClassBodies() {
     
     class BadClassWithValue() {
         object foo {
-            @error bar();
+            $error bar();
         }
         void bar() {}
     }
@@ -671,7 +671,7 @@ class ClassBodies() {
     class BadClassWithValue2() {
         object foo {
             void method() {
-                @error bar();
+                $error bar();
             }
         }
         print("hello");
@@ -682,7 +682,7 @@ class ClassBodies() {
         object foo {
             print("hello");
             void method() {
-                @error bar();
+                $error bar();
             }
         }
         void bar() {}
@@ -691,8 +691,8 @@ class ClassBodies() {
     abstract class BadClassWithFormal() {
     	shared formal void noop();
     	shared formal String greeting;
-    	@error noop();
-    	@error String hello = greeting;
+    	$error noop();
+    	$error String hello = greeting;
     	void method() {
         	noop();
         	String hello = greeting;
@@ -700,8 +700,8 @@ class ClassBodies() {
     }
     
     class BadClassWithCallToSuper() {
-    	@error String s1 = string;
-    	@error String s2 = super.string;
+    	$error String s1 = string;
+    	$error String s2 = super.string;
         void method() {
             String s1 = string;
             String s2 = super.string;

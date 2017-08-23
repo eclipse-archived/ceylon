@@ -5,15 +5,15 @@ class List<Element>() {
 class Graph1() {
     List<Node> nodes = List<Node>();
     class Node() {
-        @error nodes.add(this);    //compiler error (this reference in initializer)
+        $error nodes.add(this);    //compiler error (this reference in initializer)
     }
 }
 
 class Graph7() {
     List<Node> nodes;
     Node createNode() {
-        @error Node node = Node(); //compiler error (forward reference in initializer)
-        @error nodes.add(node);    //compiler error (not definitely specified)
+        $error Node node = Node(); //compiler error (forward reference in initializer)
+        $error nodes.add(node);    //compiler error (not definitely specified)
         return node;
     }
     nodes = List<Node>();
@@ -24,7 +24,7 @@ class Graph5() {
     void do(Anything exp) {}
     List<Node> nodes = List<Node>();
     class Node() {
-        @error do(nodes.add(this));    //compiler error (this reference in initializer)
+        $error do(nodes.add(this));    //compiler error (this reference in initializer)
     }
 }
 
@@ -32,7 +32,7 @@ class Graph2() {
     class Node() {}
     Node createNode() {
         Node node = Node();
-        @error nodes.add(node);    //compiler error (forward reference in initializer)
+        $error nodes.add(node);    //compiler error (forward reference in initializer)
         return node;
     }
     List<Node> nodes = List<Node>();
@@ -43,7 +43,7 @@ class Graph6() {
     class Node() {}
     Node createNode() {
         Node node = Node();
-        @error do(nodes.add(node));    //compiler error (forward reference in initializer)
+        $error do(nodes.add(node));    //compiler error (forward reference in initializer)
         return node;
     }
     List<Node> nodes = List<Node>();
@@ -53,7 +53,7 @@ class Graph4() {
     class Node() {}
     Node createNode() {
         Node node = Node();
-        @error this.nodes.add(node);    //compiler error (forward reference in initializer)
+        $error this.nodes.add(node);    //compiler error (forward reference in initializer)
         return node;
     }
     List<Node> nodes = List<Node>();
@@ -84,8 +84,8 @@ class Graph8() extends SuperGraph() {
 
 class Graph9() extends SuperGraph() {
     Node createNode() {
-        @error Node node = Node();
-        @error nodes.add(node);
+        $error Node node = Node();
+        $error nodes.add(node);
         return node;
     }
     createNode();
@@ -102,11 +102,11 @@ class Graph10() extends SuperGraph() {
 }
 
 class Graph11() extends SuperGraph() {
-    @error shared actual class Node() 
+    $error shared actual class Node() 
             extends super.Node() {}
     Node createNode() {
         Node node = Node();
-        @error nodes.add(node);
+        $error nodes.add(node);
         return node;
     }
     createNode();

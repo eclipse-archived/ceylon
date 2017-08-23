@@ -5221,7 +5221,7 @@ OR_SPECIFY
     ;
 
 COMPILER_ANNOTATION
-    :   '@'
+    :   '$'
     ;
 
 fragment
@@ -5245,7 +5245,7 @@ fragment
 IdentifierStart
     :   '_'
     |   Letter
-    ;       
+    ;
 
 fragment
 LIdentifierPrefix

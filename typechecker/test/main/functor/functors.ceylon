@@ -99,7 +99,7 @@ void tryit(Map<Integer,Integer> map, Float float, Float? x,
     
     Map<Integer,String> res = toString(MapFunctor(map));
     
-    @type:"Listish<String>"
+    $type:"Listish<String>"
     value listish = toString(ListishFunctor(map));
     
     Map<Integer,String>|List<String> mapOrList 

@@ -5,12 +5,12 @@ void statements() {
         shared void doIt() {}
     }
     void y() {}
-    X x { @error return x; }
+    X x { $error return x; }
     
-    @error x();
-    @error X().hello();
-    @error z();
-    @error X().z();
+    $error x();
+    $error X().hello();
+    $error z();
+    $error X().z();
     
     X();
     y();
@@ -19,25 +19,25 @@ void statements() {
     X? xn = null;
     xn?.doIt();
     
-    @error x;
-    @error X().hello;
-    @error x.hello;
+    $error x;
+    $error X().hello;
+    $error x.hello;
     
-    @error "Hello" + "World";
-    @error "Hello"[0];
-    @error { "Hello", "World" };
-    @error { X() }*.hello;
-    @error xn?.hello;
+    $error "Hello" + "World";
+    $error "Hello"[0];
+    $error { "Hello", "World" };
+    $error { X() }*.hello;
+    $error xn?.hello;
     
-    @error true;
+    $error true;
     
     abstract class Z(String z) {}
     
-    @error Z("hello");
-    @error Basic();
-    @error Equality();
-    @error process();
+    $error Z("hello");
+    $error Basic();
+    $error Equality();
+    $error process();
     
-    @error throw 1;
+    $error throw 1;
         
 }

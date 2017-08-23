@@ -1,9 +1,9 @@
 class BreakContinue() {
     void badBreak() {
-        @error break;
+        $error break;
     }
     void badContinue() {
-        @error continue;
+        $error continue;
     }
     void forBreak() {
         for (n in 0..1) {
@@ -28,42 +28,42 @@ class BreakContinue() {
     void forBadBreak() {
         for (n in 0..1) {
             void bad() {
-                @error break;
+                $error break;
             }
         }
     }
     void forBadContinue() {
         for (n in 0..1) {
             class Bad() {
-                @error continue;
+                $error continue;
             }
         }
     }
     void forBadContinue2() {
         for (n in 0..1) {
             object bad {
-                @error continue;
+                $error continue;
             }
         }
     }
     void whileBadBreak() {
         while (1==1) {
             class Bad() {
-                @error break;
+                $error break;
             }
         }
     }
     void whileBadBreak2() {
         while (1==1) {
             object bad {
-                @error break;
+                $error break;
             }
         }
     }
     void whileBadContinue() {
         while (1==0) {
             void bad() {
-                @error continue;
+                $error continue;
             }
         }
     }
@@ -96,7 +96,7 @@ class BreakContinue() {
             return "hello";
         }
         assign bad {
-            @error return 0;
+            $error return 0;
         }
         return 1;
     }
@@ -106,7 +106,7 @@ class BreakContinue() {
             return "hello";
         }
         assign bad {
-            @error return "goodbye";
+            $error return "goodbye";
         }
         return 1;
     }
@@ -125,7 +125,7 @@ class BreakContinue() {
         for (i in 1..10) {
             return i;
         }
-        @error return 1;
+        $error return 1;
     }
     Integer q() {
         for (i in 1:10) {
@@ -138,7 +138,7 @@ class BreakContinue() {
     Integer foo() {
         for (i in 1..10) {
             break;
-            @error return i;
+            $error return i;
         }
         return 1;
     }
@@ -146,7 +146,7 @@ class BreakContinue() {
     Integer foo1() {
         for (i in 1..10) {
             break;
-            @error throw;
+            $error throw;
         }
         return 1;
     }
@@ -154,7 +154,7 @@ class BreakContinue() {
     Integer foo2() {
         for (i in 1..10) {
             break;
-            @error break;
+            $error break;
         }
         return 1;
     }
@@ -177,7 +177,7 @@ class BreakContinue() {
             else {
                 break;
             }
-            @error return i;
+            $error return i;
         }
         return 1;
     }
@@ -190,7 +190,7 @@ class BreakContinue() {
             else {
                 continue;
             }
-            @error return i;
+            $error return i;
         }
         return 1;
     }
@@ -203,7 +203,7 @@ class BreakContinue() {
             else {
                 break;
             }
-            @error throw;
+            $error throw;
         }
         return 1;
     }
@@ -216,7 +216,7 @@ class BreakContinue() {
             else {
                 break;
             }
-            @error continue;
+            $error continue;
         }
         return 1;
     }
@@ -269,7 +269,7 @@ Boolean continueThenReturnInWhileBad(Anything x) {
         }
         return false;
     }
-    @error return true;
+    $error return true;
 }
 
 Boolean breakThenReturnInForOk(Anything+ xs) {

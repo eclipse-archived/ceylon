@@ -10,7 +10,7 @@ abstract class SetFamily<Element,in S>()
 
 }
 
-@error //pity this doesn't work!
+$error //pity this doesn't work!
 class TreeSetFamily<Element>() 
         extends SetFamily<Element,TreeSet>() {
     shared class TreeSet()

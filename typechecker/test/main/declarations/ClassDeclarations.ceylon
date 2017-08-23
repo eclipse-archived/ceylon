@@ -5,25 +5,25 @@ abstract class ClassDeclarations() {
     shared formal String hello;
     shared formal void greet();
     void sayHello() {
-        @error use(hello);
+        $error use(hello);
     }
     void performGreeting() {
-        @error greet();
+        $error greet();
     }
     
     void foo() {
-        @error bar();
+        $error bar();
     }
     
     void bar() {
         foo();
     }
     
-    @error sayGoodbye();
-    @error use(goodbye);
+    $error sayGoodbye();
+    $error use(goodbye);
     
-    @error use(hello);
-    @error greet();
+    $error use(hello);
+    $error greet();
     sayHello();
     
     shared formal String goodbye;

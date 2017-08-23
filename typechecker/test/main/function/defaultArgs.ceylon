@@ -15,7 +15,7 @@ void stuff() {
 
 void variableCapture() {
     class C(shared variable Integer i, j = 0,
-            @error shared Integer f() => i,
+            $error shared Integer f() => i,
             g = j) {
         shared variable Integer j;
         shared Integer g;
@@ -24,14 +24,14 @@ void variableCapture() {
         }
     }
     void f(variable Integer i = 1, j = 0,
-           @error Integer f() => i,
+           $error Integer f() => i,
            g = j) {
         variable Integer j;
         Integer g;
         i = 10;
     }
     
-    void ff(variable String s, @error void f() => print(s)) {}
+    void ff(variable String s, $error void f() => print(s)) {}
     
     void gg(variable String s) {
         void g(void f() => print(s)) {}

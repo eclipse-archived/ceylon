@@ -13,10 +13,10 @@ interface MemberClassRefinement {
     }
     class BadConcrete() 
             extends Abstract() {
-        @error shared actual class Inner() 
+        $error shared actual class Inner() 
                 extends super.Inner() {}
     }
-    @error class BrokenConcrete() 
+    $error class BrokenConcrete() 
             extends Abstract() {}
 }
 
@@ -48,14 +48,14 @@ class Singleton(String s)
 
 void testSin() {
     print(Singleton("hello").Iterator().next());
-    @type:"Singleton.Iterator" Singleton("hello").Iterator();
+    $type:"Singleton.Iterator" Singleton("hello").Iterator();
     Singleton.Iterator i1 = Singleton("hello").Iterator();
-    @type:"Singleton.Alias" Singleton("goodbye").Alias();
+    $type:"Singleton.Alias" Singleton("goodbye").Alias();
     Singleton.Iterator i2 = Singleton("goodbye").Alias();
 }
 
-//@error class SingletonAlias() => Singleton.Iterator();
-//@error class Alias() => Many<Integer>.Iterator();
+//$error class SingletonAlias() => Singleton.Iterator();
+//$error class Alias() => Many<Integer>.Iterator();
 
 interface InterfaceFormalMemberClass {
     shared formal class Member() {}
@@ -76,15 +76,15 @@ interface OuterInter<T> {
     shared class SuperClass() {}
 }
 
-//@error class BrokenToplevelClass() extends OuterInter<Integer>.SuperClass() {}
-//@error interface BrokenToplevelInterface satisfies OuterInter<Integer>.SuperInter {}
+//$error class BrokenToplevelClass() extends OuterInter<Integer>.SuperClass() {}
+//$error interface BrokenToplevelInterface satisfies OuterInter<Integer>.SuperInter {}
 
 class OuterClass() satisfies OuterInter<String> {
     shared interface SubInter satisfies OuterInter<String>.SuperInter {}
-    @error shared interface BrokenInter satisfies OuterInter<Integer>.SuperInter {}
+    $error shared interface BrokenInter satisfies OuterInter<Integer>.SuperInter {}
     shared class SubClass() extends super.SuperClass() {}
-    @error shared class BrokenClass1() extends super.SuperClass(1) {}
-    @error shared class BrokenClass2() extends super.SuperClass {}
+    $error shared class BrokenClass1() extends super.SuperClass(1) {}
+    $error shared class BrokenClass2() extends super.SuperClass {}
 }
 
 void memberClassRefinementWithAliases() {
@@ -102,11 +102,11 @@ void memberClassRefinementWithAliases() {
         shared class Alias() => super.Member();
         shared actual class Member() extends Alias() {}
     }
-    @error class Sub3() extends Super2() satisfies Super1 {
-        @error shared class Alias() => super.Member();
+    $error class Sub3() extends Super2() satisfies Super1 {
+        $error shared class Alias() => super.Member();
     }
 }
 
 abstract class Out() {
-    @error shared formal sealed class In() {}
+    $error shared formal sealed class In() {}
 }

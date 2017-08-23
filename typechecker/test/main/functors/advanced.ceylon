@@ -17,19 +17,19 @@ void testAdvancedStuff() {
 
     Functor<Integer,List>&Functor<Integer,Set> yfun = nothing;
     Nothing n = yfun;
-    @error List<String>&Set<String> yfmap1 = yfun.fmap(Object.string);
+    $error List<String>&Set<String> yfmap1 = yfun.fmap(Object.string);
     Functor<Integer, out <T>=>List<T>&Set<T>> yf = yfun;
     List<String>&Set<String> yfmap2 = yf.fmap(Object.string);
     
     Functor<Float,List> | Functor<Float,Sequence> f = nothing;
-    @type:"List<String>" value result1 = f.fmap(Object.string);
+    $type:"List<String>" value result1 = f.fmap(Object.string);
     
     Functor<Float,List> | Functor<Integer,Sequence> g = nothing;
-    @type:"List<String>" value result2 = g.fmap(Object.string);
+    $type:"List<String>" value result2 = g.fmap(Object.string);
     Functor<Float|Integer, out <T>=>List<T>|Sequence<T>> gg = g;
     
     Functor<Float,out List> & Functor<Integer,out Sequence> h = nothing;
-    @type:"Sequence<String>" value result3 = h.fmap(Object.string);
+    $type:"Sequence<String>" value result3 = h.fmap(Object.string);
     Functor<Float|Integer, out <T>=>List<T>&Sequence<T>> hh = h;
     
     Functor<Integer, Nothing> funny = 
@@ -40,7 +40,7 @@ void testAdvancedStuff() {
     Functor<Integer, out Iterable> funn = funny;
     
     Functor<String,Sequence> seqfun = nothing;
-    @error Functor<String,List> listfun = seqfun;
+    $error Functor<String,List> listfun = seqfun;
     Functor<String,out List> wildlistfun = seqfun;
 
 }
@@ -62,10 +62,10 @@ void moreConstraints() {
     accept<String,Category>(cat, "goodbye");
     accept<Integer,Foo>(Foo(1..10), 5);
     accept<Integer,Foo>(Foo(1..10), -1);
-    @error accept<Integer,List>(1..10, 5);
-    @error accept<Integer,List>(1..10, -1);
-    @error accept<Integer,Range>(1..10, 5);
-    @error accept<Integer,Range>(1..10, -1);
+    $error accept<Integer,List>(1..10, 5);
+    $error accept<Integer,List>(1..10, -1);
+    $error accept<Integer,Range>(1..10, 5);
+    $error accept<Integer,Range>(1..10, -1);
 }
 
 void moreConstraintsBroken() {
@@ -80,30 +80,30 @@ void moreConstraintsBroken() {
     
     accept<String,Category>(cat, "hello");
     accept<String,Category>(cat, "goodbye");
-    @error accept<Integer,List>(1..10, 5);
-    @error accept<Integer,List>(1..10, -1);
+    $error accept<Integer,List>(1..10, 5);
+    $error accept<Integer,List>(1..10, -1);
     
     interface Cat<in A> {}
     
     void haha<C>() 
             given C<out E> given E<out X> {
         C<List> co;
-        @error C<Cat> contra;
-        @error C<Object> bad;
+        $error C<Cat> contra;
+        $error C<Object> bad;
     }
     haha<List>();
-    @error haha<Category>();
-    @error haha<Object>();
+    $error haha<Category>();
+    $error haha<Object>();
     
     void hahaha<C>() 
             given C<in E> given E<in X> {
-        @error C<List> co;
+        $error C<List> co;
         C<Cat> contra;
-        @error C<Object> bad;
+        $error C<Object> bad;
     }
-    @error hahahe<List>();
+    $error hahahe<List>();
     hahaha<Cat>();
-    @error haha<Object>();
+    $error haha<Object>();
     
 }
 
@@ -135,10 +135,10 @@ void testEnumeratedConstraints() {
             = J<<I>=>Map<String,I>,Integer>(map<Integer>());
     J<Sequence,String> j3
             = J<Sequence,String>([""]);
-    @error J<List,String> j4
+    $error J<List,String> j4
             = J<List,String>([""]);
     value j5 = J<<T>=>T[],String>([""]);
-    @error value j6 = J<List,String>([""]);
+    $error value j6 = J<List,String>([""]);
 }
 
 

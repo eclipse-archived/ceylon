@@ -3,13 +3,13 @@ class DefiningClass() {
     void method1(String name = defaultName) {}
     void method2(String name = this.defaultName) {}
     void method3(String name, String nickname = name) {}
-    void method4(@error String name = super.string) {}
+    void method4($error String name = super.string) {}
     void method5(String name = this.string) {}
-    void method6(@error String name = 1) {}
+    void method6($error String name = 1) {}
 }
 
 class DefaultedAndSequenced() {
-    void m(String s, Integer i = 1, @error Boolean* b = [true, false]) {}
+    void m(String s, Integer i = 1, $error Boolean* b = [true, false]) {}
     m("hello");
     m("hello", 2);
     m("hello", 2, *{});
@@ -28,6 +28,6 @@ interface Barface {
 class FunctionalParameterDefaults(
     Integer f(Integer i)=>i,
     void k(Float f)=>print(f), 
-    @error Integer h(Float f)=>f, 
-    @error void g()=>"hello") {
+    $error Integer h(Float f)=>f, 
+    $error void g()=>"hello") {
 }

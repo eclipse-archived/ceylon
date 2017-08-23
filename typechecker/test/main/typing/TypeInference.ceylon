@@ -2,25 +2,25 @@ interface TypeInference {
     
     class Inference() {
     
-        @type:"String" function inferredMethod() {
+        $type:"String" function inferredMethod() {
             return "Hello";
         }
         
-        @type:"String" value inferredGetter {
+        $type:"String" value inferredGetter {
             return "Hello";
         }
         
-        @type:"String" value inferredAttribute = "Hello";
+        $type:"String" value inferredAttribute = "Hello";
         
-        /*@error value brokenInferredMethod() {
+        /*$error value brokenInferredMethod() {
             return "Hello";
         }*/
         
-        @error function brokenInferredGetter {
+        $error function brokenInferredGetter {
             return "Hello";
         }
         
-        @error function brokenInferredAttribute => "Hello";
+        $error function brokenInferredAttribute => "Hello";
         
     }
     
@@ -29,19 +29,19 @@ interface TypeInference {
             return 0;    
         }
         void m(){
-            @type:"Integer" value n = test();
+            $type:"Integer" value n = test();
         }
-        @type:"Integer" function f() {
+        $type:"Integer" function f() {
             return test();
         }
     }
     
     class BackwardTypeInference(){
         void m(){
-            @type:"unknown" @error value n = test();
+            $type:"unknown" $error value n = test();
         }
-        @type:"unknown" @error function f() {
-            @error return test();
+        $type:"unknown" $error function f() {
+            $error return test();
         }
         function test(){
             return 0;    
@@ -50,45 +50,45 @@ interface TypeInference {
     
     class BrokenInference() {
         
-        @error value x;
+        $error value x;
         
-        @error value y {}
+        $error value y {}
         
-        @error function f() {}
+        $error function f() {}
         
-        @error function g();
+        $error function g();
         
-        @error class C();
+        $error class C();
         
-        @error interface I;
+        $error interface I;
         
     }
 
     class UnknownInference() {
         
-        @error @type:"unknown" value x = burp;
+        $error $type:"unknown" value x = burp;
         
-        @type:"unknown" @error value y {
-            @error return burp;
+        $type:"unknown" $error value y {
+            $error return burp;
         }
         
-        @type:"unknown" @error function f() {
-            @error return burp;
+        $type:"unknown" $error function f() {
+            $error return burp;
         }
         
-        @error @type:"unknown" function g() => burp;
+        $error $type:"unknown" function g() => burp;
         
-        @error @type:"Sequence<unknown>" value seq = [ @error burp ].sequence();
+        $error $type:"Sequence<unknown>" value seq = [ $error burp ].sequence();
         
-        @type:"Sequence<unknown>" @error function createSeq() {
-            @error @type:"unknown" return [ @error hi ].sequence();
+        $type:"Sequence<unknown>" $error function createSeq() {
+            $error $type:"unknown" return [ $error hi ].sequence();
         }
         
         Sequence<T> singleton<T>(T element) {
             return [element];
         }
         
-        @type:"Sequence<Nothing>" @error 
+        $type:"Sequence<Nothing>" $error 
         value sing = singleton(hi);
         
         value hi = "hi";
@@ -97,7 +97,7 @@ interface TypeInference {
     
     class MultipleReturnTypeInference() {
         
-        @type:"String|Float" function inferredMethod() {
+        $type:"String|Float" function inferredMethod() {
             if (true) {
                 return "Hello";
             }
@@ -106,7 +106,7 @@ interface TypeInference {
             }
         }
         
-        @type:"String|Integer" value inferredGetter {
+        $type:"String|Integer" value inferredGetter {
             if (true) {
                 return "Hello";
             }
@@ -115,7 +115,7 @@ interface TypeInference {
             }
         }
         
-        @type:"String|Float|Integer" function method() {
+        $type:"String|Float|Integer" function method() {
             if (1==0) {
                 return inferredMethod();
             }
@@ -124,11 +124,11 @@ interface TypeInference {
             }
         }
         
-        @type:"Nothing" function f() {
+        $type:"Nothing" function f() {
             throw;
         }
         
-        @type:"Nothing" value v {
+        $type:"Nothing" value v {
             throw;
         }
         
@@ -138,15 +138,15 @@ interface TypeInference {
         function join(String x, String y, String f(String z)) {
             return f(x+" "+y);
         }
-        @type:"String" value hw = join {
+        $type:"String" value hw = join {
             value x { return "Hello"; }
             value y { return "Hello"; }
             function f(String z) { return z.uppercased; }
         };
-        @type:"String" value broken = join {
+        $type:"String" value broken = join {
             value x { return "Hello"; }
-            @error value y { return 0; }
-            @error function f(Integer z) { return z; }
+            $error value y { return 0; }
+            $error function f(Integer z) { return z; }
         };
     }
 
@@ -155,10 +155,10 @@ interface TypeInference {
 void testObjectNarrowing<T>() {
     object foo {}
     if (is T foo) {
-        @type:"Basic&T" value f = foo;
+        $type:"Basic&T" value f = foo;
     }
-    @type:"Entry<Basic,Basic>" value entry = foo->foo;
-    @type:"Iterable<Basic,Nothing>" value iterable = {foo};
-    @type:"Tuple<Basic,Basic,Empty>" value tuple = [foo];
-    @warn:"redundantNarrowing" if (is Category foo) {}
+    $type:"Entry<Basic,Basic>" value entry = foo->foo;
+    $type:"Iterable<Basic,Nothing>" value iterable = {foo};
+    $type:"Tuple<Basic,Basic,Empty>" value tuple = [foo];
+    $warn:"redundantNarrowing" if (is Category foo) {}
 }

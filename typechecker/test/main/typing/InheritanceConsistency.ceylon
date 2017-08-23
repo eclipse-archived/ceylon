@@ -9,16 +9,16 @@ class InheritanceConsistency() {
     }
 
     //formal from interface and superclass not implemented
-    @error class Human(age) extends Animal() satisfies Named {
+    $error class Human(age) extends Animal() satisfies Named {
         shared Integer age;
     }
 
     //formal from interface not implemented
-    @error class Toy() satisfies Named {
+    $error class Toy() satisfies Named {
     }
 
     //formal from superclass not implemented
-    @error class Lion(age) extends Animal() {
+    $error class Lion(age) extends Animal() {
         shared Integer age;
     }
 
@@ -45,23 +45,23 @@ class InheritanceConsistency() {
     }
 
     //does not implement A.a and A.d
-    @error class D() extends C() satisfies B {
+    $error class D() extends C() satisfies B {
 
     }
 
     //does not implement A.d (C.d is not an implementation of A.d)
-    @error class E() extends C() satisfies B {
+    $error class E() extends C() satisfies B {
         shared actual Boolean a = false;
     }
 
     //avoid cycles in hierarchy
-    @error class CycleA() extends CycleB() {}
-    @error class CycleB() extends CycleA() {}
+    $error class CycleA() extends CycleB() {}
+    $error class CycleB() extends CycleA() {}
 
-    @error interface CycleC satisfies CycleE {}
-    @error interface CycleD satisfies CycleC {}
-    @error interface CycleE satisfies CycleD {}
-    @error class CycleF() satisfies CycleE {}
+    $error interface CycleC satisfies CycleE {}
+    $error interface CycleD satisfies CycleC {}
+    $error interface CycleE satisfies CycleD {}
+    $error class CycleF() satisfies CycleE {}
 
     //avoid parallel member definition in a class hierarchy
     interface ActualA {
@@ -72,7 +72,7 @@ class InheritanceConsistency() {
         shared default String hello { return "Bonjour"; }
     }
 
-    @error //may not inherit two declarations with the same name that do not share a common supertype
+    $error //may not inherit two declarations with the same name that do not share a common supertype
     class ActualC() satisfies ActualA & ActualB {
     }
 
@@ -87,7 +87,7 @@ class InheritanceConsistency() {
         shared actual default String hello { return "Bonjour"; }
     }
 
-    @error //inherit two declarations with the same name (from same common ancestor but do not override)
+    $error //inherit two declarations with the same name (from same common ancestor but do not override)
     class ActualG() satisfies ActualE & ActualF {
     }
 
@@ -114,6 +114,6 @@ void testValueArgs() {
         }
     };
     accept {
-        @error object inter satisfies Inter<String> {}
+        $error object inter satisfies Inter<String> {}
     };
 }

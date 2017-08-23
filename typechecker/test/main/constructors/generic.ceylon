@@ -11,7 +11,7 @@ class CtorGenericClass<T> {
     }
     shared void n() {
         CtorGenericClass<String> ctor = package.CtorGenericClass<String>("");
-        @error CtorGenericClass<String> ctor2 = package.CtorGenericClass<String>.CtorGenericClass("");
+        $error CtorGenericClass<String> ctor2 = package.CtorGenericClass<String>.CtorGenericClass("");
         CtorGenericClass<String> foo = package.CtorGenericClass<String>.foo("");
         CtorGenericClass<String>(String) fooFun = package.CtorGenericClass<String>.foo;
         String(String)(CtorGenericClass<String>) fun 
@@ -21,7 +21,7 @@ class CtorGenericClass<T> {
 
 void testCtorGenericClass() {
     CtorGenericClass<String> ctor = CtorGenericClass<String>("");
-    @error CtorGenericClass<String> ctor2 = CtorGenericClass<String>.CtorGenericClass("");
+    $error CtorGenericClass<String> ctor2 = CtorGenericClass<String>.CtorGenericClass("");
     CtorGenericClass<String> foo = CtorGenericClass<String>.foo("");
     String(String)(CtorGenericClass<String>) fun 
             = CtorGenericClass<String>.fun;
@@ -40,11 +40,11 @@ class Baz0b extends Foo<Foo<String>> {
 }
 
 class Baz1 extends Foo<List<String>> {
-    @error shared new create() extends Foo<List<Integer>>.bar() {}
+    $error shared new create() extends Foo<List<Integer>>.bar() {}
 }
 
 class Baz2 extends Foo<Foo<String>> {
-    @error shared new create() extends Foo<Foo<String>.Bar>.bar() {}
+    $error shared new create() extends Foo<Foo<String>.Bar>.bar() {}
 }
 
 
@@ -56,8 +56,8 @@ void check() {
 class A1<T> given T satisfies [Object+] { shared new (){} }
 class A2<T> given T satisfies [Object+] { shared new init(){} }
 
-@error class B1<T>() extends A1<T>() given T satisfies [Object*] {}
+$error class B1<T>() extends A1<T>() given T satisfies [Object*] {}
 
-@error class B2<T>() extends A2<T>.init() given T satisfies [Object*]{}
+$error class B2<T>() extends A2<T>.init() given T satisfies [Object*]{}
 
 

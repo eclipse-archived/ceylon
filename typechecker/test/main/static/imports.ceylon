@@ -1,6 +1,6 @@
 import static {
     Map {
-        @error Entry
+        $error Entry
     },
     Int {
         parse

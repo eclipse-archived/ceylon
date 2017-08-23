@@ -13,7 +13,7 @@ void namespaces1() {
 void namespaces2() {
     String name = "y";
     if (1==1) {
-        @error String name = "x";
+        $error String name = "x";
     }
 }
 

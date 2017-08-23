@@ -6,7 +6,7 @@ void quantificationOverId() {
     A<in String> x3 = nothing;
     String y1 = x1;
     String y2 = x2;
-    @error String y3 = x3;
+    $error String y3 = x3;
     Anything y4 = x3;
     Invariant<A<in Integer>> iaii = nothing;
     Invariant<Anything> ia = iaii;
@@ -15,7 +15,7 @@ void quantificationOverId() {
     Invariant<A<out Integer>> iai = nothing;
     Invariant<Integer> ii2 = iai;
 
-    @error alias B<in T> => T;
+    $error alias B<in T> => T;
     B<String> z1 = nothing;
     String w1 = z1;
 
@@ -31,7 +31,7 @@ void quantificationOverIdWithSimpleBounds() {
     A<in String> x3 = nothing;
     String y1 = x1;
     String y2 = x2;
-    @error String y3 = x3;
+    $error String y3 = x3;
     Object y4 = x3;
     Invariant<A<in Integer>> iaii = nothing;
     Invariant<Object> ia = iaii;
@@ -48,7 +48,7 @@ void quantificationOverIdWithBounds() {
     A<in String> x3 = nothing;
     String y1 = x1;
     String y2 = x2;
-    @error String y3 = x3;
+    $error String y3 = x3;
     Summable<in String> y4 = x3;
     Invariant<A<in Integer>> iaii = nothing;
     Invariant<Summable<in Integer>> ia = iaii;
@@ -66,8 +66,8 @@ void quantificationOverInv() {
     A<out String> x2 = nothing;
     A<in String> x3 = nothing;
     Invariant<String> y1 = x1;
-    @error Invariant<String> y2 = x2;
-    @error Invariant<String> y3 = x3;
+    $error Invariant<String> y2 = x2;
+    $error Invariant<String> y3 = x3;
 }
 
 interface Covariant<out T> {}
@@ -79,7 +79,7 @@ void quantificationOverCo() {
     A<in String> x3 = nothing;
     Covariant<String> y1 = x1;
     Covariant<String> y2 = x2;
-    @error Covariant<String> y3 = x3;
+    $error Covariant<String> y3 = x3;
     Covariant<Anything> y4 = x3;
 }
 
@@ -90,7 +90,7 @@ void quantificationOverCoWithSimpleBounds() {
     A<in String> x3 = nothing;
     Covariant<String> y1 = x1;
     Covariant<String> y2 = x2;
-    @error Covariant<String> y3 = x3;
+    $error Covariant<String> y3 = x3;
     Covariant<Object> y4 = x3;
 }
 
@@ -101,7 +101,7 @@ void quantificationOverCoWithBounds() {
     A<in String> x3 = nothing;
     Covariant<String> y1 = x1;
     Covariant<String> y2 = x2;
-    @error Covariant<String> y3 = x3;
+    $error Covariant<String> y3 = x3;
     Covariant<Summable<in String>> y4 = x3;
 }
 
@@ -120,7 +120,7 @@ void quantificationOverCoWithTrickyBounds() {
     A<in String> x3 = nothing;
     Covariant<String|Integer> y1 = x1;
     Covariant<String|Integer> y2 = x2;
-    @error Covariant<String|Integer> y3 = x3;
+    $error Covariant<String|Integer> y3 = x3;
     Covariant<Correspondence<Integer,Character>&{Character*}|Integer> y4 = x3;
 }
 
@@ -132,7 +132,7 @@ void quantificationOverContra() {
     A<out String> x2 = nothing;
     A<in String> x3 = nothing;
     Contravariant<String> y1 = x1;
-    @error Contravariant<String> y2 = x2;
+    $error Contravariant<String> y2 = x2;
     Contravariant<String> y3 = x3;
 }
 
@@ -144,9 +144,9 @@ void quantificationOverInvariantAndOtherInvariant() {
     A<out String> x2 = nothing;
     A<in String> x3 = nothing;
     Invariant<String> & OtherInvariant<String> y1 = x1;
-    @error Invariant<String> y2 = x2;
-    @error Invariant<String> y3 = x3;
-    @error OtherInvariant<String> y4 = x2;
-    @error OtherInvariant<String> y5 = x3;
+    $error Invariant<String> y2 = x2;
+    $error Invariant<String> y3 = x3;
+    $error OtherInvariant<String> y4 = x2;
+    $error OtherInvariant<String> y5 = x3;
     A<String> z1 = y1;
 }

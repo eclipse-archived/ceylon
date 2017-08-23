@@ -34,56 +34,56 @@ class Inheritance() {
     
     class ZZ(Integer n) 
             extends X<Integer>(n) {
-        @error String sss = getIt();
-        @error Boolean b = isIt("hi");
+        $error String sss = getIt();
+        $error Boolean b = isIt("hi");
     }
     
     class GoodEnough(Integer n) 
             extends X<String>(n.string) {}
     
-    @error class Bad1() extends X<String>() {}
+    $error class Bad1() extends X<String>() {}
     
-    @error class Bad2(Integer n) extends X<String>(n) {}
+    $error class Bad2(Integer n) extends X<String>(n) {}
     
-    @error class Bad3() extends I<String>() {}
+    $error class Bad3() extends I<String>() {}
     
-    @error class Bad4() satisfies X<String> {}
+    $error class Bad4() satisfies X<String> {}
     
     X<String> ys = Y<String>("foo");
     ys.doIt("to a string");
-    @error ys.doIt(1);
-    @type:"String" ys.getIt();
+    $error ys.doIt(1);
+    $type:"String" ys.getIt();
     I<String> iys = ys;
     Object oys = iys;
     
     X<Integer> yn = Y<Integer>(1);
     yn.doIt(6);
-    @type:"Integer" yn.getIt();
+    $type:"Integer" yn.getIt();
     I<Integer> iyn = yn;
     
     X<String> z = Z();
     z.doIt("to a string");
-    @type:"String" z.getIt();
+    $type:"String" z.getIt();
     I<String> iz = z;
     
     X<Float> w = W<String,Float>("amount", 1.3);
     w.doIt(4.5);
-    @type:"Float" w.getIt();
+    $type:"Float" w.getIt();
     I<Float> iw = w;
     
-    @type:"String" X<String>("goodbye").getIt();
+    $type:"String" X<String>("goodbye").getIt();
     
-    @type:"Inheritance.Y<String>" Y<String>("hello");
+    $type:"Inheritance.Y<String>" Y<String>("hello");
     
-    @type:"String" Y<String>("adios").getIt();
+    $type:"String" Y<String>("adios").getIt();
     
-    @type:"Inheritance.Z" Z();
+    $type:"Inheritance.Z" Z();
     
-    @type:"String" Z().getIt();
+    $type:"String" Z().getIt();
     
-    @type:"Inheritance.W<Float,Integer>" W<Float,Integer>(1.2, 1);
+    $type:"Inheritance.W<Float,Integer>" W<Float,Integer>(1.2, 1);
     
-    @type:"Integer" W<Float,Integer>(1.2, 1).getIt();
+    $type:"Integer" W<Float,Integer>(1.2, 1).getIt();
     
     /*object none satisfies Nothing[] {
         shared actual Integer? lastIndex = null;
@@ -123,7 +123,7 @@ class Inheritance() {
         Inheritance.Outer.Inner2 inner7 = Inner4();
     }
     
-    @error class Outer2() satisfies Outer.Inner2 {
+    $error class Outer2() satisfies Outer.Inner2 {
         shared actual void hi() { 
             hello(); 
         }
@@ -132,9 +132,9 @@ class Inheritance() {
     Outer.Inner2 oi2 = Outer2();
     Outer.Inner2 oi3 = Outer().Inner3();
     Outer.Inner2 oi4 = Outer().inner1;
-    @error Outer.Inner2 oi5 = Outer.Inner3();
-    @error Inheritance.Outer.Inner2 oi6 = Inheritance.Outer.Inner3();
-    @error Object foo = Outer.Foo.Bar();
+    $error Outer.Inner2 oi5 = Outer.Inner3();
+    $error Inheritance.Outer.Inner2 oi6 = Inheritance.Outer.Inner3();
+    $error Object foo = Outer.Foo.Bar();
     
     void method<T>(T x) 
             given T satisfies Outer.Inner2 {
@@ -151,25 +151,25 @@ class Inheritance() {
     }
     
     class B() extends A() {
-        @error super.hello();
-        @error super.C();
+        $error super.hello();
+        $error super.C();
         shared actual void hello() {
-            @error super.hello();
+            $error super.hello();
         }
         shared actual class C() 
             extends super.C() {}
     }
     
     class D() {
-        @error Anything sup1 = super;
+        $error Anything sup1 = super;
         Anything sup2;
-        @error sup2 = super;
+        $error sup2 = super;
         variable Anything sup3 = null;
-        @error sup3 = super;
+        $error sup3 = super;
         void accept(Anything v) {}
-        @error accept(super);
+        $error accept(super);
         Anything supe() {
-            @error return super;
+            $error return super;
         }
     }
     
@@ -183,5 +183,5 @@ class Inheritance() {
 interface MyIdentif satisfies Identifiable {}
 class MyClass() extends Object() satisfies MyIdentif {}
 
-@error class MyNothing() extends Nothing() {}
-@error interface MyOtherNothing satisfies Nothing {}
+$error class MyNothing() extends Nothing() {}
+$error interface MyOtherNothing satisfies Nothing {}

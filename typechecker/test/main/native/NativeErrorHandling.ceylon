@@ -19,7 +19,7 @@
  */
 native shared class NativeErrorHandling() {
     shared native void test() {
-        @error foo.bar();
+        $error foo.bar();
     }
 }
 

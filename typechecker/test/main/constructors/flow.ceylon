@@ -21,15 +21,15 @@ class Foobar2 {
     c = 3;
     
     
-    @error return;
+    $error return;
     
-    @error
+    $error
     shared new foo(Integer val) {
         a = val;
         return;        
     }
     
-    @error
+    $error
     shared new bar(Integer val) {
         print(c);
         a = val;
@@ -43,8 +43,8 @@ class Foobar3 {
     c = 3;
     
     shared new foo(Integer val) {
-        @error return;
-        @error a = val;
+        $error return;
+        $error a = val;
     }
     
     shared new bar(Integer val) {
@@ -65,7 +65,7 @@ void run0() {
 }
 
 void run1() {
-    @error Bar();
+    $error Bar();
     String x = "";
     class Bar() {
         print(x);
@@ -73,7 +73,7 @@ void run1() {
 }
 
 void run2() {
-    @error Bar.create();
+    $error Bar.create();
     String x = "";
     class Bar {
         shared new create() {
@@ -83,10 +83,10 @@ void run2() {
 }
 
 void run3() {
-    @error Bar.create();
+    $error Bar.create();
     String x = "";
     class Bar {
-        @error shared static void create() {
+        $error shared static void create() {
             print(x);
         }
         new () {}
@@ -94,8 +94,8 @@ void run3() {
 }
 
 void run4() {
-    @error object bar extends Bar() {}
-    @error object baz satisfies Baz {}
+    $error object bar extends Bar() {}
+    $error object baz satisfies Baz {}
     String x = "";
     class Bar() {
         print(x);

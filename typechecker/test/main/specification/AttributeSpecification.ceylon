@@ -1,11 +1,11 @@
 class Hello(String? name) {
 
        shared Hello brokenSelfRef {
-           @error return this;
+           $error return this;
        }
        
        shared void brokenForwardRef() {
-           @error printMessage("foo");
+           $error printMessage("foo");
        }
 
        String greeting;
@@ -66,7 +66,7 @@ void m2(Person[] people) {
     Boolean minors;
     for (p in people) {
         if (p.age<18) {
-            @error minors = true;
+            $error minors = true;
             if (1==1) {
                 continue;
             }
@@ -144,10 +144,10 @@ void m6(Person[] people) {
                 minors = true;
             }
             else {
-                @error name = p.string;
+                $error name = p.string;
                 continue;
             }
-            @error minors = false;
+            $error minors = false;
             age = p.age;
             break;
         }
@@ -164,13 +164,13 @@ void m7(Person[] people) {
     for (p in people) {
         if (p.age<18) {
             if (1==1) {
-                @error name = p.string;
+                $error name = p.string;
                 continue;
             }
             else {
                 minors = true;
             }
-            @error minors = false;
+            $error minors = false;
             age = p.age;
             break;
         }
@@ -188,7 +188,7 @@ void m8(Person[] people) {
         if (p.age<18) {
             switch (1==1) 
             case (true) {
-                @error name = p.string;
+                $error name = p.string;
                 continue;
             }
             case (false) {
@@ -210,7 +210,7 @@ void m9(Person[] people) {
     for (p in people) {
         if (p.age<18) {
             try {
-                @error name = p.string;
+                $error name = p.string;
                 continue;
             }
             catch (e) {
@@ -235,7 +235,7 @@ void m10(Person[] people) {
                 minors = true;
             }
             catch (e) {
-                @error name = p.string;
+                $error name = p.string;
                 continue;
             }
             age = p.age;
@@ -261,7 +261,7 @@ void n1(Person[] people) {
     else {
         minors = false;
     }
-    @error print(minors);
+    $error print(minors);
 }
 
 void n2(Person[] people) {
@@ -310,7 +310,7 @@ void n10(Person[] people) {
     else {
         minors = false;
     }
-    @error print(minors);
+    $error print(minors);
 }
 
 void n11(Person[] people) {
@@ -426,7 +426,7 @@ void n6(Person[] people) {
     else {
         minors = false;
     }
-    @error print(minors);
+    $error print(minors);
 }
 
 void n7(Person[] people) {
@@ -449,7 +449,7 @@ void n7(Person[] people) {
     else {
         minors = false;
     }
-    @error print(minors);
+    $error print(minors);
 }
 
 void n8(Person[] people) {
@@ -506,7 +506,7 @@ class InitializerWithAnonFunction() {
 shared void run1() {
     for (i in 0..10) {}
     String s;
-    @error value d = s;
+    $error value d = s;
 }
 
 
@@ -514,7 +514,7 @@ shared void run2() {
     for (i in 0..10) {}
     else {}
     String s;
-    @error value d = s;
+    $error value d = s;
 }
 
 class Xx() {
@@ -522,13 +522,13 @@ class Xx() {
     shared String hello = "hi";
     void m() {
         if (1==1) {
-            @error string = "foo";
-            @error hello = "bye";
+            $error string = "foo";
+            $error hello = "bye";
         }
     }
 }
 
 class Yy() extends Xx() {
-    @error string = "xxx";
-    @error hello = "bye";
+    $error string = "xxx";
+    $error hello = "bye";
 }
