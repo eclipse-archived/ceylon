@@ -1433,7 +1433,6 @@ parameterDeclarationOrRefOrPattern returns [Parameter parameter]
 
 parameterDeclarationOrRef returns [Parameter parameter]
     :
-      //(compilerAnnotations annotatedDeclarationStart) => 
       parameter
       { $parameter = $parameter.parameter; }
     | 
@@ -1960,10 +1959,26 @@ primary returns [Primary primary]
     )*
     ;
 
+parameterStart
+    : VOID_MODIFIER LIDENTIFIER
+    | variadicType LIDENTIFIER
+    | DYNAMIC LIDENTIFIER
+    ;
+    
+annotatedParameterStart
+    : 
+      (stringLiteral | annotation) 
+      (LIDENTIFIER | (UIDENTIFIER) => UIDENTIFIER | (unambiguousType) => unambiguousType | parameterStart)
+    |
+      (unambiguousType) => unambiguousType 
+    | 
+      parameterStart
+    ;
+
 specifierParametersStart
     : LPAREN 
       ( 
-        compilerAnnotations annotatedDeclarationStart
+        compilerAnnotations annotatedParameterStart
       | RPAREN (SPECIFY | COMPUTE | specifierParametersStart)
       )
     ;
@@ -2558,13 +2573,31 @@ spreadArgument returns [SpreadArgument positionalArgument]
         $positionalArgument.setExpression(e); }
     ;
 
+inferrableParameterStart
+    : VOID_MODIFIER LIDENTIFIER
+    | variadicType LIDENTIFIER
+    | DYNAMIC LIDENTIFIER
+    | VALUE_MODIFIER LIDENTIFIER
+    | FUNCTION_MODIFIER LIDENTIFIER
+    ;
+    
+annotatedInferrableParameterStart
+    : 
+      (stringLiteral | annotation) 
+      (LIDENTIFIER | (UIDENTIFIER) => UIDENTIFIER | (unambiguousType) => unambiguousType | inferrableParameterStart)
+    |
+      (unambiguousType) => unambiguousType 
+    | 
+      inferrableParameterStart
+    ;
+
 anonParametersStart
     : typeParameters?
       LPAREN
       ( 
         RPAREN
       | (LIDENTIFIER|LBRACKET) => pattern (COMMA | RPAREN anonParametersStart2)
-      | compilerAnnotations annotatedDeclarationStart 
+      | compilerAnnotations annotatedInferrableParameterStart 
       )
     ;
 
@@ -2575,7 +2608,7 @@ anonParametersStart2
       | (LIDENTIFIER COMMA)*
         (
           (LIDENTIFIER|LBRACKET) => pattern RPAREN anonParametersStart2 
-        | compilerAnnotations annotatedDeclarationStart
+        | compilerAnnotations annotatedInferrableParameterStart
         )
       )
     | COMPUTE
@@ -2583,8 +2616,14 @@ anonParametersStart2
     | TYPE_CONSTRAINT
     ;
 
+anonymousFunctionStart
+    : VOID_MODIFIER
+    | FUNCTION_MODIFIER (SMALLER_OP|LPAREN)
+    | anonParametersStart
+    ;
+    
 functionOrExpression returns [Expression expression]
-    : (FUNCTION_MODIFIER|VOID_MODIFIER|anonParametersStart) =>
+    : (anonymousFunctionStart) =>
       anonymousFunction
       { $expression = new Expression(null);
         $expression.setTerm($anonymousFunction.function); }
@@ -2940,13 +2979,13 @@ assignmentOperator returns [AssignmentOp operator]
     ;
 
 thenElseExpression returns [Term term]
-    : de1=disjunctionExpression
+    : de1=expressionOrMeta
       { $term = $de1.term; }
       (
         thenElseOperator
         { $thenElseOperator.operator.setLeftTerm($term);
           $term = $thenElseOperator.operator; }
-        de2=disjunctionExpression
+        de2=expressionOrMeta
         { $thenElseOperator.operator.setRightTerm($de2.term); }
       )*
     ;
@@ -2956,6 +2995,22 @@ thenElseOperator returns [BinaryOperatorExpression operator]
       { $operator = new DefaultOp($ELSE_CLAUSE); }
     | THEN_CLAUSE
       { $operator = new ThenOp($THEN_CLAUSE); }
+    ;
+
+declarationLiteralStart
+    : (CLASS_DEFINITION|INTERFACE_DEFINITION|NEW|ALIAS|TYPE_CONSTRAINT|OBJECT_DEFINITION|PACKAGE|MODULE|FUNCTION_MODIFIER|VALUE_MODIFIER)
+      (LIDENTIFIER|UIDENTIFIER)
+    ;
+
+expressionOrMeta returns [Term term]
+    : (META) =>
+      m1=metaLiteral2
+      { $term=$m1.meta; }
+    | (declarationLiteralStart) => 
+      m2=metaLiteral2
+      { $term=$m2.meta; }
+    | de=disjunctionExpression
+      { $term = $de.term; }
     ;
 
 disjunctionExpression returns [Term term]
@@ -3840,7 +3895,14 @@ booleanCondition returns [BooleanCondition condition]
       functionOrExpression
       { $condition.setExpression($functionOrExpression.expression); }
     ;
-    
+
+
+letStart
+    : (patternStart) => patternStart 
+    | compilerAnnotations 
+      (declarationStart|specificationStart)
+    ;
+
 existsCondition returns [ExistsCondition condition]
     : (
         NOT_OP
@@ -3851,7 +3913,7 @@ existsCondition returns [ExistsCondition condition]
       { if ($condition==null)
             $condition = new ExistsCondition($EXISTS); }
       ( 
-        ((patternStart) => patternStart | compilerAnnotations (declarationStart|specificationStart)) =>
+        (letStart) =>
         letVariable 
         { $condition.setVariable($letVariable.statement); }
       | (LIDENTIFIER (RPAREN|COMMA))=> iv1=impliedVariable
@@ -3875,7 +3937,7 @@ nonemptyCondition returns [NonemptyCondition condition]
       { if ($condition==null)
             $condition = new NonemptyCondition($NONEMPTY); }
       ( 
-        ((patternStart) => patternStart | compilerAnnotations (declarationStart|specificationStart)) =>
+        (letStart) =>
         letVariable 
         { $condition.setVariable($letVariable.statement); }
       | (LIDENTIFIER (RPAREN|COMMA))=> iv1=impliedVariable
@@ -4657,47 +4719,76 @@ modelExpression returns [MetaLiteral meta]
     { $meta=$memberModelExpression.literal; }
   | 
     typeModelExpression
-    { $meta = $typeModelExpression.literal; }
+    { $meta=$typeModelExpression.literal; }
   ;
 
 metaLiteral returns [MetaLiteral meta]
     : d1=BACKTICK
-      { $meta = new TypeLiteral($d1); }
-	    ( moduleLiteral
-	      { $meta=$moduleLiteral.literal; 
-	        $meta.setToken($d1); }
-	    | (PACKAGE (LIDENTIFIER|BACKTICK)) =>
-	      packageLiteral
-	      { $meta=$packageLiteral.literal; 
-	        $meta.setToken($d1); }
-	    | classLiteral
-	      { $meta=$classLiteral.literal; 
-          $meta.setToken($d1); }
-	    | newLiteral
-	      { $meta=$newLiteral.literal; 
-          $meta.setToken($d1); }
-	    | interfaceLiteral
-	      { $meta=$interfaceLiteral.literal; 
-          $meta.setToken($d1); }
-	    | aliasLiteral
-	      { $meta=$aliasLiteral.literal; 
-          $meta.setToken($d1); }
-	    | typeParameterLiteral
-	      { $meta=$typeParameterLiteral.literal; 
-          $meta.setToken($d1); }
-	    | valueLiteral
-	      { $meta=$valueLiteral.literal; 
-          $meta.setToken($d1); }
-	    | functionLiteral
-	      { $meta=$functionLiteral.literal; 
-          $meta.setToken($d1); }
-	    | modelExpression
-	      { $meta=$modelExpression.meta; 
-	        $meta.setToken($d1); }     
-	    )
-      d2=BACKTICK
-      { $meta.setEndToken($d2); }
+    { $meta = new TypeLiteral($d1); }
+    ( moduleLiteral
+      { $meta=$moduleLiteral.literal; 
+        $meta.setToken($d1); }
+    | (PACKAGE (LIDENTIFIER|BACKTICK)) =>
+      packageLiteral
+      { $meta=$packageLiteral.literal; 
+        $meta.setToken($d1); }
+    | classLiteral
+      { $meta=$classLiteral.literal; 
+        $meta.setToken($d1); }
+    | newLiteral
+      { $meta=$newLiteral.literal; 
+        $meta.setToken($d1); }
+    | interfaceLiteral
+      { $meta=$interfaceLiteral.literal; 
+        $meta.setToken($d1); }
+    | aliasLiteral
+      { $meta=$aliasLiteral.literal; 
+        $meta.setToken($d1); }
+    | typeParameterLiteral
+      { $meta=$typeParameterLiteral.literal; 
+        $meta.setToken($d1); }
+    | valueLiteral
+      { $meta=$valueLiteral.literal; 
+        $meta.setToken($d1); }
+    | functionLiteral
+      { $meta=$functionLiteral.literal; 
+        $meta.setToken($d1); }
+    | modelExpression
+      { $meta=$modelExpression.meta; 
+        $meta.setToken($d1); }     
+    )
+    d2=BACKTICK
+    { $meta.setEndToken($d2); }
     ;
+
+metaLiteral2 returns [MetaLiteral meta]
+    : m=META
+      { $meta = new TypeLiteral($m); }
+      modelExpression
+      { if ($modelExpression.meta!=null) {
+          $meta=$modelExpression.meta; 
+          $meta.setToken($m);
+        } }
+    | moduleLiteral
+      { $meta=$moduleLiteral.literal; }
+    | packageLiteral
+      { $meta=$packageLiteral.literal; }
+    | classLiteral
+      { $meta=$classLiteral.literal; }
+    | newLiteral
+      { $meta=$newLiteral.literal; }
+    | interfaceLiteral
+      { $meta=$interfaceLiteral.literal; }
+    | aliasLiteral
+      { $meta=$aliasLiteral.literal; }
+    | typeParameterLiteral
+      { $meta=$typeParameterLiteral.literal; }
+    | valueLiteral
+      { $meta=$valueLiteral.literal; }
+    | functionLiteral
+      { $meta=$functionLiteral.literal; }
+    ;
+
 
 // Lexer
 
@@ -5222,6 +5313,10 @@ OR_SPECIFY
 
 COMPILER_ANNOTATION
     :   '$'
+    ;
+
+META
+    :   '@'
     ;
 
 fragment
