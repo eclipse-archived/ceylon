@@ -2344,16 +2344,17 @@ public class ExpressionVisitor extends Visitor {
         super.visit(that);
         TypedDeclaration d = 
                 that.getDeclarationModel();
-        Type t = d.getType();
+        Type type = d.getType();
         FunctionOrValue fov = (FunctionOrValue) d;
         if (fov.isSmall()
-                && t != null
-                && !t.isInteger()
-                && !t.isFloat()
-                && !t.isCharacter()) {
+                && type != null
+                && !type.isInteger()
+                && !type.isFloat()
+                && !type.isCharacter()
+                && !that.getType().hasErrors()) {
             that.addError("type may not be annotated 'small': '" 
                 + d.getName() + "' has type '"
-                + t.asString(that.getUnit()) 
+                + type.asString(that.getUnit()) 
                 + "' (only an 'Integer', 'Float', or 'Character' may be small)");
         }
     }
