@@ -268,13 +268,13 @@ public final class String
     @Transient
     public Integer getLastIndex() {
         long length = getSize();
-        return (length == 0) ? null : Integer.instance(length - 1);
+        return length == 0 ? null : Integer.instance(length - 1);
     }
 
     @Ignore
     public static Integer getLastIndex(java.lang.String value) {
         long length = getSize(value);
-        return (length == 0) ? null : Integer.instance(length - 1);
+        return length == 0 ? null : Integer.instance(length - 1);
     }
 
     @Transient
