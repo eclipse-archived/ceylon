@@ -499,7 +499,7 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression makeDefaultExprForType(Type type) {
         if (canUnbox(type)) {
             String underlyingType = type.getUnderlyingType();
-            if (type.isBoolean()) {
+            if (isCeylonBoolean(type)) {
                 return makeBoolean(false);
             } else if (type.isFloat() && underlyingType == null) {
                 return make().Literal(0.0);
@@ -1433,13 +1433,13 @@ public abstract class AbstractTransformer implements Transformation {
         }
         TypeDeclaration decl = type.getDeclaration();
         // All the following types either are Object or erase to Object
-        if (decl.isObject()
+        if (type.isNothing()
+                || decl.isObject()
                 || decl.isIdentifiable()
                 || decl.isBasic()
                 || decl.isNull()
                 || decl.isNullValue()
-                || decl.isAnything()
-                || type.isNothing()) {
+                || decl.isAnything()) {
             return true;
         }
         return false;
@@ -1447,11 +1447,11 @@ public abstract class AbstractTransformer implements Transformation {
     
     boolean willEraseToPrimitive(Type type) {
         return type!=null
-            && (type.isBoolean()
-             || type.isInteger()
-             || type.isFloat()
-             || type.isCharacter()
-             || type.isByte());
+            && (isCeylonBoolean(type)
+                || type.isInteger()
+                || type.isFloat()
+                || type.isCharacter()
+                || type.isByte());
     }
     
     boolean willEraseToAnnotation(Type type) {
@@ -1694,12 +1694,12 @@ public abstract class AbstractTransformer implements Transformation {
     
     boolean isCeylonBasicType(Type type) {
         return type != null 
-            && (type.isString()
-             || type.isBoolean()
-             || type.isInteger()
-             || type.isFloat()
-             || type.isCharacter()
-             || type.isByte());
+            && (isCeylonBoolean(type)
+                || type.isString()
+                || type.isInteger()
+                || type.isFloat()
+                || type.isCharacter()
+                || type.isByte());
     }
     
     boolean isCeylonCallable(Type type) {
