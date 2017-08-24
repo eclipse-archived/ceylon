@@ -549,7 +549,6 @@ public class CeylonTransformer extends AbstractTransformer {
             scopeAnnotations = declarationModel.isToplevel() && setterDecl != null ? 
                             makeAtLocalDeclarations(decl, setterDecl) : 
                             makeAtLocalDeclarations(decl);
-            builder.classAnnotations(scopeAnnotations);
         }else if(block != null){
             scopeAnnotations = makeAtLocalDeclarations(block);
         }
