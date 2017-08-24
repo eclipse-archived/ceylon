@@ -2979,13 +2979,13 @@ assignmentOperator returns [AssignmentOp operator]
     ;
 
 thenElseExpression returns [Term term]
-    : de1=expressionOrMeta
+    : de1=disjunctionExpression
       { $term = $de1.term; }
       (
         thenElseOperator
         { $thenElseOperator.operator.setLeftTerm($term);
           $term = $thenElseOperator.operator; }
-        de2=expressionOrMeta
+        de2=disjunctionExpression
         { $thenElseOperator.operator.setRightTerm($de2.term); }
       )*
     ;
@@ -2995,23 +2995,6 @@ thenElseOperator returns [BinaryOperatorExpression operator]
       { $operator = new DefaultOp($ELSE_CLAUSE); }
     | THEN_CLAUSE
       { $operator = new ThenOp($THEN_CLAUSE); }
-    ;
-
-declarationLiteralStart
-    : (CLASS_DEFINITION|INTERFACE_DEFINITION|NEW|ALIAS|TYPE_CONSTRAINT|OBJECT_DEFINITION|PACKAGE|MODULE|FUNCTION_MODIFIER|VALUE_MODIFIER)
-      (PACKAGE MEMBER_OP)?
-      (LIDENTIFIER|UIDENTIFIER)
-    ;
-
-expressionOrMeta returns [Term term]
-    : (META) =>
-      m1=metaLiteral2
-      { $term=$m1.meta; }
-    | (declarationLiteralStart) => 
-      m2=metaLiteral2
-      { $term=$m2.meta; }
-    | de=disjunctionExpression
-      { $term = $de.term; }
     ;
 
 disjunctionExpression returns [Term term]
@@ -3053,13 +3036,27 @@ logicalNegationExpression returns [Term term]
       { $term = $notOperator.operator; }
       le=logicalNegationExpression
       { $notOperator.operator.setTerm($le.term); }
-    | equalityExpression
-      { $term = $equalityExpression.term; }
+    | e=expressionOrMeta
+      { $term = $e.term; }
     ;
 
 notOperator returns [NotOp operator]
     : NOT_OP 
       { $operator = new NotOp($NOT_OP); }
+    ;
+
+declarationLiteralStart
+    : (CLASS_DEFINITION|INTERFACE_DEFINITION|NEW|ALIAS|TYPE_CONSTRAINT|OBJECT_DEFINITION|PACKAGE|MODULE|FUNCTION_MODIFIER|VALUE_MODIFIER)
+      (PACKAGE MEMBER_OP)?
+      (LIDENTIFIER|UIDENTIFIER)
+    ;
+
+expressionOrMeta returns [Term term]
+    : (META|declarationLiteralStart) =>
+      m=metaLiteral2
+      { $term=$m.meta; }
+    | e=equalityExpression
+      { $term = $e.term; }
     ;
 
 equalityExpression returns [Term term]
@@ -3164,17 +3161,13 @@ typeOperator returns [TypeOperatorExpression operator]
     ;
 
 existenceEmptinessExpression returns [Term term]
-    : de1=entryRangeExpression
-      { $term = $de1.term; }
+    : e=entryRangeExpression
+      { $term = $e.term; }
       (
-        eno1=existsNonemptyOperator
-        { $term = $eno1.operator;
-          $eno1.operator.setTerm($de1.term); }
+        eno=existsNonemptyOperator
+        { $term = $eno.operator;
+          $eno.operator.setTerm($e.term); }
       )?
-    /*| eno2=existsNonemptyOperator
-      { $term = $eno2.operator; }
-      de2=rangeIntervalEntryExpression
-      { $eno2.operator.setTerm($de2.term); }*/
     ;
 
 existsNonemptyOperator returns [UnaryOperatorExpression operator]
