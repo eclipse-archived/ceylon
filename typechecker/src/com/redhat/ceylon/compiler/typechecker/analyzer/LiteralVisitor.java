@@ -840,4 +840,56 @@ public class LiteralVisitor extends Visitor {
         return spec;
     }
     
+    //TODO: remove this transformation when the backends are fixed
+    
+    @Override
+    public void visit(Tree.Body that) {
+        super.visit(that);
+        List<Tree.Statement> statements = that.getStatements();
+        for (int i=0; i<statements.size(); i++) {
+            Tree.Statement bs = statements.get(i);
+            if (bs instanceof Tree.LetStatement) {
+                Tree.LetStatement ls =
+                        (Tree.LetStatement) bs;
+                List<Tree.Statement> variables = ls.getVariables();
+                for (int j=0; j<variables.size(); j++) {
+                    Tree.Statement s = variables.get(j);
+                    if (s instanceof Tree.Variable) {
+                        while (j<variables.size()) {
+                            Tree.Statement rs = 
+                                    eliminateVariable(variables.remove(j));
+                            statements.add(++i, rs);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    private Tree.Statement eliminateVariable(Tree.Statement s) {
+        if (s instanceof Tree.Variable) {
+            Tree.Variable v = (Tree.Variable) s;
+            Tree.AttributeDeclaration ad = 
+                    new Tree.AttributeDeclaration(
+                            v.getMainToken());
+            Tree.AnnotationList al = 
+                    v.getAnnotationList();
+            if (al==null) al = 
+                    new Tree.AnnotationList(null);
+            ad.setAnnotationList(al);
+            ad.setType(v.getType());
+            ad.setIdentifier(v.getIdentifier());
+            ad.setSpecifierOrInitializerExpression(
+                    v.getSpecifierExpression());
+            return ad;
+        }
+        else {
+            Tree.LetStatement ls = 
+                    new Tree.LetStatement(null);
+            ls.addVariable(s);
+            return ls;
+        }
+    }
+
 }
