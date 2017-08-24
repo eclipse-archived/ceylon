@@ -689,21 +689,46 @@ keyItemPattern returns [KeyValuePattern pattern]
       )?
     ;
 
-destructure returns [Destructure destructure]
+destructure returns [LetStatement statement]
+    @init { Destructure d = null; }
     : VALUE_MODIFIER
-      { ValueModifier vm = new ValueModifier($VALUE_MODIFIER);
-        $destructure = new Destructure(null);
-        $destructure.setType(vm); }
-      tupleOrEntryPattern
-      { $destructure.setPattern($tupleOrEntryPattern.pattern); }
+      { $statement = new LetStatement($VALUE_MODIFIER);
+        $statement.addUsageWarning(Warning.syntaxDeprecation,
+            "use of 'value' for destructuring is deprecated (change to 'let' and add parentheses)"); }
+      p=tupleOrEntryPattern
+      { d = new Destructure(null);
+        d.setPattern($p.pattern);
+        $statement.addVariable(d); }
       (
-        specifier
-        { $destructure.setSpecifierExpression($specifier.specifierExpression); }
+        s=specifier
+        { d.setSpecifierExpression($s.specifierExpression); }
         { expecting=SEMICOLON; }
       )?
       SEMICOLON
-      { $destructure.setEndToken($SEMICOLON); 
+      { $statement.setEndToken($SEMICOLON); 
         expecting=-1; }
+    ;
+
+destructure2 returns [LetStatement statement]
+    @init { Destructure d = null; }
+    : LET
+      { $statement = new LetStatement($LET); }
+      LPAREN
+      { $statement.setEndToken($LPAREN); }
+      v1=letVariable
+      { $statement.addVariable($v1.statement); 
+        $statement.setEndToken(null); }
+      (
+        COMMA
+        { $statement.setEndToken($COMMA); }
+        v2=letVariable
+        { $statement.addVariable($v2.statement);
+          $statement.setEndToken(null); }
+      )*
+      RPAREN
+      { $statement.setEndToken($RPAREN); }
+      SEMICOLON
+      { $statement.setEndToken($SEMICOLON); }
     ;
 
 inferredAttributeDeclaration returns [AnyAttribute declaration]
@@ -1557,7 +1582,9 @@ declarationOrStatement returns [Statement statement]
     : compilerAnnotations
       (
         (destructureStart) => destructure
-        { $statement=$destructure.destructure; }
+        { $statement=$destructure.statement; }
+      | destructure2
+        { $statement=$destructure2.statement; }
       | (annotatedAssertionStart) => assertion
         { $statement = $assertion.assertion; }
       | (annotatedDeclarationStart) => declaration
@@ -2613,21 +2640,23 @@ patternStart
     ;
 
 letVariable returns [Statement statement]
+    @init { Destructure d=null; Variable v=null; }
     : (
         (patternStart) => pattern
-        { Destructure d = new Destructure(null);
+        { d = new Destructure(null);
           d.setPattern($pattern.pattern);
           $statement = d; }
       |
         variable
-        { $statement=$variable.variable; }
+        { v = $variable.variable;
+          $statement=v; }
       )
       (
         specifier
-        { if ($statement instanceof Destructure)
-            ((Destructure) $statement).setSpecifierExpression($specifier.specifierExpression);
-          else if ($statement instanceof Variable)
-            ((Variable) $statement).setSpecifierExpression($specifier.specifierExpression); }
+        { if (d!=null)
+            d.setSpecifierExpression($specifier.specifierExpression);
+          if (v!=null)
+            v.setSpecifierExpression($specifier.specifierExpression); }
       )?
     ;
 

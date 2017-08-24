@@ -22,6 +22,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.ConditionScope;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** This component is used by the main JS visitor to generate code for conditions.
@@ -559,21 +560,27 @@ public class ConditionGenerator {
         Set<Tree.Variable> vars;
         Set<Value> captured;
         final boolean member;
-        private VarHolder(Tree.Statement st, Tree.Term rhs, String varName, boolean member) {
-            if (st instanceof Tree.Variable) {
-                var = (Tree.Variable)st;
+        private VarHolder(Tree.Variable v, Tree.Term rhs, String varName, boolean member) {
+            this(v, null, v.getScope(), rhs, varName, member);
+        }
+        private VarHolder(Tree.Destructure d, Tree.Term rhs, String varName, boolean member) {
+            this(null, d, d.getScope(), rhs, varName, member);
+        }
+        private VarHolder(Tree.Variable v, Tree.Destructure d, Scope scope, Tree.Term rhs, String varName, boolean member) {
+            if (v!=null) {
+                var = v;
                 destr = null;
                 if (var.getDeclarationModel() != null && var.getDeclarationModel().isJsCaptured()) {
                     captured = Collections.singleton(var.getDeclarationModel());
                 }
             } else {
                 var = null;
-                destr = (Tree.Destructure)st;
+                destr = d;
             }
             term = rhs;
-            if (st.getScope() instanceof Tree.Assertion &&
-                    st.getScope().getContainer() instanceof ClassOrInterface) {
-                name = gen.getNames().self((ClassOrInterface)st.getScope().getContainer()) + "." + varName;
+            if (scope instanceof Tree.Assertion &&
+                    scope.getContainer() instanceof ClassOrInterface) {
+                name = gen.getNames().self((ClassOrInterface)scope.getContainer()) + "." + varName;
                 if (var != null) {
                     names.forceName(var.getDeclarationModel(), name);
                 }

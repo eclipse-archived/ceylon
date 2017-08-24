@@ -99,6 +99,10 @@ public class AssertionVisitor extends Visitor {
             super.visit(that);
             return;
         }
+        if (that instanceof Tree.Destructure) {
+            super.visit(that);
+            return;
+        }
         boolean b = expectingError;
         boolean c = expectingWarning;
         List<Message> f = foundErrors;
