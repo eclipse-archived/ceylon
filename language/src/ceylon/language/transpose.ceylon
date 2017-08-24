@@ -9,17 +9,16 @@
  produces the stream 
  `{ { 'h', 'w', 1 }, { 'e', 'o', 2 }, { 'l', 'r', 3 }, 
   { 'l', 'l', null }, { 'o', 'd', null } }`."
-shared {Iterable<Element?,Absent>*} transpose<Element,Absent>
+shared {{Element?+}*} transpose<Element,Absent>
         ("The streams to be transposed."
          Iterable<{Element*},Absent> streams)
         given Absent satisfies Null
-        => object satisfies {Row*} {
-    alias Row => Iterable<Element?,Absent>;
+        => object satisfies {{Element?+}*} {
     value iterators 
             = streams.collect((stream) => stream.iterator());
     class Done { shared new done {} }
-    iterator() => object satisfies Iterator<Row> {
-        shared actual Row|Finished next() {
+    iterator() => object satisfies Iterator<{Element?+}> {
+        shared actual {Element?+}|Finished next() {
             if (nonempty iterators) {
                 value elements 
                         = iterators.collect((iter)
