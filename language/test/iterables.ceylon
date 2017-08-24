@@ -448,4 +448,10 @@ shared void testIterables() {
     } catch (AssertionError e) {
         check(e.message == "nonempty Iterable with initial 'finished' element", "iterate {finished}");
     }
+    
+    check(transpose { padding=null; "hello", "world", 1..3 }.string
+      =="{ [h, w, 1], [e, o, 2], [l, r, 3], [l, l, <null>], [o, d, <null>] }", "transpose 1");
+    check(transpose { padding=null; [], [1] }.sequence()==[[null, 1]], "transpose 2");
+    check(transpose { padding=null; [], {}, ""}.empty, "transpose 3");
+    check(transpose { padding=null; }.empty, "transpose 4");
 }
