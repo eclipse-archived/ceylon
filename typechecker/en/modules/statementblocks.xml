@@ -1452,19 +1452,6 @@ else {
             
         </section>
         
-        <section id="destructuringstatements">
-            <title>Destructuring statements</title>
-            
-            <para>A <emphasis>destructuring statement</emphasis> assigns an expression 
-            to a pattern, as defined above in <xref linkend="patterns"/>.</para>
-            
-            <synopsis>Destructure: "value" (TuplePattern | EntryPattern) Specifier ";"</synopsis>
-            
-            <para>The type of the specified expression is the patterned type of the
-            tuple or entry pattern.</para>
-            
-        </section>
-        
         <section id="dynamicblocks">
             <title>Dynamic blocks</title>
             
@@ -2850,6 +2837,23 @@ else "total must be less than ``bound``";</programlisting>
             </comment>
             
         </section>
+        
+        <section id="destructuringstatements">
+            <title>Destructuring statements</title>
+            
+            <para>A <emphasis>destructuring statement</emphasis> assigns expressions 
+            to patterns, as defined above in <xref linkend="patterns"/>.</para>
+            
+            <synopsis>Destructure: "let" "(" Pattern Specifier ("," Pattern Specifier)* ")" ";"</synopsis>
+            
+            <para>The type of a specified expression is the patterned type of the
+            corresponding pattern.</para>
+            
+             <programlisting>let ([x, y] = pair, d = sqrt(x^2+y^2));</programlisting>
+            
+        </section>
+        
+        
                  
     </section>
 
