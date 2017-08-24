@@ -1709,6 +1709,9 @@ statement returns [Statement statement]
       { $statement = $controlStatement.controlStatement; }
     | expressionOrSpecificationStatement
       { $statement = $expressionOrSpecificationStatement.statement; }
+    | { displayRecognitionError(getTokenNames(), 
+              new MismatchedTokenException(RBRACE, input)); }
+      SEMICOLON
     ;
 
 expressionOrSpecificationStatement returns [Statement statement]
