@@ -35,14 +35,14 @@ abstract class Partial(id) {
     
     "Creates (but does not initialize) the [[instance_]] using backend-specific reflection.
      After normal completion of this method instance_ will be non-null."
-    throws(`class DeserializationException`,
+    throws(class DeserializationException,
         "* the class of the instance has already been specified
          * instance is a member instance and the container has not been specified")
     shared formal void instantiate();
     
     "Initializes the [[instance_]] using backend-specific reflection.
      After normal completion of this method state will be null."
-    throws(`class DeserializationException`,
+    throws(class DeserializationException,
         "the partial contains insufficient state")
     shared formal void initialize<Id>(DeserializationContextImpl<Id> context)
             given Id satisfies Object;

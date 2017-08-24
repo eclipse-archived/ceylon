@@ -38,7 +38,7 @@
      8660
      #21_D4
      $10_0001_1101_0100"
-see (`value runtime.integerSize`)
+see (value runtime.integerSize)
 tagged("Basic types", "Numbers")
 shared native final class Integer
         extends Object
@@ -168,10 +168,10 @@ shared native final class Integer
      Magnitude: 'k' | 'M' | 'G' | 'T' | 'P'
      Base10Digits: ('0'..'9')+
      BaseNDigits: ('0'..'9'|'a'..'z'|'A'..'Z')+"
-    throws (`class AssertionError`, 
+    throws (class AssertionError, 
             "if [[radix]] is not between [[minRadix]] and 
              [[maxRadix]]")
-    see (`function format`, `function Float.parse`)
+    see (function format, function Float.parse)
     tagged("Numbers", "Basic types")
     since("1.3.1")
     shared static Integer|ParseException parse(
@@ -196,10 +196,10 @@ shared native final class Integer
      - `Integer.format(10,8)` is `\"12\"`
      - `Integer.format(511,16)` is `\"1ff\"`
      - `Integer.format(512,32)` is `\"g0\"`"
-    throws (`class AssertionError`, 
+    throws (class AssertionError, 
             "if [[radix]] is not between [[minRadix]] and 
              [[maxRadix]]")
-    see (`function parse`, `function Float.format`)
+    see (function parse, function Float.format)
     tagged("Numbers")
     since("1.3.1")
     shared static String format(
@@ -224,7 +224,7 @@ shared native final class Integer
     shared new (Integer integer) extends Object() {}
     
     "The UTF-32 character with this UCS code point."
-    throws (`class OverflowException`,
+    throws (class OverflowException,
             "if this integer is not in the range 
              `0..#10FFFF` of legal Unicode code points")
     shared native Character character;
@@ -247,7 +247,7 @@ shared native final class Integer
     "The result of raising this number to the given 
      non-negative integer power, where `0^0` evaluates to 
      `1`."
-    throws (`class AssertionError`, 
+    throws (class AssertionError, 
             "if the given [[power|other]] is negative")
     shared actual native Integer power(Integer other);
     
@@ -395,7 +395,7 @@ shared native final class Integer
      - For larger integers on the JVM platform, an 
        [[OverflowException]] is thrown. If this behavior is 
        not desired, use [[nearestFloat]] instead."
-    throws (`class OverflowException`,
+    throws (class OverflowException,
         "if the number cannot be represented as a `Float`
          without loss of precision, that is, if 
          
@@ -403,8 +403,8 @@ shared native final class Integer
          
          (Note that [[nearestFloat]] does not produce an
          exception in this case.)")
-    see (`value runtime.maxExactIntegralFloat`,
-         `value nearestFloat`)
+    see (value runtime.maxExactIntegralFloat,
+         value nearestFloat)
     since("1.1.0")
     shared native Float float;
 
@@ -419,7 +419,7 @@ shared native final class Integer
        loss of precision.
      
      This method never throws an [[OverflowException]]."
-    see (`value float`)
+    see (value float)
     since("1.2.0")
     shared native Float nearestFloat;
 
@@ -473,12 +473,12 @@ shared native final class Integer
     "The result of raising this number to the given 
      non-negative integer power, where `0^0` evaluates to 
      `1`."
-    throws (`class AssertionError`, 
+    throws (class AssertionError, 
         "if the given [[power|integer]] is negative")
     shared actual native Integer powerOfInteger(Integer integer)
             => power(integer);
     
-    see (`function formatInteger`)
+    see (function formatInteger)
     shared actual native String string;
     
     shared actual native Boolean largerThan(Integer other); 

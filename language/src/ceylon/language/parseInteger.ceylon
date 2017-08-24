@@ -34,10 +34,10 @@
      Magnitude: 'k' | 'M' | 'G' | 'T' | 'P'
      Base10Digits: ('0'..'9')+
      BaseNDigits: ('0'..'9'|'a'..'z'|'A'..'Z')+"
-throws (`class AssertionError`, 
+throws (class AssertionError, 
         "if [[radix]] is not between [[minRadix]] and 
          [[maxRadix]]")
-see (`function Integer.parse`)
+see (function Integer.parse)
 tagged("Numbers", "Basic types")
 deprecated("Use [[Integer.parse]]")
 shared Integer? parseInteger(

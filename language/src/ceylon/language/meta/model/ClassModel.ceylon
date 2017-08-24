@@ -25,7 +25,7 @@ shared sealed interface ClassModel<out Type=Anything, in Arguments=Nothing>
     "Looks up a constructor by name, 
      Returns `null` if no such constructor matches. 
      This excludes unshared constructors."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
         "If the specified type arguments are not 
          compatible with the actual result.")
     since("1.2.0")
@@ -37,7 +37,7 @@ shared sealed interface ClassModel<out Type=Anything, in Arguments=Nothing>
     "Looks up a constructor by name, 
      Returns `null` if no such constructor matches. 
      This includes unshared constructors."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
         "If the specified type arguments are not 
          compatible with the actual result.")
     since("1.2.0")

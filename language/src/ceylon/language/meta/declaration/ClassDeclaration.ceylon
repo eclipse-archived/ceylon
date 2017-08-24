@@ -106,10 +106,10 @@ shared sealed interface ClassDeclaration
 
     "Applies the given closed type arguments to this toplevel class declaration in order to obtain a class model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
         "If the specified `Type` or `Arguments` type arguments are not 
          compatible with the actual result.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
             "If the specified closed type argument values are not compatible 
              with the actual result's type parameters.")
     shared formal Class<Type, Arguments> classApply
@@ -119,10 +119,10 @@ shared sealed interface ClassDeclaration
 
     "Applies the given closed type arguments to this `static` member class declaration 
      in order to obtain a class model."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
         "If the specified `Type` or `Arguments` type arguments are not 
          compatible with the actual result.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
             "If the specified closed type argument values are not compatible 
              with the actual result's type parameters.")
     shared formal Class<Type, Arguments> staticClassApply<Type=Anything, Arguments=Nothing>
@@ -131,10 +131,10 @@ shared sealed interface ClassDeclaration
 
     "Applies the given closed container type and type arguments to this member class declaration in order to obtain a member class model. 
      See [this code sample](#member-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
         "If the specified `Container`, `Type` or `Arguments` type arguments 
          are not compatible with the actual result.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
             "If the specified closed container type or type argument values 
              are not compatible with the actual result's container type or 
              type parameters.")
@@ -145,7 +145,7 @@ shared sealed interface ClassDeclaration
 
     "Creates a new instance of this toplevel class, 
      by applying the specified type arguments and value arguments."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
         "If the specified type or value arguments are not compatible with 
          this toplevel class, or if the class lacks both a parameter list
          and a default constructor.")
@@ -159,7 +159,7 @@ shared sealed interface ClassDeclaration
     
     "Creates a new instance of this member class, by applying the specified 
      type arguments and value arguments."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
         "If the specified container, type or value arguments are not 
          compatible with this method, or if the class lacks both a parameter list
          and a default constructor.")

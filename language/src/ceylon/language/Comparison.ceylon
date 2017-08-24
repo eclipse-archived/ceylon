@@ -1,6 +1,6 @@
 "The result of a comparison between two [[Comparable]] 
  objects: [[larger]], [[smaller]], or [[equal]]."
-see (`interface Comparable`)
+see (interface Comparable)
 by ("Gavin")
 tagged("Comparisons")
 shared abstract class Comparison(shared actual String string) 

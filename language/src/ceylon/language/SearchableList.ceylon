@@ -30,7 +30,7 @@
  
  - `\"\".inclusions(\"x\")` is the empty stream `{}`, but
  - `\"\".inclusions(\"\")` is the stream `{ 0 }`."
-see (`class String`, `class Array`)
+see (class String, class Array)
 since("1.2.0")
 shared interface SearchableList<Element> 
         satisfies List<Element> {

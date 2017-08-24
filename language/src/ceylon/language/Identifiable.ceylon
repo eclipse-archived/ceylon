@@ -25,7 +25,7 @@ shared interface Identifiable {
      of this instance. Subtypes which refine [[equals]] must 
      also refine `hash`, according to the general contract 
      defined by [[Object.equals]]."
-    see (`function identityHash`)
+    see (function identityHash)
     shared default actual Integer hash => identityHash(this);
     
 }

@@ -16,7 +16,7 @@
    so [[defaultConstructor|ClassDeclaration.defaultConstructor]] 
    has optional type.
    """
-see(`interface ClassWithInitializerDeclaration`)
+see(interface ClassWithInitializerDeclaration)
 since("1.2.0")
 shared sealed interface ClassWithConstructorsDeclaration 
         satisfies ClassDeclaration {

@@ -20,7 +20,7 @@ shared final sealed annotation class AnnotationAnnotation()
 
 "Annotation to mark a class as an *annotation class*, or a 
  top-level function as an *annotation constructor*."
-see (`interface Annotation`)
+see (interface Annotation)
 shared annotation AnnotationAnnotation annotation()
         => AnnotationAnnotation();
 
@@ -343,7 +343,7 @@ shared final sealed annotation class ThrownExceptionAnnotation(
 "Annotation to document the exception types thrown by a 
  function, value, class, or constructor.
  
-     throws(`class Exception`)
+     throws(class Exception)
      void die() { throw; }"
 shared annotation ThrownExceptionAnnotation throws(
     "The [[Exception]] type that is thrown."

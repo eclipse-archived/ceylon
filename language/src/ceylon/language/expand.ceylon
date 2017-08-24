@@ -9,9 +9,9 @@
  
  results in the stream `{ 1, 2, 3, 5, 'h', 'i' }` which has
  the type `{Integer|Character*}`."
-see (`function Iterable.flatMap`,
-    `function concatenate`, 
-    `function Iterable.chain`)
+see (function Iterable.flatMap,
+     function concatenate, 
+     function Iterable.chain)
 tagged("Streams")
 since("1.1.0")
 shared Iterable<Element,OuterAbsent|InnerAbsent>

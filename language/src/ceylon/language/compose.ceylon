@@ -8,7 +8,7 @@
      compose(g,f)(*args)==g(f(*args))
  
  for every possible argument tuple `args` of `f()`."
-see(`function curry`, `function uncurry`)
+see(function curry, function uncurry)
 tagged("Functions")
 shared X(*Args) compose<X,Y,Args>(X(Y) x, Y(*Args) y) 
         given Args satisfies Anything[]

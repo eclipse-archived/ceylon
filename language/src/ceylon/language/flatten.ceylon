@@ -19,7 +19,7 @@
  - if the given function accepts `[P1, P2, ..., Pn, S+]`,
    the returned function has multiple parameters with types
    `P1`, `P2`, ..., `Pn`, `S+`."
-see(`function unflatten`)
+see(function unflatten)
 tagged("Functions")
 shared native Return(*Args) flatten<Return,Args>
         (Return tupleFunction(Args tuple))

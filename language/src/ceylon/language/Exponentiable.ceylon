@@ -24,7 +24,7 @@
  example, a `Rational` number class might be a subtype of
  `Exponentiable<Rational,Integer>`, thus accepting only
  whole-number exponents."
-see (`class Integer`, `class Float`)
+see (class Integer, class Float)
 tagged("Numbers")
 shared interface Exponentiable<This,Other> of This
         satisfies Numeric<This>

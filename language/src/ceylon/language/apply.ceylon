@@ -23,7 +23,7 @@
  examples above are both equivalent to:
  
      string.split(Character.whitespace, true, false)"
-see (`function unflatten`)
+see (function unflatten)
 tagged("Functions")
 shared Return apply<Return,Args>
             (Callable<Return,Args> f, Args args)

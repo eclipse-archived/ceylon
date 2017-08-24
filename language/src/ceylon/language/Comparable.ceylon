@@ -49,10 +49,10 @@
    
    - [[sort]] vs [[Iterable.sort]] and
    - [[max]] vs [[Iterable.max]]."""
-see (`class Comparison`,
-     `function sort`, 
-     `function max`, `function min`,
-     `function largest`, `function smallest`)
+see (class Comparison,
+     function sort, 
+     function max, function min,
+     function largest, function smallest)
 by ("Gavin")
 tagged("Comparisons")
 shared interface Comparable<in Other> of Other 
@@ -79,7 +79,7 @@ shared interface Comparable<in Other> of Other
         (consistency with `equals()`), 
      - if `x>y` then `y<x` (symmetry), and 
      - if `x>y` and `y>z` then `x>z` (transitivity)."
-    see (`function equals`)
+    see (function equals)
     shared formal Comparison compare(Other other);
     
     "Determines if this value is strictly larger than the 

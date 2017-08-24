@@ -4,7 +4,7 @@
      
      Map<String,List<Item>> map = ... ;
      {String*} uppercaseKeys = map.map(forKey(String.uppercased));"
-see (`function forItem`)
+see (function forItem)
 tagged("Functions")
 shared Result forKey<Key,Result>(Result resulting(Key key))
             (Key->Anything entry)

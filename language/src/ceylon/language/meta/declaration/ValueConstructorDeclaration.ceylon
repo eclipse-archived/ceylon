@@ -19,7 +19,7 @@ import ceylon.language.meta.declaration {
        
        ValueConstructorDeclaration dollars = `new Currency.usd`;
    """
-see (`interface CallableConstructorDeclaration`)
+see (interface CallableConstructorDeclaration)
 since("1.2.0")
 shared sealed interface ValueConstructorDeclaration 
         satisfies GettableDeclaration & ConstructorDeclaration {
@@ -42,9 +42,9 @@ shared sealed interface ValueConstructorDeclaration
             => apply<Object>().get();
     
     "Reads the current value of this attribute on the given container instance."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
         "If the specified container is not compatible with this attribute.")
-    throws(`class StorageException`,
+    throws(class StorageException,
         "If this attribute is not stored at runtime, for example if it is 
          neither shared nor captured.")
     shared actual default Object memberGet(Object container)

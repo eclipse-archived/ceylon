@@ -1,7 +1,7 @@
 
 "Contains information about the Ceylon language version."
-see (`value process`, `value runtime`, `value system`,
-     `value operatingSystem`)
+see (value process, value runtime, value system,
+     value operatingSystem)
 tagged("Environment")
 shared native object language {
     

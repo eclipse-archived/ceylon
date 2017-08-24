@@ -1,8 +1,8 @@
 "Represents the current process (instance of the virtual
  machine)."
 by ("Gavin", "Tako")
-see (`value language`, `value runtime`, `value system`,
-     `value operatingSystem`)
+see (value language, value runtime, value system,
+     value operatingSystem)
 tagged("Environment")
 shared native object process {
     
@@ -35,7 +35,7 @@ shared native object process {
     
     "Print a line to the standard output of the virtual 
      machine process."
-    see (`function print`)
+    see (function print)
     shared void writeLine(String line="") { 
         write(line);
         write(operatingSystem.newline); 

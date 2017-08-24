@@ -4,7 +4,7 @@
  
  (This is most useful for tool-generated implementations of
  `formal` members.)"
-throws (`class AssertionError`, 
+throws (class AssertionError, 
         "when evaluated")
 tagged("Basic types")
 shared Nothing nothing {

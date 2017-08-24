@@ -22,9 +22,9 @@
      |ceylon.language.meta.model::Function]], 
     where `Anything` means there is no constraint, and that 
     the program element need not have a metamodel type."
-see (`interface Annotation`,
-     `interface OptionalAnnotation`,
-     `interface SequencedAnnotation`)
+see (interface Annotation,
+     interface OptionalAnnotation,
+     interface SequencedAnnotation)
 shared interface ConstrainedAnnotation<out Value=Annotation, 
             out Values=Anything, in ProgramElement=Nothing,
             out Type=Anything> 

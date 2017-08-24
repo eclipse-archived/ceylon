@@ -31,7 +31,7 @@
        for (i in 0:array.size) {
            print(array[i]);
        }"""
-see (`class Integer`)
+see (class Integer)
 by ("Gavin")
 tagged("Numbers")
 shared interface Integral<Other> of Other
@@ -54,14 +54,14 @@ shared interface Integral<Other> of Other
      `x == (x/y)*y + x%y`, [[division|divided]] for an 
      integral numeric type must round toward `0`, the 
      additive identity."
-    see (`function divided`, `function modulo`)
+    see (function divided, function modulo)
     shared formal Other remainder(Other other);
 
     "The modulo, after dividing this number by the given 
      number. This differs from [[remainder]] in that the
      result is always positive or `0`."
-    see (`function divided`, `function remainder`)
-    throws (`class AssertionError`, 
+    see (function divided, function remainder)
+    throws (class AssertionError, 
             "If the modulus is not strictly positive")
     shared default Other modulo(Other modulus){
         if (!modulus.positive) {

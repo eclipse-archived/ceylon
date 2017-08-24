@@ -17,10 +17,10 @@
  
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
-see (`function byDecreasing`,
-     `function byIncreasing`,
-     `function Iterable.max`,
-     `function Iterable.sort`)
+see (function byDecreasing,
+     function byIncreasing,
+     function Iterable.max,
+     function Iterable.sort)
 tagged("Comparisons")
 since("1.1.0")
 shared Comparison comparing<in Value>(Comparison(Value,Value)* comparators)

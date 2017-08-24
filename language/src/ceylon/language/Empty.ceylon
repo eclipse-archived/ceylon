@@ -7,7 +7,7 @@
  
  (Whether the syntax `[]` refers to the type or the value 
  depends upon how it occurs grammatically.)"
-see (`interface Sequence`)
+see (interface Sequence)
 tagged("Sequences")
 shared interface Empty of package.empty
            satisfies Nothing[] &

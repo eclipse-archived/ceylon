@@ -119,19 +119,19 @@ shared sealed interface ClassOrInterfaceDeclaration
     
     "Applies the given closed type arguments to this toplevel class or interface declaration in order to obtain a class or interface model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
         "If the specified `Type` type argument is not compatible with the actual result.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
             "If the specified closed type argument values are not compatible 
              with the actual result's type parameters.")
     shared formal ClassOrInterface<Type> apply<Type=Anything>(AppliedType<>* typeArguments);
     
     "Applies the given closed container type and type arguments to this member class or interface declaration in order to obtain a 
      member class or interface model. See [this code sample](#member-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
         "If the specified `Container` or `Type` type arguments are not 
          compatible with the actual result.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
             "If the specified closed container type or type argument values 
              are not compatible with the actual result's container type or 
              type parameters.")

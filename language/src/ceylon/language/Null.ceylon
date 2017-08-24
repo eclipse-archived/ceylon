@@ -39,7 +39,7 @@
    considered meaningful. Therefore, `Null` is neither
    [[Identifiable]], nor does it define 
    [[value equality|Object.equals]]."""
-see (`value null`)
+see (value null)
 by ("Gavin") 
 tagged("Basic types")
 shared abstract class Null() 

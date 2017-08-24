@@ -9,7 +9,7 @@
  - [[Sequence]]`<Element>`, abbreviated `[Element+]` 
    represents a non-empty sequence, and has the very 
    important subclass [[Tuple]]."
-see (`class Tuple`)
+see (class Tuple)
 tagged("Sequences")
 shared interface Sequential<out Element=Anything>
         of []|[Element+]
@@ -127,9 +127,9 @@ shared interface Sequential<out Element=Anything>
     "Returns a new sequence that starts with the specified
      [[element]], followed by the elements of this sequence,
      in the order they occur in this sequence."
-    see (`function prepend`,
-         `function withTrailing`,
-         `function follow`)
+    see (function prepend,
+         function withTrailing,
+         function follow)
     since("1.1.0")
     shared formal 
     [Other,Element*] withLeading<Other>(
@@ -139,8 +139,8 @@ shared interface Sequential<out Element=Anything>
     "Returns a new sequence that starts with the elements of 
      this sequence, in the order they occur in this sequence, 
      and ends with the specified [[element]]."
-    see (`function append`,
-         `function withLeading`)
+    see (function append,
+         function withLeading)
     since("1.1.0")
     shared formal 
     [Element|Other+] withTrailing<Other>(
@@ -151,10 +151,10 @@ shared interface Sequential<out Element=Anything>
      sequence, in the order in which they occur in this 
      sequence, followed by the given [[elements]], in the 
      order in which they occur in the given sequence."
-    see (`function prepend`,
-         `function withTrailing`,
-         `function concatenate`,
-         `function chain`)
+    see (function prepend,
+         function withTrailing,
+         function concatenate,
+         function chain)
     since("1.1.0")
     shared formal 
     [Element|Other*] append<Other>(Other[] elements);
@@ -163,9 +163,9 @@ shared interface Sequential<out Element=Anything>
      the order in which they occur in the given sequence,
      followed by the elements of this sequence, in the order 
      in which they occur in this sequence."
-    see (`function append`,
-         `function withLeading`,
-         `function concatenate`)
+    see (function append,
+         function withLeading,
+         function concatenate)
     since("1.1.0")
     shared formal 
     [Element|Other*] prepend<Other>(Other[] elements);
