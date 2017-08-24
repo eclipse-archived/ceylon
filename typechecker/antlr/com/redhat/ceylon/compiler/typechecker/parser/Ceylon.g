@@ -3055,7 +3055,7 @@ declarationLiteralStart
     ;
 
 expressionOrMeta returns [Term term]
-    : (META|declarationLiteralStart) =>
+    : (POWER_OP|declarationLiteralStart) =>
       m=metaLiteral2
       { $term=$m.meta; }
     | e=equalityExpression
@@ -4759,7 +4759,7 @@ metaLiteral returns [MetaLiteral meta]
     ;
 
 metaLiteral2 returns [MetaLiteral meta]
-    : m=META
+    : m=POWER_OP
       { $meta = new TypeLiteral($m); }
       modelExpression
       { if ($modelExpression.meta!=null) {

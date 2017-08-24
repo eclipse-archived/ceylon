@@ -5,232 +5,232 @@ void test2<T>() {
     $type:"ClassWithInitializerDeclaration" 
     value noParamsClass = class NoParams;
     $type:"Class<NoParams,Empty>" 
-    value noParamsType = @NoParams;
+    value noParamsType = ^NoParams;
     $type:"Class<Params,[Integer,String]>" 
-    value paramsType = @Params;
+    value paramsType = ^Params;
     $type:"Class<ParameterisedClass<Integer>,[]>" 
-    value parameterisedType = @ParameterisedClass<Integer>;
+    value parameterisedType = ^ParameterisedClass<Integer>;
     $type:"ClassWithInitializerDeclaration" 
     value parameterisedTypeDeclClass = class ParameterisedClass;
     $error
-    value parameterisedTypeDecl = @ParameterisedClass;
+    value parameterisedTypeDecl = ^ParameterisedClass;
     $type:"InterfaceDeclaration" 
     value interfaceInterface = interface Interface1;
     $type:"Interface<Interface1>" 
-    value interfaceType = @Interface1;
+    value interfaceType = ^Interface1;
     $type:"Interface<ParameterisedInterface<Integer>>" 
-    value parameterisedInterfaceType = @ParameterisedInterface<Integer>;
+    value parameterisedInterfaceType = ^ParameterisedInterface<Integer>;
     $type:"InterfaceDeclaration" 
     value parameterisedInterfaceDeclInterface = interface ParameterisedInterface;
     $error
-    value parameterisedInterfaceDecl = @ParameterisedInterface;
+    value parameterisedInterfaceDecl = ^ParameterisedInterface;
     $type:"UnionType<Interface1|Interface2>"
-    value unionType = @Interface1|Interface2;
+    value unionType = ^Interface1|Interface2;
     $type:"IntersectionType<Interface1&Interface2>" 
-    value intersectionType = @Interface1&Interface2;
+    value intersectionType = ^Interface1&Interface2;
     $type:"TypeParameter" 
     value parameterTypeParameter = given T;
     $type:"Type<T>" 
-    value parameterType = @T;
+    value parameterType = ^T;
     $type:"Type<Nothing>"
-    value nothingType = @String&Integer;
+    value nothingType = ^String&Integer;
     $type:"AliasDeclaration" 
     value aliasTypeAlias = alias Alias;
     $type:"Type<NoParams>" 
-    value aliasType = @Alias;
+    value aliasType = ^Alias;
     $type:"ClassWithInitializerDeclaration" 
     value objectDec = class Object;
     $type:"Class<Object,Nothing>" 
-    value objectType = @Object;
+    value objectType = ^Object;
     $type:"ClassWithInitializerDeclaration" 
     value singDec = class Singleton;
     $type:"Class<Singleton<Integer>,[Integer]>" 
-    value singType = @Singleton<Integer>;
+    value singType = ^Singleton<Integer>;
     $type:"ClassWithInitializerDeclaration" 
     value nullDec = class Null;
     $type:"Class<Null,Nothing>" 
-    value nullType = @Null;
+    value nullType = ^Null;
     $type:"ClassWithConstructorsDeclaration" 
     value nullObjectDec = class \Inull;
     $type:"Class<Null,Nothing>" 
-    value nullObjectType = @\Inull;
+    value nullObjectType = ^\Inull;
     $type:"ValueDeclaration" 
     value nullValueDec = value null;
     $type:"Value<Null,Nothing>" 
-    value nullValueType = @null;
+    value nullValueType = ^null;
     $type:"ClassWithConstructorsDeclaration" 
     value booleanDec = class Boolean;
     $type:"Class<Boolean,Nothing>" 
-    value booleanType = @Boolean;
+    value booleanType = ^Boolean;
     $type:"ClassWithConstructorsDeclaration" 
     value trueDec = class \Itrue;
     $type:"Class<Boolean,Nothing>" 
-    value trueType = @\Itrue;
+    value trueType = ^\Itrue;
     
     // members
     $type:"ClassWithInitializerDeclaration"
     value memberClassTypeClass = class Container.InnerClass;
     $type:"MemberClass<Container,Container.InnerClass,[]>"
-    value memberClassType = @Container.InnerClass;
+    value memberClassType = ^Container.InnerClass;
     $type:"InterfaceDeclaration"
     value memberInterfaceTypeInterface = interface Container.InnerInterface;
     $type:"MemberInterface<Container,Container.InnerInterface>"
-    value memberInterfaceType = @Container.InnerInterface;
+    value memberInterfaceType = ^Container.InnerInterface;
     
     $type:"MemberClass<ParameterisedContainer<String>,ParameterisedContainer<String>.InnerClass<Integer>,[]>"
-    value memberParameterisedClassType = @ParameterisedContainer<String>.InnerClass<Integer>;
+    value memberParameterisedClassType = ^ParameterisedContainer<String>.InnerClass<Integer>;
     $error
-    value memberParameterisedClassDecl = @ParameterisedContainer.InnerClass;
+    value memberParameterisedClassDecl = ^ParameterisedContainer.InnerClass;
     $error
-    value memberParameterisedClassTypeErr1 = @ParameterisedContainer<String>.InnerClass;
+    value memberParameterisedClassTypeErr1 = ^ParameterisedContainer<String>.InnerClass;
     $error
-    value memberParameterisedClassTypeErr2 = @ParameterisedContainer.InnerClass<Integer>;
+    value memberParameterisedClassTypeErr2 = ^ParameterisedContainer.InnerClass<Integer>;
 
     $type:"MemberInterface<ParameterisedContainer<String>,ParameterisedContainer<String>.InnerInterface<Integer>>"
-    value memberParameterisedInterfaceType = @ParameterisedContainer<String>.InnerInterface<Integer>;
+    value memberParameterisedInterfaceType = ^ParameterisedContainer<String>.InnerInterface<Integer>;
     $error
-    value memberParameterisedInterfaceDecl = @ParameterisedContainer.InnerInterface;
+    value memberParameterisedInterfaceDecl = ^ParameterisedContainer.InnerInterface;
     $error
-    value memberParameterisedInterfaceTypeErr1 = @ParameterisedContainer<String>.InnerInterface;
+    value memberParameterisedInterfaceTypeErr1 = ^ParameterisedContainer<String>.InnerInterface;
     $error
-    value memberParameterisedInterfaceTypeErr2 = @ParameterisedContainer.InnerInterface<Integer>;
+    value memberParameterisedInterfaceTypeErr2 = ^ParameterisedContainer.InnerInterface<Integer>;
 
     // toplevel methods
     $type:"FunctionDeclaration"
     value toplevelMethodFunction = function method;
     $type:"Function<Integer,[String]>"
-    value toplevelMethod = @method;
+    value toplevelMethod = ^method;
     $error:"does not accept type arguments: 'method'"
-    value toplevelMethodErr = @method<String>;
+    value toplevelMethodErr = ^method<String>;
     $error:"function or value is not defined: 'missingMethod'"
-    value toplevelMethodErr2 = @missingMethod;
+    value toplevelMethodErr2 = ^missingMethod;
     $type:"Function<Integer,[String]>"
-    value toplevelParameterisedMethod = @parameterisedMethod<Integer,String>;
+    value toplevelParameterisedMethod = ^parameterisedMethod<Integer,String>;
     $type:"FunctionDeclaration"
     value toplevelParameterisedMethodErr = function parameterisedMethod;
     $type:"Function<Integer(Boolean),[String]>"
-    value toplevelMPLMethod = @mplMethod;
+    value toplevelMPLMethod = ^mplMethod;
 
     // qualified methods
     $type:"FunctionDeclaration"
     value containerMethodFunction = function Container.method;
     $type:"Method<Container,Anything,Empty>"
-    value containerMethod = @Container.method;
+    value containerMethod = ^Container.method;
     $error:"method or attribute is not defined: 'missing' in type 'Container'"
-    value containerMethodErr = @Container.missing;
+    value containerMethodErr = ^Container.missing;
     $type:"Method<ParameterisedContainer<String>,Anything,[Integer]>"
-    value parameterisedContainerMethod = @ParameterisedContainer<String>.method<Integer>;
+    value parameterisedContainerMethod = ^ParameterisedContainer<String>.method<Integer>;
     $type:"FunctionDeclaration"
     value parameterisedContainerMethodDeclFunction = function ParameterisedContainer.method;
     $error
-    value parameterisedContainerMethodDecl = @ParameterisedContainer.method;
+    value parameterisedContainerMethodDecl = ^ParameterisedContainer.method;
     $error
-    value parameterisedContainerMethodErr1 = @ParameterisedContainer<String>.method;
+    value parameterisedContainerMethodErr1 = ^ParameterisedContainer<String>.method;
     $error
-    value parameterisedContainerMethodErr2 = @ParameterisedContainer.method<Integer>;
+    value parameterisedContainerMethodErr2 = ^ParameterisedContainer.method<Integer>;
     
     // toplevel attributes
     $type:"ValueDeclaration"
     value toplevelGetterValue = value get;
     $type:"Value<Integer,Nothing>"
-    value toplevelGetter = @get;
+    value toplevelGetter = ^get;
     $type:"ValueDeclaration"
     value toplevelAttributeValue = value attribute;
     $type:"Value<Integer,Nothing>"
-    value toplevelAttribute = @attribute;
+    value toplevelAttribute = ^attribute;
     $error:"does not accept type arguments: 'attribute'"
-    value toplevelAttributeErr = @attribute<String>;
+    value toplevelAttributeErr = ^attribute<String>;
     $type:"ValueDeclaration"
     value toplevelVariableAttributeValue = value variableAttribute;
     $type:"Value<Integer,Integer>"
-    value toplevelVariableAttribute = @variableAttribute;
+    value toplevelVariableAttribute = ^variableAttribute;
 
     // qualified attributes
     $type:"ValueDeclaration"
     value containerAttributeValue = value Container.attribute;
     $type:"Attribute<Container,Integer,Nothing>"
-    value containerAttribute = @Container.attribute;
+    value containerAttribute = ^Container.attribute;
     $type:"ValueDeclaration"
     value containerVariableAttributeValue = value Container.variableAttribute;
     $type:"Attribute<Container,Integer,Integer>"
-    value containerVariableAttribute = @Container.variableAttribute;
+    value containerVariableAttribute = ^Container.variableAttribute;
     $type:"Attribute<ParameterisedContainer<String>,String,Nothing>"
-    value parameterisedContainerAttribute = @ParameterisedContainer<String>.attribute;
+    value parameterisedContainerAttribute = ^ParameterisedContainer<String>.attribute;
     $type:"ValueDeclaration"
     value parameterisedContainerAttributeDeclValue = value ParameterisedContainer.attribute;
     $error
-    value parameterisedContainerAttributeDecl = @ParameterisedContainer.attribute;
+    value parameterisedContainerAttributeDecl = ^ParameterisedContainer.attribute;
     $type:"Attribute<ParameterisedContainer<String>,String,String>"
-    value parameterisedContainerVariableAttribute = @ParameterisedContainer<String>.variableAttribute;
+    value parameterisedContainerVariableAttribute = ^ParameterisedContainer<String>.variableAttribute;
     $error
-    value parameterisedContainerVariableAttributeDecl = @ParameterisedContainer.variableAttribute;
+    value parameterisedContainerVariableAttributeDecl = ^ParameterisedContainer.variableAttribute;
     
     // class parameters
     $error
-    value classParameter = @Container.parameter;
+    value classParameter = ^Container.parameter;
     $type:"ValueDeclaration"
     value classParameterAndSharedAttributeValue = value Container.parameterAndSharedAttribute;
     $type:"Attribute<Container,Integer,Nothing>"
-    value classParameterAndSharedAttribute = @Container.parameterAndSharedAttribute;
+    value classParameterAndSharedAttribute = ^Container.parameterAndSharedAttribute;
     $error
     value classParameterMethodValue = value Container.parameterAndMethod;
     $error
-    value classParameterMethod = @Container.parameterAndMethod;
+    value classParameterMethod = ^Container.parameterAndMethod;
     $type:"FunctionDeclaration"
     value classParameterAndSharedMethodFunction = function Container.parameterAndSharedMethod;
     $type:"Method<Container,Integer,Empty>"
-    value classParameterAndSharedMethod = @Container.parameterAndSharedMethod;
+    value classParameterAndSharedMethod = ^Container.parameterAndSharedMethod;
 
     $error
     value parameterisedClassParameterValue = value ParameterisedContainer.parameter;
     $error
-    value parameterisedClassParameter = @ParameterisedContainer.parameter;
+    value parameterisedClassParameter = ^ParameterisedContainer.parameter;
     $error
-    value parameterisedClassParameterErr = @ParameterisedContainer<String>.parameter;
+    value parameterisedClassParameterErr = ^ParameterisedContainer<String>.parameter;
     $type:"Attribute<ParameterisedContainer<String>,Integer,Nothing>"
-    value parameterisedClassParameterAndSharedAttribute = @ParameterisedContainer<String>.parameterAndSharedAttribute;
+    value parameterisedClassParameterAndSharedAttribute = ^ParameterisedContainer<String>.parameterAndSharedAttribute;
     $type:"ValueDeclaration"
     value parameterisedClassParameterAndSharedAttributeDeclValue = value ParameterisedContainer.parameterAndSharedAttribute;
     $error
-    value parameterisedClassParameterAndSharedAttributeDecl = @ParameterisedContainer.parameterAndSharedAttribute;
+    value parameterisedClassParameterAndSharedAttributeDecl = ^ParameterisedContainer.parameterAndSharedAttribute;
     
     // class attributes that are parameters too
     $type:"ValueDeclaration"
     value classSharedAttributeAndParameterValue = value Container.sharedAttributeAndParameter;
     $type:"Attribute<Container,Integer,Nothing>"
-    value classSharedAttributeAndParameter = @Container.sharedAttributeAndParameter;
+    value classSharedAttributeAndParameter = ^Container.sharedAttributeAndParameter;
     $error
     value classAttributeAndParameterValue = value Container.attributeAndParameter;
     $error
-    value classAttributeAndParameter = @Container.attributeAndParameter;
+    value classAttributeAndParameter = ^Container.attributeAndParameter;
 
     $type:"Attribute<ParameterisedContainer<String>,Integer,Nothing>"
-    value parameterisedClassSharedAttributeAndParameter = @ParameterisedContainer<String>.sharedAttributeAndParameter;
+    value parameterisedClassSharedAttributeAndParameter = ^ParameterisedContainer<String>.sharedAttributeAndParameter;
     $type:"ValueDeclaration"
     value parameterisedClassSharedAttributeAndParameterDeclValue = value ParameterisedContainer.sharedAttributeAndParameter;
     $error
-    value parameterisedClassSharedAttributeAndParameterDecl = @ParameterisedContainer.sharedAttributeAndParameter;
+    value parameterisedClassSharedAttributeAndParameterDecl = ^ParameterisedContainer.sharedAttributeAndParameter;
 
     $error
-    value parameterisedClassAttributeAndParameter = @ParameterisedContainer<String>.attributeAndParameter;
+    value parameterisedClassAttributeAndParameter = ^ParameterisedContainer<String>.attributeAndParameter;
     $error
-    value parameterisedClassAttributeAndParameterDecl = @ParameterisedContainer.attributeAndParameter;
+    value parameterisedClassAttributeAndParameterDecl = ^ParameterisedContainer.attributeAndParameter;
 
     // class methods that are parameters too
     $type:"FunctionDeclaration"
     value classSharedMethodAndParameterFunction = function Container.sharedMethodAndParameter;
     $type:"Method<Container,Integer,Empty>"
-    value classSharedMethodAndParameter = @Container.sharedMethodAndParameter;
+    value classSharedMethodAndParameter = ^Container.sharedMethodAndParameter;
     $error
     value classMethodAndParameterFunction = function Container.methodAndParameter;
     $error
-    value classMethodAndParameter = @Container.methodAndParameter;
+    value classMethodAndParameter = ^Container.methodAndParameter;
     
     // private attributes
     $error:"method or attribute is not visible: 'privateAttribute' of type 'Container'"
     value privateAttributeValue = value Container.privateAttribute;
     $error:"method or attribute is not visible: 'privateAttribute' of type 'Container'"
-    value privateAttribute = @Container.privateAttribute;
+    value privateAttribute = ^Container.privateAttribute;
     
     // local values and methods
     value localValue = 2;
@@ -241,51 +241,51 @@ void test2<T>() {
     $error:"metamodel reference to local"
     value localFunctionDeclFunction = function localFunction;
     $error:"metamodel reference to local"
-    value localValueDecl = @localValue;
+    value localValueDecl = ^localValue;
     $error:"metamodel reference to local"
-    value localFunctionDecl = @localFunction;
+    value localFunctionDecl = ^localFunction;
     
     class LocalClass(String arg) {
         shared String fun() => "hello";
     }
-    $type:"Method<LocalClass,String,[]>" value localClassFun = @LocalClass.fun;
-    $type:"Class<LocalClass,Nothing>" value localClass = @LocalClass;
+    $type:"Method<LocalClass,String,[]>" value localClassFun = ^LocalClass.fun;
+    $type:"Class<LocalClass,Nothing>" value localClass = ^LocalClass;
 
     class OtherLocalClass {
         shared new create() {}
         shared new instance {}
         shared String fun() => "hello"; 
     }
-    $type:"Class<OtherLocalClass,Nothing>" value otherLocalClass = @OtherLocalClass;
-    $type:"CallableConstructor<OtherLocalClass,Nothing>" value otherLocalClassCtor = @OtherLocalClass.create;
-    $type:"ValueConstructor<OtherLocalClass>" value otherLocalClassSingCtor = @OtherLocalClass.instance;
-    $type:"Method<OtherLocalClass,String,[]>" value otherLocalClassFun = @OtherLocalClass.fun;
+    $type:"Class<OtherLocalClass,Nothing>" value otherLocalClass = ^OtherLocalClass;
+    $type:"CallableConstructor<OtherLocalClass,Nothing>" value otherLocalClassCtor = ^OtherLocalClass.create;
+    $type:"ValueConstructor<OtherLocalClass>" value otherLocalClassSingCtor = ^OtherLocalClass.instance;
+    $type:"Method<OtherLocalClass,String,[]>" value otherLocalClassFun = ^OtherLocalClass.fun;
     
 }
 
 void meta2() {
     $type:"Function<Sequence<String>,Tuple<String,String,Empty>>" 
-    value fd1 = @singletonList<String>;
+    value fd1 = ^singletonList<String>;
     //$type:"FunctionDeclaration" $error
     //value fd3 = function singletonList<String>;
     $type:"FunctionDeclaration" 
     value fd2 = function singletonList;
-    $error value ut1 = @List|String; 
+    $error value ut1 = ^List|String; 
     $type:"UnionType<List<String>|String>" 
-    value ut2 = @List<String>|String; 
-    $error value it1 = @List&String; 
+    value ut2 = ^List<String>|String; 
+    $error value it1 = ^List&String; 
     $type:"Type<Nothing>"
-    value it2 = @List<String>&Integer; 
+    value it2 = ^List<String>&Integer; 
     $type:"Type<List<Character>>"
-    value it3 = @List<Character>&{Character*}; 
+    value it3 = ^List<Character>&{Character*}; 
     $type:"IntersectionType<Category<Object>&Foo<Object>>" 
-    value it4 = @Category&Foo<Object>; 
+    value it4 = ^Category&Foo<Object>; 
     $type:"InterfaceDeclaration" 
     value id1 = interface List;
     $type:"FunctionDeclaration" 
     value md1 = function List.defines;
     $type:"Method<List<Integer>,Boolean,Tuple<Integer,Integer,Empty>>" 
-    value md2 = @List<Integer>.defines; 
+    value md2 = ^List<Integer>.defines; 
     //$type:"FunctionDeclaration" $error 
     //value md8 = function List<Integer>.defines; 
     $type:"ClassWithInitializerDeclaration"
@@ -293,42 +293,42 @@ void meta2() {
     $type:"FunctionDeclaration"
     value md3 = function Foo.Bar.x;
     $type:"Method<Foo<Object>.Bar<Object>,Anything,Empty>"
-    value md4 = @Foo<Object>.Bar<Object>.x<Integer>;
+    value md4 = ^Foo<Object>.Bar<Object>.x<Integer>;
     $error
-    value md5 = @Foo.Bar<Object>.x<Integer>;
+    value md5 = ^Foo.Bar<Object>.x<Integer>;
     $error
-    value md6 = @Foo<Object>.Bar.x<Integer>;
+    value md6 = ^Foo<Object>.Bar.x<Integer>;
     $error
-    value md7 = @Foo<Object>.Bar<String>.x<List>;
+    value md7 = ^Foo<Object>.Bar<String>.x<List>;
     //$type:"ClassDeclaration" $error
     //value cd2 = class Foo<List<String>>.Bar;
     $type:"ClassWithInitializerDeclaration"
     value cd3 = class Foo;
     $type:"Class<Foo<Object>,Empty>"
-    value cd4 = @Foo<Object>;
+    value cd4 = ^Foo<Object>;
     $type:"MemberClass<Foo<Anything>,Foo<Anything>.Bar<Anything>,Empty>"
-    value cd5 = @Foo<Anything>.Bar<Anything>;
+    value cd5 = ^Foo<Anything>.Bar<Anything>;
     $error
-    value cd6 = @Foo.Bar<Object>;
+    value cd6 = ^Foo.Bar<Object>;
     $error
-    value cd7 = @Foo<List>.Bar<Object>;
+    value cd7 = ^Foo<List>.Bar<Object>;
     $error
-    value cd8 = @Foo<Object>.Bar<List>;
+    value cd8 = ^Foo<Object>.Bar<List>;
     
     $type:"Attribute<String|Integer,String,Nothing>" 
-    value ctm1 = @<String|Integer>.string;
+    value ctm1 = ^<String|Integer>.string;
     
     $type:"Attribute<Sequential<String>,Integer,Nothing>" 
-    value ctm2 = @String[].size;
+    value ctm2 = ^String[].size;
     
-    $type:"Value<Basic,Nothing>" value p = @process; 
+    $type:"Value<Basic,Nothing>" value p = ^process; 
     
     $error value tparam = given Map.Item;
     $error see (given Sequence.Element);
     $error see (value Map.key);
     
-    $type:"Class<Bar,Empty>" value cd15 = @Bar;
-    $type:"Class<Baz,Nothing>" value cd16 = @Baz;
+    $type:"Class<Bar,Empty>" value cd15 = ^Bar;
+    $type:"Class<Baz,Nothing>" value cd16 = ^Baz;
     $type:"CallableConstructorDeclaration" value cd9 = new Bar;
     //$type:"ConstructorDeclaration" value cd10a = new Bar.Bar;
     $type:"CallableConstructorDeclaration" value cd10b = new Bar.baz;
@@ -340,16 +340,16 @@ void meta2() {
     $error value cd11 = class Bar.baz;
     $error value cd12 = interface Bar.baz;
     $error value cd15 =  new Bar.instance;
-    $type:"CallableConstructor<Bar,[String]>" value cd13 = @Bar.baz;
-    $type:"ValueConstructor<Bar>" value cd17 = @Bar.instance;
-    $type:"CallableConstructor<Baz,[String]>" value cd18 = @Baz.baz;
-    $type:"ValueConstructor<Baz>" value cd19 = @Baz.instance;
+    $type:"CallableConstructor<Bar,[String]>" value cd13 = ^Bar.baz;
+    $type:"ValueConstructor<Bar>" value cd17 = ^Bar.instance;
+    $type:"CallableConstructor<Baz,[String]>" value cd18 = ^Baz.baz;
+    $type:"ValueConstructor<Baz>" value cd19 = ^Baz.instance;
     $error value cd14 = new Foo;
     
-    $error value broke = @Map<Anything,Anything>;
+    $error value broke = ^Map<Anything,Anything>;
     
     $type:"Class<ArraySequence<Integer>,Nothing>" 
-    value sealed = @ArraySequence<Integer>;
+    value sealed = ^ArraySequence<Integer>;
 }
 
 void testPackagesModules2() {
@@ -362,8 +362,8 @@ void testPackagesModules2() {
 }
 
 void testMethodOfGeneric2() {
-    Method<Integer, Integer, [Integer]> plus1 = @Summable<Integer>.plus;
-    Method<Integer, Integer, [Integer]> plus2 = @Integer.plus;
+    Method<Integer, Integer, [Integer]> plus1 = ^Summable<Integer>.plus;
+    Method<Integer, Integer, [Integer]> plus2 = ^Integer.plus;
 }
 
 void objectMemberRefs2() {
@@ -371,9 +371,9 @@ void objectMemberRefs2() {
     ClassDeclaration processClassDec = class process; 
     FunctionDeclaration processWriteLineDec = function process.writeLine; 
     ValueDeclaration processArgumentsDec = value process.arguments;
-    Value<Basic,Nothing> obj = @process;
-    Method<\Iprocess,Anything,[]|[String]> fun = @\Iprocess.writeLine;
-    Attribute<\Iprocess,String[],Nothing> att = @\Iprocess.arguments;
+    Value<Basic,Nothing> obj = ^process;
+    Method<\Iprocess,Anything,[]|[String]> fun = ^\Iprocess.writeLine;
+    Attribute<\Iprocess,String[],Nothing> att = ^\Iprocess.arguments;
 }
 
 void testImplicitRefs2() {
@@ -398,21 +398,21 @@ void testImplicitRefs2() {
 shared void testObjectMetamodelRefs2() {
     ClassDeclaration cd = class foo.bar.Bar;
     ValueDeclaration vd = value foo.bar.Bar.name;
-    Attribute<\Ifoo,Basic,Nothing> vbn = @\Ifoo.bar;
-    Attribute<\Ifoo.\Ibar.Bar,String,Nothing> vsn = @\Ifoo.\Ibar.Bar.name;
-    MemberClass<\Ifoo.\Ibar,\Ifoo.\Ibar.Bar,[]> it1 = @\Ifoo.\Ibar.Bar;
+    Attribute<\Ifoo,Basic,Nothing> vbn = ^\Ifoo.bar;
+    Attribute<\Ifoo.\Ibar.Bar,String,Nothing> vsn = ^\Ifoo.\Ibar.Bar.name;
+    MemberClass<\Ifoo.\Ibar,\Ifoo.\Ibar.Bar,[]> it1 = ^\Ifoo.\Ibar.Bar;
     MemberClass<\Ifoo.\Ibar.Bar,\Ifoo.\Ibar.Bar.Baz<String>,[String]> it2 
-            = @\Ifoo.\Ibar.Bar.Baz<String>;
+            = ^\Ifoo.\Ibar.Bar.Baz<String>;
     $type:"Attribute<x,Basic,Nothing>"
-    value xy = @\Ix.y;
+    value xy = ^\Ix.y;
     $type:"MemberClass<x,x.Y,Empty>"
-    value xY = @\Ix.Y;
+    value xY = ^\Ix.Y;
     $type:"MemberInterface<x,x.I>"
-    value xI = @\Ix.I;
+    value xI = ^\Ix.I;
     $type:"Attribute<x,String,Nothing>"
-    value xName = @\Ix.name;
+    value xName = ^\Ix.name;
     $type:"Method<x,Anything,Empty>"
-    value xDo = @\Ix.do;
+    value xDo = ^\Ix.do;
     
 }
 
@@ -422,10 +422,10 @@ shared void packageQualifiedMetamodel2() {
     Integer packageValue => 0;
     class PackageClass(Integer i) {}
     interface PackageInterface {}
-    Function<String,[]> pf = @package.packageFun;
-    Value<String> pv = @package.packageValue;
-    Class<package.PackageClass,[]> pc = @package.PackageClass;
-    Interface<package.PackageInterface> pi = @package.PackageInterface;
-    Attribute<package.PackageClass,String> pca = @package.PackageClass.val;
-    Attribute<package.PackageInterface,String> pci = @package.PackageInterface.val;
+    Function<String,[]> pf = ^package.packageFun;
+    Value<String> pv = ^package.packageValue;
+    Class<package.PackageClass,[]> pc = ^package.PackageClass;
+    Interface<package.PackageInterface> pi = ^package.PackageInterface;
+    Attribute<package.PackageClass,String> pca = ^package.PackageClass.val;
+    Attribute<package.PackageInterface,String> pci = ^package.PackageInterface.val;
 }
