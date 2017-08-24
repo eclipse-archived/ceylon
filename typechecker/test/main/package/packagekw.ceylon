@@ -1,4 +1,7 @@
 import ceylon.language { Int=Integer }
+import ceylon.language.meta.declaration {
+  Package, Module
+}
 
 String get() => "hello";
 class X() {}
@@ -31,9 +34,11 @@ class Outer() {
     $error package.X z2 = Z();
 }
 
-$error Anything p_0 = package;
-$error Anything p_1 = package();
-$error Anything p_2 = (package);
+Package p_1 = package;
+Package p_2 = (package);
+
+Module m_1 = module;
+Module m_2 = (module);
 
 void run<X>(X x) {
     package.run("hello");

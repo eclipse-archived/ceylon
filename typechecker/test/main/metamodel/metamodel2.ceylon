@@ -377,20 +377,20 @@ void objectMemberRefs2() {
 }
 
 void testImplicitRefs2() {
-    Module mod = `module`;
-    Package pack = `package`;
+    Module mod = module;
+    Package pack = package;
     class C() {
-        ClassDeclaration clazz = `class`;
-        $error value int = `interface`; 
+        ClassDeclaration clazz = class;
+        $error value int = interface; 
     } 
     interface I {
         void run() {
-            InterfaceDeclaration int = `interface`;
-            $error value clazz = `class`;
+            InterfaceDeclaration int = interface;
+            $error value clazz = class;
         } 
     } 
-    $error value int = `interface`; 
-    $error value clazz = `class`; 
+    $error value int = interface; 
+    $error value clazz = class; 
 }
 
 
