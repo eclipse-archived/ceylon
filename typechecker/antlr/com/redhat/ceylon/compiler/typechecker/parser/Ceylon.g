@@ -716,14 +716,18 @@ destructure2 returns [LetStatement statement]
       LPAREN
       { $statement.setEndToken($LPAREN); }
       v1=letVariable
-      { $statement.addVariable($v1.statement); 
-        $statement.setEndToken(null); }
+      { if ($v1.statement!=null) {
+          $statement.addVariable($v1.statement); 
+          $statement.setEndToken(null);
+        } }
       (
         COMMA
         { $statement.setEndToken($COMMA); }
         v2=letVariable
-        { $statement.addVariable($v2.statement);
-          $statement.setEndToken(null); }
+        { if ($v2.statement!=null) {
+            $statement.addVariable($v2.statement);
+            $statement.setEndToken(null); 
+          } }
       )*
       RPAREN
       { $statement.setEndToken($RPAREN); }
