@@ -1074,7 +1074,7 @@ public class StatementTransformer extends AbstractTransformer {
                 type = var.getType();
                 toTypeBoxed = !CodegenUtil.isUnBoxed(var.getDeclarationModel());
             } else if (varOrDes instanceof Tree.Destructure) {
-                type = ((Tree.Destructure)varOrDes).getType();
+                type = null;
                 toTypeBoxed = false;
             } else {
                 throw BugException.unhandledNodeCase(varOrDes);

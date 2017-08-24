@@ -96,7 +96,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     see (`function defines`)
     shared actual default Boolean contains(Object entry) {
         if (is Object->Anything entry) {
-            value key -> it = entry;
+            let (key -> it = entry);
             if (defines(key)) {
                 value item = get(key);
                 return 

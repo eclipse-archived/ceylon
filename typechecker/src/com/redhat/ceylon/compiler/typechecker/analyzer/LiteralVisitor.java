@@ -27,7 +27,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PatternParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -676,8 +675,7 @@ public class LiteralVisitor extends Visitor {
             id.setText(switchId==null ? "_" : switchId.getText());
             that.setCaseItem(createIsCase(type, id, pc));
             Tree.Destructure destructure = 
-                    destructure(pattern, id);
-            destructure.setPatternCase(true);
+                    destructure(pattern, id, true);
             Tree.Expression e = that.getExpression();
             Tree.Block b = that.getBlock();
             if (e!=null) {
@@ -754,7 +752,7 @@ public class LiteralVisitor extends Visitor {
                                     asType(pattern));
                     parameters.set(j, param);
                     Tree.Destructure destructure = 
-                            destructure(pattern, id);
+                            destructure(pattern, id, false);
                     if (funBody==null) {
                         letClause.getVariables()
                             .add(destructure);
@@ -816,12 +814,13 @@ public class LiteralVisitor extends Visitor {
         }
     }
 
-    private Tree.Destructure destructure(Tree.Pattern pattern, Tree.Identifier id) {
+    private Tree.Destructure destructure(Tree.Pattern pattern, 
+            Tree.Identifier id, boolean patternCase) {
         Tree.Destructure destructure = 
                 new Tree.Destructure(null);
-        destructure.setType(new ValueModifier(null)); //unnecessary?
         destructure.setSpecifierExpression(createReference(id));
         destructure.setPattern(pattern);
+        destructure.setPatternCase(patternCase);
         return destructure;
     }
 

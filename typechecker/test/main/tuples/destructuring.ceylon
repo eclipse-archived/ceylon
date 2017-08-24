@@ -107,7 +107,7 @@ void buggy() {
     value [@type:"Integer" first, @type:"Sequence<Integer>" *rest] = list;
 }
 
-void unknownTail<First,Rest>(Tuple<Anything,First,Rest> tup,
+void unknownTail1<First,Rest>(Tuple<Anything,First,Rest> tup,
     String(*Tuple<Anything,First,Rest>) fun)
         given Rest satisfies Anything[]
         given First satisfies Object {
