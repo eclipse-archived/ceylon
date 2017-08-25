@@ -1017,7 +1017,7 @@ public class AnalyzerUtil {
         else {
             String error = type.getFirstUnknownTypeError();
             if (error != null) {
-                return ": " + error;
+                return " - " + error;
             }
             else {
                 return "";

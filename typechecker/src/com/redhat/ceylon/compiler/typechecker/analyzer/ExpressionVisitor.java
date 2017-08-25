@@ -1311,7 +1311,8 @@ public class ExpressionVisitor extends Visitor {
                         type.addError("value must specify an explicit type or definition", 200);
                     }
                     else if (!hasError(sie)) {
-                        type.addError("value type could not be inferred" + 
+                        type.addError("value type could not be inferred: '" + 
+                                val.getName() + "'" +
                                 getTypeUnknownError(t));
                     }
                 }
@@ -4798,8 +4799,8 @@ public class ExpressionVisitor extends Visitor {
             if (!dynamic 
                     && isTypeUnknown(argType)
                     && !hasError(arg)) {
-                arg.addError("could not determine type of named argument: '" + 
-                        param.getName() + "'");
+                arg.addError("could not determine type of named argument: the type of '" + 
+                        param.getName() + "' is not known");
             }
         }
         
@@ -7487,7 +7488,7 @@ public class ExpressionVisitor extends Visitor {
                 that.addError(
                         "could not determine type of method or attribute reference: '" +
                         member.getName(unit) + 
-                        "' of '" + rtname + "'" + 
+                        "' of '" + rtname + "' is ambiguous" + 
                         getTypeUnknownError(fullType));
             }
             that.setTypeModel(accountForStaticReferenceType(
@@ -7687,8 +7688,8 @@ public class ExpressionVisitor extends Visitor {
                     && isTypeUnknown(fullType) 
                     && !hasError(that)) {
                 that.addError(
-                        "could not determine type of function or value reference: '" +
-                        member.getName(unit) + "'" + 
+                        "could not determine type of function or value reference: the type of '" +
+                        member.getName(unit) + "' is not known" + 
                         getTypeUnknownError(fullType));
             }
             if (dynamic && 
@@ -8401,20 +8402,20 @@ public class ExpressionVisitor extends Visitor {
             Type fullType =
                     type.getFullType(wrap(type, 
                             receivingType, that));
-            if (!dynamic && 
-                    !that.getStaticMethodReference() &&
-                    memberType instanceof Class &&
-                    !isAbstraction(memberType) &&
-                    isTypeUnknown(fullType) && 
-                    !hasError(that)) {
+            if (!dynamic 
+                    && !that.getStaticMethodReference() 
+                    && memberType instanceof Class 
+                    && !isAbstraction(memberType) 
+                    && isTypeUnknown(fullType) 
+                    && !hasError(that)) {
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type
                 String rtname = 
                         receiverType.getDeclaration()
                             .getName(unit);
                 that.addError("could not determine type of member class reference: '" +
-                        memberType.getName(unit)  + "' of '" + 
-                        rtname + "'");
+                        memberType.getName(unit) + "' of '" + 
+                        rtname + "' is ambiguous");
             }
             that.setTypeModel(accountForStaticReferenceType(
                     that, memberType, fullType));
