@@ -111,8 +111,8 @@
         </listitem>
     </itemizedlist>
     
-    <para>Unlike other alternative JVM languages, Ceylon aims to completely replace 
-    the legacy Java SE class libraries.</para>
+    <para>Unlike other alternative JVM languages, Ceylon defines its own basic types
+    and provides its own modular set of cross-platform libraries..</para>
     
     <para>Therefore, the Ceylon SDK provides:</para>
     
@@ -126,17 +126,17 @@
             documentation, and managing modules in module repositories,</para>
         </listitem>
         <listitem>
-            <para>Eclipse-based tooling for developing, compiling, testing, and 
-            debugging programs written in Ceylon,</para>
+            <para>Eclipse-based and IntelliJ-based tooling for developing, 
+            compiling, testing, and debugging programs written in Ceylon,</para>
         </listitem>
         <listitem>
             <para>a module runtime for modular programs that execute on the Java
             Virtual Machine, and</para>
         </listitem>
         <listitem>
-            <para>a set of class libraries that provides much of the functionality
-            of the Java SE platform, together with the core functionality of the
-            Java EE platform.</para>
+            <para>a set of <emphasis>platform libraries</emphasis> that provide 
+            much of the functionality of the Java SE platform, together with the 
+            core functionality of the Java EE platform.</para>
         </listitem>
     </itemizedlist>
     
