@@ -4582,90 +4582,74 @@ referencePath returns [SimpleType type]
 
 moduleLiteral returns [ModuleLiteral literal]
  : MODULE
-   { $literal = new ModuleLiteral(null);
-     $literal.setEndToken($MODULE); }
+   { $literal = new ModuleLiteral($MODULE); }
    (
      p1=packagePath
-     { $literal.setImportPath($p1.importPath); 
-       $literal.setEndToken(null); }
+     { $literal.setImportPath($p1.importPath); }
    )?
  ;
 
 packageLiteral returns [PackageLiteral literal]
  : PACKAGE
-   { $literal = new PackageLiteral(null);
-     $literal.setEndToken($PACKAGE); }
+   { $literal = new PackageLiteral($PACKAGE); }
    (
      p2=packagePath
-     { $literal.setImportPath($p2.importPath); 
-       $literal.setEndToken(null); }
+     { $literal.setImportPath($p2.importPath); }
    )?
  ;
 
 classLiteral returns [ClassLiteral literal]
  : CLASS_DEFINITION
-   { $literal = new ClassLiteral(null);
-     $literal.setEndToken($CLASS_DEFINITION); }
+   { $literal = new ClassLiteral($CLASS_DEFINITION); }
    (
      ct=referencePath
-     { $literal.setType($ct.type); 
-       $literal.setEndToken(null); }
+     { $literal.setType($ct.type); }
    )?
  ;
 
 interfaceLiteral returns [InterfaceLiteral literal]
  : INTERFACE_DEFINITION
-   { $literal = new InterfaceLiteral(null);
-     $literal.setEndToken($INTERFACE_DEFINITION); }
+   { $literal = new InterfaceLiteral($INTERFACE_DEFINITION); }
    (
      it=referencePath
-     { $literal.setType($it.type); 
-       $literal.setEndToken(null); }
+     { $literal.setType($it.type); }
    )?
  ;
 
 newLiteral returns [NewLiteral literal]
  : NEW
-   { $literal = new NewLiteral(null);
-     $literal.setEndToken($NEW); }
+   { $literal = new NewLiteral($NEW); }
    (
      nt=referencePath
-     { $literal.setType($nt.type); 
-       $literal.setEndToken(null); }
+     { $literal.setType($nt.type); }
    )?
  ;
 
 aliasLiteral returns [AliasLiteral literal]
  : ALIAS
-   { $literal = new AliasLiteral(null);
-     $literal.setEndToken($ALIAS); }
+   { $literal = new AliasLiteral($ALIAS); }
    (
      at=referencePath
-     { $literal.setType($at.type); 
-       $literal.setEndToken(null); }
+     { $literal.setType($at.type); }
    )?
  ;
 
 typeParameterLiteral returns [TypeParameterLiteral literal]
  : TYPE_CONSTRAINT
-   { $literal = new TypeParameterLiteral(null);
-     $literal.setEndToken($TYPE_CONSTRAINT); }
+   { $literal = new TypeParameterLiteral($TYPE_CONSTRAINT); }
    (
      tt=referencePath
-     { $literal.setType($tt.type); 
-       $literal.setEndToken(null); }
+     { $literal.setType($tt.type); }
    )?
  ;
 
 valueLiteral returns [ValueLiteral literal]
   : (
       VALUE_MODIFIER
-      { $literal = new ValueLiteral(null);
-        $literal.setEndToken($VALUE_MODIFIER); }
+      { $literal = new ValueLiteral($VALUE_MODIFIER); }
     |
       OBJECT_DEFINITION
-      { $literal = new ValueLiteral(null);
-        $literal.setEndToken($OBJECT_DEFINITION);
+      { $literal = new ValueLiteral($OBJECT_DEFINITION);
         $literal.setBroken(true); }
     )
     vt=referencePath
@@ -4674,20 +4658,17 @@ valueLiteral returns [ValueLiteral literal]
         $literal.setType(((QualifiedType)$vt.type).getOuterType());
         $literal.setIdentifier($vt.type.getIdentifier());
         $literal.setTypeArgumentList($vt.type.getTypeArgumentList());
-        $literal.setEndToken(null);
       }
       else if ($vt.type instanceof BaseType) {
         $literal.setIdentifier($vt.type.getIdentifier());
         $literal.setTypeArgumentList($vt.type.getTypeArgumentList());
-        $literal.setEndToken(null);
       }
     }
   ;
 
 functionLiteral returns [FunctionLiteral literal]
   : FUNCTION_MODIFIER
-    { $literal = new FunctionLiteral(null);
-      $literal.setEndToken($FUNCTION_MODIFIER); }
+    { $literal = new FunctionLiteral($FUNCTION_MODIFIER); }
     ft=referencePath
     {
       if ($ft.type instanceof QualifiedType) {
@@ -4695,13 +4676,11 @@ functionLiteral returns [FunctionLiteral literal]
         $literal.setType(qt.getOuterType());
         $literal.setIdentifier(qt.getIdentifier());
         $literal.setTypeArgumentList(qt.getTypeArgumentList());
-        $literal.setEndToken(null);
       }
       else if ($ft.type instanceof BaseType) {
         BaseType bt = (BaseType) $ft.type;
         $literal.setIdentifier(bt.getIdentifier());
         $literal.setTypeArgumentList(bt.getTypeArgumentList());
-        $literal.setEndToken(null);
         $literal.setPackageQualified(bt.getPackageQualified());
       }
     }
