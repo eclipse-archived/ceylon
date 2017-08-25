@@ -58,7 +58,7 @@ public class CeylonFatJarTool extends ResourceRootTool {
         this.modules = modules;
     }
 
-    @OptionArgument(longName = "run", argumentName = "toplevel")
+    @OptionArgument(shortName='x', longName = "run", argumentName = "toplevel")
     @Description("Specifies the fully qualified name of a toplevel method or class with no parameters. " +
             "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator " +
             "between the package name and the toplevel class or method name (defaults to `{module}::run`).")
