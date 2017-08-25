@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableToOneOf;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableIgnoringNull;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyForInterop;
@@ -1960,11 +1960,11 @@ public class ExpressionVisitor extends Visitor {
     private void checkType(Type declaredType, 
             Tree.SpecifierOrInitializerExpression sie) {
         if (sie!=null) { 
-            Tree.Expression e = sie.getExpression();
-            if (e!=null) {
-                Type set = e.getTypeModel();
-                if (!isTypeUnknown(set)) {
-                    checkAssignable(set, declaredType, sie, 
+            Tree.Expression ex = sie.getExpression();
+            if (ex!=null) {
+                Type type = ex.getTypeModel();
+                if (!isTypeUnknown(type)) {
+                    checkAssignable(type, declaredType, sie, 
                             "specified expression must be assignable to declared type");
                 }
             }
@@ -1976,33 +1976,15 @@ public class ExpressionVisitor extends Visitor {
             Tree.SpecifierOrInitializerExpression sie, 
             int code) {
         if (sie!=null) {
-            Tree.Expression e = sie.getExpression();
-            if (e!=null) {
-                Type t = e.getTypeModel();
-                if (!isTypeUnknown(t)) {
-                    String message = 
-                            "specified expression must be assignable to declared type of " + 
-                            decdesc(dec);
-                    if (dec.hasUncheckedNullType()) {
-                        Type optionalDeclaredType = 
-                                unit.getOptionalType(
-                                        declaredType);
-                       checkAssignableToOneOf(t, 
-                               declaredType, 
-                               optionalDeclaredType, 
-                               sie, 
-                               message 
-                               + " with runtime null checking", 
-                               code);
-                    }
-                    else {
-                        checkAssignable(t, 
-                                declaredType, 
-                                sie, 
-                                message 
-                                + " with strict null checking", 
-                                code);
-                    }
+            Tree.Expression ex = sie.getExpression();
+            if (ex!=null) {
+                Type type = ex.getTypeModel();
+                if (!isTypeUnknown(type)) {
+                    checkAssignableIgnoringNull(type, 
+                           declaredType, sie, dec,
+                           "specified expression must be assignable to declared type of " 
+                           + decdesc(dec), 
+                           code);
                 }
             }
         }

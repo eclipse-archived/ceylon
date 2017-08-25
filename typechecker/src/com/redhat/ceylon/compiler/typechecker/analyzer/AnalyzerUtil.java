@@ -815,31 +815,47 @@ public class AnalyzerUtil {
         }
     }
 
-    static void checkAssignableToOneOf(Type type, 
-            Type supertype1, Type supertype2, 
-            Node node, String message, int code) {
+    static void checkAssignableIgnoringNull(Type type, 
+            Type supertype, Node node, Declaration dec,
+            String message, int code) {
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
         }
-        else if (isTypeUnknown(supertype1)) {
-            addTypeUnknownError(node, supertype1, message);
+        else if (isTypeUnknown(supertype)) {
+            addTypeUnknownError(node, supertype, message);
         }
-        else if (isTypeUnknown(supertype2)) {
-            addTypeUnknownError(node, supertype2, message);
-        }
-        else if (!type.isSubtypeOf(supertype1)
-                && !type.isSubtypeOf(supertype2)) {
-            if (supertype1.isUnion() && supertype1.covers(type)) {
-                node.addUsageWarning(Warning.implicitNarrowing,
-                        message + 
-                        notAssignableMessage(type, supertype1, node));
+        else {
+            Unit unit = node.getUnit();
+            boolean ignoreNull = 
+                    canIgnoreNull(type, unit, dec);
+            Type checkType = 
+                    ignoreNull ?
+                        unit.getOptionalType(supertype) : 
+                        supertype;
+            if (!type.isSubtypeOf(checkType)) {
+                if (supertype.isUnion() 
+                        && supertype.covers(type)) {
+                    node.addUsageWarning(Warning.implicitNarrowing,
+                            message + 
+                            notAssignableMessage(type, supertype, node));
+                }
+                else {
+                    if (ignoreNull) {
+                        message += " ignoring 'null'";
+                    }
+                    node.addError(message + 
+                            notAssignableMessage(type, supertype, node), 
+                            code);
+                }
             }
-            else {
-                node.addError(message + 
-                        notAssignableMessage(type, supertype1, node), 
-                        code);
-            }
         }
+    }
+
+    private static boolean canIgnoreNull(
+            Type type, Unit unit, Declaration dec) {
+        return hasUncheckedNullType(dec) 
+            && unit.getNullValueType()
+                    .isSubtypeOf(type);
     }
 
     static String notAssignableMessage(Type type,
@@ -921,7 +937,8 @@ public class AnalyzerUtil {
             addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-            if (supertype.isUnion() && supertype.covers(type)) {
+            if (supertype.isUnion() 
+                    && supertype.covers(type)) {
                 node.addUsageWarning(Warning.implicitNarrowing,
                         message + 
                         notAssignableMessage(type, supertype, node));
@@ -1723,17 +1740,16 @@ public class AnalyzerUtil {
                 unit.getPackage()
                     .getQualifiedNameString();
         String name = name(that.getIdentifier());
-        return Module.LANGUAGE_MODULE_NAME.equals(pname) &&
-                ("Anything".equalsIgnoreCase(name) ||
-                "Object".equalsIgnoreCase(name) ||
-                "Basic".equalsIgnoreCase(name) ||
-                "Null".equalsIgnoreCase(name));
+        return Module.LANGUAGE_MODULE_NAME.equals(pname) 
+            && ("Anything".equalsIgnoreCase(name) 
+             || "Object".equalsIgnoreCase(name) 
+             || "Basic".equalsIgnoreCase(name) 
+             || "Null".equalsIgnoreCase(name));
     }
 
-    static boolean hasUncheckedNullType(Reference member) {
-        Declaration dec = member.getDeclaration();
-        return dec instanceof TypedDeclaration && 
-                ((TypedDeclaration) dec)
+    static boolean hasUncheckedNullType(Declaration dec) {
+        return dec instanceof TypedDeclaration 
+            && ((TypedDeclaration) dec)
                     .hasUncheckedNullType();
     }
 

@@ -2,8 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableToOneOf;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableIgnoringNull;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyForInterop;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyOneOf;
@@ -1436,26 +1435,14 @@ public class RefinementVisitor extends Visitor {
                 mod.setTypeModel(t);
                 return;
             }
-            if (hasUncheckedNullType(refinedMember)) {
-                Type optionalRefinedType = 
-                        unit.getOptionalType(refinedType);
-                checkAssignableToOneOf(refiningType, 
-                        refinedType, optionalRefinedType, 
-                        that, 
-                        "type of member must be assignable to type of refined member " + 
-                        message(refined), 
-                        9000);
-            }
-            else {
-                checkAssignable(refiningType, refinedType, 
-                        that,
-                        "type of member must be assignable to type of refined member " + 
-                        message(refined), 
-                        9000);
-                checkSmallRefinement(that, 
-                        refiningMember.getDeclaration(), 
-                        refinedMember.getDeclaration());
-            }
+            checkAssignableIgnoringNull(refiningType, 
+                    refinedType,  that, refined,
+                    "type of member must be assignable to type of refined member " + 
+                    message(refined), 
+                    9000);
+            checkSmallRefinement(that, 
+                    refiningMember.getDeclaration(), 
+                    refinedMember.getDeclaration());
         }
     }
 
@@ -1491,7 +1478,7 @@ public class RefinementVisitor extends Visitor {
                 }
                 return;
             }
-            if (hasUncheckedNullType(refinedMember)) {
+            if (hasUncheckedNullType(refined)) {
                 Type optionalRefinedType = 
                         unit.getOptionalType(refinedType);
                 checkIsExactlyOneOf(refiningType, 
