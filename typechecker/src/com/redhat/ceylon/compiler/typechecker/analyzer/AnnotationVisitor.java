@@ -1113,9 +1113,16 @@ public class AnnotationVisitor extends Visitor {
                         }
                     }
                     if (!ok) {
+                        StringBuilder message = new StringBuilder();
+                        for (AnnotationTarget at: target) {
+                            if (message.length()>0) {
+                                message.append(", ");
+                            }
+                            message.append(at);
+                        }
                         annotation.addError(
-                                "annotated program element does not satisfy annotation constraint: '"
-                                + target + "'");
+                                "annotated program element does not satisfy annotation constraint: the annotation is declared 'target {"
+                                + message + "}'");
                     }
                 }
             }
