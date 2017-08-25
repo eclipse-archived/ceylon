@@ -41,19 +41,19 @@ class Hiding() {
         class InnerWithAttribute() {
             String hello = "hello";
             void method() {
-                @type:"String" value s = hello;
+                $type:"String" value s = hello;
             }
         }
         
         class InnerWithSuper() extends Super() {
             void method() {
-                @type:"String" value s = hello;
+                $type:"String" value s = hello;
             }
         }
         
         class InnerWithParameter(String hello) {
             void method() {
-                @type:"String" value s = hello;
+                $type:"String" value s = hello;
             }
         }
     }
@@ -65,7 +65,7 @@ class Hiding() {
         void nested() {
             String hello = "hello";
             void helloWorld() {
-                @error outer.helloWorld("gavin");
+                $error outer.helloWorld("gavin");
             }
            
             String ih = hello;

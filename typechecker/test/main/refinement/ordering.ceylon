@@ -1,7 +1,7 @@
 void run() {
     C().m();
     C().n();
-    @type:"String" C().s();
+    $type:"String" C().s();
 }
 
 class C() satisfies L5 {
@@ -41,8 +41,8 @@ interface L4 satisfies L3 {
 void test1() {
     I&J ij1 = TBottom().thing;
     I&J ij2 = TBottom().thingy("");
-    @type:"I&J" value ij3 = TBottom().thing;
-    @type:"I&J" value ij4 = TBottom().thingy("");
+    $type:"I&J" value ij3 = TBottom().thing;
+    $type:"I&J" value ij4 = TBottom().thingy("");
 }
 
 class TBottom() satisfies TMid1&TMid2<J> {
@@ -72,6 +72,6 @@ interface TMid2<T>
 void test2() {
     I&J ij1 = TBottom().thing;
     I&J ij2 = TBottom().thingy("");
-    @type:"I&J" value ij3 = TBottom().thing;
-    @type:"I&J" value ij4 = TBottom().thingy("");
+    $type:"I&J" value ij3 = TBottom().thing;
+    $type:"I&J" value ij4 = TBottom().thingy("");
 }

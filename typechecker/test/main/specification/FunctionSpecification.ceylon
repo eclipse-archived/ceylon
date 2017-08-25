@@ -7,9 +7,9 @@ void specFunction() {
     f2 = (String e)() => e;
     
     Integer g0();
-    @error g0() = 1;
+    $error g0() = 1;
     Integer g1();
-    @error g1 => () => 1;
+    $error g1 => () => 1;
     
     Integer x;
     if (1==1) {
@@ -33,7 +33,7 @@ void specFunction() {
     if (1==1) {
         z=>100;
     }
-    @error print(z);
+    $error print(z);
 
     Integer w();
     if (1==1) {
@@ -41,6 +41,6 @@ void specFunction() {
     else {
         w()=>100^100;
     }
-    @error print(w());
+    $error print(w());
     
 }

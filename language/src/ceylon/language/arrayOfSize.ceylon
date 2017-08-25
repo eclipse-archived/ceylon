@@ -2,9 +2,9 @@
  index with the given [[element]]. The specified `size` must 
  be no larger than [[runtime.maxArraySize]]. If `size<=0`, 
  the new array will have no elements."
-throws (`class AssertionError`, 
+throws (class AssertionError, 
         "if `size>runtime.maxArraySize`")
-see (`value runtime.maxArraySize`)
+see (value runtime.maxArraySize)
 deprecated ("Use [[Array.ofSize]]")
 tagged("Collections")
 shared Array<Element> arrayOfSize<Element>(

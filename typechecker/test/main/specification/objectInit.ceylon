@@ -8,8 +8,8 @@ class Init1() {
 
 class Init2() {
     shared void fun() {
-        @error print(with);
-        @error print(this);
+        $error print(with);
+        $error print(this);
     }
     shared object with {
         print("");

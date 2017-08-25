@@ -66,26 +66,26 @@ import ceylon.language.meta.declaration {
 shared sealed interface DeserializationContext<Id> {
     
     """The given [[instanceId]] refers to an instance of the given class."""
-    throws(`class DeserializationException`, 
+    throws(class DeserializationException, 
         "the given instance was specified by [[instanceValue]] or has already been reconstructed.")
     shared formal void instance(Id instanceId, ClassModel<> clazz);
     
     """The given [[instanceId]] is a member of the instance with the given [[containerId]].
        
        This is used for member class instances."""
-    throws(`class DeserializationException`, 
+    throws(class DeserializationException, 
         "the given instance was specified by [[instanceValue]] or has already been reconstructed.")
     shared formal void memberInstance(Id containerId, Id instanceId);
     
     """The value of the given [[attribute]] of the instance with 
        the given [[instanceId]] has given [[attributeValueId]]."""
-    throws(`class DeserializationException`, 
+    throws(class DeserializationException, 
         "the given instance was specified by [[instanceValue]] or has already been reconstructed.")
     shared formal void attribute(Id instanceId, ValueDeclaration attribute, Id attributeValueId);
     
     """The value at the given [[index]] of the [[Array]] instance with 
        the given [[instanceId]] has given [[elementValueId]]."""
-    throws(`class DeserializationException`, 
+    throws(class DeserializationException, 
         "the given instance was specified by [[instanceValue]] or has already been reconstructed.")
     shared formal void element(Id instanceId, Integer index, Id elementValueId);
     
@@ -97,7 +97,7 @@ shared sealed interface DeserializationContext<Id> {
     
     """Get the instance with the given [[instanceId]] reconstructing it 
        if necessary."""
-    throws(`class DeserializationException`, 
+    throws(class DeserializationException, 
         "the instance, or an instance reachable from it, 
          could not be reconstructed")
     shared formal Instance reconstruct<Instance>(Id instanceId);

@@ -93,8 +93,8 @@ shared [First,Second]? findPair<First,Second>(
  [[Iterable.every]], [[zipPairs]], and [[unflatten]]:
  
      everyPair(p, xs, ys) == zipPairs(xs, ys).every(unflatten(p))"
-see (`function corresponding`,
-     `function anyPair`)
+see (function corresponding,
+     function anyPair)
 tagged("Streams")
 since("1.1.0")
 shared Boolean everyPair<First,Second>(
@@ -125,7 +125,7 @@ shared Boolean everyPair<First,Second>(
  [[Iterable.any]], [[zipPairs]], and [[unflatten]]:
  
      anyPair(p, xs, ys) == zipPairs(xs, ys).any(unflatten(p))"
-see (`function everyPair`)
+see (function everyPair)
 tagged("Streams")
 since("1.1.0")
 shared Boolean anyPair<First,Second>(

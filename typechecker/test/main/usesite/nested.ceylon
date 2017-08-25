@@ -7,5 +7,5 @@ void nested() {
     }
     Outer<out Object>.Inner o = Outer("").Inner();
     Object obj = o.get();
-    @error o.set("");
+    $error o.set("");
 }

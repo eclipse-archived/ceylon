@@ -16,7 +16,7 @@ import ceylon.language { AnnotationType = Annotation }
    annotations as the class, but will have no 
    other annotations.
    """
-see(`interface ClassWithConstructorsDeclaration`)
+see(interface ClassWithConstructorsDeclaration)
 since("1.2.0")
 shared sealed interface ClassWithInitializerDeclaration 
         satisfies ClassDeclaration {

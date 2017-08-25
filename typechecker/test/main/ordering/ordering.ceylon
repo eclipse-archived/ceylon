@@ -37,10 +37,10 @@ interface SubCat3 satisfies Cat3<Float> {
     shared actual class In() extends super.In() {}
 }
 
-@error class CX() extends CY() {
+$error class CX() extends CY() {
     shared String hello = "hello";
 }
-@error class CY() extends CX() {}
+$error class CY() extends CX() {}
 
 
 class Foo() extends Baz() {

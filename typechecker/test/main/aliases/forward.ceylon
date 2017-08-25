@@ -6,19 +6,19 @@ List<String>&Text after = ["hello"];
 
 Defaulted dbefore = Defaulted("hello");
 Defaulted<String> dsbefore = dbefore;
-@error Defaulted<Integer> edbefore = dbefore;
+$error Defaulted<Integer> edbefore = dbefore;
 class Defaulted<T=String>(shared T t) {}
 Defaulted dafter = Defaulted("bye");
 Defaulted<String> dsafter = dafter;
-@error Defaulted<Integer> edafter = dafter;
+$error Defaulted<Integer> edafter = dafter;
 
 Optional<String> obefore = Optional("hello", 1);
 Optional<String,Integer> osibefore = obefore;
-@error Optional<String,Float> eobefore = obefore;
+$error Optional<String,Float> eobefore = obefore;
 class Optional<X,T=Integer>(X x, T t) {}
 Optional<String> oafter = Optional("bye", 2);
 Optional<String,Integer> osiafter = oafter;
-@error Optional<String,Float> eoafter = oafter;
+$error Optional<String,Float> eoafter = oafter;
 
 Defaulted<Optional<String>> do1 = Defaulted(Optional("hello", 1));
 Defaulted<Optional<String,Integer>> do2 = do1; 
@@ -46,10 +46,10 @@ class CrazyDefaulted<out T,out L=List<T>>(T t, L ts) {
 
 void testCrazyDefaulted() {
     CrazyDefaulted<String> cddef = CrazyDefaulted("hello", ["goodbye"]);
-    @type:"List<String>" value cddefl = cddef.list;
+    $type:"List<String>" value cddefl = cddef.list;
     CrazyDefaulted<String,List<String>> cdexpl = cddef;
     CrazyDefaulted<String> cddef1 = cdexpl;
     CrazyDefaulted<String,[String]> cddef2 = CrazyDefaulted("hello", ["goodbye"]);
 }
 
-class CrazyBrokenDefaulted<@error out L=List<T>, out T=String>(T t, L ts) {}
+class CrazyBrokenDefaulted<$error out L=List<T>, out T=String>(T t, L ts) {}

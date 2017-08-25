@@ -71,10 +71,10 @@ import ceylon.language.meta {
    
    A given annotation class can have multiple annotation 
    constructors."""
-see(`interface OptionalAnnotation`,
-    `interface SequencedAnnotation`,
-    `function annotations`, 
-    `function optionalAnnotation`, 
-    `function sequencedAnnotations`)
+see(interface OptionalAnnotation,
+    interface SequencedAnnotation,
+    function annotations, 
+    function optionalAnnotation, 
+    function sequencedAnnotations)
 shared interface Annotation 
         of ConstrainedAnnotation<> {}

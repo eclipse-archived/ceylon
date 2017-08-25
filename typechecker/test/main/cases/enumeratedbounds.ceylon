@@ -21,19 +21,19 @@ class Foo<T>(T* ti) given T of Float|Integer {
 void testEnumeratedBounds() {
     qux(20);
     qux("hello");
-    @error qux(1.0);
+    $error qux(1.0);
     
-    @type:"Foo<Integer>" Foo<Integer>();
-    @type:"Foo<Float>" Foo(1.0, 2.0);
-    @error Foo("foo", "bar");
-    @error Foo<Object>();
+    $type:"Foo<Integer>" Foo<Integer>();
+    $type:"Foo<Float>" Foo(1.0, 2.0);
+    $error Foo("foo", "bar");
+    $error Foo<Object>();
 }
 
-void brokenEnumBound<O>() @error given O of true|false {}
+void brokenEnumBound<O>() $error given O of true|false {}
 
 class Lizt<out Item>() {
     shared Item add<in InItem>(InItem i) 
-            @error given InItem of Item { 
+            $error given InItem of Item { 
         return i of Item; 
     }
 }

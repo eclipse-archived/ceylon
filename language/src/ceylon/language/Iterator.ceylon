@@ -12,7 +12,7 @@
  
  An iterator is _exhausted_ when [[next]] produces the 
  value [[finished]]."
-see (`interface Iterable`)
+see (interface Iterable)
 by ("Gavin")
 tagged("Streams")
 shared interface Iterator<out Element> {

@@ -19,7 +19,7 @@ interface DefiniteSpecification {
         X x;
         doSomething();
         doSomethingElse();
-        @error use(x);
+        $error use(x);
     }
     
     void goodMethodWithSpec() {
@@ -33,7 +33,7 @@ interface DefiniteSpecification {
     void badMethodWithSpec() {
         X x;
         doSomething();
-        @error use(x);
+        $error use(x);
         doSomethingElse();
         x = X();
     }
@@ -43,12 +43,12 @@ interface DefiniteSpecification {
         doSomething();
         x = X();
         doSomethingElse();
-        @error x = X();
+        $error x = X();
     }
     
     void goodMethodWithRecursiveSpec() {
         X x {
-            @error return x;
+            $error return x;
         }
         doSomething();
         use(x);
@@ -67,19 +67,19 @@ interface DefiniteSpecification {
     void badMethodWithRecursiveSpec() {
         X x;
         doSomething();
-        @error x = x;
+        $error x = x;
         doSomethingElse();
         use(x);
     }
     
     void badMethodWithRecursiveSpec2() {
-        @error X x = x;
+        $error X x = x;
         doSomething();
         use(x);
     }
     
     void badMethodWithMutuallyRecursiveDef() {
-        X y { @error return x; }
+        X y { $error return x; }
         X x { return y; }
         use(x);
     }
@@ -115,7 +115,7 @@ interface DefiniteSpecification {
             doSomethingElse();
         }
         doNull();
-        @error use(x);
+        $error use(x);
     }
     
     void goodMethodWithSpecInIf2() {
@@ -139,7 +139,7 @@ interface DefiniteSpecification {
         }
         else {
             doSomethingElse();
-            @error use(x);
+            $error use(x);
         }
         doNull();
     }
@@ -155,7 +155,7 @@ interface DefiniteSpecification {
             doSomethingElse();
         }
         doNull();
-        @error x = X();
+        $error x = X();
     }
     
     void badMethodWithSpecInIf4() {
@@ -163,7 +163,7 @@ interface DefiniteSpecification {
         doNull();
         if (testSomething()) {
             doSomething();
-            @error x = X();
+            $error x = X();
         }
     }
     
@@ -173,7 +173,7 @@ interface DefiniteSpecification {
         x = X();
         if (testSomething()) {
             doSomething();
-            @error x = X();
+            $error x = X();
         }
     }
     
@@ -189,7 +189,7 @@ interface DefiniteSpecification {
         else {
             x = X();
         }
-        @error use(x);
+        $error use(x);
     }
     
     void badMethodWithSpecInIfAndElseIfOnly() {
@@ -204,7 +204,7 @@ interface DefiniteSpecification {
         else {
             doSomethingElse();
         }
-        @error use(x);
+        $error use(x);
     }
     
     void goodMethodWithSpecInNestedIf() {
@@ -233,7 +233,7 @@ interface DefiniteSpecification {
                 use(x);
             }
             else {
-                @error use(x);
+                $error use(x);
             }
         }
         else {
@@ -258,7 +258,7 @@ interface DefiniteSpecification {
         X x;
         if (testSomething()) {
             doSomething();
-            @error use(x);
+            $error use(x);
         }
         else {
             x = X();
@@ -279,7 +279,7 @@ interface DefiniteSpecification {
             use(x);
         }
         doSomethingElse();
-        @error x = X();
+        $error x = X();
     }
     
     void badMethodWithSpecInElse3() {
@@ -289,7 +289,7 @@ interface DefiniteSpecification {
             doSomething();
         }
         else {
-            @error x = X();
+            $error x = X();
             doNull();
         }
     }
@@ -302,7 +302,7 @@ interface DefiniteSpecification {
             doSomething();
         }
         else {
-            @error x = X();
+            $error x = X();
             doNull();
         }
     }
@@ -368,7 +368,7 @@ interface DefiniteSpecification {
         if (testSomething()) {
             y = X();
         }
-        @error X x = y;
+        $error X x = y;
     }
     
     void goodMethodWithSpecInFor() {
@@ -384,7 +384,7 @@ interface DefiniteSpecification {
         X y;
         for (X x in {X()}) {
             doSomething();
-            @error y=X();
+            $error y=X();
         }
         doNull();
     }
@@ -409,7 +409,7 @@ interface DefiniteSpecification {
         }
         else {
             doSomethingElse();
-            @error y = X();
+            $error y = X();
         }
         doNull();
     }
@@ -425,7 +425,7 @@ interface DefiniteSpecification {
             y = X();
         }
         doNull();
-        @error use (y);
+        $error use (y);
     }
     
     void goodMethodWithSpecInWhile() {
@@ -441,7 +441,7 @@ interface DefiniteSpecification {
         X x;
         while (testSomething()) {
             doSomething();
-            @error x = X();
+            $error x = X();
         }
         doSomethingElse();
     }
@@ -459,7 +459,7 @@ interface DefiniteSpecification {
         X x;
         do {
             doSomething();
-            @error x = X();
+            $error x = X();
         }
         while (testSomething());
     }*/
@@ -482,7 +482,7 @@ interface DefiniteSpecification {
             use(x);
         }
         catch (Exception e) {
-            @error x = X();
+            $error x = X();
         }
         use(x);
     }
@@ -494,7 +494,7 @@ interface DefiniteSpecification {
         catch (Exception e) {
             x = X();
         }
-        @error use(x);
+        $error use(x);
     }
 
     void tryCatch3() {
@@ -504,7 +504,7 @@ interface DefiniteSpecification {
         }
         catch (Exception e) {
         }
-        @error use(x);
+        $error use(x);
     }
 
     void tryCatchCatch1() {
@@ -513,10 +513,10 @@ interface DefiniteSpecification {
             x = X();
         }
         catch (E e) {
-            @error x = X();
+            $error x = X();
         }
         catch (Exception e) {
-            @error x = X();
+            $error x = X();
         }
         use(x);
     }
@@ -527,11 +527,11 @@ interface DefiniteSpecification {
             x = X();
         }
         catch (E e) {
-            @error x = X();
+            $error x = X();
         }
         catch (Exception e) {
         }
-        @error use(x);
+        $error use(x);
     }
 
     void tryFinally1() {
@@ -550,7 +550,7 @@ interface DefiniteSpecification {
             x = X();
         }
         finally {
-            @error x = X();
+            $error x = X();
         }
         use(x);
     }
@@ -561,7 +561,7 @@ interface DefiniteSpecification {
             x = X();
         }
         finally {
-            @error use(x);
+            $error use(x);
         }
         use(x);
     }
@@ -586,7 +586,7 @@ interface DefiniteSpecification {
             x = X();
         }
         finally {
-            @error x = X();
+            $error x = X();
         }
         use(x);
     }
@@ -639,7 +639,7 @@ interface DefiniteSpecification {
         else {
             s = "world";
         }
-        @error print(s);
+        $error print(s);
     }
     
     void switchCase3() {
@@ -655,11 +655,11 @@ interface DefiniteSpecification {
         //TODO: remove
         else {
         }
-        @error print(s);
+        $error print(s);
     }
     
     class Super(String s) {}
-    @error class Sub() extends Super(name) {
+    $error class Sub() extends Super(name) {
         String name = "gavin";
     }
     
@@ -681,7 +681,7 @@ interface DefiniteSpecification {
                 break;
             }
         }
-        @error name = "Gavin";
+        $error name = "Gavin";
         shared void bar() => print(name);
     }
     
@@ -692,7 +692,7 @@ interface DefiniteSpecification {
                 name = null;
                 break;
             }
-            @error name = "Gavin";
+            $error name = "Gavin";
         }
         shared void bar() => print(name);
     }
@@ -732,23 +732,23 @@ interface DefiniteSpecification {
 }
 
 void localFatArrows() {
-    @error Integer fi => foo;
-    Integer fo { @error return foo; }
-    @error Integer foo => foo;
+    $error Integer fi => foo;
+    Integer fo { $error return foo; }
+    $error Integer foo => foo;
     Integer bar() => bar();
-    @error Integer baz = baz;
-    @error Integer qux() = qux();
-    Integer fee { @error return fee; }
+    $error Integer baz = baz;
+    $error Integer qux() = qux();
+    Integer fee { $error return fee; }
     Integer fum() { return fum(); }
 }
 class LocalFatArrows() {
-    @error Integer fi => foo;
-    Integer fo { @error return foo; }
-    @error Integer foo => foo;
+    $error Integer fi => foo;
+    Integer fo { $error return foo; }
+    $error Integer foo => foo;
     Integer bar() => bar();
-    @error Integer baz = baz;
-    @error Integer qux() = qux();
-    Integer fee { @error return fee; }
+    $error Integer baz = baz;
+    $error Integer qux() = qux();
+    Integer fee { $error return fee; }
     Integer fum() { return fum(); }
 }
 
@@ -756,17 +756,17 @@ void moreDefiniteSpec() {
     class Count(shared Integer count){}
     void fold2() {}
     Integer integer=0;
-    @error integer++;
-    @error print(integer=10);
-    @error print++;
-    @error print=nothing;
-    @error print(print=nothing);
-    @error fold2++;
-    @error fold2=nothing;
-    @error print(fold2=nothing);
-    @error Count(12).count++;
-    @error Count(12).count=1;
-    @error print(Count(12).count=1);
+    $error integer++;
+    $error print(integer=10);
+    $error print++;
+    $error print=nothing;
+    $error print(print=nothing);
+    $error fold2++;
+    $error fold2=nothing;
+    $error print(fold2=nothing);
+    $error Count(12).count++;
+    $error Count(12).count=1;
+    $error print(Count(12).count=1);
 
 }
 
@@ -786,15 +786,15 @@ abstract class AssignToFormalDefault() {
     shared default variable String name1 = "";
     shared default String name2 => "";
     assign name2 {}
-    @error name0 = "foo";
-    @error name1 = "foo";
-    @error name2 = "foo";
+    $error name0 = "foo";
+    $error name1 = "foo";
+    $error name2 = "foo";
 }
 
 class C2() {
     shared default String name => "";
     assign name {}
-    @error name = "foo";
+    $error name = "foo";
 }
 
 void initInLoop() {
@@ -804,7 +804,7 @@ void initInLoop() {
     }
     variable String[] data2;
     for (i in 0..10) {
-        @error data2 = data2.append([]);
+        $error data2 = data2.append([]);
     }
 }
 
@@ -818,7 +818,7 @@ shared void run3() {
     } else {
         throw AssertionError("");
     }
-    @error print(s);
+    $error print(s);
 }
 
 shared void run4() {
@@ -861,7 +861,7 @@ shared void run10() {
     Integer x;
     for (i in 0:3) {
         for (j in 0:3) {
-            @error x = i*10 + j;
+            $error x = i*10 + j;
             print(x);
             break;
         }
@@ -884,7 +884,7 @@ void run12() {
     for (i in 0:3) {
         for (j in 0:3) {
             if (true || false) {
-                @error x = i*10 + j;
+                $error x = i*10 + j;
                 break;
             }
         }
@@ -907,7 +907,7 @@ void run13() {
     } else {
         x = -1;
     }
-    @error print(x);
+    $error print(x);
 }
 
 //SEE #5948
@@ -944,7 +944,7 @@ void run15() {
     } else {
         x = -1;
     }
-    @error print(x);
+    $error print(x);
 }
 
 shared void run20() {
@@ -1012,7 +1012,7 @@ shared void run23() {
     for (i in 0:3) {
         for (j in 0:3) {
             if (true || false) {
-                @error x = i*10 + j;
+                $error x = i*10 + j;
                 break;
             }
         } else {
@@ -1030,7 +1030,7 @@ shared void run24() {
         for (k in 0:3) {
             for (j in 0:3) {
                 if (true || false) {
-                    @error x = i*10 + j;
+                    $error x = i*10 + j;
                     break;
                 }
             } else {
@@ -1065,7 +1065,7 @@ shared void run27() {
                 break; // or continue;
             }
         }
-        @error print(s.size);
+        $error print(s.size);
     }
 }
 
@@ -1077,7 +1077,7 @@ shared void run28() {
                 break; // or continue;
             }
         }
-        @error print(s.size);
+        $error print(s.size);
     }
 }
 
@@ -1094,7 +1094,7 @@ shared void run29() {
 class ClassWithReturn1() {
     String name;
     if (1==1) {
-        @error return;
+        $error return;
     }
     name = "Gavin";
     shared void bar() => print(name);
@@ -1102,7 +1102,7 @@ class ClassWithReturn1() {
 
 class ClassWithReturn2() {
     if (1==1) {
-        @error return;
+        $error return;
     }
     value name = "Gavin";
     shared void bar() => print(name);
@@ -1172,7 +1172,7 @@ void specificationInLoop1() {
             return;
         }
     }
-    @error print(x);
+    $error print(x);
 }
 
 void specificationInLoop2() {
@@ -1195,7 +1195,7 @@ void specificationInLoop3() {
     for (j in 0..3) {
         break;
     }
-    @error print(x);
+    $error print(x);
 }
 
 void specificationInLoop4() {
@@ -1208,7 +1208,7 @@ void specificationInLoop4() {
             return;
         }
     }
-    @error print(x);
+    $error print(x);
 }
 
 
@@ -1237,7 +1237,7 @@ void specificationInLoop6() {
         }
         print(x);
     }
-    @error print(x);
+    $error print(x);
 }
 
 void specificationInLoop7() {
@@ -1251,7 +1251,7 @@ void specificationInLoop7() {
         }
         print(x);
     }
-    @error print(x);
+    $error print(x);
 }
 
 void specificationInLoop8() {
@@ -1265,7 +1265,7 @@ void specificationInLoop8() {
         }
         print(x);
     }
-    @error print(x);
+    $error print(x);
 }
 
 void specificationInLoop9() {
@@ -1280,7 +1280,7 @@ void specificationInLoop9() {
             throw;
         }
     }
-    @error print(x);
+    $error print(x);
 }
 
 void specificationInLoop10() {
@@ -1328,5 +1328,5 @@ void specificationInLoop12() {
 
 void indexExpressionDefSpec() {
     Array<String> ds;
-    @error ds[0] = "hello";
+    $error ds[0] = "hello";
 }

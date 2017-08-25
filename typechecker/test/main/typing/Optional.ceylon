@@ -17,7 +17,7 @@ class Optional() {
         xx(xxx);
     }
     
-    if (exists @error Y xxx = x) {}
+    if (exists $error Y xxx = x) {}
     
     value sx = [ X() ];
     value sxn = [ X(), null ];
@@ -31,7 +31,7 @@ class Optional() {
     ss=sxn;
     ss=syn;
     value bs = [ X(), "foo" ];
-    @error ss=bs;
+    $error ss=bs;
     
     class Foo<T>() {
         shared T? optional = null;
@@ -45,8 +45,8 @@ class Optional() {
     String[]? optionalList = Foo<String>().optionalList;
     String[] list = Foo<String>().list;
     
-    @error String sssss = list.first;
-    @error Integer nnnn = list.lastIndex;
+    $error String sssss = list.first;
+    $error Integer nnnn = list.lastIndex;
     
     if (nonempty list) {
         String s = list.first;
@@ -73,21 +73,21 @@ class Optional() {
     
     T t<T>(T t) => t;
     
-    @type:"Null|String|String|Null|String|Integer|Sequence<Object>" 
+    $type:"Null|String|String|Null|String|Integer|Sequence<Object>" 
     String? | String | String? | Integer | Sequence<Object> foobar1 = -1;
-    @type:"Null|String|Integer|Sequence<Object>" value foobar1a = foobar1;
-    @type:"Null|String|Integer|Sequence<Object>" t(foobar1);
+    $type:"Null|String|Integer|Sequence<Object>" value foobar1a = foobar1;
+    $type:"Null|String|Integer|Sequence<Object>" t(foobar1);
     String|Integer|Sequence<Object>|Null foobar1b = foobar1;
     
-    @type:"Null|Sequential<String>|Sequential<String>|Sequence<String>|Integer|Float" 
+    $type:"Null|Sequential<String>|Sequential<String>|Sequence<String>|Integer|Float" 
     String[]? | String[] | Sequence<String> | Integer | Float foobar2 = 1.float;
-    @type:"Null|Sequential<String>|Integer|Float" value foobar2a = foobar2;
-    @type:"Null|Sequential<String>|Integer|Float" t(foobar2);
+    $type:"Null|Sequential<String>|Integer|Float" value foobar2a = foobar2;
+    $type:"Null|Sequential<String>|Integer|Float" t(foobar2);
     Sequential<String>|Integer|Float|Null foobar2b = foobar2;
     
-    @type:"Sequence<Null|String|Integer|Sequence<Object>|Sequential<String>|Float>" 
+    $type:"Sequence<Null|String|Integer|Sequence<Object>|Sequential<String>|Float>" 
     value xyz1 = [ foobar1, foobar2 ].sequence();
-    @type:"Sequence<Null|String|Integer|Sequence<Object>|Sequential<String>|Float>" 
+    $type:"Sequence<Null|String|Integer|Sequence<Object>|Sequential<String>|Float>" 
     value xyz2 = { foobar1, foobar2 }.sequence();
     
     //TODO: I think the type parameter X does
@@ -112,32 +112,32 @@ class Optional() {
     }
     
     if (exists s = WithOptional<String>("hello").val) {
-        @type:"String" value es = s;
+        $type:"String" value es = s;
     }
     
     if (exists seq = WithOptional<String>("goodbye").seq) {
-        @type:"Sequential<String>" value sseq = seq;
+        $type:"Sequential<String>" value sseq = seq;
     }
     
     if (nonempty seq = WithOptional<String>("hello again").seq) {
-        @type:"Sequence<String>" value sseq = seq;
+        $type:"Sequence<String>" value sseq = seq;
     }
     
     class WithOptionalString(String? val)
             extends WithOptional<String>(val) {
         
         if (exists val) {
-            @type:"String" value ss = val;
+            $type:"String" value ss = val;
         }
         
         void method() {
         
             if (exists seq = WithOptionalString("hello").seq) {
-                @type:"Sequential<String>" value sseq = seq;
+                $type:"Sequential<String>" value sseq = seq;
             }
             
             if (nonempty seq = WithOptionalString("hello").seq) {
-                @type:"Sequence<String>" value sseq = seq;
+                $type:"Sequence<String>" value sseq = seq;
             }
             
         }
@@ -146,11 +146,11 @@ class Optional() {
     
     
     if (exists seq = WithOptionalString("hello").seq) {
-        @type:"Sequential<String>" value sseq = seq;
+        $type:"Sequential<String>" value sseq = seq;
     }
     
     if (nonempty seq = WithOptionalString("hello").seq) {
-        @type:"Sequence<String>" value sseq = seq;
+        $type:"Sequence<String>" value sseq = seq;
     }
     
 }

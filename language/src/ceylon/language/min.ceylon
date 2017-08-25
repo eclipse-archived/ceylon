@@ -12,11 +12,11 @@
  [[Float]]s, `min()` will not return an
  [[undefined value|Float.undefined]] unless every element of
  the stream is undefined."
-see (`interface Comparable`, 
-     `function max`,
-     `function smallest`, 
-     `function Integer.min`,
-     `function Float.min`)
+see (interface Comparable, 
+     function max,
+     function smallest, 
+     function Integer.min,
+     function Float.min)
 tagged("Comparisons", "Streams")
 shared native Absent|Value min<Value,Absent>
         (Iterable<Value,Absent> values) 

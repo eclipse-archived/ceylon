@@ -2,8 +2,8 @@
  a [[first]] element, and a strictly positive [[size]]. The 
  range includes all values whose offset from `first` is 
  non-negative and less than the `size`."
-see (`class Span`,
-    `interface Enumerable`)
+see (class Span,
+     interface Enumerable)
 final serializable
 class Measure<Element>(first, size)
         extends Range<Element>()

@@ -3,8 +3,8 @@
  both endpoints, and all values falling _between_ the 
  endpoints."
 by ("Gavin")
-see (`class Measure`,
-    `interface Enumerable`)
+see (class Measure,
+     interface Enumerable)
 final serializable
 class Span<Element>(first, last)
         extends Range<Element>()

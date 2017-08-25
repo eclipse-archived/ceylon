@@ -2,7 +2,7 @@ import ceylon.language.meta.declaration{CallableConstructorDeclaration}
 
 
 "A model for a callable constructor of a member class."
-see(`interface MemberClassValueConstructor`)
+see(interface MemberClassValueConstructor)
 since("1.2.0")
 shared sealed interface MemberClassCallableConstructor<in Container=Nothing, out Type=Object, in Arguments=Nothing>
         satisfies FunctionModel<Type, Arguments> & Qualified<CallableConstructor<Type, Arguments>, Container>

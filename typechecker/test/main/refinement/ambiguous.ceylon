@@ -15,23 +15,23 @@ class GH() satisfies AB {
 }
 
 void abcdefghUnion(CD|EF cdef, EF|GH efgh, AB|GH abgh) {
-    @type:"CD|EF" value v1 = cdef;
-    @type:"EF|GH" value v2 = efgh;
-    @type:"AB" value v3 = abgh;
-    @type:"Anything" value ns = cdef.anything;
-    @type:"Anything" value o = efgh.anything;
-    @type:"Anything" value no = abgh.anything;
+    $type:"CD|EF" value v1 = cdef;
+    $type:"EF|GH" value v2 = efgh;
+    $type:"AB" value v3 = abgh;
+    $type:"Anything" value ns = cdef.anything;
+    $type:"Anything" value o = efgh.anything;
+    $type:"Anything" value no = abgh.anything;
 }
 
-void abcdefghIntersection(@type:"CD&EF" CD&EF cdef, 
-        @type:"EF&GH" EF&GH efgh, 
-        @type:"AB&GH" AB&GH abgh) {
-    @type:"Nothing" value v1 = cdef;
-    @type:"Nothing" value v2 = efgh;
-    @type:"GH" value v3 = abgh;
-    @error ns = cdef.anything;
-    @error value o = efgh.anything;
-    @type:"Object" value no = abgh.anything;
+void abcdefghIntersection($type:"CD&EF" CD&EF cdef, 
+        $type:"EF&GH" EF&GH efgh, 
+        $type:"AB&GH" AB&GH abgh) {
+    $type:"Nothing" value v1 = cdef;
+    $type:"Nothing" value v2 = efgh;
+    $type:"GH" value v3 = abgh;
+    $error ns = cdef.anything;
+    $error value o = efgh.anything;
+    $type:"Object" value no = abgh.anything;
 }
 
 interface IJ satisfies AB {
@@ -47,21 +47,21 @@ interface MN satisfies AB {
 }
 
 void ijklmnUnion(IJ|KL cdef, KL|MN efgh, AB|IJ abgh) {
-    @type:"IJ|KL" value v1 = cdef;
-    @type:"KL|MN" value v2 = efgh;
-    @type:"AB" value v3 = abgh;
-    @type:"Anything" value ns = cdef.anything;
-    @type:"Anything" value o = efgh.anything;
-    @type:"Anything" value no = abgh.anything;
+    $type:"IJ|KL" value v1 = cdef;
+    $type:"KL|MN" value v2 = efgh;
+    $type:"AB" value v3 = abgh;
+    $type:"Anything" value ns = cdef.anything;
+    $type:"Anything" value o = efgh.anything;
+    $type:"Anything" value no = abgh.anything;
 }
 
 void ijklmnIntersection(IJ&KL cdef, KL&MN efgh, AB&MN abgh) {
-    @type:"IJ&KL" value v1 = cdef;
-    @type:"KL&MN" value v2 = efgh;
-    @type:"MN" value v3 = abgh;
-    @type:"Anything" value ns = cdef.anything;
-    @type:"Anything" value o = efgh.anything;
-    @type:"Object" value no = abgh.anything;
+    $type:"IJ&KL" value v1 = cdef;
+    $type:"KL&MN" value v2 = efgh;
+    $type:"MN" value v3 = abgh;
+    $type:"Anything" value ns = cdef.anything;
+    $type:"Anything" value o = efgh.anything;
+    $type:"Object" value no = abgh.anything;
 }
 
 
@@ -86,8 +86,8 @@ class Parent() satisfies IBase {
 }
 
 class Bad() extends Parent() satisfies ISub1 & ISub2 {
-    @error shared actual default String someString => super.someString;
-    @error shared actual default String someStringF() => super.someStringF();
+    $error shared actual default String someString => super.someString;
+    $error shared actual default String someStringF() => super.someStringF();
 }
 
 class Good() extends Parent() satisfies ISub1 & ISub2 {
@@ -114,7 +114,7 @@ interface I2x satisfies Cov<Bx> {}
 interface I3x satisfies Cov<Ax&Cx> {}
 
 class Xx() satisfies I1x & I2x & I3x {
-    @error shared actual Ax&Cx get => nothing;
+    $error shared actual Ax&Cx get => nothing;
 }
 
 class Yx() satisfies I1x & I2x & I3x {

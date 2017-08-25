@@ -197,7 +197,7 @@ shared native final class Float
      Magnitude: 'k' | 'M' | 'G' | 'T' | 'P' | 'm' | 'u' | 'n' | 'p' | 'f'
      Exponent: ('e'|'E') Sign? Digits
      Digits: ('0'..'9')+"
-    see (`function format`, `function Integer.parse`)
+    see (function format, function Integer.parse)
     tagged("Numbers", "Basic types")
     since("1.3.1")
     shared static Float|ParseException parse(String string)
@@ -243,7 +243,7 @@ shared native final class Float
      This function never produces a representation involving 
      scientific notation."
     tagged("Numbers")
-    see (`function parse`, `function Integer.format`)
+    see (function parse, function Integer.format)
     since("1.3.1")
     shared static String format(
         "The floating point value to format."
@@ -298,7 +298,7 @@ shared native final class Float
      - `x>x`, `x<x`, `x>=x`, `x<=x` all evaluate to `false`.
      
      [NaN]: http://en.wikipedia.org/wiki/NaN"
-    see (`function compare`)
+    see (function compare)
     aliased("notANumber")
     shared Boolean undefined => this!=this;
     
@@ -306,13 +306,13 @@ shared native final class Float
      Produces `true` for `infinity` and `-infinity`. 
      Produces `false` for a finite number, `+0.0`, `-0.0`, 
      or undefined."
-    see (`value infinity`, `value finite`)
+    see (value infinity, value finite)
     shared Boolean infinite 
             => this==infinity || this==-infinity;
     
     "Determines whether this value is finite. Produces
      `false` for `infinity`, `-infinity`, and undefined."
-    see (`value infinite`, `value infinity`)
+    see (value infinite, value infinity)
     shared Boolean finite 
             => this!=infinity && this!=-infinity 
                     && !this.undefined;
@@ -384,7 +384,7 @@ shared native final class Float
      - `x<=>y` produces an exception when evaluated, but
      - `x>y`, `x<y`, `x>=y`, `x<=y`, and `x==y` all evaluate 
        to `false`."
-    throws (`class Exception`, 
+    throws (class Exception, 
             "if either this value, the given value, or both 
              are [[undefined]]")
     shared actual native Comparison compare(Float other)
@@ -435,7 +435,7 @@ shared native final class Float
     "This value, represented as an [[Integer]], after 
      truncation of its fractional part, if such a 
      representation is possible."
-    throws (`class OverflowException`,
+    throws (class OverflowException,
         "if the the [[wholePart]] of this value is too large 
          or too small to be represented as an `Integer`")
     since("1.1.0")
@@ -470,7 +470,7 @@ shared native final class Float
      - a Ceylon floating point literal that evaluates to 
        this floating point number, for example, `\"1.0\"`, 
        `\"-0.0\"`, or `\"1.5E10\"`."
-    see (`function formatFloat`)
+    see (function formatFloat)
     shared actual native String string;
     
     "Determines if this value is strictly larger than the 

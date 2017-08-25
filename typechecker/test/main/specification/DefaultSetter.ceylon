@@ -14,19 +14,19 @@ class DefaultSetter() {
             return aDefault;
         }
         assign aFormal {
-            @error:"member is default and may not be specified except in its declaration"
+            $error:"member is default and may not be specified except in its declaration"
             aDefault = aFormal;
         }
     }
 }
 
 void variation() {
-    @error i++;
-    @error i=10;
-    @error j++;
-    @error j=10;
-    Integer k { @error return i; }
-    assign k { @error i=k; }
+    $error i++;
+    $error i=10;
+    $error j++;
+    $error j=10;
+    Integer k { $error return i; }
+    assign k { $error i=k; }
     variable Integer i;
     Integer j { return i; }
     assign j { i=j; }

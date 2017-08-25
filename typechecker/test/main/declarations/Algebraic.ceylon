@@ -13,13 +13,13 @@ void algebraic(Algebraic z) {
     switch (z)
     case (concrete) {}
     case (is Concrete) {
-        @type:"Concrete" value c = z;
+        $type:"Concrete" value c = z;
     }
     
     switch (zz=z)
     case (concrete) {}
     case (is Concrete) {
-        @type:"Concrete" value c = zz;
+        $type:"Concrete" value c = zz;
     }
 }
 
@@ -54,28 +54,28 @@ class EnumConstraint<T>(T* ti) given T of Float|Integer {
 void testEnumConstraints() {
     enumConstraint(20);
     enumConstraint("hello");
-    @error enumConstraint(1.0);
+    $error enumConstraint(1.0);
     EnumConstraint<Integer> emp = EnumConstraint<Integer>();
     EnumConstraint<Float> foo = EnumConstraint(1.0, 2.0);
-    @error EnumConstraint("hello", "world");
+    $error EnumConstraint("hello", "world");
 }
 
 interface I {}
 interface J {}
 
 void ij<T>(T k) 
-        @error:"case is not disjoint" 
+        $error:"case is not disjoint" 
         given T of I|J {
-    @error:"case is not disjoint" switch (k)
+    $error:"case is not disjoint" switch (k)
     case (is I) {}
     case (is J) {}
-    @error switch (k)
+    $error switch (k)
     case (is I) {}
     switch (k)
     case (is I) {}
     else {}
     if (!is I k) {
-        @type:"J" value kk=k;
+        $type:"J" value kk=k;
     }
 }
 
@@ -86,8 +86,8 @@ void testij() {
     ij(i);
     ij(j);
     ij(k);
-    @error ij("hello");
-    @error ij(1);
+    $error ij("hello");
+    $error ij(1);
 }
 
 abstract class XXX<out T>() of YYY<T> | ZZZ<T> | WWW {}
@@ -116,7 +116,7 @@ void switchit(XXX<String> x) {
     }
     else {}
 
-    @error switch (x) 
+    $error switch (x) 
     case (is YYY<String>) { 
         print("yyy"); 
     }
@@ -135,7 +135,7 @@ void switchit(XXX<String> x) {
         print("www");
     }
 
-    @error switch (x) 
+    $error switch (x) 
     case (is YYY<Nothing>) { 
         print("yyy"); 
     }
@@ -146,7 +146,7 @@ void switchit(XXX<String> x) {
         print("www");
     }
 
-    @error switch (x) 
+    $error switch (x) 
     case (is YYY<Integer>) { 
         print("yyy"); 
     }
@@ -158,7 +158,7 @@ void switchit(XXX<String> x) {
     }
     
     if (!is YYY<String> x) {
-        @type:"ZZZ<String>|WWW" value xx = x;
+        $type:"ZZZ<String>|WWW" value xx = x;
     }
 }
 
@@ -175,12 +175,12 @@ Integer fib(Integer n) {
     }
 }
 
-@error interface Association 
+$error interface Association 
     of OneToOne | OneToMany { }
-@error interface OneTo satisfies Association {}
+$error interface OneTo satisfies Association {}
 class OneToOne() satisfies OneTo {}
 class OneToMany() satisfies OneTo {}
-@error class Broken() satisfies Association {}
+$error class Broken() satisfies Association {}
     
     
 interface Anything of SomethingUsual | SomethingElse {}
@@ -236,7 +236,7 @@ class Class4() {}
 void switchInterface(Interface i) {
     
     if (is Sized i) {
-        @type:"Interface&Sized" value ii = i;
+        $type:"Interface&Sized" value ii = i;
         print(i.size);
         switch(i)
         case (is Class1&Sized) {
@@ -255,22 +255,22 @@ void switchInterface(Interface i) {
     case (is Class1) {}
     else {}
         
-    //@error 
+    //$error 
     switch(i)
     case (is Class1) {}
     case (is Class2) {}
     else {}
         
-    @error switch(i)
+    $error switch(i)
     case (is Class1) {}
         
-    @error 
+    $error 
     switch(i)
     case (is String) {}
     case (is Class1) {}
     case (is Class2) {}
     
-    @error    
+    $error    
     switch(i)
     case (is Class4) {}
     case (is Class1) {}
@@ -287,7 +287,7 @@ void switchInterface(Interface i) {
     case (is Integer) {}
     case (is Float) {}
     
-    @error switch (num)
+    $error switch (num)
     case (is Integer) {}
     case (is Float) {}
     case (is String) {}
@@ -302,10 +302,10 @@ void switchUnion1(Class2|Class3|String val) {
     switch (val)
     case (is Class2) {}
     else {}
-    @error switch (val)
+    $error switch (val)
     case (is Class2) {}
     case (is Class3) {}
-    @error switch (val)
+    $error switch (val)
     case (is Class2) {}
     case (is Class3) {}
     case (is String) {}
@@ -320,10 +320,10 @@ void switchUnion1var(Class2|Class3|String val) {
     switch (v=val)
     case (is Class2) {}
     else {}
-    @error switch (v=val)
+    $error switch (v=val)
     case (is Class2) {}
     case (is Class3) {}
-    @error switch (v=val)
+    $error switch (v=val)
     case (is Class2) {}
     case (is Class3) {}
     case (is String) {}
@@ -335,12 +335,12 @@ void switchUnion2(Class1|String val) {
     case (is Class3) {}
     case (object1) {}
     case (is String) {}
-    @error:"case is not disjoint" 
+    $error:"case is not disjoint" 
     switch (val)
     case (is Class1) {}
     case (object1) {}
     case (is String) {}
-    @error:"case is not disjoint" 
+    $error:"case is not disjoint" 
     switch (val)
     case (is Class1) {}
     case (is Class3) {}
@@ -352,22 +352,22 @@ void switchUnion2var(Class1|String val) {
     case (is Class3) {}
     case (object1) {}
     case (is String) {}
-    @error:"case is not disjoint" 
+    $error:"case is not disjoint" 
     switch (v=val)
     case (is Class1) {}
     case (object1) {}
     case (is String) {}
-    @error:"case is not disjoint" 
+    $error:"case is not disjoint" 
     switch (v=val)
     case (is Class1) {}
     case (is Class3) {}
     case (is String) {}
 }
 
-@error class NonAbstract() of SubtypeOfNonAbstract {}
+$error class NonAbstract() of SubtypeOfNonAbstract {}
 class SubtypeOfNonAbstract() extends NonAbstract() {}
 
-@error abstract class Abstract() of NonSubtypeOfAbstract {}
+$error abstract class Abstract() of NonSubtypeOfAbstract {}
 class NonSubtypeOfAbstract() {}
  
 /*interface Indirect of Abstract1 | Abstract2 {}
@@ -380,32 +380,32 @@ class Concrete3() extends Abstract1() {}*/
 interface J1 of J2|J3 {}
 interface J2 satisfies J1 {}
 interface J3 satisfies J1 {}
-@error interface J4 satisfies J1 {}
+$error interface J4 satisfies J1 {}
 interface J5 of J6|N {}
-@error interface J6 satisfies J1&J5 {}
+$error interface J6 satisfies J1&J5 {}
 interface N satisfies J5 {}
 
 void testHardCase(J4 i) {
     
     switch(i)
     case (is J2) {
-        @type:"J4&J2" value ii = i;
+        $type:"J4&J2" value ii = i;
     }
     case (is J3) {}
     
-    @error switch(i)
+    $error switch(i)
     case (is J2) {}
     case (is J3) {}
     case (is Null) {}
 
-    @error switch(i)
+    $error switch(i)
     case (is J2) {}
     case (is J3) {}
     case (null) {}
 
     J4? mi = null;
     
-    @error switch(mi)
+    $error switch(mi)
     case (is J2) {}
     case (is J3) {}
     
@@ -416,7 +416,7 @@ void testHardCase(J4 i) {
 
     switch(mi)
     case (is J2) {
-        @type:"J4&J2" value ii = mi;
+        $type:"J4&J2" value ii = mi;
     }
     case (is J3) {}
     case (is Null) {}
@@ -526,22 +526,22 @@ class RR<E>(E e)
     if (is Integer e) {}
 }
 
-interface Foobarbaz<X> @error given X of Foobarbaz<X>? {}
+interface Foobarbaz<X> $error given X of Foobarbaz<X>? {}
 
-interface Experimental<out Output> @error given Output of String?|Integer? {
+interface Experimental<out Output> $error given Output of String?|Integer? {
     shared formal Output fileContents(String filePath);
 }
 
 class OuterEnum() {
-    @error shared abstract class Enum() of x|y {}
+    $error shared abstract class Enum() of x|y {}
     object x extends Enum() {}
     object y extends Enum() {}
-    @error shared abstract class EnumToo() of z|w {}
+    $error shared abstract class EnumToo() of z|w {}
     EnumToo z = nothing;
     EnumToo w = nothing;
 }
 
-@error interface BrokeEnum<T> of BrokeCase<T, T> {}
+$error interface BrokeEnum<T> of BrokeCase<T, T> {}
 class BrokeCase<T,U>() satisfies BrokeEnum<T> {}
 
 shared void caseTypes() {
@@ -550,7 +550,7 @@ shared void caseTypes() {
     case (is BrokeCase<String,String>) {}
 }
 
-@error interface BrokeEnum2<T> of BrokeCase2<T> {}
+$error interface BrokeEnum2<T> of BrokeCase2<T> {}
 class BrokeCase2<T,U=T>() satisfies BrokeEnum2<T> {}
 
 shared void caseTypes2() {
@@ -562,7 +562,7 @@ shared void caseTypes2() {
 void switchOfTest<That>(That that) given That of Integer {
     switch (that)
     case (is Integer) {}
-    @error switch (that)
+    $error switch (that)
     case (is Integer) {}
     case (is Float) {}
 }

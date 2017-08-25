@@ -21,8 +21,8 @@
             (Integer i, Character c) => i.string==c.string)
  
  both evaluate to `true`."
-see (`function everyPair`, 
-     `function compareCorresponding`)
+see (function everyPair, 
+     function compareCorresponding)
 tagged("Comparisons", "Streams")
 since("1.1.0")
 shared Boolean corresponding<First,Second>(
@@ -84,7 +84,7 @@ shared Boolean corresponding<First,Second>(
             (Integer i, Integer j) => i<=>j)
  
  both evaluate to `smaller`."
-see (`function corresponding`)
+see (function corresponding)
 tagged("Comparisons", "Streams")
 since("1.3.0")
 shared Comparison compareCorresponding<First,Second>(

@@ -19,5 +19,5 @@ import ceylon.language.meta {
    evaluates to `"ceylon.language::Integer"` on every 
    platform."""
 tagged("Metamodel")
-see (`function type`)
+see (function type)
 shared native String className(Anything obj);

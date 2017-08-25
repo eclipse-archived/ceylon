@@ -15,12 +15,12 @@
  Note that [[Iterable.max]] may be used to find the largest 
  value in any stream, as determined by a given comparator 
  function."
-see (`interface Comparable`, 
-     `function min`, 
-     `function largest`,
-     `function Iterable.max`, 
-     `function Integer.max`,
-     `function Float.max`)
+see (interface Comparable, 
+     function min, 
+     function largest,
+     function Iterable.max, 
+     function Integer.max,
+     function Float.max)
 tagged("Comparisons", "Streams")
 shared native Absent|Value max<Value,Absent>
         (Iterable<Value,Absent> values) 

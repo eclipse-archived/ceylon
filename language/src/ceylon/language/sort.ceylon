@@ -4,8 +4,8 @@
  
  Note that [[Iterable.sort]] may be used to sort any stream
  according to a given comparator function."
-see (`interface Comparable`,
-     `function Iterable.sort`)
+see (interface Comparable,
+     function Iterable.sort)
 tagged("Streams", "Comparisons")
 shared Element[] sort<Element>({Element*} elements) 
         given Element satisfies Comparable<Element> {

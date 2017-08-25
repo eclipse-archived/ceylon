@@ -48,8 +48,8 @@
  
  - the _span operator_, written `first..last`, or 
  - the _segment operator_, written `first:length`."
-see (`class Range`, 
-     `function span`, `function measure`)
+see (class Range, 
+     function span, function measure)
 shared interface Enumerable<Other> of Other
         satisfies Ordinal<Other>
         given Other satisfies Enumerable<Other> {
@@ -60,7 +60,7 @@ shared interface Enumerable<Other> of Other
      - `x.neighbour(0) == x`,
      - `x.neighbour(i+1) == x.neighbour(i).successor`, and
      - `x.neighbour(i-1) == x.neighbour(i).predecessor`."
-    throws (`class OverflowException`, 
+    throws (class OverflowException, 
             "if the neighbour cannot be represented as an 
              instance of the type")
     since("1.1.0")
@@ -73,7 +73,7 @@ shared interface Enumerable<Other> of Other
      
      - `x.offset(x) == 0`, and
      - `x.successor.offset(x) == 1` if `x!=x.successor`."
-    throws (`class OverflowException`,
+    throws (class OverflowException,
             "if the offset cannot be represented as an 
              integer")
     since("1.1.0")

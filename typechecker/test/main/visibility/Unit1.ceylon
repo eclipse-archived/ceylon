@@ -1,4 +1,4 @@
-import visibility.pack { @error Unit3, Unit4, Unit5 }
+import visibility.pack { $error Unit3, Unit4, Unit5 }
 
 class Unit1() {
     
@@ -21,22 +21,22 @@ class Unit1() {
     }
     
     print(Inner().hello);
-    @error print(Inner().goodbye);
+    $error print(Inner().goodbye);
     Unit1 u1 = Unit1();
     u1.print(u1.goodbye);
     
-    @error print(Unit2().Inner().hello);
-    @error print(Unit2().Inner().goodbye); 
+    $error print(Unit2().Inner().hello);
+    $error print(Unit2().Inner().goodbye); 
     
-    @error class Subclass1() extends Unit3() {}
+    $error class Subclass1() extends Unit3() {}
     class Subclass2() extends Unit4() {}
     
-    @error Unit3 u3 = Unit3();
+    $error Unit3 u3 = Unit3();
     Unit4 u4 = Unit4();
     
-    @error Unit3();
+    $error Unit3();
     
-    @error String h = u3.hello;
-    @error String s = Unit5().hello;
+    $error String h = u3.hello;
+    $error String s = Unit5().hello;
     
 }

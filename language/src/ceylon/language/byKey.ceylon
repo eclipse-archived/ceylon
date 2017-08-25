@@ -5,7 +5,7 @@
  
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
-see (`function byItem`)
+see (function byItem)
 tagged("Comparisons")
 shared Comparison byKey<Key>
         (Comparison comparing(Key x, Key y))

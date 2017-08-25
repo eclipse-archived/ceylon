@@ -61,7 +61,7 @@ class Annotations() {
         
     }
     
-    @error print ("hello") class Broken() {}
+    $error print ("hello") class Broken() {}
     
     /*void getMeOutOfTheInitialiserSection(){
 
@@ -75,10 +75,10 @@ class Annotations() {
     
 }
 
-@error fun fun fun String emptyStringFun0() => "";
+$error fun fun fun String emptyStringFun0() => "";
 an fun String emptyStringFun1() => "";
-@error att String emptyStringFun2() => "";
-@error fun String emptyStringAtt1 => "";
+$error att String emptyStringFun2() => "";
+$error fun String emptyStringAtt1 => "";
 an att String emptyStringAtt2 => "";
 an fun String? emptyOptionalStringFun() => null;
 att String? emptyOptionalStringAtt => null;
@@ -89,12 +89,12 @@ An? van = annotations(`An`, `value emptyStringAtt2`);
 Fun? ffun = annotations(`Fun`, `function emptyStringFun1`);
 Att? vatt = annotations(`Att`, `value emptyStringAtt2`);
 
-final annotation class Broken1(@error String foo()) {}
-@error final annotation class Broken2(foo) {
+final annotation class Broken1($error String foo()) {}
+$error final annotation class Broken2(foo) {
     String foo();
 }
 
-@error "doc1"
+$error "doc1"
 doc ("doc2")
 void dupeDocumentation() {}
 

@@ -46,7 +46,7 @@
  Some numeric types, for example complex numbers, do not 
  have a [[total order|Comparable]]. Numeric types with a 
  total order also satisfy [[Number]]."
-see (`interface Number`)
+see (interface Number)
 by ("Gavin")
 tagged("Numbers")
 shared interface Numeric<Other> of Other
@@ -69,8 +69,8 @@ shared interface Numeric<Other> of Other
        division by `0` results in an exception.
      - For others, including [[Float]], it results in a 
        special value of the type, for example, [[infinity]]."
-    see (`function Integral.remainder`, 
-         `value infinity`)
+    see (function Integral.remainder, 
+         value infinity)
     shared formal Other divided(Other other);
     
 }

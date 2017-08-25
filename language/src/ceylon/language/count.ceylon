@@ -1,7 +1,7 @@
 "A count of the number of `true` items in the given values.
  
      Integer negatives = count { for (x in xs) x<0.0 };"
-see (`function Iterable.count`)
+see (function Iterable.count)
 tagged("Streams")
 shared Integer count({Boolean*} values) {
     variable value count=0;

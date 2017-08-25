@@ -26,7 +26,7 @@
    value `1.0` are considered equal. Except in these extreme
    cases, instances of different classes are considered
    unequal."""
-see (`class Basic`, `class Null`)
+see (class Basic, class Null)
 by ("Gavin")
 tagged("Basic types")
 shared abstract class Object() 
@@ -85,7 +85,7 @@ shared abstract class Object()
      taking the exclusive disjunction of the 32 lowest-order
      bits with the 32 highest-order bits, before returning
      the value to the caller."
-    see (`function identityHash`)
+    see (function identityHash)
     shared formal Integer hash;
     
     "A developer-friendly string representing the instance. 

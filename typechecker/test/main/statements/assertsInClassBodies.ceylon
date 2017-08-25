@@ -44,7 +44,7 @@ class SecondTime2(Integer hour,
     second) 
         extends Time(hour, minute) {
     
-    @error assert (second>0);
+    $error assert (second>0);
     
     shared Integer second;
     

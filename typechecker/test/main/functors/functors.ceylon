@@ -32,18 +32,18 @@ void test() {
     {String*} stringStream = 
             toString(IterableFunctor {1, 2, 3 });
     
-    @type:"List<String>"
+    $type:"List<String>"
     value strings = 
             toString(ListFunctor([1, 2, 3]));
     
-    @type:"List<String>"
+    $type:"List<String>"
     value strings0 = 
             toString<Integer,List>(ListFunctor([1, 2, 3]));
     
-    @error
+    $error
     value strings1 = 
             toString<Integer,Set>(ListFunctor([1, 2, 3]));
-    @error
+    $error
     value strings2 = 
             toString<Integer,List>(ListFunctor([1.0, 2.0, 3.0]));
 }

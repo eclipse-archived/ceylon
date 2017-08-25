@@ -1,16 +1,16 @@
 interface Interfaces {
     
-    @error Integer count = 0;
+    $error Integer count = 0;
     
-    @error count++;
+    $error count++;
     
     shared formal String name;
     
-    @error name = "Gavin";
+    $error name = "Gavin";
     
-    @error Float length;
+    $error Float length;
     
-    @error Float add(Float x, Float y);
+    $error Float add(Float x, Float y);
     
     shared formal void print(String s);
     
@@ -32,7 +32,7 @@ interface Interfaces {
         return super.string;
     }
     
-    @error printLine("Hi!");
+    $error printLine("Hi!");
     
     interface NestedInterface {
         shared formal String hello;
@@ -48,17 +48,17 @@ interface Interfaces {
         shared Integer times = 1;
     }
     
-    @error for (c in "hello") {}
-    @error while (true) {}
-    @error if (true) {}
-    @error try {} finally {}
-    @error switch (1==0) case (true) {} case (false) {}
+    $error for (c in "hello") {}
+    $error while (true) {}
+    $error if (true) {}
+    $error try {} finally {}
+    $error switch (1==0) case (true) {} case (false) {}
     
-    @error MemberClass();
+    $error MemberClass();
     
-    @error throw;
+    $error throw;
     
-    @error return MemberClass();
+    $error return MemberClass();
     
     MemberClass create() {
         return MemberClass();
@@ -70,7 +70,7 @@ interface Interfaces {
     
     void usesSuperAndThis() {
         void use(Object o) {}
-        @error use(super);
+        $error use(super);
         use(this);
     }
     

@@ -1,4 +1,4 @@
-@error class WithBothInitAndDefaultConst() {
+$error class WithBothInitAndDefaultConst() {
     shared new withBothInitAndDefaultConst() {}
 }
 
@@ -8,10 +8,10 @@ class WithConst extends Basic {
     shared new const() {}
 }
 
-@error class WithNoConst extends Basic() {}
-@error class WithInit() extends Basic {}
+$error class WithNoConst extends Basic() {}
+$error class WithInit() extends Basic {}
 
-@error class WithConstAndParams() {
+$error class WithConstAndParams() {
     new const() {}
 }
 
@@ -20,7 +20,7 @@ class WithDefaultConst {
 }
 
 class ExtendsWithDefaultConstBroken extends WithDefaultConst {
-    @error shared new () {}
+    $error shared new () {}
 }
 
 class ExtendsWithDefaultConstOk extends WithDefaultConst {
@@ -28,7 +28,7 @@ class ExtendsWithDefaultConstOk extends WithDefaultConst {
 }
 
 class ExtendsWithConstBroken extends WithConst {
-    @error shared new () {}
+    $error shared new () {}
 }
 
 class ExtendsWithConstOk extends WithConst {
@@ -93,17 +93,17 @@ class BrokenWithAttributes {
         count = initial;
     }
     void inc() {
-        @error count++;
+        $error count++;
     }
     void reset() {
-        @error count = init;
+        $error count = init;
     }
 }
 
 class BrokenWithSharedAttributes {
-    @error shared String name;
-    @error shared variable Integer count;
-    @error shared Integer init;
+    $error shared String name;
+    $error shared variable Integer count;
+    $error shared Integer init;
     shared new () {
         init = 0;
     }
@@ -111,10 +111,10 @@ class BrokenWithSharedAttributes {
         count = initial;
     }
     shared void inc() {
-        @error count++;
+        $error count++;
     }
     shared void reset() {
-        @error count = init;
+        $error count = init;
     }
 }
 
@@ -153,14 +153,14 @@ class WithAttributesAndMispacedUsage {
     Integer init;
     variable Integer count;
     print(name);
-    @error print(init);
+    $error print(init);
     shared new () {
-        @error print(count);
+        $error print(count);
         count = 0;
         init = count;
     }
     new constWithParameter(Integer initial) {
-        @error print(init);
+        $error print(init);
         count = initial;
         init = initial;
     }
@@ -174,20 +174,20 @@ class WithAttributesAndMispacedUsage {
 
 class Alias1() => WithDefaultConst();
 class Alias2() => WithConst.const();
-@error class BrokenAlias1() => WithConst();
-@error class BrokenAlias2() => WithConst;
-@error class AliasWithNoParams => WithNeitherInitNorConst();
+$error class BrokenAlias1() => WithConst();
+$error class BrokenAlias2() => WithConst;
+$error class AliasWithNoParams => WithNeitherInitNorConst();
 
 class Super {
     shared new create() {}
 }
 
 class Broken extends Super {
-    @error shared new () extends Super() {}
+    $error shared new () extends Super() {}
 }
 
 class MoreBroken extends Super {
-    @error new broken() extends Basic() {}
+    $error new broken() extends Basic() {}
     shared new screate() extends create() {}
 }
 
@@ -196,12 +196,12 @@ class Sub1 extends Super {
     shared new screate() extends create() {}
 }
 class BrokenSub1 extends Super {
-    @error new create() extends Super.create {}
+    $error new create() extends Super.create {}
     shared new screate() extends create() {}
 }
 
 class Sub2() extends Super.create() {}
-@error class BrokenSub2() extends Super.create {}
+$error class BrokenSub2() extends Super.create {}
 
 class Alias() => Super.create();
 
@@ -217,7 +217,7 @@ class Silly extends Basic {
 class Unshared() { }
 
 shared class SharedWithConstructor {
-    shared new (@error Unshared bar) { }
+    shared new ($error Unshared bar) { }
 }
 
 abstract class AbstractWithConstructor {
@@ -234,22 +234,22 @@ class InheritsAbstractWithConstructor2
 }
 
 void testRefs<T>() {
-    @error value val1 = WithConst;
-    @error value val2 = T;
-    @error value val3 = Identifiable;
-    @error value val4 = AbstractWithConstructor.constructorForAbstract;
+    $error value val1 = WithConst;
+    $error value val2 = T;
+    $error value val3 = Identifiable;
+    $error value val4 = AbstractWithConstructor.constructorForAbstract;
     
-    @type:"InheritsAbstractWithConstructor1" 
+    $type:"InheritsAbstractWithConstructor1" 
     value new1 = InheritsAbstractWithConstructor1();
     
-    @type:"InheritsAbstractWithConstructor2" 
+    $type:"InheritsAbstractWithConstructor2" 
     value new2 = InheritsAbstractWithConstructor2.constructor();
 }
 
 shared class C<out X> {
     shared new ({X*} items) {}
     shared class B<out Y> {
-        shared new (@error [X*] items) {}
+        shared new ($error [X*] items) {}
         shared new other([Y*] items) {}
     }
 }
@@ -262,19 +262,19 @@ shared class Subtype extends Supertype {
     Integer xsub = 1;
     shared Integer ysub = 1;
     
-    @error shared new subtype() extends Supertype(xsub) {}
-    @error shared new create() extends Supertype(ysub) {}
-    @error shared new extra() extends Supertype(ysub) {}
+    $error shared new subtype() extends Supertype(xsub) {}
+    $error shared new create() extends Supertype(ysub) {}
+    $error shared new extra() extends Supertype(ysub) {}
 }
 
 class WithDupeConstructor {
     new dupe() {}
-    @error new dupe(String string) {}
+    $error new dupe(String string) {}
     shared new create() {}
 }
 class WithDupeDefaultConstructor {
-    @error shared new () {}
-    @error new (String string) {}
+    $error shared new () {}
+    $error new (String string) {}
 }
 
 class WithUnsharedDefaultConstructor {
@@ -337,22 +337,22 @@ shared class WithBrokenPartialConstructor {
     abstract new withLength(Float x, Float y) {
         //length = (x^2+y^2)^0.5;
     }
-    @error shared abstract new withBrokenLength(Float x, Float y) {
+    $error shared abstract new withBrokenLength(Float x, Float y) {
         length = (x^2+y^2)^0.5;
     }
     shared new withNameAndCoords(String name, Float x, Float y) 
             extends withLength(x, y) {
         this.name = name;
     }
-    @error string = "``name``:``length``";
-    @error print(withLength(1.0, 2.0));
+    $error string = "``name``:``length``";
+    $error print(withLength(1.0, 2.0));
 }
 
 class WithBrokenDelegation<Element> {
     
     shared new(){}
     
-    @error shared new foo(Element f) 
+    $error shared new foo(Element f) 
             extends WithBrokenDelegation<Integer>(){} 
     
     shared new foo0(Element f) 
@@ -360,7 +360,7 @@ class WithBrokenDelegation<Element> {
     
     shared new baz(){}
     
-    @error shared new bar(Element f) 
+    $error shared new bar(Element f) 
             extends WithBrokenDelegation<Integer>.baz(){}
     
     shared new bar0(Element f) 
@@ -369,16 +369,16 @@ class WithBrokenDelegation<Element> {
 
 class WithInnerClassExtendingPartialConstructor {
     abstract new partial() {}   
-    @error shared class Inner() extends partial() {}
+    $error shared class Inner() extends partial() {}
     shared new create() {}
 }
 
 class Foobar {
     abstract new partial() {}
     shared new create() {}
-    @error class First() => Foobar.partial();
+    $error class First() => Foobar.partial();
     shared class Second() => Foobar.create();
-    @error shared class Third() => Foobar.none();
+    $error shared class Third() => Foobar.none();
 }
 
 class WithMethod {
@@ -398,14 +398,14 @@ void testWithMethod() {
             .accept(3.0);
 }
 
-@error shared new(){}
+$error shared new(){}
 
 class WithMemberRefInDelegation {
     shared new create(String s) {}
     String hello = "hello";
-    @error shared new broken1 extends create(hello) {}
+    $error shared new broken1 extends create(hello) {}
     function str(Integer j) => j.string;
-    @error shared new broken2(Integer i) extends create(str(i)) {} 
+    $error shared new broken2(Integer i) extends create(str(i)) {} 
 }
 
 class WithNoSharedConstructor {
@@ -425,7 +425,7 @@ class WithReturnInConstructor {
 class WithConstructorWithInheritedMethodName 
         satisfies InterfaceWithMethod {
     shared new () {}
-    @error shared new create() {}
+    $error shared new create() {}
 }
 
 interface InterfaceWithMethod {
@@ -433,13 +433,13 @@ interface InterfaceWithMethod {
 }
 
 class WithDuplicateDefaultConstructor {
-    @error shared new() {}
-    @error shared new(String name) {}
+    $error shared new() {}
+    $error shared new(String name) {}
 }
 
 shared class WithIllegalDefaultArg {
     Integer b = 1;
-    shared new(@error Integer a = b) { // error
+    shared new($error Integer a = b) { // error
         print(a);
     }
 }
@@ -460,11 +460,11 @@ void notinherited() {
     
     void runAB() {
         value ai = A.instance;
-        @error value bi = B.instance;
+        $error value bi = B.instance;
         value ac = A.create();
-        @error value bc = B.create();
+        $error value bc = B.create();
         
-        @error value over1 = B.overload();
+        $error value over1 = B.overload();
         value over2 = B.overload("");
     }
     
@@ -505,9 +505,9 @@ shared void testWithAssertion() {
 }
 
 class BadNew {
-    @error shared new construct() extends BadNew() {}
-    @error shared new () extends create() {}
-    @error shared new create() extends make() {}
+    $error shared new construct() extends BadNew() {}
+    $error shared new () extends create() {}
+    $error shared new create() extends make() {}
     shared new make() {}
 }
 class GoodNew {
@@ -543,15 +543,15 @@ class WithPrivateDefConstructor {
 }
 
 class OkExtendsWithPrivateDefConstructor() extends WithPrivateDefConstructor.create() {}
-@error class BadExtendsWithPrivateDefConstructor() extends WithPrivateDefConstructor() {}
+$error class BadExtendsWithPrivateDefConstructor() extends WithPrivateDefConstructor() {}
 
 void testWithPrivateDefConstructor() {
     WithPrivateDefConstructor.create().Inner();
-    @error value foo = WithPrivateDefConstructor();     
-    @error value makeF = WithPrivateDefConstructor;
+    $error value foo = WithPrivateDefConstructor();     
+    $error value makeF = WithPrivateDefConstructor;
     WithPrivateDefConstructor bar = WithPrivateDefConstructor.create();
-    @error WithPrivateDefConstructor();
-    @error `WithPrivateDefConstructor`();
+    $error WithPrivateDefConstructor();
+    $error `WithPrivateDefConstructor`();
 }
 
 class Order {

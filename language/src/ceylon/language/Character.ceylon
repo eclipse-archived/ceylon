@@ -24,7 +24,7 @@
    since `'a'.integer<'b'.integer`.
    
    [Unicode]: http://www.unicode.org/"""
-see (`class String`)
+see (class String)
 by ("Gavin")
 tagged("Basic types", "Strings")
 shared final native class Character(Character character)
@@ -56,8 +56,8 @@ shared final native class Character(Character character)
      
      Therefore, for most purposes, it is better to use 
      `char.string.lowercased` instead of `char.lowercased`."
-    see (`value String.lowercased`, 
-         `value Character.uppercased`)
+    see (value String.lowercased, 
+         value Character.uppercased)
     shared native Character lowercased;
     
     "The uppercase representation of this character.
@@ -80,8 +80,8 @@ shared final native class Character(Character character)
      
      Therefore, for most purposes, it is better to use 
      `char.string.uppercased` instead of `char.uppercased`."
-    see (`value String.uppercased`, 
-         `value Character.lowercased`)
+    see (value String.uppercased, 
+         value Character.lowercased)
     shared native Character uppercased;
     
     "The title case representation of this character."

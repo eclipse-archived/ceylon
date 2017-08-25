@@ -22,6 +22,6 @@ shared sealed interface Qualified<out Kind=Anything, in Container=Nothing>
      
      This has the same behaviour as invoking this `Member` directly, but exchanges compile-time type
      safety with runtime checks."
-    throws(`class IncompatibleTypeException`, "If the container is not assignable to this member's container")
+    throws(class IncompatibleTypeException, "If the container is not assignable to this member's container")
     shared formal Kind bind(Anything container);
 }

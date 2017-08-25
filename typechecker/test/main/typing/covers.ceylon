@@ -15,7 +15,7 @@ void coverage() {
     T<String>|I<Nothing,Nothing> u = z of T<String>|I<Nothing,Nothing>;
     S<String> w = z of S<String>;
     T<String> v = z of T<String>;
-    @error T<String> t = z;
+    $error T<String> t = z;
 
     {Nothing*}&{String+} something = nothing;
     {Nothing+} it = something;
@@ -27,18 +27,18 @@ void coverage() {
     [String+]|{Nothing+} iter1 = strings of [String+]|{Nothing+};    
     [String*] iter6 = strings of [String*];
     [String+] iter2 = strings of [String+];
-    @error [String+] iter7 = strings;
+    $error [String+] iter7 = strings;
     
     []&{String+} x0 = nothing;
     {Nothing+} y0 = x0 of {Nothing+};
     {Nothing+}&[] y8 = x0 of {Nothing+}&[];
     Nothing y9 = x0 of Nothing;
-    @error []&{String+} x9 = y0;
+    $error []&{String+} x9 = y0;
 
     {Nothing*}&{String+} x3 = nothing;
     {Nothing+} y3 = x3 of {Nothing+};
     
-    @error abstract class Problem() satisfies Empty&{Nothing+} {}
+    $error abstract class Problem() satisfies Empty&{Nothing+} {}
     
     Set<Anything> s1 = nothing;
     Set<Object> s2 = s1 of Set<Object>;

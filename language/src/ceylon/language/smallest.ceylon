@@ -9,11 +9,11 @@
  _On the JVM platform, for arguments of type `Integer` or 
  `Float`, prefer [[Integer.smallest]] or [[Float.smallest]]
  in performance-sensitive code._"
-see (`interface Comparable`, 
-     `function largest`, 
-     `function min`, 
-     `function Integer.smallest`,
-     `function Float.smallest`)
+see (interface Comparable, 
+     function largest, 
+     function min, 
+     function Integer.smallest,
+     function Float.smallest)
 tagged("Comparisons")
 shared Element smallest<Element>(Element x, Element y) 
         given Element satisfies Comparable<Element> 

@@ -19,7 +19,7 @@ interface DefiniteAssignment {
         variable X x;
         doSomething();
         doSomethingElse();
-        @error use(x);
+        $error use(x);
     }
     
     void goodMethodWithSpec() {
@@ -33,7 +33,7 @@ interface DefiniteAssignment {
     void badMethodWithSpec() {
         variable X x;
         doSomething();
-        @error use(x);
+        $error use(x);
         doSomethingElse();
         x = X();
     }
@@ -49,13 +49,13 @@ interface DefiniteAssignment {
     void badMethodWithRecursiveSpec() {
         variable X x;
         doSomething();
-        @error x = x;
+        $error x = x;
         doSomethingElse();
         use(x);
     }
     
     void badMethodWithRecursiveSpec2() {
-        @error variable X x = x;
+        $error variable X x = x;
         doSomething();
         use(x);
     }
@@ -85,7 +85,7 @@ interface DefiniteAssignment {
             doSomethingElse();
         }
         doNull();
-        @error use(x);
+        $error use(x);
     }
     
     void goodMethodWithSpecInIf2() {
@@ -109,7 +109,7 @@ interface DefiniteAssignment {
         }
         else {
             doSomethingElse();
-            @error use(x);
+            $error use(x);
         }
         doNull();
     }
@@ -173,7 +173,7 @@ interface DefiniteAssignment {
                 use(x);
             }
             else {
-                @error use(x);
+                $error use(x);
             }
         }
         else {
@@ -198,7 +198,7 @@ interface DefiniteAssignment {
         variable X x;
         if (testSomething()) {
             doSomething();
-            @error use(x);
+            $error use(x);
         }
         else {
             x = X();
@@ -292,7 +292,7 @@ interface DefiniteAssignment {
         if (testSomething()) {
             y = X();
         }
-        @error variable X x = y;
+        $error variable X x = y;
     }
     
     void goodMethodWithSpecInFor() {
@@ -347,7 +347,7 @@ interface DefiniteAssignment {
         }
         else {
             doSomethingElse();
-            @error y = X();
+            $error y = X();
         }
         doNull();
     }
@@ -363,7 +363,7 @@ interface DefiniteAssignment {
             y = X();
         }
         doNull();
-        @error use (y);
+        $error use (y);
     }
     
     void goodMethodWithSpecInWhile() {
@@ -382,7 +382,7 @@ interface DefiniteAssignment {
             x = X();
         }
         doSomethingElse();
-        @error use (x);
+        $error use (x);
     }
     
     void goodMethodWithSpecInWhile2() {
@@ -446,7 +446,7 @@ interface DefiniteAssignment {
             x = X();
             use(x);
         }
-        @error use(x);
+        $error use(x);
     }
 
     void tryCatch3() {
@@ -457,7 +457,7 @@ interface DefiniteAssignment {
         }
         catch (Exception e) {
         }
-        @error use(x);
+        $error use(x);
     }
 
     void tryCatchCatch1() {
@@ -484,7 +484,7 @@ interface DefiniteAssignment {
         }
         catch (Exception e) {
         }
-        @error use(x);
+        $error use(x);
     }
 
     void tryFinally1() {
@@ -514,7 +514,7 @@ interface DefiniteAssignment {
             x = X();
         }
         finally {
-            @error use(x);
+            $error use(x);
         }
         use(x);
     }
@@ -592,7 +592,7 @@ interface DefiniteAssignment {
         else {
             s = "world";
         }
-        @error print(s);
+        $error print(s);
     }
     
     void switchCase3() {
@@ -608,7 +608,7 @@ interface DefiniteAssignment {
         //TODO: remove
         else {
         }
-        @error print(s);
+        $error print(s);
     }
     
     class GoodWithAnonFunction() {
@@ -618,11 +618,11 @@ interface DefiniteAssignment {
 
     class BadWithAnonFunction() {
         String name;
-        @error value x = () => name;
+        $error value x = () => name;
     }
     
     class TestNonemptyRangeFor1() {
-        @error shared variable Integer j;
+        $error shared variable Integer j;
         for (i in 0:10) {
             j = i;
         }
@@ -642,7 +642,7 @@ interface DefiniteAssignment {
                 j = i;
             }
             else {
-                @error return;
+                $error return;
             }
         }
     }
@@ -661,13 +661,13 @@ interface DefiniteAssignment {
                 j = 0;
             }
             else {
-                @error return;
+                $error return;
             }
         }
     }
     
     class TestWhileFalse() {
-        @error shared variable Integer j;
+        $error shared variable Integer j;
         while (false) {
             j = 0;
         }

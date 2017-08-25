@@ -22,23 +22,23 @@ class Refinement() {
 
         //formal member not implemented in concrete class
         class X() {
-            @error shared formal String hello;
+            $error shared formal String hello;
         }
         
         abstract class Y() extends X() {
-            @error shared String hello = "Hello";
-            @error shared actual String goodbye = "Goodbye";
+            $error shared String hello = "Hello";
+            $error shared actual String goodbye = "Goodbye";
         }
         
         abstract class Z() extends Y() {
-            @error shared actual String hello = "Hi";
+            $error shared actual String hello = "Hi";
         }
 
         //formal member not implemented in concrete class
         class W() extends X() {
-            @error actual String hello = "Hello";
-            @error default String goodbye = "Goodbye";
-            @error formal String hiAgain;
+            $error actual String hello = "Hello";
+            $error default String goodbye = "Goodbye";
+            $error formal String hiAgain;
         }
     
     }
@@ -54,11 +54,11 @@ class Refinement() {
         }
         
         class Y() extends X() {
-            @error shared actual Integer hello = 1;
-            @error shared actual Integer count { return 1; }
-            shared actual void print(@error Object o) {}
-            @error shared actual Integer getHello() { return hello; }
-            @error shared actual class Z() {}
+            $error shared actual Integer hello = 1;
+            $error shared actual Integer count { return 1; }
+            shared actual void print($error Object o) {}
+            $error shared actual Integer getHello() { return hello; }
+            $error shared actual class Z() {}
         }
         
     }
@@ -84,7 +84,7 @@ class Refinement() {
         void check() {
             X.Z z1 = Y().Z();
             Y.Z z2 = Y().Z();
-            @error Y.Z z3 = X().Z();
+            $error Y.Z z3 = X().Z();
         }
         
     }
@@ -99,7 +99,7 @@ class Refinement() {
             shared String hello { return "hi"; }
         }
         
-        @error class Z() satisfies X & Y {}
+        $error class Z() satisfies X & Y {}
     }
     
     abstract class WithParamMember() {
@@ -121,30 +121,30 @@ class Refinement() {
 
     class BadSubclassWithParamMember1() 
             extends WithParamMember() {
-        @error shared actual T[] seq<T,U>(T t) { return [t]; }
-        @error shared actual class Inner<T,U>(T t) 
+        $error shared actual T[] seq<T,U>(T t) { return [t]; }
+        $error shared actual class Inner<T,U>(T t) 
                 extends super.Inner<T>(t) {}
     }
 
     class BadSubclassWithParamMember2() 
             extends WithParamMember() {
-        @error shared actual String[] seq(@error String s) { return [s]; }
-        @error shared actual class Inner(@error String s) 
+        $error shared actual String[] seq($error String s) { return [s]; }
+        $error shared actual class Inner($error String s) 
                 extends super.Inner<String>(s) {}
     }
 
     class BadSubclassWithParamMember3() 
             extends WithParamMember() {
-        @error shared actual Anything[] seq<T>(T t) { return [t]; }
-        @error shared actual class Inner<T>(T t) 
+        $error shared actual Anything[] seq<T>(T t) { return [t]; }
+        $error shared actual class Inner<T>(T t) 
                 extends super.Inner<String>("hello") {}
     }
 
     class BadSubclassWithParamMember4() 
             extends WithParamMember() {
-        @error shared actual T[] seq<T>(T t) 
+        $error shared actual T[] seq<T>(T t) 
                 given T satisfies String { return [t]; }
-        @error shared actual class Inner<T>(T t) 
+        $error shared actual class Inner<T>(T t) 
                 extends super.Inner<T>(t) 
                 given T satisfies String {}
 }
@@ -192,9 +192,9 @@ class VariableSuper() {
 }
 
 class VariableSub() extends VariableSuper() {
-    @error shared actual variable Integer i=1;
+    $error shared actual variable Integer i=1;
     shared actual variable Integer j=1;
-    @error shared actual variable Anything k=0;
+    $error shared actual variable Anything k=0;
 }
 
 abstract class WithRefinedMethod() {
@@ -204,9 +204,9 @@ abstract class WithRefinedMethod() {
 }
 
 class WithRefiningMethod() extends WithRefinedMethod() {
-    @error shared actual void method1(String s) {}
-    @error shared actual void method2(String s)(Integer i)(Float f) {}
-    shared actual void method3(String s)(@error String i) {}
+    $error shared actual void method1(String s) {}
+    $error shared actual void method2(String s)(Integer i)(Float f) {}
+    shared actual void method3(String s)($error String i) {}
 }
 
 class Qux() {
@@ -217,12 +217,12 @@ class Qux() {
 
 class QuxQux() extends Qux() {
     actual shared default 
-    void print(@error String[] strings) {
+    void print($error String[] strings) {
         for (string in strings) {
             pr(string);
         }
     }
-    shared actual void print2(@error String* strings) {
+    shared actual void print2($error String* strings) {
         for (string in strings) {
             pr(string);
         }
@@ -240,37 +240,37 @@ class CX() {
 }
 class CY() {
     shared default String name;
-    @error name = "Gavin";
+    $error name = "Gavin";
     shared actual String string => name;
 }
 
 class CZ() {
     shared default String name;
     if (1==1) {
-        @error name = "Gavin";
+        $error name = "Gavin";
     }
     else {
-        @error name = "Trompon";
+        $error name = "Trompon";
     }
     shared actual String string => name;
 }
 
 class CW() {
-    @error shared default String name;
+    $error shared default String name;
     if (1==1) {
-        @error name = "Gavin";
+        $error name = "Gavin";
     }
 }
 
 
 class Elephant() {
     default shared String name;
-    @error name = "Trompon"; //this is controversial. Should it really be an error?
+    $error name = "Trompon"; //this is controversial. Should it really be an error?
     default shared Float size=1000.0;
-    @error default shared Integer count;
-    @error count++;
-    @error print(name);
-    @error print(size);
+    $error default shared Integer count;
+    $error count++;
+    $error print(name);
+    $error print(size);
 }
 
 class MyElephant() extends Elephant() {
@@ -294,9 +294,9 @@ interface DefinesHashAndEq {
     shared actual Integer hash { return 0; }
     shared actual Boolean equals(Object that) { return false; }
 }
-@error object hasToRefineHash satisfies DefinesHashAndEq {}
+$error object hasToRefineHash satisfies DefinesHashAndEq {}
 object doesntHaveToRefineHash extends Object() satisfies DefinesHashAndEq {}
-@error class HasToRefineHash() satisfies DefinesHashAndEq {}
+$error class HasToRefineHash() satisfies DefinesHashAndEq {}
 class DoesntHaveToRefineHash() extends Object() satisfies DefinesHashAndEq {}
 
 
@@ -318,7 +318,7 @@ interface AbstractThing {
     string => "bar";
     hash => 3;
 }
-@error class ConcreteThing() 
+$error class ConcreteThing() 
         satisfies AbstractThing {
 }
 
@@ -346,10 +346,10 @@ void intermediateShortcutRefinement() {
     }
     
     class BarAndBaz() satisfies Bar & Baz {
-        @error method1() => null;
-        @error val1 = 2.3;
-        @error method2() => null;
-        @error val2 = 2.3;
+        $error method1() => null;
+        $error val1 = 2.3;
+        $error method2() => null;
+        $error val2 = 2.3;
     }
 
 }
@@ -361,7 +361,7 @@ class ABC() {
 }
 
 class DEF() extends ABC() {
-    @error shared void mul(Integer hi) {
+    $error shared void mul(Integer hi) {
         print("Nope");
     }
 }
@@ -382,5 +382,5 @@ interface BarBar<out T> satisfies FooFoo<T> {
     shared actual formal [T+] val;
 }
 class BatBat() satisfies FooFoo<Integer>&BarBar<Object> {
-    @error shared actual [Object+] val => ["bob"];
+    $error shared actual [Object+] val => ["bob"];
 }

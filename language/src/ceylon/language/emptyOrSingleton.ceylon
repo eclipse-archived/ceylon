@@ -15,7 +15,7 @@
  produces the stream:
   
      { 1.23, 5.67, -1.0 }"
-see (`class Tuple`, `interface Empty`)
+see (class Tuple, interface Empty)
 tagged("Sequences")
 shared []|[Element&Object] emptyOrSingleton<Element>
         (Element element)

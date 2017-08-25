@@ -16,9 +16,9 @@ class ClassContainer() {
         MemberClassCallableConstructor<\ImemberObject,\ImemberObject.Ctor,[]> ctorOther
                 = `\ImemberObject.Ctor.\Iother`;
         print(ctorOther(other.memberObject)());
-        @error:"constructor is not a type" 
+        $error:"constructor is not a type" 
         MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor.\Ictor,[]> ctorCtor2;
-        @error:"constructor is not a type" 
+        $error:"constructor is not a type" 
         MemberClassConstructor<\ImemberObject,\ImemberObject.Ctor.\Iother,[]> ctorOther2;
     }
     
@@ -35,12 +35,12 @@ void testClassWithUpperNameConstructors() {
     bar1 = ClassWithUpperNameConstructors.\iValue;
     baz1 = ClassWithUpperNameConstructors.\iFunction();
     
-    @error:"constructor is not a type" 
+    $error:"constructor is not a type" 
     ClassWithUpperNameConstructors.Value bar2;
-    @error:"constructor is not a type" 
+    $error:"constructor is not a type" 
     ClassWithUpperNameConstructors.Function baz2;
-    @error:"constructor is not a type" 
+    $error:"constructor is not a type" 
     bar2 = ClassWithUpperNameConstructors.Value;
-    @error:"constructor is not a type" 
+    $error:"constructor is not a type" 
     baz2 = ClassWithUpperNameConstructors.Function();
 }

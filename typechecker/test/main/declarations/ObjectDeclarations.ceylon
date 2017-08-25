@@ -51,7 +51,7 @@ object se2 satisfies Something {
 }
 
 void testSomething(Something s) {
-    @type:"Object" value ss = s.something;
-    @type:"String" value ss1 = se1.something;
-    @type:"String" value ss2 = se2.something;
+    $type:"Object" value ss = s.something;
+    $type:"String" value ss1 = se1.something;
+    $type:"String" value ss2 = se2.something;
 }

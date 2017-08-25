@@ -2,7 +2,7 @@
  bits, and may be the subject of bitwise operations. A bit 
  is a [[Boolean]] value. Bits are indexed from right to 
  left, where `0` is the index of the least significant bit."
-see (`class Integer`)
+see (class Integer)
 by ("Stef")
 shared interface Binary<Other> of Other 
     given Other satisfies Binary<Other> {

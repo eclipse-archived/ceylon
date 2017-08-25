@@ -3,7 +3,7 @@ object diamonds extends Suit("Diamonds") {}
 object clubs extends Suit("Clubs") {}
 object spades extends Suit("Spades") {}
 
-@error object extra extends Suit("Extra") {}
+$error object extra extends Suit("Extra") {}
 
 class BrokenCase() extends Broken() {}
 
@@ -16,7 +16,7 @@ void test() {
     case (clubs) {}
     case (spades) {}
     
-    @error switch (s)
+    $error switch (s)
     case (hearts) {}
     case (hearts,diamonds) {}
     case (clubs,spades) {}
@@ -30,7 +30,7 @@ void test() {
     case (diamonds) {}
     else {}
     
-    @error switch (s)
+    $error switch (s)
     case (hearts) {}
     case (hearts) {}
     case (diamonds) {}
@@ -44,7 +44,7 @@ void test() {
     case (spades) {}
     else {}
     
-    @error switch (s)
+    $error switch (s)
     case (hearts) {}
     case (diamonds) {}
     
@@ -71,7 +71,7 @@ void test() {
     case (spades) {}
     else {}
     
-    @error switch (maybe)
+    $error switch (maybe)
     case (hearts) {}
     case (diamonds) {}
     case (clubs) {}
@@ -87,7 +87,7 @@ void test() {
     
     variable Suit? mss = null;
     
-    @error switch (mss)
+    $error switch (mss)
     case (is Suit) {}
     case (is Null) {}
     
@@ -101,7 +101,7 @@ void test() {
     
     Suit? msss { return null; }
     
-    @error switch (msss)
+    $error switch (msss)
     case (is Suit) {}
     case (is Null) {}
     
@@ -112,7 +112,7 @@ void test() {
     case (spades) {}
     case (null) {}
     
-    @error switch (s!=hearts then s)
+    $error switch (s!=hearts then s)
     case (hearts) {}
     case (diamonds) {}
     case (clubs) {}

@@ -16,7 +16,7 @@ shared sealed interface MemberClassValueConstructor<in Container=Nothing, out Ty
     shared actual formal ClassModel<Type> container;
     
     "Binds this attribute to the given container instance. The instance type is checked at runtime."
-    throws(`class StorageException`,
+    throws(class StorageException,
         "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
     shared actual formal ValueConstructor<Type> bind(Anything container);
 }

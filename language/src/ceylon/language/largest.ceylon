@@ -9,11 +9,11 @@
  _On the JVM platform, for arguments of type `Integer` or 
  `Float`, prefer [[Integer.largest]] or [[Float.largest]]
  in performance-sensitive code._"
-see (`interface Comparable`, 
-     `function smallest`, 
-     `function max`, 
-     `function Integer.largest`,
-     `function Float.largest`)
+see (interface Comparable, 
+     function smallest, 
+     function max, 
+     function Integer.largest,
+     function Float.largest)
 tagged("Comparisons")
 shared Element largest<Element>(Element x, Element y) 
         given Element satisfies Comparable<Element> 

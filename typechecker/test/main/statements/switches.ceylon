@@ -19,51 +19,51 @@ void testSwitch(Integer i, String s, Character c, String? ss) {
     case ('\n') {}
     else {}
     
-    @error switch (i)
+    $error switch (i)
     case (-1) {}
     case (0) {}
     case (-1) {}
     else {}
     
-    @error switch (i)
+    $error switch (i)
     case (1) {}
     case (0) {}
     case (1) {}
     else {}
     
-    @error switch (i)
+    $error switch (i)
     case (1k) {}
     case (0) {}
     case (1000) {}
     else {}
     
-    @error switch (i)
+    $error switch (i)
     case (-1) {}
     case (0) {}
     case (1) {}
     
-    @error switch (s)
+    $error switch (s)
     case ("") {}
     
-    @error switch (s)
+    $error switch (s)
     case ("") {}
     case ("") {}
     else {}
     
-    @error switch (ss)
+    $error switch (ss)
     case ("") {}
     case (null) {}
     
-    @error switch (c)
+    $error switch (c)
     case (' ') {}
     case ('\n') {}
     
-    @error switch (c)
+    $error switch (c)
     case (' ') {}
     case ('\{#0020}') {}
     else {}
     
-    @error switch (c)
+    $error switch (c)
     case ('\\') {}
     case ('\{#005C}') {}
     else {}
@@ -82,13 +82,13 @@ void fun0<X>(X x) {
 
 void fun1<X>(X&Boolean x) {
     switch (x)
-    //@error case (null) {
+    //$error case (null) {
     //    print(x);
     //}
     case (true) {}
     case (false) {}
     else {
-        @error print(x.string);
+        $error print(x.string);
     }
 }
 
@@ -101,7 +101,7 @@ void fun2<X>(X x) {
         print("F");
     }
     else {
-        @error print(x.string);
+        $error print(x.string);
     }
 }
 

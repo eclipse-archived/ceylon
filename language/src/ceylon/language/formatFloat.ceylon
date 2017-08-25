@@ -37,7 +37,7 @@
  This function never produces a representation involving 
  scientific notation."
 tagged("Numbers")
-see (`function Float.format`)
+see (function Float.format)
 since("1.2.0")
 deprecated("Use [[Float.format]]")
 shared String formatFloat(

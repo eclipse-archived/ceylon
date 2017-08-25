@@ -10,7 +10,7 @@ void assertions() {
     "illegal arguments: ``process.arguments``"
     assert (exists arg = process.arguments[0], 
             arg=="gavin");
-    @error assert ();
+    $error assert ();
     print(Assertions("hello").name);
     Anything x = null;
     assert (is Object x, x=="hello");
@@ -19,13 +19,13 @@ void assertions() {
     if (is Object y, y=="hello") {
         print(y=="goodbye");
     }
-    @error print(y=="goodbye");
+    $error print(y=="goodbye");
     Integer[] ints = 0..10;
     assert (exists int0 = ints[0], is Integer int1 = ints[1]);
     print(int0+1);
     print(int1-1);
-    if (exists @error String szsq) {}
-    assert (exists @error String swsq);
+    if (exists $error String szsq) {}
+    assert (exists $error String swsq);
 }
 
 class Assertions(String? nameOrNull) {

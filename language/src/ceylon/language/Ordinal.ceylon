@@ -33,11 +33,11 @@
  
  - `minimum.predecessor==minimum`, and
  - `maximum.successor==maximum`."
-see (`class Character`, 
-     `class Integer`, 
-     `interface Integral`, 
-     `interface Comparable`,
-     `interface Enumerable`)
+see (class Character, 
+     class Integer, 
+     interface Integral, 
+     interface Comparable,
+     interface Enumerable)
 by ("Gavin")
 tagged("Numbers")
 shared interface Ordinal<out Other> of Other

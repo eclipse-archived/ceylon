@@ -15,10 +15,10 @@
  
  To concatentate `String`s, use [[String.sum]]. When a lazy
  stream is desired, use [[expand]]."
-see (`function expand`, 
-     `function Iterable.chain`,
-     `function Sequential.append`,
-     `function String.sum`)
+see (function expand, 
+     function Iterable.chain,
+     function Sequential.append,
+     function String.sum)
 tagged("Streams")
 shared Element[] concatenate<Element>(
         "The streams to concatenate."
