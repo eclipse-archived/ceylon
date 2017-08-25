@@ -29,9 +29,9 @@
         <programlisting>"The user login action"
 by ("Gavin King",
     "Andrew Haley")
-throws (`class DatabaseException`,
+throws (class DatabaseException,
         "if database access fails")
-see (`function LogoutAction.logout`)
+see (function LogoutAction.logout)
 scope (session) 
 action { description="Log In"; url="/login"; }
 shared deprecated</programlisting>
@@ -322,8 +322,8 @@ shared deprecated</programlisting>
         <literal>annotations()</literal> defined in the package
         <literal>ceylon.language.meta.model</literal>.</para>
         
-        <programlisting>Scope scope = annotations(`Scope`, `class Person`) else Scope(request);</programlisting>
-        <programlisting>Todo[] todos = annotations(`Todo`, `function method`);</programlisting>
+        <programlisting>Scope scope = annotations(`Scope`, class Person) else Scope(request);</programlisting>
+        <programlisting>Todo[] todos = annotations(`Todo`, function method);</programlisting>
         
     </section>
     

@@ -1403,13 +1403,13 @@ else {
             <itemizedlist>
                 <listitem>
                     <para>an unqualified value reference, or a qualified value reference 
-                    where the receiver expression is `this`, and a lazy 
+                    where the receiver expression is <literal>this</literal>, and a lazy 
                     <literal>=&gt;</literal> specifier, or</para>
                 </listitem>
                 <listitem>
                     <para>a unqualified callable reference, or a qualified value reference 
-                    where the receiver expression is `this`, one or more parameter lists, 
-                    and a lazy specifier.</para>
+                    where the receiver expression is <literal>this</literal>, one or more 
+                    parameter lists, and a lazy specifier.</para>
                 </listitem>
             </itemizedlist>
             
