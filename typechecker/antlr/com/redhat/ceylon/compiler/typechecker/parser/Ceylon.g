@@ -1946,9 +1946,7 @@ baseReferenceOrParameterized returns [Primary primary]
 baseReference returns [Identifier identifier, 
                        TypeArgumentList typeArgumentList, 
                        boolean isMember]
-    : 
-    (
-      memberReference
+    : memberReference
       { $identifier = $memberReference.identifier;
         $typeArgumentList = $memberReference.typeArgumentList;
         $isMember = true; }
@@ -1956,41 +1954,40 @@ baseReference returns [Identifier identifier,
       { $identifier = $typeReference.identifier;
         $typeArgumentList = $typeReference.typeArgumentList;
         $isMember = false; }
-    )
     ;
 
 primary returns [Primary primary]
     : base
       { $primary=$base.primary; }
-    (
-      qualifiedReference
-      { QualifiedMemberOrTypeExpression qe;
-        if ($qualifiedReference.isMember)
-            qe = new QualifiedMemberExpression(null);
-        else
-            qe = new QualifiedTypeExpression(null);
-        qe.setPrimary($primary);
-        qe.setMemberOperator($qualifiedReference.operator);
-        qe.setIdentifier($qualifiedReference.identifier);
-        if ($qualifiedReference.typeArgumentList!=null)
-            qe.setTypeArguments($qualifiedReference.typeArgumentList);
-        else 
-            qe.setTypeArguments( new InferredTypeArguments(null) );
-        $primary=qe; }
-      | indexOrIndexRange 
-        { $indexOrIndexRange.indexExpression.setPrimary($primary);
-          $primary = $indexOrIndexRange.indexExpression; }
-      | positionalArguments 
-        { InvocationExpression ie = new InvocationExpression(null);
-          ie.setPrimary($primary);
-          ie.setPositionalArgumentList($positionalArguments.positionalArgumentList); 
-          $primary=ie; }
-      | namedArguments
-        { InvocationExpression ie = new InvocationExpression(null);
-          ie.setPrimary($primary);
-          ie.setNamedArgumentList($namedArguments.namedArgumentList);
-          $primary=ie; }
-    )*
+      (
+        qualifiedReference
+        { QualifiedMemberOrTypeExpression qe;
+          if ($qualifiedReference.isMember)
+              qe = new QualifiedMemberExpression(null);
+          else
+              qe = new QualifiedTypeExpression(null);
+          qe.setPrimary($primary);
+          qe.setMemberOperator($qualifiedReference.operator);
+          qe.setIdentifier($qualifiedReference.identifier);
+          if ($qualifiedReference.typeArgumentList!=null)
+              qe.setTypeArguments($qualifiedReference.typeArgumentList);
+          else 
+              qe.setTypeArguments( new InferredTypeArguments(null) );
+          $primary=qe; }
+        | indexOrIndexRange 
+          { $indexOrIndexRange.indexExpression.setPrimary($primary);
+            $primary = $indexOrIndexRange.indexExpression; }
+        | positionalArguments 
+          { InvocationExpression ie = new InvocationExpression(null);
+            ie.setPrimary($primary);
+            ie.setPositionalArgumentList($positionalArguments.positionalArgumentList); 
+            $primary=ie; }
+        | namedArguments
+          { InvocationExpression ie = new InvocationExpression(null);
+            ie.setPrimary($primary);
+            ie.setNamedArgumentList($namedArguments.namedArgumentList);
+            $primary=ie; }
+      )*
     ;
 
 parameterStart
@@ -3081,21 +3078,12 @@ notOperator returns [NotOp operator]
       { $operator = new NotOp($NOT_OP); }
     ;
 
-declarationLiteralStart
-    : (CLASS_DEFINITION|INTERFACE_DEFINITION|NEW|ALIAS|TYPE_CONSTRAINT)
-    | (FUNCTION_MODIFIER|VALUE_MODIFIER|OBJECT_DEFINITION)
-      (PACKAGE MEMBER_OP)?
-      (LIDENTIFIER|UIDENTIFIER)
-    | PACKAGE (~MEMBER_OP)
-    | MODULE
-    ;
-
+//TODO: NOT BLESSED BY SPEC!!!
 expressionOrMeta returns [Term term]
-    : (POWER_OP|declarationLiteralStart) =>
-      m=metaLiteral2
-      { $term=$m.meta; }
-    | e=equalityExpression
-      { $term = $e.term; }
+    : modelRef
+      { $term=$modelRef.meta; }
+    | equalityExpression
+      { $term = $equalityExpression.term; }
     ;
 
 equalityExpression returns [Term term]
@@ -3380,13 +3368,29 @@ prefixOperator returns [PrefixOperatorExpression operator]
     ;
 
 postfixIncrementDecrementExpression returns [Term term]
-    : primary 
-      { $term = $primary.primary; } 
+    : valueExpression 
+      { $term = $valueExpression.term; } 
       (
         postfixOperator
         { $postfixOperator.operator.setTerm($term);
           $term = $postfixOperator.operator; }
       )*
+    ;
+
+declarationLiteralStart
+    : (CLASS_DEFINITION|INTERFACE_DEFINITION|NEW|ALIAS|TYPE_CONSTRAINT)
+    | (FUNCTION_MODIFIER|VALUE_MODIFIER|OBJECT_DEFINITION)
+      (PACKAGE MEMBER_OP)?
+      (LIDENTIFIER|UIDENTIFIER)
+    | PACKAGE (~MEMBER_OP)
+    | MODULE
+    ;
+
+valueExpression returns [Term term]
+    : (declarationLiteralStart) => declarationRef
+      { $term = $declarationRef.meta; } 
+    | primary
+      { $term = $primary.primary; } 
     ;
 
 postfixOperator returns [PostfixOperatorExpression operator]
@@ -3860,13 +3864,6 @@ assertMessage returns [AnnotationList annotationList]
       )?
     ;
 
-prefixOperatorStart
-    : DIFFERENCE_OP
-    | INCREMENT_OP 
-    | DECREMENT_OP 
-    | COMPLEMENT_OP
-    ;
-    
 compilerAnnotations returns [List<CompilerAnnotation> annotations]
     : { $annotations = new ArrayList<CompilerAnnotation>(); }
     (
@@ -4767,33 +4764,8 @@ modelExpression returns [MetaLiteral meta]
 metaLiteral returns [MetaLiteral meta]
     : d1=BACKTICK
     { $meta = new TypeLiteral($d1); }
-    ( moduleLiteral
-      { $meta=$moduleLiteral.literal; 
-        $meta.setToken($d1); }
-    | (PACKAGE (LIDENTIFIER|BACKTICK)) =>
-      packageLiteral
-      { $meta=$packageLiteral.literal; 
-        $meta.setToken($d1); }
-    | classLiteral
-      { $meta=$classLiteral.literal; 
-        $meta.setToken($d1); }
-    | newLiteral
-      { $meta=$newLiteral.literal; 
-        $meta.setToken($d1); }
-    | interfaceLiteral
-      { $meta=$interfaceLiteral.literal; 
-        $meta.setToken($d1); }
-    | aliasLiteral
-      { $meta=$aliasLiteral.literal; 
-        $meta.setToken($d1); }
-    | typeParameterLiteral
-      { $meta=$typeParameterLiteral.literal; 
-        $meta.setToken($d1); }
-    | valueLiteral
-      { $meta=$valueLiteral.literal; 
-        $meta.setToken($d1); }
-    | functionLiteral
-      { $meta=$functionLiteral.literal; 
+    ( declarationRef
+      { $meta=$declarationRef.meta; 
         $meta.setToken($d1); }
     | modelExpression
       { $meta=$modelExpression.meta; 
@@ -4803,7 +4775,7 @@ metaLiteral returns [MetaLiteral meta]
     { $meta.setEndToken($d2); }
     ;
 
-metaLiteral2 returns [MetaLiteral meta]
+modelRef returns [MetaLiteral meta]
     : m=POWER_OP
       { $meta = new TypeLiteral($m); }
       modelExpression
@@ -4811,7 +4783,10 @@ metaLiteral2 returns [MetaLiteral meta]
           $meta=$modelExpression.meta; 
           $meta.setToken($m);
         } }
-    | moduleLiteral
+    ;
+    
+declarationRef returns [MetaLiteral meta]
+    : moduleLiteral
       { $meta=$moduleLiteral.literal; }
     | packageLiteral
       { $meta=$packageLiteral.literal; }
