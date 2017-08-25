@@ -5,7 +5,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableIgnoringNull;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyForInterop;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyIgnoringNull;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkSupertype;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correctionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
@@ -1758,7 +1758,7 @@ public class ExpressionVisitor extends Visitor {
                                 typeNode = type;
                             }
                         }
-                        checkIsExactlyForInterop(unit,
+                        checkIsExactlyIgnoringNull(
                                 refinedParameters.isNamedParametersSupported(),
                                 parameterType, 
                                 refinedParameterType, 
@@ -1767,7 +1767,8 @@ public class ExpressionVisitor extends Visitor {
                                 + "' of '" + method.getName() 
                                 + "' declared by '" + ci.getName() 
                                 + "' is different to type of corresponding parameter " 
-                                + message(refinedMethod, refinedParameter));
+                                + message(refinedMethod, refinedParameter),
+                                9200);
                         if (refinedParameter.isSequenced() 
                                 && !parameter.isSequenced()) {
                             param.addError("parameter must be variadic: parameter " 

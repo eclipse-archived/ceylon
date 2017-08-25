@@ -4,12 +4,10 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableIgnoringNull;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyForInterop;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyOneOf;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyIgnoringNull;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeErrorNode;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.hasUncheckedNullType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMemberReference;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
@@ -1478,22 +1476,13 @@ public class RefinementVisitor extends Visitor {
                 }
                 return;
             }
-            if (hasUncheckedNullType(refined)) {
-                Type optionalRefinedType = 
-                        unit.getOptionalType(refinedType);
-                checkIsExactlyOneOf(refiningType, 
-                        refinedMember.getType(), 
-                        optionalRefinedType, that, 
-                        "type of member must be exactly the same as type of variable refined member: " + 
-                        message(refined));
-            }
-            else {
-                checkIsExactly(refiningType, 
-                        refinedType, that,
-                        "type of member must be exactly the same as type of variable refined member: " + 
-                        message(refined), 
-                        9000);
-            }
+        
+            checkIsExactlyIgnoringNull(refined,
+                    refiningType, 
+                    refinedType, that,
+                    "type of member must be exactly the same as type of variable refined member: " + 
+                    message(refined), 
+                    9000);
         }
     }
 
@@ -1930,10 +1919,11 @@ public class RefinementVisitor extends Visitor {
                     .append(containerName(refinedMember)) 
                     .append("'");
         }
-        checkIsExactlyForInterop(typeNode.getUnit(), 
+        checkIsExactlyIgnoringNull( 
                 refinedParams.isNamedParametersSupported(), 
                 parameterType, refinedParameterType, 
-                typeNode, message.toString());
+                typeNode, message.toString(),
+                9200);
     }
 
     private void handleUnknownParameterType(

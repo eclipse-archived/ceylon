@@ -1304,26 +1304,51 @@ public class AnalyzerUtil {
         return that;
     }
 
-    static void checkIsExactlyForInterop(Unit unit, 
+    static void checkIsExactlyIgnoringNull( 
             boolean isCeylon,  
             Type parameterType, 
             Type refinedParameterType, 
-            Node node, String message) {
+            Node node, String message,
+            int code) {
         if (isCeylon) {
             // it must be a Ceylon method
             checkIsExactly(parameterType, 
                     refinedParameterType, 
-                    node, message, 9200);
+                    node, message, code);
         }
         else {
             // we're refining a Java method
             Type refinedDefiniteType = 
-                    unit.getDefiniteType(
+                    node.getUnit()
+                        .getDefiniteType(
                             refinedParameterType);
             checkIsExactlyOneOf(parameterType, 
                     refinedParameterType, 
                     refinedDefiniteType, 
                     node, message);
+        }
+    }
+    
+    static void checkIsExactlyIgnoringNull( 
+            Declaration dec,  
+            Type parameterType, 
+            Type refinedParameterType, 
+            Node node, String message,
+            int code) {
+        if (hasUncheckedNullType(dec)) {
+            Type refinedOptionalType = 
+                    node.getUnit()
+                        .getOptionalType(
+                            refinedParameterType);
+            checkIsExactlyOneOf(parameterType, 
+                    refinedParameterType, 
+                    refinedOptionalType, 
+                    node, message);
+        }
+        else {
+            checkIsExactly(parameterType, 
+                    refinedParameterType, 
+                    node, message, code);
         }
     }
 
