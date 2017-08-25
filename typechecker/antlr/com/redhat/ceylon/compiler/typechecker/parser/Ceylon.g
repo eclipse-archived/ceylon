@@ -3840,8 +3840,13 @@ compilerAnnotations returns [List<CompilerAnnotation> annotations]
     ;
     
 compilerAnnotation returns [CompilerAnnotation annotation]
-    : ca=COMPILER_ANNOTATION
-      { $annotation=new CompilerAnnotation($ca); }
+    : (
+        DOLLAR
+        { $annotation=new CompilerAnnotation($DOLLAR); }
+      |
+        AT
+        { $annotation=new CompilerAnnotation($AT); }
+      )
       annotationName 
       { $annotation.setIdentifier($annotationName.identifier); }
       ( 
@@ -4183,9 +4188,13 @@ switchHeader returns [SwitchClause clause]
       { $clause.setEndToken($RPAREN); }
     ;
 
+compilerAnnotationStart
+    : DOLLAR | AT
+    ;
+
 switched returns [Switched switched]
     @init { $switched = new Switched(null); }
-    : ( (COMPILER_ANNOTATION|declarationStart|specificationStart) 
+    : ( (compilerAnnotationStart|declarationStart|specificationStart) 
         => specifiedVariable
         { $switched.setVariable($specifiedVariable.variable); }
       | expression
@@ -4431,7 +4440,7 @@ resources returns [ResourceList resources]
 resource returns [Resource resource]
     @init { $resource = new Resource(null); }
     : 
-      (COMPILER_ANNOTATION|declarationStart|specificationStart) => 
+      (compilerAnnotationStart|declarationStart|specificationStart) => 
       specifiedVariable
       { $resource.setVariable($specifiedVariable.variable); }
     | 
@@ -5308,11 +5317,11 @@ OR_SPECIFY
     :   '||='
     ;
 
-COMPILER_ANNOTATION
+DOLLAR
     :   '$'
     ;
 
-META
+AT
     :   '@'
     ;
 
