@@ -27,13 +27,11 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.JarURLConnection;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -204,11 +202,11 @@ public class CeylonAssemblyRunner {
         
         private static boolean shouldInclude(String entryName) {
             entryName = entryName.toLowerCase();
-            return !entryName.isEmpty() &&
-                    (entryName.endsWith(".jar")
-                            || entryName.endsWith(".car")
-                            || entryName.endsWith("/module.xml")
-                            || entryName.endsWith("/module.properties"));
+            return !entryName.isEmpty() 
+                && (entryName.endsWith(".jar")
+                 || entryName.endsWith(".car")
+                 || entryName.endsWith("/module.xml")
+                 || entryName.endsWith("/module.properties"));
         }
 
         private static File mkdirs(File dir) {
