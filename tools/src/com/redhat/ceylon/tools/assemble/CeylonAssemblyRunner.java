@@ -191,7 +191,8 @@ public class CeylonAssemblyRunner {
                     addURL(out.toURI().toURL());
                     mkdirs(out.getParentFile());
                     try (InputStream zipIn = zf.getInputStream(entry)) {
-                        try (BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(out))) {
+                        try (BufferedOutputStream fileOut 
+                                = new BufferedOutputStream(new FileOutputStream(out))) {
                             copyStream(zipIn, fileOut, false, false);
                         }
                     }
@@ -204,6 +205,7 @@ public class CeylonAssemblyRunner {
             return !entryName.isEmpty() 
                 && (entryName.endsWith(".jar")
                  || entryName.endsWith(".car")
+                 || entryName.endsWith(".pom")
                  || entryName.endsWith("/module.xml")
                  || entryName.endsWith("/module.properties"));
         }
