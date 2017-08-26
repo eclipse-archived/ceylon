@@ -7949,7 +7949,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 || "java.lang::synchronized".equals(aname)
                                 || "java.lang::native".equals(aname)
                                 || "java.lang::strictfp".equals(aname)
-                                || "java.lang::overloaded".equals(aname)) {
+                                || "java.lang::overloaded".equals(aname)
+                                || "java.lang::nonbean".equals(aname)) {
                             continue;
                         }
                     }

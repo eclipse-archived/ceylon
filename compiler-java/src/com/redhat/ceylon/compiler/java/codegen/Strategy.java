@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.model.LazyClass;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -357,7 +358,13 @@ class Strategy {
                 // The class will already have a nullary ctor
                 return false;
             }
-            
+            for (Annotation annotation : cls.getAnnotations()) {
+                Declaration annoDecl = cls.getUnit().getImportedDeclaration(annotation.getName(), null, false);
+                if (annoDecl != null && annoDecl.getQualifiedNameString().equals("java.lang::nonbean")) {
+                    return false;
+                }
+            }
+
             boolean hasDelegatableSuper = false;
             Class superClass = (Class)cls.getExtendedType().getDeclaration();
             if (superClass instanceof LazyClass
