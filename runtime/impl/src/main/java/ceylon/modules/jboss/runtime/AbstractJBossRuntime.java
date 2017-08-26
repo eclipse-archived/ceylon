@@ -76,6 +76,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             if (p >= 0) {
                 spec = spec.substring(0, p) + "/" + spec.substring(p + 1);
             }
+            spec = spec.replace("\\:", ":"); //ModuleIdentifier escapes :
             String msg = "Could not find module: " + spec + " (invalid version?";
             if (name.equals("ceylon.language")) {
                 msg += " try running with '--link-with-current-distribution'";
@@ -83,6 +84,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             msg += ")";
             final CeylonRuntimeException cre = new CeylonRuntimeException(msg);
             cre.initCause(e);
+//            e.printStackTrace();
             throw cre;
         }
     }
