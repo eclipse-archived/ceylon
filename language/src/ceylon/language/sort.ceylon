@@ -7,14 +7,10 @@
 see (interface Comparable,
      function Iterable.sort)
 tagged("Streams", "Comparisons")
-shared Element[] sort<Element>({Element*} elements) 
-        given Element satisfies Comparable<Element> {
-    value array = Array(elements);
-    if (array.empty) {
-        return [];
-    }
-    else {
-        array.sortInPlace(increasing);
-        return ArraySequence(array);
-    }
-}
+shared [Element+] | []&Iterable<Element,Absent> 
+sort<Element,Absent>(
+        "The unsorted stream of elements."
+        Iterable<Element,Absent> elements) 
+        given Element satisfies Comparable<Element> 
+        given Absent satisfies Null
+        => elements.sort(increasing);

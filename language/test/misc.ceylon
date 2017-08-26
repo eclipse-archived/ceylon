@@ -9,7 +9,7 @@ shared void misc() {
     check(String { characters=['h', 'i']; }=="hi", "named sequenced args");
     check(String({})=="", "empty arg");
     check(String{}=="", "no named args");
-    check(concatenate()==[], "no args");
+    //check(concatenate()==[], "no args");
     check(concatenate("hello", " ", "world")=="hello world".sequence(), "no args");
     check(concatenate(*{"hello", " ", "world"})=="hello world".sequence(), "spread arg");
             
@@ -30,9 +30,9 @@ shared void misc() {
     }
     
     //Test empty varargs
-    //see(); 
+    see(); 
     by(); tagged();
-    concatenate();
+    expand{};
     ",".join{};
     StringBuilder().appendAll{};
     //LazyList<Nothing>(); LazyMap<Nothing,Nothing>(); LazySet<Nothing>();
