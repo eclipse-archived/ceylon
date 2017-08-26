@@ -39,15 +39,15 @@ throws (class AssertionError,
          [[maxRadix]]")
 see (function Integer.parse)
 tagged("Numbers", "Basic types")
-deprecated("Use [[Integer.parse]]")
 shared Integer? parseInteger(
             "The string representation to parse."
-            String string,
+            String? string,
             "The base, between [[minRadix]] and [[maxRadix]] 
              inclusive."
             Integer radix = 10) 
-        => if (is Integer result 
-                = parseIntegerInternal(string, radix))
+        => if (exists string, 
+               is Integer result 
+                    = parseIntegerInternal(string, radix))
         then result 
         else null;
 

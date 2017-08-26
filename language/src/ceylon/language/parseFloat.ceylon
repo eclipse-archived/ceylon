@@ -25,10 +25,10 @@
      Digits: ('0'..'9')+"
 see (function Float.parse)
 tagged("Numbers", "Basic types")
-deprecated("Use [[Float.parse]]")
-shared Float? parseFloat(String string)
-        => if (is Float result 
-                = parseFloatInternal(string))
+shared Float? parseFloat(String? string)
+        => if (exists string,
+               is Float result 
+                    = parseFloatInternal(string))
         then result
         else null;
 
