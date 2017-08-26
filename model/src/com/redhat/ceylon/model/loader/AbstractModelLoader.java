@@ -293,21 +293,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected static final String JAVA_LANG_NATIVE_ANNOTATION = "java.lang.native";
     protected static final String JAVA_LANG_STRICTFP_ANNOTATION = "java.lang.strictfp";
     protected static final String JAVA_LANG_OVERLOADED_ANNOTATION = "java.lang.overloaded";
-    
+    protected static final String JAVA_LANG_UNSERIALIZABLE_ANNOTATION = "java.lang.unserializable";
+
     private static final String CEYLON_INTEROP_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.language.transient";
     private static final String CEYLON_INTEROP_VOLATILE_ANNOTATION = "com.redhat.ceylon.compiler.java.language.volatile";
     private static final String CEYLON_INTEROP_SYNCHRONIZED_ANNOTATION = "com.redhat.ceylon.compiler.java.language.synchronized";
     private static final String CEYLON_INTEROP_NATIVE_ANNOTATION = "com.redhat.ceylon.compiler.java.language.native";
     private static final String CEYLON_INTEROP_STRICTFP_ANNOTATION = "com.redhat.ceylon.compiler.java.language.strictfp";
     private static final String CEYLON_INTEROP_OVERLOADED_ANNOTATION = "com.redhat.ceylon.compiler.java.language.overloaded";
-    
+    private static final String CEYLON_INTEROP_UNSERIALIZABLE_ANNOTATION = "com.redhat.ceylon.compiler.java.language.unserializable";
+
     private static final String CEYLON_INTEROP_TRANSIENT_TYPE = "com.redhat.ceylon.compiler.java.language.Transient";
     private static final String CEYLON_INTEROP_VOLATILE_TYPE = "com.redhat.ceylon.compiler.java.language.Volatile";
     private static final String CEYLON_INTEROP_SYNCHRONIZED_TYPE = "com.redhat.ceylon.compiler.java.language.Synchronized";
     private static final String CEYLON_INTEROP_NATIVE_TYPE = "com.redhat.ceylon.compiler.java.language.Native";
     private static final String CEYLON_INTEROP_STRICTFP_TYPE = "com.redhat.ceylon.compiler.java.language.Strictfp";
     private static final String CEYLON_INTEROP_OVERLOADED_TYPE = "com.redhat.ceylon.compiler.java.language.Overloaded";
-    
+    private static final String CEYLON_INTEROP_UNSERIALIZABLE_TYPE = "com.redhat.ceylon.compiler.java.language.Unserializable";
+
     private static final Set<String> CEYLON_INTEROP_DECLARATIONS = new HashSet<String>();
     static {
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_BYTE_ARRAY);
@@ -328,13 +331,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_SYNCHRONIZED_ANNOTATION);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_STRICTFP_ANNOTATION);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_OVERLOADED_ANNOTATION);
-        
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_UNSERIALIZABLE_ANNOTATION);
+
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_NATIVE_TYPE);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_TRANSIENT_TYPE);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_VOLATILE_TYPE);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_SYNCHRONIZED_TYPE);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_STRICTFP_TYPE);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_OVERLOADED_TYPE);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_UNSERIALIZABLE_TYPE);
 
     }
     
@@ -491,7 +496,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             || JAVA_LANG_SYNCHRONIZED_ANNOTATION.equals(name)
                             || JAVA_LANG_NATIVE_ANNOTATION.equals(name)
                             || JAVA_LANG_STRICTFP_ANNOTATION.equals(name)
-                            || JAVA_LANG_OVERLOADED_ANNOTATION.equals(name)) {
+                            || JAVA_LANG_OVERLOADED_ANNOTATION.equals(name)
+                            || JAVA_LANG_UNSERIALIZABLE_ANNOTATION.equals(name)) {
                         name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
                         module = getLanguageModule();
                     }
@@ -6578,6 +6584,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_SYNCHRONIZED_ANNOTATION, DeclarationType.VALUE);
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_STRICTFP_ANNOTATION, DeclarationType.VALUE);
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_OVERLOADED_ANNOTATION, DeclarationType.VALUE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_UNSERIALIZABLE_ANNOTATION, DeclarationType.VALUE);
     }
     
     protected void loadJavaBaseExtras() {
