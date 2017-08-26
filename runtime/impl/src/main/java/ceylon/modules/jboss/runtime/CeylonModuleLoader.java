@@ -58,6 +58,7 @@ import com.redhat.ceylon.model.cmr.RuntimeResolver;
 import ceylon.modules.api.runtime.LogChecker;
 import ceylon.modules.api.util.ModuleVersion;
 import ceylon.modules.jboss.repository.ResourceLoaderProvider;
+import ceylon.modules.jboss.runtime.Graph.Vertex;
 
 /**
  * Ceylon JBoss Module loader.
@@ -227,12 +228,11 @@ public class CeylonModuleLoader extends ModuleLoader
      * @param visited already visited modules
      * @throws ModuleLoadException for any modules error
      */
-    @SuppressWarnings({"unchecked"})
     private void relink(ModuleIdentifier mi, Set<ModuleIdentifier> visited) throws ModuleLoadException {
         if (visited.add(mi) == false)
             return;
 
-        Graph.Vertex v = graph.getVertex(mi);
+        Vertex<ModuleIdentifier, Boolean> v = graph.getVertex(mi);
         if (v == null)
             return;
 
