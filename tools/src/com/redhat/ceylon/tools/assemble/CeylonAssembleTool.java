@@ -81,7 +81,7 @@ public class CeylonAssembleTool extends ModuleLoadingTool {
         this.modules = modules;
     }
 
-    @OptionArgument(shortName='x', longName = "run", argumentName = "toplevel")
+    @OptionArgument(longName = "run", argumentName = "toplevel")
     @Description("Specifies the fully qualified name of a toplevel method or class with no parameters. " +
             "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator " +
             "between the package name and the toplevel class or method name (defaults to `{module}::run`).")
