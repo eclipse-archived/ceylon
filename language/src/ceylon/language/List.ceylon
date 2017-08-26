@@ -115,22 +115,15 @@ shared interface List<out Element=Anything>
      this list, that is, if `0<=index<=list.lastIndex`."
     shared actual default Boolean defines(Integer index) 
             => 0 <= index < size;
-    
-    "Determines if this list contains the given value.
-     Returns `true` for every element of this list."
-    shared actual default Boolean contains(Object element) 
-            //TODO: delete this unnecessary refinement
-            => super.contains(element);
-    
+        
     "The rest of the list, without the first element.
      
      This is a lazy operation returning a view of this list."
     shared actual default List<Element> rest 
             => size>1 then Sublist(1,size-1) else [];
     
-    //TODO: refine type of List.exceptLast
-    //shared actual default List<Element> exceptLast 
-    //        => size>1 then Sublist(0, size-2) else [];
+    shared actual default List<Element> exceptLast 
+            => size>1 then Sublist(0, size-2) else [];
     
     "A list containing all indexes of this list.
      
