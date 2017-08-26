@@ -74,6 +74,7 @@ public class MavenUtils {
         }
         doc.getDocumentElement().normalize();
         Element root = doc.getDocumentElement();
+        
         String modGroupId = getText(root, "groupId");
         // can be null, inherited from parent
         if(modGroupId == null){
@@ -81,8 +82,19 @@ public class MavenUtils {
             if(parent != null)
                 modGroupId = getText(parent, "groupId");
         }
+        
         String modArtifactId = getText(root, "artifactId");
+        
+        String classifier = getText(root, "classifier");
+        
         String modVersion = getText(root, "version");
+        // can be null, inherited from parent
+        if(modVersion == null){
+            Element parent = getFirstElement(root, "parent");
+            if(parent != null)
+                modVersion = getText(parent, "version");
+        }
+        
         String modName = modGroupId + ":" + modArtifactId;
         if(name != null && !name.equals(modName))
             return null;
@@ -121,7 +133,7 @@ public class MavenUtils {
                 }
             }
         }
-        return new ModuleInfo(modName, modVersion, modGroupId, modArtifactId, null, null, ret);
+        return new ModuleInfo(modName, modVersion, modGroupId, modArtifactId, classifier, null, ret);
     }
 
     static String getText(Element element, String childName){

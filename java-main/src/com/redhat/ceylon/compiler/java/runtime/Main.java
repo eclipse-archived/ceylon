@@ -393,14 +393,16 @@ public class Main {
         }
         
         private void scanFolderForJars(File folder) {
-        	for(File file : folder.listFiles()){
-        		if(file.isFile() 
-        				&& (file.getName().endsWith(".car")
-        						|| file.getName().endsWith(".jar")
-        						|| file.getName().endsWith(".zip"))){
-        			potentialJars.add(file);
-        		}
-        	}
+            	for(File file : folder.listFiles()){
+            		if(file.isFile()) {
+                    String name = file.getName();
+                    if (name.endsWith(".car")
+                		|| name.endsWith(".jar")
+                		|| name.endsWith(".zip")) {
+                        potentialJars.add(file);
+                    }
+            		}
+            	}
 		}
 
 		// for tests
@@ -532,15 +534,21 @@ public class Main {
                 }
                 if(module != null){
                     if (module != NO_MODULE) {
-                        // classpath does not allow more than one version of a module, and Maven modules may be missing
-                        // version info
+                        // classpath does not allow more than one version of a module, 
+                        // and Maven modules may be missing version info
                         String key = module.name();
+//                        System.out.println("Found module: " + key + " -> " + 
+//                        module.namespace() + ":" + module.groupId() + ":" + module.artifactId() + ":" + module.version());
                         modules.put(key, module);
                     }
                     iterator.remove();
                     if (name != null || version != null) {
                         return module;
                     }
+                }
+                else {
+                    iterator.remove();
+                    System.err.println("Could not determine module metadata for jar in classpath: "+file+". Skipping it next time.");
                 }
             }
             return null;
@@ -601,12 +609,12 @@ public class Main {
                 // try Maven
                 List<ZipEntry> mavenDescriptors = findEntries(zipFile, METAINF_MAVEN, POM_XML);
                 if(mavenDescriptors.size() == 1 && MavenResolver != null) {
-                    Module mod = loadMavenJar(file, zipFile, mavenDescriptors.get(0), null, null);
-                    return mod;
+                    return loadMavenJar(file, zipFile, mavenDescriptors.get(0), null, null);
                 }
-                // alternately, try an external pom (for example javax.servlet has no internal pom, but
-                // has crap OSGi metadata, and a valid external pom).
-                // If the jar comes straight out of a Maven repo/cache we may have an external pom file
+                // alternately, try an external pom (for example javax.servlet has no 
+                // internal pom, but has crap OSGi metadata, and a valid external pom).
+                // If the jar comes straight out of a Maven repo/cache we may have an 
+                // external pom file
                 if(file.getName().endsWith(".jar")){
                     File externalDescriptor = new File(file.getParentFile(), file.getName().substring(0, file.getName().length()-4)+".pom");
                     if(externalDescriptor.exists()){
