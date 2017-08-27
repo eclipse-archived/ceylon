@@ -175,3 +175,19 @@ void syntax4() {
     for ([a, b, c] in seq2) {}
     let ([a, b, c] = seq2.first);
 }
+
+void letStatement1([String, Integer->Float] pair, Float[3] point) {
+    let ([key, pos->intensity] = pair, 
+         [x, y, z] = point,
+         d = (x^2+y^2+z^2)^0.5,
+         sum = x + y + z);
+    
+}
+
+void letStatement2([String, Integer->Float] pair, Float[3] point) {
+    let ([String key, Integer pos->Float intensity] = pair, 
+         [Float x, Float y, Float z] = point,
+         Float d = (x^2+y^2+z^2)^0.5,
+         value sum = x + y + z);
+    
+}
