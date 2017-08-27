@@ -175,4 +175,99 @@ shared native("jvm") object process {
 
 shared native("js") object process {
     
+    shared native("js") String[] arguments {
+        dynamic {
+            return (0:_argv.length).collect(Object.string);
+        }
+    }
+    
+    shared native("js") String? namedArgumentValue(String name) {
+        dynamic {
+            return if (name.empty) then null 
+                else _namedArgs[name]?.string;
+        }
+    }
+    
+    shared native("js") Boolean namedArgumentPresent(String name) {
+        dynamic {
+            return if (name.empty) then false 
+                else _namedArgs[name] exists;
+        }
+    }
+    
+    shared native("js") String? propertyValue(String name) {
+        dynamic {
+            return if (name.empty) then null 
+                else _properties[name]?.string;
+        }
+    }
+    
+    value node = propertyValue("node.version") exists;
+    
+    shared native("js") String? environmentVariableValue(String name) {
+        dynamic {
+            return if (node, _process.env exists)
+                then _process.env[name]?.string else null;
+        }
+    }
+    
+    shared native("js") void write(String string); 
+    dynamic {
+        if (node && _process.stdout exists) {
+            write = (dynamic s) {
+                _process.stdout.write(s.valueOf());
+            };
+        }
+        else if (console exists && console.log exists) {
+            value buffer = StringBuilder();
+            write = (String str) {
+                buffer.append(str);
+                if (str.endsWith(operatingSystem.newline)) {
+                    console.log(buffer.string);
+                    buffer.clear();
+                }
+            };
+        }
+        else {
+            write = (String s) {};
+        }
+    }
+    
+    shared native("js") void writeError(String string); 
+    dynamic {
+        if (node && _process.stderr exists) {
+            writeError = (dynamic s) {
+                _process.stderr.write(s.valueOf());
+            };
+        }
+        else if (console exists && console.error exists) {
+            value buffer = StringBuilder();
+            writeError = (String str) {
+                buffer.append(str);
+                if (str.endsWith(operatingSystem.newline)) {
+                    console.error(buffer.string);
+                    buffer.clear();
+                }
+            };
+        }
+        else {
+            writeError = write;
+        }
+    }
+    
+    shared native("js") String? readLine() => null;
+    
+    shared native("js") Nothing exit(Integer code) {
+        dynamic {
+            if (node && _process.exit exists) {
+                _process.exit(code);
+            }
+        }
+        return nothing;
+    }
+    
+    shared native("js") void flush() {}
+    
+    shared native("js") void flushError() {}
+    
 }
