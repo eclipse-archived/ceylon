@@ -8,6 +8,12 @@ see (function Boolean.parse)
 shared Boolean? parseBoolean(String? string) 
         => if (exists string,
                is Boolean result
-                   = Boolean.parse(string))
+                   = parseBooleanInternal(string))
         then result
         else null;
+
+Boolean|ParseException parseBooleanInternal(String string)
+        => switch (string)
+        case ("true") true
+        case ("false") false
+        else ParseException("illegal format for Boolean");
