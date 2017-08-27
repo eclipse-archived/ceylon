@@ -423,13 +423,7 @@ public class ExpressionVisitor extends Visitor {
                     if (e!=null) {
                         Type it = e.getTypeModel();
                         if (it!=null) {
-                            if (!unit.isIterableType(it) &&
-                                    !unit.isJavaIterableType(it) && 
-                                    !unit.isJavaArrayType(it)) {
-                                se.addError("expression is not iterable: '" + 
-                                        it.asString(unit) + 
-                                        "' is not a subtype of 'Iterable'");
-                            }
+                            checkIterable(it, e);
                             that.setPossiblyEmpty(
                                     cc.getPossiblyEmpty() || 
                                     !unit.isNonemptyIterableType(it));
@@ -1143,10 +1137,8 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkIterable(Type pt, Tree.Primary p) {
-        if (!unit.isIterableType(pt)
-                && !unit.isJavaIterableType(pt)
-                && !unit.isJavaArrayType(pt)) {
-            p.addError("expression must be of iterable type: '" +
+        if (!unit.isContainerType(pt)) {
+            p.addError("expression is not iterable: '" +
                     pt.asString(unit) + 
                     "' is not a subtype of 'Iterable'");
         }
