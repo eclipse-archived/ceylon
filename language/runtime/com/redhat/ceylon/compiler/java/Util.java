@@ -45,7 +45,6 @@ import ceylon.language.meta.classDeclaration_;
 import ceylon.language.meta.typeLiteral_;
 import ceylon.language.meta.type_;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
-import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.Type;
 
