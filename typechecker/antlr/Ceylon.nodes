@@ -305,7 +305,8 @@
     boolean inherited;)
 
 ^(BASE_TYPE: SIMPLE_TYPE
-    boolean packageQualified;)
+    boolean packageQualified;
+    boolean outerQualified;)
 
 ^(QUALIFIED_TYPE: SIMPLE_TYPE
     STATIC_TYPE outerType)
@@ -358,6 +359,7 @@
     IDENTIFIER
     TYPE_ARGUMENT_LIST?
     boolean packageQualified;
+    boolean outerQualified;
     Reference target;)
 
 ^(CLASS_LITERAL:TYPE_LITERAL)

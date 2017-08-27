@@ -17,6 +17,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeForWrongBackend;
@@ -383,6 +384,13 @@ public class TypeVisitor extends Visitor {
             TypeDeclaration type; 
             if (that.getPackageQualified()) {
                 type = getPackageTypeDeclaration(name, 
+                        null, false, unit);
+            }
+            else if (that.getOuterQualified()) {
+                TypeDeclaration outerScope = 
+                        getOuterClassOrInterface(scope)
+                            .getDeclaration();
+                type = getTypeDeclaration(outerScope, name, 
                         null, false, unit);
             }
             else {

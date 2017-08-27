@@ -20,6 +20,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.setRestrictio
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getOuterClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
@@ -2897,15 +2898,27 @@ public abstract class DeclarationVisitor extends Visitor {
                     that.getTypeArgumentList();
             final boolean packageQualified = 
                     that.getPackageQualified();
+            final boolean outerQualified = 
+                    that.getOuterQualified();
             Type t = 
                     new LazyType(unit) {
                 @Override
                 public TypeDeclaration initDeclaration() {
-                    return packageQualified ?
-                            getPackageTypeDeclaration(name, 
-                                    null, false, unit) :
-                            getTypeDeclaration(scope, name, 
-                                    null, false, unit);
+                    if (packageQualified) {
+                        return getPackageTypeDeclaration(name, 
+                                null, false, unit);
+                    }
+                    else if (outerQualified) {
+                        TypeDeclaration outerScope = 
+                                getOuterClassOrInterface(scope)
+                                    .getDeclaration();
+                        return getTypeDeclaration(outerScope, name, 
+                                null, false, unit);
+                    }
+                    else {
+                        return getTypeDeclaration(scope, name, 
+                                null, false, unit);
+                    }
                 }
                 @Override
                 public Map<TypeParameter, Type> 

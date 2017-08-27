@@ -10492,6 +10492,7 @@ public class ExpressionVisitor extends Visitor {
         if (id!=null) {
             String name = name(id);
             Tree.StaticType type = that.getType();
+            Scope scope = that.getScope();
             if (type == null) {
                 TypedDeclaration result;
                 if (that.getPackageQualified()) {
@@ -10500,10 +10501,19 @@ public class ExpressionVisitor extends Visitor {
                                     name, 
                                     null, false, unit);
                 }
+                else if (that.getOuterQualified()) {
+                    Scope outerScope =
+                            getOuterClassOrInterface(scope)
+                                .getDeclaration();
+                    result = 
+                            getTypedDeclaration(
+                                    outerScope, name, 
+                                    null, false, unit);
+                }
                 else {
                     result = 
                             getTypedDeclaration(
-                                    that.getScope(), name, 
+                                    scope, name, 
                                     null, false, unit);
                 }
                 if (result!=null) {
@@ -10524,7 +10534,7 @@ public class ExpressionVisitor extends Visitor {
                 TypedDeclaration member = 
                         getTypedMember(qtd, name, 
                                 null, false, unit, 
-                                that.getScope());
+                                scope);
                 if (member==null) {
                     if (qtd.isMemberAmbiguous(name, unit, null, false)) {
                         that.addError("method or attribute is ambiguous: '" +

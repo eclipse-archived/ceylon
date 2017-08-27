@@ -3736,19 +3736,28 @@ primaryType returns [StaticType type]
 
 baseType returns [StaticType type]
     @init { BaseType pt = null; }
-    : 
-      tna1=typeNameWithArguments
+    : tna1=typeNameWithArguments
       { BaseType bt = new BaseType(null);
         bt.setIdentifier($tna1.identifier);
         if ($tna1.typeArgumentList!=null)
             bt.setTypeArgumentList($tna1.typeArgumentList);
         $type=bt; }
-    |
-      groupedType
+    | groupedType
       { $type=$groupedType.type; }
     | PACKAGE
       { pt = new BaseType($PACKAGE); 
         pt.setPackageQualified(true);
+        $type=pt; }
+      MEMBER_OP
+      { pt.setEndToken($MEMBER_OP); }
+      tna2=typeNameWithArguments
+      { pt.setEndToken(null);
+        pt.setIdentifier($tna2.identifier);
+        if ($tna2.typeArgumentList!=null)
+            pt.setTypeArgumentList($tna2.typeArgumentList); }
+    | OUTER
+      { pt = new BaseType($OUTER); 
+        pt.setOuterQualified(true);
         $type=pt; }
       MEMBER_OP
       { pt.setEndToken($MEMBER_OP); }
@@ -4682,6 +4691,7 @@ functionLiteral returns [FunctionLiteral literal]
         $literal.setIdentifier(bt.getIdentifier());
         $literal.setTypeArgumentList(bt.getTypeArgumentList());
         $literal.setPackageQualified(bt.getPackageQualified());
+        $literal.setOuterQualified(bt.getOuterQualified());
       }
     }
   ;
