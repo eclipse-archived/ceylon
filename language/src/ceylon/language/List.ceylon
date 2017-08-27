@@ -362,13 +362,11 @@ shared interface List<out Element=Anything>
     shared default 
     Boolean startsWith(List<> sublist) 
             => !shorterThan(sublist.size) 
-            && everyPair<Element,Anything>(
-                (first, second)
+            && everyPair(this,sublist)
+                ((first, second)
                     => if (exists first, exists second)
                         then first==second
-                        else first exists == second exists, 
-                this, 
-                sublist);
+                        else first exists == second exists);
     
     "Determine if the given [[list|sublist]] occurs at the 
      end of this list."
@@ -376,13 +374,12 @@ shared interface List<out Element=Anything>
     shared default 
     Boolean endsWith(List<> sublist)
             => !shorterThan(sublist.size) 
-            && everyPair<Element,Anything>(
-                (first, second)
+            && everyPair(skip(size-sublist.size), 
+                         sublist)
+                ((first, second)
                     => if (exists first, exists second)
                         then first==second
-                        else first exists == second exists, 
-                skip(size-sublist.size), 
-                sublist);
+                        else first exists == second exists);
     
     "The indexes in this list for which the element is not
      null and satisfies the given 

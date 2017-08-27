@@ -12,14 +12,14 @@
 tagged("Streams")
 aliased("iterate")
 since("1.1.0")
-shared {Element+} loop<Element>(
-        "The first element of the resulting stream."
-        Element first)(
-        "The function that produces the next element of the
-         stream, given the current element. The function may
-         return [[finished]] to indicate the end of the 
-         stream."
-        Element|Finished next(Element element))
+shared {Element+} loop<Element>
+        ("The first element of the resulting stream."
+         Element first)
+        ("The function that produces the next element of the
+          stream, given the current element. The function may
+          return [[finished]] to indicate the end of the 
+          stream."
+         Element|Finished next(Element element))
     => let (start = first)
     object satisfies {Element+} {
         first => start;
