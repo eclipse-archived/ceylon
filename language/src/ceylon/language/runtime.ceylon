@@ -144,16 +144,10 @@ shared native("js") object runtime  {
     shared native("js") String type => "js";
     shared native("js") String name {
         dynamic {
-            if (_process exists) {
-                return "node.js";
-            }
-            else if (navigator exists 
-                    && window exists) {
-                return "Browser";
-            }
-            else {
-                return "Unknown JavaScript environment";
-            }
+            return switch (String type = vmType)
+                case ("node") "node.js"
+                case ("browser") "Browser"
+                else "Unknown JavaScript environment";
         }
     }
     shared native("js") String version {

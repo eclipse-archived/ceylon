@@ -1,9 +1,16 @@
 //Some native stuff for process, runtime, operatingSystem, language
 
-_process = process;
+vmType = "unknown";
+
+if (typeof process !== "undefined") {
+	nodeProcess = process;
+	vmType = "node";
+}
 
 if (typeof navigator !== "undefined" 
 	&& typeof window !== "undefined") {
+	vmType = "browser";
+	browser = {};
 	
     if (navigator.languages
     		|| navigator.userLanguage
@@ -11,14 +18,21 @@ if (typeof navigator !== "undefined"
     		|| navigator.language) {
         // work around a cordova bug 
     	    // https://github.com/ceylon/ceylon/issues/6182
-    		_locale = navigator.languages 
+    		browser.locale 
+    				= navigator.languages 
     		       && navigator.languages[0];
-    		if (!_locale) {
-    			_locale = navigator.userLanguage 
+    		if (!browser.locale) {
+    			browser.locale 
+    					= navigator.userLanguage 
     			       || navigator.browserLanguage 
     			       || navigator.language;
         }
     }
     
+}
+
+//workaround for https://github.com/ceylon/ceylon/issues/7232
+if (typeof console == "undefined") {
+	console = {};
 }
 

@@ -143,7 +143,9 @@ shared native("jvm") object process {
                 return null;
             }
         }
-        return null;
+        else {
+            return null;
+        }
     }
     
     shared native("jvm") Boolean namedArgumentPresent(String name) {
@@ -173,139 +175,141 @@ shared native("jvm") object process {
     
 }
 
-native("js") class JsVmType {
-    shared new node {}
-    shared new browser {}
-    shared new unknown {}
-}
-
 shared native("js") object process {
     
-    JsVmType vmType;
-    dynamic {
-        if (_process exists) {
-            vmType = JsVmType.node;
-        }
-        else if (navigator exists 
-                 && window exists) {
-            vmType = JsVmType.browser;
-        }
-        else {
-            vmType = JsVmType.unknown;
-        }
-    }
-    
-    variable dynamic args;
-    variable dynamic namedArgs;
+    String type;
+    shared native("js") String[] arguments;
     
     dynamic {
-        args = dynamic [,];
-        namedArgs = dynamic [];
-        switch (vmType)
-        case (JsVmType.node) {
+        type = vmType;
+        switch (type)
+        case ("node") {
             // parse command line arguments
-            if (_process.args exists 
-                && _process.args.length >= 2) {
+            dynamic argv = nodeProcess.argv;
+            if (argv exists && argv.length >= 2) {
                 // Ignore the first two arguments 
                 // see https://github.com/ceylon/ceylon.language/issues/503
-                args = _process.args.slice(2);
-                variable value i = 0;
-                while (i<args.length) {
-                    variable dynamic arg = args[i];
-                    if (arg.charAt(0) == '-') {
-                        variable value pos = 1;
-                        if (arg.charAt(1) == '-') { 
-                            pos = 2; 
-                        }
-                        arg = arg.substr(pos);
-                        pos = arg.indexOf('=');
-                        if (pos >= 0) {
-                            namedArgs[arg.substr(0, pos)] 
-                                    = arg.substr(pos+1);
-                        } else {
-                            value next = _argv[i+1];
-                            if (exists next, 
-                                next.charAt(0) != '-') {
-                                namedArgs[arg] = next;
-                                ++i;
-                            } else {
-                                namedArgs[arg] = null;
-                            }
-                        }
-                    }
-                }
+                arguments = (2:argv.length)
+                        .collect((i) { 
+                    String part = argv[i]; 
+                    return part; 
+                });
+            }
+            else {
+                arguments = [];
             }
         }
-        case (JsVmType.browser) {
+        case ("browser") {
             // parse URL parameters
-            dynamic parts 
-                    = window.location.search
-                    .substr(1)
-                    .replace('+', ' ')
-                    .split('&');
-            if (parts.length > 1 
-                || parts.length > 0 
-                    && parts[0].length > 0) {
-                for (i in 0:parts.length) {
-                    dynamic part = parts[i];
-                    args[i] = part;
-                    dynamic pos = part.indexOf('=');
-                    if (pos >= 0) {
-                        dynamic next = decodeURIComponent(part.substr(pos+1));
-                        namedArgs[part.substr(0, pos)] = next;
-                    } else {
-                        namedArgs[part] = null;
-                    }
-                }
+            String search 
+                    = window.location.search;
+            value bits 
+                    = search.rest
+                    .replace("+"," ")
+                    .split('&'.equals)
+                    .sequence();
+            if (bits.longerThan(1)
+                || !bits[0].empty) {
+                arguments = bits;
+            }
+            else {
+                arguments = [];
             }
         }
-        else {}
-    }
-    
-    shared native("js") String[] arguments {
-        dynamic {
-            return (0:args.length).collect(Object.string);
+        else {
+            arguments = [];
         }
     }
-    
+        
     shared native("js") String? namedArgumentValue(String name) {
-        dynamic {
-            return if (name.empty) then null 
-                else namedArgs[name]?.string;
+        if (name.empty) {
+            return null;
+        }
+        for (i in 0:arguments.size) {
+            assert (exists arg = arguments[i]);
+            switch (type)
+            case ("node") {
+                if (arg.startsWith("-``name``=") || 
+                    arg.startsWith("--``name``=")) {
+                    return arg[arg.indexOf("=")+1...];
+                }
+                if (arg == "-" + name || 
+                    arg == "--" + name) {
+                    if (exists next = arguments[i+1], 
+                        !next.startsWith("-")) {
+                        return next;
+                    }
+                    return null;
+                }
+            }
+            case ("browser") {
+                if (arg.startsWith(name + "=")) {
+                    value rest = arg[name.size+1...];
+                    dynamic {
+                        return decodeURIComponent(rest).string;
+                    }
+                } else if (arg == name) {
+                    return null;
+                }
+            }
+            else {}
+        }
+        else {
+            return null;
         }
     }
     
     shared native("js") Boolean namedArgumentPresent(String name) {
-        dynamic {
-            return if (name.empty) then false 
-                else namedArgs[name] exists;
+        if (name.empty) {
+            return false;
+        }
+        for (arg in arguments) {
+            switch (type)
+            case ("node") {
+                if (arg.startsWith("-``name``=") || 
+                    arg.startsWith("--``name``=") || 
+                        arg == "-" + name || 
+                        arg == "--" + name) {
+                    return true;
+                }
+            }
+            case ("browser") {
+                if (arg.startsWith(name + "=") ||
+                    arg == name) {
+                    return true;
+                }
+            }
+            else {}
+        }
+        else {
+            return false;
         }
     }
     
     shared native("js") String? propertyValue(String name) {
         dynamic {
-            switch (vmType)
-            case (JsVmType.node) {
+            switch (type)
+            case ("node") {
                 switch (name)
                 case ("os.name") {
-                    if (exists platform = _process.platform) {
+                    if (exists platform = nodeProcess.platform) {
                         return platform;
                     }
                 }
                 case ("os.arch") {
-                    if (exists arch = _process.arch) {
+                    if (exists arch = nodeProcess.arch) {
                         return arch;
                     }
                 }
                 case ("node.version") {
-                    if (exists versions = _process.versions,
+                    if (exists versions = nodeProcess.versions,
                         exists version = versions.node) {
                         return version;
                     }
                 }
                 else {}
             }
-            case (JsVmType.browser) {
+            case ("browser") {
                 switch (name)
                 case ("os.name") {
                     if (exists platform = navigator.platform) {
@@ -323,8 +327,8 @@ shared native("js") object process {
                     }
                 }
                 case ("user.locale") {
-                    if (exists _locale) {
-                        return _locale;
+                    if (exists locale = browser.locale) {
+                        return locale;
                     }
                 }
                 else {}
@@ -360,21 +364,26 @@ shared native("js") object process {
     
     shared native("js") String? environmentVariableValue(String name) {
         dynamic {
-            return if (vmType==JsVmType.node, _process.env exists)
-                then _process.env[name]?.string else null;
+            if (type=="node", 
+                exists env = nodeProcess.env,
+                exists val = env[name]) {
+                return val;
+            }
+            else {
+                return null;
+            }
         }
     }
     
     shared native("js") void write(String string); 
     dynamic {
-        if (vmType==JsVmType.node
-            && _process.stdout exists) {
+        if (type=="node"
+            && nodeProcess.stdout exists) {
             write = (dynamic s) {
-                _process.stdout.write(s.valueOf());
+                nodeProcess.stdout.write(s.valueOf());
             };
         }
-        else if (console exists 
-                && console.log exists) {
+        else if (console.log exists) {
             value buffer = StringBuilder();
             write = (String str) {
                 buffer.append(str);
@@ -391,14 +400,13 @@ shared native("js") object process {
     
     shared native("js") void writeError(String string);
     dynamic {
-        if (vmType==JsVmType.node
-            && _process.stderr exists) {
+        if (type=="node"
+            && nodeProcess.stderr exists) {
             writeError = (dynamic s) {
-                _process.stderr.write(s.valueOf());
+                nodeProcess.stderr.write(s.valueOf());
             };
         }
-        else if (console exists 
-                && console.error exists) {
+        else if (console.error exists) {
             value buffer = StringBuilder();
             writeError = (String str) {
                 buffer.append(str);
@@ -417,9 +425,9 @@ shared native("js") object process {
     
     shared native("js") Nothing exit(Integer code) {
         dynamic {
-            if (vmType==JsVmType.node 
-                && _process.exit exists) {
-                _process.exit(code);
+            if (type=="node" 
+                && nodeProcess.exit exists) {
+                nodeProcess.exit(code);
             }
         }
         return nothing;
