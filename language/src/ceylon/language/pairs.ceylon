@@ -175,3 +175,22 @@ shared Result foldPairs<Result,First,Second>
     }
     return partial;
 }
+
+"Given two streams, call the given function for each
+ corresponding pair of elements. If one of the streams 
+ is longer than the other, simply ignore additional 
+ elements of the longer stream with no pair in the other 
+ stream."
+tagged("Streams")
+since("1.4.0")
+shared void eachPair<First,Second>
+        ({First*} firstIterable, {Second*} secondIterable)
+        ("Function called for each pair of elements."
+        void step(First first, Second second)) {
+    value firstIter = firstIterable.iterator();
+    value secondIter = secondIterable.iterator();
+    while (!is Finished first = firstIter.next(),
+           !is Finished second = secondIter.next()) {
+        step(first,second);
+    }
+}
