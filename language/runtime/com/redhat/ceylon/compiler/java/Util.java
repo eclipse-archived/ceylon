@@ -1008,6 +1008,16 @@ public class Util {
         return t;
     }
     
+    private static String[] args = new String[0];
+    
+    public static void storeArgs(String[] args) {
+        Util.args = args;
+    }
+    
+    public static String[] getArgs() {
+        return args;
+    }
+    
     /** 
      * Generates a default message for when a Throwable lacks a non-null 
      * message of its own. This can only happen for non-Ceylon throwable types, 

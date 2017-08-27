@@ -70,6 +70,109 @@ shared native object process {
      exit code."
     shared native Nothing exit(Integer code);
     
-    string => "process";
+    shared actual String string => "process";
+    
+}
+
+shared native("jvm") object process {
+    import java.lang {
+        System {
+            output = \iout,
+            input = \iin,
+            error = err
+        }
+    }
+    import java.io {
+        BufferedReader,
+        InputStreamReader,
+        IOException
+    }
+    import com.redhat.ceylon.compiler.java {
+        Util
+    }
+    
+    shared native("jvm") String[] arguments 
+            => [for (arg in Util.args) arg.string];
+    
+    shared native("jvm") void write(String string) 
+            => output.print(string);
+    
+    shared native("jvm") void writeError(String string) 
+            => error.print(string);
+    
+    shared native("jvm") void flush() => output.flush();
+    
+    shared native("jvm") void flushError() => error.flush();
+    
+    late value stdinReader 
+            = BufferedReader(InputStreamReader(input));
+    
+    shared native("jvm") String? readLine() {
+        try {
+            return stdinReader.readLine();
+        } 
+        catch (IOException e) {
+            throw Exception("could not read line from standard input", e);
+        }
+    }
+    
+    shared native("jvm") Nothing exit(Integer code) {
+        System.exit(code);
+        return nothing;
+    }
+    
+    shared native("jvm") String? namedArgumentValue(String name) {
+        if (name.empty) {
+            return null;
+        }
+        value args = Util.args;
+        for (i in 0:args.size) {
+            value arg = args.get(i);
+            if (arg.startsWith("-``name``=") || 
+                arg.startsWith("--``name``=")) {
+                return arg.substring(arg.indexOf("=")+1).string;
+            }
+            if (arg.string == "-" + name || 
+                arg.string == "--" + name) {
+                if (i+1 < args.size) {
+                    value next = args.get(i+1);
+                    if (!next.startsWith("-")) {
+                        return next.string;
+                    }
+                }
+                return null;
+            }
+        }
+        return null;
+    }
+    
+    shared native("jvm") Boolean namedArgumentPresent(String name) {
+        if (name.empty) {
+            return false;
+        }
+        for (arg in Util.args) {
+            if (arg.startsWith("-``name``=") || 
+                arg.startsWith("--``name``=") || 
+                    arg.string == "-" + name || 
+                    arg.string == "--" + name) {
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    
+    shared native("jvm") String? propertyValue(String name) 
+            => if (name.empty) then null 
+            else System.getProperty(name);
+
+    shared native("jvm") String? environmentVariableValue(String name) 
+            => if (name.empty) then null 
+            else System.getenv(name);
+    
+}
+
+shared native("js") object process {
     
 }

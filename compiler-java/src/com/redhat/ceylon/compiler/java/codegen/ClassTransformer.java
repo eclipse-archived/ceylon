@@ -83,7 +83,6 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCFieldAccess;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIdent;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCNewClass;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCPrimitiveTypeTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCReturn;
@@ -5878,10 +5877,8 @@ public class ClassTransformer extends AbstractTransformer {
         MethodDefinitionBuilder methbuilder = MethodDefinitionBuilder
                 .main(this)
                 .ignoreModelAnnotations();
-        // Add call to process.setupArguments
-        JCExpression argsId = makeUnquotedIdent("args");
-        JCMethodInvocation processExpr = make().Apply(null, naming.makeLanguageValue("process"), List.<JCTree.JCExpression>nil());
-        methbuilder.body(make().Exec(make().Apply(null, makeSelect(processExpr, "setupArguments"), List.<JCTree.JCExpression>of(argsId))));
+        // Add call to Util.storeArgs
+        methbuilder.body(make().Exec(utilInvocation().storeArgs(makeUnquotedIdent("args"))));
         // Add call to toplevel method
         methbuilder.body(make().Exec(callee));
         return methbuilder;

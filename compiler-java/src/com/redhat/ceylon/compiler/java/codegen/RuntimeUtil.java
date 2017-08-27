@@ -121,6 +121,10 @@ class RuntimeUtil {
         return makeUtilInvocation(null, "checkNull", List.of(expr));
     }
 
+    public JCExpression storeArgs(JCExpression expr) {
+        return makeUtilInvocation(null, "storeArgs", List.of(expr));
+    }
+
     /**
      * Makes a call to 
      * {@code Util.sequentialCopy($reifiedT, Object[] initial, Sequential rest)} 
