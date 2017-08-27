@@ -577,6 +577,11 @@ public class RefinementVisitor extends Visitor {
             that.addError("native header is variable: " +
                     message(dec));
         }
+        if (that instanceof Tree.ObjectDefinition) {
+            checkMissingMemberImpl(that, 
+                    (Class) dec.getTypeDeclaration(), 
+                    (Class) header.getTypeDeclaration());
+        }
     }
     
     private boolean sameObjects(Value dec, Value header) {
