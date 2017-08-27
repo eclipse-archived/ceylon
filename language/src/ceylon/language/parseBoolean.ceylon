@@ -4,10 +4,10 @@
  
  Recognized values are `\"true\"`, `\"false\"`."
 tagged("Basic types")
-deprecated("Use [[Boolean.parse]]")
 see (function Boolean.parse)
-shared Boolean? parseBoolean(String string) 
-        => switch (string)
-        case ("true") true
-        case ("false") false
+shared Boolean? parseBoolean(String? string) 
+        => if (exists string,
+               is Boolean result
+                   = Boolean.parse(string))
+        then result
         else null;

@@ -14,7 +14,9 @@ shared native abstract class Boolean
     tagged("Basic types")
     since("1.3.1")
     shared static Boolean|ParseException parse(String string)
-            => parseBoolean(string) 
+            => switch (string)
+            case ("true") true
+            case ("false") false
             else ParseException("illegal format for Boolean");
     
     shared new () {}
