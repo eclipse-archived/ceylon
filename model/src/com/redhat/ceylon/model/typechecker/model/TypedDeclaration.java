@@ -42,14 +42,9 @@ public abstract class TypedDeclaration
             flags&=(~DYNAMICALLY_TYPED);
         }
     }
-        
+
     public TypeDeclaration getTypeDeclaration() {
-    	if (type==null) {
-    	    return null;
-    	}
-    	else {
-            return type.getDeclaration();
-    	}
+        return type==null ? null : type.getDeclaration();
     }
     
     @Override
