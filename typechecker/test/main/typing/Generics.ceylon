@@ -549,8 +549,8 @@ class Generics() {
         return iterable.coalesced;
     }
 	    
-    $type:"Iterable<String,Null>" coalesce{null, "hello"};
-    $type:"Sequential<String>" concatenate({}, {"hello", "world"}, {"goodbye"});
+    $type:"{String*}" coalesce{null, "hello"};
+    $type:"[String+]|[]" concatenate({}, {"hello", "world"}, {"goodbye"});
     
     class ParamOuter<T>() {
         class Inner<Y>(){

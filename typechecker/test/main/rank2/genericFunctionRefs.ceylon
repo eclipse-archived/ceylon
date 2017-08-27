@@ -181,11 +181,11 @@ void moreRefPassing() {
 
 void moreTypeArgInference() {
     value conc = concatenate;
-    $type:"Sequential<Integer|String|Float>" 
+    $type:"[Integer|String|Float+]|[]" 
     value stream1 = conc({1,2}, {""}, {0.0}, {});
-    $type:"Sequential<Integer|String>"
+    $type:"[Integer|String+]"
     value stream2 = conc(for (s in {{1,2}, {""}}) s);
-    $type:"Sequential<String>"
+    $type:"[String+]"
     value stream3 = conc(for (s in {{1,2}, {""}}) s*.string);
     value add = plus;
     $type:"Float" value sum1 = add(*[1.0,2.0]);
