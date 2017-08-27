@@ -144,11 +144,11 @@ shared native("js") object runtime  {
     shared native("js") String type => "js";
     shared native("js") String name {
         dynamic {
-            if (is String version 
-                = process.propertyValue("node.version")) {
+            if (_process exists) {
                 return "node.js";
             }
-            else if (exists window) {
+            else if (navigator exists 
+                    && window exists) {
                 return "Browser";
             }
             else {
@@ -158,11 +158,11 @@ shared native("js") object runtime  {
     }
     shared native("js") String version {
         dynamic { 
-            if (is String version 
+            if (exists version 
                 = process.propertyValue("node.version")) {
                 return version;
             }
-            else if (is String version 
+            else if (exists version 
                 = process.propertyValue("browser.version")) {
                 return version;
             }

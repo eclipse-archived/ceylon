@@ -2,6 +2,8 @@ import ceylon.language.meta { modules }
 
 @test
 shared void testResources() {
+    print(runtime.name);
+    print(operatingSystem.fileSeparator);
     assert(exists mod = modules.find("default","unversioned"));
     value res1 = mod.resourceByPath("resource.txt");
     value res2 = mod.resourceByPath("/resource.txt");

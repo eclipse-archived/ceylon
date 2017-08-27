@@ -1,5 +1,6 @@
 function(_path) {
-  var isdefmod=this.name==='default' && this.version==='unversioned';
+  var isdefmod = this.name==='default' 
+	          && this.version==='unversioned';
   var mpath;
   if (isdefmod) {
     mpath = this.name;

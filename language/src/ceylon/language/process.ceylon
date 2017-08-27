@@ -173,52 +173,208 @@ shared native("jvm") object process {
     
 }
 
+native("js") class JsVmType {
+    shared new node {}
+    shared new browser {}
+    shared new unknown {}
+}
+
 shared native("js") object process {
+    
+    JsVmType vmType;
+    dynamic {
+        if (_process exists) {
+            vmType = JsVmType.node;
+        }
+        else if (navigator exists 
+                 && window exists) {
+            vmType = JsVmType.browser;
+        }
+        else {
+            vmType = JsVmType.unknown;
+        }
+    }
+    
+    variable dynamic args;
+    variable dynamic namedArgs;
+    
+    dynamic {
+        args = dynamic [,];
+        namedArgs = dynamic [];
+        switch (vmType)
+        case (JsVmType.node) {
+            // parse command line arguments
+            if (_process.args exists 
+                && _process.args.length >= 2) {
+                // Ignore the first two arguments 
+                // see https://github.com/ceylon/ceylon.language/issues/503
+                args = _process.args.slice(2);
+                variable value i = 0;
+                while (i<args.length) {
+                    variable dynamic arg = args[i];
+                    if (arg.charAt(0) == '-') {
+                        variable value pos = 1;
+                        if (arg.charAt(1) == '-') { 
+                            pos = 2; 
+                        }
+                        arg = arg.substr(pos);
+                        pos = arg.indexOf('=');
+                        if (pos >= 0) {
+                            namedArgs[arg.substr(0, pos)] 
+                                    = arg.substr(pos+1);
+                        } else {
+                            value next = _argv[i+1];
+                            if (exists next, 
+                                next.charAt(0) != '-') {
+                                namedArgs[arg] = next;
+                                ++i;
+                            } else {
+                                namedArgs[arg] = null;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        case (JsVmType.browser) {
+            // parse URL parameters
+            dynamic parts 
+                    = window.location.search
+                    .substr(1)
+                    .replace('+', ' ')
+                    .split('&');
+            if (parts.length > 1 
+                || parts.length > 0 
+                    && parts[0].length > 0) {
+                for (i in 0:parts.length) {
+                    dynamic part = parts[i];
+                    args[i] = part;
+                    dynamic pos = part.indexOf('=');
+                    if (pos >= 0) {
+                        dynamic next = decodeURIComponent(part.substr(pos+1));
+                        namedArgs[part.substr(0, pos)] = next;
+                    } else {
+                        namedArgs[part] = null;
+                    }
+                }
+            }
+        }
+        else {}
+    }
     
     shared native("js") String[] arguments {
         dynamic {
-            return (0:_argv.length).collect(Object.string);
+            return (0:args.length).collect(Object.string);
         }
     }
     
     shared native("js") String? namedArgumentValue(String name) {
         dynamic {
             return if (name.empty) then null 
-                else _namedArgs[name]?.string;
+                else namedArgs[name]?.string;
         }
     }
     
     shared native("js") Boolean namedArgumentPresent(String name) {
         dynamic {
             return if (name.empty) then false 
-                else _namedArgs[name] exists;
+                else namedArgs[name] exists;
         }
     }
     
     shared native("js") String? propertyValue(String name) {
         dynamic {
-            return if (name.empty) then null 
-                else _properties[name]?.string;
+            switch (vmType)
+            case (JsVmType.node) {
+                switch (name)
+                case ("os.name") {
+                    if (exists platform = _process.platform) {
+                        return platform;
+                    }
+                }
+                case ("os.arch") {
+                    if (exists arch = _process.arch) {
+                        return arch;
+                    }
+                }
+                case ("node.version") {
+                    if (exists versions = _process.versions,
+                        exists version = versions.node) {
+                        return version;
+                    }
+                }
+                else {}
+            }
+            case (JsVmType.browser) {
+                switch (name)
+                case ("os.name") {
+                    if (exists platform = navigator.platform) {
+                        return platform;
+                    }
+                }
+                case ("browser.version") {
+                    if (exists version = navigator.appVersion) {
+                        return version;
+                    }
+                }
+                case ("user.language") {
+                    if (exists lang = navigator.language) {
+                        return lang;
+                    }
+                }
+                case ("user.locale") {
+                    if (exists _locale) {
+                        return _locale;
+                    }
+                }
+                else {}
+            }
+            else {}
+            
+            value windows
+                    => if (exists os = propertyValue("os.name"))
+                    then os.lowercased.contains("win")
+                      && !os.lowercased.contains("darwin")
+                    else false;
+            
+            switch (name)
+            case ("file.encoding") {
+                if (exists document, 
+                    exists charset = document.defaultCharset) {
+                    return charset;
+                }
+            }
+            case ("line.separator") {
+                return windows then "\r\n" else "\n";
+            }
+            case ("file.separator") {
+                return windows then "\\" else "/";
+            }
+            case ("path.separator") {
+                return windows then ";" else ":";
+            }
+            else {}
+            return null;
         }
     }
     
-    value node = propertyValue("node.version") exists;
-    
     shared native("js") String? environmentVariableValue(String name) {
         dynamic {
-            return if (node, _process.env exists)
+            return if (vmType==JsVmType.node, _process.env exists)
                 then _process.env[name]?.string else null;
         }
     }
     
     shared native("js") void write(String string); 
     dynamic {
-        if (node && _process.stdout exists) {
+        if (vmType==JsVmType.node
+            && _process.stdout exists) {
             write = (dynamic s) {
                 _process.stdout.write(s.valueOf());
             };
         }
-        else if (console exists && console.log exists) {
+        else if (console exists 
+                && console.log exists) {
             value buffer = StringBuilder();
             write = (String str) {
                 buffer.append(str);
@@ -233,14 +389,16 @@ shared native("js") object process {
         }
     }
     
-    shared native("js") void writeError(String string); 
+    shared native("js") void writeError(String string);
     dynamic {
-        if (node && _process.stderr exists) {
+        if (vmType==JsVmType.node
+            && _process.stderr exists) {
             writeError = (dynamic s) {
                 _process.stderr.write(s.valueOf());
             };
         }
-        else if (console exists && console.error exists) {
+        else if (console exists 
+                && console.error exists) {
             value buffer = StringBuilder();
             writeError = (String str) {
                 buffer.append(str);
@@ -251,7 +409,7 @@ shared native("js") object process {
             };
         }
         else {
-            writeError = write;
+            writeError = (String s) {};
         }
     }
     
@@ -259,7 +417,8 @@ shared native("js") object process {
     
     shared native("js") Nothing exit(Integer code) {
         dynamic {
-            if (node && _process.exit exists) {
+            if (vmType==JsVmType.node 
+                && _process.exit exists) {
                 _process.exit(code);
             }
         }
