@@ -189,11 +189,12 @@ shared native("js") object process {
             if (argv exists && argv.length >= 2) {
                 // Ignore the first two arguments 
                 // see https://github.com/ceylon/ceylon.language/issues/503
-                arguments = (2:argv.length)
-                        .collect((i) { 
-                    String part = argv[i]; 
-                    return part; 
-                });
+                arguments 
+                    = (0:argv.length)
+                        .skip(2)
+                        .collect((i) 
+                            => let (String arg = argv[i]) 
+                                    arg);
             }
             else {
                 arguments = [];
@@ -205,9 +206,9 @@ shared native("js") object process {
                     = window.location.search;
             value bits 
                     = search.rest
-                    .replace("+"," ")
-                    .split('&'.equals)
-                    .sequence();
+                        .replace("+"," ")
+                        .split('&'.equals)
+                        .sequence();
             if (bits.longerThan(1)
                 || !bits[0].empty) {
                 arguments = bits;
