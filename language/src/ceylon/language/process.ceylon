@@ -72,6 +72,50 @@ shared native object process {
     
     shared actual String string => "process";
     
+    String? namedArgumentValueInternal(String name) {
+        if (name.empty) {
+            return null;
+        }
+        value args = arguments;
+        for (i in 0:args.size) {
+            assert (exists arg = args[i]);
+            if (arg.startsWith("-``name``=")) {
+                return arg.removeInitial("-``name``=");
+            }
+            if (arg.startsWith("--``name``=")) {
+                return arg.removeInitial("--``name``=");
+            }
+            if (arg == "-" + name || 
+                arg == "--" + name) {
+                return 
+                if (exists next = args[i+1],
+                    !next.startsWith("-"))
+                then next
+                else null;
+            }
+        }
+        else {
+            return null;
+        }
+    }
+    
+    Boolean namedArgumentPresentInternal(String name) {
+        if (name.empty) {
+            return false;
+        }
+        for (arg in arguments) {
+            if (arg.startsWith("-``name``=") || 
+                arg.startsWith("--``name``=") || 
+                    arg == "-" + name || 
+                    arg == "--" + name) {
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    
 }
 
 shared native("jvm") object process {
@@ -121,49 +165,11 @@ shared native("jvm") object process {
         return nothing;
     }
     
-    shared native("jvm") String? namedArgumentValue(String name) {
-        if (name.empty) {
-            return null;
-        }
-        value args = Util.args;
-        for (i in 0:args.size) {
-            value arg = args.get(i);
-            if (arg.startsWith("-``name``=") || 
-                arg.startsWith("--``name``=")) {
-                return arg.substring(arg.indexOf("=")+1).string;
-            }
-            if (arg.string == "-" + name || 
-                arg.string == "--" + name) {
-                if (i+1 < args.size) {
-                    value next = args.get(i+1);
-                    if (!next.startsWith("-")) {
-                        return next.string;
-                    }
-                }
-                return null;
-            }
-        }
-        else {
-            return null;
-        }
-    }
+    shared native("jvm") String? namedArgumentValue(String name)
+            => namedArgumentValueInternal(name);
     
-    shared native("jvm") Boolean namedArgumentPresent(String name) {
-        if (name.empty) {
-            return false;
-        }
-        for (arg in Util.args) {
-            if (arg.startsWith("-``name``=") || 
-                arg.startsWith("--``name``=") || 
-                    arg.string == "-" + name || 
-                    arg.string == "--" + name) {
-                return true;
-            }
-        }
-        else {
-            return false;
-        }
-    }
+    shared native("jvm") Boolean namedArgumentPresent(String name)
+            => namedArgumentPresentInternal(name);
     
     shared native("jvm") String? propertyValue(String name) 
             => if (name.empty) then null 
@@ -187,8 +193,7 @@ shared native("js") object process {
             // parse command line arguments
             dynamic argv = nodeProcess.argv;
             if (argv exists && argv.length >= 2) {
-                // Ignore the first two arguments 
-                // see https://github.com/ceylon/ceylon.language/issues/503
+                // ignore the first two arguments 
                 arguments 
                     = (0:argv.length)
                         .skip(2)
@@ -222,75 +227,73 @@ shared native("js") object process {
         }
     }
         
-    shared native("js") String? namedArgumentValue(String name) {
-        if (name.empty) {
-            return null;
+    shared native("js") String? namedArgumentValue(String name);
+    dynamic {
+        switch (type)
+        case ("node") {
+            namedArgumentValue 
+                    = namedArgumentValueInternal;
         }
-        for (i in 0:arguments.size) {
-            assert (exists arg = arguments[i]);
-            switch (type)
-            case ("node") {
-                if (arg.startsWith("-``name``=") || 
-                    arg.startsWith("--``name``=")) {
-                    return arg[arg.indexOf("=")+1...];
-                }
-                if (arg == "-" + name || 
-                    arg == "--" + name) {
-                    if (exists next = arguments[i+1], 
-                        !next.startsWith("-")) {
-                        return next;
-                    }
+        case ("browser") {
+            namedArgumentValue = (String name) {
+                if (name.empty) {
                     return null;
                 }
-            }
-            case ("browser") {
-                if (arg.startsWith(name + "=")) {
-                    value rest = arg[name.size+1...];
-                    dynamic {
-                        return decodeURIComponent(rest).string;
+                for (i in 0:arguments.size) {
+                    assert (exists arg = arguments[i]);
+                    if (arg.startsWith(name + "=")) {
+                        value rest = arg[name.size+1...];
+                        dynamic {
+                            return decodeURIComponent(rest).string;
+                        }
                     }
-                } else if (arg == name) {
+                    if (arg == name) {
+                        return null;
+                    }
+                }
+                else {
                     return null;
                 }
-            }
-            else {}
+            };
         }
         else {
-            return null;
+            namedArgumentValue(String name) => null;
         }
     }
     
-    shared native("js") Boolean namedArgumentPresent(String name) {
-        if (name.empty) {
-            return false;
+    shared native("js") Boolean namedArgumentPresent(String name);
+    dynamic {
+        switch (type)
+        case ("node") {
+            namedArgumentPresent 
+                    = namedArgumentPresentInternal;
         }
-        for (arg in arguments) {
-            switch (type)
-            case ("node") {
-                if (arg.startsWith("-``name``=") || 
-                    arg.startsWith("--``name``=") || 
-                        arg == "-" + name || 
-                        arg == "--" + name) {
-                    return true;
+        case ("browser") {
+            namedArgumentPresent = (String name) {
+                if (name.empty) {
+                    return false;
                 }
-            }
-            case ("browser") {
-                if (arg.startsWith(name + "=") ||
-                    arg == name) {
-                    return true;
+                for (arg in arguments) {
+                    if (arg.startsWith(name + "=") ||
+                        arg == name) {
+                        return true;
+                    }
                 }
-            }
-            else {}
+                else {
+                    return false;
+                }
+            };
         }
         else {
-            return false;
+            namedArgumentPresent(String name) => false;
         }
     }
     
-    shared native("js") String? propertyValue(String name) {
-        dynamic {
-            switch (type)
-            case ("node") {
+    String? platformPropertyValue(String name);
+    dynamic {
+        switch (type)
+        case ("node") {
+            platformPropertyValue = (String name) {
                 switch (name)
                 case ("os.name") {
                     if (exists platform = nodeProcess.platform) {
@@ -309,8 +312,11 @@ shared native("js") object process {
                     }
                 }
                 else {}
-            }
-            case ("browser") {
+                return null;
+            };
+        }
+        case ("browser") {
+            platformPropertyValue = (String name) {
                 switch (name)
                 case ("os.name") {
                     if (exists platform = navigator.platform) {
@@ -332,47 +338,47 @@ shared native("js") object process {
                         return locale;
                     }
                 }
-                else {}
-            }
-            else {}
-            
-            value windows
-                    => if (exists os = propertyValue("os.name"))
-                    then os.lowercased.contains("win")
-                      && !os.lowercased.contains("darwin")
-                    else false;
-            
-            switch (name)
-            case ("file.encoding") {
-                if (exists document, 
-                    exists charset = document.defaultCharset) {
-                    return charset;
+                case ("file.encoding") {
+                    if (exists charset = document.characterSet) {
+                        return charset;
+                    }
                 }
-            }
-            case ("line.separator") {
-                return windows then "\r\n" else "\n";
-            }
-            case ("file.separator") {
-                return windows then "\\" else "/";
-            }
-            case ("path.separator") {
-                return windows then ";" else ":";
-            }
-            else {}
-            return null;
+                else {}
+                return null;
+            };
+        }
+        else {
+            platformPropertyValue(String name)
+                    => null;
         }
     }
     
-    shared native("js") String? environmentVariableValue(String name) {
-        dynamic {
-            if (type=="node", 
-                exists env = nodeProcess.env,
-                exists val = env[name]) {
-                return val;
-            }
-            else {
-                return null;
-            }
+    value windows
+            => if (exists os = platformPropertyValue("os.name"))
+            then os.lowercased.contains("win")
+             && !os.lowercased.contains("darwin")
+            else false;
+    
+    shared native("js") String? propertyValue(String name) {
+        dynamic {            
+            return switch (name)
+                case ("line.separator") (windows then "\r\n" else "\n")
+                case ("file.separator") (windows then "\\" else "/")
+                case ("path.separator") (windows then ";" else ":")
+                else platformPropertyValue(name);
+        }
+    }
+    
+    shared native("js") String? environmentVariableValue(String name);
+    dynamic {
+        if (type=="node" 
+            && nodeProcess.env exists) {
+            environmentVariableValue(String name) 
+                    => nodeProcess.env[name];
+        }
+        else {
+            environmentVariableValue(String name) 
+                    => null;
         }
     }
     
