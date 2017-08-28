@@ -8594,17 +8594,25 @@ public class ExpressionVisitor extends Visitor {
         Tree.Variable var = that.getVariable();
         if (var!=null) {
             Tree.Type vt = var.getType();
+            Type et = unit.getExceptionType();
             if (vt instanceof Tree.LocalModifier) {
-                Type et = unit.getExceptionType();
                 vt.setTypeModel(et);
                 var.getDeclarationModel().setType(et);
             }
             else {
-                Type et = vt.getTypeModel();
-                if (!isTypeUnknown(et)) {
+                Type t = vt.getTypeModel();
+                if (!isTypeUnknown(t)) {
                     Type tt = unit.getThrowableType();
-                    checkAssignable(et, tt, vt, 
+                    checkAssignable(t, tt, vt, 
                             "catch type must be a throwable type");
+                    if (!vt.hasErrors()) {
+                        if (!t.isSubtypeOf(et)) {
+                            vt.addUsageWarning(Warning.catchType, 
+                                    "discouraged 'catch' type: " 
+                                    + et.asString(unit) 
+                                    + " is not a subtype of 'Exception'");
+                        }
+                    }
                 }
             }
         }
