@@ -2097,7 +2097,7 @@ public class GenerateJsVisitor extends Visitor {
                 Function fd = (Function)d;
                 if (fd.getTypeDeclaration() instanceof Constructor) {
                     that.getPrimary().visit(this);
-                    out(names.constructorSeparator(fd), names.name(fd));
+                    out(names.constructorSeparator(fd), names.name(fd.getTypeDeclaration()));
                 } else if (fd.isStatic()) {
                     BmeGenerator.generateStaticReference(that, fd, this);
                 } else {
