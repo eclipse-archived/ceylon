@@ -1494,17 +1494,15 @@ public class ExpressionVisitor extends Visitor {
                 Tree.StaticMemberOrTypeExpression smte = 
                         (Tree.StaticMemberOrTypeExpression) me;
                 smte.setDeclaration(d);
-            }
-            else if (d instanceof FunctionOrValue) {
+            } 
+            else if (d instanceof FunctionOrValue 
+                    && !lhs.hasErrors()) {
                 FunctionOrValue mv = (FunctionOrValue) d;
                 if (mv.isShortcutRefinement()) {
-                    String desc;
-                    if (d instanceof Value) {
-                        desc = "value";
-                    }
-                    else {
-                        desc = "function";
-                    }
+                    String desc = 
+                            d instanceof Value ? 
+                                "value" : 
+                                "function";
                     me.addError(desc + 
                             " already specified by shortcut refinement: '" + 
                             d.getName(unit) + "'");
@@ -1516,12 +1514,9 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else if (!mv.isVariable() && !mv.isLate()) {
                     String desc;
-                    if (d instanceof Value) {
-                        desc = "value is neither variable nor late and";
-                    }
-                    else {
-                        desc = "function";
-                    }
+                    desc = d instanceof Value ? 
+                            "value is neither variable nor late and" : 
+                            "function";
                     if (mv.isToplevel()) {
                         me.addError("toplevel " + desc + 
                                 " may not be specified: '" + 

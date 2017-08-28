@@ -57,6 +57,7 @@ public class SelfReferenceVisitor extends Visitor {
 
     private void visitExtendedType(
             Tree.ExtendedTypeExpression that) {
+        if (that.hasErrors()) return;
         Scope scope = that.getScope();
         //VERY UGLY!!
         //Note: super has a special meaning in any 
@@ -93,6 +94,7 @@ public class SelfReferenceVisitor extends Visitor {
 
     private void checkReference(
             Tree.MemberOrTypeExpression that) {
+        if (that.hasErrors()) return;
         Declaration member = 
                 resolveTypeAliases(that.getDeclaration());
         if (member!=null) {
@@ -143,6 +145,7 @@ public class SelfReferenceVisitor extends Visitor {
 
     private void checkMemberReference(
             Tree.MemberOrTypeExpression that) {
+        if (that.hasErrors()) return;
         Declaration member = 
                 resolveTypeAliases(that.getDeclaration());
         if (member!=null

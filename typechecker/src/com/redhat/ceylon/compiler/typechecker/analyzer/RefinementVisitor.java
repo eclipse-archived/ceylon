@@ -2163,6 +2163,18 @@ public class RefinementVisitor extends Visitor {
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
             final ClassOrInterface c) {
+        if (!sv.isFormal() && !sv.isDefault()
+                && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
+            that.addError("inherited attribute may not be assigned in initializer and may not be refined: " + 
+                    message(sv) + " is declared neither 'formal' nor 'default'", 
+                    510);
+//            return;
+        }
+        else if (sv.isVariable()) {
+            that.addError("inherited attribute may not be assigned in initializer and may not be refined by non-variable: " + 
+                    message(sv) + " is declared 'variable'");
+//            return;
+        }
         final ClassOrInterface ci = 
                 (ClassOrInterface) 
                     sv.getContainer();
@@ -2173,15 +2185,6 @@ public class RefinementVisitor extends Visitor {
                 refined instanceof Value ? 
                         (Value) refined : sv;
         final Reference rv = getRefinedMemberReference(sv, c);
-        if (!sv.isFormal() && !sv.isDefault()
-                && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
-            that.addError("inherited attribute may not be assigned in initializer and is neither formal nor default so may not be refined: " + 
-                    message(sv), 510);
-        }
-        else if (sv.isVariable()) {
-            that.addError("inherited attribute may not be assigned in initializer and is variable so may not be refined by non-variable: " + 
-                    message(sv));
-        }
         boolean lazy = 
                 that.getSpecifierExpression() 
                     instanceof Tree.LazySpecifierExpression;
@@ -2260,6 +2263,13 @@ public class RefinementVisitor extends Visitor {
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
             final ClassOrInterface c) {
+        if (!sm.isFormal() && !sm.isDefault()
+                && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
+            bme.addError("inherited method may not be refined: " 
+                    + message(sm) + " is declared neither 'formal' nor 'default'", 
+                    510);
+//            return;
+        }
         final ClassOrInterface ci = 
                 (ClassOrInterface) 
                     sm.getContainer();
@@ -2272,11 +2282,6 @@ public class RefinementVisitor extends Visitor {
         final Function root = 
                 refined instanceof Function ? 
                         (Function) refined : sm;
-        if (!sm.isFormal() && !sm.isDefault()
-                && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
-            that.addError("inherited method is neither formal nor default so may not be refined: " + 
-                    message(sm), 510);
-        }
         final Reference rm = getRefinedMemberReference(sm,c);
         Function m = new Function();
         m.setName(name);
