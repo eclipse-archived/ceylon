@@ -72,6 +72,7 @@ void issues() {
   //#6343
   check(parseFloat("1") exists, "#6343.1");
   check(isFinite()=="our own impl", "#6343.2");
+  test7122();
 }
 
 shared String isFinite() => "our own impl";
