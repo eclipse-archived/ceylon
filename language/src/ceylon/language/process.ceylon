@@ -184,18 +184,21 @@ shared native("jvm") object process {
 shared native("js") object process {
     
     String type;
-    shared native("js") String[] arguments;
-    
     dynamic {
         type = vmType;
-        switch (type)
-        case ("node") {
-            // parse command line arguments
+    }
+    
+    shared native("js") String[] arguments;
+    
+    switch (type)
+    case ("node") {
+        // parse command line arguments
+        dynamic {
             dynamic argv = nodeProcess.argv;
-            if (argv exists && argv.length >= 2) {
-                // ignore the first two arguments 
+            if (argv exists) {
                 arguments 
                     = (0:argv.length)
+                        // ignore the first two arguments 
                         .skip(2)
                         .collect((i) 
                             => let (String arg = argv[i]) 
@@ -205,88 +208,86 @@ shared native("js") object process {
                 arguments = [];
             }
         }
-        case ("browser") {
-            // parse URL parameters
-            String search 
-                    = window.location.search;
-            value bits 
-                    = search.rest
-                        .replace("+"," ")
-                        .split('&'.equals)
-                        .sequence();
-            if (bits.longerThan(1)
-                || !bits[0].empty) {
-                arguments = bits;
-            }
-            else {
-                arguments = [];
-            }
+    }
+    case ("browser") {
+        // parse URL parameters
+        String search;
+        dynamic {
+            search = window.location.search;
+        }
+        value bits 
+                = search.rest
+                    .replace("+"," ")
+                    .split('&'.equals)
+                    .sequence();
+        if (bits.longerThan(1)
+            || !bits[0].empty) {
+            arguments = bits;
         }
         else {
             arguments = [];
         }
     }
+    else {
+        arguments = [];
+    }
         
     shared native("js") String? namedArgumentValue(String name);
-    dynamic {
-        switch (type)
-        case ("node") {
-            namedArgumentValue 
-                    = namedArgumentValueInternal;
-        }
-        case ("browser") {
-            namedArgumentValue = (String name) {
-                if (name.empty) {
-                    return null;
-                }
-                for (i in 0:arguments.size) {
-                    assert (exists arg = arguments[i]);
-                    if (arg.startsWith(name + "=")) {
-                        value rest = arg[name.size+1...];
-                        dynamic {
-                            return decodeURIComponent(rest).string;
-                        }
-                    }
-                    if (arg == name) {
-                        return null;
+    switch (type)
+    case ("node") {
+        namedArgumentValue 
+                = namedArgumentValueInternal;
+    }
+    case ("browser") {
+        namedArgumentValue = (String name) {
+            if (name.empty) {
+                return null;
+            }
+            for (i in 0:arguments.size) {
+                assert (exists arg = arguments[i]);
+                if (arg.startsWith(name + "=")) {
+                    value rest = arg[name.size+1...];
+                    dynamic {
+                        return decodeURIComponent(rest).string;
                     }
                 }
-                else {
+                if (arg == name) {
                     return null;
                 }
-            };
-        }
-        else {
-            namedArgumentValue(String name) => null;
-        }
+            }
+            else {
+                return null;
+            }
+        };
+    }
+    else {
+        namedArgumentValue(String name) => null;
     }
     
     shared native("js") Boolean namedArgumentPresent(String name);
-    dynamic {
-        switch (type)
-        case ("node") {
-            namedArgumentPresent 
-                    = namedArgumentPresentInternal;
-        }
-        case ("browser") {
-            namedArgumentPresent = (String name) {
-                if (name.empty) {
-                    return false;
+    switch (type)
+    case ("node") {
+        namedArgumentPresent 
+                = namedArgumentPresentInternal;
+    }
+    case ("browser") {
+        namedArgumentPresent = (String name) {
+            if (name.empty) {
+                return false;
+            }
+            for (arg in arguments) {
+                if (arg.startsWith(name + "=") ||
+                    arg == name) {
+                    return true;
                 }
-                for (arg in arguments) {
-                    if (arg.startsWith(name + "=") ||
-                        arg == name) {
-                        return true;
-                    }
-                }
-                else {
-                    return false;
-                }
-            };
-        }
-        else {
-            namedArgumentPresent(String name) => false;
-        }
+            }
+            else {
+                return false;
+            }
+        };
+    }
+    else {
+        namedArgumentPresent(String name) => false;
     }
     
     String? platformPropertyValue(String name);
@@ -359,86 +360,93 @@ shared native("js") object process {
              && !os.lowercased.contains("darwin")
             else false;
     
-    shared native("js") String? propertyValue(String name) {
-        dynamic {            
-            return switch (name)
-                case ("line.separator") (windows then "\r\n" else "\n")
-                case ("file.separator") (windows then "\\" else "/")
-                case ("path.separator") (windows then ";" else ":")
-                else platformPropertyValue(name);
-        }
-    }
+    shared native("js") String? propertyValue(String name)
+            => switch (name)
+            case ("line.separator") (windows then "\r\n" else "\n")
+            case ("file.separator") (windows then "\\" else "/")
+            case ("path.separator") (windows then ";" else ":")
+            else platformPropertyValue(name);
     
     shared native("js") String? environmentVariableValue(String name);
-    dynamic {
-        if (type=="node" 
-            && nodeProcess.env exists) {
-            environmentVariableValue(String name) 
-                    => nodeProcess.env[name];
-        }
-        else {
-            environmentVariableValue(String name) 
-                    => null;
-        }
+    if (type=="node") {
+        environmentVariableValue = (String name) {
+            dynamic {
+                return if (exists env = nodeProcess.env)
+                    then env[name] else null;
+            }
+        };
+    }
+    else {
+        environmentVariableValue(String name) 
+                => null;
     }
     
     shared native("js") void write(String string); 
-    dynamic {
-        if (type=="node"
-            && nodeProcess.stdout exists) {
-            write = (dynamic s) {
-                nodeProcess.stdout.write(s.valueOf());
-            };
-        }
-        else if (console.log exists) {
-            value buffer = StringBuilder();
-            write = (String str) {
-                buffer.append(str);
-                if (str.endsWith(operatingSystem.newline)) {
-                    console.log(buffer.string);
-                    buffer.clear();
+    if (type=="node") {
+        write = (dynamic s) {
+            dynamic {
+                if (exists stdout = nodeProcess.stdout) {
+                    stdout.write(s.valueOf());
                 }
-            };
-        }
-        else {
-            write = (String s) {};
-        }
+            }
+        };
+    }
+    else {
+        value buffer = StringBuilder();
+        write = (String str) {
+            buffer.append(str);
+            if (str.endsWith(operatingSystem.newline)) {
+                dynamic {
+                    if (exists log = console.log) {
+                        log(buffer.string);
+                    }
+                }
+                buffer.clear();
+            }
+        };
     }
     
     shared native("js") void writeError(String string);
-    dynamic {
-        if (type=="node"
-            && nodeProcess.stderr exists) {
-            writeError = (dynamic s) {
-                nodeProcess.stderr.write(s.valueOf());
-            };
-        }
-        else if (console.error exists) {
-            value buffer = StringBuilder();
-            writeError = (String str) {
-                buffer.append(str);
-                if (str.endsWith(operatingSystem.newline)) {
-                    console.error(buffer.string);
-                    buffer.clear();
+    if (type=="node") {
+        writeError = (dynamic s) {
+            dynamic {
+                if (exists stderr = nodeProcess.stderr) {
+                    stderr.write(s.valueOf());
                 }
-            };
-        }
-        else {
-            writeError = (String s) {};
-        }
+            }
+        };
+    }
+    else {
+        value buffer = StringBuilder();
+        writeError = (String str) {
+            buffer.append(str);
+            if (str.endsWith(operatingSystem.newline)) {
+                dynamic {
+                    if (exists error = console.error) {
+                        error(buffer.string);
+                    }
+                }
+                buffer.clear();
+            }
+        };
+    }
+    
+    shared native("js") Nothing exit(Integer code);
+    if (type=="node") { 
+        exit = (Integer code) {
+            dynamic {
+                if (exists exit = nodeProcess.exit) {
+                    nodeProcess.exit(code);
+                }
+            }
+            return nothing;
+        };
+    }
+    else {
+        exit(Integer code) => nothing;
     }
     
     shared native("js") String? readLine() => null;
-    
-    shared native("js") Nothing exit(Integer code) {
-        dynamic {
-            if (type=="node" 
-                && nodeProcess.exit exists) {
-                nodeProcess.exit(code);
-            }
-        }
-        return nothing;
-    }
     
     shared native("js") void flush() {}
     
