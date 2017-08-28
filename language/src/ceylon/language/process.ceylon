@@ -92,7 +92,7 @@ shared native("jvm") object process {
     }
     
     shared native("jvm") String[] arguments 
-            => [for (arg in Util.args) arg.string];
+            => Util.args.array.collect(stringify);
     
     shared native("jvm") void write(String string) 
             => output.print(string);
