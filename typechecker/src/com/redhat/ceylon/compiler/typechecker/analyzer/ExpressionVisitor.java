@@ -8608,9 +8608,9 @@ public class ExpressionVisitor extends Visitor {
                     if (!vt.hasErrors()) {
                         if (!t.isSubtypeOf(et)) {
                             vt.addUsageWarning(Warning.catchType, 
-                                    "discouraged 'catch' type: " 
-                                    + et.asString(unit) 
-                                    + " is not a subtype of 'Exception'");
+                                    "discouraged 'catch' type: '" 
+                                    + t.asString(unit) 
+                                    + "' is not a subtype of 'Exception'");
                         }
                     }
                 }
