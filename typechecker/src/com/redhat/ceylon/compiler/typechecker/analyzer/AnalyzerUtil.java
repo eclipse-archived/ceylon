@@ -76,6 +76,9 @@ public class AnalyzerUtil {
     
     static final List<Type> NO_TYPE_ARGS = emptyList();
     
+    static final Map<TypeParameter,Type> NO_SUBSTITUTIONS = 
+            Collections.<TypeParameter,Type>emptyMap();
+
     private static Declaration getMemberInheritedFromOuterTypes(
             TypeDeclaration td, String name, 
             List<Type> signature, boolean variadic, 

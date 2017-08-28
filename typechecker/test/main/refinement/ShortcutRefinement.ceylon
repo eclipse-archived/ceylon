@@ -387,4 +387,30 @@ class WithValueAndFunctionShouldWork()
     shared actual String val(String str) => str;
 }
 
+interface WithGenericFormal {
+    shared formal Value method<Value>
+            (Value something);
+}
 
+object impl satisfies WithGenericFormal {
+    shared actual Value method<Value>
+            (Value something) 
+            => something;
+}
+
+class WithShortcutAssignment()
+        satisfies WithGenericFormal {
+    
+    method = impl.method;
+    
+    Float float = method(1.0);
+}
+
+$error class WithShortcutRefinement()
+        satisfies WithGenericFormal {
+    
+    $error method<X,Y>(X something) 
+            => impl.method(something);
+    
+    $error Float method = method(1.0);
+}

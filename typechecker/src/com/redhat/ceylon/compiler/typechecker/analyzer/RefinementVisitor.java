@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_SUBSTITUTIONS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableIgnoringNull;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
@@ -2159,60 +2160,64 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private void refineAttribute(Value sv, 
+    private void refineAttribute(
+            Value assignedAttribute, 
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
-            final ClassOrInterface c) {
-        if (!sv.isFormal() && !sv.isDefault()
-                && !sv.isShortcutRefinement()) { //this condition is here to squash a dupe message
+            ClassOrInterface c) {
+        if (!assignedAttribute.isFormal() && !assignedAttribute.isDefault()
+                && !assignedAttribute.isShortcutRefinement()) { //this condition is here to squash a dupe message
             that.addError("inherited attribute may not be assigned in initializer and may not be refined: " + 
-                    message(sv) + " is declared neither 'formal' nor 'default'", 
+                    message(assignedAttribute) + " is declared neither 'formal' nor 'default'", 
                     510);
 //            return;
         }
-        else if (sv.isVariable()) {
+        else if (assignedAttribute.isVariable()) {
             that.addError("inherited attribute may not be assigned in initializer and may not be refined by non-variable: " + 
-                    message(sv) + " is declared 'variable'");
+                    message(assignedAttribute) + " is declared 'variable'");
 //            return;
         }
-        final ClassOrInterface ci = 
+        ClassOrInterface ci = 
                 (ClassOrInterface) 
-                    sv.getContainer();
-        final String name = sv.getName();
+                    assignedAttribute.getContainer();
+        String name = assignedAttribute.getName();
         Declaration refined = 
                 ci.getRefinedMember(name, null, false);
-        final Value root = 
+        Value root = 
                 refined instanceof Value ? 
-                        (Value) refined : sv;
-        final Reference rv = getRefinedMemberReference(sv, c);
+                        (Value) refined : 
+                        assignedAttribute;
+        Reference rv = getRefinedMemberReference(assignedAttribute, c);
         boolean lazy = 
                 that.getSpecifierExpression() 
                     instanceof Tree.LazySpecifierExpression;
-        Value v = new Value();
-        v.setName(name);
-        v.setShared(true);
-        v.setActual(true);
-        v.getAnnotations().add(new Annotation("shared"));
-        v.getAnnotations().add(new Annotation("actual"));
-        v.setRefinedDeclaration(root);
+        Value attribute = new Value();
+        attribute.setName(name);
+        attribute.setShared(true);
+        attribute.setActual(true);
+        attribute.getAnnotations().add(new Annotation("shared"));
+        attribute.getAnnotations().add(new Annotation("actual"));
+        attribute.setRefinedDeclaration(root);
         Unit unit = that.getUnit();
-        v.setUnit(unit);
-        v.setContainer(c);
-        v.setScope(c);
-        v.setShortcutRefinement(true);
-        v.setTransient(lazy);
+        attribute.setUnit(unit);
+        attribute.setContainer(c);
+        attribute.setScope(c);
+        attribute.setShortcutRefinement(true);
+        attribute.setTransient(lazy);
         Declaration rvd = rv.getDeclaration();
         if (rvd instanceof TypedDeclaration) {
-            TypedDeclaration rvtd = (TypedDeclaration) rvd;
-            v.setUncheckedNullType(rvtd.hasUncheckedNullType());
+            TypedDeclaration rvtd = 
+                    (TypedDeclaration) rvd;
+            attribute.setUncheckedNullType(
+                    rvtd.hasUncheckedNullType());
         }
-        ModelUtil.setVisibleScope(v);
-        c.addMember(v);
+        ModelUtil.setVisibleScope(attribute);
+        c.addMember(attribute);
         that.setRefinement(true);
-        that.setDeclaration(v);
-        that.setRefined(sv);
-        unit.addDeclaration(v);
-        v.setType(new LazyType(unit) {
+        that.setDeclaration(attribute);
+        that.setRefined(assignedAttribute);
+        unit.addDeclaration(attribute);
+        attribute.setType(new LazyType(unit) {
             Type intersection() {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rv.getType());
@@ -2259,32 +2264,34 @@ public class RefinementVisitor extends Visitor {
         });
     }
 
-    private void refineMethod(final Function sm, 
+    private void refineMethod(
+            Function assignedMethod, 
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
-            final ClassOrInterface c) {
-        if (!sm.isFormal() && !sm.isDefault()
-                && !sm.isShortcutRefinement()) { //this condition is here to squash a dupe message
+            ClassOrInterface c) {
+        if (!assignedMethod.isFormal() && !assignedMethod.isDefault()
+                && !assignedMethod.isShortcutRefinement()) { //this condition is here to squash a dupe message
             bme.addError("inherited method may not be refined: " 
-                    + message(sm) + " is declared neither 'formal' nor 'default'", 
+                    + message(assignedMethod) + " is declared neither 'formal' nor 'default'", 
                     510);
 //            return;
         }
-        final ClassOrInterface ci = 
+        ClassOrInterface ci = 
                 (ClassOrInterface) 
-                    sm.getContainer();
-        final String name = sm.getName();
-        final List<Type> signature = getSignature(sm);
-        final boolean variadic = isVariadic(sm);
+                    assignedMethod.getContainer();
+        String name = assignedMethod.getName();
+        List<Type> signature = getSignature(assignedMethod);
+        boolean variadic = isVariadic(assignedMethod);
         Declaration refined = 
                 ci.getRefinedMember(name,
                         signature, variadic);
-        final Function root = 
+        Function root = 
                 refined instanceof Function ? 
-                        (Function) refined : sm;
-        final Reference rm = getRefinedMemberReference(sm,c);
-        Function m = new Function();
-        m.setName(name);
+                        (Function) refined : 
+                        assignedMethod;
+        Reference rm = getRefinedMemberReference(assignedMethod,c);
+        Function method = new Function();
+        method.setName(name);
         List<Tree.ParameterList> paramLists;
         List<TypeParameter> typeParams;
         Tree.Term me = that.getBaseMemberExpression();
@@ -2311,7 +2318,40 @@ public class RefinementVisitor extends Visitor {
         }
         int i=0;
         Unit unit = that.getUnit();
-        for (ParameterList pl: sm.getParameterLists()) {
+        
+        final Map<TypeParameter,Type> subs;
+        if (typeParams!=null) {
+            //the type parameters are written
+            //down in the shortcut refinement
+            method.setTypeParameters(typeParams);
+            //TODO: check 'em!!
+            //no need to check them because 
+            //this case is actually disallowed
+            //elsewhere (specification statements
+            //may not have type parameters)
+            subs = NO_SUBSTITUTIONS;
+        }
+        else if (assignedMethod.isParameterized()) {
+            if (me instanceof Tree.ParameterizedExpression) {
+                //we have parameters, but no type parameters
+                bme.addError("refined method is generic: '" 
+                        + assignedMethod.getName(unit) 
+                        + "' declares type parameters");
+                subs = NO_SUBSTITUTIONS;
+            }
+            else {
+                //we're assigning a method reference
+                //so we need to magic up some "fake"
+                //type parameters
+                subs = copyTypeParametersFromRefined(
+                        assignedMethod, method, unit);
+            }
+        }
+        else {
+            subs = NO_SUBSTITUTIONS;
+        }
+        
+        for (ParameterList pl: assignedMethod.getParameterLists()) {
             ParameterList l = new ParameterList();
             Tree.ParameterList tpl = 
                     paramLists.size()<=i ? null : 
@@ -2331,14 +2371,15 @@ public class RefinementVisitor extends Visitor {
 //                    vp.setDefaulted(p.isDefaulted());
                     vp.setName(p.getName());
                     v.setName(p.getName());
-                    vp.setDeclaration(m);
-                    v.setContainer(m);
-                    v.setScope(m);
+                    vp.setDeclaration(method);
+                    v.setContainer(method);
+                    v.setScope(method);
                     l.getParameters().add(vp);
                     v.setType(new LazyType(unit) {
                         private Type type() {
                             return rm.getTypedParameter(p)
-                                    .getFullType();
+                                    .getFullType()
+                                    .substitute(subs, null);
                         }
                         @Override
                         public Type initQualifyingType() {
@@ -2374,101 +2415,41 @@ public class RefinementVisitor extends Visitor {
                                 .get(j);
                     Parameter rp = tp.getParameterModel();
                     rp.setDefaulted(p.isDefaulted());
-                    rp.setDeclaration(m);
+                    rp.setDeclaration(method);
                     l.getParameters().add(rp);
                 }
                 j++;
             }
-            m.getParameterLists().add(l);
+            method.getParameterLists().add(l);
         }
-        if (typeParams!=null) {
-            m.setTypeParameters(typeParams);
-            //TODO: check 'em!!
-        }
-        else if (!sm.getTypeParameters().isEmpty()) {
-            if (me instanceof Tree.ParameterizedExpression) {
-                bme.addError("refined method is generic: '" 
-                        + sm.getName(unit) 
-                        + "' declares type parameters");
-            }
-            else {
-                //we're refining it by assigning a function
-                //reference using the = specifier, not =>
-                //copy the type parameters of the refined
-                //declaration
-                List<TypeParameter> typeParameters = 
-                        sm.getTypeParameters();
-                List<TypeParameter> tps = 
-                        new ArrayList<TypeParameter>
-                            (typeParameters.size());
-                Map<TypeParameter,Type> subs = 
-                        new HashMap<TypeParameter,Type>();
-                for (int j=0; j<typeParameters.size(); j++) {
-                    TypeParameter param = typeParameters.get(j);
-                    TypeParameter tp = new TypeParameter();
-                    tp.setName(param.getName());
-                    tp.setUnit(unit);
-                    tp.setScope(m);
-                    tp.setContainer(m);
-                    tp.setDeclaration(m);
-                    tp.setCovariant(param.isCovariant());
-                    tp.setContravariant(param.isContravariant());
-                    tps.add(tp);
-                    subs.put(param, tp.getType());
-                }
-                //we need to substitute these type parameters 
-                //into the upper bounds of the type parameters
-                //of the refined declaration
-                for (int j=0; j<typeParameters.size(); j++) {
-                    TypeParameter param = typeParameters.get(j);
-                    TypeParameter tp = tps.get(j);
-                    List<Type> sts = param.getSatisfiedTypes();
-                    ArrayList<Type> ssts = 
-                            new ArrayList<Type>(sts.size());
-                    for (Type st: sts) {
-                        ssts.add(st.substitute(subs, null));
-                    }
-                    tp.setSatisfiedTypes(ssts);
-                    List<Type> cts = param.getCaseTypes();
-                    if (cts!=null) {
-                        ArrayList<Type> scts = 
-                                new ArrayList<Type>(cts.size());
-                        for (Type ct: cts) {
-                            scts.add(ct.substitute(subs, null));
-                        }
-                        tp.setCaseTypes(scts);
-                    }
-                }
-                m.setTypeParameters(tps);
-            }
-        }
-        m.setShared(true);
-        m.setActual(true);
-        m.getAnnotations().add(new Annotation("shared"));
-        m.getAnnotations().add(new Annotation("actual"));
-        m.setRefinedDeclaration(root);
-        m.setUnit(unit);
-        m.setContainer(c);
-        m.setScope(c);
-        m.setShortcutRefinement(true);
-        m.setDeclaredVoid(sm.isDeclaredVoid());
+
+        method.setShared(true);
+        method.setActual(true);
+        method.getAnnotations().add(new Annotation("shared"));
+        method.getAnnotations().add(new Annotation("actual"));
+        method.setRefinedDeclaration(root);
+        method.setUnit(unit);
+        method.setContainer(c);
+        method.setScope(c);
+        method.setShortcutRefinement(true);
+        method.setDeclaredVoid(assignedMethod.isDeclaredVoid());
         Declaration rmd = rm.getDeclaration();
         if (rmd instanceof TypedDeclaration) {
             TypedDeclaration rmtd = (TypedDeclaration) rmd;
-            m.setUncheckedNullType(rmtd.hasUncheckedNullType());
+            method.setUncheckedNullType(rmtd.hasUncheckedNullType());
         }
-        ModelUtil.setVisibleScope(m);
-        c.addMember(m);
+        ModelUtil.setVisibleScope(method);
+        c.addMember(method);
         that.setRefinement(true);
-        that.setDeclaration(m);
+        that.setDeclaration(method);
         that.setRefined(root);
-        unit.addDeclaration(m);
+        unit.addDeclaration(method);
         Scope scope = that.getScope();
         if (scope instanceof Specification) {
             Specification spec = (Specification) scope;
-            spec.setDeclaration(m);
+            spec.setDeclaration(method);
         }
-        m.setType(new LazyType(unit) {
+        method.setType(new LazyType(unit) {
             Type intersection() {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rm.getType());
@@ -2484,7 +2465,9 @@ public class RefinementVisitor extends Visitor {
                 IntersectionType it = 
                         new IntersectionType(getUnit()); 
                 it.setSatisfiedTypes(list);
-                return it.canonicalize().getType();
+                return it.canonicalize()
+                        .getType()
+                        .substitute(subs, null);
             }
             @Override
             public Type initQualifyingType() {
@@ -2512,7 +2495,61 @@ public class RefinementVisitor extends Visitor {
                     type.getVarianceOverrides();
             }
         });
-        inheritDefaultedArguments(m);
+        inheritDefaultedArguments(method);
+    }
+
+    private static Map<TypeParameter,Type> 
+    copyTypeParametersFromRefined(Function refinedMethod, 
+            Function method, Unit unit) {
+        //we're refining it by assigning a function
+        //reference using the = specifier, not =>
+        //copy the type parameters of the refined
+        //declaration
+        List<TypeParameter> typeParameters = 
+                refinedMethod.getTypeParameters();
+        List<TypeParameter> tps = 
+                new ArrayList<TypeParameter>
+                    (typeParameters.size());
+        Map<TypeParameter, Type> subs = 
+                new HashMap<TypeParameter,Type>();
+        for (int j=0; j<typeParameters.size(); j++) {
+            TypeParameter param = typeParameters.get(j);
+            TypeParameter tp = new TypeParameter();
+            tp.setName(param.getName());
+            tp.setUnit(unit);
+            tp.setScope(method);
+            tp.setContainer(method);
+            tp.setDeclaration(method);
+            tp.setCovariant(param.isCovariant());
+            tp.setContravariant(param.isContravariant());
+            tps.add(tp);
+            subs.put(param, tp.getType());
+        }
+        //we need to substitute these type parameters 
+        //into the upper bounds of the type parameters
+        //of the refined declaration
+        for (int j=0; j<typeParameters.size(); j++) {
+            TypeParameter param = typeParameters.get(j);
+            TypeParameter tp = tps.get(j);
+            List<Type> sts = param.getSatisfiedTypes();
+            ArrayList<Type> ssts = 
+                    new ArrayList<Type>(sts.size());
+            for (Type st: sts) {
+                ssts.add(st.substitute(subs, null));
+            }
+            tp.setSatisfiedTypes(ssts);
+            List<Type> cts = param.getCaseTypes();
+            if (cts!=null) {
+                ArrayList<Type> scts = 
+                        new ArrayList<Type>(cts.size());
+                for (Type ct: cts) {
+                    scts.add(ct.substitute(subs, null));
+                }
+                tp.setCaseTypes(scts);
+            }
+        }
+        method.setTypeParameters(tps);
+        return subs;
     }
     
 }

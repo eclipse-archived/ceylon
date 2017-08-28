@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_SUBSTITUTIONS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableIgnoringNull;
@@ -71,6 +72,7 @@ import static java.util.Collections.emptyList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -1657,10 +1659,41 @@ public class ExpressionVisitor extends Visitor {
                 refinedValue, value, ci, 
                 interveningRefinements);
     }
+    
+    private static Map<TypeParameter,Type>
+    substitutions(FunctionOrValue refined, 
+                  FunctionOrValue member) {
+        if (refined instanceof Function) {
+            Function refinedMethod = (Function) refined;
+            Function method = (Function) member;
+            List<TypeParameter> refinedParams = 
+                    refinedMethod.getTypeParameters();
+            List<TypeParameter> params = 
+                    method.getTypeParameters();
+            Map<TypeParameter,Type> result = 
+                    new HashMap<TypeParameter,Type>
+                    (params.size());
+            for (int i=0; 
+                    i<refinedParams.size() 
+                        && i<params.size(); 
+                    i++) {
+                result.put(refinedParams.get(i),
+                        params.get(i).getType());
+            }
+            return result;
+        }
+        else {
+            return NO_SUBSTITUTIONS;
+        }
+    }
 
     private void refineMethod(Tree.SpecifierStatement that) {
-        Function refinedMethod = (Function) that.getRefined();
-        Function method = (Function) that.getDeclaration();
+        Function refinedMethod = 
+                (Function) 
+                    that.getRefined();
+        Function method = 
+                (Function) 
+                    that.getDeclaration();
 
         ClassOrInterface ci = 
                 (ClassOrInterface) 
@@ -1694,6 +1727,8 @@ public class ExpressionVisitor extends Visitor {
                     refinedMethod.getParameterLists();
             List<ParameterList> methodParamLists = 
                     method.getParameterLists();
+            Map<TypeParameter,Type> subs = 
+                    substitutions(refinedMethod, method);
             for (int i=0; 
                     i<refinedParamLists.size() &&
                     i<methodParamLists.size(); 
@@ -1712,7 +1747,8 @@ public class ExpressionVisitor extends Visitor {
                     Type refinedParameterType = 
                             refinedProducedReference
                             .getTypedParameter(refinedParameter)
-                            .getFullType();
+                            .getFullType()
+                            .substitute(subs, null);
                     Parameter parameter;
                     if (parameterList==null || 
                             parameterList.getParameters().size()<=j) {
@@ -1799,8 +1835,12 @@ public class ExpressionVisitor extends Visitor {
                 getRefinedMemberReference(
                         refinedMethodOrValue, 
                         refiningType);
+        Map<TypeParameter,Type> substs = 
+                substitutions(refinedMethodOrValue, 
+                        methodOrValue);
         Type refinedType = 
-                refinedProducedReference.getType();
+                refinedProducedReference.getType()
+                    .substitute(substs, null);
         boolean allHaveNulls = 
                 hasNullReturnValues(refinedType, 
                         refinedMethodOrValue);
@@ -1819,7 +1859,12 @@ public class ExpressionVisitor extends Visitor {
                 Reference refinedMember = 
                         getRefinedMemberReference(refinement, 
                                 refiningType);
-                Type type = refinedMember.getType();
+                Map<TypeParameter,Type> subs = 
+                        substitutions(refinement, 
+                                methodOrValue);
+                Type type = 
+                        refinedMember.getType()
+                            .substitute(subs, null);
                 allHaveNulls = allHaveNulls 
                         && hasNullReturnValues(type, 
                                 refinement);

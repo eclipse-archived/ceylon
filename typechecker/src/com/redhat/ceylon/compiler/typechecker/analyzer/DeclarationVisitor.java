@@ -843,8 +843,10 @@ public abstract class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeParameterList that) {
         super.visit(that);
-        Generic g = (Generic) declaration;
-        g.setTypeParameters(getTypeParameters(that));
+        if (declaration instanceof Generic) {
+            Generic g = (Generic) declaration;
+            g.setTypeParameters(getTypeParameters(that));
+        }
     }    
     
     private void defaultExtendedToBasic(Class c) {
