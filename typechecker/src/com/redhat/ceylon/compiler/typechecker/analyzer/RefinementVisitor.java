@@ -2217,51 +2217,8 @@ public class RefinementVisitor extends Visitor {
         that.setDeclaration(attribute);
         that.setRefined(assignedAttribute);
         unit.addDeclaration(attribute);
-        attribute.setType(new LazyType(unit) {
-            Type intersection() {
-                List<Type> list = new ArrayList<Type>();
-//                list.add(rv.getType());
-                for (Declaration d: 
-                    getInterveningRefinements(name, 
-                        null, false, root, c, ci)) {
-                    addToIntersection(list,
-                            c.getType()
-                             .getTypedReference(d, NO_TYPE_ARGS)
-                             .getType(),
-                            getUnit());
-                }
-                IntersectionType it = 
-                        new IntersectionType(getUnit()); 
-                it.setSatisfiedTypes(list);
-                return it.canonicalize().getType();
-            }
-            @Override
-            public Type initQualifyingType() {
-                Type type = intersection();
-                return type==null ? null : 
-                    type.getQualifyingType();
-            }
-            @Override
-            public Map<TypeParameter, Type> 
-            initTypeArguments() {
-                Type type = intersection();
-                return type==null ? null : 
-                    type.getTypeArguments();
-            }
-            @Override
-            public TypeDeclaration initDeclaration() {
-                Type type = intersection();
-                return type==null ? null : 
-                    type.getDeclaration();
-            }
-            @Override
-            public Map<TypeParameter, SiteVariance> 
-            getVarianceOverrides() {
-                Type type = intersection();
-                return type==null ? null : 
-                    type.getVarianceOverrides();
-            }
-        });
+        setRefiningType(c, ci, name, null, false, root, 
+                attribute, unit, NO_SUBSTITUTIONS);
     }
 
     private void refineMethod(
@@ -2316,7 +2273,7 @@ public class RefinementVisitor extends Visitor {
             paramLists = emptyList();
             typeParams = null;
         }
-        int i=0;
+        
         Unit unit = that.getUnit();
         
         final Map<TypeParameter,Type> subs;
@@ -2351,76 +2308,14 @@ public class RefinementVisitor extends Visitor {
             subs = NO_SUBSTITUTIONS;
         }
         
-        for (ParameterList pl: assignedMethod.getParameterLists()) {
-            ParameterList l = new ParameterList();
-            Tree.ParameterList tpl = 
+        int i=0;
+        for (ParameterList pl: 
+                assignedMethod.getParameterLists()) {
+            Tree.ParameterList params = 
                     paramLists.size()<=i ? null : 
                         paramLists.get(i++);
-            int j=0;
-            for (final Parameter p: pl.getParameters()) {
-                //TODO: meaningful errors when parameters don't line up
-                //      currently this is handled elsewhere, but we can
-                //      probably do it better right here
-                if (tpl==null || tpl.getParameters().size()<=j) {
-                    Parameter vp = new Parameter();
-                    Value v = new Value();
-                    vp.setModel(v);
-                    v.setInitializerParameter(vp);
-                    vp.setSequenced(p.isSequenced());
-                    vp.setAtLeastOne(p.isAtLeastOne());
-//                    vp.setDefaulted(p.isDefaulted());
-                    vp.setName(p.getName());
-                    v.setName(p.getName());
-                    vp.setDeclaration(method);
-                    v.setContainer(method);
-                    v.setScope(method);
-                    l.getParameters().add(vp);
-                    v.setType(new LazyType(unit) {
-                        private Type type() {
-                            return rm.getTypedParameter(p)
-                                    .getFullType()
-                                    .substitute(subs, null);
-                        }
-                        @Override
-                        public Type initQualifyingType() {
-                            Type type = type();
-                            return type==null ? null :
-                                type.getQualifyingType();
-                        }
-                        @Override
-                        public Map<TypeParameter,Type> 
-                        initTypeArguments() {
-                            Type type = type();
-                            return type==null ? null :
-                                type.getTypeArguments();
-                        }
-                        @Override
-                        public TypeDeclaration initDeclaration() {
-                            Type type = type();
-                            return type==null ? null :
-                                type.getDeclaration();
-                        }
-                        @Override
-                        public Map<TypeParameter, SiteVariance> 
-                        getVarianceOverrides() {
-                            Type type = type();
-                            return type==null ? null :
-                                type.getVarianceOverrides();
-                        }
-                    });
-                }
-                else {
-                    Tree.Parameter tp =
-                            tpl.getParameters()
-                                .get(j);
-                    Parameter rp = tp.getParameterModel();
-                    rp.setDefaulted(p.isDefaulted());
-                    rp.setDeclaration(method);
-                    l.getParameters().add(rp);
-                }
-                j++;
-            }
-            method.getParameterLists().add(l);
+            createRefiningParameterList(rm, method, 
+                    params, unit, subs, pl);
         }
 
         method.setShared(true);
@@ -2449,7 +2344,36 @@ public class RefinementVisitor extends Visitor {
             Specification spec = (Specification) scope;
             spec.setDeclaration(method);
         }
-        method.setType(new LazyType(unit) {
+        setRefiningType(c, ci, name, signature, variadic, 
+                root, method, unit, subs);
+        inheritDefaultedArguments(method);
+    }
+
+    private void createRefiningParameterList(
+            Reference rm, Function method, 
+            Tree.ParameterList params, 
+            Unit unit, 
+            Map<TypeParameter, Type> subs, 
+            ParameterList pl) {
+        ParameterList l = new ParameterList();
+        int j=0;
+        for (Parameter p: pl.getParameters()) {
+            //TODO: meaningful errors when parameters don't line up
+            //      currently this is handled elsewhere, but we can
+            //      probably do it better right here
+            createRefiningParameter(rm, method, unit, 
+                    subs, l, params, j, p);
+            j++;
+        }
+        method.getParameterLists().add(l);
+    }
+
+    private void setRefiningType(ClassOrInterface c, 
+            ClassOrInterface ci, String name, 
+            List<Type> signature, boolean variadic, 
+            FunctionOrValue root, FunctionOrValue member, 
+            Unit unit, final Map<TypeParameter, Type> subs) {
+        member.setType(new LazyType(unit) {
             Type intersection() {
                 List<Type> list = new ArrayList<Type>();
 //                list.add(rm.getType());
@@ -2495,7 +2419,71 @@ public class RefinementVisitor extends Visitor {
                     type.getVarianceOverrides();
             }
         });
-        inheritDefaultedArguments(method);
+    }
+
+    private void createRefiningParameter(
+            Reference rm, Function method, 
+            Unit unit, 
+            final Map<TypeParameter, Type> subs,
+            ParameterList l, Tree.ParameterList tpl, 
+            int j, final Parameter p) {
+        if (tpl==null || tpl.getParameters().size()<=j) {
+            Parameter vp = new Parameter();
+            Value v = new Value();
+            vp.setModel(v);
+            v.setInitializerParameter(vp);
+            vp.setSequenced(p.isSequenced());
+            vp.setAtLeastOne(p.isAtLeastOne());
+//                    vp.setDefaulted(p.isDefaulted());
+            vp.setName(p.getName());
+            v.setName(p.getName());
+            vp.setDeclaration(method);
+            v.setContainer(method);
+            v.setScope(method);
+            l.getParameters().add(vp);
+            v.setType(new LazyType(unit) {
+                private Type type() {
+                    return rm.getTypedParameter(p)
+                            .getFullType()
+                            .substitute(subs, null);
+                }
+                @Override
+                public Type initQualifyingType() {
+                    Type type = type();
+                    return type==null ? null :
+                        type.getQualifyingType();
+                }
+                @Override
+                public Map<TypeParameter,Type> 
+                initTypeArguments() {
+                    Type type = type();
+                    return type==null ? null :
+                        type.getTypeArguments();
+                }
+                @Override
+                public TypeDeclaration initDeclaration() {
+                    Type type = type();
+                    return type==null ? null :
+                        type.getDeclaration();
+                }
+                @Override
+                public Map<TypeParameter, SiteVariance> 
+                getVarianceOverrides() {
+                    Type type = type();
+                    return type==null ? null :
+                        type.getVarianceOverrides();
+                }
+            });
+        }
+        else {
+            Tree.Parameter tp =
+                    tpl.getParameters()
+                        .get(j);
+            Parameter rp = tp.getParameterModel();
+            rp.setDefaulted(p.isDefaulted());
+            rp.setDeclaration(method);
+            l.getParameters().add(rp);
+        }
     }
 
     private static Map<TypeParameter,Type> 
