@@ -40,6 +40,7 @@ import ceylon.language { printTrace=printStackTrace }
  the type `File?`, where a `null` return value indicates 
  nonexistence. On the other hand, failure to read from an
  already open file could result in an `Exception`."
+see (class Exception, class AssertionError)
 by ("Gavin", "Tom")
 tagged("Basic types")
 since("1.1.0")
