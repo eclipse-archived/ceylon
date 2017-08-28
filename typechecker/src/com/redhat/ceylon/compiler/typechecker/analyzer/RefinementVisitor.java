@@ -2362,8 +2362,7 @@ public class RefinementVisitor extends Visitor {
             //      currently this is handled elsewhere, but we can
             //      probably do it better right here
             createRefiningParameter(rm, method, p, 
-                    list, params, j, subs, unit);
-            j++;
+                    list, params, j++, subs, unit);
         }
         method.getParameterLists().add(list);
     }
