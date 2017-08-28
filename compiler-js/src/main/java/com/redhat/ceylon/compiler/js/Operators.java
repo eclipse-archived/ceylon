@@ -73,7 +73,12 @@ public class Operators {
             gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getTerm(), false)));
         } else {
             final int boxTypeLeft = gen.boxStart(exp.getTerm());
-            exp.getTerm().visit(gen);
+            if (exp.getTerm() instanceof Tree.BaseMemberExpression) {
+                BmeGenerator.generateBme((Tree.BaseMemberExpression)exp.getTerm(), gen,
+                        !(exp instanceof Tree.Exists));
+            } else {
+                exp.getTerm().visit(gen);
+            }
             if (boxTypeLeft == 4) gen.out("/*TODO: callable targs 9*/");
             gen.boxUnboxEnd(boxTypeLeft);
         }
@@ -379,7 +384,7 @@ public class Operators {
             gen.out(gen.getClAlias(), "jsc$3(", lhsVar, ",");
         }
         gen.out(gen.getClAlias(),"nn$(", lhsVar, ")?");
-        if (isMethod && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {
+        if (isMethod && !that.getDeclaration().getTypeParameters().isEmpty()) {
             //Function ref with type parameters
             BmeGenerator.printGenericMethodReference(gen, that, lhsVar, gen.memberAccess(that, lhsVar));
         } else {
