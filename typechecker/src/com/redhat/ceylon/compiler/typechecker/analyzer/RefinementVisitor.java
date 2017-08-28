@@ -2355,23 +2355,23 @@ public class RefinementVisitor extends Visitor {
             Unit unit, 
             Map<TypeParameter, Type> subs, 
             ParameterList pl) {
-        ParameterList l = new ParameterList();
+        ParameterList list = new ParameterList();
         int j=0;
         for (Parameter p: pl.getParameters()) {
             //TODO: meaningful errors when parameters don't line up
             //      currently this is handled elsewhere, but we can
             //      probably do it better right here
-            createRefiningParameter(rm, method, unit, 
-                    subs, l, params, j, p);
+            createRefiningParameter(rm, method, p, 
+                    list, params, j, subs, unit);
             j++;
         }
-        method.getParameterLists().add(l);
+        method.getParameterLists().add(list);
     }
 
-    private void setRefiningType(ClassOrInterface c, 
-            ClassOrInterface ci, String name, 
-            List<Type> signature, boolean variadic, 
-            FunctionOrValue root, FunctionOrValue member, 
+    private void setRefiningType(final ClassOrInterface c, 
+            final ClassOrInterface ci, final String name, 
+            final List<Type> signature, final boolean variadic, 
+            final FunctionOrValue root, FunctionOrValue member, 
             Unit unit, final Map<TypeParameter, Type> subs) {
         member.setType(new LazyType(unit) {
             Type intersection() {
@@ -2422,11 +2422,11 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void createRefiningParameter(
-            Reference rm, Function method, 
-            Unit unit, 
-            final Map<TypeParameter, Type> subs,
-            ParameterList l, Tree.ParameterList tpl, 
-            int j, final Parameter p) {
+            final Reference rm, Function method, 
+            final Parameter p, ParameterList l,
+            Tree.ParameterList tpl, int j, 
+            final Map<TypeParameter, Type> subs, 
+            Unit unit) {
         if (tpl==null || tpl.getParameters().size()<=j) {
             Parameter vp = new Parameter();
             Value v = new Value();
