@@ -80,8 +80,8 @@ public class ReflectionClass implements ClassMirror {
     @Override
     public boolean isDefaultAccess() {
         return !Modifier.isPrivate(klass.getModifiers())
-                && !Modifier.isPublic(klass.getModifiers())
-                && !Modifier.isProtected(klass.getModifiers());
+            && !Modifier.isPublic(klass.getModifiers())
+            && !Modifier.isProtected(klass.getModifiers());
     }
 
     @Override
@@ -205,17 +205,20 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public boolean isCeylonToplevelAttribute() {
-        return !isInnerClass() && isAnnotationPresent(AbstractModelLoader.CEYLON_ATTRIBUTE_ANNOTATION);
+        return !isInnerClass() 
+            && isAnnotationPresent(AbstractModelLoader.CEYLON_ATTRIBUTE_ANNOTATION);
     }
 
     @Override
     public boolean isCeylonToplevelObject() {
-        return !isInnerClass() && isAnnotationPresent(AbstractModelLoader.CEYLON_OBJECT_ANNOTATION);
+        return !isInnerClass() 
+            && isAnnotationPresent(AbstractModelLoader.CEYLON_OBJECT_ANNOTATION);
     }
 
     @Override
     public boolean isCeylonToplevelMethod() {
-        return !isInnerClass() && isAnnotationPresent(AbstractModelLoader.CEYLON_METHOD_ANNOTATION);
+        return !isInnerClass() 
+            && isAnnotationPresent(AbstractModelLoader.CEYLON_METHOD_ANNOTATION);
     }
 
     @Override
@@ -230,12 +233,14 @@ public class ReflectionClass implements ClassMirror {
 
     @Override
     public boolean isInnerClass() {
-        return klass.isMemberClass() || isAnnotationPresent(AbstractModelLoader.CEYLON_CONTAINER_ANNOTATION);
+        return klass.isMemberClass() 
+            || isAnnotationPresent(AbstractModelLoader.CEYLON_CONTAINER_ANNOTATION);
     }
 
     @Override
     public boolean isLocalClass() {
-        return klass.isLocalClass() || isAnnotationPresent(AbstractModelLoader.CEYLON_LOCAL_DECLARATION_ANNOTATION);
+        return klass.isLocalClass() 
+            || isAnnotationPresent(AbstractModelLoader.CEYLON_LOCAL_DECLARATION_ANNOTATION);
     }
 
     @Override

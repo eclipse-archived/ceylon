@@ -60,8 +60,8 @@ public class ReflectionField implements FieldMirror {
     @Override
     public boolean isDefaultAccess() {
         return !Modifier.isPrivate(field.getModifiers())
-                && !Modifier.isPublic(field.getModifiers())
-                && !Modifier.isProtected(field.getModifiers());
+            && !Modifier.isPublic(field.getModifiers())
+            && !Modifier.isProtected(field.getModifiers());
     }
 
     @Override

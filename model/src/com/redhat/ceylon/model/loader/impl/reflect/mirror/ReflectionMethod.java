@@ -94,8 +94,8 @@ public class ReflectionMethod implements MethodMirror {
     @Override
     public boolean isDefaultAccess() {
         return !Modifier.isPrivate(method.getModifiers())
-                && !Modifier.isPublic(method.getModifiers())
-                && !Modifier.isProtected(method.getModifiers());
+            && !Modifier.isPublic(method.getModifiers())
+            && !Modifier.isProtected(method.getModifiers());
     }
 
     @Override
@@ -191,8 +191,8 @@ public class ReflectionMethod implements MethodMirror {
     public boolean isDefaultMethod() {
         try {
             return method instanceof java.lang.reflect.Method
-                    && IS_DEFAULT != null
-                    && (Boolean)IS_DEFAULT.invoke(((java.lang.reflect.Method)method));
+                && IS_DEFAULT != null
+                && (Boolean)IS_DEFAULT.invoke(((java.lang.reflect.Method)method));
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
@@ -220,7 +220,7 @@ public class ReflectionMethod implements MethodMirror {
     @Override
     public boolean isDeclaredVoid() {
         return method instanceof Method 
-                && Void.TYPE == ((Method)method).getReturnType();
+            && Void.TYPE == ((Method)method).getReturnType();
     }
 
     @Override
