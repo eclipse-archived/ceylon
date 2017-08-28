@@ -1942,6 +1942,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         // in cases where the supertype is missing, which throws in reflection at class load.
                         return logModelResolutionException(x.getMessage(), module, "Unable to load type "+typeName).getDeclaration();
                     }
+                    //work around a bug in the IntelliJ model loader
+                    //see https://github.com/ceylon/ceylon-ide-intellij/issues/649
+                    if (classMirror == null 
+                            && theContainer instanceof ClassOrInterface
+                            && theDeclarationType == DeclarationType.TYPE) {
+                        int index = typeName.lastIndexOf('.');
+                        if (index>0) {
+                            String name = 
+                                    typeName.substring(0,index) 
+                                    + '$' + typeName.substring(index+1);
+                            classMirror = lookupClassMirror(module, name);
+                        }
+                    }
                     if (classMirror == null) {
                         // special case when bootstrapping because we may need to pull the decl from the typechecked model
                         if(isBootstrap && typeName.startsWith(CEYLON_LANGUAGE+".")){
