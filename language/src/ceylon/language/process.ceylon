@@ -131,12 +131,9 @@ shared native("jvm") object process {
         InputStreamReader,
         IOException
     }
-    import com.redhat.ceylon.compiler.java {
-        Util
-    }
     
     shared native("jvm") String[] arguments 
-            => Util.args.array.collect(stringify);
+            => vmArguments.sequence();
     
     shared native("jvm") void write(String string) 
             => output.print(string);
