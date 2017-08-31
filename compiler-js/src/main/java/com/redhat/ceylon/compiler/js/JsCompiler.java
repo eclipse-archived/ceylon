@@ -424,8 +424,11 @@ public class JsCompiler {
                         final JsOutput lastOut = getOutput(module);
                         for (File file: filterForModule(resFiles, opts.getResourceDirs(), module.getNameAsString())) {
                             String type = Files.probeContentType(file.toPath());
-                            boolean isPropertiesFile = file.getName().endsWith(".properties");
-                            if (isPropertiesFile 
+                            String fileName = file.getName();
+                            boolean isResourceFile 
+                                    = fileName.endsWith(".properties")
+                                    || fileName.endsWith(".txt");
+                            if (isResourceFile 
                                     || type!=null && type.startsWith("text")) {
                                 Writer writer = lastOut.getWriter();
                                 writer.write("ex$.");
@@ -435,7 +438,7 @@ public class JsCompiler {
                                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), opts.getEncoding()))) {
                                     String line = null;
                                     while ((line = reader.readLine()) != null) {
-                                        if (isPropertiesFile && opts.isMinify()) {
+                                        if (isResourceFile && opts.isMinify()) {
                                             line = line.trim();
                                             if (line.length()==0) {
                                                 continue;
