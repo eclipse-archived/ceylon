@@ -346,17 +346,12 @@ public class ImportVisitor extends Visitor {
         Declaration d = 
                 importedPackage.getMember(name, null, false);
         if (d == null) {
-            String newName;
-            if (JvmBackendUtil.isInitialLowerCase(name)) {
-                newName = NamingBase.capitalize(name);
-            }
-            else {
-                newName = NamingBase.getJavaBeanName(name);
-            }
+            String newName = adaptJavaName(name);
             d = importedPackage.getMember(newName, null, false);
             // only do this for Java declarations we fudge
-            if(d != null && !d.isJava())
+            if (d!=null && !d.isJava()) {
                 d = null;
+            }
         }
         if (d==null) {
             id.addError("imported declaration not found: '" 
@@ -421,13 +416,7 @@ public class ImportVisitor extends Visitor {
         }
         Declaration m = td.getMember(name, null, false);
         if (m == null && td.isJava()) {
-            String newName;
-            if (JvmBackendUtil.isInitialLowerCase(name)) {
-                newName = NamingBase.capitalize(name);
-            }
-            else {
-                newName = NamingBase.getJavaBeanName(name);
-            }
+            String newName = adaptJavaName(name);
             m = td.getMember(newName, null, false);
         }
         if (m==null) {
@@ -534,6 +523,12 @@ public class ImportVisitor extends Visitor {
         }
         //imtl.addError("member aliases may not have member aliases");
         return name;
+    }
+
+    private static String adaptJavaName(String name) {
+        return JvmBackendUtil.isInitialLowerCase(name) ? 
+                NamingBase.capitalize(name) : 
+                NamingBase.getJavaBeanName(name);
     }
     
     private boolean isStaticNonGeneric(Declaration dec, 
