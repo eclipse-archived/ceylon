@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
@@ -407,6 +408,14 @@ public class TypeHierarchyVisitor extends Visitor {
         return null;
     }
 
+    private boolean isJavaSetter(Declaration dec) {
+        return dec instanceof Function
+            && dec.isJava()
+            && dec.getName().matches("set[A-Z0-9].*")
+            && ((Function)dec).isDeclaredVoid()
+            && ((Function)dec).getFirstParameterList().getParameters().size() == 1;
+    }
+
     private void checkForFormalsNotImplemented(Node that, 
             List<Type> orderedTypes, Class clazz) {
         Type aggregation = buildAggregatedType(orderedTypes);
@@ -419,8 +428,19 @@ public class TypeHierarchyVisitor extends Visitor {
                             (Declaration)
                                 example.getContainer();
                     if (!clazz.equals(declaringType)) {
-                        addUnimplementedFormal(clazz, example);
                         String name = example.getName();
+                        if (isJavaSetter(example) 
+                                && aggregation.membersByName
+                                    .containsKey(setterToProperty(name))) {
+                            //we need to ignore setters that are
+                            //refined by get/set pairs lower down
+                            //the Java hierarchy
+                            //TODO: add the concept of write-only
+                            //      properties to the typechecker
+                            //      (i.e. a setter with no getter)
+                            continue;
+                         }
+                        addUnimplementedFormal(clazz, example);
                         that.addError("formal member '"
                                 + name + "' of '"
                                 + declaringType.getName()
@@ -478,6 +498,11 @@ public class TypeHierarchyVisitor extends Visitor {
                         " not implemented in class hierarchy (concrete interface members not yet supported)");
             }*/
         }
+    }
+
+    private static String setterToProperty(String name) {
+        return name.substring(3, 4).toLowerCase() 
+            + name.substring(4);
     }
 
     private static boolean isJavaInterfaceMember(Declaration formal) {
@@ -568,9 +593,10 @@ public class TypeHierarchyVisitor extends Visitor {
     //sort type hierarchy from most abstract to most concrete
     private List<Type> sortDAGAndBuildMetadata(TypeDeclaration declaration, 
             Node errorReporter) {
-        //Apply a partial sort on the class hierarchy which is a Directed Acyclic Graph (DAG)
-        // with subclasses pointing to superclasses or interfaces
-        //use depth-first plus a stack fo processed nodes to detect non DAG
+        //Apply a partial sort on the class hierarchy which is a 
+        //Directed Acyclic Graph (DAG) with subclasses pointing to 
+        //superclasses or interfaces use depth-first plus a stack to 
+        //processed nodes to detect non DAG
         //http://en.wikipedia.org/wiki/Topological_sorting
         List<Type> sortedDag = new ArrayList<Type>();
         List<TypeDeclaration> visitedDeclarationPerBranch = 
