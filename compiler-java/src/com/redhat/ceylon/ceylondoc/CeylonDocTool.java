@@ -492,7 +492,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
         typeChecker.process();
         if (haltOnError && typeChecker.getErrors() > 0) {
-            throw new CeylondException("error.failedParsing", new Object[] { typeChecker.getErrors() }, null);
+            throw new CeylondException("error.failedTypechecking", new Object[] { typeChecker.getErrors() }, null);
         }
         
         initModules(modules);
