@@ -2,12 +2,14 @@ package com.redhat.ceylon.compiler.js;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -15,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -350,7 +353,7 @@ public class JsCompiler {
                 }
             } else if(srcFiles != null && !srcFiles.isEmpty()
                          // For the specific case of the Stitcher
-                         && !typecheckerPhasedUnits.isEmpty() ){
+                         && !typecheckerPhasedUnits.isEmpty()) {
                 for (PhasedUnit pu: phasedUnits) {
                     if ("module.ceylon".equals(pu.getUnitFile().getName())) {
                         final int t = compileUnit(pu);
@@ -415,6 +418,57 @@ public class JsCompiler {
                         }
                     }
                 }
+                if (resFiles!=null) {
+                    for (Map.Entry<Module,JsOutput> entry: output.entrySet()) {
+                        Module module = entry.getKey();
+                        final JsOutput lastOut = getOutput(module);
+                        for (File file: filterForModule(resFiles, opts.getResourceDirs(), module.getNameAsString())) {
+                            String type = Files.probeContentType(file.toPath());
+                            boolean isPropertiesFile = file.getName().endsWith(".properties");
+                            if (isPropertiesFile 
+                                    || type!=null && type.startsWith("text")) {
+                                Writer writer = lastOut.getWriter();
+                                writer.write("ex$.");
+                                writer.write(resourceKey(module, file));
+                                writer.write("=\"");
+                                Pattern pattern = Pattern.compile("\\\\|\\t|\\r|\\f|\\n");
+                                try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), opts.getEncoding()))) {
+                                    String line = null;
+                                    while ((line = reader.readLine()) != null) {
+                                        if (isPropertiesFile && opts.isMinify()) {
+                                            line = line.trim();
+                                            if (line.length()==0) {
+                                                continue;
+                                            }
+                                            if (!opts.isComment() && line.startsWith("#")) {
+                                                continue;
+                                            }
+                                        }
+                                        StringBuffer result = new StringBuffer();
+                                        Matcher matcher = pattern.matcher(line);
+                                        while (matcher.find()) {
+                                            String escaped;
+                                            switch (matcher.group(0)) {
+                                            case "\\": escaped = "\\\\\\\\"; break;
+                                            case "\t": escaped = "\\\\t"; break;
+                                            case "\r": escaped = "\\\\r"; break;
+                                            case "\f": escaped = "\\\\f"; break;
+                                            case "\n": escaped = "\\\\n"; break;
+                                            default: throw new IllegalStateException();
+                                            }
+                                            matcher.appendReplacement(result, escaped);
+                                        }
+                                        matcher.appendTail(result);
+                                        writer.write(result.toString());
+                                        writer.write("\\n");
+                                    }
+                                }
+                                writer.write("\";\n");
+                                generatedCode = true;
+                            }
+                        }
+                    }
+                }
             }
             for (PhasedUnit pu: pkgs) {
                 final int t = compileUnit(pu);
@@ -435,6 +489,12 @@ public class JsCompiler {
             }
         }
         return errCount == 0 && exitCode == 0;
+    }
+
+    private String resourceKey(Module module, File file) {
+        return module.getNameAsString().replace(".", "$$") 
+                + "$$"
+                + file.getName().replace(".", "$$");
     }
 
     private int compileUnit(PhasedUnit pu) throws IOException {
@@ -490,6 +550,10 @@ public class JsCompiler {
      * Right now it's one file per module. */
     private JsOutput getOutput(PhasedUnit pu) throws IOException {
         Module mod = pu.getPackage().getModule();
+        return getOutput(mod);
+    }
+
+    private JsOutput getOutput(Module mod) throws IOException {
         JsOutput jsout = output.get(mod);
         if (jsout==null) {
             jsout = newJsOutput(mod);
