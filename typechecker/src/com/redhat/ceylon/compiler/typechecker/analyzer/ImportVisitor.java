@@ -594,10 +594,11 @@ public class ImportVisitor extends Visitor {
     private boolean isNonimportable(Package pkg, String name) {
         String pname = pkg.getQualifiedNameString();
         return pname.equals("java.lang")
-                && ("Object".equals(name) ||
-                    "Throwable".equals(name) ||
-                    "Exception".equals(name)) ||
-               pname.equals("java.lang.annotation")
+                && ("Object".equals(name) 
+                 || "Throwable".equals(name) 
+                 || "RuntimeException".equals(name) 
+                 || "Exception".equals(name)) 
+            || pname.equals("java.lang.annotation")
                 && "Annotation".equals(name);
     }
     
