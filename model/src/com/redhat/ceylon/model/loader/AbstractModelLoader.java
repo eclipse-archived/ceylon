@@ -224,7 +224,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror THROWABLE_TYPE = simpleCeylonObjectType("java.lang.Throwable");
 //    private static final TypeMirror ERROR_TYPE = simpleCeylonObjectType("java.lang.Error");
     private static final TypeMirror EXCEPTION_TYPE = simpleCeylonObjectType("java.lang.Exception");
-    private static final TypeMirror CEYLON_THROWABLE_TYPE = simpleCeylonObjectType("java.lang.Throwable");
+    private static final TypeMirror CEYLON_THROWABLE_TYPE = simpleCeylonObjectType("ceylon.language.Throwable");
     private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleCeylonObjectType("ceylon.language.Exception");
     
     private static final TypeMirror STRING_TYPE = simpleJDKObjectType("java.lang.String");
