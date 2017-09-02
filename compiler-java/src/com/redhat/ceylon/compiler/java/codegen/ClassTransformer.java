@@ -3730,13 +3730,14 @@ public class ClassTransformer extends AbstractTransformer {
         public long constructor(ClassOrInterface cdecl) {
             return declarationSharedFlags(cdecl);
         }
+        
         public int constructor(Constructor ctor) {
             return ctor.isShared() 
                 && !Decl.isAncestorLocal(ctor) 
-                && !ctor.isPackageVisibility()
                 && !ctor.isAbstract() 
                 && !ModelUtil.isEnumeratedConstructor(ctor)
-                    ? PUBLIC : PRIVATE;
+                    ? (!ctor.isPackageVisibility() ? PUBLIC : 0) 
+                    : PRIVATE;
         }
 
         public long typeAlias(TypeAlias decl) {
