@@ -2662,7 +2662,8 @@ case (hexadecimal) {
             <para>A reference annotated <literal>late</literal> may not be initialized or 
             assigned a value by the class initializer. A parameter may not be annotated 
             <literal>late</literal>. A reference not belonging to a class may not be annotated 
-            <literal>late</literal>.</para>
+            <literal>late</literal>. A reference annotated <literal>formal</literal> or 
+            <literal>default</literal> may not be annotated <literal>late</literal>.</para>
             
             <para>If a class declares or inherits a <literal>variable</literal> reference, it 
             must (directly or indirectly) extend the class <literal>Basic</literal> defined in 

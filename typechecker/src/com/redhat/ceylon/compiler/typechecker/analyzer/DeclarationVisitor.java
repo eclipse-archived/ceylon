@@ -1450,6 +1450,9 @@ public abstract class DeclarationVisitor extends Visitor {
             if (v.isFormal()) {
                 that.addError("formal attribute may not be annotated 'late'");
             }
+            else if (v.isDefault()) {
+                that.addError("default attribute may not be annotated 'late'");
+            }
             else if (!v.isClassOrInterfaceMember() && 
                     !v.isToplevel()) {
                 that.addError("block-local value may not be annotated 'late'");
