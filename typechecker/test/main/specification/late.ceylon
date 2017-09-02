@@ -81,3 +81,8 @@ class LateVariance<out T>() {
     late T t1;
     $error shared late T t2;
 }
+
+abstract class WithFormalAndDefaultLate() {
+    $error shared formal late String name;
+    $error shared default late Integer count;
+}
