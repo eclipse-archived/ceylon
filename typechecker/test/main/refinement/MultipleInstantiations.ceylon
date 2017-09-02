@@ -15,19 +15,19 @@ class SuperCo() satisfies Co<Object> {
 class SubCo() extends SuperCo() satisfies Co<String> {
     default shared actual String get() { return ""; }
     void m() {
-        @type:"Object" (super of SuperCo).get();
-        @error @type:"String" super.get();
-        @error @type:"String" (super of Co<String>).get();
-        @error (super of Object).get();
+        $type:"Object" (super of SuperCo).get();
+        $error $type:"String" super.get();
+        $error $type:"String" (super of Co<String>).get();
+        $error (super of Object).get();
     }
 } 
-@error class SubCoBroken() extends SuperCo() satisfies Co<String> {}
+$error class SubCoBroken() extends SuperCo() satisfies Co<String> {}
 void testSubCo() {
     value inst = SubCo();
-    @type:"String" inst.get();
+    $type:"String" inst.get();
     Co<String> cog = inst;
     Co<Object> coo = inst;
-    @type:"String" infer(inst);
+    $type:"String" infer(inst);
 }
 
 class SuperCoOk() satisfies Co<String> {
@@ -37,10 +37,10 @@ class SubCoOk() extends SuperCoOk() satisfies Co<Object> {
 } 
 void testSubCoOk() {
     value inst = SubCoOk();
-    @type:"String" inst.get();
+    $type:"String" inst.get();
     Co<String> cog = inst;
     Co<Object> coo = inst;
-    @type:"String" infer(inst);
+    $type:"String" infer(inst);
 }
 
 
@@ -50,22 +50,22 @@ class SuperCoGood() satisfies Co<G> {
 class SubCoGood() extends SuperCoGood() satisfies Co<H> {
     default shared actual H&G get() { return nothing; }
     void m() {
-        @type:"G&H" @error super.get();
-        @type:"G" (super of SuperCoGood).get();
-        @type:"H" @error (super of Co<H>).get();
+        $type:"G&H" $error super.get();
+        $type:"G" (super of SuperCoGood).get();
+        $type:"H" $error (super of Co<H>).get();
     }
 }
 void testSubCoGood() {
     value inst = SubCoGood();
     
-    @type:"H&G" inst.get();
+    $type:"H&G" inst.get();
     Co<G> cog = inst;
     Co<H> coh = inst;
     Co<Object> coo = inst;
     Co<G&H> cogh = inst;
-    @type:"G&H" infer(inst);
+    $type:"G&H" infer(inst);
     
-    @type:"G&H" inst.C("").get();
+    $type:"G&H" inst.C("").get();
     Co<G>.C<String|Float> cogc = inst.C("", 0.0);
     Co<H>.C<String|Float> cohc = inst.C("", 0.0);
     Co<Object>.C<String|Float> cooc = inst.C("", 0.0);
@@ -78,38 +78,38 @@ interface InterCoG satisfies Co<G> {
 interface InterCoH satisfies Co<H> {}
 interface InterCo satisfies Co<Object> {}
 
-@error class SatCoBroken() satisfies InterCoG&InterCoH {}
+$error class SatCoBroken() satisfies InterCoG&InterCoH {}
 
 class SatCoOK() satisfies InterCo&InterCoG&InterCoH {
     default shared actual G&H get() { return nothing; }
 }
 void testSatCoOK() {
     value inst = SatCoOK();
-    @type:"G&H" inst.get();
+    $type:"G&H" inst.get();
     Co<G> cog = inst;
     Co<H> coh = inst;
     Co<Object> coo = inst;
     Co<G&H> cogh = inst;
-    @type:"G&H" infer(inst);
+    $type:"G&H" infer(inst);
 }
 
 class SatCoGood() satisfies InterCo&InterCoG {}
 void testSatCoGood() {
     value inst = SatCoGood();
-    @type:"G" inst.get();
+    $type:"G" inst.get();
     Co<G> cog = inst;
     Co<Object> coo = inst;
-    @type:"G" infer(inst);
+    $type:"G" infer(inst);
 }
 class SatCoFine() satisfies InterCo&InterCoH {
     default shared actual H get() { return nothing; }
 }
 void testSatCoFine() {
     value inst = SatCoFine();
-    @type:"H" inst.get();
+    $type:"H" inst.get();
     Co<H> cog = inst;
     Co<Object> coo = inst;
-    @type:"H" infer(inst);
+    $type:"H" infer(inst);
 }
 
 interface Contra<in T> {
@@ -120,13 +120,13 @@ class SuperContra() satisfies Contra<String> {
     shared actual void accept(String t) {}
 }
 
-@error class SubContra() extends SuperContra() satisfies Contra<Object> {} 
+$error class SubContra() extends SuperContra() satisfies Contra<Object> {} 
 
 
 interface I1 { shared String name { return "Gavin"; } } 
 interface I2 { shared String name { return "Tom"; } }
 
-@error class Broken() satisfies I1&I2 {}
+$error class Broken() satisfies I1&I2 {}
 
 class MethodIfNonEmptySequence() {
     shared void m1(String s) {

@@ -23,7 +23,7 @@
    For any monoid, the addition operation must satisfy:
    
    - `x + 0 == x`"""
-see (`class String`, `interface Numeric`)
+see (class String, interface Numeric)
 by ("Gavin")
 tagged("Numbers", "Strings")
 shared interface Summable<Other> of Other

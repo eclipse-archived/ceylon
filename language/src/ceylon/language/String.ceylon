@@ -66,7 +66,7 @@ shared native final class String
                   Ranged<Integer,Character,String> {
     
     "The concatenation of the given [[strings]]."
-    see (`class StringBuilder`)
+    see (class StringBuilder)
     shared static String sum({String*} strings) {
         value result = StringBuilder();
         result.appendAll(strings);
@@ -100,7 +100,7 @@ shared native final class String
      representation of 
      \{LATIN CAPITAL LETTER I WITH DOT ABOVE} is two 
      characters wide."
-    see (`value String.uppercased`)
+    see (value String.uppercased)
     shared native String lowercased;
     
     "This string, with all characters in uppercase.
@@ -116,7 +116,7 @@ shared native final class String
      multiple characters, for example the uppercase 
      representation of \{LATIN SMALL LETTER SHARP S} is 
      SS."
-    see (`value String.lowercased`)
+    see (value String.lowercased)
     shared native String uppercased;
     
     "Split the string into tokens, using the given 
@@ -211,6 +211,10 @@ shared native final class String
     shared actual native String rest
             => String(characters.rest);
     
+    "This string, without its last character."
+    since("1.3.3")
+    shared actual native String exceptLast;
+    
     "A sequence containing all indexes of this string."
     shared actual native Integer[] keys => 0:size;
     
@@ -229,7 +233,7 @@ shared native final class String
      line breaks. Recognized line break sequences are 
      `\\n` and `\\r\\n`. The empty string is considered 
      a single line of text."
-    see (`value linesWithBreaks`)
+    see (value linesWithBreaks)
     shared native {String+} lines 
             => split('\n'.equals, true, false)
                .spread(String.trimTrailing)('\r'.equals);
@@ -239,7 +243,7 @@ shared native final class String
      break sequence, `\\n` or `\\r\\n`, except for the 
      very last line. The empty string is considered a 
      single line of text."
-    see (`value lines`)
+    see (value lines)
     since("1.1.0")
     shared native {String+} linesWithBreaks
             => split('\n'.equals, false, false)
@@ -461,7 +465,7 @@ shared native final class String
      underlying representation of the characters uses a
      UTF-16 encoding. Use of [[longerThan]] or 
      [[shorterThan]] is highly recommended."
-    see (`function longerThan`, `function shorterThan`)
+    see (function longerThan, function shorterThan)
     aliased ("length")
     shared actual native Integer size => characters.size;
     
@@ -473,8 +477,8 @@ shared native final class String
      string:
      
          string.lastIndex == string.size-1"
-    shared actual Integer? lastIndex 
-            => !characters.empty then characters.size-1;
+    shared actual native Integer? lastIndex 
+            => !empty then size-1;
     
     "An iterator for the characters of the string."
     shared actual native Iterator<Character> iterator()
@@ -490,7 +494,7 @@ shared native final class String
      Using the [[item operator|Correspondence.get]],
      `string.getFromFirst(index)` may be written as
      `string[index]`."
-    see (`function getFromLast`)
+    see (function getFromLast)
     shared actual native Character? getFromFirst(
         "An index from the start of the string, which 
          identifies a character within the string only 
@@ -504,7 +508,7 @@ shared native final class String
      string is indexed from the _end_ of the string, or 
      `null` if the index falls outside the bounds of 
      this string."
-    see (`function getFromFirst`)
+    see (function getFromFirst)
     shared actual native Character? getFromLast(
         "An index from the end of the string, which 
          identifies a character within this string only 
@@ -580,7 +584,7 @@ shared native final class String
      occurrence in this string of the given nonempty 
      [[substring]] with the given [[replacement]] string, 
      working from the start of this string to the end."
-    throws (`class AssertionError`,
+    throws (class AssertionError,
             "if the given [[substring]] is empty")
     shared native String replace(String substring, 
                                  String replacement) {
@@ -616,7 +620,7 @@ shared native final class String
      occurrence in this string of the given nonempty 
      [[substring]], if any, with the given 
      [[replacement]] string."
-    throws (`class AssertionError`,
+    throws (class AssertionError,
             "if the given [[substring]] is empty")
     since("1.1.0")
     shared native String replaceFirst(String substring, 
@@ -635,7 +639,7 @@ shared native final class String
      occurrence in this string of the given nonempty 
      [[substring]], if any, with the given 
      [[replacement]] string."
-    throws (`class AssertionError`,
+    throws (class AssertionError,
             "if the given [[substring]] is empty")
     since("1.1.0")
     shared native String replaceLast(String substring, 
@@ -685,11 +689,11 @@ shared native final class String
      For more specialized lexicographic comparisons 
      between strings, use [[compareIgnoringCase]] or 
      [[compareCorresponding]]."
-    see (`function compareIgnoringCase`,
-         `function compareCorresponding`)
+    see (function compareIgnoringCase,
+         function compareCorresponding)
     shared actual native Comparison compare(String other)
-            => compareCorresponding(this, other, 
-                (Character x, Character y) => x<=>y);
+            => compareCorresponding(this, other) 
+                ((x, y) => x<=>y);
     
     "Compare this string with the given string 
      lexicographically, ignoring the case of the 
@@ -705,14 +709,13 @@ shared native final class String
      
      For more specialized lexicographic comparisons 
      between strings, use [[compareCorresponding]]."
-    see (`value Character.lowercased`, 
-         `value Character.uppercased`,
-         `function compareCorresponding`)
+    see (value Character.lowercased, 
+         value Character.uppercased,
+         function compareCorresponding)
     since("1.2.0")
     shared native Comparison compareIgnoringCase(String other)
-            => compareCorresponding(this, other, 
-                (Character x, Character y) 
-                        => charsEqualIgnoringCase(x, y) 
+            => compareCorresponding(this, other) 
+                ((x, y) => charsEqualIgnoringCase(x, y) 
                         then equal 
                         else x.lowercased <=> y.lowercased);
     
@@ -721,7 +724,7 @@ shared native final class String
      `string.size>length`, since it does not require 
      complete iteration of the underlying UTF-16-encoded
      native string."
-    see (`value size`)
+    see (value size)
     shared actual native Boolean longerThan(Integer length) {
         variable value index = 0;
         for (_ in characters) {
@@ -739,7 +742,7 @@ shared native final class String
      `string.size>length`, since it does not require 
      complete iteration of the underlying UTF-16-encoded
      native string."
-    see (`value size`)
+    see (value size)
     shared actual native Boolean shorterThan(Integer length) {
         variable value index = 0;
         for (_ in characters) {
@@ -760,12 +763,12 @@ shared native final class String
      For more specialized character-wise comparisons 
      between strings, use [[equalsIgnoringCase]] or 
      [[corresponding]]."
-    see (`function equalsIgnoringCase`,
-         `function corresponding`)
+    see (function equalsIgnoringCase,
+         function corresponding)
     shared actual native Boolean equals(Object that)
             => if (is String that)
-            then corresponding(this, that, 
-                    (Character x, Character y) => x==y)
+            then corresponding(this, that)
+                    ((x, y) => x==y)
             else false;
     
     "Compare this string with the given string, ignoring 
@@ -778,13 +781,13 @@ shared native final class String
      
      For more specialized character-wise comparisons 
      between strings, use [[corresponding]]."
-    see (`value Character.lowercased`, 
-         `value Character.uppercased`,
-         `function corresponding`)
+    see (value Character.lowercased, 
+         value Character.uppercased,
+         function corresponding)
     since("1.2.0")
     shared native Boolean equalsIgnoringCase(String that)
-            => corresponding(this, that, 
-                charsEqualIgnoringCase);
+            => corresponding(this, that) 
+                (charsEqualIgnoringCase);
     
     "A hash code for this `String`, computed from its 
      UTF-16 code units."
@@ -805,7 +808,7 @@ shared native final class String
     "Determines if this string has no characters, that 
      is, if it has zero [[size]]. This is a _much_ more 
      efficient operation than `string.size==0`."
-    see (`value size`)
+    see (value size)
     shared actual native Boolean empty => characters.empty;
     
     "This string."
@@ -894,7 +897,7 @@ shared native final class String
      
      If the given `length` is not strictly positive, no
      elements are copied."
-    throws (`class AssertionError`, 
+    throws (class AssertionError, 
         "if the arguments do not identify meaningful 
          ranges within the two lists:
          
@@ -938,7 +941,7 @@ shared native final class String
      of code written in other languages. It is more 
      idiomatic to use [[measure]] or [[span]] where 
      reasonable._"
-    see (`function measure`, `function span`)
+    see (function measure, function span)
     since("1.3.0")
     shared native String substring(
         "The inclusive start index."
@@ -962,7 +965,7 @@ shared native final class String
      of code written in other languages. It is more 
      idiomatic to use [[firstInclusion]] where 
      reasonable._"
-    see (`function firstInclusion`)
+    see (function firstInclusion)
     since("1.3.0")
     shared native Integer indexOf(
         "The substring to find within this string."
@@ -986,7 +989,7 @@ shared native final class String
      of code written in other languages. It is more 
      idiomatic to use [[lastInclusion]] where 
      reasonable._"
-    see (`function lastInclusion`)
+    see (function lastInclusion)
     since("1.3.0")
     shared native Integer lastIndexOf(
         "The substring to find within this string."

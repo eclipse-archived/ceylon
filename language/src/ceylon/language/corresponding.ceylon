@@ -13,47 +13,49 @@
  
  For example:
  
-     corresponding({ 1, 2, 3, 4 }, 1:4)
+     corresponding({ 1, 2, 3, 4 }, 1:4)()
  
  and:
  
-     corresponding({ 1, 2, 3, 4 }, \"1234\", 
-            (Integer i, Character c) => i.string==c.string)
+     corresponding({ 1, 2, 3, 4 }, \"1234\")
+            ((i, c) => i.string==c.string)
  
  both evaluate to `true`."
-see (`function everyPair`, 
-     `function compareCorresponding`)
+see (function everyPair, 
+     function compareCorresponding)
 tagged("Comparisons", "Streams")
 since("1.1.0")
-shared Boolean corresponding<First,Second>(
-    {First*} firstIterable, {Second*} secondIterable,
-    "The predicate function that compares an element of the
-     [[first stream|firstIterable]] with the corresponding 
-     element of the [[second stream|secondIterable]].
-     
-     By default, the elements are compared by a predicate
-     function that returns `true` if and only if the 
-     elements are [[equal|Object.equals]] or both `null`."
-    Boolean comparing(First first, Second second)
+shared Boolean(Boolean(First,Second)=)
+corresponding<First,Second>
+    ({First*} firstIterable, {Second*} secondIterable)
+    => ("The predicate function that compares an element of the
+         [[first stream|firstIterable]] with the corresponding 
+         element of the [[second stream|secondIterable]].
+      
+         By default, the elements are compared by a predicate
+         function that returns `true` if and only if the 
+         elements are [[equal|Object.equals]] or both `null`."
+        Boolean comparing(First first, Second second)
             => if (exists first, exists second) 
                     then first==second
-                    else !first exists && 
-                         !second exists) {
-    value firstIter = firstIterable.iterator();
-    value secondIter = secondIterable.iterator();
-    while (true) {
-        value first = firstIter.next();
-        value second = secondIter.next();
-        if (!is Finished first, !is Finished second) {
-            if (!comparing(first, second)) {
-                return false;
+                    else !first exists 
+                      && !second exists) {
+        value firstIter = firstIterable.iterator();
+        value secondIter = secondIterable.iterator();
+        while (true) {
+            value first = firstIter.next();
+            value second = secondIter.next();
+            if (!is Finished first, !is Finished second) {
+                if (!comparing(first, second)) {
+                    return false;
+                }
+            }
+            else {
+                return first is Finished 
+                    && second is Finished;
             }
         }
-        else {
-            return first is Finished && second is Finished;
-        }
-    }
-}
+    };
 
 "Compares corresponding elements of the given streams using 
  the given [[comparison function|comparing]]. Two elements 
@@ -75,24 +77,24 @@ shared Boolean corresponding<First,Second>(
  
  For example:
  
-     compareCorresponding({ 1, 2, 2, 5 }, 1:4,
-            (Integer i, Integer j) => i<=>j)
+     compareCorresponding({ 1, 2, 2, 5 }, 1:4)
+            ((i, j) => i<=>j)
  
  and:
  
-     compareCorresponding({ 1, 2, 3 }, 1:4,
-            (Integer i, Integer j) => i<=>j)
+     compareCorresponding({ 1, 2, 3 }, 1:4)
+            ((i, j) => i<=>j)
  
  both evaluate to `smaller`."
-see (`function corresponding`)
+see (function corresponding)
 tagged("Comparisons", "Streams")
 since("1.3.0")
-shared Comparison compareCorresponding<First,Second>(
-    {First*} firstIterable, {Second*} secondIterable,
-    "The comparison function that compares an element of the
-     [[first stream|firstIterable]] with the corresponding 
-     element of the [[second stream|secondIterable]]."
-    Comparison comparing(First first, Second second)) {
+shared Comparison compareCorresponding<First,Second>
+    ({First*} firstIterable, {Second*} secondIterable)
+    ("The comparison function that compares an element of the
+      [[first stream|firstIterable]] with the corresponding 
+      element of the [[second stream|secondIterable]]."
+     Comparison comparing(First first, Second second)) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
     while (true) {

@@ -1,12 +1,12 @@
 object bar {
-    @error print(bar);
-    @error print(this);
+    $error print(bar);
+    $error print(this);
     object baz {
-        @error print(bar);
-        @error print(baz);
-        @error print(outer.baz);
+        $error print(bar);
+        $error print(baz);
+        $error print(outer.baz);
         shared void printSelf() {
-            @error print(bar);
+            $error print(bar);
             print(baz);
             print(outer.baz);
         }
@@ -68,24 +68,24 @@ interface SelfReference {
         }
     }
     
-    @error class Bad() extends Super(this) {
+    $error class Bad() extends Super(this) {
         function f() {
-            @error use(this);
-            @error return this;
+            $error use(this);
+            $error return this;
         }
         value v {
-            @error use(this);
-            @error return this;
+            $error use(this);
+            $error return this;
         }
-        @error class Inner() 
+        $error class Inner() 
                 extends Super(outer) {
             function f() {
-                @error use(outer);
-                @error return outer;
+                $error use(outer);
+                $error return outer;
             }
             value v {
-                @error use(outer);
-                @error return outer;
+                $error use(outer);
+                $error return outer;
             }
         }
         use("hello");
@@ -110,9 +110,9 @@ interface SelfReference {
     }
     
     class Concrete() extends Abstract() {
-        @error print(hello);
-        @error print(super.hello);
-        @error print(this.hello);
+        $error print(hello);
+        $error print(super.hello);
+        $error print(this.hello);
         void method() {
             print(hello);
             print(super.hello);
@@ -126,7 +126,7 @@ interface SelfReference {
     
     class Outer() {
         class Inner() {
-            Inner getInner() { @error return getInn(this); }
+            Inner getInner() { $error return getInn(this); }
             Outer getOuter() { return getOut(outer); }
             Inner ii = getInner();
             Outer oo = getOuter();
@@ -138,12 +138,12 @@ interface SelfReference {
 
 void recursivedefs() {
     String a;
-    @error a => a;
+    $error a => a;
     String b;
-    @error b = b;
-    @error String c => c;
-    @error String d = d;
-    String e { @error return e; }
+    $error b = b;
+    $error String c => c;
+    $error String d = d;
+    String e { $error return e; }
     String f() { return f(); }
     String g() => g();
     String h();

@@ -30,13 +30,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.model.LazyClass;
+import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -56,14 +56,6 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 class Strategy {
     private Strategy() {}
-    
-    public static boolean defaultParameterMethodTakesThis(Tree.Declaration decl) {
-        return defaultParameterMethodTakesThis(decl.getDeclarationModel());
-    }
-    
-    public static boolean defaultParameterMethodTakesThis(Declaration decl) {
-        return decl instanceof Function && decl.isToplevel();
-    }
     
     enum DefaultParameterMethodOwner {
         /** 
@@ -98,7 +90,7 @@ class Strategy {
             decl = (Declaration) decl.getContainer();
         } 
         if (Decl.isConstructor(decl)) {
-            decl = Decl.getConstructedClass(decl);
+            decl = ModelUtil.getConstructedClass(decl);
         }
         
         if ((decl instanceof Function || decl instanceof Class) 
@@ -107,7 +99,7 @@ class Strategy {
             return DefaultParameterMethodOwner.STATIC;
         } else if (isInnerClass(decl)) {
             // Only inner classes have their default value methods on their outer
-            return Decl.getClassOrInterfaceContainer(decl, false) instanceof Class ? 
+            return ModelUtil.getClassOrInterfaceContainer(decl, false) instanceof Class ? 
                     DefaultParameterMethodOwner.OUTER : 
                     DefaultParameterMethodOwner.OUTER_COMPANION;
         }
@@ -115,6 +107,10 @@ class Strategy {
         return DefaultParameterMethodOwner.INIT_COMPANION;
     }
     
+    
+    public static boolean defaultParameterMethodTakesThis(Declaration decl) {
+        return decl instanceof Function && decl.isToplevel();
+    }
     
     public static boolean defaultParameterMethodStatic(final Declaration odecl) {
         return defaultParameterMethodOwner(odecl) == DefaultParameterMethodOwner.STATIC;
@@ -130,21 +126,17 @@ class Strategy {
             elem = (Declaration)elem.getContainer();
         }
         return elem instanceof Class
-                && !elem.isToplevel()
-                && !Decl.isLocalNotInitializer(elem);
-    }
-    
-    public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {
-        return defaultParameterMethodOnSelf(decl.getDeclarationModel());
+            && !elem.isToplevel()
+            && !ModelUtil.isLocalNotInitializer(elem);
     }
     
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
         return decl instanceof Function
-                && !Decl.isConstructor(decl)
-                && !decl.isParameter()
-                && !Decl.withinInterface(decl)
-                && !decl.isToplevel()
-                && !decl.isStatic();
+            && !Decl.isConstructor(decl)
+            && !decl.isParameter()
+            && !decl.isInterfaceMember()
+            && !decl.isToplevel()
+            && !decl.isStatic();
     }
     
     public static boolean hasDefaultParameterValueMethod(Parameter param) {
@@ -152,7 +144,8 @@ class Strategy {
     }
     
     public static boolean hasDefaultParameterOverload(Parameter param) {
-        return param.isDefaulted() || isCeylonVariadicNeedingEmpty(param);
+        return param.isDefaulted() 
+            || isCeylonVariadicNeedingEmpty(param);
     }
     
     private static boolean isCeylonVariadicNeedingEmpty(Parameter param){
@@ -165,7 +158,8 @@ class Strategy {
     }
     
     public static boolean hasEmptyDefaultArgument(Parameter param) {
-        return param.isSequenced() && !param.isAtLeastOne();
+        return param.isSequenced() 
+            && !param.isAtLeastOne();
     }
     
     /**
@@ -179,12 +173,13 @@ class Strategy {
                 return false;
             }
         }
+        ClassOrInterface model = def.getDeclarationModel();
         return def instanceof Tree.AnyClass 
-                && Decl.isToplevel(def) 
-                && Decl.isShared(def)
-                && !Decl.isAbstract(def)
-                && !def.getDeclarationModel().isNativeHeader()
-                && hasNoRequiredParameters((Class)def.getDeclarationModel());
+            && model.isToplevel() 
+            && model.isShared()
+            && !model.isAbstract()
+            && !model.isNativeHeader()
+            && hasNoRequiredParameters((Class)model);
     }
     
     /**
@@ -212,37 +207,31 @@ class Strategy {
      * @param def
      */
     public static boolean generateMain(Tree.AnyMethod def) {
-        return  Decl.isToplevel(def)
-                && Decl.isShared(def)
-                && hasNoRequiredParameters(def.getDeclarationModel());
+        Function model = def.getDeclarationModel();
+        return model.isToplevel()
+            && model.isShared()
+            && hasNoRequiredParameters(model);
     }
     
     public static boolean generateThisDelegates(Tree.AnyMethod def) {
-        return Decl.withinInterface(def.getDeclarationModel())
+        return def.getDeclarationModel().isInterfaceMember()
             && def instanceof MethodDeclaration
             && ((MethodDeclaration) def).getSpecifierExpression() == null;
     }
 
     public static boolean needsOuterMethodInCompanion(ClassOrInterface model) {
-        return Decl.withinClassOrInterface(model);
+        return model.isClassOrInterfaceMember();
     }
     
     public static boolean useField(Value attr) {
-        return !Decl.withinInterface(attr) && Decl.isCaptured(attr) 
+        return !attr.isInterfaceMember() && ModelUtil.isCaptured(attr) 
             || attr.isStatic();
     }
     
     
     public static boolean createField(Parameter p, Value v) {
-        return !Decl.withinInterface(v) && (p == null || useField(v));
-    }
-    
-    /**
-     * Determines whether a method wrapping the Callable should be generated 
-     * for a FunctionalParameter 
-     */
-    static boolean createMethod(Tree.Parameter parameter) {
-        return createMethod(parameter.getParameterModel());
+        return !v.isInterfaceMember() 
+            && (p == null || useField(v));
     }
     
     /**
@@ -250,8 +239,7 @@ class Strategy {
      * for a FunctionalParameter 
      */
     static boolean createMethod(Parameter parameter) {
-        FunctionOrValue model = parameter.getModel();
-        return JvmBackendUtil.createMethod(model);
+        return JvmBackendUtil.createMethod(parameter.getModel());
     }
 
     /**
@@ -260,31 +248,29 @@ class Strategy {
      * interface itself.
      */
     public static boolean onlyOnCompanion(Declaration model) {
-        return Decl.withinInterface(model)
-                && (model instanceof ClassOrInterface
-                        || !Decl.isShared(model));
+        return model.isInterfaceMember()
+            && (model instanceof ClassOrInterface || !model.isShared());
     }
     
     static boolean generateInstantiator(Declaration model) {
         if (model instanceof Class) {
             Class cls = (Class)model;
             return !cls.isAbstract()
-                    && !cls.isStatic()
-                    && (Decl.isRefinableMemberClass(cls) 
-                        || 
-                        // If shared, generate an instantiator so that BC is 
-                        // preserved should the member class later become refinable
-                        (Decl.isCeylon(cls)
-                                && model.isMember()
-                                && cls.isShared()
-                                && !cls.isAnonymous()));
+                && !cls.isStatic()
+                && (Decl.isRefinableMemberClass(cls) 
+                    // If shared, generate an instantiator so that BC is 
+                    // preserved should the member class later become refinable
+                    || ModelUtil.isCeylonDeclaration(cls)
+                            && model.isMember()
+                            && cls.isShared()
+                            && !cls.isAnonymous());
         } else if (Decl.isConstructor(model)) {
-            Constructor ctor = Decl.getConstructor(model);
-            Class cls = Decl.getConstructedClass(ctor);
+            Constructor ctor = ModelUtil.getConstructor(model);
+            Class cls = ModelUtil.getConstructedClass(ctor);
             return cls.isMember()
-                    && cls.isShared()
-                    && !cls.isStatic()
-                    && ctor.isShared();
+                && cls.isShared()
+                && !cls.isStatic()
+                && ctor.isShared();
         } else {
             return false;
         }
@@ -307,16 +293,16 @@ class Strategy {
      * {@code actual} then {@code java.lang.Object} should be used.
      */
     static boolean useBoxedVoid(Function m) {
-        return m.isMember() &&
-            (m.isDefault() || m.isFormal() || m.isActual()) &&
-            m.getType().isAnything() &&
-            Decl.isCeylon((TypeDeclaration)m.getRefinedDeclaration().getContainer());
+        return m.isMember() 
+            && (m.isDefault() || m.isFormal() || m.isActual()) 
+            && m.getType().isAnything() 
+            && ModelUtil.isCeylonDeclaration((TypeDeclaration)m.getRefinedDeclaration().getContainer());
     }
 
     public static boolean hasDelegatedDpm(Class cls) {
-        return Decl.isRefinableMemberClass(cls.getRefinedDeclaration()) &&
-            Strategy.defaultParameterMethodOnOuter(cls) &&
-            Decl.withinInterface(cls.getRefinedDeclaration());
+        return Decl.isRefinableMemberClass(cls.getRefinedDeclaration()) 
+            && Strategy.defaultParameterMethodOnOuter(cls) 
+            && cls.getRefinedDeclaration().isInterfaceMember();
     }
 
     /**
@@ -360,11 +346,6 @@ class Strategy {
         return positionalArguments.size() < 128;
     }
 
-    public static boolean generateJpaCtor(
-            Tree.ClassOrInterface def) {
-        return generateJpaCtor(def.getDeclarationModel());
-    }
-
     static boolean generateJpaCtor(ClassOrInterface declarationModel) {
         if (declarationModel instanceof Class
                 && !(declarationModel instanceof ClassAlias)
@@ -377,7 +358,13 @@ class Strategy {
                 // The class will already have a nullary ctor
                 return false;
             }
-            
+            for (Annotation annotation : cls.getAnnotations()) {
+                Declaration annoDecl = cls.getUnit().getImportedDeclaration(annotation.getName(), null, false);
+                if (annoDecl != null && annoDecl.getQualifiedNameString().equals("java.lang::nonbean")) {
+                    return false;
+                }
+            }
+
             boolean hasDelegatableSuper = false;
             Class superClass = (Class)cls.getExtendedType().getDeclaration();
             if (superClass instanceof LazyClass
@@ -413,8 +400,8 @@ class Strategy {
     private static boolean isNullary(Class superClass) {
         ParameterList parameterList = superClass.getParameterList();
         return parameterList != null 
-                && parameterList.getParameters() != null 
-                && parameterList.getParameters().isEmpty();
+            && parameterList.getParameters() != null 
+            && parameterList.getParameters().isEmpty();
     }
     
     /**
@@ -448,16 +435,16 @@ class Strategy {
                 && !(c instanceof ClassAlias)) {
             List<Parameter> parameters = null;
             if (c.hasConstructors()) {
-                Constructor defaultConstructor = Decl.getDefaultConstructor(c);
+                Constructor defaultConstructor = c.getDefaultConstructor();
                 if (defaultConstructor != null
                         && defaultConstructor.getParameterList() != null) {
                     parameters = defaultConstructor.getParameterList().getParameters();
                 }
-            } else if (c.getParameterList() != null ){
+            } else if (c.getParameterList() != null ) {
                 parameters = c.getParameterList().getParameters();
             }
             return parameters != null 
-                    && (parameters.isEmpty()
+                && (parameters.isEmpty()
                     || parameters.get(0).isDefaulted()
                     || parameters.get(0).isSequenced() && !parameters.get(0).isAtLeastOne());
         }
@@ -467,12 +454,12 @@ class Strategy {
     public static boolean introduceJavaIoSerializable(
             Class cls, Interface ser) {
         return !(cls instanceof ClassAlias)
-                && (Decl.hasOnlyValueConstructors(cls) 
-                    || cls.isAnonymous()
-                    || (cls.getExtendedType() != null
-                        && (cls.getExtendedType().isBasic()
-                         || cls.getExtendedType().isObject())))
-                && !cls.getSatisfiedTypes().contains(ser.getType());
+            && (Decl.hasOnlyValueConstructors(cls) 
+                || cls.isAnonymous()
+                || (cls.getExtendedType() != null
+                    && (cls.getExtendedType().isBasic()
+                     || cls.getExtendedType().isObject())))
+            && !cls.getSatisfiedTypes().contains(ser.getType());
     }
     
     /** Should the given class have a readResolve() method added ?
@@ -483,7 +470,7 @@ class Strategy {
 
     public static boolean useSerializationProxy(Class model) {
         return model.hasEnumerated()
-                && (model.isToplevel() || model.isMember());
+            && (model.isToplevel() || model.isMember());
     }
     
     public static List<TypeParameter> getEffectiveTypeParameters(Declaration decl) {
@@ -503,10 +490,10 @@ class Strategy {
     
     private static List<TypeParameter> getEffectiveTypeParameters(Declaration original, Declaration decl) {
         if (Decl.isConstructor(original)) {
-            original = Decl.getConstructedClass(original);
+            original = ModelUtil.getConstructedClass(original);
         }
         if (Decl.isConstructor(decl)) {
-            decl = Decl.getConstructedClass(decl);
+            decl = ModelUtil.getConstructedClass(decl);
         }
         Scope container = decl.getContainer();
         if (decl instanceof Value) {
@@ -576,10 +563,10 @@ class Strategy {
                         || term instanceof Tree.CharLiteral
                         || (term instanceof Tree.NegativeOp
                             && (((Tree.NegativeOp)term).getTerm() instanceof Tree.NaturalLiteral
-                            || ((Tree.NegativeOp)term).getTerm() instanceof Tree.FloatLiteral))
+                             || ((Tree.NegativeOp)term).getTerm() instanceof Tree.FloatLiteral))
                         ||(term instanceof Tree.BaseMemberExpression
                             && (((Tree.BaseMemberExpression)term).getDeclaration().equals(unit.getTrueValueDeclaration())
-                                || ((Tree.BaseMemberExpression)term).getDeclaration().equals(unit.getFalseValueDeclaration())))) {
+                             || ((Tree.BaseMemberExpression)term).getDeclaration().equals(unit.getFalseValueDeclaration())))) {
                 } else {
                     allCtc = false;
                     break;

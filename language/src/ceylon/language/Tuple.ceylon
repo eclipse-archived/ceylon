@@ -178,7 +178,7 @@ class Tuple<out Element, out First, out Rest = []>
 }
 
 "Efficiently repackage the given array as a [[Tuple]]."
-throws (`class AssertionError`, 
+throws (class AssertionError, 
         "if the given array is empty")
 native [Element+] arrayToTuple<Element>(Array<Element> array) {
     variable Element[] tuple = [];

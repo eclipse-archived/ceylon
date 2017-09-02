@@ -48,9 +48,9 @@ shared sealed interface ClassOrInterface<out Type=Anything>
        will return [[Object.hash]].
      - If the common supertype between this type and the [[Container]] type has no such member, `null` is returned.
      "
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
            "If the specified `Kind` type argument is not compatible with the actual result.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
            "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal Member<Container, Kind>? getClassOrInterface
             <Container=Nothing, Kind=ClassOrInterface<>>
@@ -68,9 +68,9 @@ shared sealed interface ClassOrInterface<out Type=Anything>
        be thrown.
      - If this type has no such member, `null` is returned.
      "
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
            "If the specified `Container` or `Kind` type arguments are not compatible with the actual result.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
            "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal Member<Container, Kind>? getDeclaredClassOrInterface
             <Container=Nothing, Kind=ClassOrInterface<>>
@@ -80,10 +80,10 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Gets a member class by name. Returns `null` if not found.
      
      See [[getClassOrInterface]] for how the [[Container]] type parameter works."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
            "If the specified `Type` or `Arguments` type arguments are not compatible with the actual result, 
             or if the corresponding member is not a `MemberClass`.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
            "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal MemberClass<Container, Type, Arguments>? getClass
             <Container=Nothing, Type=Anything, Arguments=Nothing>
@@ -93,10 +93,10 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Gets a member class by name. Returns `null` if not found.
      
      See [[getDeclaredClassOrInterface]] for how the [[Container]] type parameter works."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
            "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result, 
             or if the corresponding member is not a `MemberClass`.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
            "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal MemberClass<Container, Type, Arguments>? getDeclaredClass
             <Container=Nothing, Type=Anything, Arguments=Nothing>
@@ -106,10 +106,10 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Gets a member interface by name. Returns `null` if not found.
      
      See [[getClassOrInterface]] for how the [[Container]] type parameter works."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
            "If the specified `Type` type argument is not compatible with the actual result, 
             or if the corresponding member is not a `MemberInterface`.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
            "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal MemberInterface<Container, Type>? getInterface
             <Container=Nothing, Type=Anything>
@@ -118,10 +118,10 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Gets a member interface by name. Returns `null` if not found.
      
      See [[getDeclaredClassOrInterface]] for how the [[Container]] type parameter works."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
            "If the specified `Container` or `Type` type arguments are not compatible with the actual result, 
             or if the corresponding member is not a `MemberInterface`.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
            "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal MemberInterface<Container, Type>? getDeclaredInterface
             <Container=Nothing, Type=Anything>
@@ -130,9 +130,9 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Gets a method by name. Returns `null` if not found.
      
      See [[getClassOrInterface]] for how the [[Container]] type parameter works."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
            "If the specified `Type` or `Arguments` type arguments are not compatible with the actual result.")
-    throws(`class TypeApplicationException`, 
+    throws(class TypeApplicationException, 
            "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal Method<Container, Type, Arguments>? getMethod
             <Container=Nothing, Type=Anything, Arguments=Nothing>
@@ -142,9 +142,9 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Gets a method by name. Returns `null` if not found.
      
      See [[getDeclaredClassOrInterface]] for how the [[Container]] type parameter works."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
            "If the specified `Container`, `Type` or `Arguments` type arguments are not compatible with the actual result.")
-    throws(`class TypeApplicationException`,
+    throws(class TypeApplicationException,
            "If the specified closed type argument values are not compatible with the actual result's type parameters.")
     shared formal Method<Container, Type, Arguments>? getDeclaredMethod
             <Container=Nothing, Type=Anything, Arguments=Nothing>
@@ -154,7 +154,7 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Gets an attribute by name. Returns `null` if not found.
      
      See [[getClassOrInterface]] for how the [[Container]] type parameter works."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
            "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")
     shared formal Attribute<Container, Get, Set>? getAttribute
             <Container=Nothing, Get=Anything, Set=Nothing>
@@ -163,7 +163,7 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Gets an attribute by name. Returns `null` if not found.
      
      See [[getDeclaredClassOrInterface]] for how the [[Container]] type parameter works."
-    throws(`class IncompatibleTypeException`, 
+    throws(class IncompatibleTypeException, 
            "If the specified `Container`, `Get` or `Set` type arguments are not compatible with the actual result.")
     shared formal Attribute<Container, Get, Set>? getDeclaredAttribute
             <Container=Nothing, Get=Anything, Set=Nothing>

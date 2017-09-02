@@ -26,7 +26,7 @@ public class CtorDelegation {
             this.extending = ((FunctionOrValue)extending).getTypeDeclaration();
         } else if (extending instanceof Class
                     && ((Class)extending).hasConstructors()) {
-            this.extending = Decl.getDefaultConstructor(((Class)extending));
+            this.extending = ((Class)extending).getDefaultConstructor();
         } else {
             this.extending = extending;
         }

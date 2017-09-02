@@ -152,9 +152,9 @@
        {Float*} xs = ... ;
        {Float*} ys = ... ;
        Boolean same = corresponding(xs, ys);"""
-see (`interface Collection`, 
-     `function corresponding`,
-     `interface Iterator`)
+see (interface Collection, 
+     function corresponding,
+     interface Iterator)
 by ("Gavin")
 tagged("Streams")
 shared interface Iterable<out Element=Anything, 
@@ -190,7 +190,7 @@ shared interface Iterable<out Element=Anything,
     "Determines if this stream has more elements than the 
      given [[length]]. This is an efficient operation for
      streams with many elements."
-    see (`value size`)
+    see (value size)
     shared default Boolean longerThan(Integer length) {
         if (length<0) {
             return true;
@@ -207,7 +207,7 @@ shared interface Iterable<out Element=Anything,
     "Determines if this stream has fewer elements than the 
      given [[length]]. This is an efficient operation for 
      streams with many elements."
-    see (`value size`)
+    see (value size)
     shared default Boolean shorterThan(Integer length) {
         if (length<=0) {
             return false;
@@ -308,7 +308,7 @@ shared interface Iterable<out Element=Anything,
      Therefore, if the stream `i` has an unstable iteration
      order, the stream `{ i.first, *i.rest }` might not have
      the same elements as `i`."
-    see (`value first`)
+    see (value first)
     shared default {Element*} rest => skip(1);
     
     "A stream containing all but the last element of this 
@@ -392,7 +392,7 @@ shared interface Iterable<out Element=Anything,
          (0..4).map(10.power)
      
      results in the stream `{ 1, 10, 100, 1000, 10000 }`."
-    see (`function collect`)
+    see (function collect)
     shared default
     Iterable<Result,Absent> map<Result>(
         "The mapping to apply to the elements."
@@ -421,7 +421,7 @@ shared interface Iterable<out Element=Anything,
      produces this stream:
      
          { \"hello\", \"hola\", \"world\", \"mundo\" }"
-    see (`function expand`)
+    see (function expand)
     since("1.1.0")
     shared default 
     Iterable<Result,Absent|OtherAbsent>
@@ -458,7 +458,7 @@ shared interface Iterable<out Element=Anything,
          (1..100).filter(13.divides)
      
      results in the stream `{ 13, 26, 39, 52, 65, 78, 91 }`."
-    see (`function select`)
+    see (function select)
     shared default 
     {Element*} filter(
         "The predicate the elements must satisfy. The 
@@ -506,8 +506,8 @@ shared interface Iterable<out Element=Anything,
          (1..100).fold(0)(plus)
      
      results in the integer `5050`."
-    see (`function reduce`, 
-         `function scan`)
+    see (function reduce, 
+         function scan)
     shared default 
     Result fold<Result>(Result initial)(
         "The accumulating function that accepts an
@@ -546,7 +546,7 @@ shared interface Iterable<out Element=Anything,
          (1..100).reduce(plus)
      
      results in the integer `5050`." 
-    see (`function fold`)
+    see (function fold)
     since("1.1.0")
     shared default 
     Result|Element|Absent reduce<Result>(
@@ -605,7 +605,7 @@ shared interface Iterable<out Element=Anything,
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
     since("1.1.0")
-    see (`function fold`)
+    see (function fold)
     shared default 
     {Result+} scan<Result>(Result initial)(
         "The accumulating function that accepts the 
@@ -649,7 +649,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).find(Integer.positive)
      
      evaluates to `1`."
-    see (`function findLast`, `function locate`)
+    see (function findLast, function locate)
     shared default 
     Element? find(
         "The predicate the element must satisfy."
@@ -672,7 +672,7 @@ shared interface Iterable<out Element=Anything,
          (-10..10).findLast(3.divides)
      
      evaluates to `9`."
-    see (`function find`, `function locateLast`)
+    see (function find, function locateLast)
     shared default 
     Element? findLast(
         "The predicate the element must satisfy."
@@ -697,9 +697,9 @@ shared interface Iterable<out Element=Anything,
          (-10..10).locate(Integer.positive)
      
      evaluates to `11->1`."
-    see (`function locateLast`, `function locations`,
-         `function find`, 
-         `function List.firstIndexWhere`)
+    see (function locateLast, function locations,
+         function find, 
+         function List.firstIndexWhere)
     since("1.2.0")
     shared default 
     <Integer->Element&Object>? locate(
@@ -726,9 +726,9 @@ shared interface Iterable<out Element=Anything,
          (-10..10).locateLast(3.divides)
      
      evaluates to `19->9`."
-    see (`function locate`, `function locations`,
-         `function findLast`, 
-         `function List.lastIndexWhere`)
+    see (function locate, function locations,
+         function findLast, 
+         function List.lastIndexWhere)
     since("1.2.0")
     shared default 
     <Integer->Element&Object>? locateLast(
@@ -759,8 +759,8 @@ shared interface Iterable<out Element=Anything,
      Note that this method is more efficient than the
      alternative of applying [[filter]] to an [[indexed]]
      stream."
-    see (`function locate`, `function locateLast`, 
-         `function List.indexesWhere`)
+    see (function locate, function locateLast, 
+         function List.indexesWhere)
     since("1.2.0")
     shared default
     {<Integer->Element&Object>*} locations(
@@ -806,9 +806,9 @@ shared interface Iterable<out Element=Anything,
      and [[ceylon.language::min]] may be used to find the  
      largest and smallest values in a stream of [[Comparable]] 
      values, according to the natural order of its elements."
-    see (`function package.max`, `function package.min`,
-         `function byIncreasing`, `function byDecreasing`,
-         `function package.comparing`)
+    see (function package.max, function package.min,
+         function byIncreasing, function byDecreasing,
+         function package.comparing)
     since("1.1.0")
     shared default 
     Element|Absent max(
@@ -859,7 +859,7 @@ shared interface Iterable<out Element=Anything,
      
      This operation is an eager counterpart to 
      [[List.reversed]]."
-    see (`value List.reversed`)
+    see (value List.reversed)
     shared default List<Element> reverse() {
         value array = Array(this);
         if (array.empty) {
@@ -891,10 +891,10 @@ shared interface Iterable<out Element=Anything,
      Note that the toplevel function [[ceylon.language::sort]] 
      may be used to sort a stream of [[Comparable]] values 
      according to the natural order of its elements."
-    see (`function increasing`, `function decreasing`,
-         `function byIncreasing`, `function byDecreasing`,
-         `function package.comparing`, 
-         `function package.sort`)
+    see (function increasing, function decreasing,
+         function byIncreasing, function byDecreasing,
+         function package.comparing, 
+         function package.sort)
     shared default 
     [Element+] | []&Iterable<Element,Absent> sort(
         "The function comparing pairs of elements."
@@ -919,7 +919,7 @@ shared interface Iterable<out Element=Anything,
      any stream `it`, and mapping `f`:
      
          it.collect(f) == [*it.map(f)]"
-    see (`function map`)
+    see (function map)
     shared default 
     [Result+] | []&Iterable<Result,Absent> collect<Result>(
         "The transformation applied to the elements."
@@ -935,7 +935,7 @@ shared interface Iterable<out Element=Anything,
      For any stream `it`, and predicate `p`:
      
          it.select(p) == [*it.filter(p)]"
-    see (`function filter`)
+    see (function filter)
     shared default 
     Element[] select(
         "The predicate the elements must satisfy."
@@ -964,7 +964,7 @@ shared interface Iterable<out Element=Anything,
      function|selecting]]. If the stream is empty, returns 
      `false`. For an infinite stream, this operation might 
      not terminate."
-    see (`function every`)
+    see (function every)
     shared default 
     Boolean any(
         "The predicate that at least one element must 
@@ -982,7 +982,7 @@ shared interface Iterable<out Element=Anything,
      given [[predicate function|selecting]]. If the stream
      is empty, return `true`. For an infinite stream, this 
      operation might not terminate."
-    see (`function any`)
+    see (function any)
     shared default 
     Boolean every(
         "The predicate that all elements must satisfy."
@@ -1004,9 +1004,9 @@ shared interface Iterable<out Element=Anything,
      stream has no elements. If the specified number of 
      elements to skip is zero or fewer, the resulting stream 
      contains the same elements as this stream."
-    see (`function List.sublistFrom`,
-         `function skipWhile`,
-         `function take`)
+    see (function List.sublistFrom,
+         function skipWhile,
+         function take)
     since("1.1.0")
     shared default 
     {Element*} skip(Integer skipping) {
@@ -1035,10 +1035,10 @@ shared interface Iterable<out Element=Anything,
      resulting stream contains the same elements as this 
      stream. If the specified number of elements to take is
      fewer than one, the resulting stream has no elements."
-    see (`function List.sublistTo`,
-         `function List.initial`,
-         `function takeWhile`,
-         `function skip`)
+    see (function List.sublistTo,
+         function List.initial,
+         function takeWhile,
+         function skip)
     since("1.1.0")
     shared default 
     {Element*} take(Integer taking) {
@@ -1065,8 +1065,8 @@ shared interface Iterable<out Element=Anything,
     "Produces a stream containing the elements of this 
      stream, after skipping the leading elements until the 
      given [[predicate function|skipping]] returns `false`."
-    see (`function skip`,
-         `function takeWhile`)
+    see (function skip,
+         function takeWhile)
     since("1.1.0")
     shared default 
     {Element*} skipWhile(
@@ -1101,8 +1101,8 @@ shared interface Iterable<out Element=Anything,
     "Produces a stream containing the leading elements of 
      this stream until the given [[predicate function|taking]]
      returns `false`."
-    see (`function take`,
-         `function skipWhile`)
+    see (function take,
+         function skipWhile)
     since("1.1.0")
     shared default 
     {Element*} takeWhile(
@@ -1147,7 +1147,7 @@ shared interface Iterable<out Element=Anything,
      
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
-    see (`value cycled`)
+    see (value cycled)
     shared default 
     {Element*} repeat(Integer times) 
             => object satisfies {Element*} {
@@ -1167,7 +1167,7 @@ shared interface Iterable<out Element=Anything,
      results in the stream `{ 0, 3, 6, 9 }`.
      
      The step size must be greater than zero."
-    throws (`class AssertionError`, 
+    throws (class AssertionError, 
             "if the given step size is nonpositive, 
              i.e. `step<1`")
     shared default 
@@ -1207,7 +1207,7 @@ shared interface Iterable<out Element=Anything,
          { \"123\", \"abc\", \"456\" }.map(parseInteger).defaultNullElements(0)
      
      results in the stream `{ 123, 0, 456 }`."
-    see (`value coalesced`)
+    see (value coalesced)
     shared default
     Iterable<Element&Object|Default,Absent>
     defaultNullElements<Default>(
@@ -1226,7 +1226,7 @@ shared interface Iterable<out Element=Anything,
          { \"123\", \"abc\", \"456\"}.map(parseInteger).coalesced
      
      results in the stream `{ 123, 456 }`."
-    see (`function defaultNullElements`)
+    see (function defaultNullElements)
     shared default
     {Element&Object*} coalesced
             => { for (e in this) if (exists e) e };
@@ -1241,7 +1241,7 @@ shared interface Iterable<out Element=Anything,
          { \"hello\", null, \"world\" }.indexed
      
      results in the stream `{ 0->\"hello\", 1->null, 2->\"world\" }`."
-    see (`function locations`)
+    see (function locations)
     shared default 
     Iterable<<Integer->Element>,Absent> indexed 
             => object
@@ -1336,7 +1336,7 @@ shared interface Iterable<out Element=Anything,
           
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
-    throws (`class AssertionError`,
+    throws (class AssertionError,
             "if `length<=0`")
     since("1.1.0")
     shared default 
@@ -1397,7 +1397,7 @@ shared interface Iterable<out Element=Anything,
      evaluated lazily:
      
          { head, *stream }"
-    see (`function chain`)
+    see (function chain)
     since("1.1.0")
     shared default 
     {Element|Other+} follow<Other>(Other head) 
@@ -1413,7 +1413,7 @@ shared interface Iterable<out Element=Anything,
          (1..3).chain(\"abc\")
      
      evaluates to the stream `{ 1, 2, 3, 'a', 'b', 'c' }`."
-    see (`function expand`)
+    see (function expand)
     shared default 
     Iterable<Element|Other,Absent&OtherAbsent> 
     chain<Other,OtherAbsent>
@@ -1493,7 +1493,7 @@ shared interface Iterable<out Element=Anything,
      
      If this stream is empty, the resulting stream also
      empty."
-    see (`function repeat`)
+    see (function repeat)
     shared default 
     Iterable<Element,Absent> cycled 
             => object satisfies Iterable<Element,Absent> {
@@ -1535,8 +1535,8 @@ shared interface Iterable<out Element=Anything,
      
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
-    throws (`class AssertionError`, "if `step<1`")
-    see (`function interleave`)
+    throws (class AssertionError, "if `step<1`")
+    see (function interleave)
     since("1.1.0")
     shared default 
     Iterable<Element|Other,Absent> interpose<Other>(
@@ -1601,7 +1601,7 @@ shared interface Iterable<out Element=Anything,
      
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
-    see(`function set`)
+    see(function set)
     since("1.2.0")
     shared default Iterable<Element,Absent> distinct
             => object satisfies Iterable<Element,Absent> {
@@ -1749,7 +1749,7 @@ shared interface Iterable<out Element=Anything,
      
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
-    see(`function summarize`)
+    see(function summarize)
     since("1.2.0")
     shared Map<Group,[Element+]> group<Group>(
         "The grouping function that assigns a key to the
@@ -1790,7 +1790,7 @@ shared interface Iterable<out Element=Anything,
      
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
-    see(`function group`, `function fold`)
+    see(function group, function fold)
     since("1.2.0")
     shared Map<Group,Result> summarize<Group,Result>(
         "The grouping function that assigns a key to the
@@ -1901,7 +1901,7 @@ class GroupEntry<Group,Result>(next, group, elements)
     
 }
 
-see(`function Iterable.summarize`)
+see(function Iterable.summarize)
 class Summary<Element,Group,Result>(
     {Element*} elements,
     Group? grouping(Element element),

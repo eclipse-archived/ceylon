@@ -14,7 +14,7 @@
  - [[destroy]] is called when execution of the body of the 
    `try` statement ends, even if an exception propagates out 
    of the body of the `try`."
-see (`interface Obtainable`)
+see (interface Obtainable)
 tagged("Basic types")
 since("1.1.0")
 shared interface Destroyable satisfies Usable {

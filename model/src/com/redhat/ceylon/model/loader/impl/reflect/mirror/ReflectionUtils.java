@@ -26,8 +26,7 @@ public class ReflectionUtils {
     static final Class<? extends Annotation> IGNORE_ANNOTATION = ReflectionUtils.getClass(AbstractModelLoader.CEYLON_IGNORE_ANNOTATION);
     
     public static Map<String, AnnotationMirror> getAnnotations(AnnotatedElement annotated) {
-        Annotation[] annotations = annotated.getDeclaredAnnotations();
-        return getAnnotations(annotations);
+        return getAnnotations(annotated.getDeclaredAnnotations());
     }
 
     public static Map<String, AnnotationMirror> getAnnotations(Annotation[] annotations) {

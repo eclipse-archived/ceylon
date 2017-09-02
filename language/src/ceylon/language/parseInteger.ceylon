@@ -34,20 +34,20 @@
      Magnitude: 'k' | 'M' | 'G' | 'T' | 'P'
      Base10Digits: ('0'..'9')+
      BaseNDigits: ('0'..'9'|'a'..'z'|'A'..'Z')+"
-throws (`class AssertionError`, 
+throws (class AssertionError, 
         "if [[radix]] is not between [[minRadix]] and 
          [[maxRadix]]")
-see (`function Integer.parse`)
+see (function Integer.parse)
 tagged("Numbers", "Basic types")
-deprecated("Use [[Integer.parse]]")
 shared Integer? parseInteger(
             "The string representation to parse."
-            String string,
+            String? string,
             "The base, between [[minRadix]] and [[maxRadix]] 
              inclusive."
             Integer radix = 10) 
-        => if (is Integer result 
-                = parseIntegerInternal(string, radix))
+        => if (exists string, 
+               is Integer result 
+                    = parseIntegerInternal(string, radix))
         then result 
         else null;
 

@@ -578,27 +578,30 @@ public class Type extends Reference {
     private boolean isEmptyTupleType() {
         Unit unit = getDeclaration().getUnit();
         if (unit.isTupleType(this)) {
-            List<Type> tal = getTypeArgumentList();
-            if (tal.size()>=1) {
-                Type elem = tal.get(0);
+            List<Type> args = getTypeArgumentList();
+            int size = args.size();
+            switch (size) {
+            case 1:
+                Type elem = args.get(0);
                 if (elem!=null &&
                         elem.isExactlyNothing()) {
                     return true;
                 }
-            }
-            if (tal.size()>=2) {
-                Type first = tal.get(1);
+                break;
+            case 2:
+                Type first = args.get(1);
                 if (first!=null &&
                         first.isExactlyNothing()) {
                     return true;
                 }
-            }
-            if (tal.size()>=3) {
-                Type rest = tal.get(2);
+                break;
+            case 3:
+                Type rest = args.get(2);
                 if (rest!=null &&
                         rest.isExactlyNothing()) {
                     return true;
                 }
+                break;
             }
         }
         return false;
@@ -654,35 +657,35 @@ public class Type extends Reference {
         List<TypeParameter> typeParameters = 
                 getDeclaration()
                     .getTypeParameters();
-        for (TypeParameter p: typeParameters) {
-            Type arg = getTypeArguments().get(p);
-            Type otherArg = type.getTypeArguments().get(p);
+        for (TypeParameter param: typeParameters) {
+            Type arg = getTypeArguments().get(param);
+            Type otherArg = type.getTypeArguments().get(param);
             if (arg==null || otherArg==null) {
                 return false;
             }
             else {
                 boolean contravariant = 
-                        isContravariant(p);
+                        isContravariant(param);
                 boolean covariant = 
-                        isCovariant(p);
+                        isCovariant(param);
                 boolean invariant = 
                         !covariant && 
                         !contravariant;
                 boolean otherCovariant = 
-                        type.isCovariant(p);
+                        type.isCovariant(param);
                 boolean otherContravariant = 
-                        type.isContravariant(p);
+                        type.isContravariant(param);
                 boolean otherInvariant = 
                         !otherCovariant && 
                         !otherContravariant;
                 Unit unit = getDeclaration().getUnit();
                 if (covariant 
-                        && intersectionOfSupertypes(p)
+                        && intersectionOfSupertypes(param)
                             .isSubtypeOf(arg)) {
                     arg = unit.getAnythingType();
                 }
                 if (otherCovariant 
-                        && intersectionOfSupertypes(p)
+                        && intersectionOfSupertypes(param)
                             .isSubtypeOf(otherArg)) {
                     otherArg = unit.getAnythingType();
                 }
@@ -1043,18 +1046,18 @@ public class Type extends Reference {
             TypeDeclaration td = 
                     dec.getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter elem = typeParameters.get(0);
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter elem = params.get(0);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             Type t = this;
             while (true) {
-                Map<TypeParameter, Type> ta = 
+                Map<TypeParameter,Type> args = 
                         t.getTypeArguments();
-                Type e = ta.get(elem);
-                Type f = ta.get(first);
-                Type r = ta.get(rest);
+                Type e = args.get(elem);
+                Type f = args.get(first);
+                Type r = args.get(rest);
                 if (e!=null && e.involvesTypeAliases() ||
                     f!=null && f.involvesTypeAliases()) {
                     return true;
@@ -1074,15 +1077,15 @@ public class Type extends Reference {
 //            return true;
 //        }
         else {
-            for (Type at: getTypeArgumentList()) {
-                if (at!=null && 
-                        at.involvesTypeAliases()) {
+            for (Type arg: getTypeArgumentList()) {
+                if (arg!=null && 
+                        arg.involvesTypeAliases()) {
                     return true;
                 }
             }
-            Type qt = getQualifyingType();
-            if (qt!=null && 
-                    qt.involvesTypeAliases()) {
+            Type qualifying = getQualifyingType();
+            if (qualifying!=null && 
+                    qualifying.involvesTypeAliases()) {
                 return true;
             }
             return false;
@@ -1109,22 +1112,22 @@ public class Type extends Reference {
                 getDeclaration()
                     .getUnit()
                     .getTupleDeclaration();
-        List<TypeParameter> typeParameters = 
+        List<TypeParameter> params = 
                 td.getTypeParameters();
-        TypeParameter elem = typeParameters.get(0);
-        TypeParameter first = typeParameters.get(1);
-        TypeParameter rest = typeParameters.get(2);
+        TypeParameter elem = params.get(0);
+        TypeParameter first = params.get(1);
+        TypeParameter rest = params.get(2);
         Type t1 = this;
         Type t2 = type;
         while (true) {
-            Map<TypeParameter, Type> t1a = 
+            Map<TypeParameter, Type> t1args = 
                     t1.getTypeArguments();
-            Map<TypeParameter, Type> t2a = 
+            Map<TypeParameter, Type> t2args = 
                     t2.getTypeArguments();
-            Type e1 = t1a.get(elem);
-            Type e2 = t2a.get(elem);
-            Type f1 = t1a.get(first);
-            Type f2 = t2a.get(first);
+            Type e1 = t1args.get(elem);
+            Type e2 = t2args.get(elem);
+            Type f1 = t1args.get(first);
+            Type f2 = t2args.get(first);
             if (e1==null || e2==null || 
                 f1==null || f2==null) {
                 return false;
@@ -1133,8 +1136,8 @@ public class Type extends Reference {
                 !e1.isSubtypeOfInternal(e2)) {
                 return false;
             }
-            Type r1 = t1a.get(rest);
-            Type r2 = t2a.get(rest);
+            Type r1 = t1args.get(rest);
+            Type r2 = t2args.get(rest);
             if (r1==null || r2==null) {
                 return false;
             }
@@ -1155,25 +1158,25 @@ public class Type extends Reference {
         List<TypeParameter> typeParameters = 
                 type.getDeclaration()
                     .getTypeParameters();
-        for (TypeParameter p: typeParameters) {
-            Type arg = supertype.getTypeArguments().get(p);
-            Type otherArg = type.getTypeArguments().get(p);
+        for (TypeParameter param: typeParameters) {
+            Type arg = supertype.getTypeArguments().get(param);
+            Type otherArg = type.getTypeArguments().get(param);
             if (arg==null || otherArg==null) {
                 return false;
             }
             Unit unit = supertype.getDeclaration().getUnit();
-            if (supertype.isCovariant(p)
-                    && intersectionOfSupertypes(p)
+            if (supertype.isCovariant(param)
+                    && intersectionOfSupertypes(param)
                         .isSubtypeOf(arg)) {
                 arg = unit.getAnythingType();
             }
-            if (type.isCovariant(p)
-                    && intersectionOfSupertypes(p)
+            if (type.isCovariant(param)
+                    && intersectionOfSupertypes(param)
                         .isSubtypeOf(otherArg)) {
                 otherArg = unit.getAnythingType();
             }
-            if (type.isCovariant(p)) {
-                if (supertype.isContravariant(p)) {
+            if (type.isCovariant(param)) {
+                if (supertype.isContravariant(param)) {
                     //Inv<in T> is a subtype of Inv<out Anything>
                     if (!otherArg.isAnything()) {
                         return false;
@@ -1183,8 +1186,8 @@ public class Type extends Reference {
                     return false;
                 }
             }
-            else if (type.isContravariant(p)) {
-                if (supertype.isCovariant(p)) {
+            else if (type.isContravariant(param)) {
+                if (supertype.isCovariant(param)) {
                     //Inv<out T> is a subtype of Inv<in Nothing>
                     if (!otherArg.isNothing()) {
                         return false;
@@ -1198,9 +1201,9 @@ public class Type extends Reference {
                 //type is invariant in p
                 //Inv<out Nothing> is a subtype of Inv<Nothing>
                 //Inv<in Anything> is a subtype of Inv<Anything>
-                if (supertype.isCovariant(p) && 
+                if (supertype.isCovariant(param) && 
                         !arg.isNothing() ||
-                    supertype.isContravariant(p) && 
+                    supertype.isContravariant(param) && 
                         !arg.isAnything() ||
                     !arg.isExactlyInternal(otherArg)) {
                     return false;
@@ -1586,10 +1589,10 @@ public class Type extends Reference {
      *         variances and substitution of type arguments
      */
     public Type substitute(TypedReference source) {
-        Type receiver = source.getQualifyingType();
+        Type qualifying = source.getQualifyingType();
         return substitute(source.getTypeArguments(),
-                receiver==null ? null :
-                    receiver.collectVarianceOverrides(),
+                qualifying==null ? null :
+                    qualifying.collectVarianceOverrides(),
                     source.isCovariant(),
                     source.isContravariant());
     }
@@ -1928,18 +1931,18 @@ public class Type extends Reference {
                     getDeclaration()
                         .getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter elem = typeParameters.get(0);
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter elem = params.get(0);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             Type t = this;
             while (true) {
-                Map<TypeParameter, Type> ta = 
+                Map<TypeParameter,Type> args = 
                         t.getTypeArguments();
-                Type e = ta.get(elem);
-                Type f = ta.get(first);
-                Type r = ta.get(rest);
+                Type e = args.get(elem);
+                Type f = args.get(first);
+                Type r = args.get(rest);
                 if (e!=null && e.hasUnderlyingType() ||
                     f!=null && f.hasUnderlyingType()) {
                     return true;
@@ -1956,10 +1959,10 @@ public class Type extends Reference {
             }
         }
         else {
-            List<Type> tal = getTypeArgumentList();
-            for (int i=0, size=tal.size(); 
+            List<Type> args = getTypeArgumentList();
+            for (int i=0, size=args.size(); 
                     i<size; i++) {
-                Type ta = tal.get(i);
+                Type ta = args.get(i);
                 if (ta!=null && ta.hasUnderlyingType()) {
                     return true;
                 }
@@ -2312,8 +2315,8 @@ public class Type extends Reference {
     }
     
     private Type qualifiedByDeclaringType() {
-        Type qt = getQualifyingType();
-        if (qt==null) {
+        Type qualifying = getQualifyingType();
+        if (qualifying==null) {
             return this;
         }
         else {
@@ -2332,7 +2335,7 @@ public class Type extends Reference {
                 TypeDeclaration dtd = (TypeDeclaration) 
                         declaration.getContainer();
                 Type declaringType = 
-                        qt.getSupertype(dtd);
+                        qualifying.getSupertype(dtd);
                 pt.setQualifyingType(declaringType);
                 Map<TypeParameter, Type> tam = 
                         getTypeArgumentMap(declaration, 
@@ -2602,18 +2605,18 @@ public class Type extends Reference {
                     getDeclaration()
                         .getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter elem = typeParameters.get(0);
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter elem = params.get(0);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             Type t = this;
             while (true) {
-                Map<TypeParameter, Type> ta = 
+                Map<TypeParameter,Type> args = 
                         t.getTypeArguments();
-                Type e = ta.get(elem);
-                Type f = ta.get(first);
-                Type r = ta.get(rest);
+                Type e = args.get(elem);
+                Type f = args.get(first);
+                Type r = args.get(rest);
                 if (e!=null) {
                     e.checkDecidability(
                             covariant, contravariant, 
@@ -2640,9 +2643,9 @@ public class Type extends Reference {
         }
         else {
             TypeDeclaration declaration = getDeclaration();
-            for (TypeParameter tp: 
+            for (TypeParameter param: 
                     declaration.getTypeParameters()) {
-                if (!covariant && tp.isContravariant()) {
+                if (!covariant && param.isContravariant()) {
                     //a type with contravariant parameters appears at
                     //a contravariant location in satisfies / extends
                     if (!errors.contains(declaration)) {
@@ -2650,14 +2653,14 @@ public class Type extends Reference {
                     }
                 }
                 Type pt = 
-                        getTypeArguments().get(tp);
+                        getTypeArguments().get(param);
                 if (pt!=null) {
-                    if (tp.isCovariant()) {
+                    if (param.isCovariant()) {
                         pt.checkDecidability(
                                 covariant, contravariant, 
                                 errors);
                     }
-                    else if (tp.isContravariant()) {
+                    else if (param.isContravariant()) {
                         if (covariant|contravariant) { 
                             pt.checkDecidability(
                                     !covariant, !contravariant, 
@@ -2782,21 +2785,21 @@ public class Type extends Reference {
             }
         }
         else {
-            Type qt = getQualifyingType();
-            if (qt!=null) {
-                qt.checkVariance(
+            Type qualifying = getQualifyingType();
+            if (qualifying!=null) {
+                qualifying.checkVariance(
                         covariant, contravariant, 
                         declaration, errors);
             }
-            for (TypeParameter tp: dec.getTypeParameters()) {
-                Type pt = getTypeArguments().get(tp);
+            for (TypeParameter param: dec.getTypeParameters()) {
+                Type pt = getTypeArguments().get(param);
                 if (pt!=null) {
-                    if (isCovariant(tp)) {
+                    if (isCovariant(param)) {
                         pt.checkVariance(
                                 covariant, contravariant, 
                                 declaration, errors);
                     }
-                    else if (isContravariant(tp)) {
+                    else if (isContravariant(param)) {
                         if (covariant|contravariant) {
                             //flip the variance
                             pt.checkVariance(
@@ -2830,18 +2833,18 @@ public class Type extends Reference {
                     getDeclaration()
                         .getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter elem = typeParameters.get(0);
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter elem = params.get(0);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             Type t = this;
             while (true) {
-                Map<TypeParameter, Type> ta = 
+                Map<TypeParameter,Type> args = 
                         t.getTypeArguments();
-                Type e = ta.get(elem);
-                Type f = ta.get(first);
-                Type r = ta.get(rest);
+                Type e = args.get(elem);
+                Type f = args.get(first);
+                Type r = args.get(rest);
                 if (e!=null && !e.isWellDefined() ||
                     f!=null && !f.isWellDefined()) {
                     return false;
@@ -2858,20 +2861,21 @@ public class Type extends Reference {
             }
         }
         else {
-            List<TypeParameter> tps = 
+            List<TypeParameter> params = 
                     getDeclaration()
                         .getTypeParameters();
-            Type qt = getQualifyingType();
-            if (qt!=null && 
-                    !qt.isWellDefined()) {
+            Type qualifying = getQualifyingType();
+            if (qualifying!=null && 
+                    !qualifying.isWellDefined()) {
                 return false;
             }
-            List<Type> tas = getTypeArgumentList();
-            for (int i=0; i<tps.size(); i++) {
-                Type at = tas.get(i);
-                TypeParameter tp = tps.get(i);
-                if ((!tp.isDefaulted() && at==null) || 
-                        (at!=null && !at.isWellDefined())) {
+            List<Type> args = getTypeArgumentList();
+            for (int i=0; i<params.size(); i++) {
+                TypeParameter param = params.get(i);
+                Type arg = i<args.size() ? args.get(i) : null;
+                if (arg==null ? 
+                        !param.isDefaulted() : 
+                        !arg.isWellDefined()) {
                     return false;
                 }
             }
@@ -2909,18 +2913,18 @@ public class Type extends Reference {
                     getDeclaration()
                         .getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter elem = typeParameters.get(0);
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter elem = params.get(0);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             Type t = this;
             while (true) {
-                Map<TypeParameter, Type> ta = 
+                Map<TypeParameter,Type> args = 
                         t.getTypeArguments();
-                Type e = ta.get(elem);
-                Type f = ta.get(first);
-                Type r = ta.get(rest);
+                Type e = args.get(elem);
+                Type f = args.get(first);
+                Type r = args.get(rest);
                 if (e!=null && e.containsUnknowns() ||
                     f!=null && f.containsUnknowns()) {
                     return true;
@@ -2939,16 +2943,16 @@ public class Type extends Reference {
         else {
             TypeDeclaration dec = getDeclaration();
             if (!dec.isJava() || !dec.isStatic()) {
-                Type qt = getQualifyingType();
-                if (qt!=null &&
-                        qt.containsUnknowns()) {
+                Type qualifying = getQualifyingType();
+                if (qualifying!=null &&
+                        qualifying.containsUnknowns()) {
                     return true;
                 }
             }
             if (!isTypeConstructor()) {
-                for (Type at: getTypeArgumentList()) {
-                    if (at==null || 
-                            at.containsUnknowns()) {
+                for (Type arg: getTypeArgumentList()) {
+                    if (arg==null || 
+                            arg.containsUnknowns()) {
                         return true;
                     }
                 }
@@ -3001,18 +3005,18 @@ public class Type extends Reference {
                     getDeclaration()
                         .getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter elem = typeParameters.get(0);
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter elem = params.get(0);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             Type t = this;
             while (true) {
-                Map<TypeParameter, Type> ta = 
+                Map<TypeParameter,Type> args = 
                         t.getTypeArguments();
-                Type e = ta.get(elem);
-                Type f = ta.get(first);
-                Type r = ta.get(rest);
+                Type e = args.get(elem);
+                Type f = args.get(first);
+                Type r = args.get(rest);
                 if (e!=null) {
                     String error = 
                             e.getFirstUnknownTypeError(
@@ -3063,21 +3067,20 @@ public class Type extends Reference {
             }
             TypeDeclaration dec = getDeclaration();
             if (!dec.isJava() || !dec.isStatic()) {
-                Type qt = getQualifyingType();
-                if (qt!=null) {
+                Type qualifying = getQualifyingType();
+                if (qualifying!=null) {
                     String error = 
-                            qt.getFirstUnknownTypeError(
+                            qualifying.getFirstUnknownTypeError(
                                     includeSuperTypes);
                     if (error!=null) {
                         return error;
                     }
                 }
             }
-            List<Type> tas = getTypeArgumentList();
-            for (Type at: tas) {
-                if (at!=null) {
+            for (Type arg: getTypeArgumentList()) {
+                if (arg!=null) {
                     String error = 
-                            at.getFirstUnknownTypeError(false);
+                            arg.getFirstUnknownTypeError(false);
                     if (error!=null) {
                         return error;
                     }
@@ -3137,18 +3140,18 @@ public class Type extends Reference {
                         getDeclaration()
                             .getUnit()
                             .getTupleDeclaration();
-                List<TypeParameter> typeParameters = 
+                List<TypeParameter> params = 
                         tpd.getTypeParameters();
-                TypeParameter elem = typeParameters.get(0);
-                TypeParameter first = typeParameters.get(1);
-                TypeParameter rest = typeParameters.get(2);
+                TypeParameter elem = params.get(0);
+                TypeParameter first = params.get(1);
+                TypeParameter rest = params.get(2);
                 Type t = this;
                 while (true) {
-                    Map<TypeParameter, Type> ta = 
+                    Map<TypeParameter,Type> args = 
                             t.getTypeArguments();
-                    Type e = ta.get(elem);
-                    Type f = ta.get(first);
-                    Type r = ta.get(rest);
+                    Type e = args.get(elem);
+                    Type f = args.get(first);
+                    Type r = args.get(rest);
                     if (e==null || //take note!
                             e.involvesDeclaration(td, visited) ||
                         f==null || //take note!
@@ -3167,15 +3170,14 @@ public class Type extends Reference {
                 }
             }
             else {
-                Type qt = getQualifyingType();
-                if (qt!=null && 
-                        qt.involvesDeclaration(td, visited)) {
+                Type qualifying = getQualifyingType();
+                if (qualifying!=null && 
+                        qualifying.involvesDeclaration(td, visited)) {
                     return true;
                 }
-                List<Type> tas = getTypeArgumentList();
-                for (Type at: tas) {
-                    if (at==null || //take note!
-                            at.involvesDeclaration(td, visited)) {
+                for (Type arg: getTypeArgumentList()) {
+                    if (arg==null || //take note!
+                            arg.involvesDeclaration(td, visited)) {
                         return true;
                     }
                 }
@@ -3219,30 +3221,30 @@ public class Type extends Reference {
                     dec.equals(tp)) {
                 return true;
             }
-            Type qt = getQualifyingType();
-            if (qt!=null && 
-                    qt.occursInvariantly(tp,
+            Type qualifying = getQualifyingType();
+            if (qualifying!=null && 
+                    qualifying.occursInvariantly(tp,
                             covariant, contravariant)) {
                 return true;
             }
-            List<TypeParameter> tps = 
+            List<TypeParameter> params = 
                     dec.getTypeParameters();
-            List<Type> tas = getTypeArgumentList();
-            for (int i=0; i<tps.size() && i<tas.size(); i++) {
-                TypeParameter itp = tps.get(i);
-                Type at = tas.get(i);
-                if (at!=null) {
+            List<Type> args = getTypeArgumentList();
+            for (int i=0; i<params.size() && i<args.size(); i++) {
+                TypeParameter param = params.get(i);
+                Type arg = args.get(i);
+                if (arg!=null) {
                     boolean co;
                     boolean contra;
                     if (!covariant && !contravariant) {
                         co = false;
                         contra = false;
                     }
-                    else if (isCovariant(itp)) {
+                    else if (isCovariant(param)) {
                         co = covariant;
                         contra = contravariant;
                     }
-                    else if (isContravariant(itp)) {
+                    else if (isContravariant(param)) {
                         co = !covariant;
                         contra = !contravariant;
                     }
@@ -3250,7 +3252,7 @@ public class Type extends Reference {
                         co = false;
                         contra = false;
                     }
-                    if (at.occursInvariantly(tp, co, contra)) {
+                    if (arg.occursInvariantly(tp, co, contra)) {
                         return true;
                     }
                 }
@@ -3291,23 +3293,23 @@ public class Type extends Reference {
             if (covariant && dec.equals(tp)) {
                 return true;
             }
-            Type qt = getQualifyingType();
-            if (qt!=null && 
-                    qt.occursCovariantly(tp,covariant)) {
+            Type qualifying = getQualifyingType();
+            if (qualifying!=null && 
+                    qualifying.occursCovariantly(tp,covariant)) {
                 return true;
             }
-            List<TypeParameter> tps = 
+            List<TypeParameter> params = 
                     dec.getTypeParameters();
-            List<Type> tas = getTypeArgumentList();
-            for (int i=0; i<tps.size() && i<tas.size(); i++) {
-                TypeParameter itp = tps.get(i);
-                Type at = tas.get(i);
-                if (at!=null && !isInvariant(itp)) {
+            List<Type> args = getTypeArgumentList();
+            for (int i=0; i<params.size() && i<args.size(); i++) {
+                TypeParameter param = params.get(i);
+                Type arg = args.get(i);
+                if (arg!=null && !isInvariant(param)) {
                     boolean co = covariant;
-                    if (isContravariant(itp)) {
+                    if (isContravariant(param)) {
                         co = !co;
                     }
-                    if (at.occursCovariantly(tp, co)) {
+                    if (arg.occursCovariantly(tp, co)) {
                         return true;
                     }
                 }
@@ -3348,23 +3350,23 @@ public class Type extends Reference {
             if (!covariant && dec.equals(tp)) {
                 return true;
             }
-            Type qt = getQualifyingType();
-            if (qt!=null && 
-                    qt.occursContravariantly(tp, covariant)) {
+            Type qualifying = getQualifyingType();
+            if (qualifying!=null && 
+                    qualifying.occursContravariantly(tp, covariant)) {
                 return true;
             }
-            List<TypeParameter> tps = 
+            List<TypeParameter> params = 
                     dec.getTypeParameters();
-            List<Type> tas = getTypeArgumentList();
-            for (int i=0; i<tps.size() && i<tas.size(); i++) {
-                TypeParameter itp = tps.get(i);
-                Type at = tas.get(i);
-                if (at!=null && !isInvariant(itp)) {
+            List<Type> args = getTypeArgumentList();
+            for (int i=0; i<params.size() && i<args.size(); i++) {
+                TypeParameter param = params.get(i);
+                Type arg = args.get(i);
+                if (arg!=null && !isInvariant(param)) {
                     boolean co = covariant;
-                    if (isContravariant(itp)) {
+                    if (isContravariant(param)) {
                         co = !co;
                     }
-                    if (at.occursContravariantly(tp, co)) {
+                    if (arg.occursContravariantly(tp, co)) {
                         return true;
                     }
                 }
@@ -3616,18 +3618,18 @@ public class Type extends Reference {
                 TypeParameter typeConstructorParameter,
                 boolean covariant, boolean contravariant, 
                 Unit unit) {
-            List<Type> tal = type.getTypeArgumentList();
-            List<TypeParameter> tpl = 
+            List<Type> args = type.getTypeArgumentList();
+            List<TypeParameter> params = 
                     typeConstructorParameter.getTypeParameters();
-            List<Type> sta = 
+            List<Type> substitutedArgs = 
                     new ArrayList<Type>
-                        (tal.size());
+                        (args.size());
             for (int i=0; 
-                    i<tal.size() && 
-                    i<tpl.size(); 
+                    i<args.size() && 
+                    i<params.size(); 
                     i++) {
-                Type ta = tal.get(i);
-                TypeParameter itp = tpl.get(i);
+                Type ta = args.get(i);
+                TypeParameter itp = params.get(i);
                 boolean co = false;
                 boolean contra = false;
                 if (type.isContravariant(itp)) {
@@ -3638,13 +3640,13 @@ public class Type extends Reference {
                     co = covariant;
                     contra = contravariant;
                 }
-                sta.add(ta.substitute(
+                substitutedArgs.add(ta.substitute(
                         substitutions,
                         overrides, 
                         co, contra));
             }
             return substituteIntoTypeConstructors(
-                    sub, sta,
+                    sub, substitutedArgs,
                     covariant, contravariant,
                     unit, type);
         }
@@ -3735,21 +3737,22 @@ public class Type extends Reference {
                 TypeDeclaration dec, Type type,
                 boolean covariant, boolean contravariant) {
             Type result;
-            Type receiverType = type.getQualifyingType();
-            if (receiverType!=null) {
-                receiverType = 
-                        substitute(receiverType, 
+            Type qualifying = type.getQualifyingType();
+            if (qualifying!=null) {
+                qualifying = 
+                        substitute(qualifying, 
                                 covariant, contravariant);
-                List<Type> typeArgumentList =
+                List<Type> args =
                         type.getTypeArgumentList();
-                List<Type> args = new ArrayList<Type>();
-                for (int i=0, s=typeArgumentList.size();
-                        i<s; i++) {
-                    args.add(substitute(
-                            typeArgumentList.get(i), 
+                int size = args.size();
+                List<Type> substituted = 
+                        new ArrayList<Type>(size);
+                for (int i=0; i<size; i++) {
+                    substituted.add(substitute(
+                            args.get(i), 
                             covariant, contravariant));
                 }
-                result = dec.appliedType(receiverType, args);
+                result = dec.appliedType(qualifying, substituted);
             }
             else {
                 result = new Type();
@@ -3830,15 +3833,15 @@ public class Type extends Reference {
                 //by substituting the type arguments of
                 //the function into the bounds of the
                 //parameter
-                for (TypeParameter tp: 
+                for (TypeParameter param: 
                         dec.getTypeParameters()) {
-                    TypeParameter stp = new TypeParameter();
-                    stp.setName(tp.getName());
-                    stp.setScope(tp.getScope());
-                    stp.setContainer(tp.getContainer());
-                    stp.setUnit(tp.getUnit());
-                    stp.setDeclaration(ta);
-                    List<Type> sts = tp.getSatisfiedTypes();
+                    TypeParameter substParam = new TypeParameter();
+                    substParam.setName(param.getName());
+                    substParam.setScope(param.getScope());
+                    substParam.setContainer(param.getContainer());
+                    substParam.setUnit(param.getUnit());
+                    substParam.setDeclaration(ta);
+                    List<Type> sts = param.getSatisfiedTypes();
                     List<Type> ssts = 
                             new ArrayList<Type>
                                 (sts.size());
@@ -3847,8 +3850,8 @@ public class Type extends Reference {
                                 substitutions, overrides,
                                 covariant, contravariant));
                     }
-                    stp.setSatisfiedTypes(ssts);
-                    List<Type> cts = tp.getCaseTypes();
+                    substParam.setSatisfiedTypes(ssts);
+                    List<Type> cts = param.getCaseTypes();
                     if (cts!=null) {
                         List<Type> scts = 
                                 new ArrayList<Type>
@@ -3858,15 +3861,15 @@ public class Type extends Reference {
                                     substitutions, overrides,
                                     covariant, contravariant));
                         }
-                        stp.setCaseTypes(scts);
+                        substParam.setCaseTypes(scts);
                     }
-                    tps.add(stp);
+                    tps.add(substParam);
                 }
                 ta.setTypeParameters(tps);
                 Type result = ta.getType();
-                Type qt = type.getQualifyingType();
-                if (qt!=null) {
-                    result.setQualifyingType(qt.substitute(
+                Type qualifying = type.getQualifyingType();
+                if (qualifying!=null) {
+                    result.setQualifyingType(qualifying.substitute(
                             substitutions, overrides,
                             covariant, contravariant));
                 }
@@ -4321,10 +4324,10 @@ public class Type extends Reference {
             return canonicalIntersection(list, unit);
         }
         else {
-            Type qt = getQualifyingType();
+            Type qualifying = getQualifyingType();
             Type aliasedQualifyingType = 
-                    qt==null ? null : 
-                        qt.resolveAliases();
+                    qualifying==null ? null : 
+                        qualifying.resolveAliases();
             
             List<Type> args = getTypeArgumentList();
             List<Type> aliasedArgs;
@@ -4332,10 +4335,12 @@ public class Type extends Reference {
                 aliasedArgs = NO_TYPE_ARGS;
             }
             else {
+                int size = args.size();
                 aliasedArgs = 
                         new ArrayList<Type>
-                            (args.size());
-                for (Type arg: args) {
+                            (size);
+                for (int i=0; i<size; i++) {
+                    Type arg = args.get(i);
                     Type aliasedArg = 
                             arg==null ? null : 
                                 arg.resolveAliases();
@@ -4436,18 +4441,18 @@ public class Type extends Reference {
                     getDeclaration()
                         .getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter elem = typeParameters.get(0);
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter elem = params.get(0);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             Type t = this;
             while (true) {
-                Map<TypeParameter, Type> ta = 
+                Map<TypeParameter,Type> args = 
                         t.getTypeArguments();
-                Type e = ta.get(elem);
-                Type f = ta.get(first);
-                Type r = ta.get(rest);
+                Type e = args.get(elem);
+                Type f = args.get(first);
+                Type r = args.get(rest);
                 if (e!=null && e.involvesTypeParameters() ||
                     f!=null && f.involvesTypeParameters()) {
                     return true;
@@ -4464,15 +4469,15 @@ public class Type extends Reference {
             }
         }
         else {
-            for (Type at: getTypeArgumentList()) {
-                if (at!=null && 
-                        at.involvesTypeParameters()) {
+            for (Type arg: getTypeArgumentList()) {
+                if (arg!=null && 
+                        arg.involvesTypeParameters()) {
                     return true;
                 }
             }
-            Type qt = getQualifyingType();
-            if (qt!=null && 
-                    qt.involvesTypeParameters()) {
+            Type qualifying = getQualifyingType();
+            if (qualifying!=null && 
+                    qualifying.involvesTypeParameters()) {
                 return true;
             }
         }
@@ -4538,15 +4543,15 @@ public class Type extends Reference {
             }
         }
         else {
-            for (Type at: getTypeArgumentList()) {
-                if (at!=null && 
-                        at.involvesTypeParameters(params)) {
+            for (Type arg: getTypeArgumentList()) {
+                if (arg!=null && 
+                        arg.involvesTypeParameters(params)) {
                     return true;
                 }
             }
-            Type qt = getQualifyingType();
-            if (qt!=null && 
-                    qt.involvesTypeParameters(params)) {
+            Type qualifying = getQualifyingType();
+            if (qualifying!=null && 
+                    qualifying.involvesTypeParameters(params)) {
                 return true;
             }
         }
@@ -4639,18 +4644,18 @@ public class Type extends Reference {
             }
         }
         else {
-            for (Type at: getTypeArgumentList()) {
-                if (at!=null) {
+            for (Type arg: getTypeArgumentList()) {
+                if (arg!=null) {
                     List<TypeDeclaration> l = 
-                            at.isRecursiveTypeAliasDefinition(
+                            arg.isRecursiveTypeAliasDefinition(
                                     visited);
                     if (!l.isEmpty()) return l;
                 }
             }
-            Type qt = getQualifyingType();
-            if (qt!=null) {
+            Type qualifying = getQualifyingType();
+            if (qualifying!=null) {
                 List<TypeDeclaration> l = 
-                        qt.isRecursiveTypeAliasDefinition(
+                        qualifying.isRecursiveTypeAliasDefinition(
                                 visited);
                 if (!l.isEmpty()) return l;
             }
@@ -4863,6 +4868,14 @@ public class Type extends Reference {
         return getDeclaration().isCallable();
     }
 
+    public boolean isException() {
+        return getDeclaration().isException();
+    }
+
+    public boolean isThrowable() {
+        return getDeclaration().isThrowable();
+    }
+
     boolean isDeclaredType() {
         return isClassOrInterface() || isTypeParameter();
     }
@@ -4874,17 +4887,17 @@ public class Type extends Reference {
                     getDeclaration()
                         .getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             Type t = this;
             while (true) {
-                Map<TypeParameter, Type> ta = 
+                Map<TypeParameter,Type> args = 
                         t.getTypeArguments();
-                Type f = ta.get(first);
+                Type f = args.get(first);
                 ret = (37*ret) + (f!=null ? f.hashCode() : 0);
-                Type r = ta.get(rest);
+                Type r = args.get(rest);
                 if (r==null) {
                     break;
                 }
@@ -4908,17 +4921,17 @@ public class Type extends Reference {
             ret = (37 * ret) + 
                     declaration.hashCodeForCache();
             
-            Map<TypeParameter, Type> typeArguments = 
+            Map<TypeParameter,Type> args = 
                     getTypeArguments();
-            if (!typeArguments.isEmpty()) {
-                List<TypeParameter> typeParameters = 
+            if (!args.isEmpty()) {
+                List<TypeParameter> params = 
                         declaration.getTypeParameters();
-                for (int i=0, l=typeParameters.size(); 
+                for (int i=0, l=params.size(); 
                         i<l; i++) {
                     TypeParameter typeParameter = 
-                            typeParameters.get(i);
+                            params.get(i);
                     Type typeArgument = 
-                            typeArguments.get(typeParameter);
+                            args.get(typeParameter);
                     ret = (37 * ret) + 
                             (typeArgument != null ? 
                                     typeArgument.hashCode() : 0);
@@ -4930,10 +4943,10 @@ public class Type extends Reference {
     }
     
     private Map<TypeParameter,SiteVariance> collectVarianceOverrides() {
-        Type qt = getQualifyingType();
+        Type qualifying = getQualifyingType();
         Map<TypeParameter,SiteVariance> qualifyingOverrides = 
-                qt==null ? EMPTY_VARIANCE_MAP :
-                    qt.collectVarianceOverrides();
+                qualifying==null ? EMPTY_VARIANCE_MAP :
+                    qualifying.collectVarianceOverrides();
         if (varianceOverrides.isEmpty()) {
             return qualifyingOverrides;
         }
@@ -5176,11 +5189,11 @@ public class Type extends Reference {
                     getDeclaration()
                         .getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter elem = typeParameters.get(0);
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter elem = params.get(0);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             
             Type a = this;
             Type b = other;
@@ -5288,18 +5301,18 @@ public class Type extends Reference {
                     getDeclaration()
                         .getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter elem = typeParameters.get(0);
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter elem = params.get(0);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             Type t = this;
             while (true) {
-                Map<TypeParameter, Type> ta = 
+                Map<TypeParameter,Type> args = 
                         t.getTypeArguments();
-                Type e = ta.get(elem);
-                Type f = ta.get(first);
-                Type r = ta.get(rest);
+                Type e = args.get(elem);
+                Type f = args.get(first);
+                Type r = args.get(rest);
                 if (e!=null) e.collectDeclarations(results);
                 if (f!=null) f.collectDeclarations(results);
                 if (r==null) {
@@ -5316,9 +5329,9 @@ public class Type extends Reference {
         }
         else {
             results.add(d);
-            for (Type t: getTypeArgumentList()) {
-                if (t!=null) {
-                    t.collectDeclarations(results);
+            for (Type arg: getTypeArgumentList()) {
+                if (arg!=null) {
+                    arg.collectDeclarations(results);
                 }
             }
         }
@@ -5353,18 +5366,18 @@ public class Type extends Reference {
                     getDeclaration()
                         .getUnit()
                         .getTupleDeclaration();
-            List<TypeParameter> typeParameters = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
-            TypeParameter elem = typeParameters.get(0);
-            TypeParameter first = typeParameters.get(1);
-            TypeParameter rest = typeParameters.get(2);
+            TypeParameter elem = params.get(0);
+            TypeParameter first = params.get(1);
+            TypeParameter rest = params.get(2);
             Type t = this;
             while (true) {
-                Map<TypeParameter, Type> ta = 
+                Map<TypeParameter,Type> args = 
                         t.getTypeArguments();
-                Type e = ta.get(elem);
-                Type f = ta.get(first);
-                Type r = ta.get(rest);
+                Type e = args.get(elem);
+                Type f = args.get(first);
+                Type r = args.get(rest);
                 if (e!=null && !e.isReified() ||
                     f!=null && !f.isReified()) {
                     return false;
@@ -5381,8 +5394,8 @@ public class Type extends Reference {
             }
         }
         else {
-            for (Type t: getTypeArgumentList()) {
-                if (t!=null && !t.isReified()) {
+            for (Type arg: getTypeArgumentList()) {
+                if (arg!=null && !arg.isReified()) {
                     return false;
                 }
             }
@@ -5399,18 +5412,18 @@ public class Type extends Reference {
         if (knownType!=null 
                 && td instanceof ClassOrInterface) {
             Unit unit = td.getUnit();
-            List<TypeParameter> tps = 
+            List<TypeParameter> params = 
                     td.getTypeParameters();
             List<Type> args;
             Map<TypeParameter,SiteVariance> vars;
-            if (tps.isEmpty()) {
+            if (params.isEmpty()) {
                 args = NO_TYPE_ARGS;
                 vars = EMPTY_VARIANCE_MAP;
             }
             else {
                 args = new ArrayList<Type>();
                 vars = new HashMap<TypeParameter,SiteVariance>();
-                for (TypeParameter tp: tps) {
+                for (TypeParameter tp: params) {
                     args.add(unit.getAnythingType());
                     vars.put(tp, OUT);
                 }
@@ -5426,10 +5439,10 @@ public class Type extends Reference {
             Type pst = td.getType().getSupertype(ktd);
             if (pst!=null) {
                 boolean allOccur = true;
-                for (TypeParameter tp: td.getTypeParameters()) {
+                for (TypeParameter param: td.getTypeParameters()) {
                     allOccur = allOccur
                             //TODO: is this exactly correct?
-                            && pst.involvesDeclaration(tp);
+                            && pst.involvesDeclaration(param);
                 }
                 if (allOccur) {
                     Type st = getSupertype(ktd);

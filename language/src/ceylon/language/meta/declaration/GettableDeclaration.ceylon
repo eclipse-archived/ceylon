@@ -29,8 +29,8 @@ shared sealed interface GettableDeclaration {
     shared formal Anything get();
     
     "Reads the current value of this attribute on the given container instance."
-    throws(`class IncompatibleTypeException`, "If the specified container is not compatible with this attribute.")
-    throws(`class StorageException`,
+    throws(class IncompatibleTypeException, "If the specified container is not compatible with this attribute.")
+    throws(class StorageException,
         "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
     shared formal Anything memberGet(Object container);
     

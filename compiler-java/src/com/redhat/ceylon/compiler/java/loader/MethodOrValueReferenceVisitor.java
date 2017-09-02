@@ -23,6 +23,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -264,9 +265,9 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                                 Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
                                 // are we delegating to a constructor (not a supertype) of the same class (this class)?
                                 if (Decl.isConstructor(ete.getDeclaration())
-                                        && Decl.getConstructedClass(ete.getDeclaration()).equals(that.getDeclarationModel())) {
+                                        && ModelUtil.getConstructedClass(ete.getDeclaration()).equals(that.getDeclarationModel())) {
                                     // remember the delegation
-                                    Constructor delegate = Decl.getConstructor(ete.getDeclaration());
+                                    Constructor delegate = ModelUtil.getConstructor(ete.getDeclaration());
                                     ConstructorPlan delegatePlan = constructorPlans.get(delegate);
                                     plan.delegate = delegatePlan;
                                     // mark the delegate as delegated
@@ -382,7 +383,7 @@ public class MethodOrValueReferenceVisitor extends Visitor {
     @Override public void visit(Tree.MethodDefinition that) {
         boolean cs = enterCapturingScope();
         super.visit(that);
-        if (Decl.withinClass(that)) {
+        if (that.getDeclarationModel().isClassMember()) {
             // This is a HACK to make sure that method definitions
             // are always seen as captured and can't be confused
             // for being part of the initializer. This is because

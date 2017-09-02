@@ -2928,9 +2928,9 @@ public final class Array<Element>
     }*/
 
     @Override @Ignore
-    public Iterable<? extends Element, ? extends java.lang.Object> getExceptLast() {
+    public List<? extends Element> getExceptLast() {
         // TODO Auto-generated method stub
-        return $ceylon$language$Iterable$impl().getExceptLast();
+        return $ceylon$language$List$impl().getExceptLast();
     }
 
     @Override @Ignore

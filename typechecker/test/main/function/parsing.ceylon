@@ -20,6 +20,6 @@ String(String)() b = ()(string) { String string; return string; };
 String(String,Integer)() c = ()(string,integer) { String string; Integer integer; return string.repeat(integer); };
 String(String)()() d = ()()(string) { String string; return string; };
 String(String)(Integer)() e = ()(Integer integer)(string) { String string; return string.repeat(integer); };
-@error String(String)(Integer)() f = ()(integer)(string) { Integer integer; String string; return string.repeat(integer); };
+$error String(String)(Integer)() f = ()(integer)(string) { Integer integer; String string; return string.repeat(integer); };
 
 }

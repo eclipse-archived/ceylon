@@ -40,6 +40,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -62,14 +63,15 @@ public class CodegenUtil {
 
     static boolean isErasedAttribute(String name){
         // ERASURE
-        return "hash".equals(name) || "string".equals(name);
+        return "hash".equals(name) 
+            || "string".equals(name);
     }
 
     public static boolean isHashAttribute(Declaration model) {
         return model instanceof Value
-                && Decl.withinClassOrInterface(model)
-                && model.isShared()
-                && "hash".equals(model.getName());
+            && model.isShared()
+            && model.isClassOrInterfaceMember()
+            && "hash".equals(model.getName());
     }
 
     static boolean isUnBoxed(Term node){
@@ -253,10 +255,10 @@ public class CodegenUtil {
             return false;
         // make sure we don't try to optimise things which can't be optimised
         return Decl.isValue(decl)
-                && !decl.isToplevel()
-                && !decl.isClassOrInterfaceMember()
-                && !decl.isCaptured()
-                && !decl.isShared();
+            && !decl.isToplevel()
+            && !decl.isClassOrInterfaceMember()
+            && !decl.isCaptured()
+            && !decl.isShared();
     }
 
     static Declaration getTopmostRefinedDeclaration(Declaration decl){
@@ -285,8 +287,9 @@ public class CodegenUtil {
     }
 
     static boolean isVoid(Type type) {
-        return type != null && type.getDeclaration() != null
-                && type.getDeclaration().getUnit().getAnythingType().isExactly(type);    
+        return type != null 
+            && type.getDeclaration() != null
+            && type.getDeclaration().getUnit().getAnythingType().isExactly(type);    
     }
 
 
@@ -332,7 +335,7 @@ public class CodegenUtil {
             return false;
         }
         return containerDeclaration instanceof Function
-                && ((Function)containerDeclaration).isParameter();
+            && ((Function)containerDeclaration).isParameter();
     }
     
     public static boolean isMemberReferenceInvocation(Tree.InvocationExpression expr) {
@@ -383,7 +386,7 @@ public class CodegenUtil {
 
     public static boolean isCompanionClassNeeded(TypeDeclaration decl) {
         return decl instanceof Interface 
-                && BooleanUtil.isNotFalse(((Interface)decl).isCompanionClassNeeded());
+            && BooleanUtil.isNotFalse(((Interface)decl).isCompanionClassNeeded());
     }
     
     /** 
@@ -432,10 +435,10 @@ public class CodegenUtil {
 
     public static boolean needsLateInitField(TypedDeclaration attrType, Unit unit) {
         return attrType.isLate()
-                // must be unboxed (except String)
-                && ((isUnBoxed(attrType) && !attrType.getType().isString())
-                    // or must be optional
-                    || unit.isOptionalType(attrType.getType()));
+            // must be unboxed (except String)
+            && ((isUnBoxed(attrType) && !attrType.getType().isString())
+                // or must be optional
+                || unit.isOptionalType(attrType.getType()));
     }
 
 
@@ -452,7 +455,7 @@ public class CodegenUtil {
                         Tree.ExtendedTypeExpression ete = (Tree.ExtendedTypeExpression)ctor.getDelegatedConstructor().getInvocationExpression().getPrimary();
                         // are we delegating to a constructor (not a supertype) of the same class (this class)?
                         if (Decl.isConstructor(ete.getDeclaration())
-                                && Decl.getConstructedClass(ete.getDeclaration()).equals(def.getDeclarationModel())) {
+                                && ModelUtil.getConstructedClass(ete.getDeclaration()).equals(def.getDeclarationModel())) {
                             return true;
                         }
                     }
@@ -463,7 +466,7 @@ public class CodegenUtil {
     }
     
     public static boolean downcastForSmall(Tree.Term expr, Declaration decl) {
-        return !expr.getSmall() && (Decl.isSmall(decl)
-                || Decl.isSmall(decl.getRefinedDeclaration()));
+        return !expr.getSmall() 
+            && (Decl.isSmall(decl) || Decl.isSmall(decl.getRefinedDeclaration()));
     }
 }

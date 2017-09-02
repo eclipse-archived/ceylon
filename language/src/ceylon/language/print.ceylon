@@ -7,7 +7,7 @@
      process.writeLine(line?.string else \"<null>\")
  
  and is intended mainly for debugging purposes."
-see (`function process.writeLine`)
+see (function process.writeLine)
 by ("Gavin")
 tagged("Environment")
 shared void print(Anything val) 
@@ -17,7 +17,7 @@ shared void print(Anything val)
  machine process as a single line of text, separated by a
  given character sequence."
 by ("Gavin")
-see (`function process.write`)
+see (function process.write)
 tagged("Environment")
 shared void printAll({Anything*} values,
         "A character sequence to use to separate the values"

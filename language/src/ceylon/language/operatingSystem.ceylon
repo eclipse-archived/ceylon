@@ -1,8 +1,8 @@
 
 "Represents the operating system on which the current 
  process is running."
-see (`value process`, `value runtime`, `value language`,
-    `value system`)
+see (value process, value runtime, value language,
+    value system)
 tagged("Environment")
 shared native object operatingSystem {
     

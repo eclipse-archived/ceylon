@@ -1,6 +1,6 @@
 void test3() {
-    @type:"I&J" value ij1 = ABottom().thing;
-    @type:"I&J" value ij2 = ABottom().thingy("");
+    $type:"I&J" value ij1 = ABottom().thing;
+    $type:"I&J" value ij2 = ABottom().thingy("");
 }
 
 class ABottom() satisfies AMid1&AMid2<J> {
@@ -28,8 +28,8 @@ interface AMid2<T>
 }
 
 void test4() {
-    @type:"I&J" value ij1 = ABottom().thing;
-    @type:"I&J" value ij2 = ABottom().thingy("");
+    $type:"I&J" value ij1 = ABottom().thing;
+    $type:"I&J" value ij2 = ABottom().thingy("");
 }
 
 
@@ -39,15 +39,75 @@ class Cc() {
 
 class Dd() extends Cc() {
     shared actual default value i => 0;
-    @error string => (i + 1).string;
+    $error string => (i + 1).string;
 }
 
 shared void rund() {
     print(Dd());
-    @error print(Dd().i + 1);
-    @type:"Integer|Null|String" value i = Dd().i; 
+    $error print(Dd().i + 1);
+    $type:"Integer|Null|String" value i = Dd().i; 
 }
 
 class Ee() extends Dd() {
     shared actual default value i => "";
+}
+
+class WithoutError1() {
+    $type:"Boolean" 
+    shared actual function equals(Object x) => false;
+    $type:"String" 
+    shared actual value string => "";
+}
+
+class WithoutError2() {
+    $type:"Boolean"
+    shared actual function equals(Object x) {
+        return true;
+    }
+    $type:"String"
+    shared actual value string {
+        return "";
+    }
+}
+
+class WithoutError3() {
+    $type:"Boolean"
+    shared actual function equals(Object x) {
+        return nothing;
+    }
+    $type:"String"
+    shared actual value string {
+        return nothing;
+    }
+}
+
+class WithoutError4() {
+    $type:"Boolean" 
+    shared actual function equals(Object x) => nothing;
+    $type:"String" 
+    shared actual value string => nothing;
+}
+
+
+class WithInferenceAndFatArrow() {
+    $type:"Boolean" 
+    $error shared actual function equals(Object x) => 1;
+    $type:"String" 
+    $error shared actual value string => 1;
+}
+
+class WithShortcutRefinement() {
+    $error equals(Object x) => 1;
+    $error string => 1;
+}
+
+class WithInferenceAndReturn() {
+    $type:"Boolean" 
+    shared actual function equals(Object x) {
+        $error return 1;
+    }
+    $type:"String" 
+    shared actual value string {
+        $error return 1;
+    }
 }

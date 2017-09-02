@@ -27,13 +27,11 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.JarURLConnection;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -92,7 +90,8 @@ public class CeylonAssemblyRunner {
         Method method = clazz.getMethod("main", new Class[] { args.getClass() });
         method.setAccessible(true);
         int mods = method.getModifiers();
-        if (method.getReturnType() != void.class || !Modifier.isStatic(mods)
+        if (method.getReturnType() != void.class 
+                || !Modifier.isStatic(mods)
                 || !Modifier.isPublic(mods)) {
             throw new NoSuchMethodException("'main' in class '" + className + "'");
         }
@@ -101,7 +100,7 @@ public class CeylonAssemblyRunner {
 
     private static boolean runtimeExists(ClassLoader loader) {
         try {
-            Class<?> clazz = loader.loadClass("ceylon.modules.bootstrap.CeylonRunTool");
+            loader.loadClass("ceylon.modules.bootstrap.CeylonRunTool");
             return true;
         } catch (ClassNotFoundException e) {
             return false;
@@ -121,16 +120,14 @@ public class CeylonAssemblyRunner {
         Method moduleSetter = clazz.getMethod("setModule", String.class);
         moduleSetter.invoke(runtool, mainModule);
         
-        File repoFolder = loader.getAssemblyFolder();
+        File tempFolder = loader.getAssemblyFolder();
         String repo = attrs.getValue(Constants.ATTR_ASSEMBLY_REPOSITORY);
-        if (repo != null) {
-            repoFolder = new File(repoFolder, repo);
-        }
+        File repoFolder = repo != null ? new File(tempFolder, repo) : tempFolder;
         Method sysrepSetter = clazz.getMethod("setSystemRepository", String.class);
         sysrepSetter.invoke(runtool, repoFolder.getPath());
-//        List<URI> repos = new ArrayList<URI>(1);
-//        repos.add(repoFolder.toURI());
-//        Method repoSetter = clazz.getMethod("setRepository", List.class);
+        
+//        List<String> repos = new ArrayList<String>(1);
+//        Method repoSetter = clazz.getMethod("setRepositoryAsStrings", List.class);
 //        repoSetter.invoke(runtool, repos);
         
         List<String> argList = Arrays.asList(args);
@@ -194,7 +191,8 @@ public class CeylonAssemblyRunner {
                     addURL(out.toURI().toURL());
                     mkdirs(out.getParentFile());
                     try (InputStream zipIn = zf.getInputStream(entry)) {
-                        try (BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(out))) {
+                        try (BufferedOutputStream fileOut 
+                                = new BufferedOutputStream(new FileOutputStream(out))) {
                             copyStream(zipIn, fileOut, false, false);
                         }
                     }
@@ -204,11 +202,12 @@ public class CeylonAssemblyRunner {
         
         private static boolean shouldInclude(String entryName) {
             entryName = entryName.toLowerCase();
-            return !entryName.isEmpty() &&
-                    (entryName.endsWith(".jar")
-                            || entryName.endsWith(".car")
-                            || entryName.endsWith("/module.xml")
-                            || entryName.endsWith("/module.properties"));
+            return !entryName.isEmpty() 
+                && (entryName.endsWith(".jar")
+                 || entryName.endsWith(".car")
+                 || entryName.endsWith(".pom")
+                 || entryName.endsWith("/module.xml")
+                 || entryName.endsWith("/module.properties"));
         }
 
         private static File mkdirs(File dir) {

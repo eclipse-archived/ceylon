@@ -22,26 +22,26 @@ native void nativeMethodMismatch1();
 native("jvm") void nativeMethodMismatch1() {
 }
 
-@error native("js") shared void nativeMethodMismatch1() {
+$error native("js") shared void nativeMethodMismatch1() {
 }
 
 native void nativeMethodMismatch2();
 
-@error native("jvm") String nativeMethodMismatch2() {
+$error native("jvm") String nativeMethodMismatch2() {
     throw Exception("NativeMethodMismatch-JVM");
 }
 
-@error native("js") Integer nativeMethodMismatch2() {
+$error native("js") Integer nativeMethodMismatch2() {
     throw Exception("NativeMethodMismatch-JS");
 }
 
 native void nativeMethodMismatch3(Integer i);
 
-@error native("jvm") void nativeMethodMismatch3(Integer i, Boolean b) {
+$error native("jvm") void nativeMethodMismatch3(Integer i, Boolean b) {
     throw Exception("NativeMethodMismatch-JVM");
 }
 
-native("js") void nativeMethodMismatch3(@error String s) {
+native("js") void nativeMethodMismatch3($error String s) {
     throw Exception("NativeMethodMismatch-JS");
 }
 
@@ -69,16 +69,16 @@ void testjs() {
 
 native shared void nativeMethodMismatch5<A,B>();
 
-@error native("jvm") shared void nativeMethodMismatch5<A,B,C>() {
+$error native("jvm") shared void nativeMethodMismatch5<A,B,C>() {
 }
 
-@error native("js") shared void nativeMethodMismatch5() {
+$error native("js") shared void nativeMethodMismatch5() {
 }
 
 native shared void nativeMethodMismatch6<T>() given T satisfies Usable;
 
-@error native("jvm") shared void nativeMethodMismatch6<T>() {
+$error native("jvm") shared void nativeMethodMismatch6<T>() {
 }
 
-@error native("js") shared void nativeMethodMismatch6<T>() given T satisfies Category {
+$error native("js") shared void nativeMethodMismatch6<T>() given T satisfies Category {
 }

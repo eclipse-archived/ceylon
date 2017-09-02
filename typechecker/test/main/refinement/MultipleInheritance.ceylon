@@ -17,7 +17,7 @@ class Super() satisfies Middle {}
 class Impl() extends Super() satisfies Top & Middle & Nothing {}
 
 void method() {
-	@type:"String" value id = Impl().id;
+	$type:"String" value id = Impl().id;
 }
 
 
@@ -33,19 +33,19 @@ interface Actual2 satisfies Formal {
     shared actual default String name { return "Emmanuel"; }
 }
 
-@error object bad satisfies Actual1 & Actual2 {}
+$error object bad satisfies Actual1 & Actual2 {}
 
 object good satisfies Actual1 & Actual2 {
     shared actual String name = "Tom";
 }
 
-@error class BadConcrete() satisfies Actual1 & Actual2 {}
+$error class BadConcrete() satisfies Actual1 & Actual2 {}
 
 class GoodConcrete() satisfies Actual1 & Actual2 {
     shared actual String name = "Tako";
 }
 
-@error interface BadInterface satisfies Actual1 & Actual2 {}
+$error interface BadInterface satisfies Actual1 & Actual2 {}
 
 interface GoodInterface satisfies Actual1 & Actual2 {
     shared actual String name { return "Stef"; }

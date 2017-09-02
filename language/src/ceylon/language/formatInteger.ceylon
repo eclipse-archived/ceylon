@@ -12,10 +12,10 @@
  - `formatInteger(10,8)` is `\"12\"`
  - `formatInteger(511,16)` is `\"1ff\"`
  - `formatInteger(512,32)` is `\"g0\"`"
-throws (`class AssertionError`, 
+throws (class AssertionError, 
         "if [[radix]] is not between [[minRadix]] and 
          [[maxRadix]]")
-see (`function Integer.format`)
+see (function Integer.format)
 tagged("Numbers")
 deprecated("Use [[Integer.format]]")
 shared String formatInteger(

@@ -12,7 +12,7 @@ class Z<out T>() extends X<T>() {
 }
 class W() extends X<Nothing>() {}
 
-@error class A<T>() extends X<T>() {} 
+$error class A<T>() extends X<T>() {} 
 
 void switchX(X<String> x) {
     void do(W w) {}
@@ -22,22 +22,22 @@ void switchX(X<String> x) {
     case (is W) { do(x); }
 }
 
-@error abstract class Circ() of Circ {}
+$error abstract class Circ() of Circ {}
 void switchCirc(Circ c) {
     switch (c)
     case (is Circ) {}
 }
 
-@error abstract class DupeEnum() of DupeCase|DupeCase {}
-@error class DupeCase() extends DupeEnum() {}
+$error abstract class DupeEnum() of DupeCase|DupeCase {}
+$error class DupeCase() extends DupeEnum() {}
 
 interface DupeSuper {}
-@error abstract class DupeSub() satisfies DupeSuper&DupeSuper {}
+$error abstract class DupeSub() satisfies DupeSuper&DupeSuper {}
 
 
-@error abstract class AaAa() of BbBb<Integer> {}
+$error abstract class AaAa() of BbBb<Integer> {}
 class BbBb<Type>(Type val) extends AaAa() {}
 
-@error class WithUnionCase() of <Float&Object> {}
-@error class WithIntersectionCase() of <Float&Object> {}
-@error class WithNothingCase() of Nothing {}
+$error class WithUnionCase() of <Float&Object> {}
+$error class WithIntersectionCase() of <Float&Object> {}
+$error class WithNothingCase() of Nothing {}

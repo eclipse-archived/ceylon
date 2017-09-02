@@ -1,5 +1,11 @@
 function(encoding$2){
   var $elf=this;
+  var _p=$elf.path_;
+  var key=_p.substring(1).replace(/\/|\./g,"$$$$");
+  var str=$elf.mod_[key];
+  if (str!=null) {
+    return $_String(str);
+  }
   if(encoding$2===undefined){encoding$2=$elf.textContent$defs$encoding(encoding$2);}
   if (runtime().name === 'node.js') {
     var _fr=require;

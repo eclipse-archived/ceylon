@@ -1,7 +1,7 @@
 void testis() {
     Object baz = Qux();
     if (is Bar baz) {
-        @type:"Bar" value b = baz;
+        $type:"Bar" value b = baz;
     }
     Bar bb = Qux();
 }

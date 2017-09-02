@@ -1,10 +1,10 @@
 class Aliases() {
     
     class C(String s) => Class<String>(s);
-    @error class C1(String s) => Class(s);
-    @error class C2(String s) => Class<String>;
-    @type:"Aliases.C" C("hello");
-    @type:"Aliases.C" C{s="hello";};
+    $error class C1(String s) => Class(s);
+    $error class C2(String s) => Class<String>;
+    $type:"Aliases.C" C("hello");
+    $type:"Aliases.C" C{s="hello";};
     Class<String> x = C("hello");
     Class<String> y = C{s="hello";};
     C("hello").hello("gavin");
@@ -14,16 +14,16 @@ class Aliases() {
     c.hello("gavin");
     Class<String> csp = c;
     Class<String> cs = Class<String>("gday");
-    @type:"Aliases.C" C cp = cs;
-    @type:"Aliases.C" value l = C("hi");
+    $type:"Aliases.C" C cp = cs;
+    $type:"Aliases.C" value l = C("hi");
     
     class Cok1(String s) => Class<String>("");
     class Cok2() => Class<String>("");
     class Cok3(Integer i) => Class<String>(i.string);
     class Cok4(String x, String y) => Class<String>(x+y);
-    @error class Cbroken1(String s) => Class<String>;
-    @error class Cbroken2(Integer i) => Class<String>(i);
-    @error class Cbroken4(String s) => Class<String>(0);
+    $error class Cbroken1(String s) => Class<String>;
+    $error class Cbroken2(Integer i) => Class<String>(i);
+    $error class Cbroken4(String s) => Class<String>(0);
     
     class Def(String s="") => Class<String>(s);
     Def def0 = Def();
@@ -40,22 +40,22 @@ class Aliases() {
     }
     B<String> b = B("gavin");
     String n = b.name;
-    @type:"Aliases.I<String>" I<String> i = b;
+    $type:"Aliases.I<String>" I<String> i = b;
     Interface<String> ins = i;
     function m() => i;
-    @type:"Aliases.I<String>" m();
+    $type:"Aliases.I<String>" m();
     Interface<String> z = m();
     
     interface IS => Interface<String>;
-    @type:"Aliases.IS" IS isa = i;
+    $type:"Aliases.IS" IS isa = i;
     Interface<String> insa = isa;
     
-    @error class BadC1() => Class<String>();
-    @error class BadC2(Integer n) => Class<String>(n);
-    @error class BadC3(String s1, String s2) => Class<String>(s1,s2);
+    $error class BadC1() => Class<String>();
+    $error class BadC2(Integer n) => Class<String>(n);
+    $error class BadC3(String s1, String s2) => Class<String>(s1,s2);
     
-    //@error class X() => String|Integer;
-    @error interface Y => Container&Identifiable;
+    //$error class X() => String|Integer;
+    $error interface Y => Container&Identifiable;
     
     interface Seq<T> => T[];
     interface It<T> => {T*};
@@ -65,21 +65,21 @@ class Aliases() {
 }
 
 interface Li0<U,V> => List<U>;
-@error interface Li1<in E> => List<E>;
+$error interface Li1<in E> => List<E>;
 interface Li2<E> => List<E>;
 interface Li3<out E> => List<E>;
 
 interface LL1<out E> => List<List<E>>;
-@error interface LL2<out E> => List<SequenceBuilder<E>>;
-@error interface LL3<out E> => SequenceBuilder<List<E>>;
+$error interface LL2<out E> => List<SequenceBuilder<E>>;
+$error interface LL3<out E> => SequenceBuilder<List<E>>;
 
 class Si1<T>(T t) given T satisfies Object => Singleton<T>(t); 
-@error class Si2<in T>(T t) given T satisfies Object => Singleton<T>(t); 
+$error class Si2<in T>(T t) given T satisfies Object => Singleton<T>(t); 
 class Si3<out T>(T t) given T satisfies Object => Singleton<T>(t);
 
 class E1<out T>(T x, T y) given T satisfies Object => Entry<T,T>(x,y);
-@error class E2<out T>(T x, T y) => Entry<T,T>(x,y);
-@error class E3<in T>(T x, T y) given T satisfies Object => Entry<T,T>(x,y);
+$error class E2<out T>(T x, T y) => Entry<T,T>(x,y);
+$error class E3<in T>(T x, T y) given T satisfies Object => Entry<T,T>(x,y);
 
 class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
     
@@ -97,9 +97,9 @@ class MemberClassAliasTricks_Foo(Integer a = 1, Integer b = 2){
     }
 }
 
-@error alias Rec<T> => Tuple<T,T,Rec<T>>;
-@error alias RX => String|List<RY>;
-@error alias RY => Object&Iterable<RX>;
+$error alias Rec<T> => Tuple<T,T,Rec<T>>;
+$error alias RX => String|List<RY>;
+$error alias RY => Object&Iterable<RX>;
 
 alias Id<T> => T;
 alias Or<X,Y> => X|Y;
@@ -110,7 +110,7 @@ void testOpAliases() {
     Id<String> idstr = "hello";
     Id<Object> idobj = idstr;
     String str = idstr;
-    @type:"String" value string = unwrap(idstr);
+    $type:"String" value string = unwrap(idstr);
     Integer idstrlen = idstr.size;
     
     Or<Integer,Float> ornum = 1;
@@ -125,8 +125,8 @@ void testOpAliases() {
 }
 
 abstract class S(String s) => String(s);
-@error abstract class StringSubclass(String s) extends S(s) {}
-@error abstract class IntSubclass(Integer i) extends I(i) {}
+$error abstract class StringSubclass(String s) extends S(s) {}
+$error abstract class IntSubclass(Integer i) extends I(i) {}
 abstract class I(Integer i) => Integer(i);
 
 void inheritsAlias() {
@@ -165,7 +165,7 @@ class OkOuterClass() {
 }
 
 abstract class BrokenOuterClass() {
-    @error shared class InnerAlias() => AbstractClass();
+    $error shared class InnerAlias() => AbstractClass();
 }
 
 abstract class GoodOuterClass() {
@@ -174,8 +174,8 @@ abstract class GoodOuterClass() {
 }
 
 abstract class ToplevelAlias() => AbstractClass();
-@error class BrokenToplevelAlias1() => AbstractClass();
-@error formal class BrokenToplevelAlias2() => AbstractClass();
+$error class BrokenToplevelAlias1() => AbstractClass();
+$error formal class BrokenToplevelAlias2() => AbstractClass();
 
 
 class Qux1<T>(T t) {
@@ -189,8 +189,8 @@ class Qux2<T>(T t) {
 }
 
 void testQux() {
-    @type:"Qux1<String>.Q" value q1 = Qux1("").q();
-    @type:"Qux2<String>.Q" value q2 = Qux2("").q();
+    $type:"Qux1<String>.Q" value q1 = Qux1("").q();
+    $type:"Qux2<String>.Q" value q2 = Qux2("").q();
 }
 
 abstract class Person() { shared formal void x(); }
@@ -198,7 +198,7 @@ abstract class P() => Person();
 class MrX() extends P() {
     shared actual void x() {}
 }
-@error class MrY() extends P() {}
+$error class MrY() extends P() {}
 
 void testMaybeNum() {
     MaybeNum? val = null;
@@ -282,13 +282,13 @@ class CaseAlias() => Case();
 abstract class EnumAlias() => Enum();
 class Case() extends EnumAlias() {}
 
-@error abstract class Duped1() of dupe|dupe {}
-@error object dupe extends Duped1() {}
-@error abstract class Duped2() of Dupe|Dupe {}
-@error class Dupe() extends Duped2() {}
+$error abstract class Duped1() of dupe|dupe {}
+$error object dupe extends Duped1() {}
+$error abstract class Duped2() of Dupe|Dupe {}
+$error class Dupe() extends Duped2() {}
 
-@error alias RCA => RCA();
-@error interface RCI => RCI(RCI);
+$error alias RCA => RCA();
+$error interface RCI => RCI(RCI);
 
 interface Bug824_X {
     shared String name { return "Gavin"; }

@@ -217,7 +217,7 @@ shared final serializable class Singleton<out Element>
          Singleton(null).cycled.take(4)
      
      evaluates to the stream `{ null, null, null, null }`."
-    see (`function repeat`)
+    see (function repeat)
     shared actual 
     {Element+} cycled 
             => object satisfies {Element+} {

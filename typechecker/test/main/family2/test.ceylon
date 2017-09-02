@@ -10,10 +10,10 @@ void testGraph() {
     value oe = og.Edge(on1,on2);
     on1.touches(oe);
     
-    @error bn1.touches(oe);
-    @error on1.touches(be);
-    @error bg.Edge(on1,on2);
-    @error og.Edge(bn1,bn2);
+    $error bn1.touches(oe);
+    $error on1.touches(be);
+    $error bg.Edge(on1,on2);
+    $error og.Edge(bn1,bn2);
     
     Boolean method<G,Node,Edge>(Node n, Edge e) 
             given Node satisfies Graph<G,Node,Edge>.Node 
@@ -23,7 +23,7 @@ void testGraph() {
     }
     
     Boolean b = method<BasicGraph, BasicGraph.Node, BasicGraph.Edge>(bn1,be);
-    @error method<BasicGraph, BasicGraph.Node, BasicGraph.Edge>(bn1,oe);
+    $error method<BasicGraph, BasicGraph.Node, BasicGraph.Edge>(bn1,oe);
     
     Edge method2<G,Node,Edge>(Graph<G,Node,Edge> g) 
             given Node satisfies Graph<G,Node,Edge>.Node 

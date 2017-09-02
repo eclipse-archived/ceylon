@@ -297,9 +297,9 @@ shared void testIterables() {
 	value ia = {};
 	value ib = { 1, 2, 3, 4, 5 };
 	value ic = { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 };
-	value ix = mapPairs(plus<Integer>, ia, ia);
-	{Integer+} iy = mapPairs(plus<Integer>, ib, ib);
-	{Integer+} iz = mapPairs(plus<Integer>, ic, ic);
+	value ix = mapPairs(ia, ia, plus<Integer>);
+	{Integer+} iy = mapPairs(ib, ib, plus<Integer>);
+	{Integer+} iz = mapPairs(ic, ic, plus<Integer>);
     check(ix.string=="{}", "Iterable.string [1]");
     check(iy.string=="{ 2, 4, 6, 8, 10 }", "Iterable.string [2]");
     check(iz.string=="{ 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, 2, 4, 6, 8, 10, ... }", "Iterable.string [3]");
@@ -307,8 +307,7 @@ shared void testIterables() {
     //Iterable-related functions
     check({"aaa", "tt", "z"}.sort(byIncreasing((String s) => s.size)).sequence()=={"z","tt","aaa"}.sequence(), "sort(byIncreasing)");
     check({"z", "aaa", "tt"}.sort(byDecreasing((String s) => s.size)).sequence()=={"aaa","tt","z"}.sequence(), "sort(byDecreasing)");
-    Iterable<String> combined = mapPairs((Character c, Integer i) => "comb ``c``+``i``",
-                                               "hello", { 1,2,3,4 });
+    Iterable<String> combined = mapPairs( "hello", { 1,2,3,4 }, (Character c, Integer i) => "comb ``c``+``i``");
     check(combined.sequence().size==4, "combine [1]");
     check(combined.sequence() == { "comb h+1", "comb e+2", "comb l+3", "comb l+4" }.sequence(), "combine [2]");
     
@@ -366,20 +365,18 @@ shared void testIterables() {
     //check((1..3).spread((Integer i)(Float f) => i*f)(1.0).sequence()==[1.0,2.0,3.0], "range spread");
     check((1..3).spread(Integer.times)(2).sequence()==[2,4,6], "range spread");
     
-    check(corresponding(1..5,
-        loop(0)(Integer.successor).takeWhile(5.largerThan), 
-        (Integer x, Integer y)=>x==y+1),"corresponding");
-    check(!corresponding((1..5).withTrailing(1),
-        (1..5).withTrailing(0), 
-        (Integer x, Integer y)=>x==y),"corresponding");
+    check(corresponding(1..5, loop(0)(Integer.successor).takeWhile(5.largerThan))
+        ((x, y)=>x==y+1),"corresponding");
+    check(!corresponding((1..5).withTrailing(1), (1..5).withTrailing(0))
+        ((x, y)=>x==y),"corresponding");
     
-    check(foldPairs(1, (Integer r, Integer f, Integer s)=>r+f+s, 1..3, 3..1)==13, "foldPairs");
-    check((findPair((Integer f, Integer s) => f==s, 1..3, 3..1) else -1) == [2,2], "findPair");
-    check(mapPairs((Integer f, Integer s) => f+s, 1..3, 3..1).sequence()==[4,4,4], "mapPairs");
-    check(anyPair((Integer f, Integer s) => f==s, 1..3, 3..1), "anyPair");
-    check(!anyPair((Integer f, Integer s) => f==s, 1..2, 3..4), "not anyPair");
-    check(!everyPair((Integer f, Integer s) => f==s, 1..3, 3..1), "not everyPair");
-    check(everyPair((Integer f, Integer s) => f==s, 1..3, 1..3), "everyPair");
+    check(mapPairs(1..3, 3..1, (Integer f, Integer s) => f+s).sequence()==[4,4,4], "mapPairs");
+    check(foldPairs(1..3, 3..1, 1)((r, f, s)=>r+f+s)==13, "foldPairs");
+    check((findPair(1..3, 3..1)((f, s) => f==s) else -1) == [2,2], "findPair");
+    check(anyPair(1..3, 3..1)((f, s) => f==s), "anyPair");
+    check(!anyPair(1..2, 3..4)((f, s) => f==s), "not anyPair");
+    check(!everyPair(1..3, 3..1)((f, s) => f==s), "not everyPair");
+    check(everyPair(1..3, 1..3)((f, s) => f==s), "everyPair");
     check(zipPairs(1..3, 3..1).sequence()==[[1,3],[2,2],[3,1]], "zipPairs");
     check(unzipPairs(zipPairs(1..3, 3..1)).spread(Iterable<Integer>.sequence)().sequence()==[[1,2,3],[3,2,1]], "unzipPairs");
     check(zipEntries(1..3, 3..1).sequence()==[1->3,2->2,3->1], "zipEntries");
@@ -448,4 +445,10 @@ shared void testIterables() {
     } catch (AssertionError e) {
         check(e.message == "nonempty Iterable with initial 'finished' element", "iterate {finished}");
     }
+    
+    check(transpose { padding=null; "hello", "world", 1..3 }.string
+      =="{ [h, w, 1], [e, o, 2], [l, r, 3], [l, l, <null>], [o, d, <null>] }", "transpose 1");
+    check(transpose { padding=null; [], [1] }.sequence()==[[null, 1]], "transpose 2");
+    check(transpose { padding=null; [], {}, ""}.empty, "transpose 3");
+    check(transpose { padding=null; }.empty, "transpose 4");
 }

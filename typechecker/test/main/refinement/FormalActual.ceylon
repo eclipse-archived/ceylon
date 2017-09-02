@@ -14,7 +14,7 @@ class WithActual() extends WithActualFormal() {
 	shared actual String hello = "hi";
 }
 
-@error class WithoutActual() extends WithActualFormal() {}
+$error class WithoutActual() extends WithActualFormal() {}
 
 
 abstract class Super2() {
@@ -29,5 +29,5 @@ abstract class Super1() extends Super2() {
     shared variable actual formal Integer defaultGetterSetter;
 }
 
-@error object obj extends WithFormal() {}
+$error object obj extends WithFormal() {}
 

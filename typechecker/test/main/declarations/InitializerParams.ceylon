@@ -7,21 +7,21 @@ interface InitializerParams {
         print(bar);
     }
 
-    @error class Foo(foo, bar, fum, qux, fo, fi, fee, lorax,
+    $error class Foo(foo, bar, fum, qux, fo, fi, fee, lorax,
             xarol, twiddle, twaddle) {
         String foo;
         shared String bar;
         String qux();
-        @error value fo;
-        @error function fi();
+        $error value fo;
+        $error function fi();
         if (true) {
             String twiddle;
         }
-        @error String fee = "goodbye";
+        $error String fee = "goodbye";
         String twaddle { return "hello"; }
         String lorax;
         if (false) {
-            @error lorax = "something";
+            $error lorax = "something";
         }
         variable String xarol;
         if (true) {
@@ -29,26 +29,26 @@ interface InitializerParams {
         }
     }
 
-    @error abstract class Bar(foo, bar, baz, fum) {
+    $error abstract class Bar(foo, bar, baz, fum) {
         String foo;
         shared String bar;
         shared formal String baz;
     }
 
-    @error void foo(foo, fum, qux, fo, fi, fee, lorax,
+    $error void foo(foo, fum, qux, fo, fi, fee, lorax,
             xarol, twiddle, twaddle) {
         String foo;
         String qux();
-        @error value fo;
-        @error function fi();
+        $error value fo;
+        $error function fi();
         if (true) {
             String twiddle;
         }
-        @error String fee = "goodbye";
+        $error String fee = "goodbye";
         String twaddle { return "hello"; }
         String lorax;
         if (false) {
-            @error lorax = "something";
+            $error lorax = "something";
         }
         variable String xarol;
         if (true) {
@@ -74,18 +74,18 @@ interface InitializerParams {
     void test() {
         Baz("", "");
         bar("");
-        @error Baz(0);
-        @error baz(0);
+        $error Baz(0);
+        $error baz(0);
         Func(print);
         func(() => "hello");
-        @error Func(() => "hello");
-        @error func(print);
+        $error Func(() => "hello");
+        $error func(print);
     }
     
     class A(i) {
-        @error print(i);
+        $error print(i);
         shared default Integer i;
-        @error print(i);
+        $error print(i);
     }
     
     class WithSharedParams(shared String message, 
@@ -106,11 +106,11 @@ interface InitializerParams {
         shared actual String message => "bye";
         shared actual Float fun(Float x)=>-x;
     }
-    abstract class WithSharedFormalParams(@error shared formal String message, 
-            @error shared formal Float fun(Float x)) {}
+    abstract class WithSharedFormalParams($error shared formal String message, 
+            $error shared formal Float fun(Float x)) {}
     class WithSharedDefaultParams(shared default String message, 
             shared default Float fun(Float x)) {
-        @error print(message + fun(0.0).string);
+        $error print(message + fun(0.0).string);
     }
     class WithSharedActualParams2(shared actual String message, 
             shared actual Float fun(Float x))
@@ -129,7 +129,7 @@ interface InitializerParams {
         print(wsap2.fun(1.0));
     }
     
-    @error abstract class WithFormalDefaultParams(name, count) {
+    $error abstract class WithFormalDefaultParams(name, count) {
         shared formal String name;
         shared default Integer count;
     }
@@ -151,9 +151,9 @@ interface InitializerParams {
         String* strings;
         for (String s in strings) {}
     }
-    void broken(@error Float* floats()) {
-        @error Integer* ints;
-        @error String* strings() { return ["hello"]; }
+    void broken($error Float* floats()) {
+        $error Integer* ints;
+        $error String* strings() { return ["hello"]; }
     }
     
     void testSequencedParam() {
@@ -170,13 +170,13 @@ interface InitializerParams {
     
     class Qux(bar){ void bar<T>(); }
     
-    @error shared class BrokenVis(baz) {
+    $error shared class BrokenVis(baz) {
         Baz baz;
     }
     shared class BrokenVar<out T>() {
         shared void method(t, lt) {
-            @error T t; 
-            @error List<T> lt;
+            $error T t; 
+            $error List<T> lt;
         }
     }
     class Superclass() {
@@ -185,12 +185,12 @@ interface InitializerParams {
         }
     }
     class Subclass() extends Superclass() {
-        @error shared actual void m(s, o, i) {
+        $error shared actual void m(s, o, i) {
             Object s; String o; Integer i;
         }
     }
     
-    @error class XXXX(i=1.0) { Integer i; }
+    $error class XXXX(i=1.0) { Integer i; }
 
 }
 
@@ -200,27 +200,27 @@ class WithGoodFunParam1(eq = (Object that) => true) {
 class WithGoodFunParam2(Boolean eq(Object that) => true) {}
 
 
-@error class WithBadFunParam1(eq = (Object that) => 1) {
+$error class WithBadFunParam1(eq = (Object that) => 1) {
     Boolean eq(Object that);
 }
-class WithBadFunParam2(@error Boolean eq(Object that) => 1) {}
+class WithBadFunParam2($error Boolean eq(Object that) => 1) {}
 
 void runxxx(foo) {
-    @error void foo() {
+    $error void foo() {
         print("foo");
     }
 }
 
 void runyyy(foo) {
-    @error void foo() => print("foo");
+    $error void foo() => print("foo");
 }
 
 void runzzzz(Bar b) {
-    @error shared class Bar() {}
+    $error shared class Bar() {}
 } 
 
 class FooSuper(){}
 
-@error class BarSub(foo){
+$error class BarSub(foo){
     shared object foo extends FooSuper(){}
 }

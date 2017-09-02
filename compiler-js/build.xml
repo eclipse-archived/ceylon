@@ -36,6 +36,7 @@
         <pathelement path="${ceylon.module-resolver-javascript.lib}" />
         <pathelement path="${ceylon.compiler.lib}" />
         <pathelement path="${ceylon.typechecker.lib}" />
+        <pathelement path="${ceylon.classfile.lib}" />
         <pathelement path="${build.classes}" />
         <pathelement path="${build.test-classes}" />
     </path>

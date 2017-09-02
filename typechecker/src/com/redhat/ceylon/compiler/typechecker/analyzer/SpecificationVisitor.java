@@ -18,6 +18,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -854,8 +855,8 @@ public class SpecificationVisitor extends Visitor {
     }*/
     
     private boolean blockEndsInBreak(Tree.Block that) {
-        return blockEndsInReturnThrowBreak(that) &&
-                !blockEndsInReturnThrow(that);
+        return blockEndsInReturnThrowBreak(that) 
+            && !blockEndsInReturnThrow(that);
     }
     
     private boolean blockEndsInReturnThrow(Tree.Block that) {
@@ -886,7 +887,7 @@ public class SpecificationVisitor extends Visitor {
                     }
                     if (ec!=null) {
                         return blockEndsInReturnThrow(ic.getBlock())
-                                && blockEndsInReturnThrow(ec.getBlock());
+                            && blockEndsInReturnThrow(ec.getBlock());
                     }
                 }
             }
@@ -917,8 +918,8 @@ public class SpecificationVisitor extends Visitor {
                     }
                 }
             }
-            return s instanceof Tree.Return ||
-                    s instanceof Tree.Throw;
+            return s instanceof Tree.Return 
+                || s instanceof Tree.Throw;
         }
         else {
             return false;
@@ -953,7 +954,7 @@ public class SpecificationVisitor extends Visitor {
                     }
                     if (ec!=null) {
                         return blockEndsInReturnThrowBreak(ic.getBlock())
-                                && blockEndsInReturnThrowBreak(ec.getBlock());
+                            && blockEndsInReturnThrowBreak(ec.getBlock());
                     }
                 }
             }
@@ -980,13 +981,13 @@ public class SpecificationVisitor extends Visitor {
                     }
                     if (ec!=null) {
                         return blockEndsInReturnThrowBreak(fc.getBlock())
-                                && blockEndsInReturnThrowBreak(ec.getBlock());
+                            && blockEndsInReturnThrowBreak(ec.getBlock());
                     }
                 }
             }
-            return s instanceof Tree.Return ||
-                    s instanceof Tree.Throw ||
-                    s instanceof Tree.Break;
+            return s instanceof Tree.Return 
+                || s instanceof Tree.Throw 
+                || s instanceof Tree.Break;
         }
         else {
             return false;
@@ -1066,7 +1067,8 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SpecifierStatement that) {
-        Tree.Term term = that.getBaseMemberExpression();
+        Term lhs = that.getBaseMemberExpression();
+        Tree.Term term = lhs;
         boolean parameterized = false;
         while (term instanceof Tree.ParameterizedExpression) {
             Tree.ParameterizedExpression pe = 
@@ -1080,14 +1082,15 @@ public class SpecificationVisitor extends Visitor {
                         term;
             Declaration member = bme.getDeclaration();
             if (member==declaration) {
-                if (!isForwardReferenceable()) {
+                if (!isForwardReferenceable() 
+                        && !lhs.hasErrors()) {
                     if (declaration.isFormal()) {
                         bme.addError("member is formal and may not be specified: " +
-                                name() + " is declared formal");
+                                name() + " is declared 'formal'");
                     }
                     else if (declaration.isDefault()) {
                         bme.addError("member is default and may not be specified except in its declaration: " +
-                                name() + " is declared default");
+                                name() + " is declared 'default'");
                     }
                 }
                 if (that.getRefinement()) {
@@ -1315,9 +1318,9 @@ public class SpecificationVisitor extends Visitor {
             specify();
         }
         super.visit(that);
-        if (declaration.getContainer()==c.getContainer() &&
-                that==lastConstructor && 
-                initedByEveryConstructor) {
+        if (declaration.getContainer()==c.getContainer() 
+                && that==lastConstructor 
+                && initedByEveryConstructor) {
             definitely = true;
         }
     }
@@ -1331,9 +1334,9 @@ public class SpecificationVisitor extends Visitor {
             specify();
         }
         super.visit(that);
-        if (declaration.getContainer()==e.getContainer() &&
-                that==lastConstructor && 
-                initedByEveryConstructor) {
+        if (declaration.getContainer()==e.getContainer() 
+                && that==lastConstructor 
+                && initedByEveryConstructor) {
             definitely = true;
         }
     }
@@ -1393,34 +1396,35 @@ public class SpecificationVisitor extends Visitor {
             }
             else {
                 super.visit(that);
-                if (declaration.isToplevel() && 
-                        !isNativeHeader(declaration) &&
-                        !declaration.isJavaNative()) {
+                if (declaration.isToplevel() 
+                        && !isNativeHeader(declaration) 
+                        && !declaration.isJavaNative()) {
                     that.addError("toplevel function must be specified: " +
                             name() + 
                             " may not be forward declared");
                 }
-                else if (declaration.isStatic() && 
-                        !isNativeHeader(declaration)) {
+                else if (declaration.isStatic() 
+                        && !isNativeHeader(declaration)) {
                     that.addError("static function must be specified: " +
                             name() + 
                             " may not be forward declared");
                 }
-                else if (declaration.isClassMember() && 
-                        !isNativeHeader(declaration) &&
-                        !declaration.isFormal() && 
-                        !declaration.isJavaNative() &&
-                        that.getDeclarationModel()
-                            .getInitializerParameter()==null &&
-                        declarationSection) {
+                else if (declaration.isClassMember() 
+                        && !isNativeHeader(declaration) 
+                        && !declaration.isFormal() 
+                        && !declaration.isJavaNative() 
+                        && that.getDeclarationModel()
+                               .getInitializerParameter()
+                                   ==null 
+                        && declarationSection) {
                     that.addError("forward declaration may not occur in declaration section: " +
                                 name(), 
                                 1450);
                 }
-                else if (declaration.isInterfaceMember() && 
-                        !isNativeHeader(declaration) &&
-                        !declaration.isFormal() &&
-                        !declaration.isJavaNative()) {
+                else if (declaration.isInterfaceMember() 
+                        && !isNativeHeader(declaration) 
+                        && !declaration.isFormal() 
+                        && !declaration.isJavaNative()) {
                     that.addError("interface method must be formal or specified: " +
                             name(), 
                             1400);
@@ -1533,14 +1537,15 @@ public class SpecificationVisitor extends Visitor {
                                 name());
                     }
                 }
-                else if (declaration.isClassOrInterfaceMember() && 
-                        !isNativeHeader(declaration) &&
-                        !declaration.isFormal() &&
-                        !declaration.isJavaNative() &&
-                        that.getDeclarationModel()
-                            .getInitializerParameter()==null &&
-                        !that.getDeclarationModel().isLate() &&
-                        declarationSection) {
+                else if (declaration.isClassOrInterfaceMember() 
+                        && !isNativeHeader(declaration) 
+                        && !declaration.isFormal() 
+                        && !declaration.isJavaNative() 
+                        && that.getDeclarationModel()
+                               .getInitializerParameter()
+                                   ==null 
+                        && !that.getDeclarationModel().isLate() 
+                        && declarationSection) {
                     that.addError("forward declaration may not occur in declaration section: " +
                             name(), 
                             1450);
@@ -1650,8 +1655,8 @@ public class SpecificationVisitor extends Visitor {
                 @Override
                 public void visit(Tree.Declaration that) {
                     super.visit(that);
-                    if (declarationSection &&
-                            isSameDeclaration(that)) {
+                    if (declarationSection 
+                            && isSameDeclaration(that)) {
                         definedInDeclarationSection = true;
                     }
                     if (that==lastExecutableStatement) {
@@ -1661,9 +1666,9 @@ public class SpecificationVisitor extends Visitor {
                 @Override
                 public void visit(Tree.StaticMemberOrTypeExpression that) {
                     super.visit(that);
-                    if (declarationSection &&
-                            declaration instanceof FunctionOrValue &&
-                            that.getDeclaration()==declaration) {
+                    if (declarationSection 
+                            && declaration instanceof FunctionOrValue 
+                            && that.getDeclaration()==declaration) {
                         usedInDeclarationSection = true;
                     }
                 }
@@ -1679,10 +1684,7 @@ public class SpecificationVisitor extends Visitor {
                     Node d = getDeclaration(that);
                     if (d==null) d = that;
                     d.addError("must be definitely specified by class initializer: " + 
-                                message(declaration) + 
-                                (declaration.isShared() ? 
-                                        " is shared" : 
-                                        " is captured"), 
+                                message(declaration) + explanation(), 
                                 1401);
                 }
             }
@@ -1690,6 +1692,12 @@ public class SpecificationVisitor extends Visitor {
         else {
             super.visit(that);
         }
+    }
+
+    private String explanation() {
+        return declaration.isShared() ? 
+                " is shared" : 
+                " is captured";
     }
     
     @Override
@@ -1746,44 +1754,38 @@ public class SpecificationVisitor extends Visitor {
     
     public void visit(Tree.Return that) {
         super.visit(that);
-        if (!specificationDisabled && 
-                isSharedDeclarationUninitialized()) {
+        if (!specificationDisabled 
+                && isSharedDeclarationUninitialized()) {
             that.addError("must be definitely specified by class initializer: " +
-                    message(declaration) + 
-                    (declaration.isShared() ? 
-                            " is shared" : 
-                            " is captured"));
+                    message(declaration) + explanation());
         }
-        else if (that.getDeclaration()==declaration.getContainer() &&
-                isCapturedDeclarationUninitialized()) {
+        else if (that.getDeclaration()==declaration.getContainer() 
+                && isCapturedDeclarationUninitialized()) {
             that.addError("must be definitely specified by class initializer: " +
-                    message(declaration) + 
-                    (declaration.isShared() ? 
-                            " is shared" : 
-                            " is captured"));
+                    message(declaration) + explanation());
         }
         exit();
     }
 
     private boolean isSharedDeclarationUninitialized() {
         return (declaration.isShared() || 
-                declaration.getOtherInstanceAccess()) && 
-                !declaration.isFormal() &&
-                !declaration.isJavaNative() && 
-                !isNativeHeader(declaration) &&
-                !isLate() &&
-                !definitely;
+                declaration.getOtherInstanceAccess()) 
+            && !declaration.isFormal() 
+            && !declaration.isJavaNative() 
+            && !isNativeHeader(declaration) 
+            && !isLate() 
+            && !definitely;
     }
     
     private boolean isCapturedDeclarationUninitialized() {
         return (declaration.isShared() || 
                 declaration.getOtherInstanceAccess() ||
-                usedInDeclarationSection) &&
-                !definedInDeclarationSection &&
-                !declaration.isFormal() && 
-                !isNativeHeader(declaration) &&
-                !isLate() &&
-                !definitely;
+                usedInDeclarationSection) 
+            && !definedInDeclarationSection 
+            && !declaration.isFormal() 
+            && !isNativeHeader(declaration) 
+            && !isLate() 
+            && !definitely;
     }
     
     @Override

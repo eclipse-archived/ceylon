@@ -6,10 +6,10 @@ void test() {
     Foo<[String]> foo1 = Foo<[String]>();
     Foo<[String,Integer]> foo2 = Foo<[String,Integer]>();
     
-    @error Foo<[String]> err1 = foo2;
-    @error Foo<[String,Integer]> err2 = foo1;
-    @error Foo<Empty> err3 = foo1;
-    @error Foo<[String]> err4 = foo0;
+    $error Foo<[String]> err1 = foo2;
+    $error Foo<[String,Integer]> err2 = foo1;
+    $error Foo<Empty> err3 = foo1;
+    $error Foo<[String]> err4 = foo0;
     
     Foo<Empty> good0 = foo0; 
     Foo<[String]> good1 = foo1;
@@ -20,9 +20,9 @@ void test() {
     
     bar1(foo1);
     bar2(foo2);
-    @error bar1(foo2);
-    @error bar2(foo1);
+    $error bar1(foo2);
+    $error bar2(foo1);
     
     Bar<[String,String]> bar = Bar<[Object,Object]>();
-    @error Foo<[String,String]> bar = Foo<[Object,Object]>();
+    $error Foo<[String,String]> bar = Foo<[Object,Object]>();
 }

@@ -1,23 +1,24 @@
 function(_path) {
-  var isdefmod=this.name==='default' && this.version==='unversioned';
+  var isdefmod = this.name==='default' 
+	          && this.version==='unversioned';
   var mpath;
   if (isdefmod) {
     mpath = this.name;
   } else {
     mpath = this.name.replace(/\./g, '/');
   }
-  var path = 'module-resources';
+  var p = "";
   if (_path[0]==='/') {
-    path += _path;
+    p = _path;
   } else {
     if (isdefmod) {
-      path += '';
+      p = '';
     } else {
-      path += '/';
-      path += mpath;
+      p = '/' + mpath 
     }
-    path += '/' + _path;
+    p += '/' + _path;
   }
+  var path = 'module-resources' + p;
   var sep = operatingSystem().fileSeparator;
   path = mpath + (isdefmod?'/':'/'+this.version+'/') + path;
   path = path.replace(/\\/g,sep);
@@ -31,13 +32,13 @@ function(_path) {
       if (fs.existsSync(fp)) {
         var f = fs.statSync(fp);
         if (f && f.isFile()) {
-          return JsResource$jsint('file:'+fp);
+          return JsResource$jsint('file:'+fp, p, this.meta);
         }
       }
     }
     return null;
   } else if (runtime().name==='Browser') {
-    return JsResource$jsint(require.toUrl(path));
+    return JsResource$jsint(require.toUrl(path), p, this.meta);
   } else {
     throw AssertionError("resources loading not yet supported in this environment: " + runtime().name);
   }

@@ -8,6 +8,6 @@ class TestWildcard() {
     Dupe d = Dupe();
     d.hello();
     String hello = a;
-    @error d.goodbye();
+    $error d.goodbye();
     String hi = singleton.hello;
 }

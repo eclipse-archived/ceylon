@@ -9,7 +9,7 @@ class Capture() {
     class X() {}
     
     void methodWithVariable() {
-        @captured variable X x = X();
+        $captured variable X x = X();
         void innerMethod() {
             use(x);
         }
@@ -35,7 +35,7 @@ class Capture() {
             return x;
         }
         assign innerGetter {
-            @error x=innerGetter;
+            $error x=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
@@ -44,7 +44,7 @@ class Capture() {
         }
     }
     
-    void methodWithParameter(@captured X x) {
+    void methodWithParameter($captured X x) {
         void innerMethod() {
             use(x);
         }
@@ -52,7 +52,7 @@ class Capture() {
             return x;
         }
         assign innerGetter {
-            @error x=innerGetter;
+            $error x=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
@@ -62,7 +62,7 @@ class Capture() {
     }
     
     X getterWithVariable {
-        @captured variable X x = X();
+        $captured variable X x = X();
         void innerMethod() {
             use(x);
         }
@@ -81,9 +81,9 @@ class Capture() {
     }
     
     class ClassWithVariable() {
-        @captured variable X x = X();
-        @uncaptured variable X y = X();
-        @captured shared variable X z = X();
+        $captured variable X x = X();
+        $uncaptured variable X y = X();
+        $captured shared variable X z = X();
         void innerMethod() {
             use(x);
         }
@@ -100,7 +100,7 @@ class Capture() {
         }
     }
     
-    class ClassWithParameter(@captured X x) {
+    class ClassWithParameter($captured X x) {
         void innerMethod() {
             use(x);
         }
@@ -108,7 +108,7 @@ class Capture() {
             return x;
         }
         assign innerGetter {
-            @error x=innerGetter;
+            $error x=innerGetter;
         }
         void containingMethod() {
             void nestedMethod() {
@@ -117,10 +117,10 @@ class Capture() {
         }
     }
     
-    class WithMultipleParameters(@captured String w,
-                                 @captured String x, 
-                                 @uncaptured String y, 
-                                 @uncaptured String z) {
+    class WithMultipleParameters($captured String w,
+                                 $captured String x, 
+                                 $uncaptured String y, 
+                                 $uncaptured String z) {
         shared String yy = y;
         use(z);
         shared void xx() {
@@ -134,26 +134,26 @@ class Capture() {
     }
     
     class UnsharedDuped(s) {
-        @uncaptured String s;
+        $uncaptured String s;
     }
     
     class SharedDuped(s) {
-        @captured shared String s;
+        $captured shared String s;
     }
     
-    @error class UnsharedDuped2(s) {
+    $error class UnsharedDuped2(s) {
         String s { return s; }
     }
     
-    @error class SharedDuped2(s) {
+    $error class SharedDuped2(s) {
         shared String s { return s; }
     }
     
     class WithMultipleAttributes() {
-        @uncaptured String x = "X";
-        @captured String y = "Y";
-        @captured String w = "W";
-        @captured String z = "Z";
+        $uncaptured String x = "X";
+        $captured String y = "Y";
+        $captured String w = "W";
+        $captured String z = "Z";
         use(x);
         void inner() {
             use(y);
@@ -165,26 +165,26 @@ class Capture() {
     }
     
     class WithNamedArgument() {
-        @uncaptured String hello = "hello";
+        $uncaptured String hello = "hello";
         use { o=hello; };
     }
     
     class WithNamedArgumentInMethod() {
-        @captured String hello = "hello";
+        $captured String hello = "hello";
         void method() {
             use { o=hello; };
         }
     }
     
     class WithNamedArgumentInClass() {
-        @captured String hello = "hello";
+        $captured String hello = "hello";
         class Class() {
             use { o=hello; };
         }
     }
     
     class WithAttributeArgument() {
-        @captured String hello = "hello";
+        $captured String hello = "hello";
         use {
             value o {
                 return hello;
@@ -193,7 +193,7 @@ class Capture() {
     }
     
     class WithValueArgument() {
-        @captured String hello = "hello";
+        $captured String hello = "hello";
         use {
             object o {
                 print(hello);
@@ -202,15 +202,15 @@ class Capture() {
     }
     
     class WithQualifiedRef() {
-        @captured String hello = "hello";
-        @captured value q = WithQualifiedRef();
+        $captured String hello = "hello";
+        $captured value q = WithQualifiedRef();
         function f() { 
             return q.hello;
         }
     }
     
     class WithQualifiedRefToThis() {
-        @captured String hello = "hello";
+        $captured String hello = "hello";
         function t() { 
             return this; 
         }
@@ -220,9 +220,9 @@ class Capture() {
     }
     
     class QualifiedAttributeAccess(){
-        @captured Boolean b = true;
-        @captured variable Boolean b2 = true;
-        @captured QualifiedAttributeAccess q = QualifiedAttributeAccess();
+        $captured Boolean b = true;
+        $captured variable Boolean b2 = true;
+        $captured QualifiedAttributeAccess q = QualifiedAttributeAccess();
         
         Boolean m(){
             return this.b;
@@ -250,23 +250,23 @@ class Capture() {
      }
      
      class Something1(n) {
-         @uncaptured shared Integer n;
+         $uncaptured shared Integer n;
      }
      
-     class Something2(n) { //was @captured before*
-         @uncaptured shared Integer n;
+     class Something2(n) { //was $captured before*
+         $uncaptured shared Integer n;
          shared void p() {
              print(n);
          }
      }
 
-     class Something3(@captured Integer n) {
+     class Something3($captured Integer n) {
          shared void p() {
              print(n);
          }
      }
 
-    class C(@captured void f(), @captured void g()) {
+    class C($captured void f(), $captured void g()) {
         void m(C c) {
             c.f();
             this.g();
@@ -275,79 +275,79 @@ class Capture() {
     
 }
 
-class MethodDefaultedParamCaptureInitParam1(@captured String s) {
+class MethodDefaultedParamCaptureInitParam1($captured String s) {
     String m(String t = s);
     m = (String x) => x;
 }
 
-class MethodDefaultedParamCaptureInitParam2(@captured String s) {
+class MethodDefaultedParamCaptureInitParam2($captured String s) {
     String m(String t = s) { return t; }
 }
 
-class MethodDefaultedParamCaptureInitParam3(@captured String s) {
-    @error String m(String t = s);
+class MethodDefaultedParamCaptureInitParam3($captured String s) {
+    $error String m(String t = s);
 }
 
-class MethodDefaultedParamCaptureInitParam4(@captured String s) {
+class MethodDefaultedParamCaptureInitParam4($captured String s) {
     class C(String t = s) {}
 }
 
-void methodDefaultedParamCaptureInitParam1(@captured String s) {
+void methodDefaultedParamCaptureInitParam1($captured String s) {
     String m(String t = s);
     m = (String x) => x;
 }
 
-void methodDefaultedParamCaptureInitParam2(@captured String s) {
+void methodDefaultedParamCaptureInitParam2($captured String s) {
     String m(String t = s) { return t; }
 }
 
-void methodDefaultedParamCaptureInitParam3(@captured String s) {
+void methodDefaultedParamCaptureInitParam3($captured String s) {
     String m(String t = s);
 }
 
-void methodDefaultedParamCaptureInitParam4(@captured String s) {
+void methodDefaultedParamCaptureInitParam4($captured String s) {
     class C(String t = s) {}
 }
 
-String() cap1(@captured String s) {
+String() cap1($captured String s) {
     return () => s;
 }
 
 String() cap2() {
-    @captured String s="hello";
+    $captured String s="hello";
     return () => s;
 }
 
-class MethodSpecifyingInitParam(@uncaptured Callable<Anything,[]> x) {
+class MethodSpecifyingInitParam($uncaptured Callable<Anything,[]> x) {
     Anything foo() => x();
 }
 
-class MethodSpecifyingInitParam2(@uncaptured void x()) {
+class MethodSpecifyingInitParam2($uncaptured void x()) {
     Anything foo() => x();
 }
 
-void methodSpecifyingInitParam(@uncaptured Callable<Anything,[]> x) {
+void methodSpecifyingInitParam($uncaptured Callable<Anything,[]> x) {
     Anything foo() => x();
 }
 
-void methodSpecifyingInitParam2(@uncaptured void x()) {
+void methodSpecifyingInitParam2($uncaptured void x()) {
     Anything foo() => x();
 }
 
-class MethodCapturingInitParam(@captured Callable<Anything,[]> x) {
+class MethodCapturingInitParam($captured Callable<Anything,[]> x) {
     void foo() { x(); }
 }
 
-class MethodCapturingInitParam2(@captured void x()) {
+class MethodCapturingInitParam2($captured void x()) {
     void foo() { x(); }
 }
 
-void methodCapturingInitParam(@captured Callable<Anything,[]> x) {
+void methodCapturingInitParam($captured Callable<Anything,[]> x) {
     void foo() { x(); }
 }
 
-void methodCapturingInitParam2(@captured void x()) {
+void methodCapturingInitParam2($captured void x()) {
     void foo() { x(); }
 }
 
-class DefaultedParameterClassInstantiation(@uncaptured Integer m = 1, Integer n = m + 1) {}
+class DefaultedParameterClassInstantiation($uncaptured Integer m = 1, Integer n = m + 1) {}

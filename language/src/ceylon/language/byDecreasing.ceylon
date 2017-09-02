@@ -6,10 +6,10 @@
  
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
-see (`function byIncreasing`,
-     `function decreasing`,
-     `function Iterable.max`,
-     `function Iterable.sort`)
+see (function byIncreasing,
+     function decreasing,
+     function Iterable.max,
+     function Iterable.sort)
 tagged("Functions", "Comparisons")
 shared Comparison byDecreasing<Element,Value>
         (Value comparable(Element e))
@@ -24,10 +24,10 @@ shared Comparison byDecreasing<Element,Value>
  
  This function is intended for use with [[Iterable.sort]]
  and [[Iterable.max]]."
-see (`function increasing`,
-     `function byDecreasing`,
-     `function Iterable.max`,
-     `function Iterable.sort`)
+see (function increasing,
+     function byDecreasing,
+     function Iterable.max,
+     function Iterable.sort)
 tagged("Comparisons")
 since("1.2.0")
 shared Comparison decreasing<Element>(Element x, Element y)

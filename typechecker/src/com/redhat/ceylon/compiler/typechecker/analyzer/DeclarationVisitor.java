@@ -676,7 +676,7 @@ public abstract class DeclarationVisitor extends Visitor {
             abstraction.getOverloads()
                 .add(model);
             return abstraction.isActual() 
-                    && !model.isActual();
+                && !model.isActual();
         }
         else {
             String name = model.getName();
@@ -843,8 +843,10 @@ public abstract class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TypeParameterList that) {
         super.visit(that);
-        Generic g = (Generic) declaration;
-        g.setTypeParameters(getTypeParameters(that));
+        if (declaration instanceof Generic) {
+            Generic g = (Generic) declaration;
+            g.setTypeParameters(getTypeParameters(that));
+        }
     }    
     
     private void defaultExtendedToBasic(Class c) {
@@ -1448,13 +1450,16 @@ public abstract class DeclarationVisitor extends Visitor {
             if (v.isFormal()) {
                 that.addError("formal attribute may not be annotated 'late'");
             }
+            else if (v.isDefault()) {
+                that.addError("default attribute may not be annotated 'late'");
+            }
             else if (!v.isClassOrInterfaceMember() && 
                     !v.isToplevel()) {
                 that.addError("block-local value may not be annotated 'late'");
             }
         }
         if (v.isFormal() && sie!=null) {
-            that.addError("formal attributes may not have a value", 
+            that.addError("formal attribute may not have a value", 
                     1102);
         }
         Tree.Type type = that.getType();

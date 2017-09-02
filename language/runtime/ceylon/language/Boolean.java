@@ -40,9 +40,14 @@ public abstract class Boolean
     @TypeInfo("ceylon.language::Boolean|ceylon.language::ParseException")
     public static java.lang.Object parse(
             @Name("string") java.lang.String string) {
-        Boolean bool = parseBoolean_.parseBoolean(string);
-        return bool!=null ? bool : 
-                new ParseException("illegal format for Boolean");
+        if (string==null) {
+            throw new AssertionError("null argument in native code");
+        }
+        switch (string) {
+        case "true": return instance(true);
+        case "false": return instance(false);
+        }
+        return new ParseException("illegal format for Boolean");
     }
 
     @SharedAnnotation$annotation$

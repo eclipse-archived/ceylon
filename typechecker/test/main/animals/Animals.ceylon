@@ -32,7 +32,7 @@ class Devil() extends Animal<Food>() {
 
 void test() {
     Cow().eat(Grass());
-    @error Cow().eat(Meat());
+    $error Cow().eat(Meat());
     Devil().eat(Grass());
     void feed<ActualFood>(Animal<ActualFood> a, ActualFood f) 
             given ActualFood satisfies Food {
@@ -40,7 +40,7 @@ void test() {
     }
     feed(Wolf(), Meat());
     feed(Devil(), Meat());
-    @error feed(Cow(), Meat());
+    $error feed(Cow(), Meat());
     void feedAutomatically<ActualFood>(Animal<ActualFood> a) 
             given ActualFood satisfies Food {
         a.eat(a.diet());

@@ -25,19 +25,19 @@ class Counter {
 }
 
 void test() {
-    @type:"Counter" value counter1 = Counter();
-    @type:"Counter" value counter2 = Counter.withInitial(1);
-    @type:"Counter" value counter3 = Counter.withInitial { initial=1; };
-    @error value counter4 = Counter.Clone(counter1);
-    @error /*@type:"Counter"*/ value counter5 = Counter.Counter();
-    @error @type:"Counter" value counter6 = counter1.withInitial(2);
+    $type:"Counter" value counter1 = Counter();
+    $type:"Counter" value counter2 = Counter.withInitial(1);
+    $type:"Counter" value counter3 = Counter.withInitial { initial=1; };
+    $error value counter4 = Counter.Clone(counter1);
+    $error /*$type:"Counter"*/ value counter5 = Counter.Counter();
+    $error $type:"Counter" value counter6 = counter1.withInitial(2);
     Counter();
     Counter.withInitial(2);
-    @error Counter(2);
-    @error Counter.withInitial();
-    @error Counter.withInitial("");
-    @type:"Callable<Counter,Empty>" value counterFun1 = Counter;
-    @type:"Callable<Counter,Tuple<Integer,Integer,Empty>>" value counterFun2 = Counter.withInitial;
+    $error Counter(2);
+    $error Counter.withInitial();
+    $error Counter.withInitial("");
+    $type:"Callable<Counter,Empty>" value counterFun1 = Counter;
+    $type:"Callable<Counter,Tuple<Integer,Integer,Empty>>" value counterFun2 = Counter.withInitial;
 }
 
 Float cos(Float t) => t;

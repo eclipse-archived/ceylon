@@ -15,7 +15,7 @@ interface InterfaceDeclarations {
         foo();
     }
     
-    @error sayHello();
+    $error sayHello();
     
     shared formal String goodbye;
     void sayGoodbye() {

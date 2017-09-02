@@ -20,7 +20,7 @@ zipEntries<Key,Item,KeyAbsent,ItemAbsent>
         given Key satisfies Object
         given KeyAbsent satisfies Null
         given ItemAbsent satisfies Null
-        => mapPairs(Entry<Key,Item>, keys, items);
+        => mapPairs(keys, items, Entry<Key,Item>);
 
 "Given two streams, form a new stream consisting of all 
  pairs where, for any given index in the resulting stream, 
@@ -43,8 +43,8 @@ zipPairs<First,Second,FirstAbsent,SecondAbsent>
          Iterable<Second,SecondAbsent> secondElements)
         given FirstAbsent satisfies Null
         given SecondAbsent satisfies Null
-        => mapPairs((First first,Second second) => [first,second],
-                firstElements, secondElements);
+        => mapPairs(firstElements, secondElements,
+            (First first, Second second) => [first,second]);
 
 "Given a stream of values, and a stream of [[tuples|Tuple]], 
  produce a new stream of tuples formed by prepending the 
@@ -65,4 +65,5 @@ zip<Element,Head,Tail,HeadAbsent,TailAbsent>
         given Tail satisfies Element[]
         given HeadAbsent satisfies Null
         given TailAbsent satisfies Null
-        => mapPairs(Tuple<Element|Head,Head,Tail>, heads, tails);
+        => mapPairs(heads, tails, 
+            Tuple<Element|Head,Head,Tail>);

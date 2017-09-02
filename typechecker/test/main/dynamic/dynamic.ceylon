@@ -3,18 +3,18 @@ void members() {
         dynamic it = blahblah;
         dynamic member = it.foos;
         dynamic safe = it?.foos;
-        @error dynamic spread = it*.foos;
+        $error dynamic spread = it*.foos;
         dynamic element = it[1];
         dynamic subspan = it[1..2];
         dynamic sum = it+it;
         dynamic product = it*2;
         dynamic eq = it==1;
         dynamic compare = it>it;
-        @error dynamic measure = it:3;
-        @error dynamic span = it..it;
-        @error dynamic entry = it->it;
-        @error dynamic iter = { it, it };
-        @error dynamic tuple = [it, it];
+        $error dynamic measure = it:3;
+        $error dynamic span = it..it;
+        $error dynamic entry = it->it;
+        $error dynamic iter = { it, it };
+        $error dynamic tuple = [it, it];
         dynamic b1 = a.B();
         dynamic b2 = A.B();        
     }
@@ -34,7 +34,7 @@ void test() {
     }
     dynamic {
         dynamic x = dynamic [ y="hello"; ];
-        //@error dynamic x0 = value { "hello"; };
+        //$error dynamic x0 = value { "hello"; };
         x.w = "goodbye";
         dynamic f(dynamic z) => x.y + " " + z;
         dynamic s = f(name);
@@ -55,9 +55,9 @@ T foo<T>(T t) given T satisfies Object => t;
 void run() {
     dynamic {
         dynamic x = dynamic [];
-        @error value f1 = foo(x);
+        $error value f1 = foo(x);
         value f2 = foo<Integer>(x);
-        @error value f3 = foo(x of Integer);
+        $error value f3 = foo(x of Integer);
         
         for (xx in x) {}
         
@@ -67,9 +67,9 @@ void run() {
         
         if (is String x) {}
         
-        @error value sing = Singleton(x);
-        @error value iter = {x};
-        @error value seq = [x];
+        $error value sing = Singleton(x);
+        $error value iter = {x};
+        $error value seq = [x];
     }
 }
 
@@ -101,58 +101,58 @@ void control() {
     dynamic {
         if (xyz) {}
         if (is String xyz) {
-            @type:"String" value v = xyz;
+            $type:"String" value v = xyz;
         }
         if (!is String xyz) {
-            @type:"unknown" dynamic v = xyz;
+            $type:"unknown" dynamic v = xyz;
         }
         if (exists xyz) {
-            @type:"unknown" dynamic v = xyz;
+            $type:"unknown" dynamic v = xyz;
         }
         if (nonempty xyz) {
-            @type:"unknown" dynamic v = xyz;
+            $type:"unknown" dynamic v = xyz;
         }
         for (i in xyz) {
-            @type:"unknown" dynamic v = i;
+            $type:"unknown" dynamic v = i;
         }
         for (i->Object j in xyz) {
-            @type:"unknown" dynamic v = i;
-            @type:"Object" value w = j;
+            $type:"unknown" dynamic v = i;
+            $type:"Object" value w = j;
         }
         for (String i in xyz) {
-            @type:"String" value v = i;
+            $type:"String" value v = i;
         }
         switch (xyz)
         case (true) {}
         case (is String) {
-             @type:"String" value v = xyz;
+             $type:"String" value v = xyz;
         }
     }
 }
 
 void sanity() {
-    @type:"unknown" dynamic str1 = "hello";
-    @type:"unknown" dynamic str2 => "hello";
-    @type:"unknown" dynamic str3 { return "hello"; }
-    @type:"unknown" dynamic str4() => "hello";
-    @type:"unknown" dynamic str5() { return "hello"; }
+    $type:"unknown" dynamic str1 = "hello";
+    $type:"unknown" dynamic str2 => "hello";
+    $type:"unknown" dynamic str3 { return "hello"; }
+    $type:"unknown" dynamic str4() => "hello";
+    $type:"unknown" dynamic str5() { return "hello"; }
     dynamic unk() { dynamic { return whatever; } }
-    dynamic unk0() { @error return whatever; }
+    dynamic unk0() { $error return whatever; }
 
     dynamic {
-        @error value unk1 = whatever;
-        @error value unk2 => whatever;
-        @error value unk3 { return whatever; }
-        @error function unk4() => whatever;
-        @error function unk5() { return whatever; }
+        $error value unk1 = whatever;
+        $error value unk2 => whatever;
+        $error value unk3 { return whatever; }
+        $error function unk4() => whatever;
+        $error function unk5() { return whatever; }
     }
     
-    dynamic fun1(@error value val) { dynamic { return val; } }
+    dynamic fun1($error value val) { dynamic { return val; } }
     dynamic fun2(dynamic val) { dynamic { return val; } }
     
-    @error dynamic res1 = str1;
-    @error dynamic res2 = str4();
-    @error dynamic res3 = str5;
+    $error dynamic res1 = str1;
+    $error dynamic res2 = str4();
+    $error dynamic res3 = str5;
     
     dynamic {
         dynamic res4 = str1;
@@ -160,9 +160,9 @@ void sanity() {
         dynamic res6 = str5;        
     }
 
-    dynamic res7 { @error return str1; }
-    dynamic res8 { @error return str4(); }
-    dynamic res9 { @error return str5; }
+    dynamic res7 { $error return str1; }
+    dynamic res8 { $error return str4(); }
+    dynamic res9 { $error return str5; }
     
     dynamic {
         dynamic res10 { return str1; }
@@ -170,9 +170,9 @@ void sanity() {
         dynamic res12 { return str5; }
     }
     
-    @error dynamic fes1() => str1;
-    @error dynamic fes2() => str4();
-    @error dynamic fes3() => str5;
+    $error dynamic fes1() => str1;
+    $error dynamic fes2() => str4();
+    $error dynamic fes3() => str5;
     
     dynamic {
         dynamic fes4() => str1;
@@ -180,9 +180,9 @@ void sanity() {
         dynamic fes6() => str5;        
     }
 
-    dynamic fes7() { @error return str1; }
-    dynamic fes8() { @error return str4(); }
-    dynamic fes9() { @error return str5; }
+    dynamic fes7() { $error return str1; }
+    dynamic fes8() { $error return str4(); }
+    dynamic fes9() { $error return str5; }
     
     dynamic {
         dynamic fes10() { return str1; }
@@ -190,44 +190,44 @@ void sanity() {
         dynamic fes12() { return str5; }
     }
     
-    @error value ves1 = str1;
-    @error value ves2 = str4();
-    @error value ves3 = str5;
+    $error value ves1 = str1;
+    $error value ves2 = str4();
+    $error value ves3 = str5;
     
     dynamic {
-        @error value ves4 = str1;
-        @error value ves5 = str4();
-        @error value ves6 = str5;        
+        $error value ves4 = str1;
+        $error value ves5 = str4();
+        $error value ves6 = str5;        
     }
 
-    @error value ves7 { @error return str1; }
-    @error value ves8 { @error return str4(); }
-    @error value ves9 { @error return str5; }
+    $error value ves7 { $error return str1; }
+    $error value ves8 { $error return str4(); }
+    $error value ves9 { $error return str5; }
     
     dynamic {
-        @error value ves10 { return str1; }
-        @error value ves11 { return str4(); }
-        @error value ves12 { return str5; }
+        $error value ves10 { return str1; }
+        $error value ves11 { return str4(); }
+        $error value ves12 { return str5; }
     }
 
-    @error function wes1() => str1;
-    @error function wes2() => str4();
-    @error function wes3() => str5;
+    $error function wes1() => str1;
+    $error function wes2() => str4();
+    $error function wes3() => str5;
     
     dynamic {
-        @error function wes4() => str1;
-        @error function wes5() => str4();
-        @error function wes6() => str5;        
+        $error function wes4() => str1;
+        $error function wes5() => str4();
+        $error function wes6() => str5;        
     }
 
-    @error function wes7() { @error return str1; }
-    @error function wes8() { @error return str4(); }
-    @error function wes9() { @error return str5; }
+    $error function wes7() { $error return str1; }
+    $error function wes8() { $error return str4(); }
+    $error function wes9() { $error return str5; }
     
     dynamic {
-        @error function wes10() { return str1; }
-        @error function wes11() { return str4(); }
-        @error function wes12() { return str5; }
+        $error function wes10() { return str1; }
+        $error function wes11() { return str4(); }
+        $error function wes12() { return str5; }
     }
 }
 
@@ -253,8 +253,8 @@ void badrefinement() {
     }
     
     class Node(dynamic n) extends NodeAbs() {
-        @error shared actual String native;
-        shared actual dynamic f(@error String str) => "";
+        $error shared actual String native;
+        shared actual dynamic f($error String str) => "";
         dynamic {
             native = n;
         }
@@ -268,8 +268,8 @@ void worserefinement() {
     }
     
     class Node(dynamic n) extends NodeAbs() {
-        @error shared actual dynamic native;
-        shared actual dynamic f(@error dynamic str) => "";
+        $error shared actual dynamic native;
+        shared actual dynamic f($error dynamic str) => "";
         dynamic {
             native = n;
         }

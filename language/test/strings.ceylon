@@ -723,4 +723,10 @@ shared void strings() {
     check(String.sum([])=="", "String.sum 1");
     check(String.sum(["x"])=="x", "String.sum 2");
     check(String.sum(["h","o","l","a"])=="hola", "String.sum 3");
+    
+    check("hello".rest=="ello");
+    check("hello".exceptLast=="hell");
+    check("\{THUMBS UP SIGN}\{THUMBS DOWN SIGN}".rest=="\{THUMBS DOWN SIGN}");
+    check("\{THUMBS UP SIGN}\{THUMBS DOWN SIGN}".exceptLast=="\{THUMBS UP SIGN}");
+    
 }

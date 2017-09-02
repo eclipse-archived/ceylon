@@ -40,6 +40,7 @@ import ceylon.language { printTrace=printStackTrace }
  the type `File?`, where a `null` return value indicates 
  nonexistence. On the other hand, failure to read from an
  already open file could result in an `Exception`."
+see (class Exception, class AssertionError)
 by ("Gavin", "Tom")
 tagged("Basic types")
 since("1.1.0")
@@ -55,7 +56,7 @@ class Throwable(description=null, cause=null) {
     "A message describing the problem. This default 
      implementation returns the description, if any, or 
      otherwise the message of the cause, if any."
-    see (`value cause`)
+    see (value cause)
     shared default String message 
             => description else cause?.message else "";
     
@@ -64,7 +65,7 @@ class Throwable(description=null, cause=null) {
     
     "Print the stack trace to the standard error of the 
      virtual machine process."
-    see (`function printTrace`)
+    see (function printTrace)
     shared void printStackTrace() => printTrace(this);
     
     "The given exception was suppressed in order to 

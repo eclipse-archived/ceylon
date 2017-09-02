@@ -3,29 +3,29 @@ interface GettersSetters {
     class Setters() {
         String hi { return "hi"; }
         assign hi {}
-        @error assign howdy {  }
-        @error assign hi {}
+        $error assign howdy {  }
+        $error assign hi {}
     }
     
     class SettersWithDupeParams(String hi, String howdy) {
-        @error String hi { return "hi"; }
-        @error assign howdy {  }
+        $error String hi { return "hi"; }
+        $error assign howdy {  }
     }
     
     class SettersWithDupeParams2(String hi, String howdy) {
-        @error String hi { return "hi"; }
-        @error assign howdy {  }
-        @error assign hi {}
-        @error assign hi {}
+        $error String hi { return "hi"; }
+        $error assign howdy {  }
+        $error assign hi {}
+        $error assign hi {}
     }
     
     class SettersWithDupeAttributes() {
-        @error String hi; 
-        @error String howdy;
-        @error String hi { return "hi"; }
-        @error assign hi {}
-        @error assign howdy {  }
-        @error assign hi {}
+        $error String hi; 
+        $error String howdy;
+        $error String hi { return "hi"; }
+        $error assign hi {}
+        $error assign howdy {  }
+        $error assign hi {}
     }
     
     class SharedGetterSetter() {
@@ -41,7 +41,7 @@ interface GettersSetters {
     
     void test() {
         SharedGetterSetter().name = "world";
-        @error SharedGetterSetter().greeting = "hi";
+        $error SharedGetterSetter().greeting = "hi";
     }
     
     class FatArrowSetter(n) {
@@ -53,13 +53,13 @@ interface GettersSetters {
     class BrokenSetter1(n) {
         variable String n;
         String name => n;
-        @error assign name;
+        $error assign name;
     }
         
     class BrokenSetter2(n) {
         variable String n;
         String name => n;
-        @error assign name => "hello" + "world";
+        $error assign name => "hello" + "world";
     }
         
 }

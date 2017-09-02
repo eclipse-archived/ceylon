@@ -1,8 +1,8 @@
 interface Local {}
 
 shared class WithBrokenVisibility {
-    shared new withBrokenVisibility(@error Local param) {}
-    shared new brokenConstructor(@error Local param) {}
+    shared new withBrokenVisibility($error Local param) {}
+    shared new brokenConstructor($error Local param) {}
     new okConstructor(Local param) {}
 }
 
@@ -15,9 +15,9 @@ shared void switchAOrB() {
     AOrB f = nothing;
     switch (f)
     case (AOrB.b) {
-        @type:"AOrB" value ff = f;
+        $type:"AOrB" value ff = f;
     }
     else {
-        @type:"AOrB" value ff = f;
+        $type:"AOrB" value ff = f;
     }
 }

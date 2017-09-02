@@ -6,7 +6,7 @@
  - an uninitialized [[late]] value is evaluated, 
  - an initialized `late` but non-`variable` value is
    reassigned."
-see (`function late`)
+see (function late)
 since("1.1.0")
 shared class InitializationError(String description)
         extends AssertionError(description) {}

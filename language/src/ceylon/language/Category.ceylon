@@ -69,12 +69,12 @@ shared interface Category<in Element=Object>
      consistent with some other equivalence relation, for 
      example `===`. Therefore implementations of `contains()` 
      which do not satisfy this relationship are tolerated."
-    see (`function containsEvery`, `function containsAny`)
+    see (function containsEvery, function containsAny)
     shared formal Boolean contains(Element element);
     
     "Returns `true` if every one of the given values belongs 
      to this `Category`, or `false` otherwise."
-    see (`function contains`, `function containsAny`)
+    see (function contains, function containsAny)
     shared default 
     Boolean containsEvery({Element*} elements) {
         for (element in elements) {
@@ -89,7 +89,7 @@ shared interface Category<in Element=Object>
 
     "Returns `true` if any one of the given values belongs 
      to this `Category`, or `false` otherwise."
-    see (`function contains`, `function containsEvery`)
+    see (function contains, function containsEvery)
     shared default 
     Boolean containsAny({Element*} elements) {
         for (element in elements) {

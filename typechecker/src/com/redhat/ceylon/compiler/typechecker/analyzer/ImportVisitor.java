@@ -334,27 +334,24 @@ public class ImportVisitor extends Visitor {
             i.setAlias(al);
         }
         if (isNonimportable(importedPackage, name)) {
-            id.addError("root type may not be imported: '" +
-                    name + "' in '" + 
-                    importedPackage.getNameAsString() + 
-                    "' is represented by '" + 
-                    name + "' in 'ceylon.language'");
+            id.addError("root type may not be imported: '" 
+                    + name 
+                    + "' in '" 
+                    + importedPackage.getNameAsString() 
+                    + "' is represented by '" 
+                    + equivalentType(name) 
+                    + "' in 'ceylon.language'");
             return name;
         }        
         Declaration d = 
                 importedPackage.getMember(name, null, false);
         if (d == null) {
-            String newName;
-            if (JvmBackendUtil.isInitialLowerCase(name)) {
-                newName = NamingBase.capitalize(name);
-            }
-            else {
-                newName = NamingBase.getJavaBeanName(name);
-            }
+            String newName = adaptJavaName(name);
             d = importedPackage.getMember(newName, null, false);
             // only do this for Java declarations we fudge
-            if(d != null && !d.isJava())
+            if (d!=null && !d.isJava()) {
                 d = null;
+            }
         }
         if (d==null) {
             id.addError("imported declaration not found: '" 
@@ -419,13 +416,7 @@ public class ImportVisitor extends Visitor {
         }
         Declaration m = td.getMember(name, null, false);
         if (m == null && td.isJava()) {
-            String newName;
-            if (JvmBackendUtil.isInitialLowerCase(name)) {
-                newName = NamingBase.capitalize(name);
-            }
-            else {
-                newName = NamingBase.getJavaBeanName(name);
-            }
+            String newName = adaptJavaName(name);
             m = td.getMember(newName, null, false);
         }
         if (m==null) {
@@ -533,6 +524,12 @@ public class ImportVisitor extends Visitor {
         //imtl.addError("member aliases may not have member aliases");
         return name;
     }
+
+    private static String adaptJavaName(String name) {
+        return JvmBackendUtil.isInitialLowerCase(name) ? 
+                NamingBase.capitalize(name) : 
+                NamingBase.getJavaBeanName(name);
+    }
     
     private boolean isStaticNonGeneric(Declaration dec, 
             TypeDeclaration outer) {
@@ -594,11 +591,17 @@ public class ImportVisitor extends Visitor {
     private boolean isNonimportable(Package pkg, String name) {
         String pname = pkg.getQualifiedNameString();
         return pname.equals("java.lang")
-                && ("Object".equals(name) ||
-                    "Throwable".equals(name) ||
-                    "Exception".equals(name)) ||
-               pname.equals("java.lang.annotation")
+                && ("Object".equals(name) 
+                 || "Throwable".equals(name) 
+                 || "RuntimeException".equals(name) 
+                 || "Exception".equals(name)) 
+            || pname.equals("java.lang.annotation")
                 && "Annotation".equals(name);
+    }
+    
+    private String equivalentType(String name) {
+        return "RuntimeException".equals(name) ? 
+                "Exception" : name;
     }
     
 }

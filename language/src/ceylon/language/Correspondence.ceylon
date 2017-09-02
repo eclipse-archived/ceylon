@@ -18,9 +18,9 @@
  The `get()` operation and item operator result in an
  optional type, to reflect the possibility that there may be
  no item for the given key."
-see (`interface Map`, 
-     `interface List`, 
-     `interface Category`)
+see (interface Map, 
+     interface List, 
+     interface Category)
 by ("Gavin")
 tagged("Collections")
 shared interface Correspondence<in Key, out Item=Anything>
@@ -33,14 +33,14 @@ shared interface Correspondence<in Key, out Item=Anything>
      may be written using the item operator:
      
          c[key]"
-    see (`function Correspondence.getAll`)
+    see (function Correspondence.getAll)
     shared formal Item? get(Key key);
     
     "Determines if there is a value defined for the given 
      key."
-    see (`function Correspondence.definesAny`, 
-         `function Correspondence.definesEvery`, 
-         `value Correspondence.keys`)
+    see (function Correspondence.definesAny, 
+         function Correspondence.definesEvery, 
+         value Correspondence.keys)
     shared formal Boolean defines(Key key);
     
     /*"Return a boolean value indicating whether there is an
@@ -59,7 +59,7 @@ shared interface Correspondence<in Key, out Item=Anything>
      - the case that there is no item for the given key, and
      - the case that `null` is the item for the given key."
     shared default
-    see (`function defines`, `function get`)
+    see (function defines, function get)
     Boolean->Item? lookup(Key key)
             => if (defines(key))
                then true -> get(key)
@@ -67,7 +67,7 @@ shared interface Correspondence<in Key, out Item=Anything>
     
     "The `Category` of all keys for which a value is defined
      by this `Correspondence`."
-    see (`function Correspondence.defines`)
+    see (function Correspondence.defines)
     shared default Category<Key> keys
             => object 
             satisfies Category<Key> {
@@ -76,7 +76,7 @@ shared interface Correspondence<in Key, out Item=Anything>
     
     "Determines if this `Correspondence` defines a value for
      every one of the given keys."
-    see (`function Correspondence.defines`)
+    see (function Correspondence.defines)
     shared default 
     Boolean definesEvery({Key*} keys) {
         for (key in keys) {
@@ -91,7 +91,7 @@ shared interface Correspondence<in Key, out Item=Anything>
     
     "Determines if this `Correspondence` defines a value for
      any one of the given keys."
-    see (`function Correspondence.defines`)
+    see (function Correspondence.defines)
     shared default 
     Boolean definesAny({Key*} keys) {
         for (key in keys) {
@@ -108,7 +108,7 @@ shared interface Correspondence<in Key, out Item=Anything>
      same order as the corresponding keys. For any key which 
      does not have an item defined, the resulting stream 
      contains the value `null`."
-    see (`function Correspondence.get`)
+    see (function Correspondence.get)
     since("1.1.0")
     shared default 
     Iterable<Item?,Absent> getAll<Absent>
@@ -136,9 +136,9 @@ shared interface Correspondence<in Key, out Item=Anything>
  [[Correspondence]]."
 since("1.3.0")
 tagged("Collections")
-see (`interface Correspondence`, 
-     `interface KeyedCorrespondenceMutator`,
-     `interface IndexedCorrespondenceMutator`)
+see (interface Correspondence, 
+     interface KeyedCorrespondenceMutator,
+     interface IndexedCorrespondenceMutator)
 shared interface CorrespondenceMutator<in Item>
         of IndexedCorrespondenceMutator<Item>
          | KeyedCorrespondenceMutator<Nothing,Item> {}
@@ -150,7 +150,7 @@ shared interface CorrespondenceMutator<in Item>
  Many `IndexedCorrespondenceMutator`s are [[List]]s."
 since("1.3.0")
 tagged("Collections")
-see (`interface KeyedCorrespondenceMutator`)
+see (interface KeyedCorrespondenceMutator)
 shared interface IndexedCorrespondenceMutator<in Element> 
         satisfies CorrespondenceMutator<Element> {
 
@@ -163,7 +163,7 @@ shared interface IndexedCorrespondenceMutator<in Element>
      assignment operators:
      
          c[index] = item"
-    throws (`class AssertionError`,
+    throws (class AssertionError,
             "if the given [[index]] is outside the range of
              indexes belonging to this objects")
     shared formal void set(Integer index, Element item);
@@ -176,7 +176,7 @@ shared interface IndexedCorrespondenceMutator<in Element>
  Many `KeyedCorrespondenceMutator`s are [[Map]]s."
 since("1.3.0")
 tagged("Collections")
-see (`interface IndexedCorrespondenceMutator`)
+see (interface IndexedCorrespondenceMutator)
 shared interface KeyedCorrespondenceMutator<in Key, in Item>
         satisfies CorrespondenceMutator<Item>
         given Key satisfies Object {

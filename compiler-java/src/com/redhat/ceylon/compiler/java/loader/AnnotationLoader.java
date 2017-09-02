@@ -53,6 +53,7 @@ import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -169,7 +170,7 @@ public class AnnotationLoader {
             term.setInstantiation(nested);
             return term;
         } else {
-            AnnotationTerm term = decode(Decl.getModuleContainer(method), method.getFirstParameterList().getParameters(), ai, parameter, dpm, path, code);
+            AnnotationTerm term = decode(ModelUtil.getModuleContainer(method), method.getFirstParameterList().getParameters(), ai, parameter, dpm, path, code);
             return term;
         }
     }
@@ -248,7 +249,7 @@ public class AnnotationLoader {
         }
         valueAnnotation = mm.getAnnotation(AbstractModelLoader.CEYLON_OBJECT_VALUE_ANNOTATION);
         if (valueAnnotation != null) {
-            return readObjectValuesAnnotation(Decl.getModuleContainer(method), valueAnnotation, singleValue);
+            return readObjectValuesAnnotation(ModelUtil.getModuleContainer(method), valueAnnotation, singleValue);
         }
         valueAnnotation = mm.getAnnotation(AbstractModelLoader.CEYLON_CHARACTER_VALUE_ANNOTATION);
         if (valueAnnotation != null) {

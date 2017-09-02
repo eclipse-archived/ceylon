@@ -27,10 +27,10 @@ Fun<String> toString<Fun>
 
 void testFunctors() {
     value listToString = toString<List>(listFunctor);
-    @type:"List<String>" 
+    $type:"List<String>" 
     value strList = listToString([0, 0.0, 1, 1.0]);
     value iterToString = toString<Iterable>(iterFunctor);
-    @type:"Iterable<String,Null>" 
+    $type:"Iterable<String,Null>" 
     value strIter = iterToString({0, 0.0, 1, 1.0});
 }
 
@@ -44,25 +44,25 @@ T<String> getF<T>(X<T> x, T<Integer> t)
 }
 
 void test() {
-    @type:"Sequence<String>" 
+    $type:"Sequence<String>" 
     value ts = getF<Sequence>(X<Sequence>(), 
         ([1] of Sequence<Integer>));
-    @type:"List<String>" 
+    $type:"List<String>" 
     value ls = X<List>().f([1]);
-    @type:"Sequence<String>" 
+    $type:"Sequence<String>" 
     value ss = X<Sequence>().f([1]);
-    @error value es = X<Singleton>().f([1]);
-    @type:"Singleton<String>" 
+    $error value es = X<Singleton>().f([1]);
+    $type:"Singleton<String>" 
     value sss = X<Singleton>().f(Singleton(1));
     X<Singleton> xs1 = X<Singleton>();
-    @error X<Singleton> xs2 = X<List>();
+    $error X<Singleton> xs2 = X<List>();
 }
 
 void fun<X>(X<String> strings) 
         given X<T> satisfies {T*} 
             given T satisfies Object {
     for (s in strings) {}
-    //@error 
+    //$error 
     X<Null> nulls;
 }
 
@@ -70,9 +70,9 @@ void gun<X>(X<Integer> ints)
         given X<T> satisfies {T*} 
             given T of Integer|Float|String {
     for (i in ints) {}
-    //@error 
+    //$error 
     X<Null> nulls;
-    //@error 
+    //$error 
     X<Integer|Float> iof;
 }
 
@@ -98,13 +98,13 @@ class WhyNot<Element>(Element e)
 
 void testfun() {
     fun<List>(["", "", ""]);
-    @error fun<Meh>(Meh());
-    @error fun<Integer>(["", "", ""]);
-    @error fun<Blah>(Blah());
-    @error fun<Blah>(nothing);
-    @error fun<Meh>(nothing);
-    @error fun<Integer>(nothing);
-    @error gun<Why>(nothing);
+    $error fun<Meh>(Meh());
+    $error fun<Integer>(["", "", ""]);
+    $error fun<Blah>(Blah());
+    $error fun<Blah>(nothing);
+    $error fun<Meh>(nothing);
+    $error fun<Integer>(nothing);
+    $error gun<Why>(nothing);
     gun<WhyNot>(nothing);
     gun<WhyNot>(WhyNot(1));
 }
@@ -113,7 +113,7 @@ class Dummy<X>() given X<T> {
     shared Element foo<Element>(X<Element> ds) => nothing;
 }
 void testDummy() {
-    @type:"Integer" Dummy<List>().foo([1, 2, 3]);
+    $type:"Integer" Dummy<List>().foo([1, 2, 3]);
 }
 
 interface High<out T> given T<X> given X satisfies String {}
@@ -141,13 +141,13 @@ void testSubtyping(High<U> h1,
     High<U> hb = h2;
     High<U> hc = h3;
     High<U> hd = h4;
-    @error High<U> he = h5;
-    @error High<V> hf = h1;
-    @error High<U> hg = h6;
-    @error High<N> hh = h7;
+    $error High<U> he = h5;
+    $error High<V> hf = h1;
+    $error High<U> hg = h6;
+    $error High<N> hh = h7;
     High<N> hi = h8;
     High<N> hj = l1;
-    @error High<N> hk = l2;
+    $error High<N> hk = l2;
 }
 
 class Inv<T>(T t) {}
@@ -156,19 +156,19 @@ void testVariances() {
     <T> => Inv<T> inv = nothing;
     <T> => Inv<T> inv1 = inv;
     <T> => Inv<out T> cov = inv;
-    @error <out T> => Inv<T> inv2 = inv;
-    @error <T> => Inv<T> inv3 = cov;
-    @error value x = <out T>(T t) => Inv<T>(t);
-    @error function y<out T>(T t) => Inv<T>(t);
+    $error <out T> => Inv<T> inv2 = inv;
+    $error <T> => Inv<T> inv3 = cov;
+    $error value x = <out T>(T t) => Inv<T>(t);
+    $error function y<out T>(T t) => Inv<T>(t);
 
     TC<in Nothing> some<X,TC>(TC<X> t) given TC<Y> => t;    
-    @error Array<Nothing> a1 = some<String,Array>(Array {"hello", "world"});
+    $error Array<Nothing> a1 = some<String,Array>(Array {"hello", "world"});
     Array<in Nothing> a2 = some<String,Array>(Array {"hello", "world"});
 }
 
 
 Integer typeConstructorNotSupertypeOfObject(String s) {
-    @error <T> => T t = s of Object;
+    $error <T> => T t = s of Object;
     return t<Integer>;
 }
 
@@ -191,7 +191,7 @@ void callables() {
     Integer(Integer) | <<T>=>T(T)> fun1 = identity;
     <<T>=>T(T)> fun2 = identity;
     Integer(Integer) fun3 = identity<Integer>;
-    @error fun1(10);
+    $error fun1(10);
     fun2(10);
     fun3(10);
 }
@@ -204,7 +204,7 @@ class Generic<H> {
 }
 
 void testClazz() {
-    @error value ref0 = Generic.generic;
-    @type:"<T>=>T(T)" value ref1 = Generic<Object>.generic;
-    @type:"<H>=>Object(Object)" value ref2 = Generic.notgeneric;
+    $error value ref0 = Generic.generic;
+    $type:"<T>=>T(T)" value ref1 = Generic<Object>.generic;
+    $type:"<H>=>Object(Object)" value ref2 = Generic.notgeneric;
 }

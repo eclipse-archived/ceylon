@@ -13,8 +13,8 @@ object service {
 }
 
 object service2 {
-    @error shared void execute(Runnable run) {}
-    @error shared void execute(Anything run(String id)) {}
+    $error shared void execute(Runnable run) {}
+    $error shared void execute(Anything run(String id)) {}
 }
 
 void runme() {
@@ -30,13 +30,13 @@ interface Interface {
     shared overloaded formal void run(Integer int);
     shared overloaded formal void run(Integer int1, Integer int2);
     shared overloaded formal void run(Integer* int);
-    @error overloaded shared formal void run(Integer? int);
+    $error overloaded shared formal void run(Integer? int);
     
     shared overloaded formal void wrong(Integer int);
-    @error shared overloaded formal void wrong(Integer? int);
+    $error shared overloaded formal void wrong(Integer? int);
     shared overloaded formal void wrong(String string);
     shared overloaded formal void wrong(Object thing);
-    @error shared overloaded formal void wrong(Anything thing);
+    $error shared overloaded formal void wrong(Anything thing);
 }
 
 void test(Interface i) {
@@ -59,8 +59,8 @@ class X() {
 }
 
 class X2() {
-    @error shared void execute(void run()) => run();
-    @error shared T execute<T>(T run()) given T satisfies Object => run();
+    $error shared void execute(void run()) => run();
+    $error shared T execute<T>(T run()) given T satisfies Object => run();
 }
 
 void do() {
@@ -80,7 +80,7 @@ class Clazz() {
     shared class Find<T>(Inter<T> c) {
         Find(c);
     }
-    @error shared class Find<T>() {
+    $error shared class Find<T>() {
         Inter<T> list = nothing of Inter<T>;
     }
 }
@@ -95,14 +95,14 @@ class Clas() satisfies Iface {
     shared overloaded actual void y() {}
     shared overloaded actual void y(String s) {}
     shared overloaded actual void y(Integer i) {}
-    @error shared overloaded actual void y(Float x) {}
+    $error shared overloaded actual void y(Float x) {}
     shared overloaded void y(Byte x) {}
-    @error void y(Character x) {}
-    @error String y = "";
+    $error void y(Character x) {}
+    $error String y = "";
 }
 
 class My() {
-    @error shared void equals() {}
+    $error shared void equals() {}
 }
 
 class Sender() {}
@@ -122,8 +122,8 @@ class Stream<T>(T* elements){
 }
 
 class Stream2<T>(T* elements){
-    @error shared Stream<T> filter(Predicate<T> pred) => this;
-    @error shared Stream<T> filter(Boolean fun(T t)) => this;
+    $error shared Stream<T> filter(Predicate<T> pred) => this;
+    $error shared Stream<T> filter(Boolean fun(T t)) => this;
 }
 
 void testStream() {
@@ -132,10 +132,10 @@ void testStream() {
     Stream<String> result3 = Stream("").filter(object satisfies Predicate<String> {});
     Stream<String|Integer> result4 = Stream("", 1).filter((t) => true);
     Stream<String|Integer> result5 = Stream("", 1).filter((String|Integer t) => true);
-    @error Stream("").filter((Integer t) => true);
-    @error Stream("").filter((t) => t);
-    @error Stream("").filter(object satisfies Predicate<Integer> {});
-    @error Stream("", 1).filter((Integer t) => true);
+    $error Stream("").filter((Integer t) => true);
+    $error Stream("").filter((t) => t);
+    $error Stream("").filter(object satisfies Predicate<Integer> {});
+    $error Stream("", 1).filter((Integer t) => true);
 }
 
 
@@ -145,15 +145,15 @@ class Native() {
     overloaded shared void fun(Integer u) {}
     
     overloaded shared void func(String|Integer si) {}
-    @error overloaded shared void func(Basic b) {}
-    @error overloaded shared void func(Nothing n) {}
-    @error overloaded shared void func(Null n) {}
-    @error overloaded shared void func(Float f = 1.9) {}
+    $error overloaded shared void func(Basic b) {}
+    $error overloaded shared void func(Nothing n) {}
+    $error overloaded shared void func(Null n) {}
+    $error overloaded shared void func(Float f = 1.9) {}
     overloaded shared void func(Object o, Float f, Integer i) {}
     overloaded shared void func(Object* o) {}
     
     overloaded shared void sing(Singleton<String> sing) {}
-    @error overloaded shared void sing(Singleton<Integer>? sing) {}
+    $error overloaded shared void sing(Singleton<Integer>? sing) {}
 }
 
 native shared void run();
@@ -196,7 +196,7 @@ class Thing {
     shared overloaded new (Integer integer) {
         this.string = (integer^2).string;
     }
-    @error shared overloaded new (String string) {
+    $error shared overloaded new (String string) {
         this.string = string;
     }
 }
@@ -212,18 +212,18 @@ class OtherThing {
     shared overloaded new make(Integer integer) {
         this.string = (integer^2).string;
     }
-    @error shared overloaded new make(String string) {
+    $error shared overloaded new make(String string) {
         this.string = string;
     }
 }
 
 
 class Wrong {
-    @error shared new () {}
-    @error shared new (Integer i) {}
+    $error shared new () {}
+    $error shared new (Integer i) {}
     
-    @error shared new make() {}
-    @error shared new make(Integer i) {}
+    $error shared new make() {}
+    $error shared new make(Integer i) {}
 }
 
 void tryit() {

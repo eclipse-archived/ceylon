@@ -22,7 +22,7 @@
  obtain a resource that has already been obtained. Those 
  methods should produce an [[AssertionError]] when any such 
  constraint is violated."
-see (`interface Destroyable`)
+see (interface Destroyable)
 tagged("Basic types")
 since("1.1.0")
 shared interface Obtainable satisfies Usable {
@@ -32,14 +32,14 @@ shared interface Obtainable satisfies Usable {
      
      If an exception is thrown by `obtain()`, then `release()` 
      will not be called."
-    throws (`class AssertionError`, 
+    throws (class AssertionError, 
             "if an illegal state is detected")
     shared formal void obtain();
     
     "Release this resource. Called when execution of the 
      body of a `try` statement ends, even if an exception 
      propagates out of the body of the `try`."
-    throws (`class AssertionError`, 
+    throws (class AssertionError, 
             "if an illegal state is detected")
     shared formal void release(
         "The exception propagating out of the body of the 

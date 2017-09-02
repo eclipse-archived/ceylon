@@ -15,7 +15,7 @@
  Not every value commonly considered to be a \"number\" is
  a `Number`. For example, complex numbers aren't `Number`s
  since they don't have a total order."
-see (`class Integer`, `class Float`)
+see (class Integer, class Float)
 by ("Gavin")
 tagged("Numbers")
 shared interface Number<Other> of Other
@@ -84,7 +84,7 @@ shared interface Number<Other> of Other
     "The result of raising this number to the given 
      non-negative [[Integer]] power. For a negative power,
      the behavior is implementation-dependent."
-    throws (`class AssertionError`, 
+    throws (class AssertionError, 
             "if the exponent is a negative power and this is 
              an integral numeric type")
     since("1.1.0")

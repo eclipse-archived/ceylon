@@ -139,24 +139,22 @@ public class AetherResolverImpl implements AetherResolver {
         if(localRepository == null)
             localRepository = set.getLocalRepository();
         if(localRepository == null)
-        	localRepository = System.getProperty("user.home")+File.separator+".m2"+File.separator+"repository";
-        else {
-            if (! new File(localRepository).isAbsolute() && currentDirectory != null) {
-                localRepository = new File(new File(currentDirectory), localRepository).getAbsolutePath();
-            }
-        }
+        	    localRepository = System.getProperty("user.home")+File.separator+".m2"+File.separator+"repository";
+        else if (! new File(localRepository).isAbsolute() && currentDirectory != null)
+            localRepository = new File(new File(currentDirectory), localRepository).getAbsolutePath();
+        LocalRepository localRepo = new LocalRepository( localRepository );
 
         // set up authentication
         DefaultAuthenticationSelector authenticationSelector = new DefaultAuthenticationSelector();
         for(Server server : set.getServers()){
-    		AuthenticationBuilder auth = new AuthenticationBuilder();
-    		if(server.getUsername() != null)
-    			auth.addUsername(server.getUsername());
-    		if(server.getPassword() != null)
-    			auth.addPassword(server.getPassword());
-    		if(server.getPrivateKey() != null)
-    			auth.addPrivateKey(server.getPrivateKey(), server.getPassphrase());
-        	authenticationSelector.add(server.getId(), auth.build());
+        		AuthenticationBuilder auth = new AuthenticationBuilder();
+        		if(server.getUsername() != null)
+        			auth.addUsername(server.getUsername());
+        		if(server.getPassword() != null)
+        			auth.addPassword(server.getPassword());
+        		if(server.getPrivateKey() != null)
+        			auth.addPrivateKey(server.getPrivateKey(), server.getPassphrase());
+            	authenticationSelector.add(server.getId(), auth.build());
         }
 		session.setAuthenticationSelector(authenticationSelector );
         
@@ -170,28 +168,30 @@ public class AetherResolverImpl implements AetherResolver {
         // set up proxies
         DefaultProxySelector proxySelector = new DefaultProxySelector();
         for(Proxy proxy : set.getProxies()){
-        	if(proxy.isActive()){
-        		AuthenticationBuilder auth = new AuthenticationBuilder();
-        		if(proxy.getUsername() != null)
-        			auth.addUsername(proxy.getUsername());
-        		if(proxy.getPassword() != null)
-        			auth.addPassword(proxy.getPassword());
-				proxySelector.add(
-				        new com.redhat.ceylon.aether.eclipse.aether.repository.Proxy(
-				                proxy.getProtocol(), proxy.getHost(), proxy.getPort(), 
-				                auth.build() ), 
-				        proxy.getNonProxyHosts());
-        	}
+            	if(proxy.isActive()){
+            		AuthenticationBuilder auth = new AuthenticationBuilder();
+            		if(proxy.getUsername() != null)
+            			auth.addUsername(proxy.getUsername());
+            		if(proxy.getPassword() != null)
+            			auth.addPassword(proxy.getPassword());
+    				proxySelector.add(
+    				        new com.redhat.ceylon.aether.eclipse.aether.repository.Proxy(
+    				                proxy.getProtocol(), proxy.getHost(), proxy.getPort(), 
+    				                auth.build() ), 
+    				        proxy.getNonProxyHosts());
+            	}
         }
 		session.setProxySelector(proxySelector);
         
         // set up remote repos
         List<RemoteRepository> repos = new ArrayList<>();
+        
         RemoteRepository central = new RemoteRepository.Builder( "central", "default", "http://repo1.maven.org/maven2/" ).build();
         repos.add(central);
+        
         Set<String> activeProfiles = new HashSet<>();
         activeProfiles.addAll(set.getActiveProfiles());
-        for (Profile profile : set.getProfiles()) {
+        for(Profile profile : set.getProfiles()){
             Activation activation = profile.getActivation();
             if(activation != null){
                 if(activation.isActiveByDefault())
@@ -209,7 +209,6 @@ public class AetherResolverImpl implements AetherResolver {
         session.setConfigProperty(ConfigurationProperties.CONNECT_TIMEOUT, timeout);
         session.setOffline(offline || set.isOffline());
         
-        LocalRepository localRepo = new LocalRepository( localRepository );
         session.setLocalRepositoryManager( system.newLocalRepositoryManager( session, localRepo ) );
 
         return repos;
@@ -421,10 +420,10 @@ public class AetherResolverImpl implements AetherResolver {
             public boolean selectDependency(Dependency dep) {
                 // Not System, though we could support it
                 return JavaScopes.COMPILE.equals(dep.getScope())
-                            || JavaScopes.RUNTIME.equals(dep.getScope())
-                            || JavaScopes.PROVIDED.equals(dep.getScope())
-                            // TEST is useless ATM and is nothing but trouble
-//                            || JavaScopes.TEST.equals(dep.getScope())
+                    || JavaScopes.RUNTIME.equals(dep.getScope())
+                    || JavaScopes.PROVIDED.equals(dep.getScope())
+                    // TEST is useless ATM and is nothing but trouble
+//                  || JavaScopes.TEST.equals(dep.getScope())
                             ;
             }
         });
@@ -450,8 +449,8 @@ public class AetherResolverImpl implements AetherResolver {
         if(a == null || b == null)
             return false;
         return myEquals(a.getArtifact(), b.getArtifact())
-                && a.isOptional() == b.isOptional()
-                && Objects.equals(a.getScope(), b.getScope());
+            && a.isOptional() == b.isOptional()
+            && Objects.equals(a.getScope(), b.getScope());
     }
 
     private boolean myEquals(Artifact a, Artifact b) {
@@ -461,12 +460,11 @@ public class AetherResolverImpl implements AetherResolver {
             return false;
         // Don't use Artifact.equals because it compares Properties which we don't want
         return Objects.equals(a.getArtifactId(), b.getArtifactId())
-                && Objects.equals(a.getGroupId(), b.getGroupId())
-                && Objects.equals(a.getVersion(), b.getVersion())
-                && Objects.equals(a.getClassifier(), b.getClassifier())
-                && Objects.equals(a.getExtension(), b.getExtension())
-                && Objects.equals(a.getFile(), b.getFile())
-                ;
+            && Objects.equals(a.getGroupId(), b.getGroupId())
+            && Objects.equals(a.getVersion(), b.getVersion())
+            && Objects.equals(a.getClassifier(), b.getClassifier())
+            && Objects.equals(a.getExtension(), b.getExtension())
+            && Objects.equals(a.getFile(), b.getFile());
     }
 
     private String findExtension(File pomFile) {

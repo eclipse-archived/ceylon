@@ -49,9 +49,9 @@
    [[tuples|Tuple]], and [[arrays|Array]] are all `List`s,
    and are all of fixed length. Variable-length mutable
    `List`s are also possible."""
-see (`interface Sequence`, 
-     `interface Empty`, 
-     `class Array`)
+see (interface Sequence, 
+     interface Empty, 
+     class Array)
 tagged("Collections")
 shared interface List<out Element=Anything>
         satisfies Collection<Element> &
@@ -77,7 +77,7 @@ shared interface List<out Element=Anything>
      list, that is, if `0<=index<=list.lastIndex`, or `null` 
      otherwise. The first element of the list has index `0`, 
      and the last element has index [[lastIndex]]."
-    see (`function getFromLast`)
+    see (function getFromLast)
     shared actual formal Element? getFromFirst(Integer index);
     
     "Returns the element of this list with the given 
@@ -102,12 +102,12 @@ shared interface List<out Element=Anything>
     
     "The index of the last element of the list, or `null` if 
      the list is empty. Always `size>0 then size-1`."
-    see (`value List.size`)
+    see (value List.size)
     shared formal Integer? lastIndex;
     
     "The number of elements in this list, always
      `1 + (lastIndex else -1)`."
-    see (`value List.lastIndex`)
+    see (value List.lastIndex)
     shared actual default Integer size 
             => 1 + (lastIndex else -1);
     
@@ -115,27 +115,20 @@ shared interface List<out Element=Anything>
      this list, that is, if `0<=index<=list.lastIndex`."
     shared actual default Boolean defines(Integer index) 
             => 0 <= index < size;
-    
-    "Determines if this list contains the given value.
-     Returns `true` for every element of this list."
-    shared actual default Boolean contains(Object element) 
-            //TODO: delete this unnecessary refinement
-            => super.contains(element);
-    
+        
     "The rest of the list, without the first element.
      
      This is a lazy operation returning a view of this list."
     shared actual default List<Element> rest 
             => size>1 then Sublist(1,size-1) else [];
     
-    //TODO: refine type of List.exceptLast
-    //shared actual default List<Element> exceptLast 
-    //        => size>1 then Sublist(0, size-2) else [];
+    shared actual default List<Element> exceptLast 
+            => size>1 then Sublist(0, size-2) else [];
     
     "A list containing all indexes of this list.
      
      This is a lazy operation returning a view of this list."
-    see (`function indexes`)
+    see (function indexes)
     shared actual default List<Integer> keys => Indexes();
     
     "A list containing the elements of this list in reverse 
@@ -279,8 +272,8 @@ shared interface List<out Element=Anything>
      the given [[index|from]].
      
      This is a lazy operation, returning a view of this list."
-    see (`function skip`, 
-         `function sublistTo`)
+    see (function skip, 
+         function sublistTo)
     since("1.1.0")
     shared default 
     List<Element> sublistFrom(Integer from) 
@@ -290,9 +283,9 @@ shared interface List<out Element=Anything>
      given [[index|to]].
      
      This is a lazy operation, returning a view of this list."
-    see (`function take`,
-        `function initial`,
-        `function sublistFrom`)
+    see (function take,
+        function initial,
+        function sublistFrom)
     since("1.1.0")
     shared default 
     List<Element> sublistTo(Integer to) 
@@ -303,7 +296,7 @@ shared interface List<out Element=Anything>
      [[to]].
      
      This is a lazy operation, returning a view of this list."
-    see(`function sublistTo`, `function sublistFrom`)
+    see(function sublistTo, function sublistFrom)
     since("1.1.0")
     shared default 
     List<Element> sublist(Integer from, Integer to)
@@ -365,36 +358,33 @@ shared interface List<out Element=Anything>
     
     "Determine if the given [[list|sublist]] occurs at the 
      start of this list."
-    see (`function endsWith`)
+    see (function endsWith)
     shared default 
     Boolean startsWith(List<> sublist) 
             => !shorterThan(sublist.size) 
-            && everyPair<Element,Anything>(
-                (first, second)
+            && everyPair(this,sublist)
+                ((first, second)
                     => if (exists first, exists second)
                         then first==second
-                        else first exists == second exists, 
-                this, 
-                sublist);
+                        else first exists == second exists);
     
     "Determine if the given [[list|sublist]] occurs at the 
      end of this list."
-    see (`function startsWith`)
+    see (function startsWith)
     shared default 
     Boolean endsWith(List<> sublist)
             => !shorterThan(sublist.size) 
-            && everyPair<Element,Anything>(
-                (first, second)
+            && everyPair(skip(size-sublist.size), 
+                         sublist)
+                ((first, second)
                     => if (exists first, exists second)
                         then first==second
-                        else first exists == second exists, 
-                skip(size-sublist.size), 
-                sublist);
+                        else first exists == second exists);
     
     "The indexes in this list for which the element is not
      null and satisfies the given 
      [[predicate function|selecting]]."
-    see (`function locations`)
+    see (function locations)
     since("1.1.0")
     shared default 
     {Integer*} indexesWhere(
@@ -409,7 +399,7 @@ shared interface List<out Element=Anything>
     "The first index in this list for which the element is
      not null and satisfies the given 
      [[predicate function|selecting]]."
-    see (`function locate`)
+    see (function locate)
     since("1.1.0")
     shared default 
     Integer? firstIndexWhere(
@@ -430,7 +420,7 @@ shared interface List<out Element=Anything>
     "The last index in this list for which the element is
      not null and satisfies the given 
      [[predicate function|selecting]]."
-    see (`function locateLast`)
+    see (function locateLast)
     since("1.1.0")
     shared default 
     Integer? lastIndexWhere(
@@ -563,9 +553,9 @@ shared interface List<out Element=Anything>
          list.initial(length) == list[...length-1] == list[0:length]
      
      This is an eager operation."
-    see (`function terminal`, 
-         `function sublistTo`,
-         `function take`)
+    see (function terminal, 
+         function sublistTo,
+         function take)
     shared default 
     List<Element> initial(Integer length)
             => this[...length-1];
@@ -580,7 +570,7 @@ shared interface List<out Element=Anything>
          list.terminal(length) == list[size-length...]
      
      This is an eager operation."
-    see (`function initial`)
+    see (function initial)
     shared default 
     List<Element> terminal(Integer length) 
             => this[size-length...];

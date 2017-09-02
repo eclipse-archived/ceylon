@@ -1,7 +1,7 @@
 import imports.pack { 
     method, attribute, singleton,
     Class, Interface, Dupe, Alias,
-    @error Class
+    $error Class
 }
 
 class Test() {
@@ -12,7 +12,7 @@ class Test() {
     Dupe d = Dupe();
     d.hello();
     String hello = attribute;
-    @error d.goodbye();
+    $error d.goodbye();
     Alias strings = [ "hello", "world" ];
     for (String s in strings) {}
     String hi = singleton.hello;

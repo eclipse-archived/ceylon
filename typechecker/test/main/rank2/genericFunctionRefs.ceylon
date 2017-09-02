@@ -17,14 +17,14 @@ class Outer<X>(X x) {
 
 shared void run() {
     <T> => [Integer,T](Integer,T) fun = f;
-    @type:"<T> => Callable<Tuple<Integer|T,Integer,Tuple<T,T,Empty>>,Tuple<Integer|T,Integer,Tuple<T,T,Empty>>>" 
+    $type:"<T> => Callable<Tuple<Integer|T,Integer,Tuple<T,T,Empty>>,Tuple<Integer|T,Integer,Tuple<T,T,Empty>>>" 
     value foobar = fun;
     <T> => [Object,T](Nothing,T) funk = f;
-    @error <T> => [Float,T](Integer,T) fun0 = f;
-    @error <T> => [Integer,T](Float,T) fun1 = f;
+    $error <T> => [Float,T](Integer,T) fun0 = f;
+    $error <T> => [Integer,T](Float,T) fun1 = f;
     <X> => [Object,X](Integer,X) fun2 = fun;
-    @error <X> => [Float,X](Integer,X) fun3 = fun;
-    @error <X> => [Integer,X](String,X) fun4 = fun;
+    $error <X> => [Float,X](Integer,X) fun3 = fun;
+    $error <X> => [Integer,X](String,X) fun4 = fun;
     <E> => Singleton<E>(E) createSingleton = Singleton;
     <V> => V(V,V) p = plusy;
     Float(Float,Float) addFloats = p<Float>;
@@ -32,7 +32,7 @@ shared void run() {
     <T> => T(T,T) getPlus() => plusy;
     <V> => V(V,V) q = getPlus();
     
-    @error:"'<T> => T(T) given T satisfies String' is not assignable to '<T> => T(T)'"
+    $error:"'<T> => T(T) given T satisfies String' is not assignable to '<T> => T(T)'"
     <T> => T(T) funcRef = func;
     <T> given T satisfies String => T(T) funcRefOk = func;
     
@@ -52,34 +52,34 @@ shared void run() {
     
     value mapped = "hello world 2".map;
     function getmapped(String str) => str.map;
-    @type:"Iterable<Integer,Null>" 
+    $type:"Iterable<Integer,Null>" 
     value result0 = mapped(Character.integer);
-    @type:"Iterable<Integer,Null>" 
+    $type:"Iterable<Integer,Null>" 
     value result1 = (mapped)(Character.integer);
-    @type:"Iterable<Integer,Null>"
+    $type:"Iterable<Integer,Null>"
     value result2 = mapped<Integer>(Character.integer);
-    @type:"Callable<Iterable<Integer,Null>,Tuple<Callable<Integer,Tuple<Character,Character,Empty>>,Callable<Integer,Tuple<Character,Character,Empty>>,Empty>>"
+    $type:"Callable<Iterable<Integer,Null>,Tuple<Callable<Integer,Tuple<Character,Character,Empty>>,Callable<Integer,Tuple<Character,Character,Empty>>,Empty>>"
     value applied = mapped<Integer>;
-    @type:"<Result> => Callable<Iterable<Result,Null>,Tuple<Callable<Result,Tuple<Character,Character,Empty>>,Callable<Result,Tuple<Character,Character,Empty>>,Empty>>"
+    $type:"<Result> => Callable<Iterable<Result,Null>,Tuple<Callable<Result,Tuple<Character,Character,Empty>>,Callable<Result,Tuple<Character,Character,Empty>>,Empty>>"
     value unapplied = mapped;
-    @type:"Iterable<Boolean,Null>" 
+    $type:"Iterable<Boolean,Null>" 
     value result3 = getmapped("hello world 3")(Character.digit);
-    @type:"Iterable<Boolean,Null>" 
+    $type:"Iterable<Boolean,Null>" 
     value result4 = (getmapped("hello world 3"))(Character.digit);
     
-    @error print(Outer(3).mapped.hash);
-    @error print(mapped.string);
-    @error value val = "hello".map<Object>.string;
+    $error print(Outer(3).mapped.hash);
+    $error print(mapped.string);
+    $error value val = "hello".map<Object>.string;
     
-    @error <V> => V(V, V) badbinref = binary;
+    $error <V> => V(V, V) badbinref = binary;
     <V> given V of Integer|Float => V(V, V) binref1 = binary;
-    @error <V> given V of Integer|Float|String => V(V, V) binref2 = binary;
+    $error <V> given V of Integer|Float|String => V(V, V) binref2 = binary;
     <V> given V of Integer => V(V, V) binref3 = binary;
-    @type:"<V> given V of Integer|Float => Callable<V,Tuple<V,V,Tuple<V,V,Empty>>>" 
+    $type:"<V> given V of Integer|Float => Callable<V,Tuple<V,V,Tuple<V,V,Empty>>>" 
     value infbinref = binary;
     infbinref(1,2);
-    @error infbinref("hello", "world");
-    @error infbinref(1,2.0);
+    $error infbinref("hello", "world");
+    $error infbinref(1,2.0);
 }
 
 void apply<T>(T x, T y,
@@ -146,20 +146,20 @@ void callThem() {
 }
 
 void refPassing() {
-    @type:"Boolean" function always<T>(T t) => true;
-    @type:"<T> => Callable<Boolean,Tuple<T,T,Empty>>" 
+    $type:"Boolean" function always<T>(T t) => true;
+    $type:"<T> => Callable<Boolean,Tuple<T,T,Empty>>" 
     value all = always;
-    @type:"Boolean" value bool1 = "hello world".any(always);
-    @type:"Boolean" value bool2 = "hello world".any(all);
-    @type:"<Value> given Value satisfies Summable<Value> => Callable<Value,Tuple<Value,Value,Tuple<Value,Value,Empty>>>" 
+    $type:"Boolean" value bool1 = "hello world".any(always);
+    $type:"Boolean" value bool2 = "hello world".any(all);
+    $type:"<Value> given Value satisfies Summable<Value> => Callable<Value,Tuple<Value,Value,Tuple<Value,Value,Empty>>>" 
     value pl = plus;
     Integer sum1 = [1,2,3].fold(0)(plus);
     Integer sum2 = [1,2,3].fold(0)(pl);
-    @type:"<Value> => Callable<Value,Tuple<Value,Value,Empty>>" 
+    $type:"<Value> => Callable<Value,Tuple<Value,Value,Empty>>" 
     value id = identity;
-    @type:"Iterable<Character,Null>" 
+    $type:"Iterable<Character,Null>" 
     value chars1 = "hello world".map(identity);
-    @type:"Iterable<Character,Null>" 
+    $type:"Iterable<Character,Null>" 
     value chars2 = "hello world".map(id);
 }
 
@@ -181,15 +181,15 @@ void moreRefPassing() {
 
 void moreTypeArgInference() {
     value conc = concatenate;
-    @type:"Sequential<Integer|String|Float>" 
+    $type:"[Integer|String|Float+]|[]" 
     value stream1 = conc({1,2}, {""}, {0.0}, {});
-    @type:"Sequential<Integer|String>"
+    $type:"[Integer|String+]"
     value stream2 = conc(for (s in {{1,2}, {""}}) s);
-    @type:"Sequential<String>"
+    $type:"[String+]"
     value stream3 = conc(for (s in {{1,2}, {""}}) s*.string);
     value add = plus;
-    @type:"Float" value sum1 = add(*[1.0,2.0]);
-    @type:"Integer" value sum2 = add(0,2);
+    $type:"Float" value sum1 = add(*[1.0,2.0]);
+    $type:"Integer" value sum2 = add(0,2);
 }
 
 void genericParameters() {
@@ -198,7 +198,7 @@ void genericParameters() {
         value [Integer i, Integer j] = f(1);
         value [Float x, Float y] = f(1.0);  
     }
-    @error accept(identity);
+    $error accept(identity);
     function pair<T>(T t) => [t,t];
     accept(pair);
     accept(<T>(T t) => [t,t]);
@@ -215,8 +215,8 @@ void splitAssignment() {
 }
 
 shared void testLoopRef() {
-    @type:"{Integer+}" value l1 = loop(3)((a) => a*3);
-    @type:"<Element> => {Element+}(<Element|Finished>(Element))(Element)" 
+    $type:"{Integer+}" value l1 = loop(3)((a) => a*3);
+    $type:"<Element> => {Element+}(<Element|Finished>(Element))(Element)" 
     value lp = loop;
-    @type:"{Integer+}" value l2 = lp(3)((a) => a*3);
+    $type:"{Integer+}" value l2 = lp(3)((a) => a*3);
 }

@@ -7,14 +7,14 @@ class SubA() extends SuperA() {
 
 class UsesVirtualType<AType>() 
         given AType satisfies SuperA {
-    @error AType.B bThing = nothing;
+    $error AType.B bThing = nothing;
     
     alias AAlias => AType;
-    @error AAlias.B bThingAliased = nothing;
+    $error AAlias.B bThingAliased = nothing;
 }
 
 class UsesVirtualTypeInGiven<AType, BType>()
         given AType satisfies SuperA
-        @error given BType satisfies AAlias.B {
+        $error given BType satisfies AAlias.B {
     alias AAlias => AType;
 }

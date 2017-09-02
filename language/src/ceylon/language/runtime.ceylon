@@ -5,8 +5,8 @@
  Holds information about runtime name, version and about 
  inherent limitations like minimum/maximum values that can 
  be represented by the runtime."
-see (`value process`, `value language`, `value system`,
-     `value operatingSystem`)
+see (value process, value language, value system,
+     value operatingSystem)
 tagged("Environment")
 shared native object runtime  {
     
@@ -37,7 +37,7 @@ shared native object runtime  {
     
     "The number of bits used to represent the value of an 
      [[Integer]]."
-    see (`class Integer`)
+    see (class Integer)
     shared native Integer integerSize;
     
     "The number of bits of [[Integer]] instances which may 
@@ -53,7 +53,7 @@ shared native object runtime  {
      from its successor using below formula:
      
      `Integer(n-1) = Integer(n) - 1` with `Integer(0) = 0`"
-    see (`class Integer`)
+    see (class Integer)
     shared native Integer minIntegerValue;
 
     "The largest [[Integer]] value that can be represented 
@@ -63,14 +63,14 @@ shared native object runtime  {
      from its predecessor using below formula:
      
      `Integer(n+1) = Integer(n) + 1` with `Integer(0) = 0`"
-    see (`class Integer`)
+    see (class Integer)
     shared native Integer maxIntegerValue;
     
     "The maximum size of an [[Array]] that is possible for 
      this runtime. Note that this is a theoretical limit 
      only. In practice it is usually impossible to allocate 
      an array of this size, due to memory constraints."
-    see (`class Array`)
+    see (class Array)
     since("1.1.0")
     shared native Integer maxArraySize;
     
@@ -95,7 +95,7 @@ shared native object runtime  {
      as a [[Float]] without loss of precision. The negative
      of this value is the smallest `Integer` that can be
      exactly represented as a `Float`."
-    see (`value Integer.float`)
+    see (value Integer.float)
     since("1.2.0")
     shared native Integer maxExactIntegralFloat;
     
@@ -144,25 +144,19 @@ shared native("js") object runtime  {
     shared native("js") String type => "js";
     shared native("js") String name {
         dynamic {
-            if (is String version 
-                = process.propertyValue("node.version")) {
-                return "node.js";
-            }
-            else if (exists window) {
-                return "Browser";
-            }
-            else {
-                return "Unknown JavaScript environment";
-            }
+            return switch (String type = vmType)
+                case ("node") "node.js"
+                case ("browser") "Browser"
+                else "Unknown JavaScript environment";
         }
     }
     shared native("js") String version {
         dynamic { 
-            if (is String version 
+            if (exists version 
                 = process.propertyValue("node.version")) {
                 return version;
             }
-            else if (is String version 
+            else if (exists version 
                 = process.propertyValue("browser.version")) {
                 return version;
             }

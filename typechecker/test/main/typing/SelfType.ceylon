@@ -20,10 +20,10 @@ class Foo(i)
     }
 }
 
-@error class Bar()
+$error class Bar()
        extends Comparable2<Foo>() {
     shared actual Integer compare(Foo that) {
-        @error return that.i;
+        $error return that.i;
     }
 }
 
@@ -49,8 +49,8 @@ class SelfTypeEquivalence2() {
     interface Inv<T> {}
     Inv<Self<X>> l1 { throw; }
     Inv<X> l2 { throw; }
-    @error Inv<Self<X>> l3 = l2;
-    @error Inv<X> l4 = l1;
+    $error Inv<Self<X>> l3 = l2;
+    $error Inv<X> l4 = l1;
 }
 
 class SelfTypeEquivalence3() {
@@ -59,7 +59,7 @@ class SelfTypeEquivalence3() {
     interface Inv<out T> {}
     Inv<Self<X>> l1 { throw; }
     Inv<X> l2 { throw; }
-//    @error Inv<Self<X>> l3 = l2;
+//    $error Inv<Self<X>> l3 = l2;
 //    Inv<X> l4 = l1;
 }
 
@@ -70,13 +70,13 @@ class SelfTypeEquivalence4() {
     Inv<Self<X>> l1 { throw; }
     Inv<X> l2 { throw; }
 //    Inv<Self<X>> l3 = l2;
-//    @error Inv<X> l4 = l1;
+//    $error Inv<X> l4 = l1;
 }
 
 interface Aa {}
-@error interface Bb satisfies Comparable<Bb&Aa> {}
-@error interface Cc satisfies Comparable<Cc|Aa> {}
-@error interface Zz satisfies Comparable<Bb|Cc|Aa> {}
+$error interface Bb satisfies Comparable<Bb&Aa> {}
+$error interface Cc satisfies Comparable<Cc|Aa> {}
+$error interface Zz satisfies Comparable<Bb|Cc|Aa> {}
 
 interface A satisfies Comparable<C|A> {}
 interface C satisfies Comparable<C|A> {}
@@ -101,13 +101,13 @@ class CompBar() satisfies Comp<CompBar> {
     }
 }
 
-@error class CompFoo() satisfies Comp<CompBar> {
+$error class CompFoo() satisfies Comp<CompBar> {
     shared actual Comparison compare(CompBar other) {
         return nothing;
     }
 }
 
-@error class Broken<T>() of T 
+$error class Broken<T>() of T 
         satisfies Comparable<T> 
         given T satisfies Comparable<T>{
     shared actual Comparison compare(T other) {
@@ -126,7 +126,7 @@ abstract class OkSelfTypeWithUpperBound<T>()
 
 abstract class BrokenSelfTypeWithUpperBound<T>() 
         given T satisfies String {
-    @error class Inner() of T {
+    $error class Inner() of T {
         shared String size = "big";
     }
     T t = Inner() of T;
@@ -137,7 +137,7 @@ class Universe() {
     Integer count = 0;
     class Outer() extends Universe() {
         String name = "Gavin";
-        @error class Inner() extends Outer() {
+        $error class Inner() extends Outer() {
             void fun(Outer o) {
                 print(this.name);
                 print(this.count);

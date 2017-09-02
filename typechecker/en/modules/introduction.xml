@@ -57,11 +57,17 @@
             </para>
             
             <para>
-            Moreover, Ceylon provides its own native SDK as a replacement for the Java 
+            Moreover, Ceylon provides its own native SDK as an alternative to the Java 
             platform class libraries. Certain SDK modules depend upon services available
             only on the Java platform. Other SDK modules, including the core 
             <emphasis>language module</emphasis>, are cross-platform and may also be used 
-            in a JavaScript virtual machine.
+            in a JavaScript virtual machine. 
+            </para>
+            
+            <para>
+            (Of course, Ceylon programs executing on the JVM are free to make use of any 
+            functionality in the Java SE platform class libraries, along with any other 
+            Java libraries explicitly imported by the program.)
             </para>
             
             <para>
@@ -85,7 +91,15 @@ shared native("js") void hello() {
 }</programlisting>
             
         </section>
-    
+        
+        <para>
+        Importantly, the tooling and runtime includes full support for 
+        interoperation with Maven and npm. A Ceylon program may import a Java
+        library from Maven, and use it from code marked 
+        <literal>native("jvm")</literal>, or a JavaScript package from npm, and 
+        use it from code marked <literal>native("js")</literal>.
+        </para>
+        
     </section>
 
     <section id="thetypesystem">
@@ -520,9 +534,7 @@ interface Sink&lt;in Item&gt; { ... }</programlisting>
             reference to another function.-->
             </para>
             
-            <programlisting>value result = { "C", "Java", "Ceylon" }.find((String s) =&gt; s.size>1);</programlisting>
-            
-            <!--programlisting>value matches = { "", "hello", "world" }.filter((String s) =&gt; nonempty s);</programlisting-->
+            <programlisting>value result = { "C", "Java", "Ceylon" }.find((s) =&gt; s.size>1);</programlisting>
             
             <para>
             The type of a function is expressed within the type system as an 
@@ -793,7 +805,7 @@ Null z = origin[2]; //only two elements!</programlisting>
             <para>Tuples and nonempty sequences support pattern-based 
             <emphasis>destructuring</emphasis>.</para>
             
-            <programlisting>value [x, y] = origin;</programlisting>
+            <programlisting>let ([x, y] = origin);</programlisting>
             
         </section>
         

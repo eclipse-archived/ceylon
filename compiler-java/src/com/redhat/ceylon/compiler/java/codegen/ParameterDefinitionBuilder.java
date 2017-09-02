@@ -30,6 +30,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 
@@ -140,10 +141,12 @@ public class ParameterDefinitionBuilder {
     }
 
     static boolean isBoxedVariableParameter(Parameter parameter) {
-        return parameter.getModel().isCaptured()
-                && parameter.getModel().isVariable()
-                && (!parameter.getModel().isClassOrInterfaceMember() || Decl.isLocalToInitializer(parameter.getModel()))
-                && !parameter.isHidden();
+        FunctionOrValue model = parameter.getModel();
+        return model.isCaptured()
+            && model.isVariable()
+            && (!model.isClassOrInterfaceMember() 
+                    || ModelUtil.isLocalToInitializer(model))
+            && !parameter.isHidden();
     }
 
     public ParameterDefinitionBuilder modifiers(long mods) {

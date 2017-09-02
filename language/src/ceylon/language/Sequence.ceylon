@@ -26,11 +26,11 @@
    adjacent [[enumerable values|Enumerable]],
  - [[Tuple]], a typed linked list, and
  - [[Singleton]], a sequence of just one element."
-see (`interface Empty`, 
-	 `class ArraySequence`, 
-	 `class Range`, 
-	 `class Tuple`, 
-	 `class Singleton`)
+see (interface Empty, 
+	   class ArraySequence, 
+	   class Range, 
+	   class Tuple, 
+	   class Singleton)
 by ("Gavin")
 tagged("Sequences")
 shared sealed interface Sequence<out Element=Anything>
@@ -54,7 +54,7 @@ shared sealed interface Sequence<out Element=Anything>
     shared actual formal Integer size;
     
     "The index of the last element of the sequence."
-    see (`value size`)
+    see (value size)
     shared actual default Integer lastIndex => size-1;
     
     "An integer [[Range]] containing all indexes of this 
@@ -387,7 +387,7 @@ shared sealed interface Sequence<out Element=Anything>
  
      [Element*] sequenceOfElements = sequence(elements) else [];"
 by ("Gavin")
-see (`function Iterable.sequence`)
+see (function Iterable.sequence)
 tagged("Sequences")
 since("1.1.0")
 deprecated("Since 1.3.2, [[Iterable.sequence]] has a more

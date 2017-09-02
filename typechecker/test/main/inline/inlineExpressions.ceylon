@@ -1,42 +1,42 @@
 void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
     
-    @type:"String" value numStr = 
+    $type:"String" value numStr = 
             if (num==0) then "zero" 
             else if (num==1) then "unit" 
             else num.string;
     
-    @type:"Integer|Float" value someStuff 
+    $type:"Integer|Float" value someStuff 
             = if (exists arg) 
                 then arg else 0.0;
     
-    @type:"Float" value otherStuff 
+    $type:"Float" value otherStuff 
             = if (exists arg) 
                 then 1.0 else 0.0;
     
-    @type:"String" value moreStuff 
+    $type:"String" value moreStuff 
             = switch (bool) 
                 case (true) "bar" 
                 case (false) "foo";
     
-    @type:"Boolean|Null" value someMoreStuff 
+    $type:"Boolean|Null" value someMoreStuff 
             = switch (bool) 
                 case (true) true 
                 case (false) null;
 
-    @error value moreStuffBroken
+    $error value moreStuffBroken
             = switch (bool) 
                 case (true) "bar";
     
-    @type:"Integer|Float" value evenMoreStuff 
+    $type:"Integer|Float" value evenMoreStuff 
             = switch (num) 
                 case (is Integer) -num 
                 case (is Float) num/2.0;
     
-    @error value evenMoreStuffBroken
+    $error value evenMoreStuffBroken
             = switch (num) 
                 case (is Integer) -num;
     
-    @type:"Basic&Category<String>" value xxx 
+    $type:"Basic&Category<String>" value xxx 
             = object extends Basic() 
             satisfies Category<String> {
         contains(String that) => !that.empty;
@@ -44,14 +44,14 @@ void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
 
     print(switch (bool) case (true) "bar" case (false) "foo");
     
-    @type:"String|Float" value a1 = 
+    $type:"String|Float" value a1 = 
             if (exists arg) then arg.string else 0.0;
-    @type:"String" value s1 
+    $type:"String" value s1 
             = switch (arg) case (is Null) "null" case (is Integer) arg.string;
     
-    @type:"String|Float" value a2 = 
+    $type:"String|Float" value a2 = 
             if (exists a=arg) then a.string else 0.0;
-    @type:"String" value s2 
+    $type:"String" value s2 
             = switch (a=arg) case (is Null) "null" case (is Integer) a.string;
     
     print(object satisfies Category<String> {
@@ -79,8 +79,8 @@ void inlineExpressions(Integer? arg, Boolean bool, Integer|Float num) {
             hash => 0;
         };
     };
-    @type:"Tuple<Basic,Basic,Tuple<Basic,Basic,Empty>>" value objs1 = [object{}, object{}];
-    @type:"Array<Basic>" value objs2 = Array {object{}};
+    $type:"Tuple<Basic,Basic,Tuple<Basic,Basic,Empty>>" value objs1 = [object{}, object{}];
+    $type:"Array<Basic>" value objs2 = Array {object{}};
 }
 
 void run(String? string) {
@@ -117,9 +117,9 @@ void switchOnTypeParameter<T>(T t) {
 void scopeContainingLets() {
     value x = let(y=1) y;
     value z = let(y=1) y;
-    value w = let(y=1, @error y=3) y;
+    value w = let(y=1, $error y=3) y;
     value u = let(u=1) u;
-    @error value v = let() 42;
+    $error value v = let() 42;
 }
 
 void scopeContainingSwitchesAndConditions(Object? obj) {
@@ -132,8 +132,8 @@ void scopeContainingSwitchesAndConditions(Object? obj) {
 void destructuringLet([String, Float, Integer] tuple, String->Object entry) {
     value x1 = let ([s, f, i]=tuple) s.size + f*i;
     value y2 = let ([String s, Float f, Integer i]=tuple) s.size + f*i;
-    value z3 = let ([s, @error Integer f, Integer i]=tuple) s.size + f*i;
+    value z3 = let ([s, $error Integer f, Integer i]=tuple) s.size + f*i;
     value e1 = let (k->v=entry) k+v.string;
     value f2 = let (String k->Object v=entry) k+v.string;
-    value g3 = let (String k->@error String v=entry) k+v;
+    value g3 = let (String k->$error String v=entry) k+v;
 }

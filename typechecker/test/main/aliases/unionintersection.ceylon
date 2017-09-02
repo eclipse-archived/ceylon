@@ -70,24 +70,24 @@ void testSwitch2(Number nn, E ee) {
 void testCanonicalization() {
     Inty|Floaty i = n;
     Number[] ns = [n];
-    @type:"Null|Number" value temp = ns[0];
+    $type:"Null|Number" value temp = ns[0];
     print(temp);
     Inty|Floaty|Null t = temp;
     Number? num = t;
-    @type:"Number&Object" Number&Object no = t else Floaty();
-    @type:"Number" value no1 = no;
-    @type:"Number" Number no2 = no;
-    @type:"Number" value noo = temp else Floaty();
+    $type:"Number&Object" Number&Object no = t else Floaty();
+    $type:"Number" value no1 = no;
+    $type:"Number" Number no2 = no;
+    $type:"Number" value noo = temp else Floaty();
     if (is Cntnr num) {
-        @type:"Number&Cntnr" value nnn = num;
+        $type:"Number&Cntnr" value nnn = num;
         Inty&Cntnr|Floaty&Cntnr numif = num;
         Cntnr&Number nnnn = numif;
         switch (num)
         case (is Inty) {
-            @type:"Cntnr&Inty" value nn = num;
+            $type:"Cntnr&Inty" value nn = num;
         }
         case (is Floaty) {
-            @type:"Cntnr&Floaty" value nn = num;
+            $type:"Cntnr&Floaty" value nn = num;
         }
     }
     List<Inty|Floaty> list = ns;

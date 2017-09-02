@@ -138,7 +138,7 @@ class GenericRefinement() {
 		            given T satisfies Comparable<T&S>;
 		}
 		class Bar() satisfies Foo<String> {
-		    @error
+		    $error
 		    shared actual void accept<T>(T t)
 		            given T satisfies Comparable<String> {}
 		}
@@ -152,7 +152,7 @@ class GenericRefinement() {
 		            given T satisfies Baz<T&S>;
 		}
 		class Bar() satisfies Foo<I> {
-			@error
+			$error
 		    shared actual void accept<T>(T t)
 		            given T satisfies Baz<T&J> {}
 		}
@@ -173,7 +173,7 @@ class GenericRefinement() {
     
     void meth<Absent>(Absent n) 
             given Absent satisfies Null {
-        @error
+        $error
         object obj 
             extends Object()
             satisfies Empty & 

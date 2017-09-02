@@ -391,10 +391,9 @@ public abstract class TypeDeclaration extends Declaration
     public boolean isBetterRefinement(
             List<Type> signature, boolean variadic, 
             Declaration result, Declaration candidate) {
-        if (candidate==null ||
-                candidate.isActual() /*&& 
-                !candidate.isObject()*/ || 
-                !candidate.isShared()) {
+        if (candidate==null 
+                || candidate.isActual()  
+                || !candidate.isShared()) {
             return false;
         }
         if (result==null) {

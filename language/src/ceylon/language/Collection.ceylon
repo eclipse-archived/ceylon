@@ -22,7 +22,7 @@
  definition to equality for `List`s. Instances of two 
  different kinds of collection are never equal&mdash;for
  example, a `Map` is never equal to a `List`."
-see (`interface List`, `interface Map`, `interface Set`)
+see (interface List, interface Map, interface Set)
 tagged("Collections")
 shared interface Collection<out Element=Anything>
         satisfies {Element*} {
@@ -168,7 +168,7 @@ shared interface Collection<out Element=Anything>
      - they are both instances of `Object`, and are 
        [[unequal|Object.equals]], or
      - one element is an `Object` and the other is `null`."
-    throws (`class AssertionError`, 
+    throws (class AssertionError, 
             "if [[length]] is nonpositive or if `length` is
              larger than the number of distinct elements of
              this collection")

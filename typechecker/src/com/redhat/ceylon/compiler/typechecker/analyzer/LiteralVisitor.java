@@ -27,7 +27,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PatternParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
 /**
@@ -676,8 +675,7 @@ public class LiteralVisitor extends Visitor {
             id.setText(switchId==null ? "_" : switchId.getText());
             that.setCaseItem(createIsCase(type, id, pc));
             Tree.Destructure destructure = 
-                    destructure(pattern, id);
-            destructure.setPatternCase(true);
+                    destructure(pattern, id, true);
             Tree.Expression e = that.getExpression();
             Tree.Block b = that.getBlock();
             if (e!=null) {
@@ -754,7 +752,7 @@ public class LiteralVisitor extends Visitor {
                                     asType(pattern));
                     parameters.set(j, param);
                     Tree.Destructure destructure = 
-                            destructure(pattern, id);
+                            destructure(pattern, id, false);
                     if (funBody==null) {
                         letClause.getVariables()
                             .add(destructure);
@@ -816,12 +814,13 @@ public class LiteralVisitor extends Visitor {
         }
     }
 
-    private Tree.Destructure destructure(Tree.Pattern pattern, Tree.Identifier id) {
+    private Tree.Destructure destructure(Tree.Pattern pattern, 
+            Tree.Identifier id, boolean patternCase) {
         Tree.Destructure destructure = 
                 new Tree.Destructure(null);
-        destructure.setType(new ValueModifier(null)); //unnecessary?
         destructure.setSpecifierExpression(createReference(id));
         destructure.setPattern(pattern);
+        destructure.setPatternCase(patternCase);
         return destructure;
     }
 
@@ -841,4 +840,56 @@ public class LiteralVisitor extends Visitor {
         return spec;
     }
     
+    //TODO: remove this transformation when the backends are fixed
+    
+    @Override
+    public void visit(Tree.Body that) {
+        super.visit(that);
+        List<Tree.Statement> statements = that.getStatements();
+        for (int i=0; i<statements.size(); i++) {
+            Tree.Statement bs = statements.get(i);
+            if (bs instanceof Tree.LetStatement) {
+                Tree.LetStatement ls =
+                        (Tree.LetStatement) bs;
+                List<Tree.Statement> variables = ls.getVariables();
+                for (int j=0; j<variables.size(); j++) {
+                    Tree.Statement s = variables.get(j);
+                    if (s instanceof Tree.Variable) {
+                        while (j<variables.size()) {
+                            Tree.Statement rs = 
+                                    eliminateVariable(variables.remove(j));
+                            statements.add(++i, rs);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    private Tree.Statement eliminateVariable(Tree.Statement s) {
+        if (s instanceof Tree.Variable) {
+            Tree.Variable v = (Tree.Variable) s;
+            Tree.AttributeDeclaration ad = 
+                    new Tree.AttributeDeclaration(
+                            v.getMainToken());
+            Tree.AnnotationList al = 
+                    v.getAnnotationList();
+            if (al==null) al = 
+                    new Tree.AnnotationList(null);
+            ad.setAnnotationList(al);
+            ad.setType(v.getType());
+            ad.setIdentifier(v.getIdentifier());
+            ad.setSpecifierOrInitializerExpression(
+                    v.getSpecifierExpression());
+            return ad;
+        }
+        else {
+            Tree.LetStatement ls = 
+                    new Tree.LetStatement(null);
+            ls.addVariable(s);
+            return ls;
+        }
+    }
+
 }

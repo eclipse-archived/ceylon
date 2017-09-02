@@ -1,4 +1,4 @@
-@error: "sealed interface"
+$error: "sealed interface"
 class List<T>() 
         extends Object()
         satisfies Sequence<T> {

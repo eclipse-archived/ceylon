@@ -17,7 +17,7 @@
  the additive inverse:
  
  - `x - y == x + -y`"
-see (`class Integer`, `class Float`)
+see (class Integer, class Float)
 by ("Gavin")
 tagged("Numbers")
 shared interface Invertible<Other> of Other

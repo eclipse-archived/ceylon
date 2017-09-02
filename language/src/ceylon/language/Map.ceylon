@@ -32,10 +32,10 @@
    
    An implementation of `Map` may compare keys for equality 
    using [[Object.equals]] or [[Comparable.compare]]."""
-see (`class Entry`, `function package.map`,
-     `function forKey`, `function forItem`, 
-     `function byItem`, `function byKey`,
-      `value emptyMap`)
+see (class Entry, function package.map,
+     function forKey, function forItem, 
+     function byItem, function byKey,
+     value emptyMap)
 tagged("Collections")
 shared interface Map<out Key=Object, out Item=Anything>
         satisfies Collection<Key->Item> &
@@ -45,12 +45,12 @@ shared interface Map<out Key=Object, out Item=Anything>
     "Returns the item of the entry with the given [[key]], 
      or `null` if there is no entry with the given `key` in
      this map."
-    see (`function getOrDefault`)
+    see (function getOrDefault)
     shared actual formal Item? get(Object key);
     
     "Determines if there is an entry in this map with the
      given [[key]]."
-    see (`function contains`)
+    see (function contains)
     shared actual formal Boolean defines(Object key);
     
     "Returns the item of the entry with the given [[key]], 
@@ -70,7 +70,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      
      Note that high-quality implementations of `Map` should 
      refine this default implementation."
-    see (`function get`)
+    see (function get)
     since("1.2.0")
     shared default Item|Default getOrDefault<Default>
             (Object key, Default default) {
@@ -93,10 +93,10 @@ shared interface Map<out Key=Object, out Item=Anything>
     
     "Determines if the given [[value|entry]] is an [[Entry]]
      belonging to this map."
-    see (`function defines`)
+    see (function defines)
     shared actual default Boolean contains(Object entry) {
         if (is Object->Anything entry) {
-            value key -> it = entry;
+            let (key -> it = entry);
             if (defines(key)) {
                 value item = get(key);
                 return 
@@ -120,9 +120,8 @@ shared interface Map<out Key=Object, out Item=Anything>
     shared actual default Map<Key,Item> clone() 
             => package.map(this);
     
-    "A [[Collection]] containing the keys of this map."
-    //TODO: should be a Set
-    shared actual default Collection<Key> keys
+    "A [[Set]] containing the keys of this map."
+    shared actual default Set<Key> keys
             => object extends Object() 
                       satisfies Set<Key> {
         contains(Object key) => outer.defines(key);
@@ -234,7 +233,6 @@ shared interface Map<out Key=Object, out Item=Anything>
         "The function that transforms a key/item pair of
          this map, producing the item of the resulting map."
         Result mapping(Key key, Item item)) 
-            given Result satisfies Object //TODO: remove this constraint!
             => object
             extends Object()
             satisfies Map<Key,Result> {
@@ -285,7 +283,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      after replacing every `null` item in the map with the 
      [[given default value|defaultValue]]. The item `null` 
      does not ocur in the resulting map."
-    see (`value coalescedMap`)
+    see (value coalescedMap)
     since("1.2.0")
     shared default
     Map<Key,Item&Object|Default>
@@ -398,7 +396,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     
     "A map with every entry of this map whose item is
      non-null."
-    see (`function defaultNullItems`)
+    see (function defaultNullItems)
     since("1.2.0")
     shared default
     Map<Key,Item&Object> coalescedMap 
@@ -483,7 +481,6 @@ shared object emptyMap
     shared actual 
     Map<Nothing, Nothing> mapItems<Result>
             (Result mapping(Nothing key, Nothing item))
-            given Result satisfies Object //TODO: remove this constraint!
             => emptyMap;
     
     count(Boolean selecting(Nothing->Nothing element)) => 0;

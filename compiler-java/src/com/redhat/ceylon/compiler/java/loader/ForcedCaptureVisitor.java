@@ -25,6 +25,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -53,7 +54,7 @@ public class ForcedCaptureVisitor extends Visitor {
             TypeDeclaration decl = type.getDeclaration();
             if(decl == null)
                 continue;
-            Module module = Decl.getModule(decl);
+            Module module = ModelUtil.getModule(decl);
             if(module == null)
                 continue;
             if(module.getLanguageModule() == module)

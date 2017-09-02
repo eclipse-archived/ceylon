@@ -23,24 +23,24 @@ class Is() {
     if (is Seq2<String> strings) {
         String s = strings.first;
     }
-    @error if (is Seq2 strings) {}
+    $error if (is Seq2 strings) {}
     if (is SimpleContainer<String> strings) {}
-    @error if (is Is.SimpleContainer strings) {}
+    $error if (is Is.SimpleContainer strings) {}
     if (is Is.SimpleContainer<String> strings) {}
-    @error if (is Is.SimpleContainer<String,Integer> strings) {}
+    $error if (is Is.SimpleContainer<String,Integer> strings) {}
 
     if (strings is Seq2<String>) {
-        @error String s = strings.first;
+        $error String s = strings.first;
     }
-    @error 
+    $error 
     if (strings is Seq2) {}
-    //@error 
+    //$error 
     if (strings is SimpleContainer<String>) {}
-    @error 
+    $error 
     if (strings is Is.SimpleContainer) {}
-    //@error 
+    //$error 
     if (strings is Is.SimpleContainer<String>) {}
-    @error 
+    $error 
     if (strings is Is.SimpleContainer<String,Integer>) {}
 
     void method<T>() {
@@ -54,43 +54,43 @@ class Is() {
         Integer elementCount = c.elementCount;
         Boolean isEmpty = c.isEmpty;
         if ("hello" in c) {}
-        //@error for (String str in c) {}
-        @type:"Correspondence<Integer,String>&Sized" value cc = c;
+        //$error for (String str in c) {}
+        $type:"Correspondence<Integer,String>&Sized" value cc = c;
     }
     Correspondence<Integer,String> d = nothing;
     if (is Sized&Container<Anything> d) {
         String? s = d[0];
         Object? f1 = d.first;
         Anything f2 = d.first;
-        @error Integer size = e.size;
-        @error Boolean empty = e.empty;
+        $error Integer size = e.size;
+        $error Boolean empty = e.empty;
         Integer elementCount = d.elementCount;
         Boolean isEmpty = d.isEmpty;
         if ("hello" in d) {}
-        //@error for (String str in d) {}
-        @type:"Correspondence<Integer,String>&Sized&Container<Anything,Null>" value dd = d;
+        //$error for (String str in d) {}
+        $type:"Correspondence<Integer,String>&Sized&Container<Anything,Null>" value dd = d;
     }
     if (is Emptyish&Container<String> d) {
         String? s = d[0];
         String? f1 = d.first;
         Anything f2 = d.first;
-        @error Integer size = e.size;
-        @error Boolean empty = e.empty;
-        @error Integer elementCount = d.elementCount;
+        $error Integer size = e.size;
+        $error Boolean empty = e.empty;
+        $error Integer elementCount = d.elementCount;
         Boolean isEmpty = d.isEmpty;
         if ("hello" in d) {}
-        //@error for (String str in d) {}
-        @type:"Correspondence<Integer,String>&Emptyish&Container<String,Null>" value dd = d;
+        //$error for (String str in d) {}
+        $type:"Correspondence<Integer,String>&Emptyish&Container<String,Null>" value dd = d;
     }
     if (is Sized&Category d) {
         String? s = d[0];
-        @error Integer size = e.size;
-        @error Boolean empty = e.empty;
+        $error Integer size = e.size;
+        $error Boolean empty = e.empty;
         Integer elementCount = d.elementCount;
         Boolean isEmpty = d.isEmpty;
         if ("hello" in d) {}
-        //@error for (String str in d) {}
-        @type:"Correspondence<Integer,String>&Sized" value dd = d;
+        //$error for (String str in d) {}
+        $type:"Correspondence<Integer,String>&Sized" value dd = d;
     }
     
     Correspondence<Integer,String> e = nothing;
@@ -100,15 +100,15 @@ class Is() {
         Boolean isEmpty = e.isEmpty;
         if ("hello" in e) {}
         for (String str in e) {}
-        @type:"Correspondence<Integer,String>&Sized&Iterable<String,Null>" value ee = e;
+        $type:"Correspondence<Integer,String>&Sized&Iterable<String,Null>" value ee = e;
     }
     if (is Sized&Category e) {
         String? s = e[0];
         Integer elementCount = e.elementCount;
         Boolean isEmpty = e.isEmpty;
         if ("hello" in e) {}
-        //@error for (String str in e) {} 
-        @type:"Correspondence<Integer,String>&Sized" value ee = e;
+        //$error for (String str in e) {} 
+        $type:"Correspondence<Integer,String>&Sized" value ee = e;
     }
     if (is Sized&{String*} e) {
         String? s = e[0];
@@ -118,17 +118,17 @@ class Is() {
         Boolean isEmpty = e.isEmpty;
         if ("hello" in e) {}
         for (String str in e) {} 
-        @type:"Correspondence<Integer,String>&Sized&Iterable<String,Null>" value ee = e;
+        $type:"Correspondence<Integer,String>&Sized&Iterable<String,Null>" value ee = e;
     }
     if (is String[] e) {
         String? s = e[0];
         Integer size = e.size;
         Boolean empty = e.empty;
-        @error Integer elementCount = e.elementCount;
-        @error Boolean isEmpty = e.isEmpty;
+        $error Integer elementCount = e.elementCount;
+        $error Boolean isEmpty = e.isEmpty;
         if ("hello" in e) {} 
         for (String str in e) {}
-        @type:"Sequential<String>" value ee = e;
+        $type:"Sequential<String>" value ee = e;
     }
     
     //Boolean b1 = is Sized&Iterable<String> e;
@@ -152,7 +152,7 @@ class Is() {
     Boolean c7 = e is [String,Integer];
     Boolean c8 = e is String();
     Boolean c9 = e is String(Integer);
-    @error Boolean c10 = e is String?;
+    $error Boolean c10 = e is String?;
     Boolean c11 = e is <Sized|Category>;
     
     String? ss = null;
@@ -170,10 +170,10 @@ class Is() {
     else {}
     
     void m(String s) {
-        @warn:"redundantNarrowing" if (is String s) { }
-        @warn:"redundantNarrowing" if (is Integer s) { }
-        @warn:"redundantNarrowing" value b = s is String;
-        @error value c = s is Integer;
+        $warn:"redundantNarrowing" if (is String s) { }
+        $warn:"redundantNarrowing" if (is Integer s) { }
+        $warn:"redundantNarrowing" value b = s is String;
+        $error value c = s is Integer;
     }
     
     value next = "hello".iterator().next();
@@ -183,8 +183,8 @@ class Is() {
     if (!is Finished ch = next) {
         Character char = ch;
     }
-    @warn:"redundantNarrowing" if (!is Object next) {}
-    @warn:"redundantNarrowing" if (!is Null next) {}
+    $warn:"redundantNarrowing" if (!is Object next) {}
+    $warn:"redundantNarrowing" if (!is Null next) {}
     
     Identifiable? i = null;
     if (is Category cat = i) {

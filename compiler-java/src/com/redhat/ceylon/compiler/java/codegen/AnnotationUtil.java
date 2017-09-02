@@ -207,7 +207,7 @@ public class AnnotationUtil {
                 if (declarationModel.isParameter()) {
                     result.add(PARAMETER);
                 }
-                if (declarationModel.isShared() || declarationModel.isCaptured()) {
+                if (ModelUtil.isCaptured(declarationModel)) {
                     result.add(GETTER);
                     if (!(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
                         result.add(FIELD);
@@ -312,7 +312,7 @@ public class AnnotationUtil {
                 } else if (useSite instanceof Value) {
                     // If the constructor has a getter we can't annotate, let's
                     // put the annotations on the constructor
-                    Class constructedClass = Decl.getConstructedClass((Declaration) useSite);
+                    Class constructedClass = ModelUtil.getConstructedClass((Declaration) useSite);
                     // See CeylonVisitor.transformSingletonConstructor for those tests
                     if(constructedClass.isToplevel() || constructedClass.isClassMember())
                         return target == OutputElement.GETTER;

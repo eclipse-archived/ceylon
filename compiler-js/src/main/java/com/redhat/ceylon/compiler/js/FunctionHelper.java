@@ -386,8 +386,9 @@ public class FunctionHelper {
             } else if (st instanceof Tree.Destructure) {
                 final String expvar = gen.getNames().createTempVariable();
                 gen.out(expvar, "=");
-                ((Tree.Destructure)st).getSpecifierExpression().visit(gen);
-                decs2.addAll(new Destructurer(((Tree.Destructure)st).getPattern(),
+                Tree.Destructure destructure = (Tree.Destructure)st;
+                destructure.getSpecifierExpression().visit(gen);
+                decs2.addAll(new Destructurer(destructure.getPattern(),
                         gen, directs, expvar, false, false).getDeclarations());
             }
             first=false;

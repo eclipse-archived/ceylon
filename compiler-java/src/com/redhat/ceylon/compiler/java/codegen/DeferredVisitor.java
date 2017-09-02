@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Function;
 
 public class DeferredVisitor extends Visitor {
 
@@ -35,9 +36,10 @@ public class DeferredVisitor extends Visitor {
     }
 
     private boolean isDeferredOrParamInitialized(Tree.AnyMethod def) {
-        return !Decl.isFormal(def)
-            && !def.getDeclarationModel().isJavaNative()
-            && !def.getDeclarationModel().isParameter()
+        Function model = def.getDeclarationModel();
+        return !model.isFormal()
+            && !model.isJavaNative()
+            && !model.isParameter()
             && def instanceof Tree.MethodDeclaration
             && ((Tree.MethodDeclaration)def).getSpecifierExpression() == null;
     }

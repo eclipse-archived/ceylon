@@ -12,13 +12,13 @@ class Outer() {
         return Y();
     }
 
-    @error shared class Z() extends Y() {}
+    $error shared class Z() extends Y() {}
     
 }
 
 void testHello() {
     String s1 = Outer().create().hello;
-    @error String s2 = Outer().Z().hello;
+    $error String s2 = Outer().Z().hello;
     Outer.X x = Outer().Z();
     String s3 = x.hello;
 }

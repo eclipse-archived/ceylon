@@ -53,10 +53,10 @@ class Union() {
     BadContainer<out Anything> buvsup = buv;
     
     String buvs = buv.hello;
-    @error Container<String> bc = buv;
+    $error Container<String> bc = buv;
     
     BadContainer<Nothing> bcb = BadV();
-    @error BadContainer<String> bss  = bcb;
+    $error BadContainer<String> bss  = bcb;
     
     class Foo<T>(T t) {
         shared T|S|String hello<S>(S s) { return t; }
@@ -97,18 +97,18 @@ class Union() {
     
     T t<T>(T x, T y, T z, T w) => nothing; 
     
-    @type:"Union.S|Union.A|Union.B|Union.C" S|A|B|C sabc = S();
-    @type:"Union.S|Union.A" value sabc1 = sabc;
-    @type:"Union.A|Union.B|Union.C|Union.S" A|B|C|S abcs = S();
-    @type:"Union.A|Union.S" value abcs1 = abcs;
+    $type:"Union.S|Union.A|Union.B|Union.C" S|A|B|C sabc = S();
+    $type:"Union.S|Union.A" value sabc1 = sabc;
+    $type:"Union.A|Union.B|Union.C|Union.S" A|B|C|S abcs = S();
+    $type:"Union.A|Union.S" value abcs1 = abcs;
     
-    @type:"Union.S|Union.A" t(S(),A(),B(),C());
-    @type:"Union.A|Union.S" t(A(),B(),C(),S()); 
+    $type:"Union.S|Union.A" t(S(),A(),B(),C());
+    $type:"Union.A|Union.S" t(A(),B(),C(),S()); 
     
-    @type:"Null|Union.A|Null|Union.B|Null|Union.C" A?|B?|C? oabc = null;
-    @type:"Null|Union.A|Union.B|Union.C" value oabc1 = oabc;
+    $type:"Null|Union.A|Null|Union.B|Null|Union.C" A?|B?|C? oabc = null;
+    $type:"Null|Union.A|Union.B|Union.C" value oabc1 = oabc;
     if (is A|B|C oabc) {
-        @warn:"redundantNarrowing" if (exists oabc) {}
+        $warn:"redundantNarrowing" if (exists oabc) {}
     }
     if (is B|C oabc) {
         oabc.hello();
@@ -130,7 +130,7 @@ class Union() {
     
     if (is Sequence<String?> strs) {
         for (s in strs) {
-            @warn:"redundantNarrowing" if (is String s) {}
+            $warn:"redundantNarrowing" if (is String s) {}
             s.join {};
         }
     }
@@ -146,14 +146,14 @@ class Union() {
             throw;
         }
     }
-    @type:"String|Integer|Float" value ff1 = first(["hello", "world"], [+1, -1], [1.0]).first;
-    @type:"String|Integer" value ff2 = first(["hello", "world"], [+1, -1, 1.0]).first;
+    $type:"String|Integer|Float" value ff1 = first(["hello", "world"], [+1, -1], [1.0]).first;
+    $type:"String|Integer" value ff2 = first(["hello", "world"], [+1, -1, 1.0]).first;
     
-    @type:"String|Integer|Float" value ff3 = first(["hello", "world"].sequence(), [+1, -1].sequence(), [1.0].sequence()).first;
-    @type:"String|Integer|Float" value ff4 = first(["hello", "world"].sequence(), [+1, -1, 1.0].sequence()).first;
+    $type:"String|Integer|Float" value ff3 = first(["hello", "world"].sequence(), [+1, -1].sequence(), [1.0].sequence()).first;
+    $type:"String|Integer|Float" value ff4 = first(["hello", "world"].sequence(), [+1, -1, 1.0].sequence()).first;
     
-    @type:"String|Integer|Float" value ff5 = first({"hello", "world"}.sequence(), {+1, -1}.sequence(), {1.0}.sequence()).first;
-    @type:"String|Integer|Float" value ff6 = first({"hello", "world"}.sequence(), {+1, -1, 1.0}.sequence()).first;
+    $type:"String|Integer|Float" value ff5 = first({"hello", "world"}.sequence(), {+1, -1}.sequence(), {1.0}.sequence()).first;
+    $type:"String|Integer|Float" value ff6 = first({"hello", "world"}.sequence(), {+1, -1, 1.0}.sequence()).first;
     
     class Outer<out T>() {
         shared default class Inner<out U>(u) {
@@ -176,54 +176,54 @@ class Union() {
     
     Outer<String>.Inner<Integer>|Outer<Float>.Inner<Float> foobar1 = Outer<String>().Inner<Integer>(1);
     String foobarhello1 = foobar1.hello;
-    @type:"Integer|Float" value foobaru1 = foobar1.u;
+    $type:"Integer|Float" value foobaru1 = foobar1.u;
     Outer<String|Float>.Inner<Integer|Float> foobart1 = foobar1;
-    @type:"Union.Outer<String|Float>.Inner<Integer|Float>" value foobarts1 = foobar1.get;
+    $type:"Union.Outer<String|Float>.Inner<Integer|Float>" value foobarts1 = foobar1.get;
     
     SubOuter<String>.Inner<Integer>|Outer<Float>.Inner<Float> foobar2 = SubOuter<String>().Inner<Integer>(1);
     String foobarhello2 = foobar2.hello;
-    @type:"Integer|Float" value foobaru2 = foobar2.u;
+    $type:"Integer|Float" value foobaru2 = foobar2.u;
     Outer<String|Float>.Inner<Integer|Float> foobart2 = foobar2;
-    @type:"Union.Outer<String|Float>.Inner<Integer|Float>" value foobarts2 = foobar2.get;
+    $type:"Union.Outer<String|Float>.Inner<Integer|Float>" value foobarts2 = foobar2.get;
     
     SubOuter<String>.Inner<Integer>|SpecialOuter<Float>.Inner<Float> foobar3 = SubOuter<String>().Inner<Integer>(1);
     String foobarhello3 = foobar3.hello;
-    @type:"Integer|Float" value foobaru3 = foobar3.u;
+    $type:"Integer|Float" value foobaru3 = foobar3.u;
     Outer<String|Float>.Inner<Integer|Float> foobart3 = foobar3;
-    @type:"Union.Outer<String|Float>.Inner<Integer|Float>" value foobarts3 = foobar3.get;
+    $type:"Union.Outer<String|Float>.Inner<Integer|Float>" value foobarts3 = foobar3.get;
     
     SubOuter<Object>.Inner<Integer>|SpecialOuter<Float>.Inner<Object> foobar4 = SubOuter<String>().Inner<Integer>(1);
-    @type:"Union.SubOuter<Object>.Inner<Integer>|Union.SpecialOuter<Float>.Inner<Object>" value foobar4check = foobar4;
+    $type:"Union.SubOuter<Object>.Inner<Integer>|Union.SpecialOuter<Float>.Inner<Object>" value foobar4check = foobar4;
     String foobarhello4 = foobar4.hello;
-    @type:"Object" value foobaru4 = foobar4.u;
+    $type:"Object" value foobaru4 = foobar4.u;
     Outer<Object>.Inner<Object> foobart4 = foobar4;
-    @type:"Union.Outer<Object>.Inner<Object>" value foobarts4 = foobar4.get;
+    $type:"Union.Outer<Object>.Inner<Object>" value foobarts4 = foobar4.get;
     
     SubOuter<Object>.Inner<Integer>|ReallySpecialOuter<Float>.Inner<Object> foobar5 = SubOuter<String>().Inner<Integer>(1);
-    @type:"Union.SubOuter<Object>.Inner<Integer>|Union.ReallySpecialOuter<Float>.Inner<Object>" value foobar5check = foobar5;
+    $type:"Union.SubOuter<Object>.Inner<Integer>|Union.ReallySpecialOuter<Float>.Inner<Object>" value foobar5check = foobar5;
     String foobarhello5 = foobar5.hello;
-    @type:"Object" value foobaru5 = foobar5.u;
+    $type:"Object" value foobaru5 = foobar5.u;
     Outer<Object>.Inner<Object> foobart5 = foobar5;
-    @type:"Union.Outer<Object>.Inner<Object>" value foobarts5 = foobar5.get;
+    $type:"Union.Outer<Object>.Inner<Object>" value foobarts5 = foobar5.get;
     
     class Sorted<out Elem>(Elem* them) 
             given Elem satisfies Comparable<Elem> {
         shared Elem[] elements = them.sequence();
     }
     Sorted<Integer>|Sorted<String> sorted = Sorted(+1,-1);
-    @type:"Sequential<Integer|String>" value elems = sorted.elements;
+    $type:"Sequential<Integer|String>" value elems = sorted.elements;
     
     switch (xy)
     case (is X) {}
     case (is Y) {}
     
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (h)
     case (is X) {}
     case (is Hello) {}
     
     Sized|Category sc = "hello";
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (sc)
     case (is Sized) {}
     case (is Category) {}
@@ -233,10 +233,10 @@ class Union() {
     case (is String) {}
     case (is Null) {}
 
-    //@error 
+    //$error 
     switch (maybe)
     case (is Object) {
-        @type:"String"
+        $type:"String"
         value ms = maybe;
     }
     case (is Null) {}
@@ -244,17 +244,17 @@ class Union() {
     switch (maybe)
     case (is String|Null) {}
     
-    @error:"case is not disjoint"
+    $error:"case is not disjoint"
     switch (maybe)
     case (is String) {}
     case (is String|Null) {}
     
     /*Comparable<String> elem1 = "hello";
     String elem2 = "world";
-    @type:"Sequence<String>" value selfTypeSeq1 = { elem1, elem2 };
-    @type:"Sequence<String>" value selfTypeSeq2 = { elem2, elem1 };
-    @type:"Sequence<String>" value selfTypeSeq3 = true then selfTypeSeq1 else selfTypeSeq2;
-    @type:"Sequence<String>" value selfTypeSeq4 = true then selfTypeSeq2 else selfTypeSeq1;
+    $type:"Sequence<String>" value selfTypeSeq1 = { elem1, elem2 };
+    $type:"Sequence<String>" value selfTypeSeq2 = { elem2, elem1 };
+    $type:"Sequence<String>" value selfTypeSeq3 = true then selfTypeSeq1 else selfTypeSeq2;
+    $type:"Sequence<String>" value selfTypeSeq4 = true then selfTypeSeq2 else selfTypeSeq1;
     Sequence<String> selfTypeSeq5 = selfTypeSeq1;
     Sequence<String> selfTypeSeq6 = selfTypeSeq2;
     Sequence<Comparable<String>> selfTypeSeq7 = selfTypeSeq1;
@@ -266,16 +266,16 @@ class Union() {
     for (Comparable<String> s in {elem2, elem1}) {}
     
     for (s in {elem1, elem1}) {
-        @type:"Comparable<String>" value sss = s;
+        $type:"Comparable<String>" value sss = s;
     }
     for (s in {elem2, elem2}) {
-        @type:"String" value sss = s;
+        $type:"String" value sss = s;
     }
     for (s in {elem1, elem2}) {
-        @type:"String" value sss = s;
+        $type:"String" value sss = s;
     }
     for (s in {elem2, elem1}) {
-        @type:"String" value sss = s;
+        $type:"String" value sss = s;
     }*/
     
 }
@@ -293,9 +293,9 @@ class Union1() {
     }
     
     Some|None all = Some();
-    @type:"Union1.All" value val = all.val;
+    $type:"Union1.All" value val = all.val;
     List<Some>|List<None> alls = [Some()];
-    @type:"Null|Union1.Some|Union1.None" value firstAll = alls.first;
+    $type:"Null|Union1.Some|Union1.None" value firstAll = alls.first;
     
     class GenericAll<out T>() {
         shared default GenericAll<T> val => GenericAll<T>();
@@ -308,9 +308,9 @@ class Union1() {
     }
     
     GenericSome<String>|GenericNone<Integer> gall = GenericSome<String>();
-    @type:"Union1.GenericAll<String|Integer>" value gval = gall.val;
+    $type:"Union1.GenericAll<String|Integer>" value gval = gall.val;
     List<GenericSome<String>>|List<GenericNone<Integer>> galls = [GenericSome<String>()];
-    @type:"Null|Union1.GenericSome<String>|Union1.GenericNone<Integer>" value gfirstAll = galls.first;
+    $type:"Null|Union1.GenericSome<String>|Union1.GenericNone<Integer>" value gfirstAll = galls.first;
     
     class InvariantAll<T>() {
         shared default GenericAll<T> val => GenericAll<T>();
@@ -323,14 +323,14 @@ class Union1() {
     }
     
     InvariantSome<String>|InvariantNone<Integer> iall = InvariantSome<String>();
-    @type:"Union1.GenericAll<String|Integer>" value ival = iall.val;
+    $type:"Union1.GenericAll<String|Integer>" value ival = iall.val;
     List<InvariantSome<String>>|List<InvariantNone<Integer>> ialls = [InvariantSome<String>()];
-    @type:"Null|Union1.InvariantSome<String>|Union1.InvariantNone<Integer>" value ifirstAll = ialls.first;
+    $type:"Null|Union1.InvariantSome<String>|Union1.InvariantNone<Integer>" value ifirstAll = ialls.first;
     InvariantSome<String>&InvariantNone<Integer> iall2 = nothing;
     Nothing ing = iall2;
-    @error value ival2 = iall2.val;
+    $error value ival2 = iall2.val;
     Union1.InvariantAll<String|Integer> iall3 = iall2;
-    @type:"Union1.GenericAll<String|Integer>" value ival3 = iall3.val;
+    $type:"Union1.GenericAll<String|Integer>" value ival3 = iall3.val;
     
     class ContravariantAll<in T>() {
         shared default ContravariantAll<T> val => ContravariantAll<T>();
@@ -347,18 +347,18 @@ class Union1() {
     interface Right satisfies Either {}
     
     ContravariantSome<String>|ContravariantNone<Integer> call = ContravariantSome<String>();
-    @type:"Union1.ContravariantAll<Nothing>" value cval1 = call.val;
+    $type:"Union1.ContravariantAll<Nothing>" value cval1 = call.val;
     ContravariantSome<Left>|ContravariantNone<Right> call6 = nothing;
-    @type:"Union1.ContravariantAll<Nothing>" value cval6 = call.val;
+    $type:"Union1.ContravariantAll<Nothing>" value cval6 = call.val;
     ContravariantSome<String>&ContravariantNone<Integer> call2 = nothing;
     Nothing cng1 = call2;
     ContravariantSome<Left>&ContravariantNone<Right> call5 = nothing;
     Nothing cng2 = call5;
-    @error value cval2 = call2.val;
+    $error value cval2 = call2.val;
     Union1.ContravariantAll<String|Integer> call3 = call2;
-    @type:"Union1.ContravariantAll<String|Integer>" value cval3 = call3.val;
+    $type:"Union1.ContravariantAll<String|Integer>" value cval3 = call3.val;
     List<ContravariantSome<String>>|List<ContravariantNone<Integer>> calls = [ContravariantSome<String>()];
-    @type:"Null|Union1.ContravariantSome<String>|Union1.ContravariantNone<Integer>" value cfirstAll = calls.first;
+    $type:"Null|Union1.ContravariantSome<String>|Union1.ContravariantNone<Integer>" value cfirstAll = calls.first;
     
 }
 
@@ -374,15 +374,15 @@ class Union2() {
     }
     
     InvariantSome<String>|InvariantNone<Integer> iall = nothing;
-    @type:"Union2.InvariantAll<out String|Integer>" value ival = iall.val;
+    $type:"Union2.InvariantAll<out String|Integer>" value ival = iall.val;
     InvariantSome<String>&InvariantNone<Integer> iall2 = nothing;
     Nothing ing1 = iall2;
     InvariantAll<String>&InvariantAll<Integer> iall5 = nothing;
     Nothing ing2 = iall5;
-    @error value ival2 = iall2.val;
+    $error value ival2 = iall2.val;
     Union2.InvariantAll<String|Integer> iall3 = iall2;
     Union2.InvariantAll<String&Integer> iall7 = iall2;
-    @type:"Union2.InvariantAll<String|Integer>" value ival3 = iall3.val;
+    $type:"Union2.InvariantAll<String|Integer>" value ival3 = iall3.val;
     
     interface ContravariantAll<in T> {
         shared formal ContravariantAll<T> val;
@@ -395,13 +395,13 @@ class Union2() {
     }
     
     ContravariantSome<String>|ContravariantNone<Integer> call = nothing;
-    @type:"Union2.ContravariantAll<Nothing>" value cval = call.val;
+    $type:"Union2.ContravariantAll<Nothing>" value cval = call.val;
     ContravariantSome<String>&ContravariantNone<Integer> call2 = nothing;
-    @error Nothing cng = call2;
+    $error Nothing cng = call2;
     ContravariantAll<String|Integer> cai = call2;
     Union2.ContravariantAll<String|Integer> cval2 = call2.val;
     Union2.ContravariantAll<String|Integer> call3 = call2;
-    @type:"Union2.ContravariantAll<String|Integer>" value cval3 = call3.val;
+    $type:"Union2.ContravariantAll<String|Integer>" value cval3 = call3.val;
 }
 
 void disjointSequences(String[]|Integer[] x, 
@@ -437,10 +437,10 @@ void isTest<Args>(Anything[] x, Args y)
     [Integer*] xs = [];
     [Integer+] ys = [1];
     if (is String[] xs) {}
-    @warn:"redundantNarrowing" if (is String[] ys) {}
+    $warn:"redundantNarrowing" if (is String[] ys) {}
 }
 
 void unionWithUseSiteCoverage(Set<Anything>|Integer set) {
     Set<Object>|Integer sett = set of Set<Object>|Integer;
-    @error Set<String>|Integer sett = set of Set<String>|Integer;
+    $error Set<String>|Integer sett = set of Set<String>|Integer;
 }

@@ -135,7 +135,8 @@ public class Util {
      * (as opposed to a {@code Anything})
      */
     public static boolean isUnboxedVoid(Declaration decl) {
-        return (decl instanceof Function && ((Function)decl).isDeclaredVoid());
+        return decl instanceof Function 
+            && ((Function)decl).isDeclaredVoid();
     }
 
     public static boolean isJavaSource(ClassSymbol classSymbol) {

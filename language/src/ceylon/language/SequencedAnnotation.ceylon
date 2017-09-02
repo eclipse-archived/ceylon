@@ -17,7 +17,7 @@
    instance can be queried for its `SequencedAnnotation`s of 
    a certain type using [[ceylon.language.meta::annotations]] 
    or [[ceylon.language.meta::sequencedAnnotations]]."""
-see(`interface Annotation`)
+see(interface Annotation)
 shared interface SequencedAnnotation<out Value, 
             in ProgramElement=Annotated,
             out Type=Anything>

@@ -23,7 +23,7 @@ public final class annotations_ {
     private annotations_() {}
     
     // TODO @Shared$annotation
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings("unchecked")
     @Annotations({@com.redhat.ceylon.compiler.java.metadata.Annotation("shared")})
     @TypeInfo("Values")
     @TypeParameters({
@@ -41,7 +41,8 @@ public final class annotations_ {
             @com.redhat.ceylon.compiler.java.metadata.TypeInfo(
                     value = "ceylon.language.meta.model::Class<ceylon.language::ConstrainedAnnotation<Value,Values,ProgramElement>,ceylon.language::Nothing>",
                     erased = true)
-            final ceylon.language.meta.model.Class annotationType, @com.redhat.ceylon.compiler.java.metadata.Name("programElement")
+            final ceylon.language.meta.model.Class annotationType, 
+            @com.redhat.ceylon.compiler.java.metadata.Name("programElement")
             @com.redhat.ceylon.compiler.java.metadata.TypeInfo(
                     value = "ProgramElement",
                     erased = true)

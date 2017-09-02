@@ -1,11 +1,11 @@
 void testFinal() {
     
     final class Broken() {
-        @error shared default void foo() {}
-        @error shared default String bar => "";
+        $error shared default void foo() {}
+        $error shared default String bar => "";
     }
     
-    @error abstract final class ReallyBroken() {}
+    $error abstract final class ReallyBroken() {}
     
     interface X {}
     final class Y() {
@@ -15,7 +15,7 @@ void testFinal() {
     }
     
     X&Y xy = nothing;
-    @type:"Nothing" value n = xy;
+    $type:"Nothing" value n = xy;
 }
 
 void testNonfinal() {
@@ -23,10 +23,10 @@ void testNonfinal() {
     interface X {}
     class Y() {
         shared default void foo() {}
-        @error this.foo();
-        @error foo();
+        $error this.foo();
+        $error foo();
     }
     
     X&Y xy = nothing;
-    @type:"X&Y" value n = xy;
+    $type:"X&Y" value n = xy;
 }

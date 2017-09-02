@@ -66,7 +66,7 @@ class ConstantConditions() {
             }
         }
     }
-    @error String methodWhileTrue5(Boolean b) {
+    $error String methodWhileTrue5(Boolean b) {
         while (true) {
             if (b) {
                 return "";

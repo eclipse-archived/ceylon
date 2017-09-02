@@ -224,7 +224,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror THROWABLE_TYPE = simpleCeylonObjectType("java.lang.Throwable");
 //    private static final TypeMirror ERROR_TYPE = simpleCeylonObjectType("java.lang.Error");
     private static final TypeMirror EXCEPTION_TYPE = simpleCeylonObjectType("java.lang.Exception");
-    private static final TypeMirror CEYLON_THROWABLE_TYPE = simpleCeylonObjectType("java.lang.Throwable");
+    private static final TypeMirror CEYLON_THROWABLE_TYPE = simpleCeylonObjectType("ceylon.language.Throwable");
     private static final TypeMirror CEYLON_EXCEPTION_TYPE = simpleCeylonObjectType("ceylon.language.Exception");
     
     private static final TypeMirror STRING_TYPE = simpleJDKObjectType("java.lang.String");
@@ -293,21 +293,24 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected static final String JAVA_LANG_NATIVE_ANNOTATION = "java.lang.native";
     protected static final String JAVA_LANG_STRICTFP_ANNOTATION = "java.lang.strictfp";
     protected static final String JAVA_LANG_OVERLOADED_ANNOTATION = "java.lang.overloaded";
-    
+    protected static final String JAVA_LANG_NONBEAN_ANNOTATION = "java.lang.nonbean";
+
     private static final String CEYLON_INTEROP_TRANSIENT_ANNOTATION = "com.redhat.ceylon.compiler.java.language.transient";
     private static final String CEYLON_INTEROP_VOLATILE_ANNOTATION = "com.redhat.ceylon.compiler.java.language.volatile";
     private static final String CEYLON_INTEROP_SYNCHRONIZED_ANNOTATION = "com.redhat.ceylon.compiler.java.language.synchronized";
     private static final String CEYLON_INTEROP_NATIVE_ANNOTATION = "com.redhat.ceylon.compiler.java.language.native";
     private static final String CEYLON_INTEROP_STRICTFP_ANNOTATION = "com.redhat.ceylon.compiler.java.language.strictfp";
     private static final String CEYLON_INTEROP_OVERLOADED_ANNOTATION = "com.redhat.ceylon.compiler.java.language.overloaded";
-    
+    private static final String CEYLON_INTEROP_NONBEAN_ANNOTATION = "com.redhat.ceylon.compiler.java.language.nonbean";
+
     private static final String CEYLON_INTEROP_TRANSIENT_TYPE = "com.redhat.ceylon.compiler.java.language.Transient";
     private static final String CEYLON_INTEROP_VOLATILE_TYPE = "com.redhat.ceylon.compiler.java.language.Volatile";
     private static final String CEYLON_INTEROP_SYNCHRONIZED_TYPE = "com.redhat.ceylon.compiler.java.language.Synchronized";
     private static final String CEYLON_INTEROP_NATIVE_TYPE = "com.redhat.ceylon.compiler.java.language.Native";
     private static final String CEYLON_INTEROP_STRICTFP_TYPE = "com.redhat.ceylon.compiler.java.language.Strictfp";
     private static final String CEYLON_INTEROP_OVERLOADED_TYPE = "com.redhat.ceylon.compiler.java.language.Overloaded";
-    
+    private static final String CEYLON_INTEROP_NONBEAN_TYPE = "com.redhat.ceylon.compiler.java.language.Nonbean";
+
     private static final Set<String> CEYLON_INTEROP_DECLARATIONS = new HashSet<String>();
     static {
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_BYTE_ARRAY);
@@ -328,13 +331,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_SYNCHRONIZED_ANNOTATION);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_STRICTFP_ANNOTATION);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_OVERLOADED_ANNOTATION);
-        
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_NONBEAN_ANNOTATION);
+
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_NATIVE_TYPE);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_TRANSIENT_TYPE);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_VOLATILE_TYPE);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_SYNCHRONIZED_TYPE);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_STRICTFP_TYPE);
         CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_OVERLOADED_TYPE);
+        CEYLON_INTEROP_DECLARATIONS.add(CEYLON_INTEROP_NONBEAN_TYPE);
 
     }
     
@@ -491,7 +496,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             || JAVA_LANG_SYNCHRONIZED_ANNOTATION.equals(name)
                             || JAVA_LANG_NATIVE_ANNOTATION.equals(name)
                             || JAVA_LANG_STRICTFP_ANNOTATION.equals(name)
-                            || JAVA_LANG_OVERLOADED_ANNOTATION.equals(name)) {
+                            || JAVA_LANG_OVERLOADED_ANNOTATION.equals(name)
+                            || JAVA_LANG_NONBEAN_ANNOTATION.equals(name)) {
                         name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
                         module = getLanguageModule();
                     }
@@ -1935,6 +1941,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         // to return, but perhaps if we use annotation scanner rather than reflection we can figure it out, at least
                         // in cases where the supertype is missing, which throws in reflection at class load.
                         return logModelResolutionException(x.getMessage(), module, "Unable to load type "+typeName).getDeclaration();
+                    }
+                    //work around a bug in the IntelliJ model loader
+                    //see https://github.com/ceylon/ceylon-ide-intellij/issues/649
+                    if (classMirror == null 
+                            && theContainer instanceof ClassOrInterface
+                            && theDeclarationType == DeclarationType.TYPE) {
+                        int index = typeName.lastIndexOf('.');
+                        if (index>0) {
+                            String name = 
+                                    typeName.substring(0,index) 
+                                    + '$' + typeName.substring(index+1);
+                            classMirror = lookupClassMirror(module, name);
+                        }
                     }
                     if (classMirror == null) {
                         // special case when bootstrapping because we may need to pull the decl from the typechecked model
@@ -4353,7 +4372,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // we never consider Interface and other stuff, since we never register the actualCompleter for them
             if(decl instanceof Class){
                 // Java member classes are never actual 
-                if(!JvmBackendUtil.isCeylon((Class)decl))
+                if(!ModelUtil.isCeylonDeclaration((Class)decl))
                     return;
                 // we already set the actual bit for member classes, we just need the refined decl
                 if(decl.isActual()){
@@ -4391,7 +4410,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 
                 // now that we know the refined declaration, we can check for reified type param support
                 // for Ceylon methods
-                if(decl instanceof JavaMethod && JvmBackendUtil.isCeylon(klass)){
+                if(decl instanceof JavaMethod && ModelUtil.isCeylonDeclaration(klass)){
                     if(!methodMirror.getTypeParameters().isEmpty()
                             // because this requires the refined decl, we defer this check until we've set it, to not trigger
                             // lazy loading just to check.
@@ -5992,7 +6011,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
 
                     // record use-site variance if required
-                    if(!JvmBackendUtil.isCeylon(declaration) && siteVariance != null){
+                    if(!ModelUtil.isCeylonDeclaration(declaration) && siteVariance != null){
                         // lazy alloc
                         if(siteVarianceMap == null)
                             siteVarianceMap = new HashMap<TypeParameter,SiteVariance>();
@@ -6578,6 +6597,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_SYNCHRONIZED_ANNOTATION, DeclarationType.VALUE);
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_STRICTFP_ANNOTATION, DeclarationType.VALUE);
         convertToDeclaration(getJDKBaseModule(), JAVA_LANG_OVERLOADED_ANNOTATION, DeclarationType.VALUE);
+        convertToDeclaration(getJDKBaseModule(), JAVA_LANG_NONBEAN_ANNOTATION, DeclarationType.VALUE);
     }
     
     protected void loadJavaBaseExtras() {

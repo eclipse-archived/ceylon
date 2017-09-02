@@ -1403,13 +1403,13 @@ else {
             <itemizedlist>
                 <listitem>
                     <para>an unqualified value reference, or a qualified value reference 
-                    where the receiver expression is `this`, and a lazy 
+                    where the receiver expression is <literal>this</literal>, and a lazy 
                     <literal>=&gt;</literal> specifier, or</para>
                 </listitem>
                 <listitem>
                     <para>a unqualified callable reference, or a qualified value reference 
-                    where the receiver expression is `this`, one or more parameter lists, 
-                    and a lazy specifier.</para>
+                    where the receiver expression is <literal>this</literal>, one or more 
+                    parameter lists, and a lazy specifier.</para>
                 </listitem>
             </itemizedlist>
             
@@ -1449,19 +1449,6 @@ if (normalize) {
 else {
     process(String s) => s;
 }</programlisting>
-            
-        </section>
-        
-        <section id="destructuringstatements">
-            <title>Destructuring statements</title>
-            
-            <para>A <emphasis>destructuring statement</emphasis> assigns an expression 
-            to a pattern, as defined above in <xref linkend="patterns"/>.</para>
-            
-            <synopsis>Destructure: "value" (TuplePattern | EntryPattern) Specifier ";"</synopsis>
-            
-            <para>The type of the specified expression is the patterned type of the
-            tuple or entry pattern.</para>
             
         </section>
         
@@ -2850,6 +2837,23 @@ else "total must be less than ``bound``";</programlisting>
             </comment>
             
         </section>
+        
+        <section id="destructuringstatements">
+            <title>Destructuring statements</title>
+            
+            <para>A <emphasis>destructuring statement</emphasis> assigns expressions 
+            to patterns, as defined above in <xref linkend="patterns"/>.</para>
+            
+            <synopsis>Destructure: "let" "(" Pattern Specifier ("," Pattern Specifier)* ")" ";"</synopsis>
+            
+            <para>The type of a specified expression is the patterned type of the
+            corresponding pattern.</para>
+            
+             <programlisting>let ([x, y] = pair, d = sqrt(x^2+y^2));</programlisting>
+            
+        </section>
+        
+        
                  
     </section>
 

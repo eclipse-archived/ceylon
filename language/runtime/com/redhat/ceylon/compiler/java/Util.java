@@ -45,7 +45,6 @@ import ceylon.language.meta.classDeclaration_;
 import ceylon.language.meta.typeLiteral_;
 import ceylon.language.meta.type_;
 import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
-import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.ClassOrInterface;
 import ceylon.language.meta.model.Type;
 
@@ -1007,6 +1006,16 @@ public class Util {
         if(t == null)
             throw new AssertionError("null value returned from native call not assignable to Object");
         return t;
+    }
+    
+    private static String[] args = new String[0];
+    
+    public static void storeArgs(String[] args) {
+        Util.args = args;
+    }
+    
+    public static String[] getArgs() {
+        return args;
     }
     
     /** 

@@ -39,7 +39,7 @@ import ceylon.language.meta.declaration {
           = `module`.resourceByPath("/com/redhat/example/file.txt"));
        print(resource.textContent());"""
 by("Enrique Zamudio")
-see (`function Module.resourceByPath`)
+see (function Module.resourceByPath)
 tagged("Environment")
 since("1.1.0")
 shared interface Resource {

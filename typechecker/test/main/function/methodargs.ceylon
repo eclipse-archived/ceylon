@@ -11,28 +11,28 @@ void testShortcutMethodSpec(){
         function g(Float x) => x*2.0;
     };
     //f {
-    //    @error value g(Float x) => x*2.0;
+    //    $error value g(Float x) => x*2.0;
     //};
     f {
         Float g(Float x) => x*2.0;
     };
     f {
-        @error g(Integer x) => x*2.0;
+        $error g(Integer x) => x*2.0;
     };
     f {
-        @error g = (Integer x) => x*2.0;
+        $error g = (Integer x) => x*2.0;
     };
     f {
-        @error function g(Integer x) => x*2.0;
+        $error function g(Integer x) => x*2.0;
     };
     f {
-        @error g(Float x) => x.integer*2;
+        $error g(Float x) => x.integer*2;
     };
     f {
-        @error g = (Float x) => x.integer*2;
+        $error g = (Float x) => x.integer*2;
     };
     f {
-        @error function g(Float x) => x.integer*2;
+        $error function g(Float x) => x.integer*2;
     };
     
     Float h(Float x);
@@ -44,13 +44,13 @@ void testShortcutMethodSpec(){
         value x => 5.0;
     };
     h {
-        @error function x => 5.0;
+        $error function x => 5.0;
     };
     h {
         Float x => 5.0;
     };
     h {
-        @error x => 5;
+        $error x => 5;
     };
 }
 
@@ -81,23 +81,23 @@ void testIndirectSpread() {
 
 void testIndirectWithUnknownParamTypes() {
     Callable<Anything, Nothing> f4 = function (String a, Integer b) => 2;
-    @error f4();
-    @error f4(1);
-    @error f4(1, 3);
+    $error f4();
+    $error f4(1);
+    $error f4(1, 3);
 
     Callable<Anything, Nothing[]> f5 = function (Integer* a) => 2;
     f5();
-    @error f5(1);
-    @error f5(1, 3);
+    $error f5(1);
+    $error f5(1, 3);
 }
 
 shared void parameterizedByArgs<Args>(Args args, Callable<Anything,Args> fun) 
     given Args satisfies Anything[] {
 
     fun(*args);
-    @error fun();
-    @error fun(args);
-    @error fun(1, 2, 3);
+    $error fun();
+    $error fun(args);
+    $error fun(1, 2, 3);
 
     Anything(String,Integer) fn = (String s, Integer i) => s[i];
     fn(*["a", 2]);
@@ -110,11 +110,11 @@ shared void overload<T,V>(T t)
     function g([Float]|[String,Integer]|[]|[String,String,String,String]|Character[] args) => args[0];
     Callable<Character|Float|Integer|String?,[Float]|[String,Integer]|[]|[String,String,String,String]|Character[]> f = flatten(g);
     Character|Integer|Float|String? x = f(5.0);
-    @error Character|Integer|Float|String? y = f("hello");
+    $error Character|Integer|Float|String? y = f("hello");
     Character|Integer|Float|String? z = f();
     Character|Integer|Float|String? w = f("hello",1);
     Character|Integer|Float|String? v = f('a','b','c','d');
-    @error Character|Integer|Float|String? u = f(5.0, 'x');
+    $error Character|Integer|Float|String? u = f(5.0, 'x');
     
     function gg(T|V args) => nothing;
     Callable<Nothing,T|V> ff = flatten(gg);
@@ -123,42 +123,42 @@ shared void overload<T,V>(T t)
 
 void testSpreadTypeArg<Args>(Args args) 
         given Args satisfies Object[] {
-    @type:"Tuple<Object,String,Args>" 
+    $type:"Tuple<Object,String,Args>" 
     value tup = ["hello", *args];
 }
 
 void testSpreadNoneptyTypeArg<Args>(Args args) 
         given Args satisfies [Object+] {
-    @type:"Tuple<Object,String,Args>" 
+    $type:"Tuple<Object,String,Args>" 
     value tup = ["hello", *args];
 }
 
 void testSpreadEmptyIterTypeArg<Args>(Args args) 
         given Args satisfies {Object*} {
-    @type:"Tuple<Object,String,Sequential<Object>>" 
+    $type:"Tuple<Object,String,Sequential<Object>>" 
     value tup = ["hello", *args];
 }
 
 void testSpreadNonemptyIterTypeArg<Args>(Args args) 
         given Args satisfies {Object+} {
-    @type:"Tuple<Object,String,Sequence<Object>>" 
+    $type:"Tuple<Object,String,Sequence<Object>>" 
     value tup = ["hello", *args];
 }
 
 void testSpreadUnkIterTypeArg<Args,Abs>(Args args) 
         given Abs satisfies Null
         given Args satisfies Iterable<Object,Abs> {
-    //@type:"Tuple<Object,String,Sequential<Object>&Iterable<Object,Abs>>" 
-    @type:"Tuple<Object,String,Sequential<Object>>" 
+    //$type:"Tuple<Object,String,Sequential<Object>&Iterable<Object,Abs>>" 
+    $type:"Tuple<Object,String,Sequential<Object>>" 
     value tup = ["hello", *args];
 }
 
 void testSpreadNoniterable({String*}? args) {
     void fun(String* args) {}
-    @error value v1 = { @error *args };
-    @error value v2 = [ @error *args ];
-    printAll { @error *args };
-    @error fun(*args);
+    $error value v1 = { $error *args };
+    $error value v2 = [ $error *args ];
+    printAll { $error *args };
+    $error fun(*args);
 }
 
 void moreSpreadTests() {
@@ -170,29 +170,29 @@ void moreSpreadTests() {
     f0(1, 2, 3, *empty);
     f1(1, 2, 3, *empty);
     f2(1, 2, 3, *empty);
-    @error f(1, 2, *empty);
-    @error f(1, *empty);
-    @error f(*empty);
+    $error f(1, 2, *empty);
+    $error f(1, *empty);
+    $error f(*empty);
     f0(1, 2, *empty);
     f0(1, *empty);
-    @error f0(*empty);
+    $error f0(*empty);
     f1(1, 2, *empty);
     f1(1, *empty);
-    @error f1(*empty);
-    @error f2(1, 2, *empty);
-    @error f2(1, *empty);
-    @error f2(*empty);
+    $error f1(*empty);
+    $error f2(1, 2, *empty);
+    $error f2(1, *empty);
+    $error f2(*empty);
     
     f2(*[1, 2, 3]);
     f2(*[1, 2, 3, 4]);
-    @error f2(*[1, 2]);
-    @error f2(*[1]);
-    @error f2(*[]);
+    $error f2(*[1, 2]);
+    $error f2(*[1]);
+    $error f2(*[]);
     f1(*[1, 2, 3]);
     f1(*[1, 2, 3, 4]);
     f1(*[1, 2]);
     f1(*[1]);
-    @error f1(*[]);
+    $error f1(*[]);
     
     String g(String x="", String y="") => x+y;
     String(String=, String=) g1 = g;
@@ -203,12 +203,12 @@ void moreSpreadTests() {
     g1("s1", *[]);
     g1(*[]);
     
-    @error g("s1", "s2", *["s3"]);
-    @error g("s1", *["s2", "s3"]);
+    $error g("s1", "s2", *["s3"]);
+    $error g("s1", *["s2", "s3"]);
     g("s1", *["s2"]);
     g(*["s1"]);
-    @error g1("s1", "s2", *["s3"]);
-    @error g1("s1", *["s2", "s3"]);
+    $error g1("s1", "s2", *["s3"]);
+    $error g1("s1", *["s2", "s3"]);
     g1("s1", *["s2"]);
     g1(*["s1"]);
 
@@ -216,15 +216,15 @@ void moreSpreadTests() {
 
 void testFooBar() {
     void foo({String+} items) {}
-    @error foo(); // error: missing argument to required parameter items of foo
-    @error foo{}; // NO ERROR
+    $error foo(); // error: missing argument to required parameter items of foo
+    $error foo{}; // NO ERROR
     foo{""};
     foo{items={""};};
     void bar({String+} items1, {String+} items2) {}
-    @error bar(); // error: missing argument to required parameter items1 (and items2) of foo
-    @error bar({""}); // error: missing argument to required parameter items2 of foo
-    @error bar{}; // error: missing argument to required parameter items2 of foo
-    @error bar{items1 = {""};}; // NO ERROR
+    $error bar(); // error: missing argument to required parameter items1 (and items2) of foo
+    $error bar({""}); // error: missing argument to required parameter items2 of foo
+    $error bar{}; // error: missing argument to required parameter items2 of foo
+    $error bar{items1 = {""};}; // NO ERROR
     bar{items1 = {""}; ""};
     bar{items1 = {""}; items2 = {""};};
 }
@@ -235,6 +235,6 @@ class Div(Attributes attributes = {}, {Object*} children = {}) {}
 
 void run() {
     Div { "foo", "bar" };
-    Div { @error Div{} };
-    Div { @error "foo", "bar", Div{} };
+    Div { $error Div{} };
+    Div { $error "foo", "bar", Div{} };
 }

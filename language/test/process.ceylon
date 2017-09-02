@@ -44,8 +44,8 @@ shared void testProcess() {
         "minor ``language.minorVersion`` release ``language.releaseVersion`` " +
         "\'``language.versionName``\' major bin ``language.majorVersionBinary`` minor bin " +
         "``language.minorVersionBinary``");
-    check(process.string == "process", "process.string");
-    check(language.string == "language", "language.string");
+    check(process.string == "process", "process.string was ``process.string``");
+    check(language.string == "language", "language.string was ``language.string``");
 }
 
 @test

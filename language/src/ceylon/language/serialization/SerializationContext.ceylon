@@ -22,7 +22,7 @@ shared sealed
 interface SerializationContext {
     // could be generic
     "Obtain the references of the given instance."
-    throws(`class SerializationException`,
+    throws(class SerializationException,
         "If the class is not serializable")
     shared formal References references(Anything instance);
 }

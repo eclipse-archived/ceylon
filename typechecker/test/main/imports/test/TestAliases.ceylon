@@ -5,13 +5,13 @@ import imports.pack {
     C=Class { i=count, 
               In=Inner, 
               m=method,
-              @error i2=count },
+              $error i2=count },
     C2=ClassWithCtor{ o1=other },
     I=Interface, 
     D=Dupe,
     o=op,
-    @error o2=op,
-    @error m=method
+    $error o2=op,
+    $error m=method
 }
 
 class TestAliases() {

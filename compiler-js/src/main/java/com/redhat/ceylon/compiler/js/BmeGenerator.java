@@ -29,6 +29,10 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 public class BmeGenerator {
 
     static void generateBme(final Tree.BaseMemberExpression bme, final GenerateJsVisitor gen) {
+        generateBme(bme, gen, true);
+    }
+    static void generateBme(final Tree.BaseMemberExpression bme, final GenerateJsVisitor gen,
+                            boolean nonNull) {
         final boolean forInvoke = bme.getDirectlyInvoked();
         Declaration decl = bme.getDeclaration();
         if (decl != null) {
@@ -63,10 +67,12 @@ public class BmeGenerator {
         if (decl == null && gen.isInDynamicBlock()) {
             if ("undefined".equals(exp)) {
                 gen.out(exp);
-            } else {
+            } else if (nonNull) {
                 gen.out("(typeof ", exp, "==='undefined'||", exp, "===null?");
                 gen.generateThrow(null, "Undefined or null reference: " + exp, bme);
                 gen.out(":", exp, ")");
+            } else {
+                gen.out(exp);
             }
         } else {
             final boolean isCallable = !forInvoke && (decl instanceof Functional

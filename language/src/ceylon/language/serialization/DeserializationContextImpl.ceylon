@@ -42,7 +42,7 @@ class DeserializationContextImpl<Id>() satisfies DeserializationContext<Id>
     
     "Get or create the [[Partial]] for `instanceId`; 
      add the given `attributeValueId` to its partial state."
-    throws(`class DeserializationException`, 
+    throws(class DeserializationException, 
         "If the `instanceId` corresponds to a reconstructed 
          instance or to a partial that's already been instantiated")
     void attributeOrElement(Id instanceId, ReachableReference attributeOrIndex, Id attributeValueId) {

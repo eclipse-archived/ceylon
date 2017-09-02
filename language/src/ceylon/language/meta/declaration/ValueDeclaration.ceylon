@@ -64,16 +64,16 @@ shared sealed interface ValueDeclaration
 
     "Applies this value declaration in order to obtain a value model. 
      See [this code sample](#toplevel-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")
+    throws(class IncompatibleTypeException, "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")
     shared formal Value<Get, Set> apply<Get=Anything, Set=Nothing>();
     
     "Applies this `static` value declaration in order to obtain a value model."
-    throws(`class IncompatibleTypeException`, "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")
+    throws(class IncompatibleTypeException, "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")
     shared formal Value<Get, Set> staticApply<Get=Anything, Set=Nothing>(AppliedType<Object> containerType);
 
     "Applies the given closed container type to this attribute declaration in order to obtain an attribute model. 
      See [this code sample](#member-sample) for an example on how to use this."
-    throws(`class IncompatibleTypeException`, "If the specified `Container`, `Get` or `Set` type arguments are not compatible with the actual result.")
+    throws(class IncompatibleTypeException, "If the specified `Container`, `Get` or `Set` type arguments are not compatible with the actual result.")
     shared formal Attribute<Container, Get, Set> memberApply<Container=Nothing, Get=Anything, Set=Nothing>(AppliedType<Object> containerType);
     
     "Reads the current value of this toplevel value."
@@ -81,14 +81,14 @@ shared sealed interface ValueDeclaration
             => apply<Anything, Nothing>().get();
     
     "Reads the current value of this attribute on the given container instance."
-    throws(`class IncompatibleTypeException`, "If the specified container is not compatible with this attribute.")
-    throws(`class StorageException`,
+    throws(class IncompatibleTypeException, "If the specified container is not compatible with this attribute.")
+    throws(class StorageException,
            "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
     shared actual default Anything memberGet(Object container)
             => memberApply<Nothing, Anything, Nothing>(`Nothing`).bind(container).get();
 
     "Reads the current value of this `static` attribute."
-    throws(`class IncompatibleTypeException`, "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")
+    throws(class IncompatibleTypeException, "If the specified `Get` or `Set` type arguments are not compatible with the actual result.")
     shared actual default Anything staticGet(AppliedType<Object> containerType)
             => staticApply<Anything, Nothing>(containerType).get();
 
@@ -97,8 +97,8 @@ shared sealed interface ValueDeclaration
         => apply<Anything,Nothing>().setIfAssignable(newValue);
 
     "Sets the current value of this attribute on the given container instance."
-    throws(`class IncompatibleTypeException`, "If the specified container or new value type is not compatible with this attribute.")
-    throws(`class StorageException`,
+    throws(class IncompatibleTypeException, "If the specified container or new value type is not compatible with this attribute.")
+    throws(class StorageException,
            "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
     shared formal void memberSet(Object container, Anything newValue);
     //=> memberApply<Nothing, Anything, Nothing>(`Nothing`).bind(container).setIfAssignable(newValue);

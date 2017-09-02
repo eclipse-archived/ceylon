@@ -20,7 +20,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeade
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeForWrongBackend;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeImplementation;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 import static com.redhat.ceylon.model.typechecker.model.SiteVariance.IN;
@@ -1047,10 +1046,10 @@ public class TypeVisitor extends Visitor {
     }
     
     private boolean isInitializerParameter(FunctionOrValue dec) {
-        return dec!=null && 
-                dec.isParameter() && 
-                dec.getInitializerParameter()
-                    .isHidden();
+        return dec!=null 
+            && dec.isParameter() 
+            && dec.getInitializerParameter()
+                .isHidden();
     }
     
     @Override
@@ -1065,10 +1064,11 @@ public class TypeVisitor extends Visitor {
                         dec.getName() + "'");
             }
         }
-        if (sie==null && isNativeImplementation(dec)) {
-            that.addError("missing body for native function: '" + 
-                    dec.getName() + "' must have a body");
-        }
+        //unnecessary, let definite assignment checking handle it!
+//        if (sie==null && isNativeImplementation(dec)) {
+//            that.addError("missing body for native function: '" + 
+//                    dec.getName() + "' must have a body");
+//        }
     }
     
     @Override
@@ -1102,10 +1102,11 @@ public class TypeVisitor extends Visitor {
                         dec.getName() + "'");
             }
         }
-        if (sie==null && isNativeImplementation(dec)) {
-            that.addError("missing body for native value: '" + 
-                    dec.getName() + "' must have a body");
-        }
+        //unnecessary, let definite assignment checking handle it!
+//        if (sie==null && isNativeImplementation(dec)) {
+//            that.addError("missing body for native value: '" + 
+//                    dec.getName() + "' must have a body");
+//        }
     }
     
     @Override

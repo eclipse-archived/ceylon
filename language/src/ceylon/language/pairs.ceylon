@@ -10,21 +10,21 @@
  `f`, `mapPairs()` may be defined in terms of 
  [[Iterable.map]], [[zipPairs]], and [[unflatten]]:
  
-     mapPairs(f, xs, ys) == zipPairs(xs, ys).map(unflatten(f))
+     mapPairs(xs, ys)(f) == zipPairs(xs, ys).map(unflatten(f))
  
  For example the expression
  
-     mapPairs((Float x, Float y) => (x^2+y^2)^0.5, 
-             {3.0, 5.0, 6.0, 9.0}, {4.0, 12.0, 8.0, 12.0})
+     mapPairs({3.0, 5.0, 6.0, 9.0}, {4.0, 12.0, 8.0, 12.0})
+            ((x, y) => (x^2+y^2)^0.5)
      
  evaluates to the stream `{ 5.0, 13.0, 10.0, 15.0 }`."
 tagged("Streams")
 shared Iterable<Result,FirstAbsent|SecondAbsent> 
-mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
-    "The mapping function to apply to the pair of elements."
-    Result collecting(First first, Second second),
-    Iterable<First,FirstAbsent> firstIterable,
-    Iterable<Second,SecondAbsent> secondIterable)
+mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>
+    (Iterable<First,FirstAbsent> firstIterable,
+     Iterable<Second,SecondAbsent> secondIterable,
+     "The mapping function to apply to the pair of elements."
+     Result collecting(First first, Second second))
         given FirstAbsent satisfies Null
         given SecondAbsent satisfies Null {
     object iterable 
@@ -62,14 +62,14 @@ mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
  `p`, `findPair()` may be defined in terms of 
  [[Iterable.find]], [[zipPairs]], and [[unflatten]]:
  
-     findPair(p, xs, ys) == zipPairs(xs, ys).find(unflatten(p))"
+     findPair(xs, ys)(p) == zipPairs(xs, ys).find(unflatten(p))"
 tagged("Streams")
 since("1.1.0")
-shared [First,Second]? findPair<First,Second>(
-    "The binary predicate function to apply to each pair of 
-     elements."
-    Boolean selecting(First first, Second second),
-    {First*} firstIterable, {Second*} secondIterable) {
+shared [First,Second]? findPair<First,Second>
+    ({First*} firstIterable, {Second*} secondIterable)
+    ("The binary predicate function to apply to each pair of 
+      elements."
+     Boolean selecting(First first, Second second)) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
     while (!is Finished first = firstIter.next(),
@@ -92,16 +92,16 @@ shared [First,Second]? findPair<First,Second>(
  `p`, `everyPair()` may be defined in terms of 
  [[Iterable.every]], [[zipPairs]], and [[unflatten]]:
  
-     everyPair(p, xs, ys) == zipPairs(xs, ys).every(unflatten(p))"
-see (`function corresponding`,
-     `function anyPair`)
+     everyPair(xs, ys)(p) == zipPairs(xs, ys).every(unflatten(p))"
+see (function corresponding,
+     function anyPair)
 tagged("Streams")
 since("1.1.0")
-shared Boolean everyPair<First,Second>(
-    "The binary predicate function to apply to each pair of 
-     elements."
-    Boolean selecting(First first, Second second),
-    {First*} firstIterable, {Second*} secondIterable) {
+shared Boolean everyPair<First,Second>
+    ({First*} firstIterable, {Second*} secondIterable)
+    ("The binary predicate function to apply to each pair of 
+      elements."
+     Boolean selecting(First first, Second second)) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
     while (!is Finished first = firstIter.next(),
@@ -124,15 +124,15 @@ shared Boolean everyPair<First,Second>(
  `p`, `anyPair()` may be defined in terms of 
  [[Iterable.any]], [[zipPairs]], and [[unflatten]]:
  
-     anyPair(p, xs, ys) == zipPairs(xs, ys).any(unflatten(p))"
-see (`function everyPair`)
+     anyPair(xs, ys)(p) == zipPairs(xs, ys).any(unflatten(p))"
+see (function everyPair)
 tagged("Streams")
 since("1.1.0")
-shared Boolean anyPair<First,Second>(
-    "The binary predicate function to apply to each pair of 
-     elements."
-    Boolean selecting(First first, Second second),
-    {First*} firstIterable, {Second*} secondIterable) {
+shared Boolean anyPair<First,Second>
+    ({First*} firstIterable, {Second*} secondIterable)
+    ("The binary predicate function to apply to each pair of 
+      elements."
+     Boolean selecting(First first, Second second)) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
     while (!is Finished first = firstIter.next(),
@@ -155,16 +155,17 @@ shared Boolean anyPair<First,Second>(
  combining function `f`, `foldPairs()` may be defined in 
  terms of [[Iterable.fold]], [[zipPairs]], and [[unflatten]]:
  
-     foldPairs(z, f, xs, ys) == zipPairs(xs, ys).fold(z)(unflatten(f))"
+     foldPairs(xs, ys)(z, f) == zipPairs(xs, ys).fold(z)(unflatten(f))"
 tagged("Streams")
 since("1.1.0")
-shared Result foldPairs<Result,First,Second>(
-    Result initial,
-    "The accumulating function to apply to each pair of 
-     elements."
+shared Result foldPairs<Result,First,Second>
+    ({First*} firstIterable, {Second*} secondIterable,
+     "The initial value of the accumulator."
+     Result initial)
+    ("The accumulating function to apply to each pair of 
+      elements."
     Result accumulating(Result partial, 
-                        First first, Second second),
-    {First*} firstIterable, {Second*} secondIterable) {
+                        First first, Second second)) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
     variable value partial = initial;
@@ -173,4 +174,23 @@ shared Result foldPairs<Result,First,Second>(
         partial = accumulating(partial, first, second);
     }
     return partial;
+}
+
+"Given two streams, call the given function for each
+ corresponding pair of elements. If one of the streams 
+ is longer than the other, simply ignore additional 
+ elements of the longer stream with no pair in the other 
+ stream."
+tagged("Streams")
+since("1.4.0")
+shared void eachPair<First,Second>
+        ({First*} firstIterable, {Second*} secondIterable)
+        ("Function called for each pair of elements."
+        void step(First first, Second second)) {
+    value firstIter = firstIterable.iterator();
+    value secondIter = secondIterable.iterator();
+    while (!is Finished first = firstIter.next(),
+           !is Finished second = secondIter.next()) {
+        step(first,second);
+    }
 }

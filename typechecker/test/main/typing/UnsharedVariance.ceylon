@@ -12,7 +12,7 @@ class Capturing1<T>(T t, Capturing1<T> c) {
     }
 }
 class Capturing2<out T>(T t, Capturing2<T> c) {
-    @error Consumer<T> consumer=Consumer<T>();
+    $error Consumer<T> consumer=Consumer<T>();
     shared void callIt() { 
         c.consumer.consume(t);
     }
@@ -24,7 +24,7 @@ class Capturing3<in T>(T t, Capturing3<T> c) {
     }
 }
 class Capturing4<T>(T t, Capturing4<T> c) {
-    @error Consumer<T> consumer;
+    $error Consumer<T> consumer;
     shared void callIt() { 
         c.consumer.consume(t);
     }
@@ -54,25 +54,25 @@ void unsharedVariance() {
 }
 void backdoorVariance() {
     class Bar<out T>(T t, Bar<T> bar) {
-        void accept(@error T tt) {}
+        void accept($error T tt) {}
         accept(t);
         bar.accept(t);
     }    
     class Foo<in T>(T t, Foo<T> foo) {
-         @error T get() => t;
+         $error T get() => t;
          print(get());
          foo.get();
     }
     class Baz<out T>(T t, Baz<T> baz) {
-         class Inner(@error T t) {}
+         class Inner($error T t) {}
          print(Inner(t));
          baz.Inner(t);
     }
 }
 
 class WithMethodWithForwardParam<out T, in S>() {
-    shared void method1()(t) { @error T t; }
-    shared void method2()(f) { void f(@error S t); }
-    shared void method3()(@error T t) {}
-    shared void method4()(void f(@error S t)) {}
+    shared void method1()(t) { $error T t; }
+    shared void method2()(f) { void f($error S t); }
+    shared void method3()($error T t) {}
+    shared void method4()(void f($error S t)) {}
 }

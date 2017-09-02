@@ -14,7 +14,7 @@ import org.junit.Test;
 public class FloatTest {
 
     private void assertParseFloat(Double expect, java.lang.String str) {
-        Float parsed = parseFloat(str);
+        Float parsed = parseFloat(String.instance(str));
         if (expect != null) {
             if (parsed == null) {
                 fail(str + " didn't parse as a Float");

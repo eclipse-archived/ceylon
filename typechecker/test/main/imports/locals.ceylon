@@ -22,16 +22,16 @@ void withNestedImport() {
 }
 
 void withoutImport() {
-    @error print(type(""));
-    @error print("".len);
-    @error print("".sub(0, 2));
-    @error Int i = 0;
-    @error print(fs);
+    $error print(type(""));
+    $error print("".len);
+    $error print("".sub(0, 2));
+    $error Int i = 0;
+    $error print(fs);
 }
 
 void hiding() {
     import ceylon.language.meta { 
-        @error type, 
+        $error type, 
         typeLiteral 
     }
     String type;

@@ -25,13 +25,13 @@ shared interface Numeric<Other> of Other
 
 }
 
-@error: "sealed interface" 
+$error: "sealed interface" 
 interface Vec<Num> satisfies Scalable<Num,Vec<Num>>&[Num+] {}
 interface Num satisfies Numeric<Num> {}
 
 void test(Num n, Vec<Num> ns)  {
-    @type:"Scaling.Num" value n1 = n.times(n);
-    @type:"Scaling.Vec<Scaling.Num>" value ns1 = n.times(ns);
+    $type:"Scaling.Num" value n1 = n.times(n);
+    $type:"Scaling.Vec<Scaling.Num>" value ns1 = n.times(ns);
 }
 
 }
