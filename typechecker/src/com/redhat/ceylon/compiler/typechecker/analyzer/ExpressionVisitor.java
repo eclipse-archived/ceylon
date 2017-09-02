@@ -8771,8 +8771,7 @@ public class ExpressionVisitor extends Visitor {
                         }
                     }
                     if (v!=null) {
-                        Type caseType = 
-                                getTypeIgnoringLiteralsAndConstants(that);
+                        Type caseType = getType(that);
                         Type narrowedType = 
                                 intersectionType(
                                         caseType, switchType, 
@@ -9361,10 +9360,15 @@ public class ExpressionVisitor extends Visitor {
                     cci);
         }
         else {
-            checkCasesDisjoint(
-                    getTypeIgnoringLiterals(cc),
+            if (checkCasesDisjoint(
+                    getType(cc),
                     getTypeIgnoringLiterals(occ), 
-                    cci);
+                    cci)) {
+                checkCasesDisjoint(
+                        getTypeIgnoringLiterals(cc),
+                        getType(occ), 
+                        cci);
+            }
         }
         if (cci instanceof Tree.MatchCase && 
             occi instanceof Tree.MatchCase) {
