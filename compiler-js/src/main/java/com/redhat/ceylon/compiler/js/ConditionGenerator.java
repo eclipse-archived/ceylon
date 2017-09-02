@@ -23,6 +23,7 @@ import com.redhat.ceylon.model.typechecker.model.ConditionScope;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** This component is used by the main JS visitor to generate code for conditions.
@@ -453,7 +454,17 @@ public class ConditionGenerator {
         } else if (item instanceof MatchCase) {
             final boolean isNull = switchTerm.getTypeModel().covers(switchTerm.getUnit().getNullType());
             boolean first = true;
-            for (Expression exp : ((MatchCase)item).getExpressionList().getExpressions()) {
+            MatchCase matchCaseItem = (MatchCase) item;
+            Tree.MatchList matchList = matchCaseItem.getExpressionList();
+            if (!matchList.getTypes().isEmpty()) {
+                first = false;
+                List<Type> union = new ArrayList<Type>();
+                for (Tree.Type type: matchList.getTypes()) {
+                   ModelUtil.addToUnion(union, type.getTypeModel());
+                }
+                gen.generateIsOfType(item, expvar, ModelUtil.union(union, matchList.getUnit()), null, false, false);
+            }
+            for (Expression exp : matchList.getExpressions()) {
                 if (!first) gen.out(" || ");
                 final Tree.Term term = exp.getTerm();
                 if (term instanceof Tree.StringLiteral || term instanceof Tree.NaturalLiteral) {
@@ -488,6 +499,12 @@ public class ConditionGenerator {
                     exp.visit(gen);
                 }
                 first = false;
+            }
+            caseVar = matchCaseItem.getVariable();
+            if (caseVar != null) {
+                caseDec = caseVar.getDeclarationModel();
+                directAccess.add(caseDec);
+                names.forceName(caseDec, expvar);
             }
         } else {
             cc.addUnexpectedError("support for case of type " + cc.getClass().getSimpleName() + " not yet implemented", Backend.JavaScript);
