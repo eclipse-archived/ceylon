@@ -4317,7 +4317,7 @@ caseItemList returns [CaseItem item]
     ;
 
 caseItem returns [CaseItem item]
-    : (IS_OP) => isCaseCondition 
+    : (IS_OP|type RPAREN) => isCaseCondition 
       { $item = $isCaseCondition.item; }
     | (SATISFIES) => satisfiesCaseCondition
       { $item = $satisfiesCaseCondition.item; }
@@ -4339,7 +4339,7 @@ matchCaseCondition returns [MatchCase item]
 
 isCaseCondition returns [IsCase item]
     @init { StaticType t = null; } 
-    : IS_OP 
+    : IS_OP?
       { $item = new IsCase($IS_OP); }
       type
       { t = $type.type;
