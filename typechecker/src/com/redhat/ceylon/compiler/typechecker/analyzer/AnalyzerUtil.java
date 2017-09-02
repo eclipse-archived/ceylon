@@ -1506,7 +1506,7 @@ public class AnalyzerUtil {
         }
     }
 
-    static void checkCasesDisjoint(Type later, Type earlier,
+    static boolean checkCasesDisjoint(Type later, Type earlier,
             Node node) {
         if (!isTypeUnknown(later) && !isTypeUnknown(earlier)) {
             Unit unit = node.getUnit();
@@ -1529,8 +1529,10 @@ public class AnalyzerUtil {
                             earlier.asString(unit) + "' have intersection '" +
                             it.asString(unit) + "' (use 'else case')");
                 }
+                return false;
             }
         }
+        return true;
     }
 
     static Parameter getMatchingParameter(ParameterList pl, 

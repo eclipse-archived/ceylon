@@ -8707,24 +8707,33 @@ public class ExpressionVisitor extends Visitor {
     @Override
     public void visit(Tree.MatchCase that) {
         super.visit(that);
-        for (Tree.Expression e: 
-                that.getExpressionList()
-                    .getExpressions()) {
-            if (e!=null) {
-                Type caseType = e.getTypeModel();
-                if (!isTypeUnknown(caseType)) {
-                    if (switchStatementOrExpression!=null) {
-                        Tree.Switched switched = 
-                                switchClause().getSwitched();
-                        if (switched!=null) {
-                            Tree.Expression switchExpression = 
-                                    switched.getExpression();
-                            Tree.Variable switchVariable = 
-                                    switched.getVariable();
-                            Type switchType = 
-                                    getSwitchType(switchExpression,
-                                            switchVariable);
-                            if (switchType!=null) {
+        if (switchStatementOrExpression!=null) {
+            Tree.Switched switched = 
+                    switchClause().getSwitched();
+            if (switched!=null) {
+                Tree.Expression switchExpression = 
+                        switched.getExpression();
+                Tree.Variable switchVariable = 
+                        switched.getVariable();
+                Type switchType = 
+                        getSwitchType(switchExpression,
+                                switchVariable);
+                if (switchType!=null) {
+                    Tree.Variable v = that.getVariable();
+                    if (v!=null) {
+                        if (dynamic || 
+                                !isTypeUnknown(switchType)) { //eliminate dupe errors
+                            v.visit(this);
+                        }
+                        initOriginalDeclaration(v);
+                    }
+                    Tree.MatchList matchList = 
+                            that.getExpressionList();
+                    for (Tree.Expression e: 
+                            matchList.getExpressions()) {
+                        if (e!=null) {
+                            Type caseType = e.getTypeModel();
+                            if (!isTypeUnknown(caseType)) {
                                 Type narrowedType = 
                                         intersectionType(
                                                 caseType, switchType, 
@@ -8738,8 +8747,44 @@ public class ExpressionVisitor extends Visitor {
                                 }
                             }
                         }
+                        checkValueCase(e);
                     }
-                    checkValueCase(e);
+                    for (Tree.Type t: 
+                            matchList.getTypes()) {
+                        if (t!=null) {
+                            Type caseType = t.getTypeModel();
+                            checkReified(t, 
+                                    caseType, switchType, 
+                                    false);
+    //                        if (!isTypeUnknown(pt)) {
+                            Type narrowedType = 
+                                    intersectionType(
+                                            caseType, switchType, 
+                                            unit);
+                            if (isDefinitelyNothing(switched, 
+                                    caseType, narrowedType)) {
+                                t.addError("narrows to bottom type 'Nothing': '" + 
+                                        caseType.asString(unit) + 
+                                        "' has empty intersection with '" + 
+                                        switchType.asString(unit) + "'");
+                            }
+                        }
+                    }
+                    if (v!=null) {
+                        Type caseType = getType(that);
+                        Type narrowedType = 
+                                intersectionType(
+                                        caseType, switchType, 
+                                        unit);
+                        v.getType()
+                         .setTypeModel(narrowedType);
+                        v.getDeclarationModel()
+                         .setType(narrowedType);
+                        if (!canHaveUncheckedNulls(narrowedType)) {
+                            v.getDeclarationModel()
+                             .setUncheckedNullType(false);
+                        }
+                    }                        
                 }
             }
         }
@@ -8924,11 +8969,11 @@ public class ExpressionVisitor extends Visitor {
                         switched.getExpression();
                 Tree.Variable switchVariable = 
                         switched.getVariable();
-                Tree.Variable v = that.getVariable();
                 Type switchType = 
                         getSwitchType(switchExpression,
                                 switchVariable);
                 if (switchType!=null) {
+                    Tree.Variable v = that.getVariable();
                     if (v!=null) {
                         if (dynamic || 
                                 !isTypeUnknown(switchType)) { //eliminate dupe errors
@@ -9315,10 +9360,15 @@ public class ExpressionVisitor extends Visitor {
                     cci);
         }
         else {
-            checkCasesDisjoint(
-                    getTypeIgnoringLiterals(cc),
+            if (checkCasesDisjoint(
+                    getType(cc),
                     getTypeIgnoringLiterals(occ), 
-                    cci);
+                    cci)) {
+                checkCasesDisjoint(
+                        getTypeIgnoringLiterals(cc),
+                        getType(occ), 
+                        cci);
+            }
         }
         if (cci instanceof Tree.MatchCase && 
             occi instanceof Tree.MatchCase) {
@@ -9469,21 +9519,35 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (ci instanceof Tree.MatchCase) {
             Tree.MatchCase mc = (Tree.MatchCase) ci;
-            List<Tree.Expression> es = 
-                    mc.getExpressionList()
-                        .getExpressions();
-            List<Type> list = 
-                    new ArrayList<Type>(es.size());
-            for (Tree.Expression e: es) {
-                if (e.getTypeModel()!=null) {
-                    addToUnion(list, e.getTypeModel());
-                }
-            }
-            return union(list, unit);
+            return getType(mc);
         }
         else {
             return null;
         }
+    }
+
+    private Type getType(Tree.MatchCase mc) {
+        Tree.MatchList ml = 
+                mc.getExpressionList();
+        List<Tree.Expression> es = 
+                ml.getExpressions();
+        List<Tree.Type> ts = 
+                ml.getTypes();
+        List<Type> list = 
+                new ArrayList<Type>
+                (es.size() + ts.size());
+        for (Tree.Expression e: es) {
+            if (e.getTypeModel()!=null) {
+                addToUnion(list, e.getTypeModel());
+            }
+        }
+        for (Tree.Type t: ts) {
+            Type tm = t.getTypeModel();
+            if (tm!=null) {
+                addToUnion(list, tm);
+            }
+        }
+        return union(list, unit);
     }
 
     private Type getTypeIgnoringLiterals(
@@ -9495,25 +9559,39 @@ public class ExpressionVisitor extends Visitor {
         else if (ci instanceof Tree.MatchCase) {
             Tree.MatchCase mc = 
                     (Tree.MatchCase) ci;
-            List<Tree.Expression> es = 
-                    mc.getExpressionList()
-                        .getExpressions();
-            List<Type> list = 
-                    new ArrayList<Type>(es.size());
-            for (Tree.Expression e: es) {
-                if (e.getTypeModel()!=null) {
-                    Tree.Term term = e.getTerm();
-                    if (!isLiteralCase(term)) {
-                        addToUnion(list, 
-                                e.getTypeModel());
-                    }
-                }
-            }
-            return union(list, unit);
+            return getTypeIgnoringLiterals(mc);
         }
         else {
             return null;
         }
+    }
+
+    private Type getTypeIgnoringLiterals(Tree.MatchCase mc) {
+        Tree.MatchList ml = 
+                mc.getExpressionList();
+        List<Tree.Expression> es = 
+                ml.getExpressions();
+        List<Tree.Type> ts = 
+                ml.getTypes();
+        List<Type> list = 
+                new ArrayList<Type>
+                (es.size() + ts.size());
+        for (Tree.Expression e: es) {
+            if (e.getTypeModel()!=null) {
+                Tree.Term term = e.getTerm();
+                if (!isLiteralCase(term)) {
+                    addToUnion(list, 
+                            e.getTypeModel());
+                }
+            }
+        }
+        for (Tree.Type t: ts) {
+            Type tm = t.getTypeModel();
+            if (tm!=null) {
+                addToUnion(list, tm);
+            }
+        }
+        return union(list, unit);
     }
 
     private Type getTypeIgnoringLiteralsAndConstants(
@@ -9525,31 +9603,45 @@ public class ExpressionVisitor extends Visitor {
         else if (ci instanceof Tree.MatchCase) {
             Tree.MatchCase mc = 
                     (Tree.MatchCase) ci;
-            List<Tree.Expression> es = 
-                    mc.getExpressionList()
-                        .getExpressions();
-            List<Type> list = 
-                    new ArrayList<Type>(es.size());
-            for (Tree.Expression e: es) {
-                if (e.getTypeModel()!=null) {
-                    Tree.Term term = e.getTerm();
-                    if (isEnumCase(term)) {
-                        addToUnion(list, 
-                                e.getTypeModel());
-                    }
-                }
-            }
-            return union(list, unit);
+            return getTypeIgnoringLiteralsAndConstants(mc);
         }
         else {
             return null;
         }
     }
 
+    private Type getTypeIgnoringLiteralsAndConstants(Tree.MatchCase mc) {
+        Tree.MatchList ml = 
+                mc.getExpressionList();
+        List<Tree.Expression> es = 
+                ml.getExpressions();
+        List<Tree.Type> ts = 
+                ml.getTypes();
+        List<Type> list = 
+                new ArrayList<Type>
+                (es.size() + ts.size());
+        for (Tree.Expression e: es) {
+            Type tm = e.getTypeModel();
+            if (tm!=null) {
+                Tree.Term term = e.getTerm();
+                if (isEnumCase(term)) {
+                    addToUnion(list, tm);
+                }
+            }
+        }
+        for (Tree.Type t: ts) {
+            Type tm = t.getTypeModel();
+            if (tm!=null) {
+                addToUnion(list, tm);
+            }
+        }
+        return union(list, unit);
+    }
+
     private boolean isLiteralCase(Tree.Term term) {
-        return term instanceof Tree.Literal ||
-              term instanceof Tree.Tuple ||
-              term instanceof Tree.NegativeOp;
+        return term instanceof Tree.Literal 
+            || term instanceof Tree.Tuple 
+            || term instanceof Tree.NegativeOp;
     }
     
     @Override

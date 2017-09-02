@@ -35,6 +35,22 @@ public class CustomTree extends Tree {
         }
     }
     
+    public static class MatchCase
+            extends Tree.MatchCase {
+        private Tree.Variable variable;
+        public MatchCase(Token token) {
+            super(token);
+        }
+        @Override
+        public void setVariable(Tree.Variable node) {
+            variable = node;
+        }
+        @Override
+        public Tree.Variable getVariable() {
+            return variable;
+        }
+    }
+    
     public static class GuardedVariable
             extends Tree.Variable {
         private Tree.ConditionList conditionList;

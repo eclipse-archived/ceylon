@@ -4840,11 +4840,15 @@ public class StatementTransformer extends AbstractTransformer {
                             getSwitchExpressionType(switchClause));
                 } else if (item instanceof Tree.MatchCase) {
                     // will be primitive equality test
-                    for (Tree.Expression expr : ((Tree.MatchCase) item).getExpressionList().getExpressions()) {
+                    Tree.MatchList matchList = ((Tree.MatchCase) item).getExpressionList();
+                    for (Tree.Expression expr : matchList.getExpressions()) {
                         if (isNull(expr.getTypeModel())) {
                             containsNull = clause;
                             continue outer;
                         }
+                    }
+                    for (Tree.Type type : matchList.getTypes()) {
+                        isCheap=false; //TODO!!!!!!!!
                     }
                     isCheap = true;
                 } else {
@@ -4991,7 +4995,12 @@ public class StatementTransformer extends AbstractTransformer {
             boolean canUseSwitch = true;
             caseStmts: for (Tree.CaseClause clause : caseList.getCaseClauses()) {
                 if (clause.getCaseItem() instanceof Tree.MatchCase) {
-                    java.util.List<Expression> caseExprs = ((Tree.MatchCase)clause.getCaseItem()).getExpressionList().getExpressions();
+                    Tree.MatchList matchList = ((Tree.MatchCase)clause.getCaseItem()).getExpressionList();
+                    if (!matchList.getTypes().isEmpty()) {
+                        canUseSwitch = false;
+                        break caseStmts;
+                    }
+                    java.util.List<Expression> caseExprs = matchList.getExpressions();
                     caseExpr: for (Tree.Expression expr : caseExprs) {
                         Tree.Term e = ExpressionTransformer.eliminateParens(expr);
                         if (e instanceof Tree.StringLiteral
@@ -5029,7 +5038,12 @@ public class StatementTransformer extends AbstractTransformer {
                         if (getSingletonNullCase(clause) != null) {
                             hasSingletonNullCase = true;
                         }
-                        java.util.List<Expression> caseExprs = ((Tree.MatchCase)clause.getCaseItem()).getExpressionList().getExpressions();
+                        Tree.MatchList matchList = ((Tree.MatchCase)clause.getCaseItem()).getExpressionList();
+                        if (!matchList.getTypes().isEmpty()) {
+                            canUseIfElseSwitch = false;
+                            break caseStmts;
+                        }
+                        java.util.List<Expression> caseExprs = matchList.getExpressions();
                         caseExpr: for (Tree.Expression expr : caseExprs) {
                             Tree.Term e = ExpressionTransformer.eliminateParens(expr);
                             if (e instanceof Tree.StringLiteral
@@ -5071,7 +5085,8 @@ public class StatementTransformer extends AbstractTransformer {
 
     private boolean isSwitchAllMatchCases(Tree.SwitchCaseList caseList) {
         for (Tree.CaseClause caseClause : caseList.getCaseClauses()) {
-            if (!(caseClause.getCaseItem() instanceof Tree.MatchCase)) {
+            if (!(caseClause.getCaseItem() instanceof Tree.MatchCase)
+                    || !((Tree.MatchCase) caseClause.getCaseItem()).getExpressionList().getTypes().isEmpty()) {
                 return false;
             }
         }
@@ -5083,6 +5098,40 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.Term outerExpression, Type expectedType, Tree.MatchCase matchCase,
             JCStatement last, Type switchType, boolean primitiveSelector) {
         at(matchCase);
+        
+        JCVariableDecl decl2 = null;
+        Substitution prevSubst2 = null;
+        if (matchCase.getVariable()!=null) {
+         // Use the type of the variable, which is more precise than the type we test for.
+            Type varType = matchCase.getVariable().getDeclarationModel().getType();
+            
+            String name = matchCase.getVariable().getIdentifier().getText();
+            TypedDeclaration varDecl = matchCase.getVariable().getDeclarationModel();
+
+            Naming.SyntheticName tmpVarName = selectorAlias;
+            Name substVarName = naming.aliasName(name);
+
+            // Want raw type for instanceof since it can't be used with generic types
+            JCExpression rawToTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES | JT_RAW);
+
+            // Substitute variable with the correct type to use in the rest of the code block
+            
+            JCExpression tmpVarExpr = at(matchCase).TypeCast(rawToTypeExpr, tmpVarName.makeIdent());
+            JCExpression toTypeExpr;
+            if (isCeylonBasicType(varType) && varDecl.getUnboxed() == true) {
+                toTypeExpr = makeJavaType(varType);
+                tmpVarExpr = unboxType(tmpVarExpr, varType);
+            } else {
+                toTypeExpr = makeJavaType(varType, JT_NO_PRIMITIVES);
+            }
+            
+            // The variable holding the result for the code inside the code block
+            decl2 = at(matchCase).VarDef(make().Modifiers(FINAL), substVarName, toTypeExpr, tmpVarExpr);
+
+            // Prepare for variable substitution in the following code block
+            prevSubst2 = naming.addVariableSubst(varDecl , substVarName.toString());
+
+        }
         
         JCExpression tests = null;
         java.util.List<Tree.Expression> expressions = matchCase.getExpressionList().getExpressions();
@@ -5133,13 +5182,26 @@ public class StatementTransformer extends AbstractTransformer {
                     test = make().Binary(JCTree.Tag.EQ, selectorExpr, transformedExpression);
                 }
             }
-            if(tests == null)
+            if(tests == null) {
                 tests = test;
-            else if (isNull(term.getTypeModel())) {
+            } else if (isNull(term.getTypeModel())) {
                 // ensure we do any null check as the first operation in the ||-ed expression
                 tests = make().Binary(JCTree.Tag.OR, test, tests);
             } else {
                 tests = make().Binary(JCTree.Tag.OR, tests, test);
+            }
+        }
+        
+        java.util.List<Tree.Type> types = matchCase.getExpressionList().getTypes();
+        for(Tree.Type caseType : types){
+            // note: There's no point using makeOptimizedTypeTest() because cases are disjoint
+            // anyway and the cheap cases get evaluated first.
+            Type type = caseType.getTypeModel();
+            JCExpression cond = makeTypeTest(null, selectorAlias, type, type);
+            if(tests == null) {
+                tests = cond;
+            } else {
+                tests = make().Binary(JCTree.Tag.OR, tests, cond);
             }
         }
         
@@ -5149,8 +5211,20 @@ public class StatementTransformer extends AbstractTransformer {
             prevSubst = naming.addVariableSubst(switchClause.getSwitched().getVariable().getDeclarationModel(), selectorAlias.toString());
         }
         
-        JCBlock block = transformCaseClauseBlock(caseClause, tmpVar, outerExpression, expectedType);
+        JCBlock block;
+        if (decl2!=null) {
+            List<JCStatement> stats = List.<JCStatement> of(decl2);
+            stats = stats.appendList(transformCaseClause(caseClause, tmpVar, outerExpression, expectedType));
+            block = at(matchCase).Block(0, stats);
+        }
+        else {
+            block = transformCaseClauseBlock(caseClause, tmpVar, outerExpression, expectedType);
+        }
         
+        if (prevSubst2 != null) {
+            // Deactivate the above variable substitution
+            prevSubst2.close();
+        }
         if (prevSubst != null) {
             // Deactivate the above variable substitution
             prevSubst.close();

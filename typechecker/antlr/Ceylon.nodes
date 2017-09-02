@@ -514,7 +514,8 @@
     
 ^(CASE_ITEM)
 ^(MATCH_CASE:CASE_ITEM
-    EXPRESSION_LIST)
+    MATCH_LIST expressionList
+    VARIABLE?)
 ^(IS_CASE:CASE_ITEM
     TYPE
     VARIABLE?)
@@ -695,6 +696,10 @@
 "A parenthesized list of expressions."
 ^(EXPRESSION_LIST 
     EXPRESSION*)
+
+^(MATCH_LIST:EXPRESSION_LIST
+    TYPE*)
+   
 
 "An expression."
 ^(EXPRESSION:ATOM 

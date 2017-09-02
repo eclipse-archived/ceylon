@@ -2116,12 +2116,24 @@ dynamicArguments returns [NamedArgumentList namedArgumentList]
       { $namedArgumentList.setEndToken($RBRACKET); }
     ;
 
-valueCaseList returns [ExpressionList expressionList]
-    : { $expressionList = new ExpressionList(null); }
-      ie1=intersectionExpression 
+valueCase returns [Expression expression, Type type]
+    : (intersectionType (COMMA|UNION_OP|RPAREN)) =>
+      intersectionType 
+      { $type=$intersectionType.type; }
+    | 
+      ie=intersectionExpression 
       { Expression e = new Expression(null);
-        e.setTerm($ie1.term);
-        $expressionList.addExpression(e); }
+        e.setTerm($ie.term);
+        $expression=e; }
+    ;
+
+valueCaseList returns [MatchList expressionList]
+    : { $expressionList = new MatchList(null); }
+      ie1=valueCase 
+      { if ($ie1.expression!=null)
+            $expressionList.addExpression($ie1.expression);
+        if ($ie1.type!=null)
+            $expressionList.addType($ie1.type); }
       ( 
         (
           c=COMMA 
@@ -2133,12 +2145,13 @@ valueCaseList returns [ExpressionList expressionList]
           { $expressionList.setEndToken($u); }
         )
         (
-          ie2=intersectionExpression
-          { if ($ie2.term!=null) {
-                Expression e = new Expression(null);
-                e.setTerm($ie2.term);
-                $expressionList.addExpression(e);
-                $expressionList.setEndToken(null); } }
+          ie2=valueCase
+          { if ($ie2.expression!=null)
+                $expressionList.addExpression($ie2.expression);
+            if ($ie2.type!=null)
+                $expressionList.addType($ie2.type);
+            if ($ie2.expression!=null || $ie2.type!=null)
+                $expressionList.setEndToken(null); }
         | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); } //TODO: sometimes it should be RPAREN!
         )
@@ -2768,13 +2781,29 @@ switchExpression returns [SwitchExpression term]
             }
             if (item instanceof MatchCase) {
               MatchCase mc = (MatchCase) item;
-              ExpressionList el = mc.getExpressionList();
+              MatchList el = mc.getExpressionList();
               if (el!=null) {
                 for (Expression e: el.getExpressions()) {
                   if (!(e.getTerm() instanceof Literal)) {
                     found = true;
                     break;
                   }
+                }
+                for (Type t: el.getTypes()) {
+                  found = true;
+                  Variable v = new Variable(null);
+                  v.setType(new SyntheticVariable(null));
+                  v.setIdentifier(id);
+                  SpecifierExpression se = new SpecifierExpression(null);
+                  Expression e = new Expression(null);
+                  BaseMemberExpression bme = new BaseMemberExpression(null);
+                  bme.setIdentifier(id);
+                  bme.setTypeArguments( new InferredTypeArguments(null) );
+                  e.setTerm(bme);
+                  se.setExpression(e);
+                  v.setSpecifierExpression(se);
+                  mc.setVariable(v);    
+                  break;              
                 }
               }
             }
@@ -4177,13 +4206,29 @@ switchCaseElse returns [SwitchStatement statement]
             }
             if (item instanceof MatchCase) {
               MatchCase mc = (MatchCase) item;
-              ExpressionList el = mc.getExpressionList();
+              MatchList el = mc.getExpressionList();
               if (el!=null) {
                 for (Expression e: el.getExpressions()) {
                   if (!(e.getTerm() instanceof Literal)) {
                     found = true;
                     break;
                   }
+                }
+                for (Type t: el.getTypes()) {
+                  found = true;
+                  Variable v = new Variable(null);
+                  v.setType(new SyntheticVariable(null));
+                  v.setIdentifier(id);
+                  SpecifierExpression se = new SpecifierExpression(null);
+                  Expression e = new Expression(null);
+                  BaseMemberExpression bme = new BaseMemberExpression(null);
+                  bme.setIdentifier(id);
+                  bme.setTypeArguments( new InferredTypeArguments(null) );
+                  e.setTerm(bme);
+                  se.setExpression(e);
+                  v.setSpecifierExpression(se);
+                  mc.setVariable(v);    
+                  break;              
                 }
               }
             }
@@ -4272,7 +4317,7 @@ caseItemList returns [CaseItem item]
     ;
 
 caseItem returns [CaseItem item]
-    : (IS_OP) => isCaseCondition 
+    : (IS_OP|type RPAREN) => isCaseCondition 
       { $item = $isCaseCondition.item; }
     | (SATISFIES) => satisfiesCaseCondition
       { $item = $satisfiesCaseCondition.item; }
@@ -4294,7 +4339,7 @@ matchCaseCondition returns [MatchCase item]
 
 isCaseCondition returns [IsCase item]
     @init { StaticType t = null; } 
-    : IS_OP 
+    : IS_OP?
       { $item = new IsCase($IS_OP); }
       type
       { t = $type.type;
