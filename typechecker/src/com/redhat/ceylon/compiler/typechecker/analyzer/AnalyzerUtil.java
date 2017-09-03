@@ -765,7 +765,7 @@ public class AnalyzerUtil {
         }
         else if (type.isNothing()) {
             node.addError(message + 
-                    ": operand has type `Nothing`");
+                    ": operand has type 'Nothing'");
             return null;
         }
         else {
