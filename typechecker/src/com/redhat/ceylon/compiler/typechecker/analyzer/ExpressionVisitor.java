@@ -3861,19 +3861,27 @@ public class ExpressionVisitor extends Visitor {
                                                     new Tree.ParameterList(null);
                                             Tree.InitializerParameter ip = 
                                                     new Tree.InitializerParameter(null);
-                                            ip.setIdentifier(new Tree.Identifier(fiv.id.getToken()));
+                                            Tree.Identifier id = 
+                                                    new Tree.Identifier(fiv.id.getToken());
+                                            Tree.FunctionModifier fm = 
+                                                    new Tree.FunctionModifier(null);
+                                            ip.setIdentifier(id);
                                             pl.addParameter(ip);
                                             fa.addParameterList(pl);
-                                            fa.setType(new Tree.FunctionModifier(null));
+                                            fa.setType(fm);
                                             e.setTerm(fa);
                                             ip.setUnit(unit);
                                             fa.setUnit(unit);
                                             pl.setUnit(unit);
+                                            fm.setUnit(unit);
+                                            id.setUnit(unit);
                                             e.setUnit(unit);
                                             final Function model = new Function();
                                             ip.setScope(model);
                                             fa.setScope(model);
                                             pl.setScope(model);
+                                            id.setScope(model);
+                                            fm.setScope(model);
                                             model.setUnit(unit);
                                             Scope scope = ex.getScope();
                                             e.setScope(scope);
@@ -3893,7 +3901,6 @@ public class ExpressionVisitor extends Visitor {
                                             fa.setExpression(ex);
                                             la.setExpression(e);
                                             class AdjustScopeVisitor extends Visitor {
-                                                boolean found = false;
                                                 @Override
                                                 public void visit(Tree.BaseMemberExpression that) {
                                                     super.visit(that);
