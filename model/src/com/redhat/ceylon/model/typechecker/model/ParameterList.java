@@ -45,8 +45,9 @@ public class ParameterList {
     }
 
     public boolean hasSequencedParameter() {
-        return !parameters.isEmpty() && 
-                parameters.get(parameters.size()-1).isSequenced();
+        return !parameters.isEmpty() 
+            && parameters.get(parameters.size()-1)
+                .isSequenced();
     }
     
     public boolean isFirst() {
