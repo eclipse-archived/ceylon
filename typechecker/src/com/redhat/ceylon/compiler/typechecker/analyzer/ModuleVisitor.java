@@ -218,8 +218,8 @@ public class ModuleVisitor extends Visitor {
     @Override
     public void visit(Tree.ModuleDescriptor that) {
         Tree.AnnotationList al = that.getAnnotationList();
-		Unit u = unit.getUnit();
-		moduleBackends = getNativeBackend(al, u);
+        Unit u = unit.getUnit();
+        moduleBackends = getNativeBackend(al, u);
         super.visit(that);
         if (phase==Phase.SRC_MODULE) {
             String version = 
@@ -281,9 +281,9 @@ public class ModuleVisitor extends Visitor {
                         mainModule.setUnit(u);
                         mainModule.setVersion(version);
 //                        if (hasAnnotation(al, "label", u)) {
-//                        	mainModule.setLabel(getAnnotationArgument(
-//                        			getAnnotation(al, "label", u), 
-//                        			0, u));
+//                            mainModule.setLabel(getAnnotationArgument(
+//                                    getAnnotation(al, "label", u), 
+//                                    0, u));
 //                        }
                     }
                     String nameString = 
