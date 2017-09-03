@@ -3924,6 +3924,7 @@ public class ExpressionVisitor extends Visitor {
                                         final Scope scope = 
                                                 ex.getScope();
                                         e.setScope(scope);
+                                        model.setVisibleScope(scope);
                                         model.setScope(scope);
                                         model.setContainer(scope);
                                         model.setName("anonymous#"+fid++);
@@ -3945,7 +3946,6 @@ public class ExpressionVisitor extends Visitor {
                                             public void visitAny(Node that) {
                                                 Scope scp = that.getScope();
                                                 if (scp==scope) {
-                                                    that.setScope(model);
                                                     that.setScope(model);
                                                 }
                                                 if (scp instanceof Element) {
