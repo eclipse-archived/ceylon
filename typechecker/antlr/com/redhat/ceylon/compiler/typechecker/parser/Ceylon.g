@@ -394,20 +394,26 @@ annotationName returns [Identifier identifier]
 memberName returns [Identifier identifier]
     : LIDENTIFIER
       { $identifier = new Identifier($LIDENTIFIER); }
+    | IT
+      { $identifier = new Identifier($IT); }
     ;
     
 memberNameDeclaration returns [Identifier identifier]
-    : memberName { $identifier = $memberName.identifier; }
+    : memberName 
+      { $identifier = $memberName.identifier; }
     | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input), 5001); }
-      typeName { $identifier = $typeName.identifier; }
+      typeName 
+      { $identifier = $typeName.identifier; }
     ;
 
 typeNameDeclaration returns [Identifier identifier]
-    : typeName { $identifier = $typeName.identifier; }
+    : typeName 
+      { $identifier = $typeName.identifier; }
     | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(UIDENTIFIER, input), 5002); }
-      memberName { $identifier = $memberName.identifier; }
+      memberName 
+      { $identifier = $memberName.identifier; }
       
     ;
 
@@ -561,7 +567,7 @@ setterDeclaration returns [AttributeSetterDefinition declaration]
 tuplePatternStart
     : LBRACKET
       (
-        compilerAnnotations PRODUCT_OP? LIDENTIFIER
+        compilerAnnotations PRODUCT_OP? (LIDENTIFIER|IT)
       |
         (compilerAnnotations declarationStart) => 
         (compilerAnnotations declarationStart)
@@ -1577,7 +1583,7 @@ anonymousTypeConstraints returns [TypeConstraintList typeConstraintList]
 
 destructureStart
     : VALUE_MODIFIER compilerAnnotations 
-      (LBRACKET|UIDENTIFIER|VOID_MODIFIER|VALUE_MODIFIER|FUNCTION_MODIFIER|LIDENTIFIER ENTRY_OP)
+      (LBRACKET|UIDENTIFIER|VOID_MODIFIER|VALUE_MODIFIER|FUNCTION_MODIFIER|(LIDENTIFIER|IT) ENTRY_OP)
     ;
 
 declarationOrStatement returns [Statement statement]
@@ -1621,7 +1627,7 @@ declaration returns [Declaration declaration]
       { $declaration=$inferredAttributeDeclaration.declaration; }
     | typedMethodOrAttributeDeclaration
       { $declaration=$typedMethodOrAttributeDeclaration.declaration; }
-    | (NEW (LIDENTIFIER|UIDENTIFIER)? LPAREN) => 
+    | (NEW (LIDENTIFIER|IT|UIDENTIFIER)? LPAREN) => 
       constructor
       { $declaration=$constructor.declaration; }
     | enumeratedObject
@@ -1638,7 +1644,7 @@ declaration returns [Declaration declaration]
 annotatedDeclarationStart
     : 
       (stringLiteral | annotation) 
-      (LIDENTIFIER | (UIDENTIFIER) => UIDENTIFIER | (unambiguousType) => unambiguousType | declarationStart)
+      (LIDENTIFIER | IT | (UIDENTIFIER) => UIDENTIFIER | (unambiguousType) => unambiguousType | declarationStart)
     |
       (unambiguousType) => unambiguousType 
     | 
@@ -1654,16 +1660,16 @@ annotatedAssertionStart
 //expressions
 declarationStart
     : VALUE_MODIFIER
-    | FUNCTION_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate anon functions
-    | VOID_MODIFIER (LIDENTIFIER|UIDENTIFIER) //to disambiguate anon functions
+    | FUNCTION_MODIFIER (LIDENTIFIER|IT|UIDENTIFIER) //to disambiguate anon functions
+    | VOID_MODIFIER (LIDENTIFIER|IT|UIDENTIFIER) //to disambiguate anon functions
     | ASSIGN
     | INTERFACE_DEFINITION
     | CLASS_DEFINITION
-    | OBJECT_DEFINITION (LIDENTIFIER|UIDENTIFIER) //to disambiguate object expressions
+    | OBJECT_DEFINITION (LIDENTIFIER|IT|UIDENTIFIER) //to disambiguate object expressions
     | NEW
     | ALIAS 
-    | variadicType LIDENTIFIER
-    | DYNAMIC (LIDENTIFIER|UIDENTIFIER)
+    | variadicType (LIDENTIFIER|IT)
+    | DYNAMIC (LIDENTIFIER|IT|UIDENTIFIER)
     ;
     
 // recognize some common patterns that are unambiguously
@@ -1891,7 +1897,7 @@ baseReferenceOrParameterized returns [Primary primary]
     @init { BaseMemberOrTypeExpression be=null;
             QualifiedMemberOrTypeExpression qe=null;
             ParameterizedExpression pe=null; }
-    : (LIDENTIFIER typeParameters? specifierParametersStart) => 
+    : ((LIDENTIFIER|IT) typeParameters? specifierParametersStart) => 
       memberName
       { be = new BaseMemberExpression(null);
         be.setTypeArguments(new InferredTypeArguments(null)); //yew!!
@@ -1921,7 +1927,7 @@ baseReferenceOrParameterized returns [Primary primary]
     | selfReference
       { $primary=$selfReference.atom; }
       (
-        (MEMBER_OP LIDENTIFIER typeParameters? specifierParametersStart) => 
+        (MEMBER_OP (LIDENTIFIER|IT) typeParameters? specifierParametersStart) => 
         memberSelectionOperator
         { qe = new QualifiedMemberExpression(null); 
           qe.setMemberOperator($memberSelectionOperator.operator);
@@ -1991,15 +1997,15 @@ primary returns [Primary primary]
     ;
 
 parameterStart
-    : VOID_MODIFIER LIDENTIFIER
-    | variadicType LIDENTIFIER
-    | DYNAMIC LIDENTIFIER
+    : VOID_MODIFIER (LIDENTIFIER|IT)
+    | variadicType (LIDENTIFIER|IT)
+    | DYNAMIC (LIDENTIFIER|IT)
     ;
     
 annotatedParameterStart
     : 
       (stringLiteral | annotation) 
-      (LIDENTIFIER | (UIDENTIFIER) => UIDENTIFIER | (unambiguousType) => unambiguousType | parameterStart)
+      (LIDENTIFIER | IT | (UIDENTIFIER) => UIDENTIFIER | (unambiguousType) => unambiguousType | parameterStart)
     |
       (unambiguousType) => unambiguousType 
     | 
@@ -2029,7 +2035,7 @@ qualifiedReference returns [Identifier identifier, MemberOperator operator,
         { $identifier = $typeReference.identifier;
           $typeArgumentList = $typeReference.typeArgumentList;  
           $isMember=false; }
-      | (~(LIDENTIFIER|UIDENTIFIER))=>
+      | (~(LIDENTIFIER|IT|UIDENTIFIER))=>
         { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(LIDENTIFIER, input)); }
       )
@@ -2048,8 +2054,8 @@ statementStart
     : annotation* 
     ( 
         VALUE_MODIFIER | FUNCTION_MODIFIER 
-      | variadicType LIDENTIFIER
-      | OBJECT_DEFINITION LIDENTIFIER 
+      | variadicType (LIDENTIFIER|IT)
+      | OBJECT_DEFINITION (LIDENTIFIER|IT) 
       | CLASS_DEFINITION | INTERFACE_DEFINITION
       | ASSERT
     )
@@ -2573,7 +2579,7 @@ iterableArgumentStart
 
 //special rule for syntactic predicates
 specificationStart
-    : LIDENTIFIER parameters* (SPECIFY|COMPUTE)
+    : (LIDENTIFIER|IT) parameters* (SPECIFY|COMPUTE)
     ;
 
 parExpression returns [ParExpression expression] 
@@ -2618,17 +2624,17 @@ spreadArgument returns [SpreadArgument positionalArgument]
     ;
 
 inferrableParameterStart
-    : VOID_MODIFIER LIDENTIFIER
-    | variadicType LIDENTIFIER
-    | DYNAMIC LIDENTIFIER
-    | VALUE_MODIFIER LIDENTIFIER
-    | FUNCTION_MODIFIER LIDENTIFIER
+    : VOID_MODIFIER (LIDENTIFIER|IT)
+    | variadicType (LIDENTIFIER|IT)
+    | DYNAMIC (LIDENTIFIER|IT)
+    | VALUE_MODIFIER (LIDENTIFIER|IT)
+    | FUNCTION_MODIFIER (LIDENTIFIER|IT)
     ;
     
 annotatedInferrableParameterStart
     : 
       (stringLiteral | annotation) 
-      (LIDENTIFIER | (UIDENTIFIER) => UIDENTIFIER | (unambiguousType) => unambiguousType | inferrableParameterStart)
+      (LIDENTIFIER | IT | (UIDENTIFIER) => UIDENTIFIER | (unambiguousType) => unambiguousType | inferrableParameterStart)
     |
       (unambiguousType) => unambiguousType 
     | 
@@ -2640,7 +2646,7 @@ anonParametersStart
       LPAREN
       ( 
         RPAREN
-      | (LIDENTIFIER|LBRACKET) => pattern (COMMA | RPAREN anonParametersStart2)
+      | (LIDENTIFIER|IT|LBRACKET) => pattern (COMMA | RPAREN anonParametersStart2)
       | compilerAnnotations annotatedInferrableParameterStart 
       )
     ;
@@ -2649,9 +2655,9 @@ anonParametersStart2
     : LPAREN
       (
         RPAREN anonParametersStart2
-      | (LIDENTIFIER COMMA)*
+      | ((LIDENTIFIER|IT) COMMA)*
         (
-          (LIDENTIFIER|LBRACKET) => pattern RPAREN anonParametersStart2 
+          (LIDENTIFIER|IT|LBRACKET) => pattern RPAREN anonParametersStart2 
         | compilerAnnotations annotatedInferrableParameterStart
         )
       )
@@ -3410,7 +3416,7 @@ declarationLiteralStart
     : (CLASS_DEFINITION|INTERFACE_DEFINITION|NEW|ALIAS|TYPE_CONSTRAINT)
     | (FUNCTION_MODIFIER|VALUE_MODIFIER|OBJECT_DEFINITION)
       (PACKAGE MEMBER_OP)?
-      (LIDENTIFIER|UIDENTIFIER)
+      (LIDENTIFIER|IT|UIDENTIFIER)
     | PACKAGE (~MEMBER_OP)
     | MODULE
     ;
@@ -3792,7 +3798,7 @@ qualifiedType returns [StaticType type]
     @init { QualifiedType qt = null; }
     : baseType
       { $type=$baseType.type; }
-      ( (MEMBER_OP ~LIDENTIFIER) =>
+      ( (MEMBER_OP ~(LIDENTIFIER|IT)) =>
         MEMBER_OP
         { qt = new QualifiedType($MEMBER_OP);
           qt.setOuterType($type);
@@ -3980,11 +3986,11 @@ existsCondition returns [ExistsCondition condition]
         (letStart) =>
         letVariable 
         { $condition.setVariable($letVariable.statement); }
-      | (LIDENTIFIER (RPAREN|COMMA))=> iv1=impliedVariable
+      | ((LIDENTIFIER|IT) (RPAREN|COMMA))=> iv1=impliedVariable
         { $condition.setVariable($iv1.variable); }
       | (expression (RPAREN|COMMA))=> e1=expression
         { $condition.setBrokenExpression($e1.expression); }
-      | (LIDENTIFIER)=> iv2=impliedVariable
+      | (LIDENTIFIER|IT)=> iv2=impliedVariable
         { $condition.setVariable($iv2.variable); }
       | e2=expression
         { $condition.setBrokenExpression($e2.expression); }
@@ -4004,11 +4010,11 @@ nonemptyCondition returns [NonemptyCondition condition]
         (letStart) =>
         letVariable 
         { $condition.setVariable($letVariable.statement); }
-      | (LIDENTIFIER (RPAREN|COMMA))=> iv1=impliedVariable
+      | ((LIDENTIFIER|IT) (RPAREN|COMMA))=> iv1=impliedVariable
         { $condition.setVariable($iv1.variable); }
       | (expression (RPAREN|COMMA))=> e1=expression
         { $condition.setBrokenExpression($e1.expression); }
-      | (LIDENTIFIER)=> iv2=impliedVariable
+      | (LIDENTIFIER|IT)=> iv2=impliedVariable
         { $condition.setVariable($iv2.variable); }
       | e2=expression
         { $condition.setBrokenExpression($e2.expression); }
@@ -4027,7 +4033,7 @@ isCondition returns [IsCondition condition]
       type
       { $condition.setType($type.type); }
       (
-        (LIDENTIFIER SPECIFY) =>
+        ((LIDENTIFIER|IT) SPECIFY) =>
         v=isConditionVariable
         { $condition.setVariable($v.variable); }
       | impliedVariable 
@@ -4321,7 +4327,7 @@ caseItem returns [CaseItem item]
       { $item = $isCaseCondition.item; }
     | (SATISFIES) => satisfiesCaseCondition
       { $item = $satisfiesCaseCondition.item; }
-    | (LBRACKET LIDENTIFIER) => matchCaseCondition
+    | (LBRACKET (LIDENTIFIER|IT)) => matchCaseCondition
       { $item = $matchCaseCondition.item; }
     | (patternStart) => pattern
       { PatternCase pc = new PatternCase(null);
@@ -4777,7 +4783,7 @@ typeModelExpression returns [TypeLiteral literal]
 
 modelExpression returns [MetaLiteral meta]
   :
-    (((PACKAGE|primaryType) MEMBER_OP)? LIDENTIFIER) =>
+    (((PACKAGE|primaryType) MEMBER_OP)? (LIDENTIFIER|IT)) =>
     memberModelExpression
     { $meta=$memberModelExpression.literal; }
   | 
@@ -5065,6 +5071,10 @@ INTERFACE_DEFINITION
 
 IS_OP
     :   'is'
+    ;
+
+IT
+    :   'it'
     ;
 
 LET
