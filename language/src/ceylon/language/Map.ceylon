@@ -38,8 +38,8 @@ see (class Entry, function package.map,
      value emptyMap)
 tagged("Collections")
 shared interface Map<out Key=Object, out Item=Anything>
-        satisfies Collection<Key->Item> &
-                  Correspondence<Object,Item>
+        satisfies Collection<Key->Item> 
+                & Correspondence<Object,Item>
         given Key satisfies Object {
     
     "Returns the item of the entry with the given [[key]], 

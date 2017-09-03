@@ -54,9 +54,9 @@ see (interface Sequence,
      class Array)
 tagged("Collections")
 shared interface List<out Element=Anything>
-        satisfies Collection<Element> &
-                  Correspondence<Integer,Element> &
-                  Ranged<Integer,Element,List<Element>> {
+        satisfies Collection<Element> 
+                & Correspondence<Integer,Element> 
+                & Ranged<Integer,Element,List<Element>> {
     
     "The first element of this `List`, if any."
     shared actual default Element? first => getFromFirst(0);

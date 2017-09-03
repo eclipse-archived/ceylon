@@ -34,8 +34,8 @@ see (interface Empty,
 by ("Gavin")
 tagged("Sequences")
 shared sealed interface Sequence<out Element=Anything>
-        satisfies Element[] & 
-                  {Element+} {
+        satisfies Element[] 
+                & {Element+} {
     
     "The first element of the sequence, that is, the element
      with index `0`."

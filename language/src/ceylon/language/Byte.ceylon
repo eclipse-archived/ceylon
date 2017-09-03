@@ -43,9 +43,9 @@ tagged("Basic types")
 since("1.1.0")
 shared native final class Byte(congruent) 
         extends Object()
-        satisfies Binary<Byte> & 
-                  Invertible<Byte> &
-                  Enumerable<Byte> {
+        satisfies Binary<Byte> 
+                & Invertible<Byte> 
+                & Enumerable<Byte> {
     
     "An integer member of the congruence class of the 
      resulting `Byte`.
