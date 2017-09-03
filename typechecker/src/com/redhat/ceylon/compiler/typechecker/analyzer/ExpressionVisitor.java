@@ -3890,6 +3890,9 @@ public class ExpressionVisitor extends Visitor {
                                             new FindItVisitor();
                                     fiv.visit(ex);
                                     if (fiv.id!=null) {
+                                        final Scope scope = 
+                                                ex.getScope();
+
                                         Tree.Expression e = 
                                                 new Tree.Expression(null);
                                         Tree.FunctionArgument fa = 
@@ -3906,29 +3909,33 @@ public class ExpressionVisitor extends Visitor {
                                         pl.addParameter(ip);
                                         fa.addParameterList(pl);
                                         fa.setType(fm);
+                                        fa.setExpression(ex);
                                         e.setTerm(fa);
+                                        larg.setExpression(e);
+                                        
                                         ip.setUnit(unit);
                                         fa.setUnit(unit);
                                         pl.setUnit(unit);
                                         fm.setUnit(unit);
                                         id.setUnit(unit);
                                         e.setUnit(unit);
+                                        
                                         final Function model = 
                                                 new Function();
-                                        ip.setScope(model);
-                                        fa.setScope(model);
-                                        pl.setScope(model);
-                                        id.setScope(model);
-                                        fm.setScope(model);
                                         model.setUnit(unit);
-                                        final Scope scope = 
-                                                ex.getScope();
-                                        e.setScope(scope);
                                         model.setVisibleScope(scope);
                                         model.setScope(scope);
                                         model.setContainer(scope);
                                         model.setName("anonymous#"+fid++);
                                         model.setAnonymous(true);
+                                        
+                                        e.setScope(scope);
+                                        ip.setScope(model);
+                                        fa.setScope(model);
+                                        pl.setScope(model);
+                                        id.setScope(model);
+                                        fm.setScope(model);
+                                        
                                         Parameter mp = new Parameter();
                                         mp.setDeclaration(model);
                                         ip.setParameterModel(mp);
@@ -3939,8 +3946,7 @@ public class ExpressionVisitor extends Visitor {
                                         model.addParameterList(mpl);
                                         pl.setModel(mpl);
                                         fa.setDeclarationModel(model);
-                                        fa.setExpression(ex);
-                                        larg.setExpression(e);
+                                        
                                         class AdjustScopeVisitor extends Visitor {
                                             @Override
                                             public void visitAny(Node that) {
