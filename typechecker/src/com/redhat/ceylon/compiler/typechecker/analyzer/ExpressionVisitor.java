@@ -3804,6 +3804,27 @@ public class ExpressionVisitor extends Visitor {
     
     private int fid=3000;
     
+    private boolean isSingleParameter(FunctionOrValue param) {
+        if (param instanceof Function) {
+            Function fp = (Function) param;
+            ParameterList list = 
+                    fp.getFirstParameterList();
+            return list!=null 
+                && list.getParameters().size()==1;
+        }
+        else {
+            TypeDeclaration td = 
+                    param.getTypeDeclaration();
+            if (td!=null && td.isCallable()) {
+                Type type = param.getType();
+                return unit.getCallableArgumentTypes(type).size()==1;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    
     private void visitItArgs(Tree.InvocationExpression that) {
         Tree.Primary prim = that.getPrimary();
         Tree.PositionalArgumentList pal = 
@@ -3820,98 +3841,97 @@ public class ExpressionVisitor extends Visitor {
                 ParameterList paramList = 
                         fun.getFirstParameterList();
                 if (paramList!=null) {
-                    List<Parameter> params = paramList.getParameters();
-                    for (int i=0, asz=args.size(), psz=params.size(); 
+                    List<Parameter> params = 
+                            paramList.getParameters();
+                    for (int i=0, 
+                            asz=args.size(), 
+                            psz=params.size(); 
                             i<asz && i<psz; i++) {
-                        Tree.PositionalArgument pa = args.get(i);
-                        FunctionOrValue param = params.get(i).getModel();
-                        if (param instanceof Function 
+                        Tree.PositionalArgument pa = 
+                                args.get(i);
+                        FunctionOrValue param = 
+                                params.get(i).getModel();
+                        if (isSingleParameter(param)
                                 && pa instanceof Tree.ListedArgument) {
                             Tree.ListedArgument la = 
                                     (Tree.ListedArgument) pa;
-                            Function fp = (Function) param;
-                            ParameterList list = 
-                                    fp.getFirstParameterList();
                             Tree.Expression ex = la.getExpression();
-                            if (list!=null && ex!=null) {
+                            if (ex!=null) {
                                 Tree.Term term = ex.getTerm();
                                 if (!(term instanceof Tree.FunctionArgument)) {
-                                    List<Parameter> ps = list.getParameters();
-                                    if (ps.size()==1) {
-                                        class FindItVisitor extends Visitor {
-                                            Tree.Identifier id;
+                                    class FindItVisitor extends Visitor {
+                                        Tree.Identifier id;
+                                        @Override
+                                        public void visit(Tree.BaseMemberExpression that) {
+                                            super.visit(that);
+                                            Tree.Identifier id = that.getIdentifier();
+                                            if (this.id==null 
+                                                    && id.getText().equals("it")) {
+                                                this.id = id;
+                                            }
+                                        }
+                                    }
+                                    FindItVisitor fiv = new FindItVisitor();
+                                    fiv.visit(term);
+                                    if (fiv.id!=null) {
+                                        Tree.Expression e = 
+                                                new Tree.Expression(null);
+                                        Tree.FunctionArgument fa = 
+                                                new Tree.FunctionArgument(null);
+                                        Tree.ParameterList pl =
+                                                new Tree.ParameterList(null);
+                                        Tree.InitializerParameter ip = 
+                                                new Tree.InitializerParameter(null);
+                                        Tree.Identifier id = 
+                                                new Tree.Identifier(fiv.id.getToken());
+                                        Tree.FunctionModifier fm = 
+                                                new Tree.FunctionModifier(null);
+                                        ip.setIdentifier(id);
+                                        pl.addParameter(ip);
+                                        fa.addParameterList(pl);
+                                        fa.setType(fm);
+                                        e.setTerm(fa);
+                                        ip.setUnit(unit);
+                                        fa.setUnit(unit);
+                                        pl.setUnit(unit);
+                                        fm.setUnit(unit);
+                                        id.setUnit(unit);
+                                        e.setUnit(unit);
+                                        final Function model = new Function();
+                                        ip.setScope(model);
+                                        fa.setScope(model);
+                                        pl.setScope(model);
+                                        id.setScope(model);
+                                        fm.setScope(model);
+                                        model.setUnit(unit);
+                                        Scope scope = ex.getScope();
+                                        e.setScope(scope);
+                                        model.setScope(scope);
+                                        model.setContainer(scope);
+                                        model.setName("anonymous#"+fid++);
+                                        model.setAnonymous(true);
+                                        Parameter mp = new Parameter();
+                                        mp.setDeclaration(model);
+                                        ip.setParameterModel(mp);
+                                        mp.setName("it");
+                                        ParameterList mpl = new ParameterList();
+                                        mpl.getParameters().add(mp);
+                                        model.addParameterList(mpl);
+                                        pl.setModel(mpl);
+                                        fa.setDeclarationModel(model);
+                                        fa.setExpression(ex);
+                                        la.setExpression(e);
+                                        class AdjustScopeVisitor extends Visitor {
                                             @Override
                                             public void visit(Tree.BaseMemberExpression that) {
                                                 super.visit(that);
-                                                Tree.Identifier id = that.getIdentifier();
-                                                if (this.id==null 
-                                                        && id.getText().equals("it")) {
-                                                    this.id = id;
+                                                if (that.getIdentifier().getText()
+                                                        .equals("it")) {
+                                                    that.setScope(model);
                                                 }
                                             }
                                         }
-                                        FindItVisitor fiv = new FindItVisitor();
-                                        fiv.visit(term);
-                                        if (fiv.id!=null) {
-                                            Tree.Expression e = 
-                                                    new Tree.Expression(null);
-                                            Tree.FunctionArgument fa = 
-                                                    new Tree.FunctionArgument(null);
-                                            Tree.ParameterList pl =
-                                                    new Tree.ParameterList(null);
-                                            Tree.InitializerParameter ip = 
-                                                    new Tree.InitializerParameter(null);
-                                            Tree.Identifier id = 
-                                                    new Tree.Identifier(fiv.id.getToken());
-                                            Tree.FunctionModifier fm = 
-                                                    new Tree.FunctionModifier(null);
-                                            ip.setIdentifier(id);
-                                            pl.addParameter(ip);
-                                            fa.addParameterList(pl);
-                                            fa.setType(fm);
-                                            e.setTerm(fa);
-                                            ip.setUnit(unit);
-                                            fa.setUnit(unit);
-                                            pl.setUnit(unit);
-                                            fm.setUnit(unit);
-                                            id.setUnit(unit);
-                                            e.setUnit(unit);
-                                            final Function model = new Function();
-                                            ip.setScope(model);
-                                            fa.setScope(model);
-                                            pl.setScope(model);
-                                            id.setScope(model);
-                                            fm.setScope(model);
-                                            model.setUnit(unit);
-                                            Scope scope = ex.getScope();
-                                            e.setScope(scope);
-                                            model.setScope(scope);
-                                            model.setContainer(scope);
-                                            model.setName("anonymous#"+fid++);
-                                            model.setAnonymous(true);
-                                            Parameter mp = new Parameter();
-                                            mp.setDeclaration(model);
-                                            ip.setParameterModel(mp);
-                                            mp.setName("it");
-                                            ParameterList mpl = new ParameterList();
-                                            mpl.getParameters().add(mp);
-                                            model.addParameterList(mpl);
-                                            pl.setModel(mpl);
-                                            fa.setDeclarationModel(model);
-                                            fa.setExpression(ex);
-                                            la.setExpression(e);
-                                            class AdjustScopeVisitor extends Visitor {
-                                                @Override
-                                                public void visit(Tree.BaseMemberExpression that) {
-                                                    super.visit(that);
-                                                    if (that.getIdentifier().getText()
-                                                            .equals("it")) {
-                                                        that.setScope(model);
-                                                    }
-                                                }
-                                            }
-                                            new AdjustScopeVisitor().visit(term);
-                                        }
+                                        new AdjustScopeVisitor().visit(term);
                                     }
                                 }
                             }
