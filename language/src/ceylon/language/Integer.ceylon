@@ -42,9 +42,9 @@ see (value runtime.integerSize)
 tagged("Basic types", "Numbers")
 shared native final class Integer
         extends Object
-        satisfies Integral<Integer> &
-                  Binary<Integer> & 
-                  Exponentiable<Integer,Integer> {
+        satisfies Integral<Integer> 
+                & Binary<Integer> 
+                & Exponentiable<Integer,Integer> {
     
     "The sum of all the integers in the given stream, or
      `0` if the stream is empty."

@@ -48,9 +48,9 @@
 tagged("Collections")
 shared final serializable native 
 class Array<Element>
-        satisfies SearchableList<Element> &
-                  Ranged<Integer,Element,Array<Element>> &
-                  IndexedCorrespondenceMutator<Element> {
+        satisfies SearchableList<Element> 
+                & Ranged<Integer,Element,Array<Element>> 
+                & IndexedCorrespondenceMutator<Element> {
     
     "Create an array with the given [[elements]]."
     shared native new ({Element*} elements) {}

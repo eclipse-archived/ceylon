@@ -43,8 +43,8 @@
 tagged("Basic types", "Numbers")
 shared native final class Float
         extends Object
-        satisfies Number<Float> & 
-                  Exponentiable<Float,Float> {
+        satisfies Number<Float> 
+                & Exponentiable<Float,Float> {
     
     "The sum of all the floating point values in the given 
      stream, `0.0` if the stream is empty, or an 

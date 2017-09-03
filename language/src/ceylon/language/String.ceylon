@@ -60,10 +60,10 @@ by ("Gavin")
 tagged("Basic types", "Strings")
 shared native final class String
         extends Object
-        satisfies SearchableList<Character> &
-                  Comparable<String> &
-                  Summable<String> & 
-                  Ranged<Integer,Character,String> {
+        satisfies SearchableList<Character> 
+                & Comparable<String> 
+                & Summable<String> 
+                & Ranged<Integer,Character,String> {
     
     "The concatenation of the given [[strings]]."
     see (class StringBuilder)

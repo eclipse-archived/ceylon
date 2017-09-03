@@ -35,8 +35,8 @@ see (class Integer)
 by ("Gavin")
 tagged("Numbers")
 shared interface Integral<Other> of Other
-        satisfies Number<Other> & 
-                  Enumerable<Other>
+        satisfies Number<Other> 
+                & Enumerable<Other>
         given Other satisfies Integral<Other> {
     
     "The remainder, after dividing this number by the given 

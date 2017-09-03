@@ -35,7 +35,8 @@ tagged("Sequences")
 shared sealed
 abstract serializable
 class Range<Element>()
-        of Span<Element> | Measure<Element>
+        of Span<Element> 
+         | Measure<Element>
         extends Object()
         satisfies [Element+]
         given Element satisfies Enumerable<Element> {

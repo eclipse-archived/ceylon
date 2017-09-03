@@ -19,8 +19,8 @@ see (class Integer, class Float)
 by ("Gavin")
 tagged("Numbers")
 shared interface Number<Other> of Other
-        satisfies Numeric<Other> & 
-                  Comparable<Other>
+        satisfies Numeric<Other> 
+                & Comparable<Other>
         given Other satisfies Number<Other> {
     
     "The magnitude of this number, defined for any instance 
