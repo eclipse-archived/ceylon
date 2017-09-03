@@ -29,6 +29,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isDefaultConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupOverloadedByName;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
@@ -222,16 +223,16 @@ public abstract class DeclarationVisitor extends Visitor {
                 Backends backends = 
                         model.getScope()
                             .getScopedBackends();
-                if (!isHeader &&
-                        !moduleBackends.none() &&
-                        !mbackends.supports(moduleBackends)) {
+                if (!isHeader 
+                        && !moduleBackends.none() 
+                        && !mbackends.supports(moduleBackends)) {
                     that.addError("native backend name on declaration conflicts with module descriptor: '\"" +
                             mbackends.names() + "\"' is not '\"" +
                             moduleBackends.names() + "\"' for '" +
                             name + "'");
-                } else if (!isHeader &&
-                        !backends.none() &&
-                        !backends.supports(mbackends)) {
+                } else if (!isHeader 
+                        && !backends.none() 
+                        && !backends.supports(mbackends)) {
                     that.addError("native backend for declaration conflicts with its scope: native implementation '" +
                             name + "' for '\"" + 
                             mbackends.names() +
@@ -239,7 +240,8 @@ public abstract class DeclarationVisitor extends Visitor {
                             backends.names() +
                             "\"'");
                 }
-                if (isHeader && existImplementations(model)) {
+                if (isHeader 
+                        && existImplementations(model)) {
                     that.addError("native header must be declared before its implementations: the native header '" +
                             name + "' is declared after an implementation");
                 }
@@ -300,8 +302,8 @@ public abstract class DeclarationVisitor extends Visitor {
                     if (member.isNative()) {
                         List<Declaration> overloads = 
                                 member.getOverloads();
-                        if (isHeader && 
-                                member.isNativeHeader()) {
+                        if (isHeader 
+                                && member.isNativeHeader()) {
                             that.addError("duplicate native header: the header for '" + 
                                     name + "' is not unique");
                             unit.getDuplicateDeclarations()
@@ -378,8 +380,10 @@ public abstract class DeclarationVisitor extends Visitor {
     }
     
     private boolean existImplementations(Declaration hdr) {
-        List<Declaration> decls = ModelUtil.lookupOverloadedByName(
-                hdr.getScope().getMembers(), hdr.getName());
+        List<Declaration> decls = 
+                lookupOverloadedByName(
+                        hdr.getScope().getMembers(), 
+                        hdr.getName());
         for (Declaration decl : decls) {
             if (decl.isNativeImplementation()) {
                 return true;
@@ -504,8 +508,8 @@ public abstract class DeclarationVisitor extends Visitor {
             List<Declaration> overloads) {
         if (overloads!=null) {
             for (Declaration overload: overloads) {
-                if (backends.supports(overload.getNativeBackends()) && 
-                    !shouldIgnoreOverload(overload, declaration)) {
+                if (backends.supports(overload.getNativeBackends()) 
+                    && !shouldIgnoreOverload(overload, declaration)) {
                     return overload;
                 }
             }
@@ -640,8 +644,8 @@ public abstract class DeclarationVisitor extends Visitor {
             that.addError("setter may not be marked native: the getter '" +
                     name + "' is not annotated 'native'");
         }
-        else if (!((Value) member).isTransient() && 
-                !isNativeHeader(member)) {
+        else if (!((Value) member).isTransient() 
+                && !isNativeHeader(member)) {
             that.addError("matching value is a reference or is forward-declared: '" + 
                     name + "' is not a getter");
         }
@@ -720,9 +724,9 @@ public abstract class DeclarationVisitor extends Visitor {
      * @see com.redhat.ceylon.model.typechecker.model.ConditionScope
      */
     private Scope getContainer(Node that) {
-        if (that instanceof Tree.Declaration &&
-                !(that instanceof Tree.Parameter) &&
-                !(that instanceof Tree.Variable)) {
+        if (that instanceof Tree.Declaration 
+                && !(that instanceof Tree.Parameter) 
+                && !(that instanceof Tree.Variable)) {
             Scope s = scope;
             while (s instanceof ConditionScope) {
                 s = s.getScope();
@@ -780,10 +784,10 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         for (Tree.ModuleDescriptor md: 
                 that.getModuleDescriptors()) {
-            if (index<0 || 
-                    md.getToken()
-                      .getTokenIndex()
-                          < index) {
+            if (index<0 
+                    || md.getToken()
+                          .getTokenIndex()
+                              < index) {
                 firstNonImportNode = md;
                 index = md.getToken().getTokenIndex();
             }
@@ -791,10 +795,10 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         for (Tree.PackageDescriptor pd: 
                 that.getPackageDescriptors()) {
-            if (index<0 || 
-                    pd.getToken()
-                      .getTokenIndex()
-                          < index) {
+            if (index<0 
+                    || pd.getToken()
+                          .getTokenIndex()
+                              < index) {
                 firstNonImportNode = pd;
                 index = pd.getToken().getTokenIndex();
             }
@@ -903,10 +907,10 @@ public abstract class DeclarationVisitor extends Visitor {
         that.setDeclarationModel(c);
         super.visit(that);
         if (that.getParameterList()==null) {
-            if (c.isClassOrInterfaceMember() &&
-                    (c.isFormal() || 
-                     c.isDefault() ||
-                     c.isActual())) {
+            if (c.isClassOrInterfaceMember() 
+                    && (c.isFormal() 
+                     || c.isDefault() 
+                     || c.isActual())) {
                 that.addError("member class declared 'formal', 'default', or 'actual' must have a parameter list");
             }
             Tree.AnnotationList al = 
@@ -916,8 +920,9 @@ public abstract class DeclarationVisitor extends Visitor {
                         1800);
             }
         }
-        if (c.isSealed() && c.isFormal() && 
-                c.isClassOrInterfaceMember()) {
+        if (c.isSealed() 
+                && c.isFormal() 
+                && c.isClassOrInterfaceMember()) {
             ClassOrInterface container = 
                     (ClassOrInterface) 
                         c.getContainer();
@@ -991,8 +996,8 @@ public abstract class DeclarationVisitor extends Visitor {
             c.addParameterList(pl.getModel());
         }
         //TODO: is this still necessary??
-        if (c.isClassOrInterfaceMember() && 
-                c.getContainer() 
+        if (c.isClassOrInterfaceMember() 
+                && c.getContainer() 
                     instanceof TypedDeclaration) {
             that.addUnsupportedError("nested classes of inner classes are not yet supported");
         }
@@ -1018,8 +1023,8 @@ public abstract class DeclarationVisitor extends Visitor {
         that.setConstructor(c);
         if (scope instanceof Class) {
             Class clazz = (Class) scope;
-            if (that.getIdentifier()==null && 
-                clazz.getDefaultConstructor()!=null) {
+            if (that.getIdentifier()==null 
+                && clazz.getDefaultConstructor()!=null) {
                 //found an overloaded default constructor
                 //we'll set up the class overloads later
                 //when exiting visit(Tree.ClassDefinition)
@@ -1070,13 +1075,15 @@ public abstract class DeclarationVisitor extends Visitor {
                 f.addParameterList(model);
             }
         }
-        if (that.getIdentifier()==null && c.isAbstract()) {
-            that.addError("default constructor may not be annotated 'abstract'", 
-                    1601);
-        }
-        if (c.isAbstract() && c.isShared()) {
-            that.addError("abstract constructor may not be annotated 'shared'", 
-                    1610);
+        if (c.isAbstract()) { 
+            if (that.getIdentifier()==null) {
+                that.addError("default constructor may not be annotated 'abstract'", 
+                        1601);
+            }
+            else if (c.isShared()) {
+                that.addError("abstract constructor may not be annotated 'shared'", 
+                        1610);
+            }
         }
     }
 
@@ -1160,7 +1167,8 @@ public abstract class DeclarationVisitor extends Visitor {
                     continue;
                 }
                 if (!names.contains(hm.getQualifiedNameString())
-                        && (coi instanceof Interface || isImplemented(hm))) {
+                        && (coi instanceof Interface 
+                                || isImplemented(hm))) {
                     coi.addMember(hm);
                 }
             }
@@ -1419,7 +1427,9 @@ public abstract class DeclarationVisitor extends Visitor {
         v.setTransient(lazy);
         v.setImplemented(sie != null);
         visitDeclaration(that, v);
-        if (!lazy && v.isVariable() && v.isStatic()) {
+        if (!lazy 
+                && v.isVariable() 
+                && v.isStatic()) {
             Scope container = v.getContainer();
             if (container instanceof ClassOrInterface) {
                 ClassOrInterface ci = 
@@ -1436,8 +1446,9 @@ public abstract class DeclarationVisitor extends Visitor {
         super.visit(that);
 //        if (lazy) 
             exitScope(o);
-        if (v.isInterfaceMember() && 
-                !v.isFormal() && !v.isNative()) {
+        if (v.isInterfaceMember() 
+                && !v.isFormal() 
+                && !v.isNative()) {
             if (sie==null) {
                 that.addError("interface attribute must be annotated 'formal'", 
                         1400);
@@ -1453,8 +1464,8 @@ public abstract class DeclarationVisitor extends Visitor {
             else if (v.isDefault()) {
                 that.addError("default attribute may not be annotated 'late'");
             }
-            else if (!v.isClassOrInterfaceMember() && 
-                    !v.isToplevel()) {
+            else if (!v.isClassOrInterfaceMember() 
+                    && !v.isToplevel()) {
                 that.addError("block-local value may not be annotated 'late'");
             }
         }
@@ -1585,10 +1596,10 @@ public abstract class DeclarationVisitor extends Visitor {
         super.visit(that);
         exitScope(o);
         
-        if (that.getSpecifierExpression()==null &&
-                that.getBlock()==null &&
-                !isNativeHeader(s) &&
-                !isNativeHeader(s.getGetter())) {
+        if (that.getSpecifierExpression()==null 
+                && that.getBlock()==null 
+                && !isNativeHeader(s) 
+                && !isNativeHeader(s.getGetter())) {
             that.addError("setter declaration must have a body or => specifier");
         }
     }
@@ -1859,8 +1870,8 @@ public abstract class DeclarationVisitor extends Visitor {
         for (int i=0; i<originalSize; i++) {
             Tree.Statement st = originals.get(i);
             result.add(st);
-            if (i<originalSize-1 &&
-                    st instanceof Tree.IfStatement) {
+            if (i<originalSize-1 
+                    && st instanceof Tree.IfStatement) {
                 Tree.IfStatement ifst =
                         (Tree.IfStatement) st;
                 Tree.IfClause ifcl = ifst.getIfClause();
@@ -1919,10 +1930,12 @@ public abstract class DeclarationVisitor extends Visitor {
 
     public static boolean definitelyReturns(Tree.Statement last, 
             boolean isInitializer, boolean withinInnerLoop) {
-        if (last instanceof Tree.Throw ||
-            !isInitializer && last instanceof Tree.Return ||
-            !withinInnerLoop && (last instanceof Tree.Break 
-                              || last instanceof Tree.Continue)) {
+        if (last instanceof Tree.Throw 
+            || !isInitializer 
+                && last instanceof Tree.Return 
+            || !withinInnerLoop 
+                && (last instanceof Tree.Break 
+                 || last instanceof Tree.Continue)) {
             return true;
         }
         else if (last instanceof Tree.IfStatement) {
@@ -1944,8 +1957,8 @@ public abstract class DeclarationVisitor extends Visitor {
                                 ests.get(ests.size()-1);
                         return definitelyReturns(ilast,
                                         isInitializer,
-                                        withinInnerLoop) &&
-                                definitelyReturns(elast,
+                                        withinInnerLoop) 
+                            && definitelyReturns(elast,
                                         isInitializer,
                                         withinInnerLoop);
                     }
@@ -2034,8 +2047,8 @@ public abstract class DeclarationVisitor extends Visitor {
                                 ests.get(ests.size()-1);
                         return definitelyReturns(flast, //|| definitelyDoesNotBreak(flast)
                                         isInitializer,
-                                        true) &&
-                                definitelyReturns(elast, 
+                                        true) 
+                            && definitelyReturns(elast, 
                                         isInitializer,
                                         true);
                     }
@@ -2080,7 +2093,8 @@ public abstract class DeclarationVisitor extends Visitor {
                         id = v.getIdentifier();
                     }
                 }
-                if (id!=null && t instanceof Tree.SyntheticVariable) { 
+                if (id!=null 
+                        && t instanceof Tree.SyntheticVariable) { 
                     CustomTree.GuardedVariable ev = 
                             new CustomTree.GuardedVariable(null);
                     ev.setReversed(reversed);
@@ -2315,8 +2329,8 @@ public abstract class DeclarationVisitor extends Visitor {
     private void handleAnnotationAnnotation(Tree.Declaration that, 
             Declaration model, Tree.AnnotationList al) {
         if (hasAnnotation(al, "annotation", unit)) {
-            if (!(model instanceof Function) && 
-                !(model instanceof Class)) {
+            if (!(model instanceof Function) 
+             && !(model instanceof Class)) {
                 that.addError("declaration is not a function or class, and may not be annotated 'annotation'", 
                         1950);
             }
@@ -2807,10 +2821,10 @@ public abstract class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.TryCatchStatement that) {
         super.visit(that);
-        if (that.getTryClause().getBlock()!=null &&
-            that.getCatchClauses().isEmpty() && 
-            that.getFinallyClause()==null && 
-            that.getTryClause().getResourceList()==null) {
+        if (that.getTryClause().getBlock()!=null 
+         && that.getCatchClauses().isEmpty() 
+         && that.getFinallyClause()==null 
+         && that.getTryClause().getResourceList()==null) {
             that.addError("try must have a catch, finally, or resource expression");
         }
     }
@@ -2847,8 +2861,8 @@ public abstract class DeclarationVisitor extends Visitor {
                         }
                         else {
                             if (a==null) {
-                                if (mods.containsKey(name) &&
-                                        name.equals(mods.get(name))) {
+                                if (mods.containsKey(name) 
+                                    && name.equals(mods.get(name))) {
                                     mods.put(name, "$");
                                 }
                             }
@@ -2856,8 +2870,8 @@ public abstract class DeclarationVisitor extends Visitor {
                                 Tree.Identifier aid = 
                                         a.getIdentifier();
                                 String alias = name(aid);
-                                if (mods.containsKey(alias) &&
-                                        alias.equals(mods.get(alias))) {
+                                if (mods.containsKey(alias) 
+                                    && alias.equals(mods.get(alias))) {
                                     mods.put(alias, "$");
                                 }
                             }
@@ -2873,13 +2887,13 @@ public abstract class DeclarationVisitor extends Visitor {
     @Override
     public void visit(Tree.MetaLiteral that) {
         declarationReference = 
-                that instanceof Tree.ClassLiteral || 
-                that instanceof Tree.InterfaceLiteral ||
-                that instanceof Tree.NewLiteral ||
-                that instanceof Tree.AliasLiteral ||
-                that instanceof Tree.TypeParameterLiteral ||
-                that instanceof Tree.ValueLiteral ||
-                that instanceof Tree.FunctionLiteral;
+                that instanceof Tree.ClassLiteral 
+             || that instanceof Tree.InterfaceLiteral 
+             || that instanceof Tree.NewLiteral 
+             || that instanceof Tree.AliasLiteral 
+             || that instanceof Tree.TypeParameterLiteral 
+             || that instanceof Tree.ValueLiteral 
+             || that instanceof Tree.FunctionLiteral;
         super.visit(that);
         declarationReference = false;
     }
