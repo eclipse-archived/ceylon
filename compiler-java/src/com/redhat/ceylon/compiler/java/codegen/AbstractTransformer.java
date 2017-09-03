@@ -6104,38 +6104,11 @@ public abstract class AbstractTransformer implements Transformation {
         Type nonNullType = expectedType.eliminateNull();
         TypeDeclaration expectedDeclaration = nonNullType.getDeclaration();
         if(expectedDeclaration.isSam() && expectedDeclaration instanceof Interface){
-            Declaration member = findFormalMember((Interface)expectedDeclaration, expectedDeclaration.getSamName(), new HashSet<Interface>());
+            Declaration member = ModelUtil.findFormalMember((Interface)expectedDeclaration, expectedDeclaration.getSamName());
             if(member instanceof TypedDeclaration == false)
                 return null;
             return nonNullType.getTypedMember((TypedDeclaration) member, Collections.<Type>emptyList());
         }
-        return null;
-    }
-
-    private Declaration findFormalMember(Interface declaration, String name, Set<Interface> visited) {
-        if(!visited.add(declaration))
-            return null;
-        Declaration member = declaration.getMember(name, null, false);
-        if(member.isAbstraction()){
-            // find the formal one
-            for(Declaration decl : member.getOverloads()){
-                if(decl.isFormal()){
-                    return decl;
-                }
-            }
-        }
-        if(member.isFormal())
-            return member;
-        // try supertypes
-        for(Type superType : declaration.getSatisfiedTypes()){
-            TypeDeclaration superTypeDeclaration = superType.getDeclaration();
-            if(superTypeDeclaration instanceof Interface){
-                member = findFormalMember((Interface) superTypeDeclaration, name, visited);
-                if(member != null)
-                    return member;
-            }
-        }
-        // not found
         return null;
     }
 

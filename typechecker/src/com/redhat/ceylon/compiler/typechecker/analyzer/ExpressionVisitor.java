@@ -45,6 +45,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.argumentSatisfiesEnumeratedConstraint;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.canonicalIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.contains;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.findFormalMember;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.findMatchingOverloadedClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.genericFunctionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
@@ -83,19 +84,13 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TuplePattern;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -670,13 +665,13 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void destructureSequence(Type sequenceType, 
-            TuplePattern tuplePattern) {
+            Tree.TuplePattern tuplePattern) {
         List<Tree.Pattern> patterns = 
                 tuplePattern.getPatterns();
         int length = patterns.size();
         Tree.Pattern lastPattern = patterns.get(length-1);
         if (!isVariadicPattern(lastPattern)) {
-            Pattern pattern = lastPattern;
+            Tree.Pattern pattern = lastPattern;
             if (pattern==null) pattern = tuplePattern;
             pattern.addError(
                     "assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
@@ -684,7 +679,7 @@ public class ExpressionVisitor extends Visitor {
                     "' is not a tuple type");
         }
         else if (/*nonempty && length>1 ||*/ length>2) {
-            Pattern pattern = patterns.get(2);
+            Tree.Pattern pattern = patterns.get(2);
             if (pattern==null) pattern = tuplePattern;
             pattern.addError(
                     "assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
@@ -693,7 +688,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else if ((/*nonempty ||*/ length>1) && 
                 !unit.isSequenceType(sequenceType)) {
-            Pattern pattern = patterns.get(1);
+            Tree.Pattern pattern = patterns.get(1);
             if (pattern==null) pattern = tuplePattern;
             pattern.addError(
                     "assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
@@ -1876,7 +1871,7 @@ public class ExpressionVisitor extends Visitor {
         Type it = canonicalIntersection(refinedTypes, unit);
         if (allHaveNulls && !unit.isOptionalType(it)) {
             methodOrValue.setUncheckedNullType(true);
-            Term lhs = that.getBaseMemberExpression();
+            Tree.Term lhs = that.getBaseMemberExpression();
             //TODO: this is pretty ugly, think of something better!
             lhs.setTypeModel(unit.getOptionalType(lhs.getTypeModel()));
         }
@@ -2375,7 +2370,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private static VoidModifier fakeVoid(Node that) {
+    private static Tree.VoidModifier fakeVoid(Node that) {
         return new Tree.VoidModifier(that.getToken());
     }
     
@@ -3813,49 +3808,67 @@ public class ExpressionVisitor extends Visitor {
                 && list.getParameters().size()==1;
         }
         else {
-            TypeDeclaration td = 
-                    param.getTypeDeclaration();
-            if (td!=null && td.isCallable()) {
-                Type type = param.getType();
-                return unit.getCallableArgumentTypes(type).size()==1;
+            Type type = param.getType();
+            if (type!=null) {
+                if (type.isCallable()) {
+                    return unit.getCallableArgumentTypes(type)
+                            .size()==1;
+                }
+                else {
+                    TypeDeclaration dec = 
+                            type.eliminateNull()
+                                .getDeclaration();
+                    if (dec.isSam() 
+                            && dec instanceof Interface) {
+                        Declaration method = 
+                                findFormalMember((Interface) dec, 
+                                        dec.getSamName());
+                        if (method instanceof FunctionOrValue) {
+                            return isSingleParameter(
+                                    (FunctionOrValue) 
+                                        method);
+                        }
+                    }
+                }
             }
-            else {
-                return false;
-            }
+            return false;
         }
     }
     
     private void visitItArgs(Tree.InvocationExpression that) {
         Tree.Primary prim = that.getPrimary();
-        Tree.PositionalArgumentList pal = 
+        Tree.PositionalArgumentList argList = 
                 that.getPositionalArgumentList();
-        if (pal!=null && 
+        if (argList!=null && 
                 prim instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) prim;
             List<Tree.PositionalArgument> args = 
-                    pal.getPositionalArguments();
+                    argList.getPositionalArguments();
             Declaration dec = mte.getDeclaration();
             if (dec instanceof Functional) {
                 Functional fun = (Functional) dec;
                 ParameterList paramList = 
                         fun.getFirstParameterList();
                 if (paramList!=null) {
+                    List<Type> signature = 
+                            mte.getSignature();
+                    boolean changed = false;
                     List<Parameter> params = 
                             paramList.getParameters();
                     for (int i=0, 
                             asz=args.size(), 
                             psz=params.size(); 
                             i<asz && i<psz; i++) {
-                        Tree.PositionalArgument pa = 
+                        Tree.PositionalArgument arg = 
                                 args.get(i);
                         FunctionOrValue param = 
                                 params.get(i).getModel();
                         if (isSingleParameter(param)
-                                && pa instanceof Tree.ListedArgument) {
-                            Tree.ListedArgument la = 
-                                    (Tree.ListedArgument) pa;
-                            Tree.Expression ex = la.getExpression();
+                                && arg instanceof Tree.ListedArgument) {
+                            Tree.ListedArgument larg = 
+                                    (Tree.ListedArgument) arg;
+                            Tree.Expression ex = larg.getExpression();
                             if (ex!=null) {
                                 Tree.Term term = ex.getTerm();
                                 if (!(term instanceof Tree.FunctionArgument)) {
@@ -3864,15 +3877,18 @@ public class ExpressionVisitor extends Visitor {
                                         @Override
                                         public void visit(Tree.BaseMemberExpression that) {
                                             super.visit(that);
-                                            Tree.Identifier id = that.getIdentifier();
+                                            Tree.Identifier id = 
+                                                    that.getIdentifier();
                                             if (this.id==null 
-                                                    && id.getText().equals("it")) {
+                                                    && id.getText()
+                                                        .equals("it")) {
                                                 this.id = id;
                                             }
                                         }
                                     }
-                                    FindItVisitor fiv = new FindItVisitor();
-                                    fiv.visit(term);
+                                    FindItVisitor fiv = 
+                                            new FindItVisitor();
+                                    fiv.visit(ex);
                                     if (fiv.id!=null) {
                                         Tree.Expression e = 
                                                 new Tree.Expression(null);
@@ -3897,14 +3913,16 @@ public class ExpressionVisitor extends Visitor {
                                         fm.setUnit(unit);
                                         id.setUnit(unit);
                                         e.setUnit(unit);
-                                        final Function model = new Function();
+                                        final Function model = 
+                                                new Function();
                                         ip.setScope(model);
                                         fa.setScope(model);
                                         pl.setScope(model);
                                         id.setScope(model);
                                         fm.setScope(model);
                                         model.setUnit(unit);
-                                        Scope scope = ex.getScope();
+                                        final Scope scope = 
+                                                ex.getScope();
                                         e.setScope(scope);
                                         model.setScope(scope);
                                         model.setContainer(scope);
@@ -3914,27 +3932,49 @@ public class ExpressionVisitor extends Visitor {
                                         mp.setDeclaration(model);
                                         ip.setParameterModel(mp);
                                         mp.setName("it");
-                                        ParameterList mpl = new ParameterList();
+                                        ParameterList mpl = 
+                                                new ParameterList();
                                         mpl.getParameters().add(mp);
                                         model.addParameterList(mpl);
                                         pl.setModel(mpl);
                                         fa.setDeclarationModel(model);
                                         fa.setExpression(ex);
-                                        la.setExpression(e);
+                                        larg.setExpression(e);
                                         class AdjustScopeVisitor extends Visitor {
                                             @Override
-                                            public void visit(Tree.BaseMemberExpression that) {
-                                                super.visit(that);
-                                                if (that.getIdentifier().getText()
-                                                        .equals("it")) {
+                                            public void visitAny(Node that) {
+                                                Scope scp = that.getScope();
+                                                if (scp==scope) {
+                                                    that.setScope(model);
                                                     that.setScope(model);
                                                 }
+                                                if (scp instanceof Element) {
+                                                    Element element = (Element) scp;
+                                                    if (scp.getContainer()==scope) {
+                                                        element.setContainer(model);
+                                                    }
+                                                    if (scp.getScope()==scope) {
+                                                        element.setScope(model);
+                                                    }
+                                                }
+                                                super.visitAny(that);
                                             }
                                         }
-                                        new AdjustScopeVisitor().visit(term);
+                                        new AdjustScopeVisitor().visit(ex);
+                                        signature.set(i, getCallableBottomType(1));
+                                        changed = true;
                                     }
                                 }
                             }
+                        }
+                    }
+                    if (changed && dec.isOverloaded()) {
+                        Declaration coerced =
+                            dec.getContainer()
+                                .getDirectMember(dec.getName(), 
+                                        signature, dec.isVariadic());
+                        if (coerced!=null) {
+                            mte.setDeclaration(coerced);
                         }
                     }
                 }
@@ -4369,7 +4409,7 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgumentList pal = 
                         that.getPositionalArgumentList();
                 if (pal!=null) {
-                    List<PositionalArgument> args = 
+                    List<Tree.PositionalArgument> args = 
                             pal.getPositionalArguments();
                     List<Parameter> params = 
                             pl.getParameters();
@@ -4377,7 +4417,7 @@ public class ExpressionVisitor extends Visitor {
                             i<args.size() && 
                             j<params.size();
                             i++) {
-                        PositionalArgument arg = 
+                        Tree.PositionalArgument arg = 
                                 args.get(i);
                         Parameter param = 
                                 params.get(j);
@@ -5662,7 +5702,7 @@ public class ExpressionVisitor extends Visitor {
                                 (Tree.ElementRange) eor;
                         Tree.Expression lb = er.getLowerBound();
                         Tree.Expression ub = er.getUpperBound();
-                        Expression l = er.getLength();
+                        Tree.Expression l = er.getLength();
                         if (lb!=null) {
                             checkAssignable(lb.getTypeModel(), 
                                     kt, lb, 
@@ -10525,7 +10565,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.TypeConstraint that) {
         super.visit(that);
-        TypeParameterList typeParams = 
+        Tree.TypeParameterList typeParams = 
                 that.getTypeParameterList();
         if (typeParams!=null) {
             checkNotJvm(typeParams, 
