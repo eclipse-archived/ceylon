@@ -184,7 +184,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                 moduleImport = new ModuleImport(dep.namespace(), dependency, 
                         dep.optional(), 
                         // allow forcing export but not for optional modules
-                        dep.exported() || (forceExport && !dep.optional()),
+                        dep.exported() || forceExport && !dep.optional(),
                         Backend.Java);
                 module.addImport(moduleImport);
             }
