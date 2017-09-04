@@ -102,11 +102,13 @@ public class LiteralVisitor extends Visitor {
                     text.length()-(text.endsWith("\"\"\"")?3:0));
         }
         else if (type==STRING_MID) {
-            text = text.substring(2, 
+            text = text.substring(
+                    text.startsWith("``") ? 2 : 1,
                     text.length()-2);
         }
         else if (type==STRING_END) {
-            text = text.substring(2, 
+            text = text.substring(
+                    text.startsWith("``") ? 2 : 1, 
                     text.length()-(text.endsWith("\"")?1:0));
         }
         else if (type==STRING_START) {

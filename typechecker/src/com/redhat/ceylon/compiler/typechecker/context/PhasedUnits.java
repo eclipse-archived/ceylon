@@ -12,6 +12,7 @@ import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonInterpolatingLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
@@ -117,11 +118,12 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     }
 
     protected void parseFile(VirtualFile file, VirtualFile srcDir) throws Exception {
-        if (file.getName().endsWith(".ceylon") && (sourceFiles.isEmpty() || sourceFiles.contains(file))) {
+        if (file.getName().endsWith(".ceylon") 
+                && (sourceFiles.isEmpty() || sourceFiles.contains(file))) {
 
             //System.out.println("Parsing " + file.getName());
             CeylonLexer lexer = new CeylonLexer(new ANTLRInputStream(file.getInputStream(), getEncoding()));
-            CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+            CommonTokenStream tokenStream = new CommonTokenStream(new CeylonInterpolatingLexer(lexer));
             CeylonParser parser = new CeylonParser(tokenStream);
             Tree.CompilationUnit cu = parser.compilationUnit();
             PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, 
