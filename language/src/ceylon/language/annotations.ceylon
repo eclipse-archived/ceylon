@@ -419,6 +419,7 @@ shared annotation LicenseAnnotation license(
         => LicenseAnnotation(description);
 
 "The annotation class for the [[label]] annotation."
+since("1.4.0")
 shared final sealed annotation class LabelAnnotation(
 	"The readable name of the module."
 	shared String name)
@@ -426,6 +427,7 @@ shared final sealed annotation class LabelAnnotation(
 					Module> {}
 
 "Annotation to specify the readable name of a module."
+since("1.4.0")
 shared annotation LabelAnnotation label(
 	"The readable name of the module."
 	String name)
