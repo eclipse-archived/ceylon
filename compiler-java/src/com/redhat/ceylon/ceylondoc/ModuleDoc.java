@@ -79,8 +79,10 @@ public class ModuleDoc extends CeylonDoc {
 
     private void writeDescription() throws IOException {
         open("div class='module-description'");
-
+        
         writeLinkSourceCode(module);
+        writeLabel(module);
+        
         String doc = getDoc(module, linkRenderer());
         if (isEmpty(doc)) {
             tool.warningMissingDoc(module.getNameAsString(), module);
@@ -96,6 +98,20 @@ public class ModuleDoc extends CeylonDoc {
 
         close("div");
     }
+    
+    protected final void writeLabel(Module mod) throws IOException {
+        Annotation annotation = Util.getAnnotation(mod.getUnit(), mod.getAnnotations(), "label");
+        if(annotation == null)
+            return;
+        String label = annotation.getPositionalArguments().get(0);
+        if (label == null || label.isEmpty())
+            return;
+
+        open("div class='modulelabel'");
+        around("h1", label);
+        close("div");
+    }
+
 
     private void writePlatform(Module module) throws IOException {
         if(module.isNative()) {
