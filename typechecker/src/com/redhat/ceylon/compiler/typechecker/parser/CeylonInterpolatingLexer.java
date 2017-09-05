@@ -58,8 +58,18 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         token.setLine(line());
         token.setCharPositionInLine(charPos());
         token.setStartIndex(consumedText.length());
-        consumedText.append(token.getText());
+        consume(token);
         token.setStopIndex(consumedText.length()-1);
+    }
+
+    private void consume(CommonToken token) {
+        int mismatch = 
+                1 + token.getStopIndex() - token.getStartIndex()
+                    - token.getText().length();
+        for (int i=0; i<mismatch; i++) {
+            consumedText.append(' ');
+        }
+        consumedText.append(token.getText());
     }
 
     int findMatchingCloseParen(String text, int from) {
@@ -111,17 +121,21 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         }
         
         CommonToken token = (CommonToken) lexer.nextToken();
+//        if (token.getType()!=CeylonLexer.EOF &&
+//                token.getStartIndex()!=consumedText.length()) {
+//            throw new RuntimeException("oops");
+//        }
         token.setTokenIndex(token());
         String text = token.getText();
         
         if (token.getType()!=CeylonLexer.STRING_LITERAL) {
-            consumedText.append(text);
+            consume(token);
             return token;
         }
         int start = text.indexOf("\\(");
         int end = findMatchingCloseParen(text, start);
         if (start<0 || end<0) {
-            consumedText.append(text);
+            consume(token);
             return token;
         }
         
