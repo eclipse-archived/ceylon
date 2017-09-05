@@ -11,8 +11,8 @@ class Bug111 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     private final void m2$priv$() {
-        final long num = 0L;
-        final long mag = .ceylon.language.Integer.getNegated(num);
+        final .ceylon.language.Integer num = .ceylon.language.Integer.instance(0L);
+        final long mag = num.getNegated().longValue();
     }
     
     private final void m3$priv$() {
