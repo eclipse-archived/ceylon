@@ -63,6 +63,7 @@ public final class CeylonInterpolatingLexer implements TokenSource {
     }
 
     int findMatchingCloseParen(String text, int from) {
+        if (from<0) return -1;
         int depth = 0;
         for (int i=from+2, s=text.length(); i<s; i++) {
             char ch = text.charAt(i);
@@ -70,7 +71,7 @@ public final class CeylonInterpolatingLexer implements TokenSource {
             if (ch==')') depth--;
             if (depth<0) return i;
         }
-        return text.length()-1;
+        return -1;
     }
 
     @Override
@@ -90,7 +91,8 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         if (interpolatedStringToken!=null) {
             String text = interpolatedStringToken.getText();
             int start = text.indexOf("\\(", currentIndexInStringToken);
-            if (start<0) {
+            int end = findMatchingCloseParen(text, start);
+            if (start<0 || end<0) {
                 CommonToken endToken = 
                         new CommonToken(CeylonLexer.STRING_END, 
                                 text.substring(currentIndexInStringToken));
@@ -103,7 +105,7 @@ public final class CeylonInterpolatingLexer implements TokenSource {
                         new CommonToken(CeylonLexer.STRING_MID, 
                                 text.substring(currentIndexInStringToken, start+2));
                 initToken(midToken);
-                createInterpolatedLexer(text, start);
+                createInterpolatedLexer(text, start, end);
                 return midToken;
             }
         }
@@ -117,7 +119,8 @@ public final class CeylonInterpolatingLexer implements TokenSource {
             return token;
         }
         int start = text.indexOf("\\(");
-        if (start<0) {
+        int end = findMatchingCloseParen(text, start);
+        if (start<0 || end<0) {
             consumedText.append(text);
             return token;
         }
@@ -127,12 +130,11 @@ public final class CeylonInterpolatingLexer implements TokenSource {
                         text.substring(0, start+2));
         initToken(startToken);
         interpolatedStringToken = token;
-        createInterpolatedLexer(text, start);
+        createInterpolatedLexer(text, start, end);
         return startToken;
     }
 
-    private void createInterpolatedLexer(String text, int start) {
-        int end = findMatchingCloseParen(text, start);
+    private void createInterpolatedLexer(String text, int start, int end) {
         String substring = text.substring(start+2, end);
         try {
             interpolatedExpressionLexer = 
