@@ -36,7 +36,7 @@ public class TypecheckerUnit extends Unit {
      * a Java modules that uses it. 
      */
     @Override
-    protected Package getJavaLangPackage() {
+    public Package getJavaLangPackage() {
         return javaLangPackage != null ? javaLangPackage : 
             super.getJavaLangPackage();
     }
