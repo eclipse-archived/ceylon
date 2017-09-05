@@ -206,23 +206,6 @@ class AnnotationInvocationVisitor extends Visitor {
         return transformConstructor(exprGen, invocation, ai, com.redhat.ceylon.langtools.tools.javac.util.List.<AnnotationFieldName>nil());
     }
 
-    static String checkForBannedJavaAnnotation(Tree.InvocationExpression invocation) {
-        if (invocation.getPrimary() instanceof Tree.BaseMemberExpression
-                && ((Tree.BaseMemberExpression)invocation.getPrimary()).getDeclaration() != null) {
-            String name = ((Tree.BaseMemberExpression)invocation.getPrimary()).getDeclaration().getQualifiedNameString();
-            if ("java.lang::deprecated".equals(name)) {
-                return "inappropiate java annotation: interoperation with @Deprecated is not supported: use deprecated";
-            } else if ("java.lang::override".equals(name)) {
-                return "inappropiate java annotation: interoperation with @Override is not supported: use actual";
-            } else if ("java.lang.annotation::target".equals(name)) {
-                return "inappropiate java annotation: interoperation with @Target is not supported";
-            } else if ("java.lang.annotation::retention".equals(name)) {
-                return "inappropiate java annotation: interoperation with @Retention is not supported";
-            }
-        }
-        return null;
-    }
-    
     private static JCAnnotation transformConstructor(
             ExpressionTransformer exprGen,
             Tree.InvocationExpression invocation, AnnotationInvocation ai, 
