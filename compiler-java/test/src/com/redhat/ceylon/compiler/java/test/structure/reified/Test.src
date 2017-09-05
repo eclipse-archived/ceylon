@@ -96,7 +96,7 @@ public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.r
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.structure.reified.TestClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -218,7 +218,7 @@ public final class first_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.structure.reified.first_.first(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }

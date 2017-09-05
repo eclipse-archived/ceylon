@@ -61,7 +61,7 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass();
     }
     
@@ -164,7 +164,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

@@ -33,7 +33,7 @@ public class Bug1235A implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235A();
     }
     
@@ -71,7 +71,7 @@ public class Bug1235B implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1235B();
     }
     

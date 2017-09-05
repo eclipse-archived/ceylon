@@ -20,7 +20,7 @@ public final class run_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug20xx.run_.run();
     }
 }
@@ -120,7 +120,7 @@ public class SQLog implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SQLog();
     }
     

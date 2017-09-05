@@ -13,7 +13,7 @@ public class AnnotationBug6145 implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.interop.AnnotationBug6145();
     }
     

@@ -40,7 +40,7 @@ public final class innerMethodInvocation_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.innerMethodInvocation_.innerMethodInvocation();
     }
 }

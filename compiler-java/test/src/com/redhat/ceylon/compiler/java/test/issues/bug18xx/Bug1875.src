@@ -46,7 +46,7 @@ public class Bug1879_X implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_X();
     }
     
@@ -114,7 +114,7 @@ public class Bug1879_Y implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Y();
     }
     
@@ -176,7 +176,7 @@ public class Bug1879_Z extends .com.redhat.ceylon.compiler.java.test.issues.bug1
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1879_Z();
     }
     

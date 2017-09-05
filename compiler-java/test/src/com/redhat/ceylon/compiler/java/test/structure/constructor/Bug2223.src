@@ -69,7 +69,7 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2223();
     }
     
@@ -127,7 +127,7 @@ public final class bug2223_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.structure.constructor.bug2223_.bug2223();
     }
 }

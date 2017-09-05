@@ -11,7 +11,7 @@ public final class bug2251_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2251_.bug2251();
     }
 }

@@ -24,7 +24,7 @@ public final class f1_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.structure.toplevel.f1_.f1();
     }
 }
@@ -91,7 +91,7 @@ public final class f3_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.structure.toplevel.f3_.f3();
     }
 }
@@ -135,7 +135,7 @@ public final class f4_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.structure.toplevel.f4_.f4();
     }
 }
@@ -175,7 +175,7 @@ public final class f5_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.structure.toplevel.f5_.f5();
     }
 }

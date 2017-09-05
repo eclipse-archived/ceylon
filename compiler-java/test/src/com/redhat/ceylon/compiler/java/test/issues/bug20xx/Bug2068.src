@@ -377,7 +377,7 @@ public class ConcreteBug2068 extends .com.redhat.ceylon.compiler.java.test.issue
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.ConcreteBug2068();
     }
     

@@ -26,7 +26,7 @@ public class Deprecated implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Deprecated();
     }
     
@@ -143,7 +143,7 @@ public class DeprecatedMembers implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.DeprecatedMembers();
     }
     
@@ -189,7 +189,7 @@ public final class deprecatedFunction_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.annotations.deprecatedFunction_.deprecatedFunction();
     }
 }

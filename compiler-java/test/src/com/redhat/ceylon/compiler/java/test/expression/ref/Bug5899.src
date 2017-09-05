@@ -159,7 +159,7 @@ public class Bug5899 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5899();
     }
     
@@ -228,7 +228,7 @@ public final class bug5899_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.expression.ref.bug5899_.bug5899();
     }
 }

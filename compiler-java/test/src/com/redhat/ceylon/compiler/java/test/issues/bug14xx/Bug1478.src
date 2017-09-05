@@ -70,7 +70,7 @@ public class Bug1478Foo<T> extends .com.redhat.ceylon.compiler.java.test.issues.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

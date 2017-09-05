@@ -111,7 +111,7 @@ public class Foo extends .com.redhat.ceylon.compiler.java.test.structure.klass.C
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Foo();
     }
     
@@ -128,7 +128,7 @@ public class Bar extends .com.redhat.ceylon.compiler.java.test.structure.klass.C
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.structure.klass.Bar();
     }
     
