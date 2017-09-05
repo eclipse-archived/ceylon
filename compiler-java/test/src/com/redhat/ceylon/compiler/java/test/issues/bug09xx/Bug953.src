@@ -6,7 +6,7 @@ final class bug953_ {
     }
     
     static void bug953() {
-        .ceylon.language.sort_.<.ceylon.language.Comparable>sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Iterable).ceylon.language.empty_.get_());
+        .ceylon.language.sort_.<.ceylon.language.Comparable, .java.lang.Object>sort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable).ceylon.language.empty_.get_());
         final .java.lang.Object i = .ceylon.language.min_.<.ceylon.language.Comparable, .java.lang.Object>min(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable).ceylon.language.empty_.get_());
     }
 }

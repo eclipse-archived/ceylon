@@ -31,11 +31,6 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$List$this$.contains(element);
-    }
-    
-    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.defines(index);
     }
@@ -43,6 +38,11 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public boolean endsWith(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
         return $ceylon$language$List$this$.endsWith(sublist);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends T> getExceptLast() {
+        return $ceylon$language$List$this$.getExceptLast();
     }
     
     @.java.lang.Override
@@ -259,6 +259,11 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Collection$this$.contains(element);
+    }
+    
+    @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Collection$this$.getEmpty();
     }
@@ -322,11 +327,6 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.java.lang.Override
     public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this$.every(selecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override

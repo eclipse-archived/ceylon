@@ -31,11 +31,6 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$List$this$.contains(element);
-    }
-    
-    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.defines(index);
     }
@@ -43,6 +38,11 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     @.java.lang.Override
     public boolean endsWith(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
         return $ceylon$language$List$this$.endsWith(sublist);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends .ceylon.language.String> getExceptLast() {
+        return $ceylon$language$List$this$.getExceptLast();
     }
     
     @.java.lang.Override
@@ -259,6 +259,11 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Collection$this$.contains(element);
+    }
+    
+    @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Collection$this$.getEmpty();
     }
@@ -327,11 +332,6 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     @.java.lang.Override
     public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this$.every(selecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override
@@ -925,11 +925,6 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
-    public boolean contains(final .java.lang.Object element) {
-        return $ceylon$language$List$this$.contains(element);
-    }
-    
-    @.java.lang.Override
     public boolean defines(final .ceylon.language.Integer index) {
         return $ceylon$language$List$this$.defines(index);
     }
@@ -937,6 +932,11 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     @.java.lang.Override
     public boolean endsWith(final .ceylon.language.List<? extends .java.lang.Object> sublist) {
         return $ceylon$language$List$this$.endsWith(sublist);
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.List<? extends .ceylon.language.String> getExceptLast() {
+        return $ceylon$language$List$this$.getExceptLast();
     }
     
     @.java.lang.Override
@@ -1153,6 +1153,11 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
+    public boolean contains(final .java.lang.Object element) {
+        return $ceylon$language$Collection$this$.contains(element);
+    }
+    
+    @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Collection$this$.getEmpty();
     }
@@ -1221,11 +1226,6 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     @.java.lang.Override
     public boolean every(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
         return $ceylon$language$Iterable$this$.every(selecting);
-    }
-    
-    @.java.lang.Override
-    public .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getExceptLast() {
-        return $ceylon$language$Iterable$this$.getExceptLast();
     }
     
     @.java.lang.Override
