@@ -28,9 +28,6 @@ void tupleargs() {
     $type:"Integer|Float" oneOf(*[1, 1.0]);
     $type:"String" oneOf(*["hello", "world"]);
     $type:"Integer|Float" oneOf(1, *[1.0]);
-    $error $type:"Integer" oneOf(*[1, 1, 1.0]);
+    $error $type:"Integer|Float" oneOf(*[1, 1, 1.0]);
     $type:"Null|Integer|Float|String|Character" firstOf(1,2.0,*["hello", 'W']);
-    $type:"[Integer,Float,String]" Tuple(1, Tuple(1.0, Tuple("hello", [])));
-    $type:"{[String, Integer, Integer]+}" zip(*[{"a"}, {[1,1]}]);
-    $type:"{[String, Integer, Integer]+}" zip({"a"}, {[1,1]});
 }
