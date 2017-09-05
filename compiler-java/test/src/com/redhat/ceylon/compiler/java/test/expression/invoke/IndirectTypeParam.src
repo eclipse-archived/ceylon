@@ -79,49 +79,43 @@ final class indirectTypeParam_ {
         }
         final f3_ f3 = new f3_();
         f3.f3(1L).$call$();
-        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> j = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Object.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$)), "Object[]({Object*}*)", (short)0){
+        final .ceylon.language.Callable j = (.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .ceylon.language.Object.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$)), "<[Object+]|[]>({Object*}+)", (short)0){
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .java.lang.Object> $call$() {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                return $calltyped$(iterables$variadic$);
-            }
-            
-            @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .java.lang.Object> $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>)(.ceylon.language.Sequential)$param$0;
+            public .java.lang.Object $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables = (.ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>)(.ceylon.language.Sequence)$param$0;
                 return $calltyped$(iterables);
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
                 return $calltyped$(iterables$variadic$);
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .java.lang.Object> $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
-                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, 1, new .java.lang.Object[]{(.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0}, $param$1));
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, 1, new .java.lang.Object[]{(.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0}, $param$1));
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{
                         $param$0,
                         $param$1}, .ceylon.language.empty_.get_());
                 return $calltyped$(iterables$variadic$);
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .java.lang.Object> $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
-                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, 2, new .java.lang.Object[]{
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, 2, new .java.lang.Object[]{
                         (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0,
                         (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$1}, $param$2));
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{
                         $param$0,
                         $param$1,
                         $param$2}, .ceylon.language.empty_.get_());
@@ -129,70 +123,64 @@ final class indirectTypeParam_ {
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .java.lang.Object> $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, 3, new .java.lang.Object[]{
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, 3, new .java.lang.Object[]{
                         (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0,
                         (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$1,
                         (.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$2}, $param$3));
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .java.lang.Object> $call$(final .java.lang.Object... $param$0) {
-                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            public .java.lang.Object $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends .java.lang.Object> $callvariadic$(final .java.lang.Object... $param$0) {
-                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 0, $param$0));
+            public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), 1, $param$0));
             }
             
-            private .ceylon.language.Sequential<? extends .java.lang.Object> $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables) {
-                return .ceylon.language.concatenate_.<.java.lang.Object>concatenate(.ceylon.language.Object.$TypeDescriptor$, iterables);
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>> iterables) {
+                return .ceylon.language.concatenate_.<.java.lang.Object, .java.lang.Object>concatenate(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, iterables);
             }
         };
-        final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends X>> j2 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends X>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, $reified$X), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$)), "X[]({X*}*)", (short)0){
+        final .ceylon.language.Callable j2 = (.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$X), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$)), "<[X+]|[]>({X*}+)", (short)0){
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $call$() {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                return $calltyped$(iterables$variadic$);
-            }
-            
-            @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $callvariadic$(final .ceylon.language.Sequential $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables = (.ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>)(.ceylon.language.Sequential)$param$0;
+            public .java.lang.Object $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables = (.ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>>)(.ceylon.language.Sequence)$param$0;
                 return $calltyped$(iterables);
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $call$(final .java.lang.Object $param$0) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
                 return $calltyped$(iterables$variadic$);
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
-                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, 1, new .java.lang.Object[]{(.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0}, $param$1));
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, 1, new .java.lang.Object[]{(.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0}, $param$1));
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{
                         $param$0,
                         $param$1}, .ceylon.language.empty_.get_());
                 return $calltyped$(iterables$variadic$);
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
-                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, 2, new .java.lang.Object[]{
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, 2, new .java.lang.Object[]{
                         (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0,
                         (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$1}, $param$2));
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
-                final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables$variadic$ = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), new .java.lang.Object[]{
                         $param$0,
                         $param$1,
                         $param$2}, .ceylon.language.empty_.get_());
@@ -200,25 +188,25 @@ final class indirectTypeParam_ {
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
-                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, 3, new .java.lang.Object[]{
+            public .java.lang.Object $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, 3, new .java.lang.Object[]{
                         (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$0,
                         (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$1,
                         (.ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>)(.ceylon.language.Iterable)$param$2}, $param$3));
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $call$(final .java.lang.Object... $param$0) {
-                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            public .java.lang.Object $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
             }
             
             @.java.lang.Override
-            public .ceylon.language.Sequential<? extends X> $callvariadic$(final .java.lang.Object... $param$0) {
-                return $calltyped$($spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 0, $param$0));
+            public .java.lang.Object $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$((.ceylon.language.Sequence)$spreadVarargs$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, $reified$X, .ceylon.language.Null.$TypeDescriptor$), 1, $param$0));
             }
             
-            private .ceylon.language.Sequential<? extends X> $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables) {
-                return .ceylon.language.concatenate_.<X>concatenate($reified$X, iterables);
+            private .java.lang.Object $calltyped$(final .ceylon.language.Sequence<? extends .ceylon.language.Iterable<? extends X, ? extends .java.lang.Object>> iterables) {
+                return .ceylon.language.concatenate_.<X, .java.lang.Object>concatenate($reified$X, .ceylon.language.Null.$TypeDescriptor$, iterables);
             }
         };
     }
