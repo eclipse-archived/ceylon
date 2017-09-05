@@ -1086,9 +1086,9 @@ public class CMRTests extends CompilerTests {
         
         assertErrors("modules/bug1062/ceylon/test",
                 Arrays.asList("-rep", jarOutputFolder.getPath()), null,
-                new CompilerError(5, "could not determine type of method or attribute reference: 'method' of 'JavaB': Error while loading the bug1062.javaB/1 module:\n"+
+                new CompilerError(5, "could not determine type of method or attribute reference: 'method' of 'JavaB' is ambiguous - Error while loading the bug1062.javaB/1 module:\n"+
                         "   Declaration 'bug1062.javaA.JavaA' could not be found in module 'bug1062.javaB' or its imported modules but was found in the non-imported module 'bug1062.javaA'"),
-                new CompilerError(5, "parameter type could not be determined: 'arg0' of 'method' in 'JavaB': Error while loading the bug1062.javaB/1 module:\n" + 
+                new CompilerError(5, "parameter type could not be determined: 'arg0' of 'method' in 'JavaB' - Error while loading the bug1062.javaB/1 module:\n" + 
                         "   Declaration 'bug1062.javaA.JavaA' could not be found in module 'bug1062.javaB' or its imported modules but was found in the non-imported module 'bug1062.javaA'")
                 );
     }
@@ -1121,9 +1121,9 @@ public class CMRTests extends CompilerTests {
         // JavaB/1 imports JavaA/1
         assertErrors("modules/bug1062/ceylon/test",
                 Arrays.asList("-rep", jarOutputFolder.getPath(), "-cp", getClassPathAsPath()), null,
-                new CompilerError(5, "could not determine type of method or attribute reference: 'method' of 'JavaB': Error while loading the bug1062.javaB/1 module:\n"+
+                new CompilerError(5, "could not determine type of method or attribute reference: 'method' of 'JavaB' is ambiguous - Error while loading the bug1062.javaB/1 module:\n"+
                         "   Declaration 'bug1062.javaA.JavaA' could not be found in module 'bug1062.javaB' or its imported modules but was found in the non-imported module 'bug1062.javaA'"),
-                new CompilerError(5, "parameter type could not be determined: 'arg0' of 'method' in 'JavaB': Error while loading the bug1062.javaB/1 module:\n" + 
+                new CompilerError(5, "parameter type could not be determined: 'arg0' of 'method' in 'JavaB' - Error while loading the bug1062.javaB/1 module:\n" + 
                         "   Declaration 'bug1062.javaA.JavaA' could not be found in module 'bug1062.javaB' or its imported modules but was found in the non-imported module 'bug1062.javaA'")
                 );
     }
