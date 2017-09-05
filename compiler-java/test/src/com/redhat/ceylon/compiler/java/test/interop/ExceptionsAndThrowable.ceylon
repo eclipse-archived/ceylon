@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang { RuntimeException, Error }
+import java.lang { Error }
 import java.io { IOException }
 
 @noanno
@@ -46,8 +46,6 @@ shared void testThrowable(JavaExceptionsAndThrowable j){
     }
     if(is Error t){
     }
-    if(is RuntimeException t){
-    }
     if(is Exception t){
     }
 }
@@ -57,5 +55,5 @@ shared class ExceptionsAndThrowableRefinement() extends JavaExceptionsAndThrowab
     shared actual Throwable t(Throwable? x){ if(exists x){ return x; } else { return nothing;} }
     shared actual Error e(Error? x){ if(exists x){ return x; } else { return nothing;} }
     shared actual Exception x(Exception? x){ if(exists x){ return x; } else { return nothing;} }
-    shared actual RuntimeException rtx(RuntimeException? x){ if(exists x){ return x; } else { return nothing;} }
+    shared actual Exception rtx(Exception? x){ if(exists x){ return x; } else { return nothing;} }
 }

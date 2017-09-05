@@ -18,7 +18,8 @@
  * MA  02110-1301, USA.
  */
 import spark { Spark { get, setPort, stop }, Route, Request, Response }
-import ceylon.net.uri { parse }
+import ceylon.uri { parse }
+import ceylon.http.client { gett = get }
 import java.lang { Thread }
 
 shared void run() {
@@ -29,6 +30,6 @@ shared void run() {
     get("/hello", router);
     
     Thread.sleep(1000);
-    assert("Hello World" == parse("http://localhost:8001/hello").get().execute().contents);
+    assert("Hello World" == gett(parse("http://localhost:8001/hello")).execute().contents);
     stop();
 }

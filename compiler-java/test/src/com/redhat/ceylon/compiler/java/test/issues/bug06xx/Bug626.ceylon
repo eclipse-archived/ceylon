@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
-class Bug626() satisfies Iterable<Nothing[]> {
+class Bug626() satisfies Iterable<Nothing[], Nothing> {
     shared actual Boolean equals(Object that) {return nothing;}
     shared actual Integer hash = nothing;
     shared actual Iterator<Nothing[]> iterator() => nothing;

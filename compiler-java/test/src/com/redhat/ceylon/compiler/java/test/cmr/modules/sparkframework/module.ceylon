@@ -20,6 +20,7 @@
 native("jvm")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework "1" {
     import "com.sparkjava:spark-core" "2.1";
-    import ceylon.net "1.2.0";
+    import ceylon.uri "1.3.4-SNAPSHOT";
+    import ceylon.http.client "1.3.4-SNAPSHOT";
     import java.base "7";
 }
