@@ -732,7 +732,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         }
     }
 
-    protected Package getJavaLangPackage() {
+    public Package getJavaLangPackage() {
         return getPackage().getModule().getPackage("java.lang");
     }
     
