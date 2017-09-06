@@ -782,6 +782,15 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private void checkNarrowingToRuntimeException(
+            Type knownType, Type targetType, Node node) {
+        Type ret = unit.getJavaRuntimeExceptionType();
+        if ((knownType == null || !knownType.isSubtypeOf(ret)) 
+            && targetType!=null && targetType.isExactly(ret)) {
+            node.addError("catches or narrows to 'RuntimeException'");
+        }
+    }
+    
     @Override public void visit(Tree.IsCondition that) {
         //don't recurse to the Variable, since we don't
         //want to check that the specifier expression is
@@ -882,6 +891,7 @@ public class ExpressionVisitor extends Visitor {
                 knownType = unit.getAnythingType(); //or should we use unknown?
             }
             
+            checkNarrowingToRuntimeException(knownType, type, t);
             Type it = narrow(type, knownType, that.getNot());
             //check for disjointness
             if (it.isNothing()) {
@@ -8645,13 +8655,13 @@ public class ExpressionVisitor extends Visitor {
                     Type tt = unit.getThrowableType();
                     checkAssignable(t, tt, vt, 
                             "catch type must be a throwable type");
-                    if (!vt.hasErrors()) {
-                        if (!t.isSubtypeOf(et)) {
-                            vt.addUsageWarning(Warning.catchType, 
-                                    "discouraged 'catch' type: '" 
-                                    + t.asString(unit) 
-                                    + "' is not a subtype of 'Exception'");
-                        }
+                    checkNarrowingToRuntimeException(tt, t, vt);
+                    if (!vt.hasErrors() 
+                            && !t.isSubtypeOf(et)) {
+                        vt.addUsageWarning(Warning.catchType, 
+                                "discouraged 'catch' type: '" 
+                                + t.asString(unit) 
+                                + "' is not a subtype of 'Exception'");
                     }
                 }
             }
@@ -8719,13 +8729,13 @@ public class ExpressionVisitor extends Visitor {
                         getSwitchType(switchExpression,
                                 switchVariable);
                 if (switchType!=null) {
-                    Tree.Variable v = that.getVariable();
-                    if (v!=null) {
+                    Tree.Variable var = that.getVariable();
+                    if (var!=null) {
                         if (dynamic || 
                                 !isTypeUnknown(switchType)) { //eliminate dupe errors
-                            v.visit(this);
+                            var.visit(this);
                         }
-                        initOriginalDeclaration(v);
+                        initOriginalDeclaration(var);
                     }
                     Tree.MatchList matchList = 
                             that.getExpressionList();
@@ -8770,19 +8780,20 @@ public class ExpressionVisitor extends Visitor {
                             }
                         }
                     }
-                    if (v!=null) {
+                    if (var!=null) {
                         Type caseType = getType(that);
+                        checkNarrowingToRuntimeException(switchType, caseType, that);
                         Type narrowedType = 
                                 intersectionType(
                                         caseType, switchType, 
                                         unit);
-                        v.getType()
-                         .setTypeModel(narrowedType);
-                        v.getDeclarationModel()
-                         .setType(narrowedType);
+                        var.getType()
+                            .setTypeModel(narrowedType);
+                        var.getDeclarationModel()
+                            .setType(narrowedType);
                         if (!canHaveUncheckedNulls(narrowedType)) {
-                            v.getDeclarationModel()
-                             .setUncheckedNullType(false);
+                            var.getDeclarationModel()
+                                .setUncheckedNullType(false);
                         }
                     }                        
                 }
@@ -8987,6 +8998,7 @@ public class ExpressionVisitor extends Visitor {
                                 caseType, switchType, 
                                 false);
 //                        if (!isTypeUnknown(pt)) {
+                        checkNarrowingToRuntimeException(switchType, caseType, t);
                         Type narrowedType = 
                                 intersectionType(
                                         caseType, switchType, 
