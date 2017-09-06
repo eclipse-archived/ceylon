@@ -63,10 +63,13 @@ public final class CeylonInterpolatingLexer implements TokenSource {
     }
 
     private void consume(CommonToken token) {
-        int mismatch = 
+        int startMismatch = 
+                token.getStartIndex()
+                - consumedText.length();
+        int lengthMismatch = 
                 1 + token.getStopIndex() - token.getStartIndex()
                     - token.getText().length();
-        for (int i=0; i<mismatch; i++) {
+        for (int i=0; i<startMismatch+lengthMismatch; i++) {
             consumedText.append(' ');
         }
         consumedText.append(token.getText());
@@ -121,17 +124,14 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         }
         
         CommonToken token = (CommonToken) lexer.nextToken();
-//        if (token.getType()!=CeylonLexer.EOF &&
-//                token.getStartIndex()!=consumedText.length()) {
-//            throw new RuntimeException("oops");
-//        }
         token.setTokenIndex(token());
-        String text = token.getText();
         
         if (token.getType()!=CeylonLexer.STRING_LITERAL) {
             consume(token);
             return token;
         }
+        
+        String text = token.getText();
         int start = text.indexOf("\\(");
         int end = findMatchingCloseParen(text, start);
         if (start<0 || end<0) {
