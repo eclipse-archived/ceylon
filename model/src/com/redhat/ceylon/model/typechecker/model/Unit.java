@@ -1388,6 +1388,10 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return appliedType(getJavaEnumDeclaration(), et);
     }
 
+    public Type getJavaSerializableType() {
+        return getType(getJavaRuntimeExceptionDeclaration());
+    }
+
     public Type getJavaRuntimeExceptionType() {
         return getType(getJavaRuntimeExceptionDeclaration());
     }

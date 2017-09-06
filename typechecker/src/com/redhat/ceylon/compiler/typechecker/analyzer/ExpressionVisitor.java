@@ -782,15 +782,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkNarrowingToRuntimeException(
-            Type knownType, Type targetType, Node node) {
-        Type ret = unit.getJavaRuntimeExceptionType();
-        if ((knownType == null || !knownType.isSubtypeOf(ret)) 
-            && targetType!=null && targetType.isExactly(ret)) {
-            node.addError("catches or narrows to 'RuntimeException'");
-        }
-    }
-    
     @Override public void visit(Tree.IsCondition that) {
         //don't recurse to the Variable, since we don't
         //want to check that the specifier expression is
@@ -891,7 +882,6 @@ public class ExpressionVisitor extends Visitor {
                 knownType = unit.getAnythingType(); //or should we use unknown?
             }
             
-            checkNarrowingToRuntimeException(knownType, type, t);
             Type it = narrow(type, knownType, that.getNot());
             //check for disjointness
             if (it.isNothing()) {
@@ -8655,7 +8645,10 @@ public class ExpressionVisitor extends Visitor {
                     Type tt = unit.getThrowableType();
                     checkAssignable(t, tt, vt, 
                             "catch type must be a throwable type");
-                    checkNarrowingToRuntimeException(tt, t, vt);
+                    Type ret = unit.getJavaRuntimeExceptionType();
+                    if (t.isExactly(ret)) {
+                        vt.addError("illegal catch type: 'RuntimeException' may not be caught");
+                    }
                     if (!vt.hasErrors() 
                             && !t.isSubtypeOf(et)) {
                         vt.addUsageWarning(Warning.catchType, 
@@ -8782,7 +8775,6 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (var!=null) {
                         Type caseType = getType(that);
-                        checkNarrowingToRuntimeException(switchType, caseType, that);
                         Type narrowedType = 
                                 intersectionType(
                                         caseType, switchType, 
@@ -8998,7 +8990,6 @@ public class ExpressionVisitor extends Visitor {
                                 caseType, switchType, 
                                 false);
 //                        if (!isTypeUnknown(pt)) {
-                        checkNarrowingToRuntimeException(switchType, caseType, t);
                         Type narrowedType = 
                                 intersectionType(
                                         caseType, switchType, 
