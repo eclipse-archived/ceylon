@@ -22,31 +22,20 @@ public final class CeylonInterpolatingLexer implements TokenSource {
     private Token interpolatedStringToken;
     private int currentIndexInStringToken;
     private CeylonLexer interpolatedExpressionLexer;
-    private StringBuilder consumedText = new StringBuilder();
+    private int consumedTextLength;
+    private int consumedTextLines;
+    private int consumedTextCharsSinceLastLine;
     
     public CeylonInterpolatingLexer(CeylonLexer lexer) {
         this.lexer = lexer;
     }
 
     private int line() {
-        int line = 1;
-        for (int i=0, len=consumedText.length(); 
-                i<len; i++) {
-            char ch = consumedText.charAt(i);
-            if (ch=='\n' 
-                    || ch=='\r' 
-                    && i+1<len 
-                    && consumedText.charAt(i+1)=='\f') {
-                line++;
-            }
-        }
-        return line;
+        return consumedTextLines + 1;
     }
     
     private int charPos() {
-        return consumedText.length() 
-                - Math.max(consumedText.lastIndexOf("\n"), 
-                        consumedText.lastIndexOf("\r\f"));
+        return consumedTextCharsSinceLastLine;
     }
     
     private int token() {
@@ -57,22 +46,48 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         token.setTokenIndex(token());
         token.setLine(line());
         token.setCharPositionInLine(charPos());
-        token.setStartIndex(consumedText.length());
+        token.setStartIndex(consumedTextLength);
         consume(token);
-        token.setStopIndex(consumedText.length()-1);
+        token.setStopIndex(consumedTextLength-1);
     }
 
     private void consume(CommonToken token) {
+        String text = token.getText();
+
         int startMismatch = 
                 token.getStartIndex()
-                - consumedText.length();
+                - consumedTextLength;
+        if (startMismatch<0) {
+            startMismatch=0;
+        }
         int lengthMismatch = 
                 1 + token.getStopIndex() - token.getStartIndex()
-                    - token.getText().length();
-        for (int i=0; i<startMismatch+lengthMismatch; i++) {
-            consumedText.append(' ');
+                    - text.length();
+        if (lengthMismatch<0) {
+            lengthMismatch=0;
         }
-        consumedText.append(token.getText());
+        consumedTextLength += startMismatch+lengthMismatch;
+        consumedTextCharsSinceLastLine += startMismatch+lengthMismatch;
+        
+        for (int i=0, s=text.length(); i<s; i++) {
+            char ch = text.charAt(i);
+            consumedTextLength++;
+            if (ch=='\n') {
+                consumedTextLines++;
+                consumedTextCharsSinceLastLine=0;
+            }
+            else if (ch=='\r' 
+                        && i+1<s 
+                        && text.charAt(i+1)=='\f') {
+                consumedTextLines++;
+                consumedTextCharsSinceLastLine=0;
+                consumedTextLength++;
+                i++;
+            }
+            else {
+                consumedTextCharsSinceLastLine++;
+            }
+        }
     }
 
     private int findOpeningParen(String text, int from) {
@@ -90,22 +105,18 @@ public final class CeylonInterpolatingLexer implements TokenSource {
     private int findMatchingCloseParen(String text, int from) {
         if (from<0) return -1;
         int depth = 0;
-        boolean doubleQuoted = false;
-        boolean singleQuoted = false;
+        boolean quoted = false; //i.e. single quoted (can't nest double-quoted strings)
         for (int i=from+2, s=text.length(); i<s; i++) {
             char ch = text.charAt(i);
-            if (!doubleQuoted) {
+            if (!quoted) {
                 if (ch=='(') depth++;
                 if (ch==')') depth--;
             }
-            if (ch=='\\' && (singleQuoted||doubleQuoted)) {
+            if (ch=='\\' && quoted) {
                 i++; //ignore the escaped char inside quotes
             }
-            if (!singleQuoted && ch=='"') {
-                doubleQuoted = !doubleQuoted;
-            }
-            if (!doubleQuoted && ch=='\'') {
-                singleQuoted = !singleQuoted;
+            if (ch=='\'') {
+                quoted = !quoted;
             }
             if (depth<0) return i;
         }
