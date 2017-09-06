@@ -3908,6 +3908,9 @@ compilerAnnotation returns [CompilerAnnotation annotation]
       |
         AT
         { $annotation=new CompilerAnnotation($AT); }
+      |
+        HASH
+        { $annotation=new CompilerAnnotation($HASH); }
       )
       annotationName 
       { $annotation.setIdentifier($annotationName.identifier); }
@@ -5358,6 +5361,10 @@ DOLLAR
 
 AT
     :   '@'
+    ;
+
+HASH
+    :   '#'
     ;
 
 fragment
