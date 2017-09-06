@@ -566,5 +566,6 @@ public class ExpressionTests2 extends CompilerTests {
     @Test
     public void testDestructuring(){
         compareWithJavaSource("destructuring/Destruct");
+        compareWithJavaSource("destructuring/Destruct2");
     }
 }
