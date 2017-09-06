@@ -334,13 +334,11 @@ public class ImportVisitor extends Visitor {
             i.setAlias(al);
         }
         if (isNonimportable(importedPackage, name)) {
-            id.addError("root type may not be imported: '" 
-                    + name 
-                    + "' in '" 
-                    + importedPackage.getNameAsString() 
-                    + "' is represented by '" 
-                    + equivalentType(name) 
-                    + "' in 'ceylon.language'");
+            id.addError("root type may not be imported: '" +
+                    name + "' in '" + 
+                    importedPackage.getNameAsString() + 
+                    "' is represented by '" + 
+                    name + "' in 'ceylon.language'");
             return name;
         }        
         Declaration d = 
@@ -597,11 +595,6 @@ public class ImportVisitor extends Visitor {
                  || "Exception".equals(name)) 
             || pname.equals("java.lang.annotation")
                 && "Annotation".equals(name);
-    }
-    
-    private String equivalentType(String name) {
-        return "RuntimeException".equals(name) ? 
-                "Exception" : name;
     }
     
 }
