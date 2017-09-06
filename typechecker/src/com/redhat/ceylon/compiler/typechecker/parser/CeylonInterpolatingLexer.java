@@ -75,13 +75,38 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         consumedText.append(token.getText());
     }
 
-    int findMatchingCloseParen(String text, int from) {
+    private int findOpeningParen(String text, int from) {
+        for (int i=from, s=text.length()-1; i<s; i++) {
+            char ch = text.charAt(i);
+            if (ch=='\\') {
+                char nx = text.charAt(i+1);
+                if (nx=='(') return i;
+                i++; //else skip the escaped char
+            }
+        }
+        return -1;
+    }
+
+    private int findMatchingCloseParen(String text, int from) {
         if (from<0) return -1;
         int depth = 0;
+        boolean doubleQuoted = false;
+        boolean singleQuoted = false;
         for (int i=from+2, s=text.length(); i<s; i++) {
             char ch = text.charAt(i);
-            if (ch=='(') depth++;
-            if (ch==')') depth--;
+            if (!doubleQuoted) {
+                if (ch=='(') depth++;
+                if (ch==')') depth--;
+            }
+            if (ch=='\\' && (singleQuoted||doubleQuoted)) {
+                i++; //ignore the escaped char inside quotes
+            }
+            if (!singleQuoted && ch=='"') {
+                doubleQuoted = !doubleQuoted;
+            }
+            if (!doubleQuoted && ch=='\'') {
+                singleQuoted = !singleQuoted;
+            }
             if (depth<0) return i;
         }
         return -1;
@@ -103,7 +128,7 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         
         if (interpolatedStringToken!=null) {
             String text = interpolatedStringToken.getText();
-            int start = text.indexOf("\\(", currentIndexInStringToken);
+            int start = findOpeningParen(text, currentIndexInStringToken);
             int end = findMatchingCloseParen(text, start);
             if (start<0 || end<0) {
                 CommonToken endToken = 
@@ -132,7 +157,7 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         }
         
         String text = token.getText();
-        int start = text.indexOf("\\(");
+        int start = findOpeningParen(text, 0);
         int end = findMatchingCloseParen(text, start);
         if (start<0 || end<0) {
             consume(token);
