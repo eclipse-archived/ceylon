@@ -96,9 +96,11 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         for (int i=from, s=text.length()-1; i<s; i++) {
             char ch = text.charAt(i);
             if (ch=='\\') {
+                i++; //skip the escaped char
+            }
+            if (ch=='$') {
                 char nx = text.charAt(i+1);
-                if (nx=='(') return i;
-                i++; //else skip the escaped char
+                if (nx=='{') return i;
             }
         }
         return -1;
@@ -111,8 +113,8 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         for (int i=from+2, s=text.length(); i<s; i++) {
             char ch = text.charAt(i);
             if (!quoted) {
-                if (ch=='(') depth++;
-                if (ch==')') depth--;
+                if (ch=='{') depth++;
+                if (ch=='}') depth--;
             }
             if (ch=='\\' && quoted) {
                 i++; //ignore the escaped char inside quotes
