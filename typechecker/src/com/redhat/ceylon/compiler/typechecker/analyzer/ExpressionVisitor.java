@@ -9293,6 +9293,14 @@ public class ExpressionVisitor extends Visitor {
             if (item instanceof Tree.IsCase) {
                 hasIsCase = true;
             }
+            if (item instanceof Tree.MatchCase) {
+                Tree.MatchCase matchCase = (Tree.MatchCase) item;
+                if (!matchCase.getExpressionList()
+                        .getTypes()
+                        .isEmpty()) {
+                    hasIsCase = true;
+                }
+            }
             checkCaseClausesDisjoint(cases, cc);
         }
         if (hasIsCase) {

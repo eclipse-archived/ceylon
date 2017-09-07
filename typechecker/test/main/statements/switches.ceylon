@@ -184,4 +184,18 @@ void switchMixedCases() {
     case (true) {}
     case (false|Null) {}
     
+    Object obj = "hello";
+    switch (obj)
+    case ("hello"|Integer) {
+        $type:"String|Integer" value xx = obj;
+    }
+    else {}
+    
+    variable Object var =  "hello";
+    $error switch (var)
+    case ("hello"|Integer) {
+        $type:"String|Integer" value xx = var;
+    }
+    else {}
+    
 }
