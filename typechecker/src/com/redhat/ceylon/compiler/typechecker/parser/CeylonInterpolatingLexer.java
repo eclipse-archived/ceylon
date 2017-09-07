@@ -57,17 +57,10 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         int startMismatch = 
                 token.getStartIndex()
                 - consumedTextLength;
-        if (startMismatch<0) {
-            startMismatch=0;
+        if (startMismatch>0) {
+            consumedTextLength += startMismatch;
+            consumedTextCharsSinceLastLine += startMismatch;
         }
-        int lengthMismatch = 
-                1 + token.getStopIndex() - token.getStartIndex()
-                    - text.length();
-        if (lengthMismatch<0) {
-            lengthMismatch=0;
-        }
-        consumedTextLength += startMismatch+lengthMismatch;
-        consumedTextCharsSinceLastLine += startMismatch+lengthMismatch;
         
         for (int i=0, s=text.length(); i<s; i++) {
             char ch = text.charAt(i);
@@ -88,6 +81,15 @@ public final class CeylonInterpolatingLexer implements TokenSource {
                 consumedTextCharsSinceLastLine++;
             }
         }
+        
+        int endMismatch = 
+                1 + token.getStopIndex()
+                - consumedTextLength;
+        if (endMismatch>0) {
+            consumedTextLength += endMismatch;
+            consumedTextCharsSinceLastLine += endMismatch;
+        }
+
     }
 
     private int findOpeningParen(String text, int from) {

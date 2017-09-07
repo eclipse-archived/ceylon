@@ -520,6 +520,10 @@ public class LiteralVisitor extends Visitor {
         super.visit(that);
         if (!that.isMissingToken()) {
             String text = that.getText();
+            if (text.startsWith("\\")) {
+                text = text.substring(2);
+                that.setText(text);
+            }
             if (text.startsWith(GENERATED_PREFIX)) {
                 return;
             }
