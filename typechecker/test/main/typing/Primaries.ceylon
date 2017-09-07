@@ -190,6 +190,17 @@ class Primaries() {
     String interpolated7 = "hello`` +10 ``world";
     String interpolated8 = "hello`` "ABC123".size ``world";
     
+    value abc123 = "ABC123";
+    String interpolayted0 = "hello\(abc123.count(function (Character c) => c.digit))world";
+    String interpolayted1 = "hello\({ abc123 })world";
+    String interpolayted2 = "hello\(Singleton(abc123))world";
+    String interpolayted3 = "hello\(Singleton { element=abc123; })world";
+    String interpolayted4 = "hello\((abc123))world";
+    String interpolayted5 = "hello\([abc123])world";
+    String interpolayted6 = "hello\(-10)world";
+    String interpolayted7 = "hello\(+10)world";
+    String interpolayted8 = "hello\(abc123.size)world";
+    
     List<Character> list=[' '];
     $type:"Sequential<Integer>" value xxxx = list*.integer;
     Exception("Expecting an Array but got: `` true then "x" else "null" ``");    
