@@ -4848,6 +4848,10 @@ public class StatementTransformer extends AbstractTransformer {
                         }
                     }
                     for (Tree.Type type : matchList.getTypes()) {
+                        if (isNull(type.getTypeModel())) {
+                            containsNull = clause;
+                            continue outer;
+                        }
                         isCheap=false; //TODO!!!!!!!!
                     }
                     isCheap = true;
@@ -4969,9 +4973,10 @@ public class StatementTransformer extends AbstractTransformer {
     }
     
     private boolean isJavaSwitchableType(Type type, Boolean switchUnboxed) {
-        return BooleanUtil.isNotFalse(switchUnboxed) && (type.isExactly(typeFact().getCharacterType())
-                    || type.isExactly(typeFact().getStringType()))
-                || isJavaEnumType(type);
+        return BooleanUtil.isNotFalse(switchUnboxed) 
+                && (type.isExactly(typeFact().getCharacterType())
+                 || type.isExactly(typeFact().getStringType()))
+            || isJavaEnumType(type);
     }
     
     /**
@@ -5138,18 +5143,19 @@ public class StatementTransformer extends AbstractTransformer {
         for(Tree.Expression expr : expressions){
             Tree.Term term = ExpressionTransformer.eliminateParens(expr.getTerm());
             boolean unboxedEquality = primitiveSelector || isCeylonBasicType(typeFact().getDefiniteType(switchType));
+            Type type = term.getTypeModel();
             JCExpression transformedExpression = expressionGen().transformExpression(term, 
                     unboxedEquality ? BoxingStrategy.UNBOXED: BoxingStrategy.BOXED, 
-                    term.getTypeModel());
+                    type);
             JCExpression test;
             if (term instanceof Tree.Literal || term instanceof Tree.NegativeOp) {
                 if (unboxedEquality) {
                     if (term instanceof Tree.StringLiteral) {
                         test = make().Apply(null, 
-                                makeSelect(unboxType(selectorAlias.makeIdent(), term.getTypeModel()), "equals"), List.<JCExpression>of(transformedExpression));
+                                makeSelect(unboxType(selectorAlias.makeIdent(), type), "equals"), List.<JCExpression>of(transformedExpression));
                     } else {
                         test = make().Binary(JCTree.Tag.EQ, 
-                                primitiveSelector ? selectorAlias.makeIdent() : unboxType(selectorAlias.makeIdent(), term.getTypeModel()), 
+                                primitiveSelector ? selectorAlias.makeIdent() : unboxType(selectorAlias.makeIdent(), type), 
                                 transformedExpression);
                     }
                 } else {
@@ -5161,12 +5167,12 @@ public class StatementTransformer extends AbstractTransformer {
             } else {
                 JCExpression selectorExpr;
                 if (!primitiveSelector && isCeylonBasicType(typeFact().getDefiniteType(switchType))) {
-                    selectorExpr = unboxType(selectorAlias.makeIdent(), term.getTypeModel());
+                    selectorExpr = unboxType(selectorAlias.makeIdent(), type);
                 } else {
                     selectorExpr = selectorAlias.makeIdent();
                 }
                 if (term instanceof Tree.Tuple) {
-                    if (term.getTypeModel().isEmpty()) {
+                    if (type.isEmpty()) {
                         test = make().TypeTest(selectorAlias.makeIdent(), 
                                 makeJavaType(typeFact().getEmptyType(), JT_RAW));
                     } else {
@@ -5176,15 +5182,15 @@ public class StatementTransformer extends AbstractTransformer {
                                         make().QualIdent(syms().ceylonTupleType.tsym)),
                                 test);
                     }
-                } else if (term.getTypeModel().isString()) {
+                } else if (type.isString()) {
                     test = make().Apply(null, makeSelect(selectorExpr, "equals"), List.<JCExpression>of(transformedExpression));
                 } else {
                     test = make().Binary(JCTree.Tag.EQ, selectorExpr, transformedExpression);
                 }
             }
-            if(tests == null) {
+            if (tests == null) {
                 tests = test;
-            } else if (isNull(term.getTypeModel())) {
+            } else if (isNull(type)) {
                 // ensure we do any null check as the first operation in the ||-ed expression
                 tests = make().Binary(JCTree.Tag.OR, test, tests);
             } else {
@@ -5198,8 +5204,11 @@ public class StatementTransformer extends AbstractTransformer {
             // anyway and the cheap cases get evaluated first.
             Type type = caseType.getTypeModel();
             JCExpression cond = makeTypeTest(null, selectorAlias, type, type);
-            if(tests == null) {
+            if (tests == null) {
                 tests = cond;
+            } else if (isNull(type)) {
+                // ensure we do any null check as the first operation in the ||-ed expression
+                tests = make().Binary(JCTree.Tag.OR, cond, tests);
             } else {
                 tests = make().Binary(JCTree.Tag.OR, tests, cond);
             }

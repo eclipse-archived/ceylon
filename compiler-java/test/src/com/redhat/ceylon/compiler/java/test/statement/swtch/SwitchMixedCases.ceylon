@@ -14,7 +14,7 @@ void switchMixedCases(Integer|String|Float|Null arg) {
     
     Boolean? bool = null;
     switch (bool)
-    case (Null|false) {}
     case (true) {}
+    case (false|Null) {}
 
 }
