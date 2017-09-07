@@ -121,3 +121,67 @@ void coverageWithTypeParameter<E>(String|Set<E> ss) {
     case (is String) {}
     case (is Set<E>) {}
 }
+
+void switchMixedCases() {
+    
+    Integer|String|Float|Null arg = null;
+    switch(arg)
+    case (Float) {
+        $type:"Float" value a = arg;
+    }
+    case (String|1|2|3) {
+        $type:"Integer|String" value a = arg;
+    }
+    else case (Integer|null) {
+        $type:"Integer?" value a = arg;
+    }
+    
+    $error switch(arg)
+    case (Float) {
+        $type:"Float" value a = arg;
+    }
+    case (String|1|2|3) {
+        $type:"Integer|String" value a = arg;
+    }
+    case (Integer|null) {
+        $type:"Integer?" value a = arg;
+    }
+    
+    switch(arg)
+    case (Float) {
+        $type:"Float" value a = arg;
+    }
+    case (String|1|2|3) {
+        $type:"Integer|String" value a = arg;
+    }
+    else case (Integer|null|"") {
+        $type:"Null|String|Integer" value a = arg;
+    }
+    
+    $error switch(arg)
+    case (Float) {
+        $type:"Float" value a = arg;
+    }
+    case (String) {
+        $type:"String" value a = arg;
+    }
+    case (Integer|null|"") {
+        $type:"Null|String|Integer" value a = arg;
+    }
+    
+    $error switch(arg)
+    case (Float) {
+        $type:"Float" value a = arg;
+    }
+    case (String|1|2|3) {
+        $type:"Integer|String" value a = arg;
+    }
+    case (null) {
+    }
+    
+    Boolean? bool = null;
+    switch (bool)
+    case (true) {}
+    case (false|Null) {}
+    
+}
