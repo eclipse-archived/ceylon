@@ -494,7 +494,7 @@ public class LanguageCompiler extends JavaCompiler {
                     /*
                      * Stef: see javadoc for findOrCreateModulelessPackage() for why this is here.
                      */
-                    com.redhat.ceylon.model.typechecker.model.Package p = modelLoader.findOrCreateModulelessPackage(pkgName == null ? "" : pkgName);
+                    Package p = modelLoader.findOrCreateModulelessPackage(pkgName == null ? "" : pkgName);
                     phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, moduleSourceMapper, ceylonContext, filename, map);
                     phasedUnit.setSuppressedWarnings(suppressedWarnings);
                     phasedUnits.addPhasedUnit(file, phasedUnit);
