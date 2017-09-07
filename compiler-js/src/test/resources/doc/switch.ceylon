@@ -10,33 +10,9 @@ void switchPrint(Integer|String x) {
   }
 }
 
-void switchMixedCases() {
-    
-    Integer|String|Float|Null arg = null;
-    switch(arg)
-    case (Float) {
-        Float a = arg;
-    }
-    case (String|1|2|3) {
-        String|Integer a = arg;
-    }
-    else case (Integer|null) {
-        Integer? a = arg;
-    }
-    
-    Boolean? bool = null;
-    switch (bool)
-    case (true) {}
-    case (false|Null) {}
-    
-    print("ok");
-    
-}
-
 void runx() {
   switchPrint("hi");
   for (i in 4..6) {
     switchPrint(i);
   }
-  switchMixedCases();
 }
