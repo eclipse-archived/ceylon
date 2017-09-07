@@ -2327,8 +2327,8 @@ if (is Usable tx) { ... }</programlisting>
             the type <literal>V</literal> inside the <literal>case</literal> block.</para>
             
             <!--comment><para>Note: a type case may narrow to an intersection or union type.</para>
-            <programlisting>case (is Persistent &amp; Serializable) { ... }</programlisting>
-            <programlisting>case (is Integer | Float) { ... }</programlisting></comment-->
+            <programlisting>case (Persistent &amp; Serializable) { ... }</programlisting>
+            <programlisting>case (Integer | Float) { ... }</programlisting></comment-->
             
         </section>
                 
@@ -2583,13 +2583,13 @@ case (Float) {
             <programlisting>shared void print&lt;Printable&gt;(Printable printable) 
         given Printable of String | Integer | Float {
     switch (printable)
-    case (is String) { 
+    case (String) { 
         print("\"``printable``\""); 
     }
-    case (is Integer) { 
+    case (Integer) { 
         print(printable + ".00"); 
     }
-    case (is Float) { 
+    case (Float) { 
         print(formatFloat(printable, 2)); 
     }
 }</programlisting-->

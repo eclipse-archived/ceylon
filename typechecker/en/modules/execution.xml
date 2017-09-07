@@ -134,7 +134,7 @@ assert (semaphore&identical;s); //assertion never fails</programlisting>
                 <listitem>
                     <para>testing the runtime value of a type argument of an instance, for 
                     example, <literal>objectList is List&lt;Person&gt;</literal> or 
-                    <literal>case (is List&lt;Person&gt;)</literal>,</para>
+                    <literal>case (List&lt;Person&gt;)</literal>,</para>
                 </listitem>
                 <listitem>
                     <para>filtering exceptions based on type arguments, for example,
@@ -717,7 +717,7 @@ String result = middleObject.string;</programlisting>
                 </listitem>
                 <listitem>
                     <para>the case is an assignability condition of form 
-                    <literal>case (is V)</literal> and the value is an instance of
+                    <literal>case (V)</literal> and the value is an instance of
                     <literal>V</literal>.</para>
                 </listitem>
             </itemizedlist>
