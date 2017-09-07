@@ -568,6 +568,9 @@ public class Naming extends NamingBase implements LocalId {
             b.append(iface.getIdentifier().getText());
         } else if (decl instanceof Tree.TypedDeclaration){
             String name = decl.getIdentifier().getText();
+            if (name.startsWith("\\i") || name.startsWith("\\I")) {
+                name = name.substring(2);
+            }
             b.append(name);
             // only for lowercase stuff, not for \iFoo names
             if(isLowerCase(name))
