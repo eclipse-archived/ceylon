@@ -24,7 +24,7 @@ class Bug1155 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1155();
     }
     
@@ -79,7 +79,7 @@ final class bug1155_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.$get().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1155_.bug1155();
     }
 }

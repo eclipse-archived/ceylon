@@ -28,7 +28,7 @@ final class callableArgumentParameterCtor_m {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process.getProcess().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterCtor_m.callableArgumentParameterCtor_m();
     }
 }

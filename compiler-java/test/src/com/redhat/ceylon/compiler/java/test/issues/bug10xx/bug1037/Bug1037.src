@@ -11,7 +11,7 @@ class Bug1037 extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug10
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1037.Bug1037();
     }
 }

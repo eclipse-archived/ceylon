@@ -18,7 +18,7 @@ class X implements .com.redhat.ceylon.compiler.java.test.expression.invoke.Self<
     protected final .com.redhat.ceylon.compiler.java.test.expression.invoke.Self$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.X> $com$redhat$ceylon$compiler$java$test$expression$invoke$Self$this;
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.X();
     }
 }
@@ -64,7 +64,7 @@ final class selfTypeGeneric_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.expression.invoke.selfTypeGeneric_.selfTypeGeneric();
     }
 }
