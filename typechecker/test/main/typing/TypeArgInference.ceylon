@@ -357,3 +357,29 @@ void inferenceWithSafeMemberOp() {
     // String is not assignable to Nothing
     
 }
+
+interface This {
+    shared static T fun<T>()(T t) => t;
+    shared static T sun<T>(T t) => t;
+}
+
+class That() {
+    shared T fun<T>()(T t) => t;
+    shared T sun<T>(T t) => t;
+}
+
+void nullaryFunctions() {
+    
+    T fun<T>()(T t) => t;
+    T sun<T>(T t) => t;
+    
+    void gun(String str(String str)) {}
+    
+    gun(sun);
+    gun(fun());
+    gun(This.sun);
+    gun(This.fun());
+    gun(That().sun);
+    gun(That().fun());
+    
+}

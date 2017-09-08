@@ -921,7 +921,7 @@ public class TypeArgumentInference {
      */
     List<Type> getInferredTypeArgsForFunctionRef(
             Tree.StaticMemberOrTypeExpression smte, 
-            Type receiverType) {
+            Type receiverType, boolean secondList) {
         Tree.TypeArguments typeArguments = 
                 smte.getTypeArguments();
         if (typeArguments instanceof Tree.InferredTypeArguments) {
@@ -992,7 +992,7 @@ public class TypeArgumentInference {
                         return null; //TODO: to give a nicer error
                     }
                     else {
-                        ParameterList aplf = apls.get(0);
+                        ParameterList aplf = apls.get(secondList?1:0);
                         ParameterList pplf = ppls.get(0);
                         List<Parameter> apl = 
                                 aplf.getParameters();
@@ -1056,6 +1056,10 @@ public class TypeArgumentInference {
                         }
                         else {
                             fullType = arg.getFullType();
+                            if (secondList) {
+                                fullType = 
+                                        unit.getCallableReturnType(fullType);
+                            }
                             parameterListType = 
                                     unit.getCallableTuple(fullType);
                         }
