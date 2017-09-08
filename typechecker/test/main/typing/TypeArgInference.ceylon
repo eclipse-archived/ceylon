@@ -410,13 +410,15 @@ void nullaryFunctions() {
             = Collections.emptyList();
     
     interface List<out E> {}
-    interface MutableList<E> satisfies List<E> {}
+    interface ListMutator<in E> {}
+    interface MutableList<E> satisfies List<E> & ListMutator<E> {}
     class ArrayList<E>() satisfies MutableList<E> {}
     
     class MyThing(MutableList<String> list) {}
     class YourThing(List<String> list) {}
+    class TheirThing(ListMutator<String> list) {}
     
     MyThing(ArrayList());
     YourThing(ArrayList());
-    
+    TheirThing(ArrayList());
 }

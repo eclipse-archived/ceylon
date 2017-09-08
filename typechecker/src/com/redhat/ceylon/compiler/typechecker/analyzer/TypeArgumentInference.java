@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -1045,14 +1046,14 @@ public class TypeArgumentInference {
                         Type parameterListType;
                         Type fullType;
                         if (smte.getStaticMethodReferencePrimary()) {
-                            Type type = arg.getType();
-                            Type et = unit.getEmptyType();
+                            Type argType = arg.getType();
                             parameterListType = appliedType(
                                     unit.getTupleDeclaration(), 
-                                    type, type, et);
+                                    argType, argType, 
+                                    unit.getEmptyType());
                             fullType = appliedType(
                                     unit.getCallableDeclaration(),
-                                    type, parameterListType);
+                                    argType, parameterListType);
                         }
                         else {
                             fullType = arg.getFullType();
@@ -1104,20 +1105,44 @@ public class TypeArgumentInference {
                         List<Type> inferredTypes = 
                                 new ArrayList<Type>
                                     (typeParameters.size());
+                        Type argType = arg.getType();
+                        TypeDeclaration ptd = 
+                                paramType.getDeclaration();
+                        Type template = 
+                                //TODO: This is a bit crap.
+                                //The rest of this class assumes
+                                //that we're constraining supertype
+                                //type params by subtype type args, 
+                                //but here we're constraining a 
+                                //subtype type param by a supertype
+                                //type arg. Should I iterate over
+                                //all supertypes of argType?
+                                ptd instanceof ClassOrInterface ?
+                                    argType.getSupertype(ptd) :
+                                    argType;
                         for (TypeParameter tp: typeParameters) {
-                            TypeDeclaration ptd = 
-                                    paramType.getDeclaration();
-                            Type template = 
-                                    arg.getType()
-                                        .getSupertype(ptd);
-                            Type it = 
-                                    inferFunctionRefTypeArg(
-                                            smte, 
-                                            parameterizedDec,
-                                            template, 
-                                            paramType,
-                                            tp,
-                                            true); //TODO: is this correct?
+                            boolean covariant = 
+                                    template.occursCovariantly(tp)
+                                    && !template.occursContravariantly(tp);
+                            boolean contravariant = 
+                                    template.occursContravariantly(tp)
+                                    && !template.occursCovariantly(tp);
+                            Type it;
+                            if (covariant) {
+                                it = unit.getNothingType();
+                            }
+                            else if (contravariant) {
+                                it = intersectionOfSupertypes(tp);
+                            }
+                            else {
+                                it = inferFunctionRefTypeArg(
+                                        smte, 
+                                        parameterizedDec,
+                                        template, 
+                                        paramType,
+                                        tp,
+                                        false);
+                            }
                             inferredTypes.add(it);
                         }
                         return constrainInferredTypes(
@@ -1208,7 +1233,9 @@ public class TypeArgumentInference {
         if (isTypeUnknown(it) 
 //                || it.involvesTypeParameters(typeParams)
                 || involvesTypeParams(pd, it)) {
-            return unit.getNothingType();
+            return findingUpperBounds ? 
+                    unit.getAnythingType() : 
+                    unit.getNothingType();
         }
         else {
             return it;
@@ -1545,21 +1572,21 @@ public class TypeArgumentInference {
                             parameterTypes.get(i);
                     if (pt!=null) {
                         occursContravariantly = 
-                                occursContravariantly || 
-                                pt.occursContravariantly(tp);
+                                occursContravariantly 
+                                || pt.occursContravariantly(tp);
                         occursCovariantly = 
-                                occursCovariantly || 
-                                pt.occursCovariantly(tp);
+                                occursCovariantly 
+                                || pt.occursCovariantly(tp);
                         occursInvariantly = 
-                                occursInvariantly || 
-                                pt.occursInvariantly(tp);
+                                occursInvariantly 
+                                || pt.occursInvariantly(tp);
                     }
                 }
                 //if the parameter occurs only contravariantly 
                 //in the argument list, then treat it as 'in'
                 return occursContravariantly
-                        && !occursCovariantly
-                        && !occursInvariantly;
+                    && !occursCovariantly
+                    && !occursInvariantly;
             }
         }
         
