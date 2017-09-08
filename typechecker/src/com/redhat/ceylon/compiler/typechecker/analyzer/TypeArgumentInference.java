@@ -575,31 +575,15 @@ public class TypeArgumentInference {
                 new ArrayList<Type>
                     (args.size());
         List<Parameter> params = parameters.getParameters();
-        for (int i=0; i<params.size(); i++) {
+        for (int i=0, len=params.size(); i<len; i++) {
             Parameter parameter = params.get(i);
             if (args.size()>i) {
                 Tree.PositionalArgument arg = args.get(i);
-                Type at = arg.getTypeModel();
                 if (arg instanceof Tree.SpreadArgument) {
-                    at = spreadType(at, unit, true);
-                    List<Parameter> subList = 
-                            params.subList(i, params.size());
-                    Type parameterTypeTuple = 
-                            unit.getParameterTypesAsTupleType(
-                                    subList, 
-                                    //Note: this is an abuse
-                                    //of the API - the parameters
-                                    //don't really belong to
-                                    //this type, they belong
-                                    //to the invoked declaration
-                                    receiverType);
-                    addToUnionOrIntersection(
-                            findingUpperBounds, 
-                            inferredTypes, 
-                            inferTypeArg(tp, 
-                                    parameterTypeTuple, at, 
-                                    findingUpperBounds, 
-                                    pal));
+                    inferTypeArgFromSpreadArg(tp, 
+                            receiverType, arg, i, invoked, 
+                            findingUpperBounds, inferredTypes,
+                            params, pal);
                 }
                 else if (arg instanceof Tree.Comprehension) {
                     if (parameter.isSequenced()) {
@@ -624,11 +608,12 @@ public class TypeArgumentInference {
                         Type parameterType = 
                                 parameterType(receiverType,
                                         parameter, invoked);
+                        Type argType = arg.getTypeModel();
                         addToUnionOrIntersection(
                                 findingUpperBounds, 
                                 inferredTypes,
                                 inferTypeArg(tp, 
-                                        parameterType, at,
+                                        parameterType, argType,
                                         findingUpperBounds, 
                                         pal));
                     }
@@ -637,6 +622,68 @@ public class TypeArgumentInference {
         }
         return unionOrIntersection(findingUpperBounds, 
                 inferredTypes);
+    }
+
+    private void inferTypeArgFromSpreadArg(
+            TypeParameter tp, 
+            Type receiverType, 
+            Tree.PositionalArgument arg,
+            int i, 
+            Declaration invoked, 
+            boolean findingUpperBounds, 
+            List<Type> inferredTypes, 
+            List<Parameter> params,
+            Node node) {
+
+        int len = params.size();
+        Type spreadType = 
+                spreadType(arg.getTypeModel(), 
+                        unit, true);
+        if (!params.get(len-1).isSequenced()
+                && !unit.isTupleLengthUnbounded(spreadType)) {
+            //unpacking the spread argument tuple
+            //into individual elements gives a 
+            //better result for type inference 'cos
+            //it doesn't get confused by the less
+            //precise Element type arg of the Tuple
+            List<Type> argTypes = 
+                    unit.getTupleElementTypes(spreadType);
+            for (int j=0, arglen=argTypes.size(); 
+                    j<len-i && j<arglen; j++) {
+                Parameter parameter = params.get(i+j);
+                Type parameterType = 
+                        parameterType(receiverType,
+                                parameter, invoked);
+                Type argType = argTypes.get(j);
+                addToUnionOrIntersection(
+                        findingUpperBounds, 
+                        inferredTypes,
+                        inferTypeArg(tp, 
+                                parameterType, argType,
+                                findingUpperBounds, 
+                                node));
+            }
+        }
+        else {
+            //this approach is less precise 'cos it
+            //gets thrown off by argument to Element
+            Type parameterTypeTuple = 
+                    unit.getParameterTypesAsTupleType(
+                            params.subList(i, len), 
+                            //Note: this is an abuse
+                            //of the API - the parameters
+                            //don't really belong to
+                            //this type, they belong
+                            //to the invoked declaration
+                            receiverType);
+            addToUnionOrIntersection(
+                    findingUpperBounds, 
+                    inferredTypes, 
+                    inferTypeArg(tp, 
+                            parameterTypeTuple, spreadType, 
+                            findingUpperBounds, 
+                            node));
+        }
     }
     
     /**
