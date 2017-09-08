@@ -368,7 +368,24 @@ class That() {
     shared T sun<T>(T t) => t;
 }
 
+interface Collector<T> {}
+
+interface Stream<E> {
+    shared formal List<E> collect(Collector<E> collector);
+}
+
+interface Collectors {
+    shared static Collector<T> toList<T>() 
+            => nothing;
+}
+
 void nullaryFunctions() {
+    
+    Stream<String> stream = nothing;
+    List<String> list = stream.collect(Collectors.toList());
+    
+    Collector<T> toList<T>() => nothing;
+    List<String> list2 = stream.collect(toList());
     
     T fun<T>()(T t) => t;
     T sun<T>(T t) => t;

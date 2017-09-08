@@ -1097,9 +1097,28 @@ public class TypeArgumentInference {
                                 typeParameters, inferredTypes, 
                                 receiverType, reference);
                     }
-                    else {
+                    else if (secondList) {
                         //not a callable parameter, nor a
-                        //value parameter of callable type
+                        //value parameter of callable type,
+                        //but the argument is an invocation
+                        //of a nullary function
+                        List<Type> inferredTypes = 
+                                new ArrayList<Type>
+                                    (typeParameters.size());
+                        for (TypeParameter tp: typeParameters) {
+                            Type it = 
+                                    inferTypeArg(tp,
+                                            arg.getType(), 
+                                            paramType,
+                                            false, //TODO!!! 
+                                            smte);
+                            inferredTypes.add(it);
+                        }
+                        return constrainInferredTypes(
+                                typeParameters, inferredTypes, 
+                                receiverType, reference);
+                    }
+                    else {
                         return null;
                     }
                 }
