@@ -409,4 +409,14 @@ void nullaryFunctions() {
     $type:"List<Nothing>" value empty 
             = Collections.emptyList();
     
+    interface List<out E> {}
+    interface MutableList<E> satisfies List<E> {}
+    class ArrayList<E>() satisfies MutableList<E> {}
+    
+    class MyThing(MutableList<String> list) {}
+    class YourThing(List<String> list) {}
+    
+    MyThing(ArrayList());
+    YourThing(ArrayList());
+    
 }

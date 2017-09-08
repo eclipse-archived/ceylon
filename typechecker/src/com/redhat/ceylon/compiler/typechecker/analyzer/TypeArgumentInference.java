@@ -1085,7 +1085,6 @@ public class TypeArgumentInference {
                             Type it = 
                                     inferFunctionRefTypeArg(
                                             smte,
-                                            typeParameters, 
                                             parameterizedDec,
                                             parameterListType,
                                             argumentListType,
@@ -1106,12 +1105,19 @@ public class TypeArgumentInference {
                                 new ArrayList<Type>
                                     (typeParameters.size());
                         for (TypeParameter tp: typeParameters) {
+                            TypeDeclaration ptd = 
+                                    paramType.getDeclaration();
+                            Type template = 
+                                    arg.getType()
+                                        .getSupertype(ptd);
                             Type it = 
-                                    inferTypeArg(tp,
-                                            arg.getType(), 
+                                    inferFunctionRefTypeArg(
+                                            smte, 
+                                            parameterizedDec,
+                                            template, 
                                             paramType,
-                                            false, //TODO!!! 
-                                            smte);
+                                            tp,
+                                            true); //TODO: is this correct?
                             inferredTypes.add(it);
                         }
                         return constrainInferredTypes(
@@ -1191,7 +1197,7 @@ public class TypeArgumentInference {
      */
     private Type inferFunctionRefTypeArg(
             Tree.StaticMemberOrTypeExpression smte, 
-            List<TypeParameter> typeParams, Declaration pd, 
+            Declaration pd, 
             Type template, Type type,
             TypeParameter tp, 
             boolean findingUpperBounds) {
@@ -1199,9 +1205,9 @@ public class TypeArgumentInference {
                 inferTypeArg(tp,
                         template, type,
                         findingUpperBounds, smte);
-        if (isTypeUnknown(it) ||
-//                it.involvesTypeParameters(typeParams) ||
-                involvesTypeParams(pd, it)) {
+        if (isTypeUnknown(it) 
+//                || it.involvesTypeParameters(typeParams)
+                || involvesTypeParams(pd, it)) {
             return unit.getNothingType();
         }
         else {

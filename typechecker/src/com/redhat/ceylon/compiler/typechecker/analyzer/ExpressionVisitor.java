@@ -7072,12 +7072,7 @@ public class ExpressionVisitor extends Visitor {
                         notIndirectlyInvoked);
         boolean inferrableAnyway =
                 !notDirectlyInvoked
-                && member!=null
-                && member.isParameterized() 
-                && ((Functional) member)
-                    .getFirstParameterList()
-                    .getParameters()
-                    .isEmpty();
+                && inferrableAnyway(member);
         checkExtendsClauseReference(that, member);
         if (member!=null && notDirectlyInvoked 
                 || inferrableAnyway) {
@@ -7202,12 +7197,7 @@ public class ExpressionVisitor extends Visitor {
                         notIndirectlyInvoked);
         boolean inferrableAnyway =
                 !notDirectlyInvoked
-                && member!=null
-                && member.isParameterized() 
-                && ((Functional) member)
-                    .getFirstParameterList()
-                    .getParameters()
-                    .isEmpty();
+                && inferrableAnyway(member);
         if (member!=null && notDirectlyInvoked
                 || inferrableAnyway) {
             Tree.Primary primary = that.getPrimary();
@@ -7774,6 +7764,19 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private static boolean inferrableAnyway(Declaration dec) {
+        if (dec!=null
+                && dec.isParameterized()
+                && dec instanceof Functional) {
+            Functional fd = (Functional) dec;
+            ParameterList list = fd.getFirstParameterList();
+            return list!=null && list.getParameters().isEmpty();
+        }
+        else {
+            return false;
+        }
+    }
+    
     @Override public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
         boolean notIndirectlyInvoked = 
@@ -7783,8 +7786,12 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration type = 
                 resolveBaseTypeExpression(that, 
                         notIndirectlyInvoked);
+        boolean inferrableAnyway =
+                !notDirectlyInvoked
+                && inferrableAnyway(type);
         checkExtendsClauseReference(that, type);
-        if (type!=null && notDirectlyInvoked) {
+        if (type!=null && notDirectlyInvoked
+                || inferrableAnyway) {
             Tree.TypeArguments tal = that.getTypeArguments();
             List<Type> typeArgs;
             if (explicitTypeArguments(type, tal)) {
@@ -7796,7 +7803,7 @@ public class ExpressionVisitor extends Visitor {
                 typeArgs = 
                         new TypeArgumentInference(unit)
                             .getInferredTypeArgsForFunctionRef(
-                                    that, null, false);
+                                    that, null, inferrableAnyway);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
@@ -7804,7 +7811,8 @@ public class ExpressionVisitor extends Visitor {
                         tal, null);
                 //otherwise infer type arguments later
             }
-            else if (!that.getStaticMethodReferencePrimary()) {
+            else if (notDirectlyInvoked
+                    && !that.getStaticMethodReferencePrimary()) {
                 visitGenericBaseTypeReference(that, type);
             }
         }
@@ -8120,7 +8128,11 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration type = 
                 resolveQualifiedTypeExpression(that, 
                         notIndirectlyInvoked);
-        if (type!=null && notDirectlyInvoked) {
+        boolean inferrableAnyway =
+                !notDirectlyInvoked
+                && inferrableAnyway(type);
+        if (type!=null && notDirectlyInvoked
+                || inferrableAnyway) {
             Tree.Primary primary = that.getPrimary();
             Tree.TypeArguments tal = that.getTypeArguments();
             Type receiverType = 
@@ -8136,7 +8148,8 @@ public class ExpressionVisitor extends Visitor {
                 typeArgs = 
                         new TypeArgumentInference(unit)
                             .getInferredTypeArgsForFunctionRef(
-                                    that, receiverType, false);
+                                    that, receiverType, 
+                                    inferrableAnyway);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
@@ -8150,7 +8163,7 @@ public class ExpressionVisitor extends Visitor {
                             tal);
                 }
             }
-            else {
+            else if (notDirectlyInvoked) {
                 if (!that.getStaticMethodReferencePrimary()) {
                     if (primary instanceof Tree.Package) {
                         visitGenericBaseTypeReference(that, 
