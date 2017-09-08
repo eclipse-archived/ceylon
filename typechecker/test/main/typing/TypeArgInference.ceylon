@@ -379,13 +379,20 @@ interface Collectors {
             => nothing;
 }
 
+class Collections {
+    shared static List<T> emptyList<T>() { throw; }
+    new () {}
+}
+
 void nullaryFunctions() {
     
     Stream<String> stream = nothing;
-    List<String> list = stream.collect(Collectors.toList());
+    $type:"List<String>" value list 
+            = stream.collect(Collectors.toList());
     
     Collector<T> toList<T>() => nothing;
-    List<String> list2 = stream.collect(toList());
+    $type:"List<String>" value list2 
+            = stream.collect(toList());
     
     T fun<T>()(T t) => t;
     T sun<T>(T t) => t;
@@ -398,5 +405,8 @@ void nullaryFunctions() {
     gun(This.fun());
     gun(That().sun);
     gun(That().fun());
+    
+    $type:"List<Nothing>" value empty 
+            = Collections.emptyList();
     
 }

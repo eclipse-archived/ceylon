@@ -7106,7 +7106,7 @@ public class ExpressionVisitor extends Visitor {
                         typeArgs, tal, null);
                 //otherwise infer type arguments later
             }
-            else {
+            else if (notDirectlyInvoked) {
                 visitGenericBaseMemberReference(that, member);
 //                typeArgumentsImplicit(that);
             }
@@ -7252,7 +7252,7 @@ public class ExpressionVisitor extends Visitor {
                             tal);
                 }
             }
-            else {
+            else if (notDirectlyInvoked) {
                 if (primary instanceof Tree.Package) {
                     visitGenericBaseMemberReference(that, 
                             member);
