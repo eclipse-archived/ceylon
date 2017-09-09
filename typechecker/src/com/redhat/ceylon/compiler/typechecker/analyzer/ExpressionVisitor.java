@@ -3320,6 +3320,9 @@ public class ExpressionVisitor extends Visitor {
                                             CommonToken token = 
                                                     new CommonToken(CeylonLexer.LIDENTIFIER, 
                                                             p.getName());
+                                            token.setStartIndex(term.getStartIndex());
+                                            token.setLine(term.getToken().getLine());
+                                            token.setCharPositionInLine(term.getToken().getCharPositionInLine());
                                             Tree.Identifier id = 
                                                     new Tree.Identifier(token);
                                             ip.setIdentifier(id);
@@ -3809,7 +3812,9 @@ public class ExpressionVisitor extends Visitor {
                     createInferredParameter(anon,
                             declaration, ap,
                             ap.getParameterModel(),
-                            types.get(j));
+                            types.get(j),
+                            param==null ? null : 
+                                param.getModel());
                 }
             }
         }
@@ -3840,7 +3845,8 @@ public class ExpressionVisitor extends Visitor {
                             declaration, ap,
                             ap.getParameterModel(),
                             pr.getTypedParameter(fp)
-                                .getType());
+                                .getType(),
+                            fp.getModel());
                 }
             }
         }
@@ -3867,7 +3873,8 @@ public class ExpressionVisitor extends Visitor {
      */
     private void createInferredParameter(Tree.FunctionArgument anon,
             Declaration declaration, Tree.Parameter ap,
-            Parameter parameter, Type type) {
+            Parameter parameter, Type type,
+            FunctionOrValue original) {
         if (isTypeUnknown(type)) {
             type = unit.getUnknownType();
             if (!dynamic) {
@@ -3889,6 +3896,7 @@ public class ExpressionVisitor extends Visitor {
             model = new Value();
             model.setUnit(unit);
             model.setName(parameter.getName());
+            model.setOriginalParameterDeclaration(original);
             parameter.setModel(model);
             Function m = anon.getDeclarationModel();
             model.setContainer(m);

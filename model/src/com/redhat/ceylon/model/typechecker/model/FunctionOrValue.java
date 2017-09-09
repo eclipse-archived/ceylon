@@ -173,5 +173,9 @@ public abstract class FunctionOrValue extends TypedDeclaration {
     public boolean isJavaNative() {
         return (flags&JAVA_NATIVE)!=0;
     }
+    
+    public FunctionOrValue getOriginalParameterDeclaration() {
+        return null;
+    }
 
 }

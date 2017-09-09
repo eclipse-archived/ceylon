@@ -2962,6 +2962,7 @@ anonymousFunction returns [FunctionArgument function]
       )?
       ( 
         COMPUTE
+        { if ($function.getToken()==null) $function.setToken($COMPUTE); }
         //TODO: should be a LazySpecifierExpression!
         fe=functionOrExpression
         { $function.setExpression($fe.expression); }

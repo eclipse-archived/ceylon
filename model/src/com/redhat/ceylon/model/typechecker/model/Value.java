@@ -10,6 +10,7 @@ import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ValueFl
 public class Value extends FunctionOrValue implements Scope {
     
     private Setter setter;
+    private FunctionOrValue original;
 
     public Setter getSetter() {
         return setter;
@@ -128,6 +129,15 @@ public class Value extends FunctionOrValue implements Scope {
             return "value " + toStringName() + 
                     " => " + type.asString();
         }
+    }
+
+    public void setOriginalParameterDeclaration(FunctionOrValue original) {
+        this.original = original;
+    }
+    
+    @Override
+    public FunctionOrValue getOriginalParameterDeclaration() {
+        return original;
     }
 
 }
