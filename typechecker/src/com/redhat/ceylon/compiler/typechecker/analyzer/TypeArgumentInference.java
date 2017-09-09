@@ -27,7 +27,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
@@ -411,7 +410,6 @@ public class TypeArgumentInference {
                 paramType.getTypeArgumentList();
         List<Type> superTypeArgs = 
                 supertype.getTypeArgumentList();
-        Class td = unit.getTupleDeclaration();
         for (int j=0; 
                 j<paramTypeArgs.size() && 
                 j<superTypeArgs.size() && 
@@ -423,14 +421,6 @@ public class TypeArgumentInference {
                     superTypeArgs.get(j);
             TypeParameter typeParameter = 
                     typeParameters.get(j);
-            Declaration tpd = 
-                    typeParameter.getDeclaration();
-            if (j==0 && td.equals(tpd)) {
-                //ignore arguments to the Element
-                //type parameter of Tuple, which
-                //is often quite imprecise
-                continue;
-            }
             boolean co;
             boolean contra;
             if (paramType.isCovariant(typeParameter)) {
