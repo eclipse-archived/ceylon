@@ -36,7 +36,7 @@ void testClassWithStaticMembers() {
 
 interface InterfaceWithStaticMembers {
     $warning shared static void hello(String str) {}
-    $error shared static String name = "Trompon";
+    shared static String name = "Trompon";
     $warning shared static class Inner() {}
     $error shared static object inner {
         shared String greeting = "Hello";
@@ -242,4 +242,21 @@ void testBaz<T>() {
 object objectWithStaticMembers {
     $error static String bar = "";
     $error static void baz() {}
+}
+
+interface StaticInterfaceFields {
+    $error shared static Integer attr1 = attr2;
+    shared static Integer attr2 = 2;
+    shared static Integer attr3 = attr2;
+    static Integer get() => 2;
+    shared static Integer val = get();
+}
+
+class StaticClassFields {
+    $error shared static Integer attr1 = attr2;
+    shared static Integer attr2 = 2;
+    shared static Integer attr3 = attr2;
+    static Integer get() => 2;
+    shared static Integer val = get();
+    new () {}
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Validates that flow of control is well-defined. Checks 
@@ -237,15 +238,16 @@ public class ControlFlowVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeDeclaration that) {
-        if (!that.getDeclarationModel().isParameter() &&
-            that.getSpecifierOrInitializerExpression()!=null &&
-                !(that.getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)) {
-            checkExecutableStatementAllowed(that.getSpecifierOrInitializerExpression());
-            super.visit(that);
+        Value dec = that.getDeclarationModel();
+        if (!dec.isParameter() && !dec.isStatic()) {
+            Tree.SpecifierOrInitializerExpression sie = 
+                    that.getSpecifierOrInitializerExpression();
+            if (sie!=null 
+                    && !(sie instanceof Tree.LazySpecifierExpression)) {
+                checkExecutableStatementAllowed(sie);
+            }
         }
-        else {
-            super.visit(that);
-        }
+        super.visit(that);
     }
     
     @Override
