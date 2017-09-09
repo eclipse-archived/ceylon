@@ -175,7 +175,7 @@ public abstract class Reference {
      *   @see Reference#getTypedParameter(Parameter)
      */
     public Type getFullType() {
-    	return getFullType(getType());
+    	    return getFullType(getType());
     }
     
     /**
