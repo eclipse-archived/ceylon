@@ -3761,7 +3761,9 @@ public class ClassTransformer extends AbstractTransformer {
             } else if (ModelUtil.isLocalNotInitializer(def)) {
                 result |= def.isShared() && !def.isPackageVisibility() ? PUBLIC : 0;
             } else {
-                result |= def.isShared() ? (!def.isPackageVisibility() ? PUBLIC : 0) : PRIVATE;
+                result |= def.isShared() ? 
+                        (!def.isPackageVisibility() ? PUBLIC : 0) : 
+                        (def.isStatic() && def.getContainer() instanceof Interface ? 0 : PRIVATE);
                 result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
                 result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
                 result |= def.isStatic() ? STATIC : 0;
@@ -3821,7 +3823,9 @@ public class ClassTransformer extends AbstractTransformer {
             
             int result = 0;
 
-            result |= tdecl.isShared() ? (!tdecl.isPackageVisibility() ? PUBLIC : 0) : PRIVATE;
+            result |= tdecl.isShared() ? 
+                    (!tdecl.isPackageVisibility() ? PUBLIC : 0) : 
+                    (tdecl.isStatic() && tdecl.getContainer() instanceof Interface ? 0 : PRIVATE);
             result |= ((tdecl.isFormal() && !tdecl.isDefault()) && !forCompanion) ? ABSTRACT : 0;
             result |= !(tdecl.isFormal() || tdecl.isDefault() || tdecl.isInterfaceMember()) || forCompanion ? FINAL : 0;
             result |= tdecl.isStatic() ? STATIC : 0;

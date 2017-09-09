@@ -1,14 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure;
 
-import java.lang.reflect.Constructor;
 import java.util.Arrays;
 
-import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
-import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class StaticTests extends CompilerTests {
     @Override
@@ -54,6 +51,11 @@ public class StaticTests extends CompilerTests {
     @Test
     public void testStaticLate() {
         compareWithJavaSource("attribute/StaticLate");
+    }
+
+    @Test
+    public void testStaticMembers() {
+        compareWithJavaSource(Arrays.asList("-target", "8", "-source", "8"), "attribute/StaticMembers.src", "attribute/StaticMembers.ceylon");
     }
 
     @Test
