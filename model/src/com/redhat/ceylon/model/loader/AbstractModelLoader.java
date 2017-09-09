@@ -4747,15 +4747,54 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             method.setType(returnType);
             
             ParameterList pl = new ParameterList();
-            int count = 0;
 //            List<VariableMirror> functionalParameters = functionalMethod.getParameters();
-            for(TypeMirror parameterType : functionalInterfaceType.getParameterTypes()){
+            List<TypeMirror> parameterTypes = functionalInterfaceType.getParameterTypes();
+            Map<String, Integer> used = new HashMap<String, Integer>();
+            for(TypeMirror parameterType : parameterTypes){
+                String name;
+                if (parameterTypes.size()==1) {
+                    name = "it";
+                }
+                else {
+                    switch (parameterType.getKind()) {
+                    case ARRAY:
+                        name = "array"; break;
+                    case BOOLEAN:
+                        name = "boolean"; break;
+                    case CHAR:
+                        name = "character"; break;
+                    case BYTE:
+                        name = "byte"; break;
+                    case INT:
+                    case LONG:
+                    case SHORT:
+                        name = "integer"; break;
+                    case FLOAT:
+                    case DOUBLE:
+                        name = "float"; break;
+                    case DECLARED:
+                        String typeName = parameterType.getDeclaredClass().getName();
+                        int first = typeName.codePointAt(0);
+                        name = Character.toLowerCase(first) 
+                             + typeName.substring(Character.charCount(first)); 
+                        break;
+                    default:
+                        name = "arg";
+                    }
+                    Integer count = used.get(name);
+                    if (count == null) {
+                        used.put(name, 1);
+                    } else {
+                        int next = count+1;
+                        used.put(name, next);
+                        name += next;
+                    }
+                }
                 Type modelParameterType = 
                         obtainType(moduleScope, parameterType, scope, 
                                 TypeLocation.TOPLEVEL);
                 Parameter p = new Parameter();
                 Value v = new Value();
-                String name = "arg" + count++;
                 p.setName(name);
                 v.setName(name);
                 v.setContainer(method);

@@ -3589,4 +3589,35 @@ public class ModelUtil {
         return x.getDeclaration();
     }
     
+    public static Declaration findFormalMember(Interface declaration, String name) {
+        return findFormalMember(declaration, name, new HashSet<Interface>());
+    }
+
+    private static Declaration findFormalMember(Interface declaration, String name, Set<Interface> visited) {
+        if(!visited.add(declaration))
+            return null;
+        Declaration member = declaration.getMember(name, null, false);
+        if(member.isAbstraction()){
+            // find the formal one
+            for(Declaration decl : member.getOverloads()){
+                if(decl.isFormal()){
+                    return decl;
+                }
+            }
+        }
+        if(member.isFormal())
+            return member;
+        // try supertypes
+        for(Type superType : declaration.getSatisfiedTypes()){
+            TypeDeclaration superTypeDeclaration = superType.getDeclaration();
+            if(superTypeDeclaration instanceof Interface){
+                member = findFormalMember((Interface) superTypeDeclaration, name, visited);
+                if(member != null)
+                    return member;
+            }
+        }
+        // not found
+        return null;
+    }
+    
 }

@@ -78,8 +78,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.antlr.runtime.CommonToken;
+
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -3242,6 +3245,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.Primary p = that.getPrimary();
         p.visit(this);
         
+        createAnonymousFunctionParameters(that);
+        
         Tree.PositionalArgumentList pal = 
                 that.getPositionalArgumentList();
         if (pal!=null) {
@@ -3267,6 +3272,110 @@ public class ExpressionVisitor extends Visitor {
         
     }
     
+    private void createAnonymousFunctionParameters(Tree.InvocationExpression that) {
+        Tree.Primary prim = that.getPrimary();
+        Tree.PositionalArgumentList argList =
+                that.getPositionalArgumentList();
+        if (argList!=null && 
+                prim instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression mte = 
+                    (Tree.MemberOrTypeExpression) prim;
+            List<Tree.PositionalArgument> args = 
+                    argList.getPositionalArguments();
+            Declaration dec = mte.getDeclaration();
+            if (dec instanceof Functional) {
+                Functional fun = (Functional) dec;
+                ParameterList paramList = 
+                        fun.getFirstParameterList();
+                if (paramList!=null) {
+                    List<Parameter> params = 
+                            paramList.getParameters();
+                    for (int i=0, 
+                            asz=args.size(), 
+                            psz=params.size(); 
+                            i<asz && i<psz; i++) {
+                        Tree.PositionalArgument arg = 
+                                args.get(i);
+                        FunctionOrValue param = 
+                                params.get(i).getModel();
+                        if (arg instanceof Tree.ListedArgument) {
+                            Tree.ListedArgument larg = 
+                                    (Tree.ListedArgument) arg;
+                            List<Parameter> fpl = 
+                                    inferrableParameters(param);
+                            Tree.Expression ex = larg.getExpression();
+                            if (ex!=null && fpl!=null) {
+                                Tree.Term term = ex.getTerm();
+                                if (term instanceof Tree.FunctionArgument) {
+                                    Tree.FunctionArgument anon =
+                                            (Tree.FunctionArgument) term;
+                                    Function model = anon.getDeclarationModel();
+                                    if (anon.getParameterLists().isEmpty()) {
+                                        Tree.ParameterList pl =
+                                                new Tree.ParameterList(null);
+                                        ParameterList mpl = new ParameterList();
+                                        for (Parameter p: fpl) {
+                                            Tree.InitializerParameter ip = 
+                                                    new Tree.InitializerParameter(null);
+                                            CommonToken token = 
+                                                    new CommonToken(CeylonLexer.LIDENTIFIER, 
+                                                            p.getName());
+                                            Tree.Identifier id = 
+                                                    new Tree.Identifier(token);
+                                            ip.setIdentifier(id);
+                                            pl.addParameter(ip);
+                                            ip.setUnit(unit);
+                                            ip.setScope(model);
+                                            id.setUnit(unit);
+                                            id.setScope(model);
+                                            Parameter mp = new Parameter();
+                                            mp.setDeclaration(model);
+                                            mp.setName(p.getName());
+                                            ip.setParameterModel(mp);
+                                            mpl.getParameters().add(mp);
+                                            pl.setModel(mpl);
+                                        }
+                                        pl.setUnit(unit);
+                                        pl.setScope(model);
+                                        model.addParameterList(mpl);
+                                        anon.addParameterList(pl);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private List<Parameter> inferrableParameters(FunctionOrValue param) {
+        if (param instanceof Function) {
+            Function fun = (Function) param;
+            ParameterList fpl = fun.getFirstParameterList();
+            return fpl==null ? null : fpl.getParameters();
+        }
+        else if (param instanceof Value) {
+            Type type = param.getType();
+            if (type.isCallable()) { 
+                int min = unit.getTupleMinimumLength(unit.getCallableTuple(type));
+                int max = unit.getTupleMaximumLength(unit.getCallableTuple(type));
+                if (min==1 || max==1) {
+                    Parameter p = new Parameter();
+                    p.setName("it");
+                    return Collections.<Parameter>singletonList(p);
+                }
+                else if (min==0) {
+                    return Collections.<Parameter>emptyList();
+                }
+            }
+            return null;
+        }
+        else {
+            return null;
+        }
+    }
+
     /**
      * Infer parameter types for anonymous functions in a
      * positional argument list, and set up references from

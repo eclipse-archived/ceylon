@@ -1257,8 +1257,10 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         if (paramLists.isEmpty()) {
-            that.addError("missing parameter list in function declaration", 
-                    1000);
+            if (!(that instanceof Tree.FunctionArgument)) {
+                that.addError("missing parameter list in function declaration", 
+                        1000);
+            }
         }
         else {
             paramLists.get(0).getModel().setFirst(true);

@@ -2663,6 +2663,7 @@ anonParametersStart2
 anonymousFunctionStart
     : VOID_MODIFIER
     | FUNCTION_MODIFIER (SMALLER_OP|LPAREN)
+    | COMPUTE
     | anonParametersStart
     ;
     
@@ -2947,15 +2948,17 @@ anonymousFunction returns [FunctionArgument function]
         tp=typeParameters
         { $function.setTypeParameterList($tp.typeParameterList); }
       )?
-      p1=parameters
-      { $function.addParameterList($p1.parameterList); }
-      ( 
-        p2=parameters
-        { $function.addParameterList($p2.parameterList); }
-      )*
       (
-        tc=typeConstraints
-        { $function.setTypeConstraintList($tc.typeConstraintList); }
+        p1=parameters
+        { $function.addParameterList($p1.parameterList); }
+        ( 
+          p2=parameters
+          { $function.addParameterList($p2.parameterList); }
+        )*
+        (
+          tc=typeConstraints
+          { $function.setTypeConstraintList($tc.typeConstraintList); }
+        )?
       )?
       ( 
         COMPUTE
