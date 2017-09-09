@@ -32,8 +32,6 @@ import java.util.List;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeSpecifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -1025,7 +1023,7 @@ public class TypeVisitor extends Visitor {
         TypeAlias ta = that.getDeclarationModel();
         ta.setExtendedType(null);
         super.visit(that);
-        TypeSpecifier typeSpecifier = 
+        Tree.TypeSpecifier typeSpecifier = 
                 that.getTypeSpecifier();
         if (typeSpecifier==null) {
             that.addError("missing aliased type");
@@ -1447,7 +1445,7 @@ public class TypeVisitor extends Visitor {
                     ClassOrInterface ci = 
                             (ClassOrInterface) scope;
                     if (!ci.isAbstract()) {
-                        StaticType ct = cts.get(0);
+                        Tree.StaticType ct = cts.get(0);
                         if (ci.equals(td)) {
                             ct.addError("concrete class parameterized by self type: '" 
                                     + ci.getName() 

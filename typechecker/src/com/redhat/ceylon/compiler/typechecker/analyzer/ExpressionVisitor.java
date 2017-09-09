@@ -83,13 +83,6 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TuplePattern;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -670,13 +663,13 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void destructureSequence(Type sequenceType, 
-            TuplePattern tuplePattern) {
+            Tree.TuplePattern tuplePattern) {
         List<Tree.Pattern> patterns = 
                 tuplePattern.getPatterns();
         int length = patterns.size();
         Tree.Pattern lastPattern = patterns.get(length-1);
         if (!isVariadicPattern(lastPattern)) {
-            Pattern pattern = lastPattern;
+            Tree.Pattern pattern = lastPattern;
             if (pattern==null) pattern = tuplePattern;
             pattern.addError(
                     "assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
@@ -684,7 +677,7 @@ public class ExpressionVisitor extends Visitor {
                     "' is not a tuple type");
         }
         else if (/*nonempty && length>1 ||*/ length>2) {
-            Pattern pattern = patterns.get(2);
+            Tree.Pattern pattern = patterns.get(2);
             if (pattern==null) pattern = tuplePattern;
             pattern.addError(
                     "assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
@@ -693,7 +686,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else if ((/*nonempty ||*/ length>1) && 
                 !unit.isSequenceType(sequenceType)) {
-            Pattern pattern = patterns.get(1);
+            Tree.Pattern pattern = patterns.get(1);
             if (pattern==null) pattern = tuplePattern;
             pattern.addError(
                     "assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
@@ -1876,7 +1869,7 @@ public class ExpressionVisitor extends Visitor {
         Type it = canonicalIntersection(refinedTypes, unit);
         if (allHaveNulls && !unit.isOptionalType(it)) {
             methodOrValue.setUncheckedNullType(true);
-            Term lhs = that.getBaseMemberExpression();
+            Tree.Term lhs = that.getBaseMemberExpression();
             //TODO: this is pretty ugly, think of something better!
             lhs.setTypeModel(unit.getOptionalType(lhs.getTypeModel()));
         }
@@ -2375,7 +2368,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private static VoidModifier fakeVoid(Node that) {
+    private static Tree.VoidModifier fakeVoid(Node that) {
         return new Tree.VoidModifier(that.getToken());
     }
     
@@ -4259,7 +4252,7 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgumentList pal = 
                         that.getPositionalArgumentList();
                 if (pal!=null) {
-                    List<PositionalArgument> args = 
+                    List<Tree.PositionalArgument> args = 
                             pal.getPositionalArguments();
                     List<Parameter> params = 
                             pl.getParameters();
@@ -4267,7 +4260,7 @@ public class ExpressionVisitor extends Visitor {
                             i<args.size() && 
                             j<params.size();
                             i++) {
-                        PositionalArgument arg = 
+                        Tree.PositionalArgument arg = 
                                 args.get(i);
                         Parameter param = 
                                 params.get(j);
@@ -5557,7 +5550,7 @@ public class ExpressionVisitor extends Visitor {
                                 (Tree.ElementRange) eor;
                         Tree.Expression lb = er.getLowerBound();
                         Tree.Expression ub = er.getUpperBound();
-                        Expression l = er.getLength();
+                        Tree.Expression l = er.getLength();
                         if (lb!=null) {
                             checkAssignable(lb.getTypeModel(), 
                                     kt, lb, 
@@ -10464,7 +10457,7 @@ public class ExpressionVisitor extends Visitor {
     
     @Override public void visit(Tree.TypeConstraint that) {
         super.visit(that);
-        TypeParameterList typeParams = 
+        Tree.TypeParameterList typeParams = 
                 that.getTypeParameterList();
         if (typeParams!=null) {
             checkNotJvm(typeParams, 
