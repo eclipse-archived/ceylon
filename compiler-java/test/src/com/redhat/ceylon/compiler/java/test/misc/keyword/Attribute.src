@@ -57,7 +57,7 @@ public class Attribute implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.misc.keyword.Attribute();
     }
     
@@ -379,7 +379,7 @@ public class AttributeShared implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.misc.keyword.AttributeShared();
     }
     
@@ -967,7 +967,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.misc.keyword.VariableAttributeShared();
     }
     

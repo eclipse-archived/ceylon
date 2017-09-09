@@ -293,6 +293,7 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String string;
     
     @.ceylon.language.SharedAnnotation$annotation$

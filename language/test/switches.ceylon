@@ -157,5 +157,23 @@ shared void switches() {
     check(matchTuples([2,1]) == 2, "match tuples 2");
     check(matchTuples([3,2]) == -1, "match tuples 3 (no match)");
     check(matchTuples([]) == 0, "match tuples 4 (empty)");
+    check(switchMixedCases(1.0)=="float");
+    check(switchMixedCases("")=="string");
+    check(switchMixedCases(1)=="string");
+    check(switchMixedCases(0)=="integer");
+    check(switchMixedCases(null)=="integer");
+}
+
+String switchMixedCases(Integer|String|Float|Null arg) {
+    switch(arg)
+    case (Float) {
+        return "float";
+    }
+    case (String|1|2|3) {
+        return "string";
+    }
+    else case (Integer|null) {
+        return "integer";
+    }
 }
 

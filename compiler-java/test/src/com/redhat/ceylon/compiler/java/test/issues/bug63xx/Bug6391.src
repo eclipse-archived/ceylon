@@ -44,7 +44,7 @@ public class CeylonProjectBuild<A, B extends A> implements .com.redhat.ceylon.co
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     
@@ -59,7 +59,7 @@ public class Module implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Module();
     }
     
@@ -75,7 +75,7 @@ public class VirtualFile implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug63xx.VirtualFile();
     }
     

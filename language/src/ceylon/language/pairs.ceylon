@@ -19,6 +19,7 @@
      
  evaluates to the stream `{ 5.0, 13.0, 10.0, 15.0 }`."
 tagged("Streams")
+since("1.4.0")
 shared Iterable<Result,FirstAbsent|SecondAbsent> 
 mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>
     (Iterable<First,FirstAbsent> firstIterable,

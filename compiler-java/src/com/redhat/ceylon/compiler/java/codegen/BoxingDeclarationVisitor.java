@@ -342,7 +342,6 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
             // inherit
             declaration.setUnboxed(refinedDeclaration.getUnboxed());
         } else if (declaration instanceof Function
-                && CodegenUtil.isVoid(declaration.getType())
                 && Strategy.useBoxedVoid((Function)declaration)
                 && !(refinedDeclaration.getTypeDeclaration() instanceof TypeParameter)
                 && !CodegenUtil.isContainerFunctionalParameter(refinedDeclaration)

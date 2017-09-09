@@ -463,7 +463,9 @@ public class JsCompiler {
                                         }
                                         matcher.appendTail(result);
                                         writer.write(result.toString());
-                                        writer.write("\\n");
+                                        if (reader.ready()) {
+                                            writer.write("\\n");
+                                        }
                                     }
                                 }
                                 writer.write("\";\n");

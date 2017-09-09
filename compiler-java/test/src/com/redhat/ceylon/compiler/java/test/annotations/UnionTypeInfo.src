@@ -11,7 +11,7 @@ public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
     }
     
@@ -34,7 +34,7 @@ public class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.Bar();
     }
     
@@ -107,6 +107,7 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         final getter$setter$_ getter$setter$_ = new getter$setter$_();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.Object sharedAttr;
     
     @.ceylon.language.SharedAnnotation$annotation$

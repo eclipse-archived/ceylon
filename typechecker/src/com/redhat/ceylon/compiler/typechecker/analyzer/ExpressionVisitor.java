@@ -3594,6 +3594,18 @@ public class ExpressionVisitor extends Visitor {
                     unwrapExpressionUntilTerm(e.getTerm());
             TypedReference tpr = 
                     pr.getTypedParameter(param);
+            if (term instanceof Tree.InvocationExpression) {
+                Tree.InvocationExpression ie = 
+                        (Tree.InvocationExpression) term;
+                Tree.PositionalArgumentList pal = 
+                        ie.getPositionalArgumentList();
+                Tree.NamedArgumentList nal = 
+                        ie.getNamedArgumentList();
+                if (pal!=null && pal.getPositionalArguments().isEmpty() 
+                 || nal!=null && nal.getNamedArguments().isEmpty()) {
+                    term = ie.getPrimary();
+                }
+            }
             if (term instanceof Tree.FunctionArgument) {
                 Tree.FunctionArgument anon = 
                         (Tree.FunctionArgument) term;
@@ -4272,7 +4284,12 @@ public class ExpressionVisitor extends Visitor {
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, type, 
                                 reference, receivingType);
-                tas.setTypeModels(typeArgs);
+                if (typeArgs!=null) {
+                    tas.setTypeModels(typeArgs);
+                }
+                else {
+                    typeArgs = tas.getTypeModels();
+                }
                 visitBaseTypeExpression(bte, type, typeArgs, 
                         tas, receivingType);
             }
@@ -4291,7 +4308,12 @@ public class ExpressionVisitor extends Visitor {
                         getOrInferTypeArguments(that, type, 
                                 reference, 
                                 unwrap(receivingType, qte));
-                tas.setTypeModels(typeArgs);
+                if (typeArgs!=null) {
+                    tas.setTypeModels(typeArgs);
+                }
+                else {
+                    typeArgs = tas.getTypeModels();
+                }
                 Tree.Primary primary = qte.getPrimary();
                 if (primary instanceof Tree.Package) {
                     visitBaseTypeExpression(qte, type, 
@@ -4318,7 +4340,12 @@ public class ExpressionVisitor extends Visitor {
                 List<Type> typeArgs = 
                         getOrInferTypeArguments(that, base, 
                                 reference, receivingType);
-                tas.setTypeModels(typeArgs);
+                if (typeArgs!=null) {
+                    tas.setTypeModels(typeArgs);
+                }
+                else {
+                    typeArgs = tas.getTypeModels();
+                }
                 visitBaseMemberExpression(bme, base, 
                         typeArgs, tas, receivingType);
             }
@@ -4338,7 +4365,12 @@ public class ExpressionVisitor extends Visitor {
                         getOrInferTypeArguments(that, 
                                 member, reference, 
                                 unwrap(receivingType, qme));
-                tas.setTypeModels(typeArgs);
+                if (typeArgs!=null) {
+                    tas.setTypeModels(typeArgs);
+                }
+                else {
+                    typeArgs = tas.getTypeModels();
+                }
                 Tree.Primary primary = qme.getPrimary();
                 if (primary instanceof Tree.Package) {
                     visitBaseMemberExpression(qme, 
@@ -4462,6 +4494,10 @@ public class ExpressionVisitor extends Visitor {
                 reference.getTypeArguments();
         boolean explicit = 
                 tas instanceof Tree.TypeArgumentList;
+        if (tas.getTypeModels()!=null) {
+            return null;
+        }
+        
         if (dec!=null && dec.isParameterized()) {
             //a generic declaration
             if (explicit) {
@@ -4551,6 +4587,7 @@ public class ExpressionVisitor extends Visitor {
             //inferring type arguments for
             Tree.StaticMemberOrTypeExpression reference, 
             Declaration generic, Type receiverType) {
+        
         Tree.Term primary =
                 unwrapExpressionUntilTerm(that.getPrimary());
         if (primary instanceof Tree.StaticMemberOrTypeExpression) {
@@ -7221,15 +7258,19 @@ public class ExpressionVisitor extends Visitor {
         TypedDeclaration member = 
                 resolveBaseMemberExpression(that, 
                         notIndirectlyInvoked);
+        boolean inferrableAnyway =
+                !notDirectlyInvoked
+                && inferrableAnyway(member);
         checkExtendsClauseReference(that, member);
-        if (member!=null && notDirectlyInvoked) {
+        if (member!=null && notDirectlyInvoked 
+                || inferrableAnyway) {
             Tree.TypeArguments tal = that.getTypeArguments();
             List<Type> typeArgs;
             if (typeConstructorArgumentsInferrable(member, that)) {
                 typeArgs = 
                         new TypeArgumentInference(unit)
                             .getInferredTypeArgsForFunctionRef(
-                                    that, null);
+                                    that, null, inferrableAnyway);
             }
             else if (explicitTypeArguments(member, tal)) {
                 typeArgs = 
@@ -7240,7 +7281,7 @@ public class ExpressionVisitor extends Visitor {
                 typeArgs = 
                         new TypeArgumentInference(unit)
                             .getInferredTypeArgsForFunctionRef(
-                                    that, null);
+                                    that, null, inferrableAnyway);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
@@ -7248,7 +7289,7 @@ public class ExpressionVisitor extends Visitor {
                         typeArgs, tal, null);
                 //otherwise infer type arguments later
             }
-            else {
+            else if (notDirectlyInvoked) {
                 visitGenericBaseMemberReference(that, member);
 //                typeArgumentsImplicit(that);
             }
@@ -7342,7 +7383,11 @@ public class ExpressionVisitor extends Visitor {
         TypedDeclaration member = 
                 resolveQualifiedMemberExpression(that, 
                         notIndirectlyInvoked);
-        if (member!=null && notDirectlyInvoked) {
+        boolean inferrableAnyway =
+                !notDirectlyInvoked
+                && inferrableAnyway(member);
+        if (member!=null && notDirectlyInvoked
+                || inferrableAnyway) {
             Tree.Primary primary = that.getPrimary();
             Tree.TypeArguments tal = that.getTypeArguments();
             Type receiverType = 
@@ -7358,7 +7403,8 @@ public class ExpressionVisitor extends Visitor {
                 typeArgs = 
                         new TypeArgumentInference(unit)
                             .getInferredTypeArgsForFunctionRef(
-                                    that, receiverType);
+                                    that, receiverType, 
+                                    inferrableAnyway);
             }
             else if (explicitTypeArguments(member, tal)) {
                 typeArgs = 
@@ -7369,7 +7415,8 @@ public class ExpressionVisitor extends Visitor {
                 typeArgs = 
                         new TypeArgumentInference(unit)
                             .getInferredTypeArgsForFunctionRef(
-                                    that, receiverType);
+                                    that, receiverType,
+                                    inferrableAnyway);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
@@ -7383,7 +7430,7 @@ public class ExpressionVisitor extends Visitor {
                             tal);
                 }
             }
-            else {
+            else if (notDirectlyInvoked) {
                 if (primary instanceof Tree.Package) {
                     visitGenericBaseMemberReference(that, 
                             member);
@@ -7905,6 +7952,19 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
+    private static boolean inferrableAnyway(Declaration dec) {
+        if (dec!=null
+                && dec.isParameterized()
+                && dec instanceof Functional) {
+            Functional fd = (Functional) dec;
+            ParameterList list = fd.getFirstParameterList();
+            return list!=null && list.getParameters().isEmpty();
+        }
+        else {
+            return false;
+        }
+    }
+    
     @Override public void visit(Tree.BaseTypeExpression that) {
         super.visit(that);
         boolean notIndirectlyInvoked = 
@@ -7914,8 +7974,12 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration type = 
                 resolveBaseTypeExpression(that, 
                         notIndirectlyInvoked);
+        boolean inferrableAnyway =
+                !notDirectlyInvoked
+                && inferrableAnyway(type);
         checkExtendsClauseReference(that, type);
-        if (type!=null && notDirectlyInvoked) {
+        if (type!=null && notDirectlyInvoked
+                || inferrableAnyway) {
             Tree.TypeArguments tal = that.getTypeArguments();
             List<Type> typeArgs;
             if (explicitTypeArguments(type, tal)) {
@@ -7927,7 +7991,7 @@ public class ExpressionVisitor extends Visitor {
                 typeArgs = 
                         new TypeArgumentInference(unit)
                             .getInferredTypeArgsForFunctionRef(
-                                    that, null);
+                                    that, null, inferrableAnyway);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
@@ -7935,7 +7999,8 @@ public class ExpressionVisitor extends Visitor {
                         tal, null);
                 //otherwise infer type arguments later
             }
-            else if (!that.getStaticMethodReferencePrimary()) {
+            else if (notDirectlyInvoked
+                    && !that.getStaticMethodReferencePrimary()) {
                 visitGenericBaseTypeReference(that, type);
             }
         }
@@ -8251,7 +8316,11 @@ public class ExpressionVisitor extends Visitor {
         TypeDeclaration type = 
                 resolveQualifiedTypeExpression(that, 
                         notIndirectlyInvoked);
-        if (type!=null && notDirectlyInvoked) {
+        boolean inferrableAnyway =
+                !notDirectlyInvoked
+                && inferrableAnyway(type);
+        if (type!=null && notDirectlyInvoked
+                || inferrableAnyway) {
             Tree.Primary primary = that.getPrimary();
             Tree.TypeArguments tal = that.getTypeArguments();
             Type receiverType = 
@@ -8267,7 +8336,8 @@ public class ExpressionVisitor extends Visitor {
                 typeArgs = 
                         new TypeArgumentInference(unit)
                             .getInferredTypeArgsForFunctionRef(
-                                    that, receiverType);
+                                    that, receiverType, 
+                                    inferrableAnyway);
             }
             if (typeArgs!=null) {
                 tal.setTypeModels(typeArgs);
@@ -8281,7 +8351,7 @@ public class ExpressionVisitor extends Visitor {
                             tal);
                 }
             }
-            else {
+            else if (notDirectlyInvoked) {
                 if (!that.getStaticMethodReferencePrimary()) {
                     if (primary instanceof Tree.Package) {
                         visitGenericBaseTypeReference(that, 
@@ -8833,13 +8903,16 @@ public class ExpressionVisitor extends Visitor {
                     Type tt = unit.getThrowableType();
                     checkAssignable(t, tt, vt, 
                             "catch type must be a throwable type");
-                    if (!vt.hasErrors()) {
-                        if (!t.isSubtypeOf(et)) {
-                            vt.addUsageWarning(Warning.catchType, 
-                                    "discouraged 'catch' type: '" 
-                                    + t.asString(unit) 
-                                    + "' is not a subtype of 'Exception'");
-                        }
+                    Type ret = unit.getJavaRuntimeExceptionType();
+                    if (t.isExactly(ret)) {
+                        vt.addError("illegal catch type: 'RuntimeException' may not be caught");
+                    }
+                    if (!vt.hasErrors() 
+                            && !t.isSubtypeOf(et)) {
+                        vt.addUsageWarning(Warning.catchType, 
+                                "discouraged 'catch' type: '" 
+                                + t.asString(unit) 
+                                + "' is not a subtype of 'Exception'");
                     }
                 }
             }
@@ -8907,13 +8980,13 @@ public class ExpressionVisitor extends Visitor {
                         getSwitchType(switchExpression,
                                 switchVariable);
                 if (switchType!=null) {
-                    Tree.Variable v = that.getVariable();
-                    if (v!=null) {
+                    Tree.Variable var = that.getVariable();
+                    if (var!=null) {
                         if (dynamic || 
                                 !isTypeUnknown(switchType)) { //eliminate dupe errors
-                            v.visit(this);
+                            var.visit(this);
                         }
-                        initOriginalDeclaration(v);
+                        initOriginalDeclaration(var);
                     }
                     Tree.MatchList matchList = 
                             that.getExpressionList();
@@ -8958,19 +9031,19 @@ public class ExpressionVisitor extends Visitor {
                             }
                         }
                     }
-                    if (v!=null) {
+                    if (var!=null) {
                         Type caseType = getType(that);
                         Type narrowedType = 
                                 intersectionType(
                                         caseType, switchType, 
                                         unit);
-                        v.getType()
-                         .setTypeModel(narrowedType);
-                        v.getDeclarationModel()
-                         .setType(narrowedType);
+                        var.getType()
+                            .setTypeModel(narrowedType);
+                        var.getDeclarationModel()
+                            .setType(narrowedType);
                         if (!canHaveUncheckedNulls(narrowedType)) {
-                            v.getDeclarationModel()
-                             .setUncheckedNullType(false);
+                            var.getDeclarationModel()
+                                .setUncheckedNullType(false);
                         }
                     }                        
                 }
@@ -9477,6 +9550,14 @@ public class ExpressionVisitor extends Visitor {
             Tree.CaseItem item = cc.getCaseItem();
             if (item instanceof Tree.IsCase) {
                 hasIsCase = true;
+            }
+            if (item instanceof Tree.MatchCase) {
+                Tree.MatchCase matchCase = (Tree.MatchCase) item;
+                if (!matchCase.getExpressionList()
+                        .getTypes()
+                        .isEmpty()) {
+                    hasIsCase = true;
+                }
             }
             checkCaseClausesDisjoint(cases, cc);
         }

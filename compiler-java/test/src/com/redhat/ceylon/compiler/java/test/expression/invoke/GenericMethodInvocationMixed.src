@@ -12,7 +12,7 @@ public class GenericMethodInvocationMixedClass<U> implements .com.redhat.ceylon.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.expression.invoke.GenericMethodInvocationMixedClass(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

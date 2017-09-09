@@ -29,6 +29,7 @@ public class Bug2388<Key, Value> implements .com.redhat.ceylon.compiler.java.run
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2388Java.Builder<Key, Value> delegate;
     
     @.com.redhat.ceylon.common.NonNull
@@ -46,7 +47,7 @@ public class Bug2388<Key, Value> implements .com.redhat.ceylon.compiler.java.run
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2388(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

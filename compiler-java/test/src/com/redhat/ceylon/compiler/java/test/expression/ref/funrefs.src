@@ -20,6 +20,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         this.name = name;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String name;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -54,6 +55,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             this.city = city;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        @.com.redhat.ceylon.common.NonNull
         private final .java.lang.String house;
         
         @.com.redhat.ceylon.common.NonNull
@@ -61,6 +63,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             return this.house;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        @.com.redhat.ceylon.common.NonNull
         private final .java.lang.String street;
         
         @.com.redhat.ceylon.common.NonNull
@@ -68,6 +71,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             return this.street;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        @.com.redhat.ceylon.common.NonNull
         private final .java.lang.String city;
         
         @.com.redhat.ceylon.common.NonNull

@@ -1640,7 +1640,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
                 </listitem>
             </itemizedlist>
             
-            <programlisting>switch (seq) case (null) "null" case (is []) "empty" else "nonempty"</programlisting>
+            <programlisting>switch (seq) case (null) "null" case ([]) "empty" else "nonempty"</programlisting>
             
         </section>
         

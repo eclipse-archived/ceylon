@@ -36,6 +36,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         <.java.lang.Object>method(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Callable<? extends .java.lang.Object> methodSpec;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -149,7 +150,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass();
     }
     
@@ -304,6 +305,7 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass c;
     
     @.com.redhat.ceylon.common.NonNull
@@ -414,7 +416,7 @@ public final class method_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.structure.reified.method_.method(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
 }

@@ -32,7 +32,19 @@ class LanguageModule() {
     Nothing nt1 = [nothing];
     Nothing nt2 = [nothing, nothing];
     Nothing nt3 = [ for (i in 0..10) nothing ];
-
+    
+    Integer potencia(Integer base, Integer expo) => base^expo;
+    Integer veces(Integer x, Integer y) => x*y;
+    $type:"Integer(Integer)" value p2 = curry(potencia)(2);
+    $type:"Integer(Integer)" value triple = compose(curry(veces)(3), p2);
+    function f1(Integer i) => i;
+    $type:"Integer()(Integer)" value g1 = curry(f1);
+    $type:"Integer(Integer)" Integer(Integer) h1 = uncurry(g1);
+    function f2(Integer i, Float f) => i*f;
+    $type:"Float(Float)(Integer)" value g2 = curry(f2);
+    $type:"Float(Integer)(Float)" value h2 = shuffle(g2);
+    $type:"Float(Float,Integer)" Float(Float,Integer) i1 = uncurry(h2);
+    
 }
 
 $error class Dumbthing() extends Anything() {}

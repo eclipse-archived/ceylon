@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class WithNonNull implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected WithNonNull() {
+        super();
+        this.name = null;
+        this.greeting = null;
+        this.count = 0L;
+    }
+    
+    WithNonNull(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
+    @.com.redhat.ceylon.common.NonNull
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .java.lang.String name) {
+        this.name = name;
+        this.greeting = "Hello";
+        this.count = 0L;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
+    private final .java.lang.String name;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.common.NonNull
+    public final .java.lang.String getName() {
+        return this.name;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
+    private final .java.lang.String greeting;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.common.NonNull
+    public final .java.lang.String getGreeting() {
+        return this.greeting;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final long count;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final long getCount() {
+        return this.count;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.WithNonNull.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.WithNonNull.class);
+}

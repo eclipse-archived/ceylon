@@ -43,7 +43,7 @@ public final class bug1438_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1438_.bug1438();
     }
 }
@@ -90,7 +90,7 @@ public final class bug1438_2_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug14xx.bug1438_2_.bug1438_2();
     }
 }

@@ -94,6 +94,7 @@ public class AttributeDefinitionBuilder {
     private ListBuffer<JCAnnotation> userAnnotations;
     private ListBuffer<JCAnnotation> userAnnotationsSetter;
     private ListBuffer<JCAnnotation> fieldAnnotations;
+    private JCAnnotation fieldNullability;
     private boolean isHash;
     
     private JCExpression setterClass;
@@ -283,6 +284,11 @@ public class AttributeDefinitionBuilder {
             }
             this.fieldAnnotations.appendList(annotations);
         }
+        return this;
+    }
+    
+    public AttributeDefinitionBuilder fieldNullability(JCAnnotation annotation) {
+        this.fieldNullability = annotation;
         return this;
     }
 
@@ -528,11 +534,15 @@ public class AttributeDefinitionBuilder {
     
     /** Make the declaration of the value field */
     private JCStatement makeValueField() {
+        List<JCAnnotation> annos = fieldAnnotations != null ? fieldAnnotations.toList() : List.<JCAnnotation>nil();
+        JCExpression type = valueFieldType();
+        if (fieldNullability!=null && !TransformedType.isPrimitive(type)) {
+            annos = annos.append(fieldNullability);
+        }
         return owner.make().VarDef(
-                owner.make().Modifiers(valueFieldModifiers(), fieldAnnotations != null ? fieldAnnotations.toList() : List.<JCAnnotation>nil()),
+                owner.make().Modifiers(valueFieldModifiers(), annos),
                 owner.names().fromString(Naming.quoteFieldName(fieldName)),
-                valueFieldType(),
-                null
+                type, null
         );
     }
     

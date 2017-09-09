@@ -11,8 +11,8 @@ class TupleIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$2 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)seq).iterator();
         loop_0: while (!((elem$1 = element$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             loopentered$0 = true;
-            final long element = ((.ceylon.language.Integer)elem$1).longValue();
-            .ceylon.language.print_.print(.ceylon.language.Integer.instance(element + 5L));
+            final .ceylon.language.Integer element = (.ceylon.language.Integer)elem$1;
+            .ceylon.language.print_.print(.ceylon.language.Integer.instance(element.longValue() + 5L));
         }
         if (!loopentered$0) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
     }
@@ -24,7 +24,7 @@ class TupleIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> element$iterator$$6 = ((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable)array).iterator();
         loop_1: while (!((elem$5 = element$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
             loopentered$4 = true;
-            final long element = ((.ceylon.language.Integer)elem$5).longValue();
+            final .ceylon.language.Integer element = (.ceylon.language.Integer)elem$5;
             
             final class x_ implements .java.io.Serializable {
                 
@@ -32,11 +32,11 @@ class TupleIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
                 }
                 
                 long x() {
-                    return element + 10L;
+                    return element.longValue() + 10L;
                 }
             }
             final x_ x = new x_();
-            if (element == 10L) {
+            if (element.equals(.ceylon.language.Integer.instance(10L))) {
                 doforelse$3 = false;
                 break loop_1;
             }

@@ -722,6 +722,16 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         }
     }
 
+    public Class getJavaRuntimeExceptionDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("RuntimeException", null, false);
+        }
+    }
+
     public Interface getJavaSerializableDeclaration() {
         Package io = getJavaIoPackage();
         if (io==null) {
@@ -732,7 +742,7 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         }
     }
 
-    protected Package getJavaLangPackage() {
+    public Package getJavaLangPackage() {
         return getPackage().getModule().getPackage("java.lang");
     }
     
@@ -1376,6 +1386,14 @@ public class Unit implements LanguageModuleProvider, ImportScope {
 
     public Type getJavaEnumType(Type et) {
         return appliedType(getJavaEnumDeclaration(), et);
+    }
+
+    public Type getJavaSerializableType() {
+        return getType(getJavaRuntimeExceptionDeclaration());
+    }
+
+    public Type getJavaRuntimeExceptionType() {
+        return getType(getJavaRuntimeExceptionDeclaration());
     }
 
     public Type getSequenceType(Type et) {

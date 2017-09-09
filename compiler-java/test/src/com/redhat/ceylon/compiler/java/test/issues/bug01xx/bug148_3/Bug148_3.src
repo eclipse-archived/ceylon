@@ -11,7 +11,7 @@ public final class bug148_3_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .bug148_3.bug148_3_.bug148_3();
     }
 }

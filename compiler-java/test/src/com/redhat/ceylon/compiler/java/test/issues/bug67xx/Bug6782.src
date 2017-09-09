@@ -50,7 +50,7 @@ public final class bug6782_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug67xx.bug6782_.bug6782();
     }
 }

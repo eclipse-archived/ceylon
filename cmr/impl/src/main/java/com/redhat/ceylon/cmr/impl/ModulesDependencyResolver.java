@@ -94,9 +94,11 @@ public abstract class ModulesDependencyResolver extends AbstractDependencyResolv
                         if(sep != -1){
                             String groupId = part.substring(0, sep);
                             String artifactId = part.substring(sep+1);
-                            return new ModuleInfo(ret.getName(), ret.getVersion(), 
+                            return new ModuleInfo(ret.getNamespace(), 
+                            		ret.getName(), ret.getVersion(), 
                                     groupId, artifactId, null,
-                                    ret.getFilter(), ret.getDependencies());
+                                    ret.getFilter(), 
+                                    ret.getDependencies());
                         }
                     }
                 }

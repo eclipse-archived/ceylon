@@ -11,24 +11,24 @@ public class Bug6420 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
     }
     
-    public .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6420.Sub Sub$new$(final long supAlias, final int subAlias) {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6420.Sub Sub$new$(final .ceylon.language.Integer supAlias, final .ceylon.language.Character subAlias) {
         return new Sub(supAlias, subAlias);
     }
     
     public class Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
-        protected Sub(final long supAlias, final int subAlias) {
+        protected Sub(final .ceylon.language.Integer supAlias, final .ceylon.language.Character subAlias) {
             this.supAlias = supAlias;
             this.subAlias = subAlias;
         }
-        private final long supAlias;
+        private final .ceylon.language.Integer supAlias;
         
-        public final long getSupAlias() {
+        public final .ceylon.language.Integer getSupAlias() {
             return this.supAlias;
         }
-        private final int subAlias;
+        private final .ceylon.language.Character subAlias;
         
-        public final int getSubAlias() {
+        public final .ceylon.language.Character getSubAlias() {
             return this.subAlias;
         }
         
@@ -45,7 +45,7 @@ public class Bug6420 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6420();
     }
     

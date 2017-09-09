@@ -21,8 +21,7 @@
 abstract class Bug715<Item>() satisfies Map<String, Item> 
         given Item satisfies Object {
     
-    shared actual Map<String,Result> mapItems<Result>(Result mapping(String key, Item item))
-            given Result satisfies Object {
+    shared actual Map<String,Result> mapItems<Result>(Result mapping(String key, Item item))  {
         return nothing;
     }
   

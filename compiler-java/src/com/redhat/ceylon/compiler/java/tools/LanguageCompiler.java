@@ -68,6 +68,7 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
+import com.redhat.ceylon.compiler.typechecker.parser.CeylonInterpolatingLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
@@ -465,7 +466,7 @@ public class LanguageCompiler extends JavaCompiler {
                 ANTLRStringStream input = new NewlineFixingStringStream(source);
                 CeylonLexer lexer = new CeylonLexer(input);
 
-                CommonTokenStream tokens = new CommonTokenStream(lexer);
+                CommonTokenStream tokens = new CommonTokenStream(new CeylonInterpolatingLexer(lexer));
 
                 CeylonParser parser = new CeylonParser(tokens);
                 CompilationUnit cu = parser.compilationUnit();
@@ -493,7 +494,7 @@ public class LanguageCompiler extends JavaCompiler {
                     /*
                      * Stef: see javadoc for findOrCreateModulelessPackage() for why this is here.
                      */
-                    com.redhat.ceylon.model.typechecker.model.Package p = modelLoader.findOrCreateModulelessPackage(pkgName == null ? "" : pkgName);
+                    Package p = modelLoader.findOrCreateModulelessPackage(pkgName == null ? "" : pkgName);
                     phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, moduleSourceMapper, ceylonContext, filename, map);
                     phasedUnit.setSuppressedWarnings(suppressedWarnings);
                     phasedUnits.addPhasedUnit(file, phasedUnit);

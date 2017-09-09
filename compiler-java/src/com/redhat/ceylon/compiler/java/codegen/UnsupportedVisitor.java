@@ -22,15 +22,6 @@ public class UnsupportedVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Tree.Annotation that) {
-        String msg = AnnotationInvocationVisitor.checkForBannedJavaAnnotation(that);
-        if (msg != null) {
-            that.addError(msg, Backend.Java);
-        }
-        super.visit(that);
-    }
-
-    @Override
     public void visit(Tree.FloatLiteral that) {
         try {
             ExpressionTransformer.literalValue(that);

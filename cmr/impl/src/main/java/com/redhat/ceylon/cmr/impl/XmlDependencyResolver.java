@@ -59,7 +59,7 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
             for (ModuleIdentifier mi : module.getDependencies()) {
                 infos.add(new ModuleDependencyInfo(null, mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport(), Backends.JAVA));
             }
-            ModuleInfo ret = new ModuleInfo(name, version, module.getGroupId(), module.getArtifactId(), null, module.getFilter(), infos);
+            ModuleInfo ret = new ModuleInfo(null, name, version, module.getGroupId(), module.getArtifactId(), null, module.getFilter(), infos);
             if(overrides != null)
                 ret = overrides.applyOverrides(name, version, ret);
             return ret;

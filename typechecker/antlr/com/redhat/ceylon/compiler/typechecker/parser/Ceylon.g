@@ -3914,6 +3914,9 @@ compilerAnnotation returns [CompilerAnnotation annotation]
       |
         AT
         { $annotation=new CompilerAnnotation($AT); }
+      |
+        HASH
+        { $annotation=new CompilerAnnotation($HASH); }
       )
       annotationName 
       { $annotation.setIdentifier($annotationName.identifier); }
@@ -5370,6 +5373,10 @@ AT
     :   '@'
     ;
 
+HASH
+    :   '#'
+    ;
+
 fragment
 LIDENTIFIER :;
 fragment
@@ -5382,9 +5389,8 @@ UIDENTIFIER
         { int cp = $text.codePointAt(0);
           if (cp=='_' || Character.isLowerCase(cp)) $type=LIDENTIFIER; }
     |   UIdentifierPrefix name=IdentifierPart+
-        { setText($text.substring(2)); }
     |   LIdentifierPrefix name=IdentifierPart+
-        { setText($text.substring(2)); $type=LIDENTIFIER; }
+        { $type=LIDENTIFIER; }
     ;
 
 fragment

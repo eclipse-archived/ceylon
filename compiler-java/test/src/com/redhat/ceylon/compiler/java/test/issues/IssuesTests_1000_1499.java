@@ -663,7 +663,8 @@ public class IssuesTests_1000_1499 extends CompilerTests {
 
     @Test
     public void testBug1380() {
-        compareWithJavaSource("bug13xx/Bug1380");
+        // No longer allowed by spec
+//        compareWithJavaSource("bug13xx/Bug1380");
     }
 
     @Test

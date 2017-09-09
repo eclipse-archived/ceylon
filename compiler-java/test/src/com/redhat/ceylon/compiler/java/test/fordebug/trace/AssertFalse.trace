@@ -1,6 +1,5 @@
-.AssertFalse.ceylon:?:com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_.main(java.lang.String[]):3:2a (aload_0)
-.AssertFalse.ceylon:?:com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_.main(java.lang.String[]):4:b6 (invokevirtual)
-.AssertFalse.ceylon:?:com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_.main(java.lang.String[]):7:b8 (invokestatic)
+.AssertFalse.ceylon:?:com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_.main(java.lang.String[]):1:b8 (invokestatic)
+.AssertFalse.ceylon:?:com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_.main(java.lang.String[]):4:b8 (invokestatic)
 ..AssertFalse.ceylon:2:com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_.assertFalse():0:14 (ldc2_w)
 ..AssertFalse.ceylon:3:com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_.assertFalse():4:bb (new)
 ..AssertFalse.ceylon:3:com.redhat.ceylon.compiler.java.test.fordebug.trace.assertFalse_.assertFalse():7:59 (dup)

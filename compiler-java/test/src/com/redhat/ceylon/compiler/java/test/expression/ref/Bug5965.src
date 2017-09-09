@@ -60,6 +60,7 @@ class Bug5965 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
         public class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            @.com.redhat.ceylon.common.NonNull
             private final .java.lang.String string;
             
             @.ceylon.language.SharedAnnotation$annotation$
@@ -138,7 +139,7 @@ public final class bug5965_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.expression.ref.bug5965_.bug5965();
     }
 }

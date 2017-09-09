@@ -702,7 +702,7 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
             
             <para>
             Similarly, there are no C-style typecasts in Ceylon. Instead, the 
-            <literal>if (is ... )</literal> and <literal>case (is ... )</literal> 
+            <literal>if (is ... )</literal> and <literal>case ( ... )</literal> 
             constructs may be used to test and narrow the type of an object reference 
             in one step, without risk of a <literal>ClassCastException</literal>. 
             This facility is called <emphasis>flow-sensitive typing</emphasis>.
@@ -710,10 +710,10 @@ shared abstract class AbstractMetaThingy() { ... }</programlisting>
             
             <programlisting>String name(Organization|Person entity) {
     switch (entity)
-    case (is Organization) {
+    case (Organization) {
         return entity.tradeName else entity.legalName;
     }
-    case (is Person) {
+    case (Person) {
         return entity.nickName else entity.firstName;
     }
 }</programlisting>
@@ -731,7 +731,7 @@ assert (exists arg);
 assert (exists amount = parseInteger(arg), amount>0);</programlisting>
             
             <para>
-            The combination of <literal>case (is ... )</literal> with sum types 
+            The combination of <literal>case ( ... )</literal> with sum types 
             amounts to a kind of language-level support for the visitor pattern.
             </para>
             

@@ -496,10 +496,10 @@ public class InteropTests extends CompilerTests {
     @Test
     public void testBannedAnnotation(){
       assertErrors("BannedAnnotation",
-              new CompilerError(13, "inappropiate java annotation: interoperation with @Target is not supported"),
-              new CompilerError(14, "inappropiate java annotation: interoperation with @Retention is not supported"),
-              new CompilerError(16, "inappropiate java annotation: interoperation with @Deprecated is not supported: use deprecated"),
-              new CompilerError(17, "inappropiate java annotation: interoperation with @Override is not supported: use actual"));
+              new CompilerError(13, "illegal Java annotation"),
+              new CompilerError(14, "illegal Java annotation"),
+              new CompilerError(16, "illegal Java annotation (use 'deprecated' in 'ceylon.language')"),
+              new CompilerError(17, "illegal Java annotation (use 'actual' in 'ceylon.language')"));
     }
     
     @Test

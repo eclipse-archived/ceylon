@@ -31,6 +31,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         this.attr4 = "";
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .java.lang.String attr;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -56,6 +57,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .java.lang.String attr2;
     
     @.ceylon.language.LateAnnotation$annotation$
@@ -80,6 +82,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .java.lang.String attr3;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -96,6 +99,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         this.attr3 = attr3;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .java.lang.String attr4;
     
     @.ceylon.language.VariableAnnotation$annotation$
@@ -111,6 +115,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         this.attr4 = attr4;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .java.lang.String param3;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -127,6 +132,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         this.param3 = param3;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .java.lang.String param4;
     
     @.ceylon.language.VariableAnnotation$annotation$

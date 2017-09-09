@@ -11,6 +11,7 @@ public class Bug2252 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     @.javax.annotation.Generated("a")
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .ceylon.language.Integer id;
     
     @.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = "unusedDeclaration")
@@ -22,7 +23,7 @@ public class Bug2252 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2252();
     }
     

@@ -859,6 +859,29 @@ public class AnnotationVisitor extends Visitor {
                         + dec.getName(that.getUnit()) + "'");
             }
             else {
+                String pname = 
+                        dec.getUnit()
+                            .getPackage()
+                            .getNameAsString();
+                String name = dec.getName();
+                switch (pname) {
+                case "java.lang":
+                    switch (name) {
+                    case "deprecated":
+                        that.addError("illegal Java annotation (use 'deprecated' in 'ceylon.language')");
+                        break;
+                    case "override":
+                        that.addError("illegal Java annotation (use 'actual' in 'ceylon.language')");
+                        break;
+                    } 
+                    break;
+                case "java.lang.annotation":
+                    switch (name) {
+                    case "target":
+                    case "retention":
+                        that.addError("illegal Java annotation");
+                    }
+                }
                 checkAnnotationArguments(null, 
                         (Tree.InvocationExpression) that);
             }

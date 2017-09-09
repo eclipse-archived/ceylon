@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NamedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -585,31 +586,15 @@ public class TypeArgumentInference {
                 new ArrayList<Type>
                     (args.size());
         List<Parameter> params = parameters.getParameters();
-        for (int i=0; i<params.size(); i++) {
+        for (int i=0, len=params.size(); i<len; i++) {
             Parameter parameter = params.get(i);
             if (args.size()>i) {
                 Tree.PositionalArgument arg = args.get(i);
-                Type at = arg.getTypeModel();
                 if (arg instanceof Tree.SpreadArgument) {
-                    at = spreadType(at, unit, true);
-                    List<Parameter> subList = 
-                            params.subList(i, params.size());
-                    Type parameterTypeTuple = 
-                            unit.getParameterTypesAsTupleType(
-                                    subList, 
-                                    //Note: this is an abuse
-                                    //of the API - the parameters
-                                    //don't really belong to
-                                    //this type, they belong
-                                    //to the invoked declaration
-                                    receiverType);
-                    addToUnionOrIntersection(
-                            findingUpperBounds, 
-                            inferredTypes, 
-                            inferTypeArg(tp, 
-                                    parameterTypeTuple, at, 
-                                    findingUpperBounds, 
-                                    pal));
+                    inferTypeArgFromSpreadArg(tp, 
+                            receiverType, arg, i, invoked, 
+                            findingUpperBounds, inferredTypes,
+                            params, pal);
                 }
                 else if (arg instanceof Tree.Comprehension) {
                     if (parameter.isSequenced()) {
@@ -634,11 +619,12 @@ public class TypeArgumentInference {
                         Type parameterType = 
                                 parameterType(receiverType,
                                         parameter, invoked);
+                        Type argType = arg.getTypeModel();
                         addToUnionOrIntersection(
                                 findingUpperBounds, 
                                 inferredTypes,
                                 inferTypeArg(tp, 
-                                        parameterType, at,
+                                        parameterType, argType,
                                         findingUpperBounds, 
                                         pal));
                     }
@@ -647,6 +633,68 @@ public class TypeArgumentInference {
         }
         return unionOrIntersection(findingUpperBounds, 
                 inferredTypes);
+    }
+
+    private void inferTypeArgFromSpreadArg(
+            TypeParameter tp, 
+            Type receiverType, 
+            Tree.PositionalArgument arg,
+            int i, 
+            Declaration invoked, 
+            boolean findingUpperBounds, 
+            List<Type> inferredTypes, 
+            List<Parameter> params,
+            Node node) {
+
+        int len = params.size();
+        Type spreadType = 
+                spreadType(arg.getTypeModel(), 
+                        unit, true);
+        if (!params.get(len-1).isSequenced()
+                && !unit.isTupleLengthUnbounded(spreadType)) {
+            //unpacking the spread argument tuple
+            //into individual elements gives a 
+            //better result for type inference 'cos
+            //it doesn't get confused by the less
+            //precise Element type arg of the Tuple
+            List<Type> argTypes = 
+                    unit.getTupleElementTypes(spreadType);
+            for (int j=0, arglen=argTypes.size(); 
+                    j<len-i && j<arglen; j++) {
+                Parameter parameter = params.get(i+j);
+                Type parameterType = 
+                        parameterType(receiverType,
+                                parameter, invoked);
+                Type argType = argTypes.get(j);
+                addToUnionOrIntersection(
+                        findingUpperBounds, 
+                        inferredTypes,
+                        inferTypeArg(tp, 
+                                parameterType, argType,
+                                findingUpperBounds, 
+                                node));
+            }
+        }
+        else {
+            //this approach is less precise 'cos it
+            //gets thrown off by argument to Element
+            Type parameterTypeTuple = 
+                    unit.getParameterTypesAsTupleType(
+                            params.subList(i, len), 
+                            //Note: this is an abuse
+                            //of the API - the parameters
+                            //don't really belong to
+                            //this type, they belong
+                            //to the invoked declaration
+                            receiverType);
+            addToUnionOrIntersection(
+                    findingUpperBounds, 
+                    inferredTypes, 
+                    inferTypeArg(tp, 
+                            parameterTypeTuple, spreadType, 
+                            findingUpperBounds, 
+                            node));
+        }
     }
     
     /**
@@ -884,7 +932,7 @@ public class TypeArgumentInference {
      */
     List<Type> getInferredTypeArgsForFunctionRef(
             Tree.StaticMemberOrTypeExpression smte, 
-            Type receiverType) {
+            Type receiverType, boolean secondList) {
         Tree.TypeArguments typeArguments = 
                 smte.getTypeArguments();
         if (typeArguments instanceof Tree.InferredTypeArguments) {
@@ -955,7 +1003,7 @@ public class TypeArgumentInference {
                         return null; //TODO: to give a nicer error
                     }
                     else {
-                        ParameterList aplf = apls.get(0);
+                        ParameterList aplf = apls.get(secondList?1:0);
                         ParameterList pplf = ppls.get(0);
                         List<Parameter> apl = 
                                 aplf.getParameters();
@@ -1008,17 +1056,21 @@ public class TypeArgumentInference {
                         Type parameterListType;
                         Type fullType;
                         if (smte.getStaticMethodReferencePrimary()) {
-                            Type type = arg.getType();
-                            Type et = unit.getEmptyType();
+                            Type argType = arg.getType();
                             parameterListType = appliedType(
                                     unit.getTupleDeclaration(), 
-                                    type, type, et);
+                                    argType, argType, 
+                                    unit.getEmptyType());
                             fullType = appliedType(
                                     unit.getCallableDeclaration(),
-                                    type, parameterListType);
+                                    argType, parameterListType);
                         }
                         else {
                             fullType = arg.getFullType();
+                            if (secondList) {
+                                fullType = 
+                                        unit.getCallableReturnType(fullType);
+                            }
                             parameterListType = 
                                     unit.getCallableTuple(fullType);
                         }
@@ -1044,7 +1096,6 @@ public class TypeArgumentInference {
                             Type it = 
                                     inferFunctionRefTypeArg(
                                             smte,
-                                            typeParameters, 
                                             parameterizedDec,
                                             parameterListType,
                                             argumentListType,
@@ -1056,9 +1107,59 @@ public class TypeArgumentInference {
                                 typeParameters, inferredTypes, 
                                 receiverType, reference);
                     }
-                    else {
+                    else if (secondList) {
                         //not a callable parameter, nor a
-                        //value parameter of callable type
+                        //value parameter of callable type,
+                        //but the argument is an invocation
+                        //of a nullary function
+                        List<Type> inferredTypes = 
+                                new ArrayList<Type>
+                                    (typeParameters.size());
+                        Type argType = arg.getType();
+                        TypeDeclaration ptd = 
+                                paramType.getDeclaration();
+                        Type template = 
+                                //TODO: This is a bit crap.
+                                //The rest of this class assumes
+                                //that we're constraining supertype
+                                //type params by subtype type args, 
+                                //but here we're constraining a 
+                                //subtype type param by a supertype
+                                //type arg. Should I iterate over
+                                //all supertypes of argType?
+                                ptd instanceof ClassOrInterface ?
+                                    argType.getSupertype(ptd) :
+                                    argType;
+                        for (TypeParameter tp: typeParameters) {
+                            boolean covariant = 
+                                    template.occursCovariantly(tp)
+                                    && !template.occursContravariantly(tp);
+                            boolean contravariant = 
+                                    template.occursContravariantly(tp)
+                                    && !template.occursCovariantly(tp);
+                            Type it;
+                            if (covariant) {
+                                it = unit.getNothingType();
+                            }
+                            else if (contravariant) {
+                                it = intersectionOfSupertypes(tp);
+                            }
+                            else {
+                                it = inferFunctionRefTypeArg(
+                                        smte, 
+                                        parameterizedDec,
+                                        template, 
+                                        paramType,
+                                        tp,
+                                        false);
+                            }
+                            inferredTypes.add(it);
+                        }
+                        return constrainInferredTypes(
+                                typeParameters, inferredTypes, 
+                                receiverType, reference);
+                    }
+                    else {
                         return null;
                     }
                 }
@@ -1131,7 +1232,7 @@ public class TypeArgumentInference {
      */
     private Type inferFunctionRefTypeArg(
             Tree.StaticMemberOrTypeExpression smte, 
-            List<TypeParameter> typeParams, Declaration pd, 
+            Declaration pd, 
             Type template, Type type,
             TypeParameter tp, 
             boolean findingUpperBounds) {
@@ -1139,10 +1240,12 @@ public class TypeArgumentInference {
                 inferTypeArg(tp,
                         template, type,
                         findingUpperBounds, smte);
-        if (isTypeUnknown(it) ||
-//                it.involvesTypeParameters(typeParams) ||
-                involvesTypeParams(pd, it)) {
-            return unit.getNothingType();
+        if (isTypeUnknown(it) 
+//                || it.involvesTypeParameters(typeParams)
+                || involvesTypeParams(pd, it)) {
+            return findingUpperBounds ? 
+                    unit.getAnythingType() : 
+                    unit.getNothingType();
         }
         else {
             return it;
@@ -1479,21 +1582,21 @@ public class TypeArgumentInference {
                             parameterTypes.get(i);
                     if (pt!=null) {
                         occursContravariantly = 
-                                occursContravariantly || 
-                                pt.occursContravariantly(tp);
+                                occursContravariantly 
+                                || pt.occursContravariantly(tp);
                         occursCovariantly = 
-                                occursCovariantly || 
-                                pt.occursCovariantly(tp);
+                                occursCovariantly 
+                                || pt.occursCovariantly(tp);
                         occursInvariantly = 
-                                occursInvariantly || 
-                                pt.occursInvariantly(tp);
+                                occursInvariantly 
+                                || pt.occursInvariantly(tp);
                     }
                 }
                 //if the parameter occurs only contravariantly 
                 //in the argument list, then treat it as 'in'
                 return occursContravariantly
-                        && !occursCovariantly
-                        && !occursInvariantly;
+                    && !occursCovariantly
+                    && !occursInvariantly;
             }
         }
         

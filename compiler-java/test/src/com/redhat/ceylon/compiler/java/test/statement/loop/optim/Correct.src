@@ -62,23 +62,23 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == javaArrayIterationStatic()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$66), .ceylon.language.Integer.instance(rhs$67)));
         }
-        long lhs$71 = expected;
-        long rhs$72 = tupleIterationStatic$priv$();
-        if (lhs$71 == rhs$72) {
+        long lhs$72 = expected;
+        long rhs$73 = tupleIterationStatic$priv$();
+        if (lhs$72 == rhs$73) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == tupleIterationStatic()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$71), .ceylon.language.Integer.instance(rhs$72)));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == tupleIterationStatic()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$72), .ceylon.language.Integer.instance(rhs$73)));
         }
-        long lhs$81 = expected;
-        long rhs$82 = rangeIterationDynamic$priv$();
-        if (lhs$81 == rhs$82) {
+        long lhs$82 = expected;
+        long rhs$83 = rangeIterationDynamic$priv$();
+        if (lhs$82 == rhs$83) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationDynamic()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$81), .ceylon.language.Integer.instance(rhs$82)));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == rangeIterationDynamic()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$82), .ceylon.language.Integer.instance(rhs$83)));
         }
-        long lhs$83 = expected;
-        long rhs$84 = arrayIterationDynamic$priv$();
-        if (lhs$83 == rhs$84) {
+        long lhs$84 = expected;
+        long rhs$85 = arrayIterationDynamic$priv$();
+        if (lhs$84 == rhs$85) {
         } else {
-            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arrayIterationDynamic()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$83), .ceylon.language.Integer.instance(rhs$84)));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expected == arrayIterationDynamic()") + .com.redhat.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$84), .ceylon.language.Integer.instance(rhs$85)));
         }
     }
     
@@ -336,8 +336,15 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$70 = array.iterator();
         loop_10: while (!((elem$69 = i$iterator$$70.next()) instanceof .ceylon.language.Finished)) {
             loopentered$68 = true;
-            final long i = ((.ceylon.language.Integer)elem$69).longValue();
-            sum += i;
+            final .ceylon.language.Integer i = (.ceylon.language.Integer)elem$69;
+            (
+                let
+                {
+                    .ceylon.language.Integer $ceylontmp$op$71 = .ceylon.language.Integer.instance(sum).plus(i);
+                    sum = $ceylontmp$op$71.longValue();
+                }
+                returning $ceylontmp$op$71;
+            );
         }
         if (!loopentered$68) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
         return sum;
@@ -348,21 +355,21 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Integer*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable) {
         long sum = 0L;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$75 = iterable;
-        final boolean isArray$76 = iterable$75 instanceof .ceylon.language.Array;
-        final boolean isTuple$77 = iterable$75 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$75).$getArray$() != null;
-        .java.lang.Object elem$74 = null;
-        int i$78 = 0;
-        final int length$79;
-        if (isArray$76 || isTuple$77) {
-            length$79 = (int)iterable$75.getSize();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$76 = iterable;
+        final boolean isArray$77 = iterable$76 instanceof .ceylon.language.Array;
+        final boolean isTuple$78 = iterable$76 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$76).$getArray$() != null;
+        .java.lang.Object elem$75 = null;
+        int i$79 = 0;
+        final int length$80;
+        if (isArray$77 || isTuple$78) {
+            length$80 = (int)iterable$76.getSize();
         } else {
-            length$79 = 0;
+            length$80 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$80 = isTuple$77 || isArray$76 ? null : iterable$75.iterator();
-        loop_11: while (isTuple$77 || isArray$76 ? i$78 < length$79 : !((elem$74 = i$iterator$$80.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$77) elem$74 = iterable$75.getFromFirst(i$78++);
-            final long i = isArray$76 ? .com.redhat.ceylon.compiler.java.Util.getIntegerArray(((.ceylon.language.Array)iterable$75).toArray(), i$78++) : ((.ceylon.language.Integer)elem$74).longValue();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$81 = isTuple$78 || isArray$77 ? null : iterable$76.iterator();
+        loop_11: while (isTuple$78 || isArray$77 ? i$79 < length$80 : !((elem$75 = i$iterator$$81.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$78) elem$75 = iterable$76.getFromFirst(i$79++);
+            final long i = isArray$77 ? .com.redhat.ceylon.compiler.java.Util.getIntegerArray(((.ceylon.language.Array)iterable$76).toArray(), i$79++) : ((.ceylon.language.Integer)elem$75).longValue();
             sum += i;
         }
         return sum;

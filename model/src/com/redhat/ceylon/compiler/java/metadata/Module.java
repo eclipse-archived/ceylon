@@ -17,6 +17,8 @@ public @interface Module {
     public String version();
     /** The name of the module */
     public String name();
+    /** The readable name of the module */
+    public String label() default "";
     /** The module documentation. */
     public String doc() default "";
     /** The module author(s). */

@@ -16,7 +16,7 @@ public final class bug2244TestNulls1_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2244TestNulls1_.bug2244TestNulls1();
     }
 }
@@ -78,7 +78,7 @@ public final class bug2244TestNulls1b_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2244TestNulls1b_.bug2244TestNulls1b();
     }
 }
@@ -153,7 +153,7 @@ public final class bug2244TestNulls1c_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2244TestNulls1c_.bug2244TestNulls1c();
     }
 }
@@ -173,7 +173,7 @@ public final class bug2244TestNulls2_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2244TestNulls2_.bug2244TestNulls2();
     }
 }
@@ -188,7 +188,7 @@ public final class bug2244TestNulls3_ {
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2244TestNulls3_.bug2244TestNulls3();
     }
 }

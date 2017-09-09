@@ -13,6 +13,7 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         this.s = null;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$

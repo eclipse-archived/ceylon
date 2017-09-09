@@ -10,6 +10,7 @@
  produces the stream 
  `{ { 'h', 'w', 1 }, { 'e', 'o', 2 }, { 'l', 'r', 3 }, 
   { 'l', 'l', null }, { 'o', 'd', null } }`."
+since("1.4.0")
 shared {[Element+]*} transpose<Element,Absent>
         ("A value used to pad shorter streams."
          Element padding,

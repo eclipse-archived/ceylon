@@ -22,6 +22,7 @@ public class Bug7186 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         this.someString2 = "foo";
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private .java.lang.Long someInt;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -54,6 +55,7 @@ public class Bug7186 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         this.someInt2 = someInt2;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private .java.lang.String someString;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -72,6 +74,7 @@ public class Bug7186 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         this.someString = someString == null ? null : someString.toString();
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .java.lang.String someString2;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -90,7 +93,7 @@ public class Bug7186 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug71xx.Bug7186();
     }
     

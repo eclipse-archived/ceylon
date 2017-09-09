@@ -116,4 +116,5 @@ public interface ArtifactResult {
     String artifactId();
     
     String classifier();
+    
 }

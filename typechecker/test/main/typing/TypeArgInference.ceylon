@@ -357,3 +357,68 @@ void inferenceWithSafeMemberOp() {
     // String is not assignable to Nothing
     
 }
+
+interface This {
+    shared static T fun<T>()(T t) => t;
+    shared static T sun<T>(T t) => t;
+}
+
+class That() {
+    shared T fun<T>()(T t) => t;
+    shared T sun<T>(T t) => t;
+}
+
+interface Collector<T> {}
+
+interface Stream<E> {
+    shared formal List<E> collect(Collector<E> collector);
+}
+
+interface Collectors {
+    shared static Collector<T> toList<T>() 
+            => nothing;
+}
+
+class Collections {
+    shared static List<T> emptyList<T>() { throw; }
+    new () {}
+}
+
+void nullaryFunctions() {
+    
+    Stream<String> stream = nothing;
+    $type:"List<String>" value list 
+            = stream.collect(Collectors.toList());
+    
+    Collector<T> toList<T>() => nothing;
+    $type:"List<String>" value list2 
+            = stream.collect(toList());
+    
+    T fun<T>()(T t) => t;
+    T sun<T>(T t) => t;
+    
+    void gun(String str(String str)) {}
+    
+    gun(sun);
+    gun(fun());
+    gun(This.sun);
+    gun(This.fun());
+    gun(That().sun);
+    gun(That().fun());
+    
+    $type:"List<Nothing>" value empty 
+            = Collections.emptyList();
+    
+    interface List<out E> {}
+    interface ListMutator<in E> {}
+    interface MutableList<E> satisfies List<E> & ListMutator<E> {}
+    class ArrayList<E>() satisfies MutableList<E> {}
+    
+    class MyThing(MutableList<String> list) {}
+    class YourThing(List<String> list) {}
+    class TheirThing(ListMutator<String> list) {}
+    
+    MyThing(ArrayList());
+    YourThing(ArrayList());
+    TheirThing(ArrayList());
+}

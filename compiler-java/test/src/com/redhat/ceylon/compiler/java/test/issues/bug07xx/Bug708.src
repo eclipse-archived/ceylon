@@ -109,6 +109,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.Object param;
     
     @.com.redhat.ceylon.common.Nullable
@@ -119,6 +120,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return this.param;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.Object attr;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -130,6 +132,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return this.attr;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.Object param2;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -751,7 +754,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     

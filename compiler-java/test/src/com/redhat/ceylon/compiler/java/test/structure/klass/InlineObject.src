@@ -380,6 +380,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.Object param;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -431,6 +432,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.Object attribute;
     
     @.ceylon.language.SharedAnnotation$annotation$

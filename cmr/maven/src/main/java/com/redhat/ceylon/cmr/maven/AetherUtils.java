@@ -420,7 +420,8 @@ class AetherUtils {
             ModuleVersionDetails moduleVersionDetails = new ModuleVersionDetails(
                     MavenRepository.NAMESPACE,
                     groupId+":"+artifactId, version, 
-                    groupId, artifactId,
+                    groupId, artifactId, 
+                    null,
                     description.length() > 0 ? description.toString() : null,
                     licenseBuilder.length() > 0 ? licenseBuilder.toString() : null,
                     authors, dependencies, artifactTypes , true, repositoryDisplayString);

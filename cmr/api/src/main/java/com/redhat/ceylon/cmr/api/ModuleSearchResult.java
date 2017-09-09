@@ -23,6 +23,7 @@ public class ModuleSearchResult {
         public ModuleDetails(
                 String namespace,
                 String name,
+                String label,
                 String doc,
                 String license,
                 SortedSet<String> authors,
@@ -37,6 +38,7 @@ public class ModuleSearchResult {
                 ModuleVersionDetails mvd = new ModuleVersionDetails(namespace, name, v, null, null);
                 mvd.setDoc(doc);
                 mvd.setLicense(license);
+                mvd.setLabel(label);
                 mvd.getAuthors().addAll(authors);
                 mvd.getDependencies().addAll(dependencies);
                 mvd.getArtifactTypes().addAll(artifacts);
@@ -64,6 +66,10 @@ public class ModuleSearchResult {
             } else {
                 return versions.last();
             }
+        }
+
+        public String getLabel() {
+            return (getLastVersion() != null) ? getLastVersion().getLabel() : null;
         }
 
         public String getLicense() {
@@ -122,6 +128,7 @@ public class ModuleSearchResult {
         public String toString() {
             return "ModuleSearchResult ["
                     +"name: "+name
+                    +", label: "+getLabel()
                     +", license: "+getLicense()
                     +", doc: "+getDoc()
                     +", authors: "+getAuthors()

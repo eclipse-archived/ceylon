@@ -38,7 +38,7 @@ public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo();
     }
     
@@ -86,7 +86,7 @@ public class UnionSelfType_Bar implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar();
     }
     

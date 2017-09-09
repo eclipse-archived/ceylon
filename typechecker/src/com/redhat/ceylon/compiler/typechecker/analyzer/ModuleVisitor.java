@@ -217,9 +217,9 @@ public class ModuleVisitor extends Visitor {
 
     @Override
     public void visit(Tree.ModuleDescriptor that) {
-        moduleBackends = 
-                getNativeBackend(that.getAnnotationList(), 
-                        that.getUnit());
+        Tree.AnnotationList al = that.getAnnotationList();
+        Unit u = unit.getUnit();
+        moduleBackends = getNativeBackend(al, u);
         super.visit(that);
         if (phase==Phase.SRC_MODULE) {
             String version = 
@@ -244,8 +244,7 @@ public class ModuleVisitor extends Visitor {
             else {
                 String initialName = name.get(0);
                 Backends unitBackends = 
-                        unit.getUnit()
-                            .getSupportedBackends();
+                        u.getSupportedBackends();
                 if (initialName.equals(DEFAULT_MODULE_NAME)) {
                     importPath.addError("reserved module name: 'default'");
                 }
@@ -256,13 +255,13 @@ public class ModuleVisitor extends Visitor {
                 else if (!moduleBackends.none()
                         && moduleBackends.header()) {
                     that.addError("missing backend argument for native annotation on module: "
-                        + formatPath(that.getImportPath().getIdentifiers()));
+                        + formatPath(importPath.getIdentifiers()));
                 }
                 else if (!moduleBackends.none()
                         && !unitBackends.none()
                         && !unitBackends.supports(moduleBackends)) {
                     that.addError("module not meant for this backend: "
-                        + formatPath(that.getImportPath().getIdentifiers()));
+                        + formatPath(importPath.getIdentifiers()));
                 }
                 else {
                     if (initialName.equals("ceylon")) {
@@ -279,8 +278,13 @@ public class ModuleVisitor extends Visitor {
                                     name, version);
                     importPath.setModel(mainModule);
                     if (!completeOnlyAST) {
-                        mainModule.setUnit(unit.getUnit());
+                        mainModule.setUnit(u);
                         mainModule.setVersion(version);
+//                        if (hasAnnotation(al, "label", u)) {
+//                            mainModule.setLabel(getAnnotationArgument(
+//                                    getAnnotation(al, "label", u), 
+//                                    0, u));
+//                        }
                     }
                     String nameString = 
                             formatPath(importPath.getIdentifiers());
@@ -296,7 +300,7 @@ public class ModuleVisitor extends Visitor {
                                 mainModule, that);
                         mainModule.setAvailable(true);
                         mainModule.getAnnotations().clear();
-                        buildAnnotations(that.getAnnotationList(), 
+                        buildAnnotations(al, 
                                 mainModule.getAnnotations());
                         mainModule.setNativeBackends(moduleBackends);
                         Tree.QuotedLiteral classifier = that.getClassifier();

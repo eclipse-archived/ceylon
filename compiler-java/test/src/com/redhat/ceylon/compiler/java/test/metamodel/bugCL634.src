@@ -11,6 +11,7 @@ class BugCL634 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         this.\ud801\udc28 = null;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.Object good;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -20,6 +21,7 @@ class BugCL634 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return this.good;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.Object \ud835\udcb7\ud835\udcb6\ud835\udcb9;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -29,6 +31,7 @@ class BugCL634 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return this.\ud835\udcb7\ud835\udcb6\ud835\udcb9;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.Object \ud801\udc28;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -119,7 +122,7 @@ public final class bugCL634_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         .com.redhat.ceylon.compiler.java.test.metamodel.bugCL634_.bugCL634();
     }
 }

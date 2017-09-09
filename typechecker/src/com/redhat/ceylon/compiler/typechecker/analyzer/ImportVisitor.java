@@ -334,13 +334,11 @@ public class ImportVisitor extends Visitor {
             i.setAlias(al);
         }
         if (isNonimportable(importedPackage, name)) {
-            id.addError("root type may not be imported: '" 
-                    + name 
-                    + "' in '" 
-                    + importedPackage.getNameAsString() 
-                    + "' is represented by '" 
-                    + equivalentType(name) 
-                    + "' in 'ceylon.language'");
+            id.addError("root type may not be imported: '" +
+                    name + "' in '" + 
+                    importedPackage.getNameAsString() + 
+                    "' is represented by '" + 
+                    name + "' in 'ceylon.language'");
             return name;
         }        
         Declaration d = 
@@ -547,7 +545,7 @@ public class ImportVisitor extends Visitor {
                 //spec says you can't hide a language modifier
                 //unless the modifier itself has an alias
                 //(this is perhaps a little heavy-handed)
-                //TODO: this should be a warning!!!!
+                //instead, it should be a warning
                 member.addUsageWarning(Warning.hidesLanguageModifier,
                         "import hides a language modifier: '" + 
                         alias + "' is a language modifier");
@@ -588,20 +586,14 @@ public class ImportVisitor extends Visitor {
         }
     }
     
-    private boolean isNonimportable(Package pkg, String name) {
+    private static boolean isNonimportable(Package pkg, String name) {
         String pname = pkg.getQualifiedNameString();
         return pname.equals("java.lang")
                 && ("Object".equals(name) 
                  || "Throwable".equals(name) 
-                 || "RuntimeException".equals(name) 
                  || "Exception".equals(name)) 
             || pname.equals("java.lang.annotation")
                 && "Annotation".equals(name);
-    }
-    
-    private String equivalentType(String name) {
-        return "RuntimeException".equals(name) ? 
-                "Exception" : name;
     }
     
 }

@@ -6,7 +6,7 @@ public class Bug6997FirstClass implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997FirstClass();
     }
     
@@ -45,7 +45,7 @@ public class Bug6997SecondClass extends .com.redhat.ceylon.compiler.java.test.is
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass();
     }
     

@@ -602,22 +602,22 @@ public class SmokeTestCase extends AbstractTest {
     }
 
     private final static ModuleDependencyInfo language = new ModuleDependencyInfo(null, "ceylon.language", Versions.CEYLON_VERSION_NUMBER, false, false);
-    public final static ModuleDetails com_acme_helloworld = new ModuleDetails("ceylon", "com.acme.helloworld", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
-    public final static ModuleDetails hello = new ModuleDetails("ceylon", "hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0)), false, null);
-    public final static ModuleDetails hello_js = new ModuleDetails("ceylon", "hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 9, 0)), false, null);
-    public final static ModuleDetails hello_js_jvm = new ModuleDetails("ceylon", "hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0), art(".js", 9, 0)), false, null);
-    public final static ModuleDetails hello_120_js = new ModuleDetails("ceylon", "hello", "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.0"), deps(language), types(art(".js", 8, 0)), false, null);
-    public final static ModuleDetails hello2 = new ModuleDetails("ceylon", "hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0), art(".js", 8, 0)), false, null);
-    public final static ModuleDetails hello2_jvm = new ModuleDetails("ceylon", "hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0)), false, null);
-    public final static ModuleDetails hello2_js = new ModuleDetails("ceylon", "hello2", "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".js", 8, 0)), false, null);
-    public final static ModuleDetails moduletest = new ModuleDetails("ceylon", "moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0)), false, null);
-    public final static ModuleDetails moduletest_js_jvm = new ModuleDetails("ceylon", "moduletest", "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0), art(".js")), false, null);
-    public final static ModuleDetails moduletest_js = new ModuleDetails("ceylon", "moduletest", null, null, set(), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".js")), false, null);
-    public final static ModuleDetails old_jar = new ModuleDetails("ceylon", "old-jar", null, null, set(), set("1.2.CR1"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
-    public final static ModuleDetails older_jar = new ModuleDetails("ceylon", "older-jar", null, null, set(), set("12-b3"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
-    public final static ModuleDetails org_jboss_acme = new ModuleDetails("ceylon", "org.jboss.acme", null, null, set(), set("1.0.0.Final"), deps(), types(), false, null);
-    public final static ModuleDetails test_jar = new ModuleDetails("ceylon", "test-jar", null, null, set(), set("0.1"), deps(), types(art(".jar", null, null)), false, null);
-    public final static ModuleDetails jsonly = new ModuleDetails("ceylon", "jsonly", null, null, set(), set("1.0.0"), deps(new ModuleDependencyInfo(null, "ceylon.language", "1.0.0", false, false)), types(art(".js", 7, 0)), false, null);
+    public final static ModuleDetails com_acme_helloworld = new ModuleDetails("ceylon", "com.acme.helloworld", "Hello World", "The classic Hello World module", "Public domain", set("Stef Epardaud"), set("1.0.0"), deps(), types(art(".car", 3, 0)), false, null);
+    public final static ModuleDetails hello = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0)), false, null);
+    public final static ModuleDetails hello_js = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".js", 9, 0)), false, null);
+    public final static ModuleDetails hello_js_jvm = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.1"), deps(language), types(art(".car", 8, 0), art(".js", 9, 0)), false, null);
+    public final static ModuleDetails hello_120_js = new ModuleDetails("ceylon", "hello", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.2.0"), deps(language), types(art(".js", 8, 0)), false, null);
+    public final static ModuleDetails hello2 = new ModuleDetails("ceylon", "hello2", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0), art(".js", 8, 0)), false, null);
+    public final static ModuleDetails hello2_jvm = new ModuleDetails("ceylon", "hello2", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".car", 8, 0)), false, null);
+    public final static ModuleDetails hello2_js = new ModuleDetails("ceylon", "hello2", null, "A test", "Apache Software License", set("The Ceylon Team"), set("1.0.0"), deps(IGNORE_DEPS), types(art(".js", 8, 0)), false, null);
+    public final static ModuleDetails moduletest = new ModuleDetails("ceylon", "moduletest", null, "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0)), false, null);
+    public final static ModuleDetails moduletest_js_jvm = new ModuleDetails("ceylon", "moduletest", null, "A test", "GPLv2", set("The Ceylon Team"), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".car", 3, 0), art(".js")), false, null);
+    public final static ModuleDetails moduletest_js = new ModuleDetails("ceylon", "moduletest", null, null, null, set(), set("0.1"), deps(new ModuleDependencyInfo(null, "ceylon.language", "0.6", false, false), new ModuleDependencyInfo(null, "hello", "1.0.0", false, false)), types(art(".js")), false, null);
+    public final static ModuleDetails old_jar = new ModuleDetails("ceylon", "old-jar", null, null, null, set(), set("1.2.CR1"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
+    public final static ModuleDetails older_jar = new ModuleDetails("ceylon", "older-jar", null, null, null, set(), set("12-b3"), deps(new ModuleDependencyInfo(null, "moduletest", "0.1", true, true)), types(art(".jar", null, null)), false, null);
+    public final static ModuleDetails org_jboss_acme = new ModuleDetails("ceylon", "org.jboss.acme", null, null, null, set(), set("1.0.0.Final"), deps(), types(), false, null);
+    public final static ModuleDetails test_jar = new ModuleDetails("ceylon", "test-jar", null, null, null, set(), set("0.1"), deps(), types(art(".jar", null, null)), false, null);
+    public final static ModuleDetails jsonly = new ModuleDetails("ceylon", "jsonly", null, null, null, set(), set("1.0.0"), deps(new ModuleDependencyInfo(null, "ceylon.language", "1.0.0", false, false)), types(art(".js", 7, 0)), false, null);
 
     @Test
     public void testCompleteEmpty() throws Exception {
@@ -723,7 +723,7 @@ public class SmokeTestCase extends AbstractTest {
     public void testListVersion() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
                 new ModuleVersionDetails("ceylon", "", "1.0.0",
-                        null, null, 
+                        null, null, null,
                         "The classic Hello World module", "Public domain", set("Stef Epardaud"),
                         deps(), types(new ModuleVersionArtifact(".car", 3, 0)), false, getRepositoryRoot().getAbsolutePath()),
         };
@@ -1227,7 +1227,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testListVersionJDK() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("jdk", "", javaVersion(), null, null, "JDK module java.base", null, set(), deps(), types(new ModuleVersionArtifact(".jar", null, null)), false, "Java Runtime"),
+                new ModuleVersionDetails("jdk", "", javaVersion(), null, null, null, "JDK module java.base", null, set(), deps(), types(new ModuleVersionArtifact(".jar", null, null)), false, "Java Runtime"),
         };
         testListVersions("java.base", null, expected, getJDKRepositoryManager());
     }
@@ -1341,15 +1341,15 @@ public class SmokeTestCase extends AbstractTest {
     public void testListVersionBinaryCompat() throws Exception {
         String path = getRepositoryRoot().getAbsolutePath();
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("ceylon", "hello", "1.0.0", null, null, "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.0.0", null, null, null, "A test", "Apache Software License", 
                         set("The Ceylon Team"), 
                         deps(), 
                         types(new ModuleVersionArtifact(".car", 3, 0)), false, path),
-                new ModuleVersionDetails("ceylon", "hello", "1.2.0", null, null, "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.2.0", null, null, null, "A test", "Apache Software License", 
                         set("The Ceylon Team"), 
                         deps(language), 
                         types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
-                new ModuleVersionDetails("ceylon", "hello", "1.2.1", null, null, "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.2.1", null, null, null, "A test", "Apache Software License", 
                         set("The Ceylon Team"), 
                         deps(language), 
                         types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
@@ -1357,12 +1357,12 @@ public class SmokeTestCase extends AbstractTest {
         testListVersions("hello", null, expected, getRepositoryManager());
 
         ModuleVersionDetails[] expectedBoth = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("ceylon", "hello", "1.2.0", null, null, "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.2.0", null, null, null, "A test", "Apache Software License", 
                         set("The Ceylon Team"), 
                         deps(language), 
                         types(new ModuleVersionArtifact(".car", 8, 0),
                                 new ModuleVersionArtifact(".js", 8, 0)), false, path),
-                new ModuleVersionDetails("ceylon", "hello", "1.2.1", null, null, "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.2.1", null, null, null, "A test", "Apache Software License", 
                         set("The Ceylon Team"), 
                         deps(language), 
                         types(new ModuleVersionArtifact(".car", 8, 0),
@@ -1373,7 +1373,7 @@ public class SmokeTestCase extends AbstractTest {
                 ModuleQuery.Type.CEYLON_CODE, ModuleQuery.Retrieval.ALL);
 
         ModuleVersionDetails[] expectedSingle = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("ceylon", "hello", "1.2.1", null, null, "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.2.1", null, null, null, "A test", "Apache Software License", 
                         set("The Ceylon Team"), 
                         deps(language), 
                         types(new ModuleVersionArtifact(".car", 8, 0),
@@ -1395,6 +1395,6 @@ public class SmokeTestCase extends AbstractTest {
     
     private ModuleDetails jdkModule(String name, String desc) {
         String v = javaVersion();
-        return new ModuleDetails("jdk", name, desc, null, set(), set(v), deps(), types(art(".jar", null, null)), false, null);
+        return new ModuleDetails("jdk", name, null, desc, null, set(), set(v), deps(), types(art(".jar", null, null)), false, null);
     }
 }

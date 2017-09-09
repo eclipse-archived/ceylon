@@ -286,13 +286,6 @@ public class CodegenUtil {
         return param.getModel();
     }
 
-    static boolean isVoid(Type type) {
-        return type != null 
-            && type.getDeclaration() != null
-            && type.getDeclaration().getUnit().getAnythingType().isExactly(type);    
-    }
-
-
     public static boolean canOptimiseMethodSpecifier(Term expression, Function m) {
         if(expression instanceof Tree.FunctionArgument)
             return true;

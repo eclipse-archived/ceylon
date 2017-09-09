@@ -121,7 +121,7 @@ public final class NpmUtils extends AbstractDependencyResolverAndModuleInfoReade
         
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
 
-        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, version, null, null);
+        ModuleVersionDetails mvd = new ModuleVersionDetails(NpmRepository.NAMESPACE, moduleName, version, null, null);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, null, null));
         mvd.getDependencies().addAll(dependencies);
 
@@ -180,9 +180,11 @@ public final class NpmUtils extends AbstractDependencyResolverAndModuleInfoReade
         }
     }
     
+    private static final Set<ModuleDependencyInfo> NO_DEPS = Collections.<ModuleDependencyInfo>emptySet();
+    
     private ModuleInfo getModuleInfo(Object obj, String moduleName, String version, Overrides overrides) {
-        if (obj == null) {
-            return new ModuleInfo(moduleName, version, null, null, null, null, Collections.<ModuleDependencyInfo>emptySet());
+		if (obj == null) {
+			return new ModuleInfo(NpmRepository.NAMESPACE, moduleName, version, null, null, null, null, NO_DEPS);
         }
         if (!(obj instanceof Map)) {
             throw new RuntimeException("Expected an Object");
@@ -192,9 +194,9 @@ public final class NpmUtils extends AbstractDependencyResolverAndModuleInfoReade
         Set<ModuleDependencyInfo> deps = new HashSet<ModuleDependencyInfo>();
         for (String depName : map.keySet()) {
             String depVersion = asString(map.get(depName));
-            deps.add(new ModuleDependencyInfo("npm", depName, depVersion, false, false, Backends.JS));
+            deps.add(new ModuleDependencyInfo(NpmRepository.NAMESPACE, depName, depVersion, false, false, Backends.JS));
         }
-        ModuleInfo result = new ModuleInfo(moduleName, version, null, null, null, null, deps);
+        ModuleInfo result = new ModuleInfo(NpmRepository.NAMESPACE, moduleName, version, null, null, null, null, deps);
         if(overrides != null)
             result = overrides.applyOverrides(moduleName, version, result);
         return result;
@@ -206,6 +208,8 @@ public final class NpmUtils extends AbstractDependencyResolverAndModuleInfoReade
         if (mvd.getDoc() != null && matches(mvd.getDoc(), query))
             return true;
         if (mvd.getLicense() != null && matches(mvd.getLicense(), query))
+            return true;
+        if (mvd.getLabel() != null && matches(mvd.getLabel(), query))
             return true;
         for (String author : mvd.getAuthors()) {
             if (matches(author, query))

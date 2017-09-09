@@ -188,6 +188,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     static final String CEYLON_LANGUAGE_DEPRECATED_ANNOTATION = "ceylon.language.DeprecationAnnotation$annotation$";
     static final String CEYLON_LANGUAGE_SUPPRESS_WARNINGS_ANNOTATION = "ceylon.language.SuppressWarningsAnnotation$annotation$";
     static final String CEYLON_LANGUAGE_LICENSE_ANNOTATION = "ceylon.language.LicenseAnnotation$annotation$";
+    static final String CEYLON_LANGUAGE_LABEL_ANNOTATION = "ceylon.language.LabelAnnotation$annotation$";
     static final String CEYLON_LANGUAGE_TAGS_ANNOTATION = "ceylon.language.TagsAnnotation$annotation$";
     static final String CEYLON_LANGUAGE_ALIASES_ANNOTATION = "ceylon.language.AliasesAnnotation$annotation$";
 
@@ -2434,6 +2435,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             logWarning("Module class "+moduleClassName+" declares an invalid version: "+version+". It should be: "+module.getVersion());
             return false;
         }
+//        String label = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "label");
+//        module.setLabel(label);
         int major = getAnnotationIntegerValue(moduleClass, CEYLON_CEYLON_ANNOTATION, "major", 0);
         int minor = getAnnotationIntegerValue(moduleClass, CEYLON_CEYLON_ANNOTATION, "minor", 0);
         module.setJvmMajor(major);

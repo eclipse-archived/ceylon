@@ -11,7 +11,7 @@ class AnnotationClassNullary implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassNullary();
     }
     
@@ -265,7 +265,7 @@ class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon.compi
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted();
     }
     
@@ -303,7 +303,7 @@ class AnnotationClassIntegerSequenceDefaulted implements .com.redhat.ceylon.comp
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerSequenceDefaulted();
     }
     
@@ -341,7 +341,7 @@ class AnnotationClassBooleanSequenceDefaulted implements .com.redhat.ceylon.comp
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanSequenceDefaulted();
     }
     
@@ -379,7 +379,7 @@ class AnnotationClassCharacterSequenceDefaulted implements .com.redhat.ceylon.co
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterSequenceDefaulted();
     }
     
@@ -417,7 +417,7 @@ class AnnotationClassFloatSequenceDefaulted implements .com.redhat.ceylon.compil
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatSequenceDefaulted();
     }
     
@@ -455,7 +455,7 @@ class AnnotationClassStringSequenceDefaultedEmpty implements .com.redhat.ceylon.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaultedEmpty();
     }
     
@@ -493,7 +493,7 @@ class AnnotationClassAnnotationClassSequenceDefaulted implements .com.redhat.cey
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequenceDefaulted();
     }
     
@@ -531,7 +531,7 @@ class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon.compi
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted();
     }
     
@@ -569,7 +569,7 @@ class AnnotationClassIntegerIterableDefaulted implements .com.redhat.ceylon.comp
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassIntegerIterableDefaulted();
     }
     
@@ -607,7 +607,7 @@ class AnnotationClassBooleanIterableDefaulted implements .com.redhat.ceylon.comp
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassBooleanIterableDefaulted();
     }
     
@@ -645,7 +645,7 @@ class AnnotationClassCharacterIterableDefaulted implements .com.redhat.ceylon.co
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassCharacterIterableDefaulted();
     }
     
@@ -683,7 +683,7 @@ class AnnotationClassFloatIterableDefaulted implements .com.redhat.ceylon.compil
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatIterableDefaulted();
     }
     
@@ -721,7 +721,7 @@ class AnnotationClassStringIterableDefaultedEmpty implements .com.redhat.ceylon.
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaultedEmpty();
     }
     
@@ -759,7 +759,7 @@ class AnnotationClassAnnotationClassIterableDefaulted implements .com.redhat.cey
     }
     
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.getProcess$().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassIterableDefaulted();
     }
     

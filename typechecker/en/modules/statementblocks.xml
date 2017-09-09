@@ -2197,16 +2197,17 @@ if (is Usable tx) { ... }</programlisting>
             <title>Case conditions</title>
             
             <para>The branches of a <literal>switch</literal> conditional each belong to a 
-            <emphasis>case condition</emphasis>. There are three kinds of case condition:</para> 
+            <emphasis>case condition</emphasis>. There are two kinds of case condition:</para> 
             
             <itemizedlist>
                 <listitem>
-                    <para>a <emphasis>value case</emphasis>&mdash;a list of constant values,</para>
+                    <para>a <emphasis>matching case</emphasis>&mdash;a list of constant values
+                    and types,</para>
                 </listitem>
-                <listitem>
+                <!--listitem>
                     <para>a <emphasis>type case</emphasis>&mdash;an assignability condition 
                     of form <literal>is V</literal> for some type <literal>V</literal>, and</para>
-                </listitem>
+                </listitem-->
                 <listitem>
                     <para>a <emphasis>pattern case</emphasis>&mdash;a tuple or entry pattern,
                     as defined above in <xref linkend="patterns"/>, where all pattern variables
@@ -2214,17 +2215,21 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
             </itemizedlist>
                         
-            <synopsis>CaseCondition: "(" (ValueCase | TypeCase | PatternCase) ")"</synopsis>
-            <synopsis>ValueCase: Constant ("|" Constant)*</synopsis>
-            <synopsis>TypeCase: "is" Type</synopsis>
+            <synopsis>CaseCondition: "(" (MatchCase | PatternCase) ")"</synopsis>
+            <synopsis>MatchCase: MatchCaseItem ("|" MatchCaseItem)* | IsCase</synopsis>
+            <synopsis>MatchCaseItem: Constant | IntersectionType</synopsis>
+            <synopsis>IsCase: "is" Type</synopsis>
             <synopsis>PatternCase: TuplePattern | EntryPattern</synopsis>
+            
+            <comment><para>Note: the syntax <literal>case (is Type)</literal> is supported for 
+            backward compatibility with Ceylon 1.x.</para></comment>
             
             <para>A <emphasis>constant value</emphasis> is:</para>
             
             <itemizedlist>
                 <listitem>
                     <para>a value reference, as defined in <xref linkend="valuereferences"/>,
-                    to</para>
+                    to either</para>
 		            <itemizedlist>
 		                <listitem>
 		                    <para>a toplevel anonymous class, or</para>
@@ -2241,7 +2246,7 @@ if (is Usable tx) { ... }</programlisting>
                 </listitem>
                 <listitem>
                     <para>a tuple enumeration, as defined in <xref linkend="enumeration"/>, 
-                    of constant values.</para>
+                    where each element is a constant value.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2253,12 +2258,13 @@ if (is Usable tx) { ... }</programlisting>
             
             <itemizedlist>
                 <listitem>
-                    <para>for a value case, the type is the union of the types of the values,
+                    <para>for a matching case, the type is the union of its types and the 
+                    types of its constant values,
                     </para>
                 </listitem>
-                <listitem>
+                <!--listitem>
                     <para>for a type case, the type is the specified type, and</para>
-                </listitem>
+                </listitem-->
                 <listitem>
                     <para>for a pattern case, the type is formed from the explicit types
                     declared by the pattern variables:</para>
@@ -2305,11 +2311,12 @@ if (is Usable tx) { ... }</programlisting>
                     <literal>Nothing</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>if the case is a type case, the <literal>switch</literal> variable, 
-                    or, if there is no inline variable declared by the <literal>switch</literal>, 
-                    the value referred by the <literal>switch</literal> expression, will be 
-                    treated by the compiler as having the type <literal>V&amp;U</literal> inside 
-                    the <literal>case</literal> block.</para>
+                    <para>if the case is a matching case with at least one type, the 
+                    <literal>switch</literal> variable, or, if there is no inline variable 
+                    declared by the <literal>switch</literal>, the value referred by the 
+                    <literal>switch</literal> expression, will be treated by the compiler as 
+                    having the type <literal>V&amp;U</literal> inside the <literal>case</literal> 
+                    block or expression.</para>
                 </listitem>
             </itemizedlist>
             
@@ -2320,8 +2327,8 @@ if (is Usable tx) { ... }</programlisting>
             the type <literal>V</literal> inside the <literal>case</literal> block.</para>
             
             <!--comment><para>Note: a type case may narrow to an intersection or union type.</para>
-            <programlisting>case (is Persistent &amp; Serializable) { ... }</programlisting>
-            <programlisting>case (is Integer | Float) { ... }</programlisting></comment-->
+            <programlisting>case (Persistent &amp; Serializable) { ... }</programlisting>
+            <programlisting>case (Integer | Float) { ... }</programlisting></comment-->
             
         </section>
                 
@@ -2486,10 +2493,10 @@ else {
             switched expression in a <literal>switch</literal> clause may not be an 
             assignment expression.</para></comment>
             
-            <para>If a <literal>switch</literal> has a type case condition, and does not
-            declare an inline variable, then the switched expression must be an unqualified 
-            value reference to a non-<literal>variable</literal>, non-<literal>default</literal> 
-            reference.</para>
+            <para>If a <literal>switch</literal> has a matching case with at least one type, 
+            and does not declare an inline variable, then the switched expression must be an 
+            unqualified value reference to a non-<literal>variable</literal>, 
+            non-<literal>default</literal> reference.</para>
             
             <para>In addition, every <literal>switch</literal> conditional must include:</para>
             
@@ -2514,13 +2521,14 @@ else {
             
             <itemizedlist>
                 <listitem>
-                    <para>the intersection of the types of their case conditions is 
-                    exactly <literal>Nothing</literal>, as defined by 
-                    <xref linkend="disjointtypes"/>, or</para>
+                    <para>the intersection of the types of their case conditions, after
+                    eliminating constant values of matching cases, is exactly 
+                    <literal>Nothing</literal>, as defined by <xref linkend="disjointtypes"/>, 
+                    and</para>
                 </listitem>
                 <listitem>
-                    <para>if they are both value cases with no literal value or 
-                    anonymous class value reference in common.</para>
+                    <para>if they are both matching cases, they have no constant values in 
+                    common.</para>
                 </listitem>
             </itemizedlist>
               
@@ -2528,11 +2536,11 @@ else {
             <literal>case</literal>s must be disjoint, unless one is an 
             <literal>else case</literal>.</para>
             
-            <para>A <literal>switch</literal> is <emphasis>exhaustive</emphasis> if there 
-            are no literal values in its <literal>case</literal>s, and the union type formed 
-            by the types of the case conditions of the <literal>switch</literal> covers the 
-            switched type, as defined by <xref linkend="coverage"/>. If no <literal>else</literal> 
-            block is specified, the <literal>switch</literal> must be exhaustive.</para>
+            <para>A <literal>switch</literal> is <emphasis>exhaustive</emphasis> if the 
+            union type formed by the types of the case conditions, after eliminating 
+            constant values of matching cases, covers the switched type, as defined by 
+            <xref linkend="coverage"/>. If no <literal>else</literal> block is specified, 
+            the <literal>switch</literal> must be exhaustive.</para>
             
             <comment><para>Note: On the other hand, even if the <literal>switch</literal> 
             <emphasis>is</emphasis> exhaustive, an <literal>else</literal> block may be 
@@ -2549,7 +2557,8 @@ else {
             by the compiler as having the type <literal>V~U</literal> inside the 
             <literal>else</literal> block, where <literal>V</literal> is the switched type, 
             and <literal>U</literal> is the union type formed by the types of the case 
-            conditions of the <literal>switch</literal>.</para>
+            conditions of the <literal>switch</literal>, after eliminating constant values 
+            of matching cases.</para>
             
             <programlisting>Boolean? maybe = ... ;
 switch (maybe) 
@@ -2562,10 +2571,10 @@ case (true) {
             
             <programlisting>Integer|Float number = ... ;
 switch (number)
-case (is Integer) { 
+case (Integer) { 
     return sqrt(number.float);
 } 
-case (is Float) { 
+case (Float) { 
     return sqrt(number);
 }</programlisting>
             
@@ -2574,13 +2583,13 @@ case (is Float) {
             <programlisting>shared void print&lt;Printable&gt;(Printable printable) 
         given Printable of String | Integer | Float {
     switch (printable)
-    case (is String) { 
+    case (String) { 
         print("\"``printable``\""); 
     }
-    case (is Integer) { 
+    case (Integer) { 
         print(printable + ".00"); 
     }
-    case (is Float) { 
+    case (Float) { 
         print(formatFloat(printable, 2)); 
     }
 }</programlisting-->

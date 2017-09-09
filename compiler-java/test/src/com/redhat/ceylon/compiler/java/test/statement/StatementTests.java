@@ -545,6 +545,11 @@ public class StatementTests extends CompilerTests {
     }
     
     @Test
+    public void testSwitchMixedCases(){
+        compareWithJavaSource("swtch/SwitchMixedCases");
+    }
+    
+    @Test
     public void testSwitchInlineVar(){
         compareWithJavaSource("swtch/SwitchInlineVar");
     }

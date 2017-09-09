@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.statement.swtch;
+
+final class switchMixedCases_ {
+    
+    private switchMixedCases_() {
+    }
+    
+    static void switchMixedCases(final .java.lang.Object arg) {
+        {
+            .java.lang.Object sel$0 = arg;
+            if (sel$0 instanceof .ceylon.language.Float) {
+                final double arg$3 = ((.ceylon.language.Float)sel$0).doubleValue();
+                final double a = arg$3;
+            } else if (sel$0 != null && sel$0.equals(.ceylon.language.Integer.instance(1L)) || sel$0 != null && sel$0.equals(.ceylon.language.Integer.instance(2L)) || sel$0 != null && sel$0.equals(.ceylon.language.Integer.instance(3L)) || sel$0 instanceof .ceylon.language.String) {
+                final .java.lang.Object arg$2 = (.java.lang.Object)sel$0;
+                final .java.lang.Object a = arg$2;
+            } else if (sel$0 == null || sel$0 instanceof .ceylon.language.Integer) {
+                final .ceylon.language.Integer arg$1 = (.ceylon.language.Integer)sel$0;
+                final .ceylon.language.Integer a = (.ceylon.language.Integer)arg$1;
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+        final .ceylon.language.Boolean bool = null;
+        {
+            .ceylon.language.Boolean sel$4 = bool;
+            if (sel$4 == null || sel$4.booleanValue() == false) {
+                final .ceylon.language.Boolean bool$5 = (.ceylon.language.Boolean)sel$4;
+            } else if (sel$4.booleanValue() == true) {
+            } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        }
+    }
+}

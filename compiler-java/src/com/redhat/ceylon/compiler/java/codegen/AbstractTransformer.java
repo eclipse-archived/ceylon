@@ -763,7 +763,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public static boolean isAnything(Type type) {
-        return CodegenUtil.isVoid(type);
+        return type!=null && type.isAnything();
     }
 
     private boolean isObject(Type type) {
@@ -2659,12 +2659,11 @@ public abstract class AbstractTransformer implements Transformation {
         // typeFact().getDefiniteType() intersects with Object, which isn't 
         // always right for working with the java type system.
         if (pt.isAnything()) {
-            pt = typeFact().getObjectType();
+            return typeFact().getObjectType();
         }
         else {
-            pt = pt.eliminateNull();
+            return pt.eliminateNull();
         }
-        return pt;
     }
 
     /**
@@ -3008,6 +3007,9 @@ public abstract class AbstractTransformer implements Transformation {
                 if (a.getName().equals("doc")) {
                     res.add(make().Assign(naming.makeUnquotedIdent("doc"),
                             make().Literal(a.getPositionalArguments().get(0))));
+                } else if (a.getName().equals("label")) {
+                    res.add(make().Assign(naming.makeUnquotedIdent("label"),
+                            make().Literal(a.getPositionalArguments().get(0))));
                 } else if (a.getName().equals("license")) {
                     res.add(make().Assign(naming.makeUnquotedIdent("license"),
                             make().Literal(a.getPositionalArguments().get(0))));
@@ -3091,6 +3093,7 @@ public abstract class AbstractTransformer implements Transformation {
         ListBuffer<JCExpression> annotationArgs = getLicenseAuthorsDocAnnotationArguments(
                 module.getNameAsString(), module.getAnnotations());
         annotationArgs.add(make().Assign(naming.makeUnquotedIdent("version"), make().Literal(module.getVersion())));
+//        annotationArgs.add(make().Assign(naming.makeUnquotedIdent("label"), make().Literal(module.getLabel())));
         annotationArgs.add(make().Assign(naming.makeUnquotedIdent("dependencies"),
                 make().NewArray(null, null, imports.toList())));
         JCExpression nativeBackendsAnnotationValue = makeNativeBackendsAnnotationValue(module.getNativeBackends());

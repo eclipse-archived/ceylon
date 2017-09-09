@@ -28,6 +28,7 @@ public class EnabledByXmlAccessorType implements .com.redhat.ceylon.compiler.jav
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -74,6 +75,7 @@ public class EnabledByEntity implements .com.redhat.ceylon.compiler.java.runtime
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -106,6 +108,7 @@ public class EnabledByCtorInject implements .com.redhat.ceylon.compiler.java.run
         this.s = null;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -160,6 +163,7 @@ public class EnabledByAttrInject implements .com.redhat.ceylon.compiler.java.run
     }
     @.javax.inject.Inject
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -205,6 +209,7 @@ public class EnabledByMethodInject implements .com.redhat.ceylon.compiler.java.r
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -258,6 +263,7 @@ public class Disabled implements .com.redhat.ceylon.compiler.java.runtime.model.
         this.s = s;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .ceylon.language.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$

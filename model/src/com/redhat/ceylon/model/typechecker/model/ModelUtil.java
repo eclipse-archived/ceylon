@@ -1499,8 +1499,8 @@ public class ModelUtil {
             //ceylon.ast
             Type ps = p.resolveAliases();
             Type qs = q.resolveAliases();
-            return emptyMeet(ps, qs, unit) ||
-                    hasEmptyIntersectionOfInvariantInstantiations(ps, qs);
+            return emptyMeet(ps, qs, unit) 
+                || hasEmptyIntersectionOfInvariantInstantiations(ps, qs);
 
         }
     }
@@ -1591,6 +1591,24 @@ public class ModelUtil {
         
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
+        
+        Interface std = unit.getJavaSerializableDeclaration();
+        Class otd = unit.getObjectDeclaration();
+        if (std!=null && otd!=null) {
+            if (std.inherits(pd) && qd.inherits(otd) 
+             || std.inherits(qd) && pd.inherits(otd)) {
+                return false;
+            }
+        }
+        Class retd = unit.getJavaRuntimeExceptionDeclaration();
+        Class etd = unit.getExceptionDeclaration();
+        if (retd!=null && etd!=null) {
+            if (retd.inherits(pd) && qd.inherits(etd) 
+             || retd.inherits(qd) && pd.inherits(etd)) {
+                return false;
+            }
+        }
+        
         if (q.isUnion()) {
             for (Type t: q.getCaseTypes()) {
                 if (!emptyMeet(p,t,unit)) {

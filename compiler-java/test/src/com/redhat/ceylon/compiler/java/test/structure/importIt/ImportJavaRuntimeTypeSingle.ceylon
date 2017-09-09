@@ -17,12 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-import java.lang{RuntimeException}
+import java.lang{NullPointerException}
 import java.util{List}
 
 @noanno
 class ImportJavaRuntimeTypeSingle() {
     void m(List<Integer> l) {
-        RuntimeException();
+        NullPointerException();
     }
 }

@@ -11,7 +11,7 @@ public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass();
     }
     

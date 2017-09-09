@@ -751,6 +751,9 @@ public abstract class AbstractRepository implements CmrRepository {
                     if (mvd2.getArtifactId() != null) {
                         mvd.setArtifactId(mvd2.getArtifactId());
                     }
+                    if (mvd2.getLabel() != null) {
+                        mvd.setLabel(mvd2.getLabel());
+                    }
                     if (mvd2.getDoc() != null) {
                         mvd.setDoc(mvd2.getDoc());
                     }

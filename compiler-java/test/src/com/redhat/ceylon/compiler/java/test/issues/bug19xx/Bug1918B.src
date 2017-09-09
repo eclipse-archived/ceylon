@@ -11,7 +11,7 @@ public class Bug1918B implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1918B();
     }
     
@@ -34,7 +34,7 @@ public class Bug1918C implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1918C();
     }
     
@@ -76,7 +76,7 @@ public class Bug1918Dummy implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void main(.java.lang.String[] args) {
-        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
         new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1918Dummy();
     }
     

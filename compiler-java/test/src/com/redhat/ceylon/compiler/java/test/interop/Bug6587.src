@@ -13,6 +13,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.javax.enterprise.inject.Produces
     @.javax.persistence.PersistenceContext
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .javax.persistence.EntityManager lateEntityManager;
     
     @.ceylon.language.LateAnnotation$annotation$
@@ -40,6 +41,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.javax.enterprise.inject.Produces
     @.javax.persistence.PersistenceContext
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .javax.persistence.EntityManager variableEntityManager;
     
     @.ceylon.language.VariableAnnotation$annotation$
@@ -58,6 +60,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.javax.enterprise.inject.Produces
     @.javax.persistence.PersistenceContext
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .javax.persistence.EntityManager entityManager;
     
     @.com.redhat.ceylon.common.NonNull
@@ -93,6 +96,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.javax.enterprise.inject.Produces
     @.javax.persistence.PersistenceContext
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .javax.persistence.EntityManager sharedEntityManager;
     
     @.ceylon.language.SharedAnnotation$annotation$

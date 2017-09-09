@@ -568,6 +568,9 @@ public class Naming extends NamingBase implements LocalId {
             b.append(iface.getIdentifier().getText());
         } else if (decl instanceof Tree.TypedDeclaration){
             String name = decl.getIdentifier().getText();
+            if (name.startsWith("\\i") || name.startsWith("\\I")) {
+                name = name.substring(2);
+            }
             b.append(name);
             // only for lowercase stuff, not for \iFoo names
             if(isLowerCase(name))
@@ -2100,7 +2103,8 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     public static boolean isLowerCase(String name){
-        return !name.isEmpty() && Character.isLowerCase(name.codePointAt(0));
+        return !name.isEmpty() 
+            && Character.isLowerCase(name.codePointAt(0));
     }
 
     public static String getInitializationFieldName(String fieldName) {
@@ -2110,8 +2114,9 @@ public class Naming extends NamingBase implements LocalId {
     public JCExpression makeNamedConstructorName(Constructor constructor, boolean delegation) {
         DeclNameFlag[] flags = delegation ? new DeclNameFlag[]{DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION}: new DeclNameFlag[]{DeclNameFlag.QUALIFIED};
         Class cls = (Class)constructor.getContainer();
-        if (cls.isToplevel() || 
-                (cls.isMember() && ((TypeDeclaration)cls.getContainer()).isToplevel())) {
+        if (cls.isToplevel() 
+                || cls.isMember() 
+                && ((TypeDeclaration)cls.getContainer()).isToplevel()) {
             return makeTypeDeclarationExpression(null, constructor, flags);
         } else {
             return maker.TypeCast(
@@ -2122,7 +2127,9 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     public JCExpression makeNamedConstructorType(Constructor constructor, boolean delegation) {
-        DeclNameFlag[] flags = delegation ? new DeclNameFlag[]{DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION}: new DeclNameFlag[]{DeclNameFlag.QUALIFIED};
+        DeclNameFlag[] flags = delegation 
+                ? new DeclNameFlag[]{DeclNameFlag.QUALIFIED, DeclNameFlag.DELEGATION}
+                : new DeclNameFlag[]{DeclNameFlag.QUALIFIED};
         return makeTypeDeclarationExpression(null, constructor, flags);
     }
 
@@ -2131,7 +2138,8 @@ public class Naming extends NamingBase implements LocalId {
      * so for those we have to remember the exact name
      */
     public static boolean isAmbiguousGetterName(TypedDeclaration attr) {
-        return !attr.isToplevel() && isAmbiguousGetterName(attr.getName());
+        return !attr.isToplevel() 
+            && isAmbiguousGetterName(attr.getName());
     }
 
     /**
