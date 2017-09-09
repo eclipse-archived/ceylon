@@ -763,7 +763,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     public static boolean isAnything(Type type) {
-        return CodegenUtil.isVoid(type);
+        return type!=null && type.isAnything();
     }
 
     private boolean isObject(Type type) {
