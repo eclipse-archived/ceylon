@@ -36,6 +36,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         <.java.lang.Object>method(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Callable<? extends .java.lang.Object> methodSpec;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -304,6 +305,7 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass c;
     
     @.com.redhat.ceylon.common.NonNull

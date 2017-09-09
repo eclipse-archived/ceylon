@@ -21,6 +21,7 @@ public class Class implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         this.s = s;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .ceylon.language.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$

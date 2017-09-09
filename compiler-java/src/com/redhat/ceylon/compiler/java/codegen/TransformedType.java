@@ -59,18 +59,27 @@ public class TransformedType {
 
     
     public boolean isPrimitive() {
+        return isPrimitive(typeExpression);
+    }
+    
+    public static boolean isPrimitive(JCExpression typeExpression) {
         if (typeExpression instanceof JCIdent) {
             JCIdent ident = (JCIdent)typeExpression;
             if (ident.sym != null
                     && ident.sym.type.isPrimitive()) {
                 return true;
             }
+        } else if (typeExpression instanceof JCPrimitiveTypeTree) {
+            return true;
         }
         return false;
-
     }
     
     public boolean isPrimitiveOrVoid() {
+        return isPrimitiveOrVoid(typeExpression);
+    }
+    
+    public static boolean isPrimitiveOrVoid(JCExpression typeExpression) {
         if (typeExpression instanceof JCIdent) {
             JCIdent ident = (JCIdent)typeExpression;
             if (ident.sym != null

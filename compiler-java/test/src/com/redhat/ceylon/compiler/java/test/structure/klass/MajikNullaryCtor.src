@@ -232,6 +232,7 @@ class MajikNullaryCtorSequenced implements .com.redhat.ceylon.compiler.java.runt
         this.va = va;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> va;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -270,6 +271,7 @@ class MajikNullaryCtorSequencedNonempty implements .com.redhat.ceylon.compiler.j
         this.va = va;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Sequence<? extends .ceylon.language.Integer> va;
     
     @.ceylon.language.SharedAnnotation$annotation$

@@ -139,6 +139,7 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
         return this.parameterAndSharedAttribute;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -218,6 +219,7 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
         return this.parameterAndSharedAttribute;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -845,6 +847,7 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String str;
     
     @.ceylon.language.SharedAnnotation$annotation$

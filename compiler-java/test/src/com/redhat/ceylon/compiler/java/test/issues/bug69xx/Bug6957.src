@@ -102,6 +102,7 @@ public final class AnnotationWithOneDefaultParameter implements .com.redhat.ceyl
         this.name = name;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String name;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -242,6 +243,7 @@ public final class AnnotationWithTwoDefaultParameters implements .com.redhat.cey
         this.list = list;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String name;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -250,6 +252,7 @@ public final class AnnotationWithTwoDefaultParameters implements .com.redhat.cey
         return this.name;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> list;
     
     @.ceylon.language.SharedAnnotation$annotation$

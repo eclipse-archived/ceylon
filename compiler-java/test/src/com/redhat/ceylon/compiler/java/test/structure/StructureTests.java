@@ -23,7 +23,6 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
-import com.redhat.ceylon.javax.tools.Diagnostic;
 
 public class StructureTests extends CompilerTests {
     
@@ -110,6 +109,10 @@ public class StructureTests extends CompilerTests {
     @Test
     public void testAtrParametersAndMembers(){
         compareWithJavaSource("attribute/ParametersAndMembers");
+    }
+    @Test
+    public void testAtrNonNull(){
+        compareWithJavaSource("attribute/NonNull");
     }
     @Test
     public void testAtrSmallInteger(){

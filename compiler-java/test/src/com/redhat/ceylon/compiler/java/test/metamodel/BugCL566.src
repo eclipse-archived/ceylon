@@ -20,6 +20,7 @@ class BugCl566 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         this.a = a;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .java.lang.Object a;
     
     @.ceylon.language.SharedAnnotation$annotation$

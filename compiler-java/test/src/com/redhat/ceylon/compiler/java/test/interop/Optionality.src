@@ -375,6 +375,7 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.classSubClass_.class);
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private final .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass realClass;
     
     @.com.redhat.ceylon.common.Nullable

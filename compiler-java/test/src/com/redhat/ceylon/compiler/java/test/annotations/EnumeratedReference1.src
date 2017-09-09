@@ -50,6 +50,7 @@ final class EnumeratedReference implements .com.redhat.ceylon.compiler.java.runt
         this.comparison = comparison;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Comparison comparison;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -151,6 +152,7 @@ final class EnumeratedReferenceVariadic implements .com.redhat.ceylon.compiler.j
         this.comparison = comparison;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Sequential<? extends .ceylon.language.Comparison> comparison;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -264,6 +266,7 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
         this.comparison = comparison;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Comparison comparison;
     
     @.ceylon.language.SharedAnnotation$annotation$

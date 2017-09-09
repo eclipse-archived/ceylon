@@ -42,6 +42,7 @@ public class Bug5899 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     public class D implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        @.com.redhat.ceylon.common.NonNull
         private final .java.lang.String string;
         
         @.ceylon.language.SharedAnnotation$annotation$
@@ -116,6 +117,7 @@ public class Bug5899 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
         public class E implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            @.com.redhat.ceylon.common.NonNull
             private final .java.lang.String string;
             
             @.ceylon.language.SharedAnnotation$annotation$

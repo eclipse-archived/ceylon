@@ -21,6 +21,7 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
         this.$init$lateVariableOpt = false;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .java.lang.String late;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -45,6 +46,7 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private .java.lang.String lateVariable;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -65,6 +67,7 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
         this.lateVariable = lateVariable;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private .ceylon.language.String lateOpt;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private volatile transient boolean $init$lateOpt = false;
@@ -94,6 +97,7 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
         }
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.Nullable
     private .ceylon.language.String lateVariableOpt;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private volatile transient boolean $init$lateVariableOpt = false;

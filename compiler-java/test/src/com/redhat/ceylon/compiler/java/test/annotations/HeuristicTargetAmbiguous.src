@@ -28,6 +28,7 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     @.com.redhat.ceylon.compiler.java.test.annotations.FieldOrMethodTarget
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -37,6 +38,7 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterOrFieldOrMethodTarget
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String s2;
     
     @.com.redhat.ceylon.common.NonNull
@@ -45,6 +47,7 @@ class AmbiguousClass implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterOrFieldOrMethodTarget
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String s3;
     
     @.ceylon.language.SharedAnnotation$annotation$

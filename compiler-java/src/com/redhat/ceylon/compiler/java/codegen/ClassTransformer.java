@@ -1293,6 +1293,7 @@ public class ClassTransformer extends AbstractTransformer {
         FunctionOrValue model = decl.getModel();
         AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.field(this, annotated, decl.getName(), decl.getModel(), false);
         adb.fieldAnnotations(makeAtIgnore().prependList(expressionGen().transformAnnotations(OutputElement.FIELD, annotated)));
+        adb.fieldNullability(makeNullabilityAnnotations(model));
         adb.modifiers(modifierTransformation().transformClassParameterDeclFlagsField(decl, annotated));
         BoxingStrategy exprBoxed = CodegenUtil.isUnBoxed(model) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
         BoxingStrategy boxingStrategy = useJavaBox(model, model.getType())
@@ -3549,6 +3550,7 @@ public class ClassTransformer extends AbstractTransformer {
                         if (useField) {
                             AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.field(this, null, attrName, model, Decl.isIndirect(decl)).
                                     fieldAnnotations(annos).
+                                    fieldNullability(makeNullabilityAnnotations(model)).
                                     initialValue(initialValue, boxingStrategy).
                                     fieldVisibilityModifiers(modifiers).
                                     modifiers(modifiers);

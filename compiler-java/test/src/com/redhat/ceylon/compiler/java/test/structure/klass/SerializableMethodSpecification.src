@@ -24,6 +24,7 @@ class SerializableMethodSpecification implements .com.redhat.ceylon.compiler.jav
         this.f = f;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.common.NonNull
     private final .ceylon.language.Callable<? extends .java.lang.Object> f;
     
     @.com.redhat.ceylon.common.NonNull
