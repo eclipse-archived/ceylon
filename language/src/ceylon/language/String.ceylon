@@ -172,7 +172,8 @@ shared native final class String
              Default to split at any 
              [[whitespace|Character.whitespace]] 
              character."
-            Boolean splitting(Character ch) => ch.whitespace,
+            Boolean splitting(Character character) 
+                    => character.whitespace,
             "Specifies that separator characters 
              occurring in the string should be discarded.
              If `false`, the resulting stream will have 

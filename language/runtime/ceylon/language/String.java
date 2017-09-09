@@ -1864,7 +1864,7 @@ public final class String
             @TypeInfo("ceylon.language::Boolean(ceylon.language::Character)")
             @Defaulted
             @Name("splitting") 
-            @FunctionalParameter("(ch)") 
+            @FunctionalParameter("(character)") 
             Callable<? extends Boolean> splitting,
             @Defaulted
             @Name("discardSeparators") 
