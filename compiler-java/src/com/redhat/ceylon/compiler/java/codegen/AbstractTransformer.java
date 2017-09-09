@@ -2659,12 +2659,11 @@ public abstract class AbstractTransformer implements Transformation {
         // typeFact().getDefiniteType() intersects with Object, which isn't 
         // always right for working with the java type system.
         if (pt.isAnything()) {
-            pt = typeFact().getObjectType();
+            return typeFact().getObjectType();
         }
         else {
-            pt = pt.eliminateNull();
+            return pt.eliminateNull();
         }
-        return pt;
     }
 
     /**
