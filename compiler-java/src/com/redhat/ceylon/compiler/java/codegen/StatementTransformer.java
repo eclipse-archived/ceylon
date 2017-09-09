@@ -4834,12 +4834,14 @@ public class StatementTransformer extends AbstractTransformer {
             outer: for (Tree.CaseClause clause : list) {
                 Tree.CaseItem item = clause.getCaseItem();
                 boolean isCheap;
+                Type switchType = getSwitchExpressionType(switchClause);
                 if (item instanceof Tree.IsCase) {
                     isCheap = isTypeTestCheap(null, dummy, 
                             getIsCaseType((Tree.IsCase) item), 
-                            getSwitchExpressionType(switchClause));
+                            switchType);
                 } else if (item instanceof Tree.MatchCase) {
                     // will be primitive equality test
+                    isCheap = true;
                     Tree.MatchList matchList = ((Tree.MatchCase) item).getExpressionList();
                     for (Tree.Expression expr : matchList.getExpressions()) {
                         if (isNull(expr.getTypeModel())) {
@@ -4852,9 +4854,11 @@ public class StatementTransformer extends AbstractTransformer {
                             containsNull = clause;
                             continue outer;
                         }
-                        isCheap=false; //TODO!!!!!!!!
+                        isCheap = isCheap
+                                && isTypeTestCheap(null, dummy, 
+                                    type.getTypeModel(), 
+                                    switchType);
                     }
-                    isCheap = true;
                 } else {
                     // should never get here, but we can just return the unsorted list
                     return list;
