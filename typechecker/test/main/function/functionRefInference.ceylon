@@ -1,3 +1,5 @@
+import java.lang { overloaded }
+
 void functionRefInference() {
     T[] accept<T>(T(Integer,Integer)* funs) => [for (fun in funs) fun(1, 0) ];
     $type:"Sequential<Integer>" accept(plus, times);
@@ -46,3 +48,22 @@ void g() {
 
 void f<Absent>(Absent|String a)
         given Absent satisfies Null => noop();
+
+void usingReturnType() {
+    
+    interface Creator<T> {
+        shared formal T create();
+    }
+    
+    class Thing<T>() {}
+    
+    object service {
+        overloaded shared T execute<T>(Creator<T> creator) 
+                => creator.create();
+        overloaded shared T execute<T>(T create()) 
+                => create();
+    }
+    
+    $type:"Thing<String>" value result = service.execute<Thing<String>>(Thing);
+    
+}
