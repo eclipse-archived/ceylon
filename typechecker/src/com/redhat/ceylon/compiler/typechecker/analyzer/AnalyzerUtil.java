@@ -513,6 +513,10 @@ public class AnalyzerUtil {
             
             return typeArguments;
         }
+        else if (tas instanceof Tree.InferredTypeArguments 
+                && tas.getTypeModels()!=null) {
+            return tas.getTypeModels();
+        }
         else {
             return emptyList();
         }

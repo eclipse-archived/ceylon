@@ -3241,7 +3241,13 @@ public class ExpressionVisitor extends Visitor {
      */
     @Override public void visit(Tree.InvocationExpression that) {
         
+        //assign some provisional argument types 
+        //that will help with overload resolution
         visitInvocationPositionalArgs(that);
+        
+        //make a first attempt at resolving the 
+        //invoked reference (but we don't have 
+        //all the needed types yet)
         Tree.Primary p = that.getPrimary();
         p.visit(this);
         
@@ -3249,9 +3255,24 @@ public class ExpressionVisitor extends Visitor {
         
         Tree.PositionalArgumentList pal = 
                 that.getPositionalArgumentList();
+        int cutoff = 0;
         if (pal!=null) {
-            inferParameterTypes(p, pal);
-            pal.visit(this);
+            //infer parameter types as far as we 
+            //can without having the inferred type 
+            //parameters of the primary
+            cutoff = inferParameterTypes(p, pal, false);
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            //assign types to all the positional 
+            //arguments up until the first one for 
+            //which parameter type inference failed
+            for (int j=0; j<cutoff; j++) {
+                Tree.PositionalArgument pa = 
+                        args.get(j);
+                if (pa!=null) {
+                    pa.visit(this);
+                }
+            }
         }
         
         Tree.NamedArgumentList nal = 
@@ -3260,9 +3281,40 @@ public class ExpressionVisitor extends Visitor {
             inferParameterTypes(p, nal);
             nal.visit(this);
         }
-    
+        
+        //assign some additional types that
+        //we will use for overload resolution
         visitInvocationPositionalArgs(that);
+        
+        //now here's where overloading is 
+        //finally resolved and then type 
+        //argments are inferred 
         visitInvocationPrimary(that);
+        
+        if (pal!=null) {
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            int size = args.size();
+            if (cutoff<size) {
+                //now infer the remaining parameter 
+                //types
+                inferParameterTypes(p, pal, true);
+                //assign types to the remaining 
+                //positional arguments which we
+                //missed the first time round
+                for (int j=cutoff; j<size; j++) {
+                    Tree.PositionalArgument pa = 
+                            args.get(j);
+                    if (pa!=null) {
+                        pa.visit(this);
+                    }
+                }
+            }
+        }
+        
+        //now check that the invocation is
+        //well-typed (that arguments are
+        //assignable to parameters)
         if (isIndirectInvocation(that)) {
             visitIndirectInvocation(that);
         }
@@ -3360,7 +3412,7 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (param instanceof Value) {
             Type type = param.getType();
-            if (type.isCallable()) { 
+            if (type!=null && type.isCallable()) { 
                 int min = unit.getTupleMinimumLength(unit.getCallableTuple(type));
                 int max = unit.getTupleMaximumLength(unit.getCallableTuple(type));
                 if (min==1 || max==1) {
@@ -3384,8 +3436,8 @@ public class ExpressionVisitor extends Visitor {
      * positional argument list, and set up references from
      * arguments back to parameter models. 
      */
-    private void inferParameterTypes(Tree.Primary p,
-            Tree.PositionalArgumentList pal) {
+    private int inferParameterTypes(Tree.Primary p,
+            Tree.PositionalArgumentList pal, boolean error) {
         Type type = p.getTypeModel();
         Tree.Term term = unwrapExpressionUntilTerm(p);
         if (term instanceof Tree.MemberOrTypeExpression) {
@@ -3398,12 +3450,12 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else if (dec instanceof Functional) {
-                inferParameterTypesDirectly(dec, pal, mte);
+                return inferParameterTypesDirectly(dec, pal, mte, error);
             }
             else if (dec instanceof Value) {
                 Value value = (Value) dec;
-                inferParameterTypesIndirectly(pal, 
-                        value.getType());
+                return inferParameterTypesIndirectly(pal, 
+                        value.getType(), error);
             }
         }
         else {
@@ -3411,9 +3463,10 @@ public class ExpressionVisitor extends Visitor {
                 inferDynamicParameters(pal);
             }
             else {
-                inferParameterTypesIndirectly(pal, type);
+                return inferParameterTypesIndirectly(pal, type, error);
             }
         }
+        return pal.getPositionalArguments().size();
     }
 
     private void inferDynamicParameters(
@@ -3490,17 +3543,22 @@ public class ExpressionVisitor extends Visitor {
      * Infer parameter types of anonymous function arguments
      * in an indirect invocation with positional arguments.
      */
-    private void inferParameterTypesIndirectly(
+    private int inferParameterTypesIndirectly(
             Tree.PositionalArgumentList pal,
-            Type pt) {
+            Type pt, boolean error) {
+        List<Tree.PositionalArgument> args = 
+                pal.getPositionalArguments();
+        int argCount = args.size();
         if (unit.isCallableType(pt)) {
             List<Type> paramTypes = 
                     unit.getCallableArgumentTypes(pt);
-            List<Tree.PositionalArgument> args = 
-                    pal.getPositionalArguments();
-            int argCount = args.size();
             int paramsSize = paramTypes.size();
+            boolean allSucceeded = true;
+            int result = 0;
             for (int i=0; i<paramsSize && i<argCount; i++) {
+                if (allSucceeded) {
+                    result = i;
+                }
                 Type paramType = paramTypes.get(i);
                 paramType = callableFromUnion(paramType);
                 Tree.PositionalArgument arg = args.get(i);
@@ -3516,8 +3574,9 @@ public class ExpressionVisitor extends Visitor {
                         if (term instanceof Tree.FunctionArgument) {
                             Tree.FunctionArgument fa = 
                                     (Tree.FunctionArgument) term;
-                            inferParameterTypesFromCallableType(
-                                    paramType, null, fa);
+                            allSucceeded = allSucceeded &&
+                                inferParameterTypesFromCallableType(
+                                        paramType, null, fa, error);
                         }
                         else if (term instanceof Tree.StaticMemberOrTypeExpression) {
                             Tree.StaticMemberOrTypeExpression smte = 
@@ -3528,6 +3587,10 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
+            return allSucceeded ? argCount : result;
+        }
+        else {
+            return argCount;
         }
     }
     
@@ -3538,36 +3601,49 @@ public class ExpressionVisitor extends Visitor {
      * Also sets references from arguments back to parameters
      * by side effect.
      */
-    private void inferParameterTypesDirectly(Declaration dec,
+    private int inferParameterTypesDirectly(Declaration dec,
             Tree.PositionalArgumentList pal,
-            Tree.MemberOrTypeExpression mte) {
+            Tree.MemberOrTypeExpression mte, boolean error) {
         Reference pr = 
                 getInvokedProducedReference(dec, mte);
         Functional fun = (Functional) dec;
         List<ParameterList> pls = fun.getParameterLists();
+        List<Tree.PositionalArgument> args = 
+                pal.getPositionalArguments();
+        int argCount = args.size();
         if (!pls.isEmpty()) {
             ParameterList pl = pls.get(0);
             List<Parameter> params = pl.getParameters();
-            List<Tree.PositionalArgument> args = 
-                    pal.getPositionalArguments();
             int j=0;
-            int argCount = args.size();
             int paramsSize = params.size();
+            boolean allSucceeded = true;
+            int result = 0;
             for (int i=0; i<argCount && j<paramsSize; i++) {
+                if (allSucceeded) {
+                    result = i;
+                }
                 Parameter param = params.get(j);
                 Tree.PositionalArgument arg = args.get(i);
                 arg.setParameter(param);
                 if (arg instanceof Tree.ListedArgument) {
                     Tree.ListedArgument la = 
                             (Tree.ListedArgument) arg;
-                    inferParameterTypes(pr, param, 
-                            la.getExpression(), 
-                            param.isSequenced());
+                    setupTargetParameters(pr, param, 
+                            la.getExpression());
+                    allSucceeded = allSucceeded &&
+                        inferParameterTypes(pr, param, 
+                                la.getExpression(), 
+                                param.isSequenced(),
+                                error);
                 }
                 if (!param.isSequenced()) {
                     j++;
                 }
             }
+            return allSucceeded ? argCount : result;
+        }
+        else {
+            return argCount;
         }
     }
 
@@ -3605,9 +3681,11 @@ public class ExpressionVisitor extends Visitor {
                         Tree.SpecifierExpression se = 
                                 sa.getSpecifierExpression();
                         if (se!=null) {
+                            setupTargetParameters(pr, param, 
+                                    se.getExpression());
                             inferParameterTypes(pr, param, 
                                     se.getExpression(), 
-                                    false);
+                                    false, true);
                         }
                     }
                 }
@@ -3626,9 +3704,11 @@ public class ExpressionVisitor extends Visitor {
                             Tree.ListedArgument la = 
                                     (Tree.ListedArgument) pa;
                             la.setParameter(param);
+                            setupTargetParameters(pr, param, 
+                                    la.getExpression());
                             inferParameterTypes(pr, param, 
                                     la.getExpression(), 
-                                    true);
+                                    true, true);
                         }
                     }
                 }
@@ -3688,14 +3768,11 @@ public class ExpressionVisitor extends Visitor {
     }
 
     /**
-     * Infer parameter types for an anonymous function, and
-     * also set the "target parameter" for a reference, 
-     * which will be used later for inferring type arguments
-     * for a function ref or generic function ref.
+     * Infer parameter types for an anonymous function.
      */
-    private void inferParameterTypes(Reference pr, 
+    private boolean inferParameterTypes(Reference pr, 
             Parameter param, Tree.Expression e, 
-            boolean variadic) {
+            boolean variadic, boolean error) {
         FunctionOrValue model = param.getModel();
         if (e!=null && model!=null) {
             Tree.Term term = 
@@ -3720,8 +3797,8 @@ public class ExpressionVisitor extends Visitor {
                 if (model instanceof Functional) {
                     //NOTE: this branch is basically redundant
                     //      and could be removed
-                    inferParameterTypesFromCallableParameter(
-                            pr, param, anon);
+                    return inferParameterTypesFromCallableParameter(
+                            pr, param, anon, error);
                 }
                 else { 
                     Type paramType = tpr.getFullType();
@@ -3731,12 +3808,40 @@ public class ExpressionVisitor extends Visitor {
                     }
                     paramType = callableFromUnion(paramType);
                     if (unit.isCallableType(paramType)) {
-                        inferParameterTypesFromCallableType(
-                                paramType, param, anon);
+                        return inferParameterTypesFromCallableType(
+                                paramType, param, anon, error);
                     }
                 }
             }
-            else if (term instanceof Tree.StaticMemberOrTypeExpression) {
+        }
+        return true;
+    }
+
+    /**
+     * Set the "target parameter" for a reference, which 
+     * will be used later for inferring type arguments for 
+     * a function ref or generic function ref.
+     */
+    private void setupTargetParameters(Reference pr, 
+            Parameter param, Tree.Expression e) {
+        if (e!=null) {
+            Tree.Term term = 
+                    unwrapExpressionUntilTerm(e.getTerm());
+            TypedReference tpr = 
+                    pr.getTypedParameter(param);
+            if (term instanceof Tree.InvocationExpression) {
+                Tree.InvocationExpression ie = 
+                        (Tree.InvocationExpression) term;
+                Tree.PositionalArgumentList pal = 
+                        ie.getPositionalArgumentList();
+                Tree.NamedArgumentList nal = 
+                        ie.getNamedArgumentList();
+                if (pal!=null && pal.getPositionalArguments().isEmpty() 
+                 || nal!=null && nal.getNamedArguments().isEmpty()) {
+                    term = ie.getPrimary();
+                }
+            }
+            if (term instanceof Tree.StaticMemberOrTypeExpression) {
                 //the "target parameter" is used later to
                 //infer type arguments for function refs
                 //and generic function refs
@@ -3761,7 +3866,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
     private Type callableFromUnion(Type paramType) {
         if (paramType==null) {
             return null;
@@ -3790,11 +3895,12 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void inferParameterTypesFromCallableType(
+    private boolean inferParameterTypesFromCallableType(
             Type paramType, Parameter param, 
-            Tree.FunctionArgument anon) {
+            Tree.FunctionArgument anon, boolean error) {
         List<Tree.ParameterList> apls = 
                 anon.getParameterLists();
+        boolean result = true;
         if (!apls.isEmpty()) {
             List<Type> types = 
                     unit.getCallableArgumentTypes(paramType);
@@ -3809,20 +3915,24 @@ public class ExpressionVisitor extends Visitor {
                     j++) {
                 Tree.Parameter ap = aps.get(j);
                 if (isInferrableParameter(ap)) {
-                    createInferredParameter(anon,
+                    result = result & 
+                        createInferredParameter(anon,
                             declaration, ap,
                             ap.getParameterModel(),
                             types.get(j),
                             param==null ? null : 
-                                param.getModel());
+                                param.getModel(),
+                            error);
                 }
             }
         }
+        return result;
     }
 
-    private void inferParameterTypesFromCallableParameter(
+    private boolean inferParameterTypesFromCallableParameter(
             Reference pr, Parameter param, 
-            Tree.FunctionArgument anon) {
+            Tree.FunctionArgument anon, boolean error) {
+        boolean result = true;
         Declaration declaration = param.getDeclaration();
         Functional fun = (Functional) param.getModel();
         List<ParameterList> fpls = fun.getParameterLists();
@@ -3841,15 +3951,18 @@ public class ExpressionVisitor extends Visitor {
                 Parameter fp = fps.get(j);
                 Tree.Parameter ap = aps.get(j);
                 if (isInferrableParameter(ap)) {
-                    createInferredParameter(anon,
-                            declaration, ap,
-                            ap.getParameterModel(),
-                            pr.getTypedParameter(fp)
-                                .getType(),
-                            fp.getModel());
+                    result = result &
+                        createInferredParameter(anon,
+                                declaration, ap,
+                                ap.getParameterModel(),
+                                pr.getTypedParameter(fp)
+                                    .getType(),
+                                fp.getModel(),
+                                error);
                 }
             }
         }
+        return result;
     }
 
     private static boolean isInferrableParameter(Tree.Parameter p) {
@@ -3860,7 +3973,8 @@ public class ExpressionVisitor extends Visitor {
                     instanceof Tree.ValueModifier;
         }
         else if (p instanceof Tree.InitializerParameter) {
-            return p.getParameterModel().getModel() == null;
+//            return p.getParameterModel().getModel() == null;
+            return true;
         }
         else {
             return false;
@@ -3871,25 +3985,35 @@ public class ExpressionVisitor extends Visitor {
      * Create a model for an inferred parameter of an
      * anonymous function.
      */
-    private void createInferredParameter(Tree.FunctionArgument anon,
+    private boolean createInferredParameter(Tree.FunctionArgument anon,
             Declaration declaration, Tree.Parameter ap,
             Parameter parameter, Type type,
-            FunctionOrValue original) {
+            FunctionOrValue original, boolean error) {
         if (isTypeUnknown(type)) {
             type = unit.getUnknownType();
             if (!dynamic) {
-                ap.addError("could not infer parameter type: '" 
-                        + parameter.getName() 
-                        + "' would have unknown type");
+                if (error) {
+                    ap.addError("could not infer parameter type: '" 
+                            + parameter.getName() 
+                            + "' would have unknown type");
+                }
+                else {
+                    return false;
+                }
             }
         }
         else if (involvesTypeParams(declaration, type)) {
-            ap.addError("could not infer parameter type: '" 
-                    + parameter.getName() 
-                    + "' would have type '" 
-                    + type.asString(unit) 
-                    + "' involving type parameters");
-            type = unit.getUnknownType();
+            if (error) {
+                type = unit.getUnknownType();
+                ap.addError("could not infer parameter type: '" 
+                        + parameter.getName() 
+                        + "' would have type '" 
+                        + type.asString(unit) 
+                        + "' involving type parameters");
+            }
+            else {
+                return false;
+            }
         }
         Value model = (Value) parameter.getModel(); 
         if (model==null) {
@@ -3920,6 +4044,7 @@ public class ExpressionVisitor extends Visitor {
                 .getType()
                 .setTypeModel(type);
         }
+        return true;
     }
     
     private void visitInvocationPositionalArgs(
@@ -3952,6 +4077,7 @@ public class ExpressionVisitor extends Visitor {
                                 la.getExpression();
                         if (ex!=null) {
                             Tree.Term arg = ex.getTerm();
+                            //TODO: object expression!
                             if (arg instanceof 
                                     Tree.FunctionArgument) {
                                 Tree.FunctionArgument fun = 
