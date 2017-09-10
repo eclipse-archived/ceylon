@@ -460,7 +460,8 @@ public class TypeArgumentInference {
             Declaration invoked) {
         boolean findingUpperBounds = 
                 isEffectivelyContravariant(tp, invoked,
-                        specifiedParameters(nal, parameters));
+                        specifiedParameters(nal, parameters),
+                        false);
         List<NamedArgument> namedArgs = 
                 nal.getNamedArguments();
         Set<Parameter> foundParameters = 
@@ -538,8 +539,8 @@ public class TypeArgumentInference {
             Tree.TypedArgument ta = 
                     (Tree.TypedArgument) arg;
             type = ta.getDeclarationModel()
-                    .getTypedReference() //argument can't have type parameters
-                    .getFullType();
+                     .getTypedReference() //argument can't have type parameters
+                     .getFullType();
         }
         if (type!=null) {
             Parameter parameter = 
@@ -569,13 +570,15 @@ public class TypeArgumentInference {
             Declaration invoked) {
         boolean findingUpperBounds = 
                 isEffectivelyContravariant(tp, invoked,
-                        specifiedParameters(pal, parameters));
+                        specifiedParameters(pal, parameters),
+                        false);
         List<Tree.PositionalArgument> args = 
                 pal.getPositionalArguments();
         List<Type> inferredTypes = 
                 new ArrayList<Type>
                     (args.size());
-        List<Parameter> params = parameters.getParameters();
+        List<Parameter> params = 
+                parameters.getParameters();
         for (int i=0, len=params.size(); i<len; i++) {
             Parameter parameter = params.get(i);
             if (args.size()>i) {
@@ -764,7 +767,8 @@ public class TypeArgumentInference {
         Scope supertypeDec = invoked.getContainer();
         if (supertypeDec instanceof TypeDeclaration) {
             return qualifyingType.getSupertype(
-                    (TypeDeclaration) supertypeDec);
+                    (TypeDeclaration) 
+                        supertypeDec);
         }
         else {
             return null;
@@ -1074,7 +1078,8 @@ public class TypeArgumentInference {
                 boolean findUpperBounds =
                         isEffectivelyContravariant(
                                 tp, reference, 
-                                specifiedParams);
+                                specifiedParams, 
+                                secondList);
                 Type it = 
                         inferFunctionRefTypeArg(
                                 smte, 
@@ -1741,7 +1746,8 @@ public class TypeArgumentInference {
      */
     private boolean isEffectivelyContravariant(
             TypeParameter tp, Declaration invoked, 
-            boolean[] specifiedArguments) {
+            boolean[] specifiedArguments,
+            boolean secondList) {
         if (tp.isCovariant()) {
             return false;
         }
@@ -1795,7 +1801,7 @@ public class TypeArgumentInference {
                 boolean occursInvariantly = false;
                 if (!paramLists.isEmpty()) {
                     List<Parameter> params =
-                            paramLists.get(0)
+                            paramLists.get(secondList?1:0)
                                 .getParameters();
                     for (int i=0; i<specifiedArguments.length; i++) {
                         //ignore parameters with no argument
