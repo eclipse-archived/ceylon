@@ -968,8 +968,9 @@ public class TypeArgumentInference {
                     parameterizedDec = null;
                 }
                 
-                Reference arg = appliedReference(smte);
-                
+                //if both the parameter and the argument
+                //have declared parameters, we can use a
+                //better algorithm
                 if (!smte.getStaticMethodReferencePrimary() 
                         && reference instanceof Functional 
                         && paramDec instanceof Functional 
@@ -983,171 +984,39 @@ public class TypeArgumentInference {
                     //constraint involves unknown type 
                     //parameters of the declaration with the
                     //callable parameter
-                    Functional fun = (Functional) reference;
-                    List<ParameterList> apls = 
-                            fun.getParameterLists();
-                    Functional pfun = (Functional) paramDec;
-                    List<ParameterList> ppls = 
-                            pfun.getParameterLists();
-                    if (apls.isEmpty() || ppls.isEmpty()) {
-                        return null; //TODO: to give a nicer error
-                    }
-                    else {
-                        ParameterList aplf = apls.get(secondList?1:0);
-                        ParameterList pplf = ppls.get(0);
-                        List<Parameter> apl = 
-                                aplf.getParameters();
-                        List<Parameter> ppl = 
-                                pplf.getParameters();
-                        boolean[] specifiedParams = 
-                                specifiedParameters(
-                                        apl.size(), 
-                                        ppl.size());
-                        List<Type> inferredTypes = 
-                                new ArrayList<Type>
-                                    (typeParameters.size());
-                        for (TypeParameter tp: typeParameters) {
-                            boolean findUpperBounds =
-                                    isEffectivelyContravariant(
-                                            tp, reference, 
-                                            specifiedParams);
-                            Type it = 
-                                    inferFunctionRefTypeArg(
-                                            smte, 
-                                            typeParameters,
-                                            paramTypedRef, 
-                                            parameterizedDec, 
-                                            arg, 
-                                            apl, ppl, tp,
-                                            findUpperBounds);
-                            inferredTypes.add(it);
-                        }
-                        return constrainInferredTypes(
-                                typeParameters, inferredTypes, 
-                                receiverType, reference);
-                    }
+                    return inferFunctionRefTypeArgs(smte, 
+                            receiverType, secondList, 
+                            reference, typeParameters,
+                            paramTypedRef, paramDec, 
+                            parameterizedDec);
                 }
                 else {
-                    //use a worse algorithm that throws 
-                    //away too many constraints (I guess we
-                    //should improve this, including in the
-                    //spec)
-                    
+                    //use a worse algorithm that throws away
+                    //too many constraints (I guess we should
+                    //improve this, including in the spec)
                     if (unit.isSequentialType(paramType)) {
                         paramType = 
                                 unit.getSequentialElementType(
                                         paramType);
                     }
+                    
                     if (unit.isCallableType(paramType)) {
-                        //this is the type of the parameter list
-                        //of the function ref itself, which 
-                        //involves the type parameters we are
-                        //trying to infer
-                        Type parameterListType;
-                        Type fullType;
-                        if (smte.getStaticMethodReferencePrimary()) {
-                            Type argType = arg.getType();
-                            parameterListType = appliedType(
-                                    unit.getTupleDeclaration(), 
-                                    argType, argType, 
-                                    unit.getEmptyType());
-                            fullType = appliedType(
-                                    unit.getCallableDeclaration(),
-                                    argType, parameterListType);
-                        }
-                        else {
-                            fullType = arg.getFullType();
-                            if (secondList) {
-                                fullType = 
-                                        unit.getCallableReturnType(fullType);
-                            }
-                            parameterListType = 
-                                    unit.getCallableTuple(fullType);
-                        }
-                        //this is the type of the parameter list
-                        //of the callable parameter that the 
-                        //function ref is being passed to (these
-                        //parameters are going to be assigned to
-                        //the parameters of the function ref)
-                        Type argumentListType = 
-                                unit.getCallableTuple(paramType);
-                        int argCount = 
-                                unit.getTupleElementTypes(
-                                        argumentListType)
-                                    .size();
-                        List<Type> inferredTypes = 
-                                new ArrayList<Type>
-                                    (typeParameters.size());
-                        for (TypeParameter tp: typeParameters) {
-                            boolean findUpperBounds = 
-                                    isEffectivelyContravariant(
-                                            tp, fullType, 
-                                            argCount);
-                            Type it = 
-                                    inferFunctionRefTypeArg(
-                                            smte,
-                                            parameterizedDec,
-                                            parameterListType,
-                                            argumentListType,
-                                            tp,
-                                            findUpperBounds);
-                            inferredTypes.add(it);
-                        }
-                        return constrainInferredTypes(
-                                typeParameters, inferredTypes, 
-                                receiverType, reference);
+                        //the parameter has type Callable
+                        return inferFunctionRefTypeArgs(
+                                smte, receiverType, secondList, 
+                                reference, typeParameters,
+                                paramType, parameterizedDec);
                     }
                     else if (secondList) {
-                        //not a callable parameter, nor a
-                        //value parameter of callable type,
-                        //but the argument is an invocation
-                        //of a nullary function
-                        List<Type> inferredTypes = 
-                                new ArrayList<Type>
-                                    (typeParameters.size());
-                        Type argType = arg.getType();
-                        TypeDeclaration ptd = 
-                                paramType.getDeclaration();
-                        Type template = 
-                                //TODO: This is a bit crap.
-                                //The rest of this class assumes
-                                //that we're constraining supertype
-                                //type params by subtype type args, 
-                                //but here we're constraining a 
-                                //subtype type param by a supertype
-                                //type arg. Should I iterate over
-                                //all supertypes of argType?
-                                ptd instanceof ClassOrInterface ?
-                                    argType.getSupertype(ptd) :
-                                    argType;
-                        for (TypeParameter tp: typeParameters) {
-                            boolean covariant = 
-                                    template.occursCovariantly(tp)
-                                    && !template.occursContravariantly(tp);
-                            boolean contravariant = 
-                                    template.occursContravariantly(tp)
-                                    && !template.occursCovariantly(tp);
-                            Type it;
-                            if (covariant) {
-                                it = unit.getNothingType();
-                            }
-                            else if (contravariant) {
-                                it = intersectionOfSupertypes(tp);
-                            }
-                            else {
-                                it = inferFunctionRefTypeArg(
-                                        smte, 
-                                        parameterizedDec,
-                                        template, 
-                                        paramType,
-                                        tp,
-                                        false);
-                            }
-                            inferredTypes.add(it);
-                        }
-                        return constrainInferredTypes(
-                                typeParameters, inferredTypes, 
-                                receiverType, reference);
+                        //the parameter doesn't have type 
+                        //Callable, but it's a nullary
+                        //function, so we can't use its 
+                        //arguments to infer its type
+                        //arguments (NOT BLESSED BY SPEC!)
+                        return inferNullaryFunctionCallTypeArgs(
+                                smte, receiverType, reference, 
+                                typeParameters, paramType, 
+                                parameterizedDec);
                     }
                     else {
                         return null;
@@ -1159,6 +1028,277 @@ public class TypeArgumentInference {
             //not inferring
             return null;
         }
+    }
+
+    /**
+     * Infer type arguments for a direct function 
+     * ref (i.e. not a value ref with a type 
+     * constructor type) that occurs as an argument 
+     * to a callable parameter.
+     */
+    private List<Type> inferFunctionRefTypeArgs(
+            Tree.StaticMemberOrTypeExpression smte, 
+            Type receiverType, boolean secondList, 
+            Declaration reference, 
+            List<TypeParameter> typeParameters, 
+            TypedReference paramTypedRef,
+            Declaration paramDec, 
+            Declaration parameterizedDec) {
+        
+        Reference arg = appliedReference(smte);
+        
+        Functional fun = (Functional) reference;
+        List<ParameterList> apls = 
+                fun.getParameterLists();
+        Functional pfun = (Functional) paramDec;
+        List<ParameterList> ppls = 
+                pfun.getParameterLists();
+        if (apls.isEmpty() || ppls.isEmpty()) {
+            return null; //TODO: to give a nicer error
+        }
+        else {
+            ParameterList aplf = apls.get(secondList?1:0);
+            ParameterList pplf = ppls.get(0);
+            List<Parameter> apl = 
+                    aplf.getParameters();
+            List<Parameter> ppl = 
+                    pplf.getParameters();
+            boolean[] specifiedParams = 
+                    specifiedParameters(
+                            apl.size(), 
+                            ppl.size());
+            List<Type> inferredTypes = 
+                    new ArrayList<Type>
+                        (typeParameters.size());
+            for (TypeParameter tp: typeParameters) {
+                boolean findUpperBounds =
+                        isEffectivelyContravariant(
+                                tp, reference, 
+                                specifiedParams);
+                Type it = 
+                        inferFunctionRefTypeArg(
+                                smte, 
+                                tp,
+                                typeParameters, 
+                                paramTypedRef, 
+                                parameterizedDec, 
+                                arg, apl, ppl,
+                                findUpperBounds);
+                inferredTypes.add(it);
+            }
+            return constrainInferredTypes(
+                    typeParameters, inferredTypes, 
+                    receiverType, reference);
+        }
+    }
+
+    /**
+     * Infer type arguments for the invocation of a
+     * nullary function that occurs as an argument.
+     * The parameter to which it is an argument isn't 
+     * a callable parameter. 
+     */
+    private List<Type> inferNullaryFunctionCallTypeArgs(
+            Tree.StaticMemberOrTypeExpression smte, 
+            Type receiverType, Declaration reference, 
+            List<TypeParameter> typeParameters, 
+            Type paramType, Declaration parameterizedDec) {
+        
+        Reference arg = appliedReference(smte);
+        
+        List<Type> inferredTypes = 
+                new ArrayList<Type>
+                    (typeParameters.size());
+        Type argType = arg.getType();
+        TypeDeclaration ptd = 
+                paramType.getDeclaration();
+        Type template = 
+                //TODO: This is a bit crap.
+                //The rest of this class assumes
+                //that we're constraining supertype
+                //type params by subtype type args, 
+                //but here we're constraining a 
+                //subtype type param by a supertype
+                //type arg. Should I iterate over
+                //all supertypes of argType?
+                ptd instanceof ClassOrInterface ?
+                        argType.getSupertype(ptd) :
+                        argType;
+        for (TypeParameter tp: typeParameters) {
+            boolean covariant = 
+                    template.occursCovariantly(tp)
+                    && !template.occursContravariantly(tp);
+            boolean contravariant = 
+                    template.occursContravariantly(tp)
+                    && !template.occursCovariantly(tp);
+            
+            Type it = inferNullaryFunctionCallTypeArg(
+                        smte, 
+                        tp, 
+                        paramType, 
+                        parameterizedDec, 
+                        template, 
+                        covariant, 
+                        contravariant);
+            inferredTypes.add(it);
+        }
+        return constrainInferredTypes(
+                typeParameters, inferredTypes, 
+                receiverType, reference);
+    }
+
+    private Type inferNullaryFunctionCallTypeArg(
+            Tree.StaticMemberOrTypeExpression smte, 
+            TypeParameter tp,
+            Type paramType, 
+            Declaration parameterizedDec, 
+            Type template, 
+            boolean covariant, 
+            boolean contravariant) {
+//        if (covariant) {
+//            it = unit.getNothingType();
+//        }
+//        else if (contravariant) {
+//            it = intersectionOfSupertypes(tp);
+//        }
+//        else {
+        List<Type> list = new ArrayList<Type>(1);
+        Type rt = inferTypeArg(tp, 
+                    template, paramType, 
+                    !covariant, !contravariant, 
+                    false, 
+                    new ArrayList<TypeParameter>(), 
+                    smte);
+        if (!isTypeUnknown(rt)
+                && !involvesTypeParams(parameterizedDec, rt)) {
+            addToUnionOrIntersection(contravariant, list, rt);
+        }
+        return unionOrIntersection(contravariant, list);
+//        }
+    }
+
+    /**
+     * Infer the type arguments for a reference to a 
+     * generic function that occurs as a parameter in
+     * an invocation. This implementation is used when
+     * have an indirect ref whose type is a type
+     * constructor. This version is also used for
+     * static references.
+     */
+    private List<Type> inferFunctionRefTypeArgs(
+            Tree.StaticMemberOrTypeExpression smte, 
+            Type receiverType,
+            boolean secondList, Declaration reference, 
+            List<TypeParameter> typeParameters, 
+            Type paramType, Declaration parameterizedDec) {
+        
+        Reference arg = appliedReference(smte);
+        
+        //this is the type of the parameter list
+        //of the function ref itself, which 
+        //involves the type parameters we are
+        //trying to infer
+        Type parameterListType;
+        Type fullType;
+        Type argType; 
+        if (smte.getStaticMethodReferencePrimary()) {
+            argType = arg.getType();
+            parameterListType = appliedType(
+                    unit.getTupleDeclaration(), 
+                    argType, argType, 
+                    unit.getEmptyType());
+            fullType = appliedType(
+                    unit.getCallableDeclaration(),
+                    argType, parameterListType);
+        }
+        else {
+            fullType = arg.getFullType();
+            if (secondList) {
+                fullType = 
+                        unit.getCallableReturnType(
+                                fullType);
+            }
+            parameterListType = 
+                    unit.getCallableTuple(fullType);
+            argType =
+                    unit.getCallableReturnType(fullType);
+        }
+        
+        //this is the type of the parameter list
+        //of the callable parameter that the 
+        //function ref is being passed to (these
+        //parameters are going to be assigned to
+        //the parameters of the function ref)
+        Type argumentListType = 
+                unit.getCallableTuple(paramType);
+        Type returnType =
+                unit.getCallableReturnType(paramType);
+        int argCount = 
+                unit.getTupleElementTypes(
+                        argumentListType)
+                    .size();
+        List<Type> inferredTypes = 
+                new ArrayList<Type>
+                    (typeParameters.size());
+        for (TypeParameter tp: typeParameters) {
+            boolean findUpperBounds = 
+                    isEffectivelyContravariant(
+                            tp, fullType, 
+                            argCount);
+            Type type = inferFunctionRefTypeArg(
+                            smte, 
+                            tp, 
+                            parameterizedDec, 
+                            parameterListType, 
+                            argumentListType,
+                            argType, 
+                            returnType, 
+                            findUpperBounds);
+            inferredTypes.add(type);
+        }
+        
+        return constrainInferredTypes(
+                typeParameters, inferredTypes, 
+                receiverType, reference);
+    }
+
+    private Type inferFunctionRefTypeArg(
+            Tree.StaticMemberOrTypeExpression smte, 
+            TypeParameter tp,
+            Declaration parameterizedDec, 
+            Type parameterListType, 
+            Type argumentListType, 
+            Type argType, 
+            Type returnType,
+            boolean findUpperBounds) {
+        List<Type> list = 
+                new ArrayList<Type>(2);
+        
+        //the parameter types tuple
+        Type it = inferTypeArg(tp, 
+                        parameterListType, 
+                        argumentListType, 
+                        true, false, 
+                        findUpperBounds, 
+                        new ArrayList<TypeParameter>(), 
+                        smte);
+        if (!isTypeUnknown(it)
+                && !involvesTypeParams(parameterizedDec, it)) {
+            addToUnionOrIntersection(findUpperBounds, list, it);
+        }
+        
+        //the return type
+        Type rt = inferTypeArg(tp, 
+                    argType, returnType, 
+                    false, true, 
+                    findUpperBounds, 
+                    new ArrayList<TypeParameter>(), 
+                    smte);
+        if (!isTypeUnknown(rt)
+                && !involvesTypeParams(parameterizedDec, rt)) {
+            addToUnionOrIntersection(findUpperBounds, list, rt);
+        }
+        return unionOrIntersection(findUpperBounds, list);
     }
 
     private static boolean isArgumentToGenericParameter(
@@ -1176,14 +1316,19 @@ public class TypeArgumentInference {
      */
     private Type inferFunctionRefTypeArg(
             Tree.StaticMemberOrTypeExpression smte,
+            TypeParameter tp, 
             List<TypeParameter> typeParams, 
             TypedReference param, 
-            Declaration pd, Reference arg, 
-            List<Parameter> apl, List<Parameter> ppl,
-            TypeParameter tp, 
+            Declaration pd, 
+            Reference arg, 
+            List<Parameter> apl,
+            List<Parameter> ppl, 
             boolean findingUpperBounds) {
+        
         List<Type> list = 
                 new ArrayList<Type>();
+        
+        //first look at the parameter types
         for (int i=0; 
                 i<apl.size() && 
                 i<ppl.size(); 
@@ -1208,40 +1353,27 @@ public class TypeArgumentInference {
                         list, it);
             }
         }
+        
+        //now look at the return type
+        Type it = 
+                inferTypeArg(tp, 
+                        arg.getType(), 
+                        param.getType(), 
+                        false, true,
+                        findingUpperBounds, 
+                        new ArrayList<TypeParameter>(),
+                        smte);
+        if (!(isTypeUnknown(it) ||
+//              it.involvesTypeParameters(typeParams) ||
+              involvesTypeParams(pd, it))) {
+          addToUnionOrIntersection(findingUpperBounds, 
+                  list, it);
+        }
+        
         return unionOrIntersection(findingUpperBounds, 
                 list);
     }
     
-    /**
-     * Infer the type arguments for a reference to a 
-     * generic function that occurs as a parameter in
-     * an invocation. This implementation is used when 
-     * have an indirect ref whose type is a type 
-     * constructor. This version is also used for static
-     * references (?)
-     */
-    private Type inferFunctionRefTypeArg(
-            Tree.StaticMemberOrTypeExpression smte, 
-            Declaration pd, 
-            Type template, Type type,
-            TypeParameter tp, 
-            boolean findingUpperBounds) {
-        Type it = 
-                inferTypeArg(tp,
-                        template, type,
-                        findingUpperBounds, smte);
-        if (isTypeUnknown(it) 
-//                || it.involvesTypeParameters(typeParams)
-                || involvesTypeParams(pd, it)) {
-            return findingUpperBounds ? 
-                    unit.getAnythingType() : 
-                    unit.getNothingType();
-        }
-        else {
-            return it;
-        }
-    }
-
     /**
      * Infer type arguments for a generic function reference 
      * that occurs within the primary of an invocation 

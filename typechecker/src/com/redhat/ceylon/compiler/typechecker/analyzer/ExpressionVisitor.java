@@ -4137,6 +4137,11 @@ public class ExpressionVisitor extends Visitor {
                                 pat = getCallableBottomType(
                                         countParameters(fun));
                             }
+                            else if (arg instanceof 
+                                    Tree.BaseTypeExpression) {
+                                //must be a class instantiation
+                                pat = getCallableBottomType();
+                            }
                             else if (arg instanceof
                                     Tree.NaturalLiteral) {
                                 pat = unit.getIntegerType();
@@ -4190,6 +4195,13 @@ public class ExpressionVisitor extends Visitor {
                     .getParameters()
                     .size();
         }
+    }
+
+    private Type getCallableBottomType() {
+        return appliedType(
+                unit.getCallableDeclaration(), 
+                unit.getNothingType(),
+                unit.getSequentialType(unit.getAnythingType()));
     }
 
     private Type getCallableBottomType(int size) {
