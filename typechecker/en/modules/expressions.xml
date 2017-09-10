@@ -1622,7 +1622,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             between the layers 3 and 4 defined in
             <xref linkend="operatorprecedence"/>.</para>
             
-            <para>Alternatively, the expression following <literal>then</literal>
+            <para>Alternatively, the expression following <literal>case</literal>
             or <literal>else</literal> may be an <literal>if/then/else</literal> 
             expression or a let expression.</para>
             
