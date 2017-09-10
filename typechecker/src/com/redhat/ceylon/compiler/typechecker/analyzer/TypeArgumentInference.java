@@ -477,8 +477,8 @@ public class TypeArgumentInference {
                     foundParameters);
         }
         Parameter sp = 
-                getUnspecifiedParameter(null, parameters, 
-                        foundParameters);
+                getUnspecifiedParameter(null, 
+                        parameters, foundParameters);
         if (sp!=null) {
             Tree.SequencedArgument sarg = 
                     nal.getSequencedArgument();

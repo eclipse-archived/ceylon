@@ -1,10 +1,12 @@
 void parameterInference() {
     $type:"Iterable<Character,Null>" value mapped = "hello world".map((c) => c.uppercased);
+    $type:"Iterable<Character,Null>" value mapped1 = "hello world".map(=> element.uppercased);
     $type:"Iterable<Character,Null>" value filtered = "hello world".filter((c) { return !c.whitespace; });
     $type:"Integer" value folded = (1..10).fold(0)((r, x) => r+x);
     $type:"Integer" value folded2 = (1..10).fold(0)((r, x) { Integer r; Integer x; return r+x; });
     $type:"Integer" value folded3 = (1..10).fold(0)((r, x) { return r+x; });
     $type:"Integer" value reduced = (1..10).reduce<Integer>((r, x) => r+x);
+    $type:"Integer" value reduced1 = (1..10).reduce<Integer>(=> partial+element);
     $type:"Float|Integer" value reduced2 = (1..10).reduce<Float>((r, x) {
         switch (r) 
         case (is Integer) { return (r+x).float; } 
@@ -30,8 +32,9 @@ void parameterInference() {
             = fun1((ch)=>!ch.letter);
     
     void accept(String(Float) fun) => fun(1.0);
-    accept((f)=>f.string);
-    accept { (f)=>f.string; };
+    accept((f) => f.string);
+    accept(=> it.string);
+    accept { (f) => f.string; };
     accept { (f) { return f.string; }; };
     
     void variadic(Anything(String)* args) {}
@@ -53,6 +56,11 @@ void parameterInference() {
     
     $error value funWithNoParamType = (p) => 0;
     value funWithNoParamType_ = ($error value p) => 0;
+    
+    $error value funWithNoParams = => "";
+    
+    T silly<T>(T t, T(T) f) => f(t);
+    $type:"String" silly("", => it);
 }
 
 void testNotVariable() {
@@ -74,5 +82,7 @@ void fun2(Alias foo) {}
 
 void funrun() {
     fun((str) => 1);
+    fun(=> 1);
     fun2((str) => 1); 
+    fun2(=> 1);
 }

@@ -87,6 +87,7 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -3240,7 +3241,8 @@ public class ExpressionVisitor extends Visitor {
      * has to happen in exactly the right order, which is
      * not at all the natural order for walking the tree.
      */
-    @Override public void visit(Tree.InvocationExpression that) {
+    @Override 
+    public void visit(Tree.InvocationExpression that) {
         
         //assign some provisional argument types 
         //that will help with overload resolution
@@ -3252,35 +3254,46 @@ public class ExpressionVisitor extends Visitor {
         Tree.Primary p = that.getPrimary();
         p.visit(this);
         
+        //set up the parameter lists of all 
+        //argument anonymous functions with 
+        //inferred (missing) parameter lists
         createAnonymousFunctionParameters(that);
         
-        Tree.PositionalArgumentList pal = 
-                that.getPositionalArgumentList();
-        int cutoff = 0;
-        if (pal!=null) {
-            //infer parameter types as far as we 
-            //can without having the inferred type 
-            //parameters of the primary
-            cutoff = inferParameterTypes(p, pal, false);
-            List<Tree.PositionalArgument> args = 
-                    pal.getPositionalArguments();
-            //assign types to all the positional 
-            //arguments up until the first one for 
-            //which parameter type inference failed
-            for (int j=0; j<cutoff; j++) {
-                Tree.PositionalArgument pa = 
-                        args.get(j);
-                if (pa!=null) {
-                    pa.visit(this);
-                }
-            }
-        }
-        
+        //named argument lists are the easy
+        //case because they don't support
+        //anonymous functions with inferred 
+        //parameter lists
         Tree.NamedArgumentList nal = 
                 that.getNamedArgumentList();
         if (nal!=null) {
             inferParameterTypes(p, nal);
             nal.visit(this);
+        }
+        
+        Tree.PositionalArgumentList pal = 
+                that.getPositionalArgumentList();
+        int argCount = 0; 
+        boolean[] delayed = null;
+        if (pal!=null) {
+            List<PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            argCount = args.size();
+            //infer parameter types as far as we 
+            //can without having the inferred type 
+            //parameters of the primary
+            delayed = inferParameterTypes(p, pal, false);
+            //assign types to all the positional 
+            //arguments up until the first one for 
+            //which parameter type inference failed
+            for (int j=0; j<argCount; j++) {
+                if (!delayed[j]) {
+                    Tree.PositionalArgument pa = 
+                            args.get(j);
+                    if (pa!=null) {
+                        pa.visit(this);
+                    }
+                }
+            }
         }
         
         //assign some additional types that
@@ -3293,17 +3306,16 @@ public class ExpressionVisitor extends Visitor {
         visitInvocationPrimary(that);
         
         if (pal!=null) {
-            List<Tree.PositionalArgument> args = 
+            List<PositionalArgument> args = 
                     pal.getPositionalArguments();
-            int size = args.size();
-            if (cutoff<size) {
-                //now infer the remaining parameter 
-                //types
-                inferParameterTypes(p, pal, true);
-                //assign types to the remaining 
-                //positional arguments which we
-                //missed the first time round
-                for (int j=cutoff; j<size; j++) {
+            //now infer the remaining parameter 
+            //types
+            inferParameterTypes(p, pal, true);
+            //assign types to the remaining 
+            //positional arguments which we
+            //missed the first time round
+            for (int j=0; j<argCount; j++) {
+                if (delayed[j]) {
                     Tree.PositionalArgument pa = 
                             args.get(j);
                     if (pa!=null) {
@@ -3445,17 +3457,26 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (model instanceof Value) {
             Type type = param.getType();
-            if (type!=null && type.isCallable()) { 
-                Type tup = unit.getCallableTuple(type);
-                int min = unit.getTupleMinimumLength(tup);
-                int max = unit.getTupleMaximumLength(tup);
-                if (min==1 || max==1) {
-                    Parameter p = new Parameter();
-                    p.setName("it");
-                    return Collections.<Parameter>singletonList(p);
-                }
-                else if (min==0) {
-                    return Collections.<Parameter>emptyList();
+            if (type!=null) {
+                Type callable = 
+                        intersectionType(type.resolveAliases(), 
+                                appliedType(
+                                    unit.getCallableDeclaration(), 
+                                    unit.getAnythingType(), 
+                                    unit.getNothingType()),
+                                unit);
+                if (callable.isCallable()) { 
+                    Type tup = unit.getCallableTuple(callable);
+                    int min = unit.getTupleMinimumLength(tup);
+                    int max = unit.getTupleMaximumLength(tup);
+                    if (min==1 || max==1) {
+                        Parameter p = new Parameter();
+                        p.setName("it");
+                        return Collections.<Parameter>singletonList(p);
+                    }
+                    else if (min==0) {
+                        return Collections.<Parameter>emptyList();
+                    }
                 }
             }
             return null;
@@ -3470,13 +3491,14 @@ public class ExpressionVisitor extends Visitor {
      * positional argument list, and set up references from
      * arguments back to parameter models. 
      */
-    private int inferParameterTypes(Tree.Primary p,
+    private boolean[] inferParameterTypes(Tree.Primary p,
             Tree.PositionalArgumentList pal, boolean error) {
         Type type = p.getTypeModel();
         Tree.Term term = unwrapExpressionUntilTerm(p);
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
-                    (Tree.MemberOrTypeExpression) term;
+                    (Tree.MemberOrTypeExpression) 
+                        term;
             Declaration dec = mte.getDeclaration();
             if (dec==null || dec.isDynamic()) {
                 if (type==null || type.isUnknown()) {
@@ -3484,7 +3506,8 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             else if (dec instanceof Functional) {
-                return inferParameterTypesDirectly(dec, pal, mte, error);
+                return inferParameterTypesDirectly(pal, 
+                        mte, dec, error);
             }
             else if (dec instanceof Value) {
                 Value value = (Value) dec;
@@ -3497,10 +3520,12 @@ public class ExpressionVisitor extends Visitor {
                 inferDynamicParameters(pal);
             }
             else {
-                return inferParameterTypesIndirectly(pal, type, error);
+                return inferParameterTypesIndirectly(pal, 
+                        type, error);
             }
         }
-        return pal.getPositionalArguments().size();
+        int size = pal.getPositionalArguments().size();
+        return new boolean[size];
     }
 
     private void inferDynamicParameters(
@@ -3568,7 +3593,7 @@ public class ExpressionVisitor extends Visitor {
                     (Tree.MemberOrTypeExpression) term;
             Declaration dec = mte.getDeclaration();
             if (dec instanceof Functional) {
-                inferParameterTypesDirectly(dec, nal, mte);
+                inferParameterTypesDirectly(nal, mte, dec);
             }
         }
     }
@@ -3577,22 +3602,18 @@ public class ExpressionVisitor extends Visitor {
      * Infer parameter types of anonymous function arguments
      * in an indirect invocation with positional arguments.
      */
-    private int inferParameterTypesIndirectly(
+    private boolean[] inferParameterTypesIndirectly(
             Tree.PositionalArgumentList pal,
-            Type pt, boolean error) {
+            Type type, boolean error) {
         List<Tree.PositionalArgument> args = 
                 pal.getPositionalArguments();
         int argCount = args.size();
-        if (unit.isCallableType(pt)) {
+        boolean[] delayed = new boolean[argCount];
+        if (unit.isCallableType(type)) {
             List<Type> paramTypes = 
-                    unit.getCallableArgumentTypes(pt);
+                    unit.getCallableArgumentTypes(type);
             int paramsSize = paramTypes.size();
-            boolean allSucceeded = true;
-            int result = 0;
             for (int i=0; i<paramsSize && i<argCount; i++) {
-                if (allSucceeded) {
-                    result = i;
-                }
                 Type paramType = paramTypes.get(i);
                 paramType = callableFromUnion(paramType);
                 Tree.PositionalArgument arg = args.get(i);
@@ -3608,8 +3629,8 @@ public class ExpressionVisitor extends Visitor {
                         if (term instanceof Tree.FunctionArgument) {
                             Tree.FunctionArgument fa = 
                                     (Tree.FunctionArgument) term;
-                            allSucceeded = allSucceeded &&
-                                inferParameterTypesFromCallableType(
+                            delayed[i] =
+                                !inferParameterTypesFromCallableType(
                                         paramType, null, fa, error);
                         }
                         else if (term instanceof Tree.StaticMemberOrTypeExpression) {
@@ -3621,11 +3642,8 @@ public class ExpressionVisitor extends Visitor {
                     }
                 }
             }
-            return allSucceeded ? argCount : result;
         }
-        else {
-            return argCount;
-        }
+        return delayed;
     }
     
     /**
@@ -3635,38 +3653,36 @@ public class ExpressionVisitor extends Visitor {
      * Also sets references from arguments back to parameters
      * by side effect.
      */
-    private int inferParameterTypesDirectly(Declaration dec,
+    private boolean[] inferParameterTypesDirectly(
             Tree.PositionalArgumentList pal,
-            Tree.MemberOrTypeExpression mte, boolean error) {
-        Reference pr = 
+            Tree.MemberOrTypeExpression mte,
+            Declaration dec, boolean error) {
+        Reference reference = 
                 getInvokedProducedReference(dec, mte);
         Functional fun = (Functional) dec;
         List<ParameterList> pls = fun.getParameterLists();
         List<Tree.PositionalArgument> args = 
                 pal.getPositionalArguments();
         int argCount = args.size();
+        boolean[] delayed = new boolean[argCount];
         if (!pls.isEmpty()) {
             ParameterList pl = pls.get(0);
             List<Parameter> params = pl.getParameters();
             int j=0;
             int paramsSize = params.size();
-            boolean allSucceeded = true;
-            int result = 0;
             for (int i=0; i<argCount && j<paramsSize; i++) {
-                if (allSucceeded) {
-                    result = i;
-                }
                 Parameter param = params.get(j);
                 Tree.PositionalArgument arg = args.get(i);
                 arg.setParameter(param);
                 if (arg instanceof Tree.ListedArgument) {
                     Tree.ListedArgument la = 
-                            (Tree.ListedArgument) arg;
-                    setupTargetParameters(pr, param, 
-                            la.getExpression());
-                    allSucceeded = allSucceeded &&
-                        inferParameterTypes(pr, param, 
-                                la.getExpression(), 
+                            (Tree.ListedArgument) 
+                                arg;
+                    setupTargetParameters(reference, 
+                            param, la.getExpression());
+                    delayed[i] =
+                        !inferParameterTypes(reference, 
+                                param, la.getExpression(), 
                                 param.isSequenced(),
                                 error);
                 }
@@ -3674,11 +3690,8 @@ public class ExpressionVisitor extends Visitor {
                     j++;
                 }
             }
-            return allSucceeded ? argCount : result;
         }
-        else {
-            return argCount;
-        }
+        return delayed;
     }
 
     /**
@@ -3688,13 +3701,15 @@ public class ExpressionVisitor extends Visitor {
      * Also sets references from arguments back to parameters
      * by side effect.
      */
-    private void inferParameterTypesDirectly(Declaration dec,
+    private void inferParameterTypesDirectly(
             Tree.NamedArgumentList nal,
-            Tree.MemberOrTypeExpression mte) {
-        Reference pr = 
+            Tree.MemberOrTypeExpression mte,
+            Declaration dec) {
+        Reference reference = 
                 getInvokedProducedReference(dec, mte);
         Functional fun = (Functional) dec;
-        List<ParameterList> pls = fun.getParameterLists();
+        List<ParameterList> pls = 
+                fun.getParameterLists();
         if (!pls.isEmpty()) {
             Set<Parameter> foundParameters = 
                     new HashSet<Parameter>();
@@ -3711,14 +3726,15 @@ public class ExpressionVisitor extends Visitor {
                     arg.setParameter(param);
                     if (arg instanceof Tree.SpecifiedArgument) {
                         Tree.SpecifiedArgument sa = 
-                                (Tree.SpecifiedArgument) arg;
+                                (Tree.SpecifiedArgument) 
+                                    arg;
                         Tree.SpecifierExpression se = 
                                 sa.getSpecifierExpression();
                         if (se!=null) {
-                            setupTargetParameters(pr, param, 
-                                    se.getExpression());
-                            inferParameterTypes(pr, param, 
-                                    se.getExpression(), 
+                            setupTargetParameters(reference, 
+                                    param, se.getExpression());
+                            inferParameterTypes(reference, 
+                                    param, se.getExpression(), 
                                     false, true);
                         }
                     }
@@ -3728,8 +3744,8 @@ public class ExpressionVisitor extends Visitor {
                     nal.getSequencedArgument();
             if (sa!=null) {
                 Parameter param = 
-                        getUnspecifiedParameter(pr, pl, 
-                                foundParameters);
+                        getUnspecifiedParameter(reference, 
+                                pl, foundParameters);
                 if (param!=null) {
                     sa.setParameter(param);
                     for (Tree.PositionalArgument pa: 
@@ -3738,9 +3754,9 @@ public class ExpressionVisitor extends Visitor {
                             Tree.ListedArgument la = 
                                     (Tree.ListedArgument) pa;
                             la.setParameter(param);
-                            setupTargetParameters(pr, param, 
+                            setupTargetParameters(reference, param, 
                                     la.getExpression());
-                            inferParameterTypes(pr, param, 
+                            inferParameterTypes(reference, param, 
                                     la.getExpression(), 
                                     true, true);
                         }
@@ -4007,6 +4023,7 @@ public class ExpressionVisitor extends Visitor {
                     instanceof Tree.ValueModifier;
         }
         else if (p instanceof Tree.InitializerParameter) {
+            //TODO: is this change OK??
 //            return p.getParameterModel().getModel() == null;
             return true;
         }
@@ -4942,13 +4959,13 @@ public class ExpressionVisitor extends Visitor {
                     foundParameters);
         }
         else {
-            Parameter sp = 
-                    getUnspecifiedParameter(pr, pl, 
-                            foundParameters);
-            if (sp!=null && 
+            Parameter param = 
+                    getUnspecifiedParameter(pr, 
+                            pl, foundParameters);
+            if (param!=null && 
                     !unit.isNonemptyIterableType(
-                            sp.getType())) {
-                foundParameters.add(sp);
+                            param.getType())) {
+                foundParameters.add(param);
             }
         }
         
@@ -5001,27 +5018,27 @@ public class ExpressionVisitor extends Visitor {
     private void checkSequencedArg(Tree.SequencedArgument sa, 
             ParameterList pl, Reference pr, 
             Set<Parameter> foundParameters) {
-        Parameter sp = 
-                getUnspecifiedParameter(pr, pl, 
-                        foundParameters);
-        if (sp==null) {
+        Parameter param = 
+                getUnspecifiedParameter(pr, 
+                        pl, foundParameters);
+        if (param==null) {
             sa.addError("all iterable parameters specified by named argument list: '" + 
                     pr.getDeclaration().getName(unit) +
                     "' does not declare any additional parameters of type 'Iterable'");
         }
         else {
-            if (!foundParameters.add(sp)) {
+            if (!foundParameters.add(param)) {
                 sa.addError("duplicate argument for parameter: '" +
-                        sp.getName() + "' of '" + 
+                        param.getName() + "' of '" + 
                         pr.getDeclaration().getName(unit) + "'");
             }
             else if (!dynamic &&
-                    isTypeUnknown(sp.getType())) {
+                    isTypeUnknown(param.getType())) {
                 sa.addError("parameter type could not be determined: " + 
-                        paramdesc(sp) +
-                        getTypeUnknownError(sp.getType()));
+                        paramdesc(param) +
+                        getTypeUnknownError(param.getType()));
             }
-            checkSequencedArgument(sa, pr, sp);
+            checkSequencedArgument(sa, pr, param);
         }
     }
 
