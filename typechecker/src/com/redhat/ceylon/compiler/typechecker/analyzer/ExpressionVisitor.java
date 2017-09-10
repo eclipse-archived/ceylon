@@ -4128,8 +4128,16 @@ public class ExpressionVisitor extends Visitor {
                                 la.getExpression();
                         if (ex!=null) {
                             Tree.Term arg = ex.getTerm();
-                            //TODO: object expression!
                             if (arg instanceof 
+                                    Tree.ObjectExpression) {
+                                Tree.ObjectExpression obj =
+                                        (Tree.ObjectExpression)
+                                            arg;
+                                pat = unit.denotableType(
+                                        obj.getAnonymousClass()
+                                            .getType());
+                            }
+                            else if (arg instanceof 
                                     Tree.FunctionArgument) {
                                 Tree.FunctionArgument fun = 
                                         (Tree.FunctionArgument) 
