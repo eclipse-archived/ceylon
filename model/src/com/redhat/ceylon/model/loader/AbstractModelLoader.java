@@ -3904,12 +3904,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     protected boolean isStartOfJavaBeanPropertyName(int codepoint){
-        return (codepoint == Character.toUpperCase(codepoint)) || codepoint == '_'; 
+        return codepoint == Character.toUpperCase(codepoint) 
+            || codepoint == '_'; 
     }
 
     private boolean isNonGenericMethod(MethodMirror methodMirror){
         return !methodMirror.isConstructor()
-                && methodMirror.getTypeParameters().isEmpty();
+            && methodMirror.getTypeParameters().isEmpty();
     }
     
     private boolean allReifiedTypeParameters(List<VariableMirror> list) {
@@ -4775,7 +4776,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     case DECLARED:
                         String typeName = parameterType.getDeclaredClass().getName();
                         int first = typeName.codePointAt(0);
-                        name = Character.toLowerCase(first) 
+                        name = String.valueOf(Character.toChars(Character.toLowerCase(first))) 
                              + typeName.substring(Character.charCount(first)); 
                         break;
                     default:
