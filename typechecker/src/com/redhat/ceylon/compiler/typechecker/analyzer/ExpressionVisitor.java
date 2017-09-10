@@ -29,6 +29,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.membe
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.LIDENTIFIER;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.eliminateParensAndWidening;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasError;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.hasUncheckedNulls;
@@ -79,10 +80,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.antlr.runtime.CommonToken;
+import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -3324,14 +3325,23 @@ public class ExpressionVisitor extends Visitor {
         
     }
     
-    private void createAnonymousFunctionParameters(Tree.InvocationExpression that) {
-        Tree.Primary prim = that.getPrimary();
+    /**
+     * Iterate over the arguments of an invocation
+     * looking for anonymous functions with missing
+     * parameter lists, and create the parameter
+     * lists from the type of the parameters to 
+     * which the arguments are assigned.
+     */
+    private void createAnonymousFunctionParameters(
+            Tree.InvocationExpression that) {
+        Tree.Primary primary = that.getPrimary();
         Tree.PositionalArgumentList argList =
                 that.getPositionalArgumentList();
         if (argList!=null && 
-                prim instanceof Tree.MemberOrTypeExpression) {
+                primary instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
-                    (Tree.MemberOrTypeExpression) prim;
+                    (Tree.MemberOrTypeExpression) 
+                        primary;
             List<Tree.PositionalArgument> args = 
                     argList.getPositionalArguments();
             Declaration dec = mte.getDeclaration();
@@ -3348,53 +3358,23 @@ public class ExpressionVisitor extends Visitor {
                             i<asz && i<psz; i++) {
                         Tree.PositionalArgument arg = 
                                 args.get(i);
-                        FunctionOrValue param = 
-                                params.get(i).getModel();
-                        if (arg instanceof Tree.ListedArgument) {
+                        Parameter param = params.get(i);
+                        if (arg instanceof Tree.ListedArgument
+                                && param!=null) {
                             Tree.ListedArgument larg = 
                                     (Tree.ListedArgument) arg;
                             List<Parameter> fpl = 
                                     inferrableParameters(param);
-                            Tree.Expression ex = larg.getExpression();
+                            Tree.Expression ex = 
+                                    larg.getExpression();
                             if (ex!=null && fpl!=null) {
                                 Tree.Term term = ex.getTerm();
                                 if (term instanceof Tree.FunctionArgument) {
                                     Tree.FunctionArgument anon =
-                                            (Tree.FunctionArgument) term;
-                                    Function model = anon.getDeclarationModel();
-                                    if (anon.getParameterLists().isEmpty()) {
-                                        Tree.ParameterList pl =
-                                                new Tree.ParameterList(null);
-                                        ParameterList mpl = new ParameterList();
-                                        for (Parameter p: fpl) {
-                                            Tree.InitializerParameter ip = 
-                                                    new Tree.InitializerParameter(null);
-                                            CommonToken token = 
-                                                    new CommonToken(CeylonLexer.LIDENTIFIER, 
-                                                            p.getName());
-                                            token.setStartIndex(term.getStartIndex());
-                                            token.setLine(term.getToken().getLine());
-                                            token.setCharPositionInLine(term.getToken().getCharPositionInLine());
-                                            Tree.Identifier id = 
-                                                    new Tree.Identifier(token);
-                                            ip.setIdentifier(id);
-                                            pl.addParameter(ip);
-                                            ip.setUnit(unit);
-                                            ip.setScope(model);
-                                            id.setUnit(unit);
-                                            id.setScope(model);
-                                            Parameter mp = new Parameter();
-                                            mp.setDeclaration(model);
-                                            mp.setName(p.getName());
-                                            ip.setParameterModel(mp);
-                                            mpl.getParameters().add(mp);
-                                            pl.setModel(mpl);
-                                        }
-                                        pl.setUnit(unit);
-                                        pl.setScope(model);
-                                        model.addParameterList(mpl);
-                                        anon.addParameterList(pl);
-                                    }
+                                            (Tree.FunctionArgument) 
+                                                term;
+                                    createAnonymousFunctionParameters(
+                                            fpl, term, anon);
                                 }
                             }
                         }
@@ -3404,17 +3384,71 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private List<Parameter> inferrableParameters(FunctionOrValue param) {
-        if (param instanceof Function) {
-            Function fun = (Function) param;
+    /**
+     * Create the parameter list of the given
+     * anonymous function with a missing argument
+     * list, from the given parameter list of a
+     * functional parameter to which it is assigned.
+     */
+    private void createAnonymousFunctionParameters(
+            List<Parameter> parameters, Tree.Term term, 
+            Tree.FunctionArgument anon) {
+        Function model = anon.getDeclarationModel();
+        if (anon.getParameterLists().isEmpty()) {
+            Tree.ParameterList pl =
+                    new Tree.ParameterList(null);
+            ParameterList mpl = new ParameterList();
+            for (Parameter parameter: parameters) {
+                Tree.InitializerParameter ip = 
+                        new Tree.InitializerParameter(null);
+                CommonToken token = 
+                        new CommonToken(LIDENTIFIER, 
+                                parameter.getName());
+                token.setStartIndex(term.getStartIndex());
+                Token tok = term.getToken();
+                token.setLine(tok.getLine());
+                token.setCharPositionInLine(
+                        tok.getCharPositionInLine());
+                Tree.Identifier id = 
+                        new Tree.Identifier(token);
+                ip.setIdentifier(id);
+                pl.addParameter(ip);
+                ip.setUnit(unit);
+                ip.setScope(model);
+                id.setUnit(unit);
+                id.setScope(model);
+                Parameter mp = new Parameter();
+                mp.setDeclaration(model);
+                mp.setName(parameter.getName());
+                ip.setParameterModel(mp);
+                mpl.getParameters().add(mp);
+                pl.setModel(mpl);
+            }
+            pl.setUnit(unit);
+            pl.setScope(model);
+            model.addParameterList(mpl);
+            anon.addParameterList(pl);
+        }
+    }
+
+    /** 
+     * Get the parameters of a callable parameter, or, if
+     * the given parameter is a value parameter of type
+     * X(Y), a single faked parameter with the name 'it'.
+     */
+    private List<Parameter> inferrableParameters(Parameter param) {
+        FunctionOrValue model = param.getModel();
+        if (model instanceof Function) {
+            Function fun = (Function) model;
             ParameterList fpl = fun.getFirstParameterList();
             return fpl==null ? null : fpl.getParameters();
         }
-        else if (param instanceof Value) {
+        else if (model instanceof Value) {
             Type type = param.getType();
             if (type!=null && type.isCallable()) { 
-                int min = unit.getTupleMinimumLength(unit.getCallableTuple(type));
-                int max = unit.getTupleMaximumLength(unit.getCallableTuple(type));
+                Type tup = unit.getCallableTuple(type);
+                int min = unit.getTupleMinimumLength(tup);
+                int max = unit.getTupleMaximumLength(tup);
                 if (min==1 || max==1) {
                     Parameter p = new Parameter();
                     p.setName("it");

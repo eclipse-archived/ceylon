@@ -1185,7 +1185,8 @@ public class AnnotationVisitor extends Visitor {
     //      references are only resolved when we get to the 
     //      containing InvocationExpression, and I did not want
     //      to add a whole new Visitor just for overloading errors
-    @Override public void visit(Tree.MemberOrTypeExpression that) {
+    @Override 
+    public void visit(Tree.MemberOrTypeExpression that) {
         super.visit(that);
         Declaration dec = that.getDeclaration();
         if (!that.getStaticMethodReferencePrimary() 
@@ -1222,6 +1223,20 @@ public class AnnotationVisitor extends Visitor {
                 }
             }
         }
+    }
+    
+    //Note: this simply doesn't belong here at all, since it has
+    //      nothing at all to do with annotations, but it has to
+    //      happen after ExpressionVisitor because parameter 
+    //      lists are only inferred when we get to the containing 
+    //      InvocationExpression, and I did not want to add a  
+    //      whole new Visitor just for this
+    @Override 
+    public void visit(Tree.FunctionArgument that) {
+        if (that.getParameterLists().isEmpty()) {
+            that.addError("missing parameter list: the parameter list of the anonymous function could not be inferred");
+        }
+        super.visit(that);
     }
     
     @Override
