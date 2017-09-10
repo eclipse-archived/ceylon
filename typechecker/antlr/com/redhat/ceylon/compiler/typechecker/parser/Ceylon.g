@@ -2662,7 +2662,7 @@ anonParametersStart2
 
 anonymousFunctionStart
     : VOID_MODIFIER
-    | FUNCTION_MODIFIER (SMALLER_OP|LPAREN)
+    | FUNCTION_MODIFIER (SMALLER_OP|LPAREN|LBRACE)
     | COMPUTE
     | anonParametersStart
     ;
