@@ -1591,7 +1591,8 @@ public class TypeArgumentInference {
     private static boolean[] specifiedParameters(
             Tree.PositionalArgumentList args,
             ParameterList parameters) {
-        List<Parameter> params = parameters.getParameters();
+        List<Parameter> params = 
+                parameters.getParameters();
         boolean[] specified = 
                 new boolean[params.size()];
         for (Tree.PositionalArgument arg: 
@@ -1796,11 +1797,9 @@ public class TypeArgumentInference {
                     List<Parameter> params =
                             paramLists.get(0)
                                 .getParameters();
-                    for (int i=0, size = params.size(); 
-                            i<size; i++) {
+                    for (int i=0; i<specifiedArguments.length; i++) {
                         //ignore parameters with no argument
-                        if (specifiedArguments==null ||
-                                specifiedArguments[i]) {
+                        if (specifiedArguments[i]) {
                             Parameter p = params.get(i);
                             FunctionOrValue model = 
                                     p.getModel();
