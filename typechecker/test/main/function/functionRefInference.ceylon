@@ -66,9 +66,9 @@ void usingReturnType() {
     }
     
     $type:"Thing<String>" value result1 = service.execute<Thing<String>>(Thing);
-    $type:"Thing<String>" value result2 = service.execute<Thong<String>>(Thong);
+    $type:"Thong<String>" value result2 = service.execute<Thong<String>>(Thong);
     $type:"Thing<String>" value result3 = service.execute(Thing<String>);
-    $type:"Thing<String>" value result4 = service.execute(Thong<String>);
+    $type:"Thong<String>" value result4 = service.execute(Thong<String>);
     $type:"Integer" value result5 = service.execute(object satisfies Creator<Integer> {
         create() => 0;
     });
