@@ -1,0 +1,69 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+public class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.RestrictedAnnotation$annotation$(modules = {})
+    Foo() {
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Foo.foo_ foo_ = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("foo")
+    static final class foo_ {
+        
+        foo_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.RestrictedAnnotation$annotation$(modules = {})
+    @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
+    Foo(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    .com.redhat.ceylon.compiler.java.test.structure.constructor.Foo.foo_ $name$) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.Foo();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Foo.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Foo.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class run_ {
+    
+    private run_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void run() {
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.Foo();
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.Foo(.com.redhat.ceylon.compiler.java.test.structure.constructor.Foo.foo_);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .com.redhat.ceylon.compiler.java.Util.storeArgs(args);
+        .com.redhat.ceylon.compiler.java.test.structure.constructor.run_.run();
+    }
+}

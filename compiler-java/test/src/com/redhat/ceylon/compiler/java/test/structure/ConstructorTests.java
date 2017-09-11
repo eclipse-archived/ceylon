@@ -1,6 +1,5 @@
 package com.redhat.ceylon.compiler.java.test.structure;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -381,4 +380,9 @@ public class ConstructorTests extends CompilerTests {
         compareWithJavaSource("constructor/Bug6933");
     }
 
+    @Test
+    public void testCtorBug7237() {
+        compareWithJavaSource("constructor/Bug7237");
+    }
+    
 }
