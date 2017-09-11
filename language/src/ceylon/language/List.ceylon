@@ -362,8 +362,8 @@ shared interface List<out Element=Anything>
     shared default 
     Boolean startsWith(List<> sublist) 
             => !shorterThan(sublist.size) 
-            && everyPair(this,sublist)
-                ((first, second)
+            && everyPair(this, sublist,
+                (first, second)
                     => if (exists first, exists second)
                         then first==second
                         else first exists == second exists);
@@ -375,8 +375,8 @@ shared interface List<out Element=Anything>
     Boolean endsWith(List<> sublist)
             => !shorterThan(sublist.size) 
             && everyPair(skip(size-sublist.size), 
-                         sublist)
-                ((first, second)
+                         sublist,
+                (first, second)
                     => if (exists first, exists second)
                         then first==second
                         else first exists == second exists);

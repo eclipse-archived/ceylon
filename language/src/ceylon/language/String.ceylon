@@ -693,8 +693,8 @@ shared native final class String
     see (function compareIgnoringCase,
          function compareCorresponding)
     shared actual native Comparison compare(String other)
-            => compareCorresponding(this, other) 
-                ((x, y) => x<=>y);
+            => compareCorresponding(this, other,
+                (x, y) => x<=>y);
     
     "Compare this string with the given string 
      lexicographically, ignoring the case of the 
@@ -715,8 +715,8 @@ shared native final class String
          function compareCorresponding)
     since("1.2.0")
     shared native Comparison compareIgnoringCase(String other)
-            => compareCorresponding(this, other) 
-                ((x, y) => charsEqualIgnoringCase(x, y) 
+            => compareCorresponding(this, other,
+                (x, y) => charsEqualIgnoringCase(x, y) 
                         then equal 
                         else x.lowercased <=> y.lowercased);
     
@@ -768,8 +768,8 @@ shared native final class String
          function corresponding)
     shared actual native Boolean equals(Object that)
             => if (is String that)
-            then corresponding(this, that)
-                    ((x, y) => x==y)
+            then corresponding(this, that,
+                    (x, y) => x==y)
             else false;
     
     "Compare this string with the given string, ignoring 
@@ -787,8 +787,8 @@ shared native final class String
          function corresponding)
     since("1.2.0")
     shared native Boolean equalsIgnoringCase(String that)
-            => corresponding(this, that) 
-                (charsEqualIgnoringCase);
+            => corresponding(this, that,
+                charsEqualIgnoringCase);
     
     "A hash code for this `String`, computed from its 
      UTF-16 code units."

@@ -215,6 +215,8 @@ void splitAssignment() {
 }
 
 shared void testLoopRef() {
+    {Element+} loop<Element>(Element first)(Element|Finished next(Element element)) => nothing;
+    
     $type:"{Integer+}" value l1 = loop(3)((a) => a*3);
     $type:"<Element> => {Element+}(<Element|Finished>(Element))(Element)" 
     value lp = loop;

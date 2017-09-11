@@ -10,12 +10,12 @@
  `f`, `mapPairs()` may be defined in terms of 
  [[Iterable.map]], [[zipPairs]], and [[unflatten]]:
  
-     mapPairs(xs, ys)(f) == zipPairs(xs, ys).map(unflatten(f))
+     mapPairs(xs, ys, f) == zipPairs(xs, ys).map(unflatten(f))
  
  For example the expression
  
-     mapPairs({3.0, 5.0, 6.0, 9.0}, {4.0, 12.0, 8.0, 12.0})
-            ((x, y) => (x^2+y^2)^0.5)
+     mapPairs({3.0, 5.0, 6.0, 9.0}, {4.0, 12.0, 8.0, 12.0},
+            (x, y) => (x^2+y^2)^0.5)
      
  evaluates to the stream `{ 5.0, 13.0, 10.0, 15.0 }`."
 tagged("Streams")
@@ -63,12 +63,12 @@ mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>
  `p`, `findPair()` may be defined in terms of 
  [[Iterable.find]], [[zipPairs]], and [[unflatten]]:
  
-     findPair(xs, ys)(p) == zipPairs(xs, ys).find(unflatten(p))"
+     findPair(xs, ys, p) == zipPairs(xs, ys).find(unflatten(p))"
 tagged("Streams")
 since("1.1.0")
 shared [First,Second]? findPair<First,Second>
-    ({First*} firstIterable, {Second*} secondIterable)
-    ("The binary predicate function to apply to each pair of 
+    ({First*} firstIterable, {Second*} secondIterable,
+     "The binary predicate function to apply to each pair of 
       elements."
      Boolean selecting(First first, Second second)) {
     value firstIter = firstIterable.iterator();
@@ -93,14 +93,14 @@ shared [First,Second]? findPair<First,Second>
  `p`, `everyPair()` may be defined in terms of 
  [[Iterable.every]], [[zipPairs]], and [[unflatten]]:
  
-     everyPair(xs, ys)(p) == zipPairs(xs, ys).every(unflatten(p))"
+     everyPair(xs, ys, p) == zipPairs(xs, ys).every(unflatten(p))"
 see (function corresponding,
      function anyPair)
 tagged("Streams")
 since("1.1.0")
 shared Boolean everyPair<First,Second>
-    ({First*} firstIterable, {Second*} secondIterable)
-    ("The binary predicate function to apply to each pair of 
+    ({First*} firstIterable, {Second*} secondIterable,
+     "The binary predicate function to apply to each pair of 
       elements."
      Boolean selecting(First first, Second second)) {
     value firstIter = firstIterable.iterator();
@@ -125,13 +125,13 @@ shared Boolean everyPair<First,Second>
  `p`, `anyPair()` may be defined in terms of 
  [[Iterable.any]], [[zipPairs]], and [[unflatten]]:
  
-     anyPair(xs, ys)(p) == zipPairs(xs, ys).any(unflatten(p))"
+     anyPair(xs, ys, p) == zipPairs(xs, ys).any(unflatten(p))"
 see (function everyPair)
 tagged("Streams")
 since("1.1.0")
 shared Boolean anyPair<First,Second>
-    ({First*} firstIterable, {Second*} secondIterable)
-    ("The binary predicate function to apply to each pair of 
+    ({First*} firstIterable, {Second*} secondIterable,
+     "The binary predicate function to apply to each pair of 
       elements."
      Boolean selecting(First first, Second second)) {
     value firstIter = firstIterable.iterator();
@@ -156,17 +156,17 @@ shared Boolean anyPair<First,Second>
  combining function `f`, `foldPairs()` may be defined in 
  terms of [[Iterable.fold]], [[zipPairs]], and [[unflatten]]:
  
-     foldPairs(xs, ys)(z, f) == zipPairs(xs, ys).fold(z)(unflatten(f))"
+     foldPairs(xs, ys, z, f) == zipPairs(xs, ys).fold(z)(unflatten(f))"
 tagged("Streams")
 since("1.1.0")
 shared Result foldPairs<Result,First,Second>
     ({First*} firstIterable, {Second*} secondIterable,
      "The initial value of the accumulator."
-     Result initial)
-    ("The accumulating function to apply to each pair of 
+     Result initial,
+     "The accumulating function to apply to each pair of 
       elements."
-    Result accumulating(Result partial, 
-                        First first, Second second)) {
+     Result accumulating(Result partial, 
+                         First first, Second second)) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
     variable value partial = initial;
@@ -185,9 +185,9 @@ shared Result foldPairs<Result,First,Second>
 tagged("Streams")
 since("1.4.0")
 shared void eachPair<First,Second>
-        ({First*} firstIterable, {Second*} secondIterable)
-        ("Function called for each pair of elements."
-        void step(First first, Second second)) {
+        ({First*} firstIterable, {Second*} secondIterable,
+         "Function called for each pair of elements."
+         void step(First first, Second second)) {
     value firstIter = firstIterable.iterator();
     value secondIter = secondIterable.iterator();
     while (!is Finished first = firstIter.next(),
