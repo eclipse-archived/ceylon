@@ -132,8 +132,8 @@ shared final serializable class Singleton<out Element>
             => selecting(element) then this else [];
     
     shared actual 
-    Result fold<Result>(Result initial)
-            (Result accumulating(Result partial, 
+    Result fold<Result>(Result initial,
+            Result accumulating(Result partial, 
                                  Element e))
             => accumulating(initial, element);
     

@@ -2900,8 +2900,8 @@ public final class Array<Element>
     }
 
     @Override @Ignore
-    public <Result> Callable<? extends Result> fold(TypeDescriptor arg0, Result arg1) {
-        return $ceylon$language$Iterable$impl().fold(arg0, arg1);
+    public <Result> Result fold(TypeDescriptor arg0, Result arg1, Callable<? extends Result> arg2) {
+        return $ceylon$language$Iterable$impl().fold(arg0, arg1, arg2);
     }
 
     @Override @Ignore
@@ -3016,10 +3016,10 @@ public final class Array<Element>
     }
 
     @Override @Ignore
-    public <Result> Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> scan(TypeDescriptor arg0,
-            Result arg1) {
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> scan(TypeDescriptor arg0,
+            Result arg1, Callable<? extends Result> arg2) {
         // TODO Auto-generated method stub
-        return $ceylon$language$Iterable$impl().scan(arg0, arg1);
+        return $ceylon$language$Iterable$impl().scan(arg0, arg1, arg2);
     }
 
     @Override @Ignore

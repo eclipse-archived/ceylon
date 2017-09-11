@@ -2544,18 +2544,20 @@ public final class String
     }
 
     @Ignore
-    public static <Result> Callable<? extends Result> 
+    public static <Result> Result
     fold(@Ignore TypeDescriptor $reifiedResult, 
-            java.lang.String value, Result ini) {
-        return instance(value).fold($reifiedResult, ini);
+            java.lang.String value, Result ini,
+            Callable<? extends Result> fun) {
+        return instance(value).fold($reifiedResult, ini, fun);
     }
     
     @Ignore
     public static <Result> 
-    Callable<? extends Iterable<? extends Result,? extends java.lang.Object>> 
+    Iterable<? extends Result,? extends java.lang.Object> 
     scan(@Ignore TypeDescriptor $reifiedResult, 
-            java.lang.String value, Result ini) {
-        return instance(value).scan($reifiedResult, ini);
+            java.lang.String value, Result ini,
+            Callable<? extends Result> fun) {
+        return instance(value).scan($reifiedResult, ini, fun);
     }
     
     @Override
@@ -3181,8 +3183,8 @@ public final class String
     }
 
     @Override @Ignore
-    public <Result> Callable<? extends Result> fold(TypeDescriptor arg0, Result arg1) {
-        return $ceylon$language$Iterable$impl().fold(arg0, arg1);
+    public <Result> Result fold(TypeDescriptor arg0, Result arg1, Callable<? extends Result> arg2) {
+        return $ceylon$language$Iterable$impl().fold(arg0, arg1, arg2);
     }
 
     @Override @Ignore
@@ -3280,9 +3282,9 @@ public final class String
     }
 
     @Override @Ignore
-    public <Result> Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> scan(TypeDescriptor arg0,
-            Result arg1) {
-        return $ceylon$language$Iterable$impl().scan(arg0, arg1);
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> scan(TypeDescriptor arg0,
+            Result arg1, Callable<? extends Result> arg2) {
+        return $ceylon$language$Iterable$impl().scan(arg0, arg1, arg2);
     }
 
     @Override @Ignore

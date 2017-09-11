@@ -56,7 +56,7 @@ shared void callables() {
   if (exists g=f) {
     resolve(1, g);
   } else {
-    fail("WTF this should never happen!");
+    fail("this should never happen!");
   }
   f=null;
   for (i in 1..5) {
@@ -70,7 +70,7 @@ shared void callables() {
     }
   }
   if (exists g=f) { resolve(2, g); }
-  else { fail("WTF g doesn\'t exist"); }
+  else { fail("g doesn't exist"); }
   
   // https://github.com/ceylon/ceylon.language/issues/716
   check(identity<String> != identity<Integer>, "#716.1");
@@ -90,8 +90,8 @@ shared void callables() {
 
 @test
 shared void staticRefs() {
-    String(String(String, String))(String)({String*}) fold2 
-            = Iterable<String>.fold<String>;
-    check(fold2({"x","y","z"})("")((x,y)=>x+y)=="xyz", 
+    String({String*})(String(String, String))(String) fold2 
+            = curry(shuffle(Iterable<String>.fold<String>));
+    check(fold2("")((x,y)=>x+y)({"x","y","z"})=="xyz", 
         "static ref to fold()");
 }

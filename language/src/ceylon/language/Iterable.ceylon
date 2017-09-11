@@ -509,7 +509,7 @@ shared interface Iterable<out Element=Anything,
     see (function reduce, 
          function scan)
     shared default 
-    Result fold<Result>(Result initial)(
+    Result fold<Result>(Result initial,
         "The accumulating function that accepts an
          [[intermediate result|partial]], and the 
          [[next element|element]]."
@@ -607,7 +607,7 @@ shared interface Iterable<out Element=Anything,
     since("1.1.0")
     see (function fold)
     shared default 
-    {Result+} scan<Result>(Result initial)(
+    {Result+} scan<Result>(Result initial,
         "The accumulating function that accepts the 
          [[running total|partial]] and the 
          [[next element|element]]."

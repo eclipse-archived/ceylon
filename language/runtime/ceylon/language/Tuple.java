@@ -1165,9 +1165,9 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
-    public <Result> Callable<? extends Result> fold(TypeDescriptor $reified$Result,
-            Result initial) {
-        return $ceylon$language$Iterable$impl().fold($reified$Result, initial);
+    public <Result> Result fold(TypeDescriptor $reified$Result,
+            Result initial, Callable<? extends Result> fun) {
+        return $ceylon$language$Iterable$impl().fold($reified$Result, initial, fun);
     }
 
     @Override @Ignore
@@ -1260,9 +1260,9 @@ public final class Tuple<Element, First extends Element,
     }
 
     @Override @Ignore
-    public <Result> Callable<? extends Iterable<? extends Result, ? extends java.lang.Object>> scan(
-            TypeDescriptor $reified$Result, Result initial) {
-        return  $ceylon$language$Iterable$impl().scan($reified$Result, initial);
+    public <Result> Iterable<? extends Result, ? extends java.lang.Object> scan(
+            TypeDescriptor $reified$Result, Result initial, Callable<? extends Result> fun) {
+        return  $ceylon$language$Iterable$impl().scan($reified$Result, initial, fun);
     }
 
     @Override @Ignore

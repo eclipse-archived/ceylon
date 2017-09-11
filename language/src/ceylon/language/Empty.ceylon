@@ -148,8 +148,8 @@ shared interface Empty of package.empty
             => this;
     
     shared actual 
-    Result fold<Result>(Result initial)
-            (Result accumulating(Result partial, 
+    Result fold<Result>(Result initial,
+            Result accumulating(Result partial, 
                                  Nothing element)) 
             => initial;
     
