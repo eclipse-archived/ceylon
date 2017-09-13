@@ -1712,6 +1712,8 @@ statement returns [Statement statement]
       { $statement = $controlStatement.controlStatement; }
     | expressionOrSpecificationStatement
       { $statement = $expressionOrSpecificationStatement.statement; }
+    | textFragment
+      { $statement = $textFragment.statement; }
     | { displayRecognitionError(getTokenNames(), 
               new MismatchedTokenException(RBRACE, input)); }
       SEMICOLON
@@ -1811,6 +1813,58 @@ breakDirective returns [Break directive]
 continueDirective returns [Continue directive]
     : CONTINUE
       { $directive = new Continue($CONTINUE); }
+    ;
+
+stringFragment returns [Atom atom]
+    @init { StringTemplate st=null; }
+    : TEXT_FRAGMENT
+      { $atom=new StringLiteral($TEXT_FRAGMENT); }
+    | tb1=TEXT_BIT
+      { st = new StringTemplate(null);
+        st.addStringLiteral(new StringLiteral($tb1));
+        $atom=st; }
+      e1=functionOrExpression
+      { if ($e1.expression!=null) 
+            st.addExpression($e1.expression); }
+      (
+        tb2=TEXT_BIT
+        { st.addStringLiteral(new StringLiteral($tb2)); }
+        e2=functionOrExpression
+        { if ($e2.expression!=null) 
+              st.addExpression($e2.expression); }
+      )*
+      tb3=TEXT_FRAGMENT
+      { st.addStringLiteral(new StringLiteral($tb3)); }
+    ;
+
+textFragment returns [TextStatement statement]
+    : sf=stringFragment
+      { PositionalArgumentList pal = new PositionalArgumentList(null);
+        ListedArgument pa = new ListedArgument(null);
+        Expression pe = new Expression(null);
+        pe.setTerm($sf.atom);
+        pa.setExpression(pe);
+        pal.addPositionalArgument(pa);
+        InvocationExpression ie = new InvocationExpression(null);
+        BaseMemberExpression bme = new BaseMemberExpression(null);
+        bme.setTypeArguments(new InferredTypeArguments(null));
+        Identifier id1 = new Identifier(null);
+        id1.setText("_text");
+        bme.setIdentifier(id1);
+        QualifiedMemberExpression qme = new QualifiedMemberExpression(null);
+        qme.setMemberOperator(new MemberOp(null));
+        qme.setTypeArguments(new InferredTypeArguments(null));
+        Identifier id2 = new Identifier(null);
+        id2.setText("append");
+        qme.setIdentifier(id2);
+        qme.setPrimary(bme);
+        ie.setPrimary(qme); 
+        ie.setPositionalArgumentList(pal);
+        TextStatement es = new TextStatement(null);
+        Expression e = new Expression(null);
+        e.setTerm(ie);
+        es.setExpression(e);
+        $statement = es; }
     ;
 
 typeSpecifier returns [TypeSpecifier typeSpecifier]
@@ -5431,3 +5485,8 @@ fragment
 BinaryDigit
     : '0'|'1'
     ;
+
+fragment
+TEXT_FRAGMENT :;
+fragment
+TEXT_BIT :;

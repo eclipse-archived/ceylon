@@ -92,7 +92,7 @@ public final class CeylonInterpolatingLexer implements TokenSource {
 
     }
 
-    private int findOpeningParen(String text, int from) {
+    static int findOpeningParen(String text, int from) {
         for (int i=from, s=text.length()-1; i<s; i++) {
             char ch = text.charAt(i);
             if (ch=='\\') {
@@ -106,7 +106,7 @@ public final class CeylonInterpolatingLexer implements TokenSource {
         return -1;
     }
 
-    private int findMatchingCloseParen(String text, int from) {
+    static int findMatchingCloseParen(String text, int from) {
         if (from<0) return -1;
         int depth = 0;
         boolean quoted = false; //i.e. single quoted (can't nest double-quoted strings)

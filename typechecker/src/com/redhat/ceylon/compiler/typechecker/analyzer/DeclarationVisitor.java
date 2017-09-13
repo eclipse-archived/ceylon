@@ -1246,6 +1246,11 @@ public abstract class DeclarationVisitor extends Visitor {
         if (type instanceof Tree.DynamicModifier) {
             m.setDynamicallyTyped(true);
         }
+        for (Tree.CompilerAnnotation c: that.getCompilerAnnotations()) {
+            if (c.getIdentifier().getText().equals("coercion")) {
+                m.setCoercionPoint(true);
+            }
+        }
     }
     
     private static void setParameterLists(Function m, 

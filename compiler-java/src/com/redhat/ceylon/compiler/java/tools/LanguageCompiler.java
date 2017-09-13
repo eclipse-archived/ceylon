@@ -31,11 +31,13 @@
 package com.redhat.ceylon.compiler.java.tools;
 
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -47,6 +49,7 @@ import java.util.Set;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.TokenSource;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -74,6 +77,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.parser.RecognitionError;
+import com.redhat.ceylon.compiler.typechecker.parser.TemplateScanner;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.redhat.ceylon.compiler.typechecker.util.NewlineFixingStringStream;
@@ -416,13 +420,13 @@ public class LanguageCompiler extends JavaCompiler {
         
     }
     
-    private JCCompilationUnit ceylonParse(JavaFileObject filename, CharSequence readSource) {
+    private JCCompilationUnit ceylonParse(JavaFileObject fileObject, CharSequence readSource) {
         if(ceylonEnter.hasRun())
-            throw new RunTwiceException("Trying to load new source file after CeylonEnter has been called: "+filename);
+            throw new RunTwiceException("Trying to load new source file after CeylonEnter has been called: "+fileObject);
         try {
             ModuleManager moduleManager = phasedUnits.getModuleManager();
             ModuleSourceMapper moduleSourceMapper = phasedUnits.getModuleSourceMapper();
-            File sourceFile = new File(filename.getName());
+            File sourceFile = new File(fileObject.getName());
             // FIXME: temporary solution
             VirtualFile file = vfs.getFromFile(sourceFile);
             VirtualFile srcDir = vfs.getFromFile(getSrcDir(sourceFile));
@@ -451,7 +455,7 @@ public class LanguageCompiler extends JavaCompiler {
             }
             
             if (externalPhasedUnit != null) {
-                phasedUnit = new CeylonPhasedUnit(externalPhasedUnit, filename, map);
+                phasedUnit = new CeylonPhasedUnit(externalPhasedUnit, fileObject, map);
                 phasedUnit.setSuppressedWarnings(suppressedWarnings);
                 phasedUnits.addPhasedUnit(externalPhasedUnit.getUnitFile(), phasedUnit);
                 gen.setMap(map);
@@ -460,20 +464,32 @@ public class LanguageCompiler extends JavaCompiler {
                 if ("".equals(pkgName)) {
                     pkgName = null;
                 }
-                return gen.makeJCCompilationUnitPlaceholder(phasedUnit.getCompilationUnit(), filename, pkgName, phasedUnit);
+                return gen.makeJCCompilationUnitPlaceholder(phasedUnit.getCompilationUnit(), fileObject, pkgName, phasedUnit);
             }
             if (phasedUnit == null) {
-                ANTLRStringStream input = new NewlineFixingStringStream(source);
-                CeylonLexer lexer = new CeylonLexer(input);
-
-                CommonTokenStream tokens = new CommonTokenStream(new CeylonInterpolatingLexer(lexer));
-
+                TokenSource tokenSource;
+                CeylonLexer lexer;
+                boolean isTemplate = 
+                        fileObject.getName().endsWith("-template.ceylon");
+                if (isTemplate) {
+                    lexer = null;
+                    tokenSource = new TemplateScanner(new BufferedReader(new StringReader(source)));
+                }
+                else {
+                    ANTLRStringStream input = new NewlineFixingStringStream(source);
+                    lexer = new CeylonLexer(input);
+                    tokenSource = new CeylonInterpolatingLexer(lexer);
+                }
+                
+                CommonTokenStream tokens = new CommonTokenStream(tokenSource);
                 CeylonParser parser = new CeylonParser(tokens);
                 CompilationUnit cu = parser.compilationUnit();
 
-                java.util.List<LexError> lexerErrors = lexer.getErrors();
-                for (LexError le : lexerErrors) {
-                    printError(le, le.getMessage(), "ceylon.lexer", map);
+                if (lexer!=null) {
+                    java.util.List<LexError> lexerErrors = lexer.getErrors();
+                    for (LexError le : lexerErrors) {
+                        printError(le, le.getMessage(), "ceylon.lexer", map);
+                    }
                 }
 
                 java.util.List<ParseError> parserErrors = parser.getErrors();
@@ -486,21 +502,21 @@ public class LanguageCompiler extends JavaCompiler {
                         && !ModuleManager.MODULE_FILE.equals(sourceFile.getName())
                         && !ModuleManager.PACKAGE_FILE.equals(sourceFile.getName()))
                         // otherwise we care about errors
-                        || (lexerErrors.size() == 0 
-                            && parserErrors.size() == 0)) {
+                        || ((lexer==null || lexer.getErrors().isEmpty()) 
+                            && parserErrors.isEmpty())) {
                     // FIXME: this is bad in many ways
-                    String pkgName = getPackage(filename);
+                    String pkgName = getPackage(fileObject);
                     // make a Package with no module yet, we will resolve them later
                     /*
                      * Stef: see javadoc for findOrCreateModulelessPackage() for why this is here.
                      */
                     Package p = modelLoader.findOrCreateModulelessPackage(pkgName == null ? "" : pkgName);
-                    phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, moduleSourceMapper, ceylonContext, filename, map);
+                    phasedUnit = new CeylonPhasedUnit(file, srcDir, cu, p, moduleManager, moduleSourceMapper, ceylonContext, fileObject, map);
                     phasedUnit.setSuppressedWarnings(suppressedWarnings);
                     phasedUnits.addPhasedUnit(file, phasedUnit);
                     gen.setMap(map);
 
-                    return gen.makeJCCompilationUnitPlaceholder(cu, filename, pkgName, phasedUnit);
+                    return gen.makeJCCompilationUnitPlaceholder(cu, fileObject, pkgName, phasedUnit);
                 }
             }
         } catch (RuntimeException e) {
@@ -510,7 +526,7 @@ public class LanguageCompiler extends JavaCompiler {
         }
 
         JCCompilationUnit result = make.TopLevel(List.<JCAnnotation> nil(), null, List.<JCTree> of(make.Erroneous()));
-        result.sourcefile = filename;
+        result.sourcefile = fileObject;
         return result;
     }
 

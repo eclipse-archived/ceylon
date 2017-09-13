@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.regex.Pattern;
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.Token;
+import org.antlr.runtime.TokenSource;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
@@ -17,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonParser;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
+import com.redhat.ceylon.compiler.typechecker.parser.TemplateScanner;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.util.ModuleManagerFactory;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -121,9 +125,19 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
         if (file.getName().endsWith(".ceylon") 
                 && (sourceFiles.isEmpty() || sourceFiles.contains(file))) {
 
-            //System.out.println("Parsing " + file.getName());
-            CeylonLexer lexer = new CeylonLexer(new ANTLRInputStream(file.getInputStream(), getEncoding()));
-            CommonTokenStream tokenStream = new CommonTokenStream(new CeylonInterpolatingLexer(lexer));
+            TokenSource tokenSource;
+            CeylonLexer lexer;
+            boolean isTemplate = file.getName().endsWith("-template.ceylon");
+            if (isTemplate) {
+                tokenSource = new TemplateScanner(new BufferedReader(new InputStreamReader(file.getInputStream(), getEncoding())));
+                lexer = null;
+            }
+            else {
+                //System.out.println("Parsing " + file.getName());
+                lexer = new CeylonLexer(new ANTLRInputStream(file.getInputStream(), getEncoding()));
+                tokenSource = new CeylonInterpolatingLexer(lexer);
+            }
+            CommonTokenStream tokenStream = new CommonTokenStream(tokenSource);
             CeylonParser parser = new CeylonParser(tokenStream);
             Tree.CompilationUnit cu = parser.compilationUnit();
             PhasedUnit phasedUnit = new PhasedUnit(file, srcDir, cu, 
@@ -131,12 +145,14 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
                     context, new ArrayList<Token>(tokenStream.getTokens()));
             addPhasedUnit(file, phasedUnit);
 
-            List<LexError> lexerErrors = lexer.getErrors();
-            for (LexError le : lexerErrors) {
-                //System.out.println("Lexer error in " + file.getName() + ": " + le.getMessage());
-                cu.addLexError(le);
+            if (lexer!=null) {
+                List<LexError> lexerErrors = lexer.getErrors();
+                for (LexError le : lexerErrors) {
+                    //System.out.println("Lexer error in " + file.getName() + ": " + le.getMessage());
+                    cu.addLexError(le);
+                }
+                lexerErrors.clear();
             }
-            lexerErrors.clear();
 
             List<ParseError> parserErrors = parser.getErrors();
             for (ParseError pe : parserErrors) {
