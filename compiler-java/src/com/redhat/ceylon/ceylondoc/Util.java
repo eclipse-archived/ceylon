@@ -642,7 +642,9 @@ public class Util {
     }
 
     public static boolean isEnumerated(TypeDeclaration klass) {
-        return klass.getCaseTypes() != null && !klass.getCaseTypes().isEmpty();
+        return klass.getCaseTypes() != null 
+            && klass.getSelfType() == null
+            && !klass.getCaseTypes().isEmpty();
     }
 
     public static String getDeclarationName(Declaration decl) {
