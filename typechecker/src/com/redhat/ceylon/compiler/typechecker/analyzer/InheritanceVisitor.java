@@ -507,7 +507,7 @@ public class InheritanceVisitor extends Visitor {
                     checkCasesDisjoint(
                             t.getTypeModel(), 
                             ot.getTypeModel(), 
-                            ot);
+                            t, "");
                 }
             }
         }

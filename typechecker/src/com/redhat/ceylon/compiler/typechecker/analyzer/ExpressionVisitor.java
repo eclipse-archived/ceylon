@@ -9823,17 +9823,17 @@ public class ExpressionVisitor extends Visitor {
             checkCasesDisjoint(
                     getType(cc), 
                     getType(occ), 
-                    cci);
+                    cci, " (use 'else case')");
         }
         else {
             if (checkCasesDisjoint(
                     getType(cc),
                     getTypeIgnoringLiterals(occ), 
-                    cci)) {
+                    cci, " (use 'else case')")) {
                 checkCasesDisjoint(
                         getTypeIgnoringLiterals(cc),
                         getType(occ), 
-                        cci);
+                        cci, " (use 'else case')");
             }
         }
         if (cci instanceof Tree.MatchCase && 

@@ -1511,7 +1511,7 @@ public class AnalyzerUtil {
     }
 
     static boolean checkCasesDisjoint(Type later, Type earlier,
-            Node node) {
+            Node node, String hint) {
         if (!isTypeUnknown(later) && !isTypeUnknown(earlier)) {
             Unit unit = node.getUnit();
             Type it = 
@@ -1520,18 +1520,18 @@ public class AnalyzerUtil {
             if (!it.isNothing()) {
                 if (earlier.isExactly(later)) {
                     node.addError("case is not disjoint: there is another case of type '" + 
-                            earlier.asString(unit) + "' (use 'else case')");
+                            earlier.asString(unit) + "'" + hint);
                 }
                 else if (earlier.isSubtypeOf(later)) {
                     node.addError("case is not disjoint: '" + 
                             later.asString(unit) + "' contains '" + 
-                            earlier.asString(unit) + "' (use 'else case')");
+                            earlier.asString(unit) + "'" + hint);
                 }
                 else {
                     node.addError("case is not disjoint: '" + 
                             later.asString(unit) + "' and '" + 
                             earlier.asString(unit) + "' have intersection '" +
-                            it.asString(unit) + "' (use 'else case')");
+                            it.asString(unit) + "'" + hint);
                 }
                 return false;
             }
