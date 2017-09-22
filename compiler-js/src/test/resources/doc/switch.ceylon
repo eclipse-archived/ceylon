@@ -1,3 +1,7 @@
+This is just a resource file,
+not really code. It's not supposed to compile.
+!@#$@#$^%$*%^&*%^
+
 void switchPrint(Integer|String x) {
   switch (x)
   case (is String) { print(x.uppercased); } //x is String inside the block
