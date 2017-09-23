@@ -426,8 +426,10 @@ public class InvocationGenerator {
                         exprType = pd.getType();
                     }
                     Type elemtype;
-                    if (pd == null || pd.getType().getTypeArgumentList().isEmpty()) {
+                    if (pd == null || (pd.getType() != null && pd.getType().getTypeArgumentList().isEmpty())) {
                         elemtype = exprType;
+                    } else if (pd != null && pd.getType() == null && pd.getModel() != null && pd.getModel().getContainer() instanceof Value) {
+                        elemtype = ((Value)pd.getModel().getContainer()).getType();
                     } else {
                         elemtype = pd.getType().getTypeArgumentList().get(0);
                         if (!elemtype.isTypeParameter()) {
