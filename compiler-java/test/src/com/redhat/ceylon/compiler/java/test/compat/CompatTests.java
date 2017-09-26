@@ -10,6 +10,7 @@ import java.util.Collections;
 
 import org.junit.Assert;
 import org.junit.Assume;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.Versions;
@@ -120,6 +121,8 @@ public class CompatTests extends CompilerTests {
                 Arrays.<String>asList(Versions.CEYLON_VERSION_NUMBER), null, null
         		);
     }
+    
+    @Ignore("Removed until we can create compiled modules with alternate versions")
     @Test
     public void runCompiled120CarIn121MainApi() throws Throwable {
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
@@ -169,6 +172,7 @@ public class CompatTests extends CompilerTests {
         }
     }
     
+    @Ignore("Removed until we can create compiled modules with alternate versions")
     @Test
     public void runCompiled1299CarIn121Downgrade() throws Throwable {
         //File err = File.createTempFile("compattest", "err");
@@ -212,6 +216,7 @@ public class CompatTests extends CompilerTests {
         }
     }
     
+    @Ignore("Removed until we can create compiled modules with alternate versions")
     @Test
     public void runCompiled1299Depends121With121Downgrade() throws Throwable {
         File out = File.createTempFile("compattest", "out");
@@ -253,6 +258,7 @@ public class CompatTests extends CompilerTests {
         }
     }
     
+    @Ignore("Removed until we can create compiled modules with alternate versions")
     @Test
     public void runCompiled1299Depends120With121Downgrade() throws Throwable {
         File out = File.createTempFile("compattest", "out");
@@ -308,6 +314,7 @@ public class CompatTests extends CompilerTests {
         }
     }
     
+    @Ignore("Removed until we can create compiled modules with alternate versions")
     @Test
     public void runCompiled1299With121FlatClassPathDowngrade() throws Throwable {
         File out = File.createTempFile("compattest", "out");
@@ -405,6 +412,7 @@ public class CompatTests extends CompilerTests {
         		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
     }
     
+    @Ignore("Removed until we can create compiled modules with alternate versions")
     @Test
     public void runCompiled121Depends120In121MainApi() throws Throwable {
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
