@@ -299,7 +299,6 @@ public class MiscTests extends CompilerTests {
                 "random",
                 "regex",
                 "time",
-                "transaction",
                 "unicode",
                 "uri",
         };
