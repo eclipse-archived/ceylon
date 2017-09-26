@@ -1209,7 +1209,8 @@ public class Metamodel {
         if(jAnnotationType == java.lang.Deprecated.class)
             return;
         // ignore all our metadata annotations
-        if(jAnnotationType.getName().startsWith("com.redhat.ceylon.compiler.java.metadata."))
+        if(jAnnotationType.getName().startsWith("com.redhat.ceylon.compiler.java.metadata.")
+                || jAnnotationType.getName().startsWith("com.redhat.ceylon.common."))
             return;
         // seriously, wtf?
         ((ArrayList)ceylonAnnotations).add(jAnnotation);
