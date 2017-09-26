@@ -345,8 +345,8 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Callable<? extends Result> fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
-        return $ceylon$language$Iterable$this$.fold($reified$Result, initial);
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.fold($reified$Result, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -450,8 +450,8 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
-        return $ceylon$language$Iterable$this$.scan($reified$Result, initial);
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.scan($reified$Result, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -1239,8 +1239,8 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Callable<? extends Result> fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
-        return $ceylon$language$Iterable$this$.fold($reified$Result, initial);
+    public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.fold($reified$Result, initial, accumulating);
     }
     
     @.java.lang.Override
@@ -1344,8 +1344,8 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
-    public <Result>.ceylon.language.Callable<? extends .ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object>> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial) {
-        return $ceylon$language$Iterable$this$.scan($reified$Result, initial);
+    public <Result>.ceylon.language.Iterable<? extends Result, ? extends .java.lang.Object> scan(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final Result initial, final .ceylon.language.Callable<? extends Result> accumulating) {
+        return $ceylon$language$Iterable$this$.scan($reified$Result, initial, accumulating);
     }
     
     @.java.lang.Override
