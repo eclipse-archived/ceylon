@@ -492,18 +492,18 @@ shared interface Iterable<out Element=Anything,
      For an empty stream, `fold()` returns the given initial 
      value `z`:
      
-         {}.fold(z)(f) == z
+         {}.fold(z,f) == z
      
      For a given nonempty stream `it`, initial value `z`, 
      and combining function `f`, the result of `fold()` is 
      obtained according to the following recursive 
      definition:
      
-         it.fold(z)(f) == f(it.exceptLast.fold(z)(f), it.last)
+         it.fold(z,f) == f(it.exceptLast.fold(z,f), it.last)
      
      For example, the expression
      
-         (1..100).fold(0)(plus)
+         (1..100).fold(0,plus)
      
      results in the integer `5050`."
     see (function reduce, 
@@ -579,26 +579,26 @@ shared interface Iterable<out Element=Anything,
      For an empty stream, `scan()` returns a stream 
      containing just the given initial value `z`:
      
-         {}.scan(z)(f) == { z }
+         {}.scan(z,f) == { z }
      
      For a given nonempty stream `it`, initial value `z`, 
      and combining function `f`, the result of `scan()` is 
      obtained according to the following recursive 
      definition:
      
-         it.scan(z)(f).last == f(it.exceptLast.scan(z)(f).last, it.last)
-         it.scan(z)(f).exceptLast == it.exceptLast.scan(z)(f)
+         it.scan(z,f).last == f(it.exceptLast.scan(z,f).last, it.last)
+         it.scan(z,f).exceptLast == it.exceptLast.scan(z,f)
      
      The following identities explain the relationship 
      between `scan` and [[fold]]:
      
-         it.scan(z)(f).getFromFirst(n) == it.take(n).fold(z)(f)
-         it.scan(z)(f).last == it.fold(z)(f)
-         it.scan(z)(f).first == {}.fold(z)(f) == z
+         it.scan(z,f).getFromFirst(n) == it.take(n).fold(z,f)
+         it.scan(z,f).last == it.fold(z,f)
+         it.scan(z,f).first == {}.fold(z,f) == z
      
      For example, the expression
      
-         (1..4).scan(0)(plus)
+         (1..4).scan(0,plus)
      
      results in the stream `{ 0, 1, 3, 6, 10 }`.
      
