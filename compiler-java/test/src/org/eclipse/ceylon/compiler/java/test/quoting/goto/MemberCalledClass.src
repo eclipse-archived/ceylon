@@ -1,0 +1,116 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.$goto;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("memberCalledClass")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+final class memberCalledClass_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private memberCalledClass_() {
+        this.$class = 2L;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.class);
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final long $class;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("class")
+    public final long getClass$() {
+        return this.$class;
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_();
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.quoting.goto::memberCalledClass")
+    static .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'memberCalledClass\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.$TypeDescriptor$;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("memberCalledClass2")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+final class memberCalledClass2_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private memberCalledClass2_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.class);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final long $class() {
+        return 2L;
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_();
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.quoting.goto::memberCalledClass2")
+    static .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'memberCalledClass2\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.$TypeDescriptor$;
+    }
+}

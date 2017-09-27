@@ -1,0 +1,75 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug22xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class Bug2265 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2265() {
+        this.foo = null;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private .ceylon.language.String foo;
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    private final .ceylon.language.String getFoo$priv$() {
+        return this.foo;
+    }
+    
+    private final void setFoo$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("foo")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    final .ceylon.language.String foo) {
+        this.foo = foo;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void myFunction(@.org.eclipse.ceylon.compiler.java.metadata.Name("param")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String param) {
+        setFoo$priv$(.ceylon.language.String.instance((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$0;
+                switch_0: switch (param) {
+                case "foo": 
+                    {
+                        $ceylontmp$ifResult$0 = "foo";
+                    }
+                    break switch_0;
+                
+                default: 
+                    {
+                        $ceylontmp$ifResult$0 = "not foo";
+                    }
+                
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        )));
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2265.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2265.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug2265_ {
+    
+    private bug2265_() {
+    }
+    
+    static void bug2265() {
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2265().myFunction("foo");
+    }
+}

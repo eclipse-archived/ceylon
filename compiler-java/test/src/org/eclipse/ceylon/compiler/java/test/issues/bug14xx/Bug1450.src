@@ -1,0 +1,55 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug14xx;
+
+interface Bug1450<Element> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1450$impl<? extends Element> $org$eclipse$ceylon$compiler$java$test$issues$bug14xx$Bug1450$impl();
+    
+    public .ceylon.language.Sequence<? extends Element> getTuple();
+}
+final class Bug1450$impl<Element> implements .java.io.Serializable {
+    
+    Bug1450$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1450<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1450<? extends Element> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public final .ceylon.language.Sequence<? extends Element> getTuple() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+}
+class Bug1450_Single<Element> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1450<Element>, .java.io.Serializable {
+    
+    protected Bug1450_Single(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug14xx$Bug1450$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1450$impl<Element>($reified$Element, this);
+    }
+    
+    Bug1450_Single(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element element) {
+        this.$reified$Element = $reified$Element;
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug14xx$Bug1450$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1450$impl<Element>($reified$Element, this);
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1450$impl<Element> $org$eclipse$ceylon$compiler$java$test$issues$bug14xx$Bug1450$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1450$impl<? extends Element> $org$eclipse$ceylon$compiler$java$test$issues$bug14xx$Bug1450$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug14xx$Bug1450$this$;
+    }
+    
+    @.java.lang.Override
+    public .ceylon.language.Sequence<? extends Element> getTuple() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug14xx$Bug1450$this$.getTuple();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1450_Single.class, $reified$Element);
+    }
+}

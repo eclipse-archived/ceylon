@@ -1,0 +1,48 @@
+package org.eclipse.ceylon.compiler.java.test.structure.ee.enabledPackage;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public class Class implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public Class() {
+        super();
+        this.s = null;
+    }
+    
+    public Class(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.String s) {
+        this.s = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$0 = s;
+            }
+            returning $ceylontmp$0 == null ? null : $ceylontmp$0.toString();
+        );
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .java.lang.String s;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public .ceylon.language.String getS() {
+        return this.s == null ? null : .ceylon.language.String.instance(this.s);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.ee.enabledPackage.Class.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.ee.enabledPackage.Class.class);
+}

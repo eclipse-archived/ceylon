@@ -1,0 +1,75 @@
+package org.eclipse.ceylon.compiler.java.test.expression.selfref;
+
+public interface BaseOuter {
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl $org$eclipse$ceylon$compiler$java$test$expression$selfref$BaseOuter$impl();
+    
+    public .java.lang.Object getInverse();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuter.class);
+}
+public final class BaseOuter$impl implements .java.io.Serializable {
+    
+    public BaseOuter$impl(.org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuter $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuter $this;
+    
+    public final .java.lang.Object getInverse() {
+        
+        final class inverse_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private inverse_() {
+            }
+            
+            public final .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuter item() {
+                return .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl.this.$this;
+            }
+            
+            public final .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuter item2() {
+                return .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl.this.$this;
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuter.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("inverse")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class));
+            }
+        }
+        final inverse_ inverse = new inverse_();
+        return inverse;
+    }
+}
+public abstract class BaseOuterClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public BaseOuterClass() {
+    }
+    
+    public .java.lang.Object getInverse() {
+        
+        final class inverse_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private inverse_() {
+            }
+            
+            public final .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuterClass item() {
+                return .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.this;
+            }
+            
+            public final .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuterClass item2() {
+                return .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.this;
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("inverse")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(inverse_.class));
+            }
+        }
+        final inverse_ inverse = new inverse_();
+        return inverse;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.BaseOuterClass.class);
+}

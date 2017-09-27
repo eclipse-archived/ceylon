@@ -6,19 +6,19 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl;
-import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl;
-import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$;
-import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
+import org.eclipse.ceylon.compiler.java.Util;
+import org.eclipse.ceylon.compiler.java.metadata.Ceylon;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.meta.MemberClassImpl;
+import org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType;
+import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$;
+import org.eclipse.ceylon.compiler.java.runtime.serialization.Serializable;
+import org.eclipse.ceylon.model.typechecker.model.FunctionOrValue;
+import org.eclipse.ceylon.model.typechecker.model.Type;
+import org.eclipse.ceylon.model.typechecker.model.TypeDeclaration;
+import org.eclipse.ceylon.model.typechecker.model.TypedReference;
 
 import ceylon.language.AssertionError;
 import ceylon.language.Collection;
@@ -33,7 +33,7 @@ import ceylon.language.meta.declaration.ValueDeclaration;
 import ceylon.language.meta.model.ClassModel;
 
 @Ceylon(major = 8, minor=0)
-@com.redhat.ceylon.compiler.java.metadata.Class
+@org.eclipse.ceylon.compiler.java.metadata.Class
 class PartialImpl extends Partial {
     PartialImpl(java.lang.Object id) {
         super(id);

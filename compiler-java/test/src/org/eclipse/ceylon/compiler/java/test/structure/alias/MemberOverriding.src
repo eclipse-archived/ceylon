@@ -1,0 +1,308 @@
+package org.eclipse.ceylon.compiler.java.test.structure.alias;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class MemberOverriding_Foo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MemberOverriding_Foo() {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
+class MemberOverriding_Bar extends .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo {
+    
+    MemberOverriding_Bar() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.Inner.class)})
+class MemberOverriding_Super implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MemberOverriding_Super() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo Inner$new$() {
+        return new MemberOverriding_Foo();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo Inner$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.class,
+            isStatic = false)
+    public final class Inner {
+        
+        private Inner() {
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.Inner.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super")
+class MemberOverriding_Sub1 extends .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super {
+    
+    MemberOverriding_Sub1() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar Inner$new$() {
+        return new MemberOverriding_Bar();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar Inner$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.class,
+            isStatic = false)
+    public final class Inner {
+        
+        private Inner() {
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.Inner.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super")
+class MemberOverriding_Sub2 extends .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super {
+    
+    MemberOverriding_Sub2() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo Inner$new$() {
+        return new MemberOverriding_Foo();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo Inner$aliased$() {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.class,
+            isStatic = false)
+    public final class Inner {
+        
+        private Inner() {
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.Inner.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super")
+class MemberOverriding_Sub3 extends .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super {
+    
+    MemberOverriding_Sub3() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
+    public class Inner extends .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo {
+        
+        protected Inner() {
+            super();
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.Inner.class));
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.Inner.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super")
+class MemberOverriding_Sub4 extends .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super {
+    
+    MemberOverriding_Sub4() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
+    public class Inner extends .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo {
+        
+        protected Inner() {
+            super();
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.Inner.class));
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Super")
+class MemberOverriding_Sub5 extends .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super {
+    
+    MemberOverriding_Sub5() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
+    public class Inner extends .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar {
+        
+        protected Inner() {
+            super();
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.Inner.class));
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.class);
+}

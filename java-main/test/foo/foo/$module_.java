@@ -1,7 +1,7 @@
 package foo.foo;
 
-import com.redhat.ceylon.compiler.java.metadata.Module;
-import com.redhat.ceylon.compiler.java.metadata.Import;
+import org.eclipse.ceylon.compiler.java.metadata.Import;
+import org.eclipse.ceylon.compiler.java.metadata.Module;
 
 @Module(name = "foo.foo",
         version = "1", 

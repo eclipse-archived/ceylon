@@ -1,7 +1,7 @@
 shared class Foo() {
-    restricted(`module com.redhat.yyy`) 
+    restricted(`module org.eclipse.yyy`) 
     shared void bar() {}
-    restricted(`module`,`module com.redhat.yyy`) 
+    restricted(`module`,`module org.eclipse.yyy`) 
     shared void baz() {}
     bar();
 }

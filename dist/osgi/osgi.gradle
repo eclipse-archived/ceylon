@@ -1,5 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
-import com.redhat.ceylon.model.loader.OsgiVersion
+import org.eclipse.ceylon.model.loader.OsgiVersion
 
 apply plugin : 'java'
 apply plugin : CeylonBuildInfoPlugin
@@ -61,13 +61,13 @@ ext {
     }
 
     includedBundles = '''
-com.redhat.ceylon.dist
+org.eclipse.ceylon.dist
 ceylon.bootstrap
 ceylon.language
-com.redhat.ceylon.common
-com.redhat.ceylon.model
-com.redhat.ceylon.langtools.classfile
-com.redhat.ceylon.module-resolver
+org.eclipse.ceylon.common
+org.eclipse.ceylon.model
+org.eclipse.ceylon.langtools.classfile
+org.eclipse.ceylon.module-resolver
 '''
 
 }
@@ -92,7 +92,7 @@ ant.taskdef(
 jar {
     description 'Creates distribution OSGI JAR'
     manifest makeOsgiManifest
-    archiveName "com.redhat.ceylon.dist_${bundleVersionWithTimestamp}.jar"
+    archiveName "org.eclipse.ceylon.dist_${bundleVersionWithTimestamp}.jar"
 
     from distDir, {
         include "lib/ceylon-bootstrap.jar"
@@ -131,7 +131,7 @@ task importDistJar( type : AntCeylonImportJarTask ) {
     description "Imports dist jar into embedded Ceylon module repository"
 
     classpath "${repoLibDir}/ceylon-ant.jar"
-    module "com.redhat.ceylon.dist/${project.version}"
+    module "org.eclipse.ceylon.dist/${project.version}"
     jarFile {jar.archivePath}
     descriptor { "${buildDir}/module.properties" }
     destinationDir "${embeddedRepoDir}/repo"
@@ -178,7 +178,7 @@ task repoJar( type : Jar ) {
     group = jar.group
     description 'Creates repository OSGI JAR'
     destinationDir = jar.destinationDir
-    archiveName = "com.redhat.ceylon.dist.repo_${bundleVersionWithTimestamp}.jar"
+    archiveName = "org.eclipse.ceylon.dist.repo_${bundleVersionWithTimestamp}.jar"
     manifest makeOsgiManifest
 
     from embeddedRepoDir, {
@@ -295,15 +295,15 @@ task generateOsgiP2Features {
         featureVersion = "${bundleVersionWithTimestamp}"
 
         runtimeXsl = file('p2/generateRuntimeDistributionFeature.xsl')
-        runtimeFeatureId = 'com.redhat.ceylon.dist.runtime.feature'
+        runtimeFeatureId = 'org.eclipse.ceylon.dist.runtime.feature'
         runtimeFeatureFile = file("${osgiDistFeaturesDir}/${runtimeFeatureId}_${featureVersion}/feature.xml")
 
         distXsl = file('p2/generateDistributionFeature.xsl')
-        distFeatureId = 'com.redhat.ceylon.dist.feature'
+        distFeatureId = 'org.eclipse.ceylon.dist.feature'
         distFeatureFile = file("${osgiDistFeaturesDir}/${distFeatureId}_${featureVersion}/feature.xml")
 
         depsXsl = file('p2/generateFixedDependenciesFeature.xsl')
-        depsFeatureId = 'com.redhat.ceylon.dist.dependencies.feature'
+        depsFeatureId = 'org.eclipse.ceylon.dist.dependencies.feature'
         depsFeatureFile = file("${osgiDistFeaturesDir}/${depsFeatureId}_${featureVersion}/feature.xml")
     }
 
@@ -362,18 +362,18 @@ task osgiP2 ( type : AntCeylonP2Task ) {
     sysRepo "${embeddedRepoDir}/repo"
     destinationDir osgiDistDir
     repositoryName 'Ceylon Distribution Bundles'
-    categoryPrefix 'com.redhat.ceylon.dist'
+    categoryPrefix 'org.eclipse.ceylon.dist'
     categoriesFile 'p2/category.xml'
 
-    addModule 'com.redhat.ceylon.dist', project.version
-//    addModule 'com.redhat.ceylon.dist.repo', "${project.version}${versionQualifier}"
+    addModule 'org.eclipse.ceylon.dist', project.version
+//    addModule 'org.eclipse.ceylon.dist.repo', "${project.version}${versionQualifier}"
     addModule 'ceylon.bootstrap', project.version
     addModule 'ceylon.runtime', project.version
-    addModule 'com.redhat.ceylon.tool.provider', project.version
-    addModule 'com.redhat.ceylon.compiler.java', project.version
-    addModule 'com.redhat.ceylon.compiler.js', project.version
-    addModule 'com.redhat.ceylon.typechecker', project.version
-    addModule 'com.redhat.ceylon.java.main', project.version
+    addModule 'org.eclipse.ceylon.tool.provider', project.version
+    addModule 'org.eclipse.ceylon.compiler.java', project.version
+    addModule 'org.eclipse.ceylon.compiler.js', project.version
+    addModule 'org.eclipse.ceylon.typechecker', project.version
+    addModule 'org.eclipse.ceylon.java.main', project.version
 }
 
 task distZip( type : Zip ) {
@@ -414,20 +414,20 @@ task publishInternal ( type : Copy ) {
 '''
         <mkdir dir="${build.dist.features}"/>
         <ant target="generateFeatures" inheritall="true">
-            <property name="feature.id" value="com.redhat.ceylon.dist.runtime.feature"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="feature.id" value="org.eclipse.ceylon.dist.runtime.feature"/>
+            <property name="feature.version" value="${module.org.eclipse.ceylon.dist.osgi.version}.${qualifier}"/>
             <property name="includedBundles" value="${osgiRuntimeBundles}"/>
             <property name="xslFile" value="${p2}/generateRuntimeDistributionFeature.xsl"/>
         </ant>
         <ant target="generateFeatures" inheritall="true">
-            <property name="feature.id" value="com.redhat.ceylon.dist.feature"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="feature.id" value="org.eclipse.ceylon.dist.feature"/>
+            <property name="feature.version" value="${module.org.eclipse.ceylon.dist.osgi.version}.${qualifier}"/>
             <property name="includedBundles" value=""/>
             <property name="xslFile" value="${p2}/generateDistributionFeature.xsl"/>
         </ant>
         <ant target="generateFeatures" inheritall="true">
-            <property name="feature.id" value="com.redhat.ceylon.dist.dependencies.feature"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="feature.id" value="org.eclipse.ceylon.dist.dependencies.feature"/>
+            <property name="feature.version" value="${module.org.eclipse.ceylon.dist.osgi.version}.${qualifier}"/>
             <property name="includedBundles" value=""/>
             <property name="xslFile" value="${p2}/generateFixedDependenciesFeature.xsl"/>
         </ant>
@@ -443,18 +443,18 @@ task publishInternal ( type : Copy ) {
         \tsysRep="${repoDir}/repo"
             out="${build.dist}"
         \trepositoryName="Ceylon Distribution Bundles"
-            categoryPrefix="com.redhat.ceylon.dist"
+            categoryPrefix="org.eclipse.ceylon.dist"
             categories="${p2}/category.xml"
             fork="true">
-            <module name="com.redhat.ceylon.dist" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
-            <module name="com.redhat.ceylon.dist.repo" version="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <module name="org.eclipse.ceylon.dist" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.dist.repo" version="${module.org.eclipse.ceylon.dist.osgi.version}.${qualifier}"/>
             <module name="ceylon.bootstrap" version="${module.ceylon.bootstrap.version}"/>
             <module name="ceylon.runtime" version="${module.ceylon.runtime.version}"/>
-            <module name="com.redhat.ceylon.tool.provider" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
-            <module name="com.redhat.ceylon.compiler.java" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
-            <module name="com.redhat.ceylon.compiler.js" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
-            <module name="com.redhat.ceylon.typechecker" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
-            <module name="com.redhat.ceylon.java.main" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.tool.provider" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.compiler.java" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.compiler.js" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.typechecker" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.java.main" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
         </ceylon-p2>
     \t<!--
         <exec dir="${basedir}" executable="eclipse" failonerror="true">
@@ -494,7 +494,7 @@ task publishInternal ( type : Copy ) {
             <arg value="-categoryDefinition"/>
             <arg value="${categoryDefinition}"/>
             <arg value="-categoryQualifier"/>
-            <arg value="com.redhat.ceylon.dist"/>
+            <arg value="org.eclipse.ceylon.dist"/>
             <arg value="-vmargs"/>
         \t<arg value="-Dorg.eclipse.equinox.simpleconfigurator.configUrl=${bundlesInfoUrl}"/>
             <arg value="-Dosgi.bundles=${bundlesToStart}"/>

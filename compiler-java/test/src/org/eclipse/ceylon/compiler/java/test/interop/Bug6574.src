@@ -1,0 +1,235 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug6574_ {
+    
+    private bug6574_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug6574() {
+        final .ceylon.language.Callable<? extends .java.util.List<.ceylon.language.String>> al = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.util.List<.ceylon.language.String>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.util.List.class, .ceylon.language.String.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)), "List<String>(String?*)", (short)0){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.util.List<.ceylon.language.String> $callvariadic$(final .ceylon.language.Sequential $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> arg0 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)$param$0;
+                return $calltyped$(arg0);
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.util.List<.ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> arg0$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{$param$0}, .ceylon.language.empty_.get_());
+                return $calltyped$(arg0$variadic$);
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.util.List<.ceylon.language.String> $callvariadic$(final .java.lang.Object $param$0, final .ceylon.language.Sequential $param$1) {
+                return $calltyped$($spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), 0, 1, new .java.lang.Object[]{(.ceylon.language.String)$param$0}, $param$1));
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.util.List<.ceylon.language.String> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> arg0$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                        $param$0,
+                        $param$1}, .ceylon.language.empty_.get_());
+                return $calltyped$(arg0$variadic$);
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.util.List<.ceylon.language.String> $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .ceylon.language.Sequential $param$2) {
+                return $calltyped$($spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), 0, 2, new .java.lang.Object[]{
+                        (.ceylon.language.String)$param$0,
+                        (.ceylon.language.String)$param$1}, $param$2));
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.util.List<.ceylon.language.String> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2) {
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> arg0$variadic$ = (.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                        $param$0,
+                        $param$1,
+                        $param$2}, .ceylon.language.empty_.get_());
+                return $calltyped$(arg0$variadic$);
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.util.List<.ceylon.language.String> $callvariadic$(final .java.lang.Object $param$0, final .java.lang.Object $param$1, final .java.lang.Object $param$2, final .ceylon.language.Sequential $param$3) {
+                return $calltyped$($spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), 0, 3, new .java.lang.Object[]{
+                        (.ceylon.language.String)$param$0,
+                        (.ceylon.language.String)$param$1,
+                        (.ceylon.language.String)$param$2}, $param$3));
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.util.List<.ceylon.language.String> $call$(final .java.lang.Object... $param$0) {
+                return $calltyped$($spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), 0, $param$0.length - 0, $param$0, .ceylon.language.empty_.get_()));
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.util.List<.ceylon.language.String> $callvariadic$(final .java.lang.Object... $param$0) {
+                return $calltyped$($spreadVarargs$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), 1, $param$0));
+            }
+            
+            private .java.util.List<.ceylon.language.String> $calltyped$(final .ceylon.language.Sequential<? extends .ceylon.language.String> arg0) {
+                return .java.util.Arrays.<.ceylon.language.String>asList((
+                    let
+                    {
+                        .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$0$0 = arg0;
+                    }
+                    returning .org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$0$0, new .ceylon.language.String[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$0$0.getSize())]);
+                ));
+            }
+        };
+        .java.util.List<.ceylon.language.String> lhs$1 = al.$callvariadic$((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{.ceylon.language.String.instance("a")}, .ceylon.language.empty_.get_()));
+        .java.util.List<.ceylon.language.String> rhs$2 = .java.util.Arrays.<.ceylon.language.String>asList(.ceylon.language.String.instance("a"));
+        if (lhs$1.equals(rhs$2)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\") == Arrays.asList<String>(\"a\")") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$1, rhs$2));
+        }
+        .java.util.List<.ceylon.language.String> lhs$3 = al.$callvariadic$((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b")}, .ceylon.language.empty_.get_()));
+        .java.util.List<.ceylon.language.String> rhs$4 = .java.util.Arrays.<.ceylon.language.String>asList(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+        if (lhs$3.equals(rhs$4)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\") == Arrays.asList<String>(\"a\", \"b\")") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$3, rhs$4));
+        }
+        .java.util.List<.ceylon.language.String> lhs$5 = al.$callvariadic$((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c")}, .ceylon.language.empty_.get_()));
+        .java.util.List<.ceylon.language.String> rhs$6 = .java.util.Arrays.<.ceylon.language.String>asList(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"));
+        if (lhs$5.equals(rhs$6)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", \"c\") == Arrays.asList<String>(\"a\", \"b\", \"c\")") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$5, rhs$6));
+        }
+        .java.util.List<.ceylon.language.String> lhs$7 = al.$callvariadic$((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c"),
+                .ceylon.language.String.instance("d")}, .ceylon.language.empty_.get_()));
+        .java.util.List<.ceylon.language.String> rhs$8 = .java.util.Arrays.<.ceylon.language.String>asList(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"), .ceylon.language.String.instance("d"));
+        if (lhs$7.equals(rhs$8)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", \"c\", \"d\") == Arrays.asList<String>(\"a\", \"b\", \"c\", \"d\")") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$7, rhs$8));
+        }
+        .java.util.List<.ceylon.language.String> lhs$9 = al.$callvariadic$((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c"),
+                .ceylon.language.String.instance("d"),
+                .ceylon.language.String.instance("e")}, .ceylon.language.empty_.get_()));
+        .java.util.List<.ceylon.language.String> rhs$10 = .java.util.Arrays.<.ceylon.language.String>asList(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"), .ceylon.language.String.instance("d"), .ceylon.language.String.instance("e"));
+        if (lhs$9.equals(rhs$10)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", \"c\", \"d\", \"e\") == Arrays.asList<String>(\"a\", \"b\", \"c\", \"d\", \"e\")") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$9, rhs$10));
+        }
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> x = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("1"),
+                .ceylon.language.String.instance("2"),
+                .ceylon.language.String.instance("3")});
+        .java.util.List<.ceylon.language.String> lhs$11 = al.$callvariadic$(x);
+        .java.util.List<.ceylon.language.String> rhs$12 = .java.util.Arrays.<.ceylon.language.String>asList((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$14$0 = x;
+            }
+            returning .org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$14$0, new .ceylon.language.String[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$14$0.getSize())]);
+        ));
+        if (lhs$11.equals(rhs$12)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(*x) == Arrays.asList<String>(*x)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$11, rhs$12));
+        }
+        .java.util.List<.ceylon.language.String> lhs$15 = al.$callvariadic$(.org.eclipse.ceylon.compiler.java.Util.asSequence(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{.ceylon.language.String.instance("a")}, x)));
+        .java.util.List<.ceylon.language.String> rhs$16 = .java.util.Arrays.<.ceylon.language.String>asList((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$18$0 = x;
+            }
+            returning .org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$18$0, new .ceylon.language.String[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$18$0.getSize()) + 1], .ceylon.language.String.instance("a"));
+        ));
+        if (lhs$15.equals(rhs$16)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", *x) == Arrays.asList<String>(\"a\", *x)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$15, rhs$16));
+        }
+        .java.util.List<.ceylon.language.String> lhs$19 = al.$callvariadic$(.org.eclipse.ceylon.compiler.java.Util.asSequence(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b")}, x)));
+        .java.util.List<.ceylon.language.String> rhs$20 = .java.util.Arrays.<.ceylon.language.String>asList((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$22$0 = x;
+            }
+            returning .org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$22$0, new .ceylon.language.String[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$22$0.getSize()) + 2], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+        ));
+        if (lhs$19.equals(rhs$20)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", *x) == Arrays.asList<String>(\"a\", \"b\", *x)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$19, rhs$20));
+        }
+        .java.util.List<.ceylon.language.String> lhs$23 = al.$callvariadic$(.org.eclipse.ceylon.compiler.java.Util.asSequence(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c")}, x)));
+        .java.util.List<.ceylon.language.String> rhs$24 = .java.util.Arrays.<.ceylon.language.String>asList((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$26$0 = x;
+            }
+            returning .org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$26$0, new .ceylon.language.String[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$26$0.getSize()) + 3], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"));
+        ));
+        if (lhs$23.equals(rhs$24)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", \"c\", *x) == Arrays.asList<String>(\"a\", \"b\", \"c\", *x)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$23, rhs$24));
+        }
+        .java.util.List<.ceylon.language.String> lhs$27 = al.$callvariadic$(.org.eclipse.ceylon.compiler.java.Util.asSequence(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c"),
+                .ceylon.language.String.instance("d")}, x)));
+        .java.util.List<.ceylon.language.String> rhs$28 = .java.util.Arrays.<.ceylon.language.String>asList((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$30$0 = x;
+            }
+            returning .org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$30$0, new .ceylon.language.String[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$30$0.getSize()) + 4], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"), .ceylon.language.String.instance("d"));
+        ));
+        if (lhs$27.equals(rhs$28)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", \"c\", \"d\", *x) == Arrays.asList<String>(\"a\", \"b\", \"c\", \"d\", *x)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$27, rhs$28));
+        }
+        .java.util.List<.ceylon.language.String> lhs$31 = al.$callvariadic$(.org.eclipse.ceylon.compiler.java.Util.asSequence(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c"),
+                .ceylon.language.String.instance("d"),
+                .ceylon.language.String.instance("e")}, x)));
+        .java.util.List<.ceylon.language.String> rhs$32 = .java.util.Arrays.<.ceylon.language.String>asList((
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$34$0 = x;
+            }
+            returning .org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$34$0, new .ceylon.language.String[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$34$0.getSize()) + 5], .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"), .ceylon.language.String.instance("d"), .ceylon.language.String.instance("e"));
+        ));
+        if (lhs$31.equals(rhs$32)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "al(\"a\", \"b\", \"c\", \"d\", \"e\", *x) == Arrays.asList<String>(\"a\", \"b\", \"c\", \"d\", \"e\", *x)") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$31, rhs$32));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.interop.bug6574_.bug6574();
+    }
+}

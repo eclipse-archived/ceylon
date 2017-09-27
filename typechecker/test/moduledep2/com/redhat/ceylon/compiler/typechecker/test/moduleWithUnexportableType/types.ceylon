@@ -1,4 +1,4 @@
-import com.redhat.ceylon.compiler.typechecker.test.moduleWithExportedType { ExportedClass, ExportedInterface }
+import org.eclipse.ceylon.compiler.typechecker.test.moduleWithExportedType { ExportedClass, ExportedInterface }
 
 //
 // Type signatures

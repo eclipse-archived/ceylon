@@ -1,0 +1,122 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug58xx;
+
+class Bug5856 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug5856() {
+    }
+    
+    public abstract class Graph<ActualNode extends .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph<ActualNode, ActualEdge>.Node, ActualEdge extends .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph<ActualNode, ActualEdge>.Edge> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public Graph(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ActualNode, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ActualEdge) {
+            this.$reified$ActualNode = $reified$ActualNode;
+            this.$reified$ActualEdge = $reified$ActualEdge;
+        }
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ActualNode;
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ActualEdge;
+        
+        public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph<ActualNode, ActualEdge>.Edge Edge$new$(final ActualNode node1, final ActualNode node2);
+        
+        public abstract class Edge implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            protected Edge(final ActualNode node1, final ActualNode node2) {
+                this.node1 = node1;
+                this.node2 = node2;
+            }
+            private final ActualNode node1;
+            
+            private final ActualNode getNode1$priv$() {
+                return this.node1;
+            }
+            private final ActualNode node2;
+            
+            private final ActualNode getNode2$priv$() {
+                return this.node2;
+            }
+            
+            public boolean touches(final ActualNode node) {
+                return ((ActualNode)node).equals((ActualNode)getNode1$priv$()) || ((ActualNode)node).equals((ActualNode)getNode2$priv$());
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.class, .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.this.$reified$ActualNode, .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.this.$reified$ActualEdge)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.Edge.class));
+            }
+        }
+        
+        public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph<ActualNode, ActualEdge>.Node Node$new$();
+        
+        public abstract class Node implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            protected Node() {
+            }
+            
+            public boolean touches(final ActualEdge edge) {
+                return ((.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph<ActualNode, ActualEdge>.Edge)(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.Edge)edge).touches((ActualNode)this);
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.class, .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.this.$reified$ActualNode, .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.this.$reified$ActualEdge)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.Node.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph.class, $reified$ActualNode, $reified$ActualEdge));
+        }
+    }
+    
+    class BasicGraph<T> extends .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph<.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Node, .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Edge> {
+        
+        BasicGraph(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+            super(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.class, $reified$T)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.Node.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.class, $reified$T)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.Edge.class)));
+            this.$reified$T = $reified$T;
+        }
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Edge Edge$new$(final .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Node node1, final .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Node node2) {
+            return new Edge(node1, node2);
+        }
+        
+        public class Edge extends .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph<.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Node, .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Edge>.Edge {
+            
+            protected Edge(final .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Node node1, final .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Node node2) {
+                super(node1, node2);
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.class, .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.this.$reified$T)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.Edge.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Node Node$new$() {
+            return new Node();
+        }
+        
+        public class Node extends .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.Graph<.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Node, .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph<T>.Edge>.Node {
+            
+            protected Node() {
+                super();
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.class, .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.this.$reified$T)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.Node.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.BasicGraph.class, $reified$T));
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug58xx.Bug5856.class);
+}

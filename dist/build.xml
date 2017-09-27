@@ -88,7 +88,7 @@
     
     <target name="ceylondefs" unless="ceylondefined">
         <property name="ceylondefined" value="true" />
-        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+        <typedef resource="org/eclipse/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
     </target>
     
     <target name="help">
@@ -154,10 +154,10 @@ Some super-charged ant tasks:
         <fail message="Please specify a target Herd user name with -Dherd.user=..." unless="herd.user"/>
         <fail message="Please specify a target Herd password with -Dherd.pass=..." unless="herd.pass"/>
         <path id="ant-tasks">
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/common/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.common-${module.com.redhat.ceylon.compiler.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/org/eclipse/ceylon/common/${module.org.eclipse.ceylon.compiler.version}/org.eclipse.ceylon.common-${module.org.eclipse.ceylon.compiler.version}.jar"/>
             <pathelement location="${basedir}/dist/lib/ceylon-ant.jar"/>
         </path>
-        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+        <typedef resource="org/eclipse/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
         <ceylon-copy
             nodefaultrepositories="true"
             out="${herd.repo}"
@@ -170,20 +170,20 @@ Some super-charged ant tasks:
                 <repo url="${basedir}/dist/repo"/>
             </reposet>
             <moduleset>
-                <module name="com.redhat.ceylon.common" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.cli" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.model" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.module.loader" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.module-resolver" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.module-resolver-aether" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.module-resolver-javascript" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.module-resolver-webdav" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.typechecker" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.langtools.classfile" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.tool.provider" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.tools" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.compiler.java" version="${ceylon.version}"/>
-                <module name="com.redhat.ceylon.compiler.js" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.common" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.cli" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.model" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.module.loader" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.module-resolver" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.module-resolver-aether" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.module-resolver-javascript" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.module-resolver-webdav" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.typechecker" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.langtools.classfile" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.tool.provider" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.tools" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.compiler.java" version="${ceylon.version}"/>
+                <module name="org.eclipse.ceylon.compiler.js" version="${ceylon.version}"/>
                 <module name="ceylon.bootstrap" version="${ceylon.version}"/>
                 <module name="ceylon.runtime" version="${ceylon.version}"/>
                 <module name="ceylon.language" version="${ceylon.version}"/>
@@ -669,15 +669,15 @@ Use this when NOT doing a release!">
         
         <property file="../common/common-build.properties" />
         <path id="compiler.classpath">
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar"/>
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/cli/${module.com.redhat.ceylon.cli.version}/com.redhat.ceylon.cli-${module.com.redhat.ceylon.cli.version}.jar"/>
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar"/>
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar"/>
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar"/>
-            <pathelement location="${basedir}/dist/repo/com/redhat/ceylon/langtools/classfile/${module.com.redhat.ceylon.langtools.classfile.version}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/org/eclipse/ceylon/common/${module.org.eclipse.ceylon.common.version}/org.eclipse.ceylon.common-${module.org.eclipse.ceylon.common.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/org/eclipse/ceylon/cli/${module.org.eclipse.ceylon.cli.version}/org.eclipse.ceylon.cli-${module.org.eclipse.ceylon.cli.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/org/eclipse/ceylon/compiler/java/${module.org.eclipse.ceylon.compiler.version}/org.eclipse.ceylon.compiler.java-${module.org.eclipse.ceylon.compiler.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/org/eclipse/ceylon/model/${module.org.eclipse.ceylon.model.version}/org.eclipse.ceylon.model-${module.org.eclipse.ceylon.model.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/org/eclipse/ceylon/module-resolver/${module.org.eclipse.ceylon.module-resolver.version}/org.eclipse.ceylon.module-resolver-${module.org.eclipse.ceylon.module-resolver.version}.jar"/>
+            <pathelement location="${basedir}/dist/repo/org/eclipse/ceylon/langtools/classfile/${module.org.eclipse.ceylon.langtools.classfile.version}/org.eclipse.ceylon.langtools.classfile-${module.org.eclipse.ceylon.langtools.classfile.version}.jar"/>
             <pathelement location="${jboss-modules.lib}"/>
         </path>
-        <java classname="com.redhat.ceylon.compiler.java.tools.Java9Util" classpathref="compiler.classpath" if:set="jigsaw">
+        <java classname="org.eclipse.ceylon.compiler.java.tools.Java9Util" classpathref="compiler.classpath" if:set="jigsaw">
             <arg value="${module.jar}"/>
         </java>
 
@@ -717,7 +717,7 @@ Use this when NOT doing a release!">
                 <or>
                     <and>
                     <contains string="${module.dir.relative}" substring="ceylon"/>
-                    <not><contains string="${module.dir.relative}" substring="com/redhat/ceylon/aether"/></not>
+                    <not><contains string="${module.dir.relative}" substring="org/eclipse/ceylon/aether"/></not>
                     </and>
                 </or>
             </not>
@@ -765,7 +765,7 @@ Use this when NOT doing a release!">
             <or>
                 <and>
                     <contains string="${module.dir.relative}" substring="ceylon"/>
-                    <not><contains string="${module.dir.relative}" substring="com/redhat/ceylon/aether"/></not>
+                    <not><contains string="${module.dir.relative}" substring="org/eclipse/ceylon/aether"/></not>
                 </and>
                 <contains string="${module.dir.relative}" substring="logmanager"/>
                 <not><isset property="hasOsgiMetadata"/></not>
@@ -798,7 +798,7 @@ Use this when NOT doing a release!">
                                         <equals arg1="@{moduleName}" arg2="java.tls"/>
                                         <equals arg1="@{moduleName}" arg2="java.management"/>
                                         <and>
-                                            <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
+                                            <equals arg1="${Bundle-SymbolicName}" arg2="org.eclipse.ceylon.model"/>
                                             <equals arg1="@{moduleName}" arg2="ceylon.language"/>
                                         </and>
                                     </or>
@@ -815,7 +815,7 @@ Use this when NOT doing a release!">
                                     <if> 
                                     	<and>
                                             <contains string="@{moduleName}" substring="ceylon"/>
-                                    	    <not><equals arg1="@{moduleName}" arg2="com.redhat.ceylon.aether"/></not>
+                                    	    <not><equals arg1="@{moduleName}" arg2="org.eclipse.ceylon.aether"/></not>
                                         </and>
                                         <then>
                                             <ceylon-osgi-version propertyName="depOsgiVersion" ceylonVersion="@{moduleSlot}" addTimeStamp="false"/>
@@ -852,7 +852,7 @@ Use this when NOT doing a release!">
                     <if>
                     <equals arg1="${Bundle-SymbolicName}"  arg2="ceylon.language"/>
                     <then>
-                        <var name="Require-Bundle" value="${Require-Bundle},com.redhat.ceylon.dist;bundle-version=${module(slot)};visibility:=reexport" />
+                        <var name="Require-Bundle" value="${Require-Bundle},org.eclipse.ceylon.dist;bundle-version=${module(slot)};visibility:=reexport" />
                     </then>
                 </if>
             -->
@@ -862,16 +862,16 @@ Use this when NOT doing a release!">
                 <echo file="${bundleDefinitionFile}" append="true">Export-Package: !about.html, !licenses, !settings.xml, *;version="${Bundle-Version}"${line.separator}</echo>
                 <echo file="${bundleDefinitionFile}" append="true">Require-Bundle: ${Require-Bundle}${line.separator}</echo>
                 <if>
-                    <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
+                    <equals arg1="${Bundle-SymbolicName}" arg2="org.eclipse.ceylon.model"/>
                     <then>
-                        <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${module.ceylon.language.osgi.version},com.redhat.ceylon.compiler.java.*;bundle-version=${module.com.redhat.ceylon.compiler.osgi.version}${line.separator}</echo>
+                        <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${module.ceylon.language.osgi.version},org.eclipse.ceylon.compiler.java.*;bundle-version=${module.org.eclipse.ceylon.compiler.osgi.version}${line.separator}</echo>
                     </then>
             
                 </if>
                 <if>
                     <or>
-                        <equals arg1="${Bundle-SymbolicName}"  arg2="com.redhat.ceylon.compiler.java"/>
-                        <equals arg1="${Bundle-SymbolicName}"  arg2="com.redhat.ceylon.model"/>
+                        <equals arg1="${Bundle-SymbolicName}"  arg2="org.eclipse.ceylon.compiler.java"/>
+                        <equals arg1="${Bundle-SymbolicName}"  arg2="org.eclipse.ceylon.model"/>
                     </or>
                     <then>
                         <echo file="${bundleDefinitionFile}" append="true">Import-Package: javax.lang.model.*${line.separator}</echo>

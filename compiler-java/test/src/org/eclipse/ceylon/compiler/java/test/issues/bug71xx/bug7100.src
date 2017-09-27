@@ -1,0 +1,125 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug71xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.CONSTRUCTOR,
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD,
+        .java.lang.annotation.ElementType.FIELD,
+        .java.lang.annotation.ElementType.TYPE})
+@interface Bug7100Foo$annotation$ {
+    
+    public abstract .java.lang.String[] names() default {};
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<org.eclipse.ceylon.compiler.java.test.issues.bug71xx::Bug7100Foo,ceylon.language::Annotated,ceylon.language::Anything>"})
+final class Bug7100Foo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7100Foo, .ceylon.language.Annotated, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    Bug7100Foo() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$names$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($ceylontmp$names$0);
+            }
+            returning null;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    Bug7100Foo(.org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7100Foo$annotation$ anno) {
+        this(.org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.names()));
+    }
+    
+    Bug7100Foo(@.org.eclipse.ceylon.compiler.java.metadata.Name("names")
+    @.org.eclipse.ceylon.compiler.java.metadata.Sequenced
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.String> names) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7100Foo.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7100Foo.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7100Foo$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                -32768,
+                256},
+        primary = .org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7100Foo.class)
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$names",
+        value = "thing")})
+final class bug7100_foo_ {
+    
+    private bug7100_foo_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7100Foo bug7100_foo() {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$names$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning bug7100_foo($ceylontmp$names$1);
+        );
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug71xx::Bug7100Foo")
+    static .org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7100Foo bug7100_foo(@.org.eclipse.ceylon.compiler.java.metadata.Name("names")
+    @.org.eclipse.ceylon.compiler.java.metadata.Sequenced
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.String> names) {
+        return new .org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7100Foo(.org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("thing")}, names));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug7100_ {
+    
+    private bug7100_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7100Foo$annotation$(names = {
+            "thing",
+            "hello",
+            "world"})
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug7100() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug71xx.bug7100_.bug7100();
+    }
+}

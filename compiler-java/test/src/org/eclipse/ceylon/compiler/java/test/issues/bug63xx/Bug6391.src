@@ -1,0 +1,99 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug63xx;
+
+public class CeylonProjectBuild<A, B extends A> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public CeylonProjectBuild(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
+        this.$reified$A = $reified$A;
+        this.$reified$B = $reified$B;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A;
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B;
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<A, B>.BuildMessage BuildMessage$new$() {
+        return new BuildMessage();
+    }
+    
+    public class BuildMessage implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected BuildMessage() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.class, .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.this.$reified$A, .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.this.$reified$B), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.BuildMessage.class));
+        }
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<A, B>.SourceFileMessage SourceFileMessage$new$() {
+        return new SourceFileMessage();
+    }
+    
+    public class SourceFileMessage extends .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<A, B>.BuildMessage {
+        
+        protected SourceFileMessage() {
+            super();
+        }
+        
+        public final void f() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.class, .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.this.$reified$A, .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.this.$reified$B), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.SourceFileMessage.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.class, $reified$A, $reified$B);
+    }
+}
+public class Module implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Module() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Module();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Module.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Module.class);
+}
+public class VirtualFile implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public VirtualFile() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.VirtualFile();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.VirtualFile.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.VirtualFile.class);
+}
+final class bug6391_ {
+    
+    private bug6391_() {
+    }
+    
+    static void bug6391(final .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Module, .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.VirtualFile>.BuildMessage f) {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<.java.lang.Object, ? extends .java.lang.Object>.BuildMessage dest = (.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<.java.lang.Object, ? extends .java.lang.Object>.BuildMessage)(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.BuildMessage)f;
+        if ((.java.lang.Object)f instanceof .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.SourceFileMessage) {
+            ((.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<.java.lang.Object, ? extends .java.lang.Object>.SourceFileMessage)(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.SourceFileMessage)f).f();
+        }
+    }
+}

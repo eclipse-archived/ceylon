@@ -1,0 +1,76 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+final class staticMethods_ {
+    
+    private staticMethods_() {
+    }
+    
+    static void staticMethods() {
+        .java.io.File sync = null;
+        sync = .org.eclipse.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", ""));
+        sync = .org.eclipse.ceylon.compiler.java.Util.checkNull(.java.io.File.createTempFile("", "", sync));
+        final .java.lang.Object roots1 = .org.eclipse.ceylon.compiler.java.Util.checkNull(.java.io.File.listRoots());
+        sync = .org.eclipse.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", ""));
+        sync = .org.eclipse.ceylon.compiler.java.Util.checkNull(sync.createTempFile("", "", sync));
+        final .java.lang.Object roots2 = .org.eclipse.ceylon.compiler.java.Util.checkNull(sync.listRoots());
+    }
+}
+final class staticMethodsAndSubClassesOnInstance_ {
+    
+    private staticMethodsAndSubClassesOnInstance_() {
+    }
+    
+    static void staticMethodsAndSubClassesOnInstance() {
+        final .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass inst = new .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass();
+        inst.method();
+        inst.method(1L);
+        inst.method(1L, 2L);
+        inst.topMethod();
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = inst.field;
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = inst.topField;
+    }
+}
+final class staticMethodsAndSubClassesOnType_ {
+    
+    private staticMethodsAndSubClassesOnType_() {
+    }
+    
+    static void staticMethodsAndSubClassesOnType() {
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembers.method(1L, 2L);
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topMethod();
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field;
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField;
+    }
+}
+class StaticMethodsAndSubClasses extends .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    StaticMethodsAndSubClasses() {
+        super();
+    }
+    
+    private final void test$priv$() {
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method();
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.method(1L);
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembers.method(1L, 2L);
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topMethod();
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field = .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembersSubClass.field;
+        .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField = .org.eclipse.ceylon.compiler.java.test.interop.JavaWithStaticMembers.topField;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.StaticMethodsAndSubClasses.class);
+}
+final class staticFields_ {
+    
+    private staticFields_() {
+    }
+    
+    static void staticFields() {
+        final .java.lang.Boolean $false = .org.eclipse.ceylon.compiler.java.Util.checkNull(.java.lang.Boolean.FALSE);
+    }
+}

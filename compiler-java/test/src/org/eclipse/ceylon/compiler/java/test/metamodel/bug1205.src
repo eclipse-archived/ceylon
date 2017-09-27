@@ -1,0 +1,23 @@
+package org.eclipse.ceylon.compiler.java.test.metamodel;
+
+class Bug1205 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1205() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.metamodel.Bug1205.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.metamodel.Bug1205.class);
+}
+final class bug1205_ {
+    
+    private bug1205_() {
+    }
+    
+    static void bug1205() {
+        ((.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.Bug1205, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.Bug1205, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.Bug1205, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.Bug1205.$TypeDescriptor$)).$call$();
+        ((.ceylon.language.meta.model.Function<? extends .java.lang.Object, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Function).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("org.eclipse.ceylon.compiler.java.test.metamodel", "123"), "org.eclipse.ceylon.compiler.java.test.metamodel", "123").findPackage("org.eclipse.ceylon.compiler.java.test.metamodel").getFunction("bug1205").apply(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)).$call$();
+    }
+}

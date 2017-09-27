@@ -1,0 +1,115 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug15xx;
+
+public class Sql implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Sql() {
+    }
+    
+    public <ValueTypes>.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Sql.Insert<? super ValueTypes> Insert$new$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ValueTypes) {
+        return new Insert<ValueTypes>($reified$ValueTypes);
+    }
+    
+    public class Insert<ValueTypes> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Insert(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ValueTypes) {
+            this.$reified$ValueTypes = $reified$ValueTypes;
+        }
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ValueTypes;
+        
+        public final void execute(final ValueTypes arguments) {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Sql.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Sql.Insert.class, $reified$ValueTypes));
+        }
+    }
+    
+    public final <ValueTypes>.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Sql.Insert<? super ValueTypes> foo(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ValueTypes) {
+        return Insert$new$($reified$ValueTypes);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Sql();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Sql.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Sql.class);
+}
+public class Insert<ValueTypes> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Insert(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ValueTypes) {
+        this.$reified$ValueTypes = $reified$ValueTypes;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ValueTypes;
+    
+    public final void execute(final ValueTypes arguments) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Insert(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Insert.class, $reified$ValueTypes);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class insert_ {
+    
+    private insert_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug15xx::Insert<ValueTypes>")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "ValueTypes",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.IN,
+            satisfies = {},
+            caseTypes = {})})
+    public static <ValueTypes>.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Insert<? super ValueTypes> insert(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ValueTypes) {
+        return new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Insert<ValueTypes>($reified$ValueTypes);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.insert_.insert(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+}
+final class runInsert_ {
+    
+    private runInsert_() {
+    }
+    
+    static void runInsert() {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Sql sql = new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Sql();
+        sql.<.ceylon.language.Sequence<? extends .java.lang.Object>>Insert$new$(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)).execute((.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("Second"),
+                .ceylon.language.Integer.instance(2L)}));
+        sql.<.ceylon.language.Sequence<? extends .java.lang.Object>>foo(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)).execute((.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("Second"),
+                .ceylon.language.Integer.instance(2L)}));
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Insert<.ceylon.language.Sequence<? extends .java.lang.Object>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)).execute((.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("Second"),
+                .ceylon.language.Integer.instance(2L)}));
+        .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.insert_.<.ceylon.language.Sequence<? extends .java.lang.Object>>insert(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)).execute((.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("Second"),
+                .ceylon.language.Integer.instance(2L)}));
+        final .ceylon.language.Sequence t = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("Second"),
+                .ceylon.language.Integer.instance(2L)});
+        .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.insert_.<.ceylon.language.Sequence<? extends .java.lang.Object>>insert(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)).execute((.ceylon.language.Sequence<? extends .java.lang.Object>)t);
+    }
+}

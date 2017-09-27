@@ -1,0 +1,249 @@
+package org.eclipse.ceylon.compiler.java.test.statement.loop.optim;
+
+class DestructureLoop implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    DestructureLoop() {
+    }
+    
+    private final void iterable$priv$(final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .java.lang.Object> entries, final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>, ? extends .java.lang.Object> entryTuple, final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object> tupleEntry, final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object> twoTuple, final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object> moreTuple, final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object> nestedTuple) {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>, ? extends .java.lang.Object> iterable$2 = entries;
+        final boolean isArray$3 = iterable$2 instanceof .ceylon.language.Array;
+        final boolean isTuple$4 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
+        .java.lang.Object elem$1 = null;
+        int i$5 = 0;
+        final int length$6;
+        if (isArray$3 || isTuple$4) {
+            length$6 = (int)iterable$2.getSize();
+        } else {
+            length$6 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>> elem$1$iterator$ = isTuple$4 || isArray$3 ? null : iterable$2.iterator();
+        loop_0: while (isTuple$4 || isArray$3 ? i$5 < length$6 : !((elem$1 = elem$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$3 || isTuple$4) elem$1 = iterable$2.getFromFirst(i$5++);
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$1).getKey()).longValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Entry)elem$1).getItem()).doubleValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + f));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>, ? extends .java.lang.Object> iterable$9 = (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)entryTuple;
+        final boolean isArray$10 = iterable$9 instanceof .ceylon.language.Array;
+        final boolean isTuple$11 = iterable$9 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$9).$getArray$() != null;
+        .java.lang.Object elem$8 = null;
+        int i$12 = 0;
+        final int length$13;
+        if (isArray$10 || isTuple$11) {
+            length$13 = (int)iterable$9.getSize();
+        } else {
+            length$13 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>> elem$8$iterator$ = isTuple$11 || isArray$10 ? null : iterable$9.iterator();
+        loop_1: while (isTuple$11 || isArray$10 ? i$12 < length$13 : !((elem$8 = elem$8$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$10 || isTuple$11) elem$8 = iterable$9.getFromFirst(i$12++);
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$8).getKey()).longValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Sequence)((.ceylon.language.Entry)elem$8).getItem()).getFromFirst(0)).longValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence)((.ceylon.language.Entry)elem$8).getItem()).getFromFirst(1)).doubleValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object> iterable$16 = (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)tupleEntry;
+        final boolean isArray$17 = iterable$16 instanceof .ceylon.language.Array;
+        final boolean isTuple$18 = iterable$16 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$16).$getArray$() != null;
+        .java.lang.Object elem$15 = null;
+        int i$19 = 0;
+        final int length$20;
+        if (isArray$17 || isTuple$18) {
+            length$20 = (int)iterable$16.getSize();
+        } else {
+            length$20 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> elem$15$iterator$ = isTuple$18 || isArray$17 ? null : iterable$16.iterator();
+        loop_2: while (isTuple$18 || isArray$17 ? i$19 < length$20 : !((elem$15 = elem$15$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$17 || isTuple$18) elem$15 = iterable$16.getFromFirst(i$19++);
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)elem$15).getFromFirst(0)).longValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Entry)((.ceylon.language.Sequence)elem$15).getFromFirst(1)).getKey()).longValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Entry)((.ceylon.language.Sequence)elem$15).getFromFirst(1)).getItem()).doubleValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object> iterable$23 = (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)twoTuple;
+        final boolean isArray$24 = iterable$23 instanceof .ceylon.language.Array;
+        final boolean isTuple$25 = iterable$23 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$23).$getArray$() != null;
+        .java.lang.Object elem$22 = null;
+        int i$26 = 0;
+        final int length$27;
+        if (isArray$24 || isTuple$25) {
+            length$27 = (int)iterable$23.getSize();
+        } else {
+            length$27 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> elem$22$iterator$ = isTuple$25 || isArray$24 ? null : iterable$23.iterator();
+        loop_3: while (isTuple$25 || isArray$24 ? i$26 < length$27 : !((elem$22 = elem$22$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$24 || isTuple$25) elem$22 = iterable$23.getFromFirst(i$26++);
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)elem$22).getFromFirst(0)).longValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence)elem$22).getFromFirst(1)).doubleValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + f));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object> iterable$30 = (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)moreTuple;
+        final boolean isArray$31 = iterable$30 instanceof .ceylon.language.Array;
+        final boolean isTuple$32 = iterable$30 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$30).$getArray$() != null;
+        .java.lang.Object elem$29 = null;
+        int i$33 = 0;
+        final int length$34;
+        if (isArray$31 || isTuple$32) {
+            length$34 = (int)iterable$30.getSize();
+        } else {
+            length$34 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> elem$29$iterator$ = isTuple$32 || isArray$31 ? null : iterable$30.iterator();
+        loop_4: while (isTuple$32 || isArray$31 ? i$33 < length$34 : !((elem$29 = elem$29$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$31 || isTuple$32) elem$29 = iterable$30.getFromFirst(i$33++);
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)elem$29).getFromFirst(0)).longValue();
+            final .ceylon.language.Sequential<? extends .ceylon.language.Float> f = (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)elem$29).skip(1).sequence();
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object> iterable$38 = (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)nestedTuple;
+        final boolean isArray$39 = iterable$38 instanceof .ceylon.language.Array;
+        final boolean isTuple$40 = iterable$38 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$38).$getArray$() != null;
+        .java.lang.Object elem$37 = null;
+        int i$41 = 0;
+        final int length$42;
+        if (isArray$39 || isTuple$40) {
+            length$42 = (int)iterable$38.getSize();
+        } else {
+            length$42 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> elem$37$iterator$ = isTuple$40 || isArray$39 ? null : iterable$38.iterator();
+        loop_5: while (isTuple$40 || isArray$39 ? i$41 < length$42 : !((elem$37 = elem$37$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$39 || isTuple$40) elem$37 = iterable$38.getFromFirst(i$41++);
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)elem$37).getFromFirst(0)).longValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Sequence)((.ceylon.language.Sequence)elem$37).getFromFirst(1)).getFromFirst(0)).longValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence)((.ceylon.language.Sequence)elem$37).getFromFirst(1)).getFromFirst(1)).doubleValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+    }
+    
+    private final void array$priv$(final .ceylon.language.Array<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>> entries, final .ceylon.language.Array<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>> entryTuple, final .ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>> tupleEntry, final .ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>> twoTuple, final .ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>> moreTuple, final .ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>> nestedTuple) {
+        final .ceylon.language.Array<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>> array$44 = entries;
+        final int length$45 = (int)array$44.getSize();
+        loop_6: for (int i$46 = 0; i$46 < length$45; i$46++) {
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Entry)(.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)(.ceylon.language.Entry)array$44.unsafeItem(i$46)).getItem()).doubleValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry)(.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)(.ceylon.language.Entry)array$44.unsafeItem(i$46)).getKey()).longValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + f));
+        }
+        final .ceylon.language.Array<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>> array$48 = (.ceylon.language.Array<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>>)(.ceylon.language.Array)entryTuple;
+        final int length$49 = (int)array$48.getSize();
+        loop_7: for (int i$50 = 0; i$50 < length$49; i$50++) {
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence)((.ceylon.language.Entry)(.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Entry)array$48.unsafeItem(i$50)).getItem()).getFromFirst(1)).doubleValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Sequence)((.ceylon.language.Entry)(.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Entry)array$48.unsafeItem(i$50)).getItem()).getFromFirst(0)).longValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry)(.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Entry)array$48.unsafeItem(i$50)).getKey()).longValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+        final .ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>> array$52 = (.ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Array)tupleEntry;
+        final int length$53 = (int)array$52.getSize();
+        loop_8: for (int i$54 = 0; i$54 < length$53; i$54++) {
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Entry)((.ceylon.language.Sequence)(.ceylon.language.Sequence)array$52.unsafeItem(i$54)).getFromFirst(1)).getItem()).doubleValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Entry)((.ceylon.language.Sequence)(.ceylon.language.Sequence)array$52.unsafeItem(i$54)).getFromFirst(1)).getKey()).longValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)(.ceylon.language.Sequence)array$52.unsafeItem(i$54)).getFromFirst(0)).longValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+        final .ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>> array$56 = (.ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Array)twoTuple;
+        final int length$57 = (int)array$56.getSize();
+        loop_9: for (int i$58 = 0; i$58 < length$57; i$58++) {
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence)(.ceylon.language.Sequence)array$56.unsafeItem(i$58)).getFromFirst(1)).doubleValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)(.ceylon.language.Sequence)array$56.unsafeItem(i$58)).getFromFirst(0)).longValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + f));
+        }
+        final .ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>> array$60 = (.ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Array)moreTuple;
+        final int length$61 = (int)array$60.getSize();
+        loop_10: for (int i$62 = 0; i$62 < length$61; i$62++) {
+            final .ceylon.language.Sequential<? extends .ceylon.language.Float> f = (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)(.ceylon.language.Sequence)array$60.unsafeItem(i$62)).skip(1).sequence();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)(.ceylon.language.Sequence)array$60.unsafeItem(i$62)).getFromFirst(0)).longValue();
+        }
+        final .ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>> array$65 = (.ceylon.language.Array<.ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Array)nestedTuple;
+        final int length$66 = (int)array$65.getSize();
+        loop_11: for (int i$67 = 0; i$67 < length$66; i$67++) {
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence)((.ceylon.language.Sequence)(.ceylon.language.Sequence)array$65.unsafeItem(i$67)).getFromFirst(1)).getFromFirst(1)).doubleValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Sequence)((.ceylon.language.Sequence)(.ceylon.language.Sequence)array$65.unsafeItem(i$67)).getFromFirst(1)).getFromFirst(0)).longValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)(.ceylon.language.Sequence)array$65.unsafeItem(i$67)).getFromFirst(0)).longValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+    }
+    
+    private final void javaIterable$priv$(final .java.lang.Iterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>> entries, final .java.lang.Iterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>> entryTuple, final .java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>> tupleEntry, final .java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>> twoTuple, final .java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>> moreTuple, final .java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>> nestedTuple) {
+        loop_12: for (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float> $pattern$entry$70$iterator$ : entries) {
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$entry$70$iterator$)).getKey()).longValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$entry$70$iterator$)).getItem()).doubleValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + f));
+        }
+        loop_13: for (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>> $pattern$entry$73$iterator$ : (.java.lang.Iterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>>)(.java.lang.Iterable)entryTuple) {
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$entry$73$iterator$)).getKey()).longValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Sequence)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$entry$73$iterator$)).getItem()).getFromFirst(0)).longValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$entry$73$iterator$)).getItem()).getFromFirst(1)).doubleValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+        loop_14: for (.ceylon.language.Sequence $pattern$tuple$76$iterator$ : (.java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>>)(.java.lang.Iterable)tupleEntry) {
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$tuple$76$iterator$)).getFromFirst(0)).longValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Entry)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$tuple$76$iterator$)).getFromFirst(1)).getKey()).longValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Entry)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$tuple$76$iterator$)).getFromFirst(1)).getItem()).doubleValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+        loop_15: for (.ceylon.language.Sequence $pattern$tuple$79$iterator$ : (.java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>>)(.java.lang.Iterable)twoTuple) {
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$tuple$79$iterator$)).getFromFirst(0)).longValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$tuple$79$iterator$)).getFromFirst(1)).doubleValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + f));
+        }
+        loop_16: for (.ceylon.language.Sequence $pattern$tuple$82$iterator$ : (.java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>>)(.java.lang.Iterable)moreTuple) {
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$tuple$82$iterator$)).getFromFirst(0)).longValue();
+            final .ceylon.language.Sequential<? extends .ceylon.language.Float> f = (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$tuple$82$iterator$)).skip(1).sequence();
+        }
+        loop_17: for (.ceylon.language.Sequence $pattern$tuple$86$iterator$ : (.java.lang.Iterable<.ceylon.language.Sequence<? extends .java.lang.Object>>)(.java.lang.Iterable)nestedTuple) {
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$tuple$86$iterator$)).getFromFirst(0)).longValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Sequence)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$tuple$86$iterator$)).getFromFirst(1)).getFromFirst(0)).longValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull($pattern$tuple$86$iterator$)).getFromFirst(1)).getFromFirst(1)).doubleValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+    }
+    
+    private final void objectArray$priv$(final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>[] entries, final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>[] entryTuple, final .ceylon.language.Sequence<? extends .java.lang.Object>[] tupleEntry, final .ceylon.language.Sequence<? extends .java.lang.Object>[] twoTuple, final .ceylon.language.Sequence<? extends .java.lang.Object>[] moreTuple, final .ceylon.language.Sequence<? extends .java.lang.Object>[] nestedTuple) {
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>[] array$88 = entries;
+        loop_18: for (int i$90 = 0; i$90 < array$88.length; i$90++) {
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull(array$88[i$90])).getItem()).doubleValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull(array$88[i$90])).getKey()).longValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + f));
+        }
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>[] array$92 = (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Sequence<? extends .java.lang.Object>>[])(.ceylon.language.Entry[])entryTuple;
+        loop_19: for (int i$94 = 0; i$94 < array$92.length; i$94++) {
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull(array$92[i$94])).getItem()).getFromFirst(1)).doubleValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Sequence)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull(array$92[i$94])).getItem()).getFromFirst(0)).longValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull(array$92[i$94])).getKey()).longValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$96 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])tupleEntry;
+        loop_20: for (int i$98 = 0; i$98 < array$96.length; i$98++) {
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Entry)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$96[i$98])).getFromFirst(1)).getItem()).doubleValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Entry)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$96[i$98])).getFromFirst(1)).getKey()).longValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$96[i$98])).getFromFirst(0)).longValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$100 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])twoTuple;
+        loop_21: for (int i$102 = 0; i$102 < array$100.length; i$102++) {
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$100[i$102])).getFromFirst(1)).doubleValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$100[i$102])).getFromFirst(0)).longValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + f));
+        }
+        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$104 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])moreTuple;
+        loop_22: for (int i$106 = 0; i$106 < array$104.length; i$106++) {
+            final .ceylon.language.Sequential<? extends .ceylon.language.Float> f = (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$104[i$106])).skip(1).sequence();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$104[i$106])).getFromFirst(0)).longValue();
+        }
+        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$109 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])nestedTuple;
+        loop_23: for (int i$111 = 0; i$111 < array$109.length; i$111++) {
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Sequence)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$109[i$111])).getFromFirst(1)).getFromFirst(1)).doubleValue();
+            final long j = ((.ceylon.language.Integer)((.ceylon.language.Sequence)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$109[i$111])).getFromFirst(1)).getFromFirst(0)).longValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$109[i$111])).getFromFirst(0)).longValue();
+            .ceylon.language.print_.print(.ceylon.language.Float.instance(i + j + f));
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.loop.optim.DestructureLoop.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.loop.optim.DestructureLoop.class);
+}

@@ -1,0 +1,61 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+class ExtendingCtorWithDefaultParameter implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ExtendingCtorWithDefaultParameter(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar$delegation$_ $name$) {
+        (
+            let
+            {
+                long $ceylontmp$a$0 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.ExtendingCtorWithDefaultParameter$bar$a();
+                this($name$, $ceylontmp$a$0);
+            }
+            returning null;
+        );
+    }
+    
+    ExtendingCtorWithDefaultParameter(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar_ $name$) {
+        (
+            let
+            {
+                long $ceylontmp$a$1 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.ExtendingCtorWithDefaultParameter$bar$a();
+                this($name$, $ceylontmp$a$1);
+            }
+            returning null;
+        );
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar$delegation$_ bar$delegation$_ = null;
+    
+    private static final class bar$delegation$_ {
+        
+        bar$delegation$_() {
+        }
+    }
+    
+    private ExtendingCtorWithDefaultParameter(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar$delegation$_ $name$, final long a$param$) {
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar_ bar_ = null;
+    
+    public static final long ExtendingCtorWithDefaultParameter$bar$a() {
+        return 1L;
+    }
+    
+    public static final class bar_ {
+        
+        bar_() {
+        }
+    }
+    
+    public ExtendingCtorWithDefaultParameter(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar_ $name$, final long a$param$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar$delegation$_, a$param$);
+    }
+    
+    public ExtendingCtorWithDefaultParameter() {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.bar$delegation$_);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.class);
+}

@@ -1,0 +1,84 @@
+package org.eclipse.ceylon.compiler.java.test.expression.selfref;
+
+interface IPackageQualified {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified.class);
+}
+class CPackageQualified<T extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified, .java.io.Serializable {
+    
+    CPackageQualified(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.CPackageQualified.class, $reified$T);
+    }
+}
+@.ceylon.language.SeeAnnotation$annotations$({@.ceylon.language.SeeAnnotation$annotation$(programElements = "::unversioned:default:.org.eclipse.ceylon.compiler.java.test.expression.selfref:IIPackageQualified")})
+class SubPackageQualified extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.CPackageQualified<.org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified> {
+    
+    SubPackageQualified() {
+        super(.org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified.$TypeDescriptor$);
+    }
+    
+    private final void m$priv$() {
+        new .org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified();
+        final .java.lang.String s = super.toString();
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified> ref = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified>(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "SubPackageQualified()", (short)-1){
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified $call$() {
+                return new .org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified();
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> mref = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified.$TypeDescriptor$), "Anything()(SubPackageQualified)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified $instance$ = (.org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$() {
+                        return (
+                            let
+                            {
+                                $instance$.m$priv$();
+                            }
+                            returning null;
+                        );
+                    }
+                };
+            }
+        };
+        final .org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified objExpr = (
+            let
+            {
+                
+                class anonymous_0_ extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified {
+                    
+                    private anonymous_0_() {
+                        super();
+                    }
+                    
+                    @.java.lang.Override
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+        final .ceylon.language.meta.model.Interface<? extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified> meta = (.ceylon.language.meta.model.Interface<? extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified>)(.ceylon.language.meta.model.Interface<? extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified.$TypeDescriptor$);
+        final .ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.CPackageQualified<.org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified>, ? super .ceylon.language.Empty> meta2 = (.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.CPackageQualified<.org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified>, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.CPackageQualified<.org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified>, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.CPackageQualified.class, .org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified.$TypeDescriptor$));
+        final .ceylon.language.meta.declaration.InterfaceDeclaration decl = (.ceylon.language.meta.declaration.InterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.expression.selfref.IPackageQualified.class);
+        final .ceylon.language.meta.declaration.ClassWithInitializerDeclaration decl2 = (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.expression.selfref.CPackageQualified.class);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SubPackageQualified.class);
+}

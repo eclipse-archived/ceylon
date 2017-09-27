@@ -1,0 +1,161 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class AssertionConditionList implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertionConditionList() {
+    }
+    
+    private final boolean m1$priv$(final long x) {
+        long lhs$0 = x;
+        long rhs$1 = 0L;
+        if (lhs$0 > rhs$1) {
+            long lhs$2 = x;
+            long rhs$3 = 10L;
+            if (lhs$2 < rhs$3) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "x > 0" + .java.lang.System.lineSeparator() + "\tviolated " + "x < 10") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$2), .ceylon.language.Integer.instance(rhs$3)));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "x > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "x < 10") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
+        }
+        return x == 1L;
+    }
+    
+    private final boolean m2$priv$(final .java.lang.Object x, final long z) {
+        final long y$5;
+        .java.lang.Object y$4 = null;
+        if ((y$4 = x) instanceof .ceylon.language.Integer) {
+            y$5 = ((.ceylon.language.Integer)y$4).longValue();
+            long lhs$6 = y$5;
+            long rhs$7 = 0L;
+            if (lhs$6 > rhs$7) {
+                long lhs$8 = z;
+                long rhs$9 = 10L;
+                if (lhs$8 < rhs$9) {
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tunviolated " + "y > 0" + .java.lang.System.lineSeparator() + "\tviolated " + "z < 10") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$8), .ceylon.language.Integer.instance(rhs$9)));
+                }
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "z < 10") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$6), .ceylon.language.Integer.instance(rhs$7)));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "z < 10") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$4));
+        }
+        return y$5 == 1L;
+    }
+    
+    private final boolean m3$priv$(final .java.lang.Object x, final long z) {
+        final long y$13;
+        long lhs$10 = z;
+        long rhs$11 = 10L;
+        if (lhs$10 < rhs$11) {
+            .java.lang.Object y$12 = null;
+            if ((y$12 = x) instanceof .ceylon.language.Integer) {
+                y$13 = ((.ceylon.language.Integer)y$12).longValue();
+                long lhs$14 = y$13;
+                long rhs$15 = 0L;
+                if (lhs$14 > rhs$15) {
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$14), .ceylon.language.Integer.instance(rhs$15)));
+                }
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$12));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$10), .ceylon.language.Integer.instance(rhs$11)));
+        }
+        return y$13 == 1L;
+    }
+    
+    private final boolean m4$priv$(final .java.lang.Object x, final long z) {
+        final long y$21;
+        long lhs$16 = z;
+        long rhs$17 = 10L;
+        if (lhs$16 < rhs$17) {
+            long lhs$18 = z;
+            long rhs$19 = 0L;
+            if (lhs$18 > rhs$19) {
+                .java.lang.Object y$20 = null;
+                if ((y$20 = x) instanceof .ceylon.language.Integer) {
+                    y$21 = ((.ceylon.language.Integer)y$20).longValue();
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tunviolated " + "z > 0" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$20));
+                }
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tviolated " + "z > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y = x") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$18), .ceylon.language.Integer.instance(rhs$19)));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tuntested " + "z > 0" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y = x") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$16), .ceylon.language.Integer.instance(rhs$17)));
+        }
+        return y$21 == 1L;
+    }
+    
+    private final boolean m5$priv$(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+        final long y$25;
+        final .ceylon.language.Sequence<? extends .java.lang.Object> x$23;
+        .ceylon.language.Sequential<? extends .java.lang.Object> x$22 = null;
+        if ((x$22 = x) instanceof .ceylon.language.Sequence) {
+            x$23 = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)x$22;
+            .java.lang.Object y$24 = null;
+            if ((y$24 = x$23.getFromFirst(0L)) instanceof .ceylon.language.Integer) {
+                y$25 = ((.ceylon.language.Integer)y$24).longValue();
+                long lhs$26 = y$25;
+                long rhs$27 = 0L;
+                if (lhs$26 > rhs$27) {
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "nonempty x" + .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$26), .ceylon.language.Integer.instance(rhs$27)));
+                }
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "nonempty x" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$24));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "nonempty x" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0"));
+        }
+        return y$25 == 1L;
+    }
+    
+    private final boolean m6$priv$(final .ceylon.language.Sequential<? extends .java.lang.Object> x) {
+        final long y$29;
+        if (x.getFromFirst(0L) != null) {
+            .java.lang.Object y$28 = null;
+            if ((y$28 = x.getFromFirst(0L)) instanceof .ceylon.language.Integer) {
+                y$29 = ((.ceylon.language.Integer)y$28).longValue();
+                long lhs$30 = y$29;
+                long rhs$31 = 0L;
+                if (lhs$30 > rhs$31) {
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "x[0] exists" + .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$30), .ceylon.language.Integer.instance(rhs$31)));
+                }
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "x[0] exists" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$28));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "x[0] exists" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y = x[0]" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0"));
+        }
+        return y$29 == 1L;
+    }
+    
+    private final boolean m9$priv$(final .java.lang.Object x, final .java.lang.Object y) {
+        final long y1$35;
+        final long x1$33;
+        .java.lang.Object x1$32 = null;
+        if ((x1$32 = x) instanceof .ceylon.language.Integer) {
+            x1$33 = ((.ceylon.language.Integer)x1$32).longValue();
+            .java.lang.Object y1$34 = null;
+            if ((y1$34 = y) instanceof .ceylon.language.Integer) {
+                y1$35 = ((.ceylon.language.Integer)y1$34).longValue();
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is Integer x1 = x" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y1 = y") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y1$34));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x1 = x" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y1 = y") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, x1$32));
+        }
+        return x1$33 + y1$35 == 0L;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertionConditionList.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertionConditionList.class);
+}

@@ -1,21 +1,21 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.Util;
+import org.eclipse.ceylon.compiler.java.Util;
 
-@com.redhat.ceylon.compiler.java.metadata.Ceylon(
+@org.eclipse.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
         minor = 1)
-@com.redhat.ceylon.compiler.java.metadata.Attribute
-@com.redhat.ceylon.compiler.java.metadata.Name("vmArguments")
+@org.eclipse.ceylon.compiler.java.metadata.Attribute
+@org.eclipse.ceylon.compiler.java.metadata.Name("vmArguments")
 final class vmArguments_ {
     
     private vmArguments_() {
     }
     
     @NativeAnnotation$annotation$(backends = "jvm")
-    @com.redhat.ceylon.common.NonNull
-    @com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Array<ceylon.language::String>")
-    @com.redhat.ceylon.compiler.java.metadata.Transient
+    @org.eclipse.ceylon.common.NonNull
+    @org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Array<ceylon.language::String>")
+    @org.eclipse.ceylon.compiler.java.metadata.Transient
     static Array<String> get_() {
         java.lang.String[] args = Util.checkNull(Util.getArgs());
         String[] strings = new String[args.length];

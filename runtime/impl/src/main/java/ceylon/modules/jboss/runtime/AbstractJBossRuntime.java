@@ -17,18 +17,17 @@
 
 package ceylon.modules.jboss.runtime;
 
+import org.eclipse.ceylon.cmr.api.RepositoryManager;
+import org.eclipse.ceylon.cmr.api.RepositoryManagerBuilder;
+import org.eclipse.ceylon.cmr.ceylon.CeylonUtils;
+import org.eclipse.ceylon.cmr.impl.CMRJULLogger;
+import org.eclipse.ceylon.cmr.spi.ContentTransformer;
+import org.eclipse.ceylon.cmr.spi.MergeStrategy;
+import org.eclipse.ceylon.common.log.Logger;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleNotFoundException;
-
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.CMRJULLogger;
-import com.redhat.ceylon.cmr.spi.ContentTransformer;
-import com.redhat.ceylon.cmr.spi.MergeStrategy;
-import com.redhat.ceylon.common.log.Logger;
 
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;

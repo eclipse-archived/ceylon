@@ -16,7 +16,7 @@
 
 package ceylon.audiotest;
 
-import com.redhat.ceylon.compiler.java.metadata.Module;
+import org.eclipse.ceylon.compiler.java.metadata.Module;
 
 /**
  * @author Tako Schotanus

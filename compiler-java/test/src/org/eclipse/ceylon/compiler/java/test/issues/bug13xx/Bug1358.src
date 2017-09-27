@@ -1,0 +1,78 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug13xx;
+
+public interface Bug1358<Element> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl<? extends Element> $org$eclipse$ceylon$compiler$java$test$issues$bug13xx$Bug1358$impl();
+    
+    public <Result>Result fold(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result);
+}
+public final class Bug1358$impl<Element> implements .java.io.Serializable {
+    
+    public Bug1358$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358<? extends Element> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public <Result>Result fold(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result) {
+        return (Result)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+public class Bug1358ClassImpl<Element> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358<.java.lang.Object>, .java.io.Serializable {
+    
+    public Bug1358ClassImpl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Element, .ceylon.language.Integer.$TypeDescriptor$), (.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358)this);
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl<.java.lang.Object> $org$eclipse$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358$impl $org$eclipse$ceylon$compiler$java$test$issues$bug13xx$Bug1358$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this$;
+    }
+    
+    @.java.lang.Override
+    public final <Result>Result fold(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result) {
+        return (Result)$org$eclipse$ceylon$compiler$java$test$issues$bug13xx$Bug1358$this$.<Result>fold($reified$Result);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358ClassImpl(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358ClassImpl.class, $reified$Element);
+    }
+}
+public interface Bug1358InterfaceImpl<Element> extends .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358<.java.lang.Object> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358InterfaceImpl$impl<Element> $org$eclipse$ceylon$compiler$java$test$issues$bug13xx$Bug1358InterfaceImpl$impl();
+    
+    @.java.lang.Override
+    public <Result>Result fold(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result);
+}
+public final class Bug1358InterfaceImpl$impl<Element> implements .java.io.Serializable {
+    
+    public Bug1358InterfaceImpl$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358InterfaceImpl<Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1358InterfaceImpl<Element> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public <Result>Result fold(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result) {
+        return (Result)$this.$org$eclipse$ceylon$compiler$java$test$issues$bug13xx$Bug1358$impl().<Result>fold($reified$Result);
+    }
+}

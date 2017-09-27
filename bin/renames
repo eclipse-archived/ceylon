@@ -5,12 +5,12 @@ NEW_URL=http://hg.openjdk.java.net/jdk8u/jdk8u/langtools/
 
 # The package renames
 declare -A renames
-renames[com.redhat.ceylon.javax.annotation.processing]=javax.annotation.processing
-renames[com.redhat.ceylon.javax.lang.model]=javax.lang.model
-renames[com.redhat.ceylon.javax.tools]=javax.tools
-renames[com.redhat.ceylon.langtools.source]=com.sun.source
-renames[com.redhat.ceylon.langtools.tools.javac]=com.sun.tools.javac
-renames[com.redhat.ceylon.langtools.classfile]=com.sun.tools.classfile
+renames[org.eclipse.ceylon.javax.annotation.processing]=javax.annotation.processing
+renames[org.eclipse.ceylon.javax.lang.model]=javax.lang.model
+renames[org.eclipse.ceylon.javax.tools]=javax.tools
+renames[org.eclipse.ceylon.langtools.source]=com.sun.source
+renames[org.eclipse.ceylon.langtools.tools.javac]=com.sun.tools.javac
+renames[org.eclipse.ceylon.langtools.classfile]=com.sun.tools.classfile
 
 # The inverse mapping of those renames
 declare -A rev_renames
@@ -53,5 +53,5 @@ function renamePackage {
         # Fix the imports
         find ${SRC_DIR}/${JDK_DIR} -name '*.java' -exec sed -i -r "s/$RE([a-zA-Z0-8_]*)/$J\1/g" {} \;
     done
-    #find ${SRC_DIR}/${JDK_DIR} -name '*.java' -exec sed -i -r 's/^import com\.redhat\.ceylon.(.*);/import \1;/g' {} \;
+    #find ${SRC_DIR}/${JDK_DIR} -name '*.java' -exec sed -i -r 's/^import org\.eclipse\.ceylon.(.*);/import \1;/g' {} \;
 }

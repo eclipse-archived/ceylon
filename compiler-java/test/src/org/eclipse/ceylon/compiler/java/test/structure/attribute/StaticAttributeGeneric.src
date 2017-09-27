@@ -1,0 +1,156 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class StaticAttributeGeneric<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static final .java.lang.Object nonSharedStat;
+    static {
+        nonSharedStat = .ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.StaticAnnotation$annotation$
+    private static final <T>T getNonSharedStat$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T).org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.nonSharedStat;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static final .java.lang.Object sharedStat;
+    static {
+        sharedStat = .ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    public static final <T>T getSharedStat(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T).org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.sharedStat;
+    }
+    
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    private static final <T>T getNonSharedStatGetter$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static final <T>T getSharedStatGetter(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    private static final <T>T getNonSharedStatGetter2$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static final <T>T getSharedStatGetter2(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    private static final <T>T getNonSharedVariableStatGetter$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    private static final <T>void setNonSharedVariableStatGetter$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.org.eclipse.ceylon.compiler.java.metadata.Name("nonSharedVariableStatGetter")
+    final T nonSharedVariableStatGetter) {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static final <T>T getSharedVariableStatGetter(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public static final <T>void setSharedVariableStatGetter(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.org.eclipse.ceylon.compiler.java.metadata.Name("sharedVariableStatGetter")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T sharedVariableStatGetter) {
+    }
+    
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    private static final <T>T getNonSharedVariableStatGetter2$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    private static final <T>void setNonSharedVariableStatGetter2$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.org.eclipse.ceylon.compiler.java.metadata.Name("nonSharedVariableStatGetter2")
+    final T nonSharedVariableStatGetter2) {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.StaticAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static final <T>T getSharedVariableStatGetter2(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public static final <T>void setSharedVariableStatGetter2(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.org.eclipse.ceylon.compiler.java.metadata.Name("sharedVariableStatGetter2")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T sharedVariableStatGetter2) {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public StaticAttributeGeneric(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.class, $reified$T);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class staticAttributeGeneric_ {
+    
+    private staticAttributeGeneric_() {
+    }
+    
+    static void staticAttributeGeneric() {
+        .java.lang.String s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>getSharedStat(.ceylon.language.String.$TypeDescriptor$).toString();
+        s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>getSharedStatGetter(.ceylon.language.String.$TypeDescriptor$).toString();
+        s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>getSharedStatGetter2(.ceylon.language.String.$TypeDescriptor$).toString();
+        s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>getSharedVariableStatGetter(.ceylon.language.String.$TypeDescriptor$).toString();
+        s = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>getSharedVariableStatGetter2(.ceylon.language.String.$TypeDescriptor$).toString();
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>setSharedVariableStatGetter(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(s));
+        .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>setSharedVariableStatGetter2(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(s));
+    }
+}

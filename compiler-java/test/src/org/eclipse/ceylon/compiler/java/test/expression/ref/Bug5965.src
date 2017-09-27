@@ -1,0 +1,145 @@
+package org.eclipse.ceylon.compiler.java.test.expression.ref;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.class)})
+class Bug5965 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug5965() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B B$new$() {
+        return new B();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.C.class)})
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.class,
+            isStatic = false)
+    public class B implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected B() {
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("instance")
+        final class C$instance {
+            
+            C$instance() {
+            }
+        }
+        private transient C $instance$C$instance = null;
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        @.org.eclipse.ceylon.common.NonNull
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.expression.ref::Bug5965.B.C.instance")
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("instance")
+        .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.C getC$instance() {
+            if ($instance$C$instance == null) $instance$C$instance = new C((.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.C$instance)null);
+            return $instance$C$instance;
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.org.eclipse.ceylon.compiler.java.metadata.Container(
+                klass = .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.class,
+                isStatic = false)
+        @.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+        public class C implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            @.org.eclipse.ceylon.common.NonNull
+            private final .java.lang.String string;
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.ceylon.language.ActualAnnotation$annotation$
+            @.java.lang.Override
+            @.org.eclipse.ceylon.common.NonNull
+            public final .java.lang.String toString() {
+                return this.string;
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Name("instance")
+            @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+            private C(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.C$instance $name$) {
+                this.string = "instance";
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.C.class));
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            private final .java.lang.Object writeReplace() {
+                final .java.lang.String $name$;
+                if (this == $instance$C$instance) {
+                    $name$ = "getC$instance";
+                } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+                return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.this, .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.class, $name$);
+            }
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.class));
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug5965_ {
+    
+    private bug5965_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug5965() {
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.C> iFactory = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.C>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.C.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.class))), "Bug5965.B.C.instance(Bug5965.B)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B.C $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B $instance$ = (.org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965.B)$param$0;
+                return $instance$.getC$instance();
+            }
+        };
+        .ceylon.language.String lhs$0 = .ceylon.language.String.instance(iFactory.$call$((.java.lang.Object)new .org.eclipse.ceylon.compiler.java.test.expression.ref.Bug5965().B$new$()).toString());
+        .ceylon.language.String rhs$1 = .ceylon.language.String.instance("instance");
+        if (lhs$0.equals(rhs$1)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iFactory(Bug5965().B()).string == \"instance\"") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$0, rhs$1));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.expression.ref.bug5965_.bug5965();
+    }
+}

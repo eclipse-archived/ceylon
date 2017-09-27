@@ -1,0 +1,28 @@
+package org.eclipse.ceylon.compiler.java.test.structure.method;
+
+class MethodSpecifyingInitParam implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected MethodSpecifyingInitParam() {
+        super();
+        this.x = null;
+    }
+    
+    MethodSpecifyingInitParam(final .ceylon.language.Callable<? extends .java.lang.Object> x) {
+        this.x = x;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> x;
+    
+    private final .ceylon.language.Callable<? extends .java.lang.Object> getX$priv$() {
+        return this.x;
+    }
+    
+    private final .java.lang.Object foo$priv$() {
+        return getX$priv$().$call$();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.MethodSpecifyingInitParam.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.MethodSpecifyingInitParam.class);
+}

@@ -1,0 +1,79 @@
+package org.eclipse.ceylon.compiler.java.test.fordebug.lines; // line 1
+ // line 1
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon( // line 1
+        major = 8, // line 1
+        minor = 1) // line 1
+class Doer implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
+     // line 1
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa // line 1
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Doer() { // line 1
+        super();
+    }
+     // line 1
+    Doer(@.org.eclipse.ceylon.compiler.java.metadata.Name("do") // line 1
+    @.org.eclipse.ceylon.compiler.java.metadata.FunctionalParameter("(t)") // line 1
+    @.org.eclipse.ceylon.common.NonNull // line 1
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything(ceylon.language::Anything)") // line 1
+    final .ceylon.language.Callable<? extends .java.lang.Object> $do) { // line 1
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.fordebug.lines.Doer.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.fordebug.lines.Doer.class);
+} // line 2
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon( // line 1
+        major = 8, // line 1
+        minor = 1) // line 1
+@.org.eclipse.ceylon.compiler.java.metadata.Method // line 1
+final class anonymous_ {
+     // line 6
+    private anonymous_() { // line 6
+    }
+     // line 6
+    static void anonymous() { // line 6
+        .org.eclipse.ceylon.compiler.java.test.fordebug.lines.Doer id = ( // line 3
+            let
+            {
+                .ceylon.language.Callable arg$0$0 = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1") @.org.eclipse.ceylon.compiler.java.metadata.Name("do") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 4
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1") // line 4
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("do") // line 4
+                @.org.eclipse.ceylon.compiler.java.metadata.Method // line 4
+                {
+                     // line 4
+                    @.java.lang.Override // line 4
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore // line 4
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) { // line 4
+                        final .java.lang.Object t = $param$0; // line 4
+                        return t; // line 4
+                    }
+                };
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.fordebug.lines.Doer(arg$0$0); // line 3, 4
+        );
+        id = ( // line 6
+            let
+            {
+                .ceylon.language.Callable arg$1$0 = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2") @.org.eclipse.ceylon.compiler.java.metadata.Name("do") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Anything.$TypeDescriptor$), "Anything(Anything)", (short)-1) // line 7, 9
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2") // line 9
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("do") // line 9
+                @.org.eclipse.ceylon.compiler.java.metadata.Method // line 9
+                {
+                     // line 7
+                    @.java.lang.Override // line 7
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore // line 7
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) { // line 7
+                        final .java.lang.Object t = $param$0; // line 7
+                        .ceylon.language.print_.print(.ceylon.language.String.instance("f")); // line 8
+                        return t; // line 9
+                    }
+                };
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.fordebug.lines.Doer(arg$1$0); // line 6, 7
+        );
+    }
+}

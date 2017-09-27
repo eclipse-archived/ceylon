@@ -30,7 +30,7 @@ The following conventions must be observed:
   The `CeylonToolLoader` requires that the class corresponding to 
   `ceylon foo-bar` be named `CeylonFooBarTool`.
 * To be found at runtime, tools need to be registered in a file called
-  `META-INF/services/com.redhat.ceylon.common.tool.Tool`
+  `META-INF/services/org.eclipse.ceylon.common.tool.Tool`
   within the `.jar` containing the tool class.
 
 The `@Summary` annotation provides a summary of the tool in Markdown format. 
@@ -201,7 +201,7 @@ Here's an example tool class:
         }
     }
 
-A `META-INF/services/com.redhat.ceylon.common.tool.Tool` file would be 
+A `META-INF/services/org.eclipse.ceylon.common.tool.Tool` file would be 
 required in the `.jar` file containing the `CeylonHelloWorldTool.class` file. 
 The file would need to contain the fully qualified class name of the 
 `CeylonHelloWorldTool` class on a line of its own.

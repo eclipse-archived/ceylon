@@ -1,0 +1,43 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug21xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface Bug2143$annotation$ {
+    
+    public abstract .java.lang.String name();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+final class Bug2143 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Bug2143() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    Bug2143(.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Bug2143$annotation$ anno) {
+        this(anno.name());
+    }
+    
+    Bug2143(@.org.eclipse.ceylon.compiler.java.metadata.Name("name")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String name) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Bug2143.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.Bug2143.class);
+}

@@ -1,12 +1,11 @@
 package ceylon.language;
 
+import org.eclipse.ceylon.compiler.java.language.AbstractCallable;
+import org.eclipse.ceylon.compiler.java.language.IntArray;
+import org.eclipse.ceylon.compiler.java.language.ObjectArray;
+import org.eclipse.ceylon.compiler.java.language.ObjectArrayIterable;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.redhat.ceylon.compiler.java.language.AbstractCallable;
-import com.redhat.ceylon.compiler.java.language.IntArray;
-import com.redhat.ceylon.compiler.java.language.ObjectArray;
-import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 
 public class PrimitiveArrayIterableTest {
 

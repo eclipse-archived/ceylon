@@ -1,0 +1,76 @@
+package org.eclipse.ceylon.compiler.java.test.structure.mcr;
+
+interface localInterfaceFormalMemberClass$Foo_ {
+    
+    public .java.lang.Object Foo$impl();
+    
+    abstract .java.lang.Object Bar$new$();
+}
+public final class localInterfaceFormalMemberClass_ {
+    
+    private localInterfaceFormalMemberClass_() {
+    }
+    
+    public static void localInterfaceFormalMemberClass() {
+        
+        final class Foo$impl implements .java.io.Serializable {
+            
+            Foo$impl(.org.eclipse.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass$Foo_ $this) {
+                this.$this = $this;
+            }
+            private final .org.eclipse.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass$Foo_ $this;
+            
+            abstract class Bar implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                protected Bar() {
+                }
+                
+                @.java.lang.Override
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass$Foo_.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo$impl.Bar.class));
+                }
+            }
+        }
+        
+        class FooImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass$Foo_, .java.io.Serializable {
+            
+            FooImpl() {
+                this.$org$eclipse$ceylon$compiler$java$test$structure$mcr$localInterfaceFormalMemberClass$Foo$this$ = new Foo$impl(this);
+            }
+            protected final Foo$impl $org$eclipse$ceylon$compiler$java$test$structure$mcr$localInterfaceFormalMemberClass$Foo$this$;
+            
+            @.java.lang.Override
+            public Foo$impl Foo$impl() {
+                return $org$eclipse$ceylon$compiler$java$test$structure$mcr$localInterfaceFormalMemberClass$Foo$this$;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object Bar$new$() {
+                return new Bar();
+            }
+            
+            class Bar extends Foo$impl.Bar {
+                
+                protected Bar() {
+                    $org$eclipse$ceylon$compiler$java$test$structure$mcr$localInterfaceFormalMemberClass$Foo$this$.super();
+                }
+                
+                @.java.lang.Override
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooImpl.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooImpl.Bar.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(FooImpl.class));
+            }
+        }
+        .ceylon.language.print_.print(new FooImpl());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.structure.mcr.localInterfaceFormalMemberClass_.localInterfaceFormalMemberClass();
+    }
+}

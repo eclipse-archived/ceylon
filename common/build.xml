@@ -10,11 +10,11 @@
     <property name="test.reports" location="${build.dir}/test-reports" />
 
     <!-- Local repository -->
-    <property name="ceylon.common.src" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.src" />
+    <property name="ceylon.common.src" value="${ceylon.common.dir}/org.eclipse.ceylon.common-${module.org.eclipse.ceylon.common.version}.src" />
     <property name="ceylon.common.repo" value="${ceylon.repo.dir}/${ceylon.common.dir}" />
     <property name="ceylon.common.dist" value="${build.dist}/${ceylon.common.dir}" />
 
-    <property name="versions.java" value="com/redhat/ceylon/common/Versions.java" />
+    <property name="versions.java" value="org/eclipse/ceylon/common/Versions.java" />
     
     <!-- Classpath for the build tools. -->
     <path id="classpath">
@@ -104,8 +104,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.common"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.common.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.common"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.common.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">
@@ -264,7 +264,7 @@
 
             <formatter type="xml" />
             <test
-                name="com.redhat.ceylon.common.test.AllCommonTests"
+                name="org.eclipse.ceylon.common.test.AllCommonTests"
                 fork="yes"
                 todir="${test.reports}" />
         </junit>

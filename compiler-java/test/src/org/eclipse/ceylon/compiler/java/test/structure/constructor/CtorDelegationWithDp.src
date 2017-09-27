@@ -1,0 +1,123 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+public class CtorDelegationWithDp implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public CtorDelegationWithDp(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$ $name$) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$name$0 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.CtorDelegationWithDp$name();
+                this($ceylontmp$name$0);
+            }
+            returning null;
+        );
+    }
+    
+    public CtorDelegationWithDp() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$name$1 = .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.CtorDelegationWithDp$name();
+                this($ceylontmp$name$1);
+            }
+            returning null;
+        );
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$ $delegation$ = null;
+    
+    private static final class $delegation$ {
+        
+        $delegation$() {
+        }
+    }
+    
+    private CtorDelegationWithDp(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$ $name$, final .java.lang.String name$param$) {
+    }
+    
+    public static final .java.lang.String CtorDelegationWithDp$name() {
+        return "";
+    }
+    
+    public CtorDelegationWithDp(final .java.lang.String name$param$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$, name$param$);
+    }
+    
+    private static final class foo_ {
+        
+        foo_() {
+        }
+    }
+    
+    private CtorDelegationWithDp(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.foo_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$, "");
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp foo;
+    static {
+        foo = new CtorDelegationWithDp((.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.foo_)null);
+    }
+    
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp getCtorDelegationWithDp$foo() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.foo;
+    }
+    
+    private static final class bar_ {
+        
+        bar_() {
+        }
+    }
+    
+    private CtorDelegationWithDp(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.bar_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$);
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp bar;
+    static {
+        bar = new CtorDelegationWithDp((.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.bar_)null);
+    }
+    
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp getCtorDelegationWithDp$bar() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.bar;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.baz_ baz_ = null;
+    
+    public static final class baz_ {
+        
+        baz_() {
+        }
+    }
+    
+    public CtorDelegationWithDp(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.baz_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$, "");
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.qux_ qux_ = null;
+    
+    public static final class qux_ {
+        
+        qux_() {
+        }
+    }
+    
+    public CtorDelegationWithDp(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.qux_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$delegation$);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getCtorDelegationWithDp$bar";
+        } else if (this == foo) {
+            $name$ = "getCtorDelegationWithDp$foo";
+        } else return this;
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.class, $name$);
+    }
+}

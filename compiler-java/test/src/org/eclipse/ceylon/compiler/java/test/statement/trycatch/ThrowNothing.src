@@ -1,0 +1,17 @@
+package org.eclipse.ceylon.compiler.java.test.statement.trycatch;
+
+class ThrowNothing implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ThrowNothing() {
+    }
+    
+    private final void t$priv$() {
+        throw (.java.lang.Throwable)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ThrowNothing.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ThrowNothing.class);
+}

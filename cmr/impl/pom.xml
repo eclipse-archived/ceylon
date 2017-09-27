@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <!-- Parent -->
     <parent>
-        <groupId>com.redhat.ceylon.cmr</groupId>
+        <groupId>org.eclipse.ceylon.cmr</groupId>
         <artifactId>cmr-build</artifactId>
         <version>1.1.1-SNAPSHOT</version>
     </parent>
@@ -17,12 +17,12 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.redhat.ceylon.cmr</groupId>
+            <groupId>org.eclipse.ceylon.cmr</groupId>
             <artifactId>cmr-api</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.redhat.ceylon</groupId>
+            <groupId>org.eclipse.ceylon</groupId>
             <artifactId>ceylon-common</artifactId>
         </dependency>
 

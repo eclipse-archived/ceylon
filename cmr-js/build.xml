@@ -10,7 +10,7 @@
     <property name="test.reports" location="${build.dir}/test-reports" />
 
     <!-- Local repository -->
-    <property name="ceylon.module-resolver-javascript.src" value="${ceylon.module-resolver-javascript.dir}/com.redhat.ceylon.module-resolver-javascript-${module.com.redhat.ceylon.module-resolver-javascript.version}.src" />
+    <property name="ceylon.module-resolver-javascript.src" value="${ceylon.module-resolver-javascript.dir}/org.eclipse.ceylon.module-resolver-javascript-${module.org.eclipse.ceylon.module-resolver-javascript.version}.src" />
     <property name="ceylon.module-resolver-javascript.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver-javascript.dir}" />
     <property name="ceylon.module-resolver-javascript.dist" value="${build.dist}/${ceylon.module-resolver-javascript.dir}" />
 
@@ -75,8 +75,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-resolver-javascript"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver-javascript.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.module-resolver-javascript"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.module-resolver-javascript.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

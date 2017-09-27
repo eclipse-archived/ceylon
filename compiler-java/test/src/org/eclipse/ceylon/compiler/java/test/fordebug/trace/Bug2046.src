@@ -1,0 +1,30 @@
+package org.eclipse.ceylon.compiler.java.test.fordebug.trace;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug2046_ {
+    
+    private bug2046_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug2046() {
+        (
+            let
+            {
+                .ceylon.language.Iterable arg$0$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(2.0), .ceylon.language.Float.instance(3.0), .ceylon.language.Float.instance(4.0));
+                .java.lang.String arg$0$1 = .ceylon.language.printAll_.printAll$separator(arg$0$0);
+                .ceylon.language.printAll_.printAll(arg$0$0, arg$0$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.fordebug.trace.bug2046_.bug2046();
+    }
+}

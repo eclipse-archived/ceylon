@@ -3,15 +3,16 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.compiler.js.JsCompiler;
-import com.redhat.ceylon.compiler.js.loader.JsModuleManagerFactory;
-import com.redhat.ceylon.compiler.js.util.Options;
-import com.redhat.ceylon.compiler.typechecker.TypeChecker;
-import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
-import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
-import com.redhat.ceylon.model.typechecker.context.TypeCache;
+import org.eclipse.ceylon.cmr.api.RepositoryManager;
+import org.eclipse.ceylon.cmr.ceylon.CeylonUtils;
+import org.eclipse.ceylon.compiler.typechecker.TypeChecker;
+import org.eclipse.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import org.eclipse.ceylon.compiler.typechecker.context.PhasedUnit;
+import org.eclipse.ceylon.model.typechecker.context.TypeCache;
+
+import org.eclipse.ceylon.compiler.js.JsCompiler;
+import org.eclipse.ceylon.compiler.js.loader.JsModuleManagerFactory;
+import org.eclipse.ceylon.compiler.js.util.Options;
 
 /**
  * Some hack before a proper unit test harness is put in place

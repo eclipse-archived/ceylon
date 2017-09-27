@@ -1,0 +1,23 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug63xx;
+
+public class Bug6323 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6323ParserDefinition, .java.io.Serializable {
+    
+    public Bug6323() {
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6323CeylonFile createFile(final .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6323FileViewProvider arg0) {
+        return new .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6323CeylonFile(arg0);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6323();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6323.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6323.class);
+}

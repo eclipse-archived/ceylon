@@ -84,7 +84,7 @@
         <pathelement path="${basedir}/../compiler-js/build/lib/compiler.js.test.jar"/>
     </path>
 
-    <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+    <typedef resource="org/eclipse/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
 
     <!-- ################################################################## -->
     <!-- constant to declare a file binary for checksumsum -->
@@ -219,8 +219,8 @@
 
     <target name="generate.sources.java">
         <!-- Short -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/ShortArray.java"
+        <copy file="template/org/eclipse/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/org/eclipse/ceylon/compiler/java/language/ShortArray.java"
             overwrite="true">
           <filterset>
             <filter token="Name" value="Short"/>
@@ -247,8 +247,8 @@
           </filterset>
         </copy>
         <!-- Int -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/IntArray.java"
+        <copy file="template/org/eclipse/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/org/eclipse/ceylon/compiler/java/language/IntArray.java"
             overwrite="true">
           <filterset>
             <filter token="Name" value="Int"/>
@@ -277,8 +277,8 @@
           </filterset>
         </copy>
         <!-- Long -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/LongArray.java"
+        <copy file="template/org/eclipse/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/org/eclipse/ceylon/compiler/java/language/LongArray.java"
             overwrite="true">
           <filterset>
             <filter token="Name" value="Long"/>
@@ -304,8 +304,8 @@
           </filterset>
         </copy>
         <!-- Byte -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/ByteArray.java"
+        <copy file="template/org/eclipse/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/org/eclipse/ceylon/compiler/java/language/ByteArray.java"
             overwrite="true">
           <filterset>
             <filter token="Name" value="Byte"/>
@@ -331,8 +331,8 @@
           </filterset>
         </copy>
         <!-- Boolean -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/BooleanArray.java"
+        <copy file="template/org/eclipse/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/org/eclipse/ceylon/compiler/java/language/BooleanArray.java"
             overwrite="true">
           <filterset>
             <filter token="Name" value="Boolean"/>
@@ -358,8 +358,8 @@
           </filterset>
         </copy>
         <!-- Character -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/CharArray.java"
+        <copy file="template/org/eclipse/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/org/eclipse/ceylon/compiler/java/language/CharArray.java"
             overwrite="true">
           <filterset>
             <filter token="Name" value="Char"/>
@@ -383,8 +383,8 @@
           </filterset>
         </copy>
         <!-- Float -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/FloatArray.java"
+        <copy file="template/org/eclipse/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/org/eclipse/ceylon/compiler/java/language/FloatArray.java"
             overwrite="true">
           <filterset>
             <filter token="Name" value="Float"/>
@@ -410,8 +410,8 @@
           </filterset>
         </copy>
         <!-- Double -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/DoubleArray.java"
+        <copy file="template/org/eclipse/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/org/eclipse/ceylon/compiler/java/language/DoubleArray.java"
             overwrite="true">
           <filterset>
             <filter token="Name" value="Double"/>
@@ -437,8 +437,8 @@
           </filterset>
         </copy>
         <!-- Object -->
-        <!--<copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/ObjectArray.java">
+        <!--<copy file="template/org/eclipse/ceylon/compiler/java/language/PrimitiveArray.java" 
+            tofile="runtime/org/eclipse/ceylon/compiler/java/language/ObjectArray.java">
           <filterset>
             <filter token="Name" value="Object"/>
             <filter token="Classname" value="ObjectArray"/>
@@ -487,7 +487,7 @@
             <javacoption>-g</javacoption>
             <files>
                 <include name="**/*.ceylon"/>
-                <include name="com/redhat/**/*.java"/>
+                <include name="org/eclipse/**/*.java"/>
                 <!-- We swap the nativily implemented files for their Java counter parts -->
                 <exclude name="ceylon/language/Array.ceylon"/>
                 <include name="ceylon/language/Array.java"/>
@@ -551,7 +551,7 @@
     <!-- generate the ceylon.language.js file -->
     <target name="ceylon.language.js">
         <mkdir dir="${ceylon.language.dist}"/>
-        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true" failonerror="yes">
+        <java classname="org.eclipse.ceylon.compiler.js.Stitcher" classpathref="js.compiler.classpath" fork="true" failonerror="yes">
             <sysproperty key="ceylon.cache.repo" value="${ceylon.cache.repo}" />
             <arg value="${runtime-js.src}/MASTER.txt" />
             <arg value="${build.dist.repo}/${ceylon.language.js}" />

@@ -1,0 +1,15 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug02xx;
+
+class Main implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Main() {
+        .ceylon.language.print_.print(.ceylon.language.String.instance("first"));
+        final .java.lang.String s = "second";
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Main.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Main.class);
+}

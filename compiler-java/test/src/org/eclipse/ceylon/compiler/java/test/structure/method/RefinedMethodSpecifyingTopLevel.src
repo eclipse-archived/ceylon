@@ -1,0 +1,43 @@
+package org.eclipse.ceylon.compiler.java.test.structure.method;
+
+final class foo_ {
+    
+    private foo_() {
+    }
+    
+    static long foo(final boolean b) {
+        return 2L;
+    }
+}
+class RefinedMethodSpecifyingTopLevel implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RefinedMethodSpecifyingTopLevel() {
+    }
+    
+    public long f(final boolean b) {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel.class);
+}
+class RefinedMethodSpecifyingTopLevelSub extends .org.eclipse.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevel {
+    
+    RefinedMethodSpecifyingTopLevelSub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final long f(final boolean b) {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.foo_.foo(b);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevelSub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.RefinedMethodSpecifyingTopLevelSub.class);
+}

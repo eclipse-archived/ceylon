@@ -1,0 +1,5 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+interface Interface {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.Interface.class);
+}

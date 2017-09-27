@@ -1,0 +1,212 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+public interface Cloneable<Clone extends .org.eclipse.ceylon.compiler.java.test.annotations.Cloneable<? extends Clone>> {
+    
+    public abstract Clone getClone();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface Quoting$annotation$ {
+    
+    public abstract .java.lang.String string();
+    
+    public abstract .java.lang.String $toString();
+    
+    public abstract long hash();
+    
+    public abstract long $hashCode();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface Quoting$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.Quoting$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({
+        "ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::Quoting,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>",
+        "org.eclipse.ceylon.compiler.java.test.annotations::Cloneable<org.eclipse.ceylon.compiler.java.test.annotations::Quoting>"})
+final class Quoting implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.Quoting, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .org.eclipse.ceylon.compiler.java.test.annotations.Cloneable<.org.eclipse.ceylon.compiler.java.test.annotations.Quoting>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Quoting() {
+        super();
+        this.string = null;
+        this.toString = null;
+        this.hash = 0L;
+        this.hashCode = 0L;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    Quoting(.org.eclipse.ceylon.compiler.java.test.annotations.Quoting$annotation$ anno) {
+        this(anno.string(), anno.toString(), anno.hash(), anno.hashCode());
+    }
+    
+    Quoting(@.org.eclipse.ceylon.compiler.java.metadata.Name("string")
+    @.org.eclipse.ceylon.common.NonNull
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    final .java.lang.String string, @.org.eclipse.ceylon.compiler.java.metadata.Name("toString")
+    @.org.eclipse.ceylon.common.NonNull
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .java.lang.String toString, @.org.eclipse.ceylon.compiler.java.metadata.Name("hash")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    final long hash, @.org.eclipse.ceylon.compiler.java.metadata.Name("hashCode")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final long hashCode) {
+        this.string = string;
+        this.toString = toString;
+        this.hash = hash;
+        this.hashCode = hashCode;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String string;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String toString() {
+        return this.string;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String toString;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getToString() {
+        return this.toString;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final long hash;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$0 = this.hash;
+            }
+            returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
+        );
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final long hashCode;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final long getHashCode() {
+        return this.hashCode;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.annotations::Quoting",
+            erased = true,
+            untrusted = true)
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public final .org.eclipse.ceylon.compiler.java.test.annotations.Quoting getClone() {
+        return (.org.eclipse.ceylon.compiler.java.test.annotations.Quoting)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Quoting.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Quoting.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Quoting$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                -32768,
+                -32768,
+                -32768,
+                -32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.Quoting.class)
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({
+        @.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+                name = "$arg$string",
+                value = ""),
+        @.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+                name = "$arg$toString",
+                value = "")})
+@.org.eclipse.ceylon.compiler.java.metadata.IntegerExprs({
+        @.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+                name = "$arg$hash",
+                value = -1L),
+        @.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+                name = "$arg$hashCode",
+                value = 0L)})
+final class quoting_ {
+    
+    private quoting_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::Quoting")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.Quoting quoting() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.Quoting("", "", -1L, 0L);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                0,
+                1,
+                2,
+                3},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.Quoting.class)
+final class quoting2_ {
+    
+    private quoting2_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::Quoting")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.Quoting quoting2(@.org.eclipse.ceylon.compiler.java.metadata.Name("string")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String string, @.org.eclipse.ceylon.compiler.java.metadata.Name("toString")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String toString, @.org.eclipse.ceylon.compiler.java.metadata.Name("hash")
+    final long hash, @.org.eclipse.ceylon.compiler.java.metadata.Name("hashCode")
+    final long hashCode) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.Quoting(string, toString, hash, hashCode);
+    }
+}

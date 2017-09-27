@@ -1,0 +1,11 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1767;
+
+final class bug1767_ {
+    
+    private bug1767_() {
+    }
+    
+    static void bug1767() {
+        new .org.eclipse.ceylon.compiler.typechecker.parser.CeylonParser(null).isCondition();
+    }
+}

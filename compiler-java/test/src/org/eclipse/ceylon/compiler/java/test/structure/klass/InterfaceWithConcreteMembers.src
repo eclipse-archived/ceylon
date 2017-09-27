@@ -1,0 +1,76 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+interface InterfaceWithConcreteMembers {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $org$eclipse$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$impl();
+    
+    public long foo(final boolean b);
+    
+    public long foo2(final boolean b);
+    
+    public long getBar();
+    
+    public long getBar2();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers.class);
+}
+final class InterfaceWithConcreteMembers$impl implements .java.io.Serializable {
+    
+    InterfaceWithConcreteMembers$impl(.org.eclipse.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers $this;
+    
+    public long foo(final boolean b) {
+        return 1L;
+    }
+    
+    public long foo2(final boolean b) {
+        return 1L;
+    }
+    
+    public final long getBar() {
+        return 1L;
+    }
+    
+    public final long getBar2() {
+        return 1L;
+    }
+}
+class InterfaceWithConcreteMembersImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers, .java.io.Serializable {
+    
+    InterfaceWithConcreteMembersImpl() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $org$eclipse$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers$impl $org$eclipse$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$;
+    }
+    
+    @.java.lang.Override
+    public long getBar() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.getBar();
+    }
+    
+    @.java.lang.Override
+    public long getBar2() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.getBar2();
+    }
+    
+    @.java.lang.Override
+    public long foo(final boolean b) {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.foo(b);
+    }
+    
+    @.java.lang.Override
+    public long foo2(final boolean b) {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$InterfaceWithConcreteMembers$this$.foo2(b);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl.class);
+}

@@ -1,0 +1,19 @@
+package org.eclipse.ceylon.compiler.java.test.expression.operator;
+
+public final class Bug6650 {
+    
+    private Bug6650() {
+    }
+}
+final class bug6650_ {
+    
+    private bug6650_() {
+    }
+    
+    static void bug6650() {
+        final .java.util.function.BiFunction<.java.lang.Integer, .java.lang.Integer, .ceylon.language.Boolean> filterPredicate = (.java.util.function.BiFunction<.java.lang.Integer, .java.lang.Integer, .ceylon.language.Boolean>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .java.lang.Integer element = new .java.lang.Integer(0);
+        if (!.org.eclipse.ceylon.compiler.java.Util.checkNull(filterPredicate.apply(element, element)).booleanValue()) {
+        }
+    }
+}

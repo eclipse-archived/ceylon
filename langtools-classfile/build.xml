@@ -11,7 +11,7 @@
     <property name="classfile.src" location="src" />
 
     <!-- Jarfiles everything ends up in -->
-    <property name="ceylon.classfile.src" value="${ceylon.classfile.dir}/com.redhat.ceylon.langtools.classfile-${module.com.redhat.ceylon.langtools.classfile.version}.src" />
+    <property name="ceylon.classfile.src" value="${ceylon.classfile.dir}/org.eclipse.ceylon.langtools.classfile-${module.org.eclipse.ceylon.langtools.classfile.version}.src" />
     <property name="ceylon.classfile.repo" value="${ceylon.repo.dir}/${ceylon.classfile.dir}" />
     <property name="ceylon.classfile.dist" value="${build.dist.repo}/${ceylon.classfile.dir}" />
 
@@ -81,18 +81,18 @@
         <mkdir dir="${build.classes}" />
         <javac srcdir="${classfile.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="classfile.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
             <compilerarg value="-XDignore.symbol.file" />
-            <include name="com/redhat/**" />
+            <include name="org/eclipse/**" />
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${classfile.src}">
-                <exclude name="com/redhat/**/*.utf8properties" />
-                <include name="com/redhat/**/resources/**" />
-                <include name="com/redhat/**/*.properties" />
+                <exclude name="org/eclipse/**/*.utf8properties" />
+                <include name="org/eclipse/**/resources/**" />
+                <include name="org/eclipse/**/*.properties" />
                 <include name="META-INF/**" />
             </fileset>
         </copy>
         <native2ascii dest="${build.classes}" src="${classfile.src}" encoding="UTF-8" ext=".properties">
-            <include name="com/redhat/**/*.utf8properties" />
+            <include name="org/eclipse/**/*.utf8properties" />
         </native2ascii>
     </target>
 
@@ -104,8 +104,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.langtools.classfile"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.langtools.classfile.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.langtools.classfile"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.langtools.classfile.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

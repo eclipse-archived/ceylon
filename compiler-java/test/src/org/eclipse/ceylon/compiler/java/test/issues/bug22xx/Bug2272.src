@@ -1,0 +1,115 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug22xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1$1Local"})
+class Bug2272 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2272() {
+        final .ceylon.language.Callable<? extends .java.lang.Object> local1 = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#1") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#1")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .java.lang.Object $call$() {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("Local")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                class Local implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Local() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2272.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
+                    }
+                }
+                return null;
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2272.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2272.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("bug2272")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1$1PackageLocal"})
+final class bug2272_ {
+    
+    private bug2272_() {
+    }
+    private static final .ceylon.language.Callable<? extends .java.lang.Object> $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+            @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+            @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0")
+            @.org.eclipse.ceylon.compiler.java.metadata.Method
+            {
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$() {
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                            major = 8,
+                            minor = 1)
+                    @.org.eclipse.ceylon.compiler.java.metadata.Name("PackageLocal")
+                    @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(
+                            isPackageLocal = true,
+                            qualifier = "1bug2272$1")
+                    class PackageLocal implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                        
+                        PackageLocal() {
+                        }
+                        
+                        @.java.lang.Override
+                        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(PackageLocal.class);
+                        }
+                    }
+                    return null;
+                }
+            };
+            .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.bug2272_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.bug2272_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
+    public static .ceylon.language.Callable<? extends .java.lang.Object> get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.bug2272_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.bug2272_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2272\' before it was set");
+        }
+    }
+}

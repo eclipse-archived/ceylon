@@ -1,0 +1,60 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug15xx;
+
+interface Buffer<X> {
+}
+interface OutStream<T> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OutStream$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug15xx$OutStream$impl();
+    
+    public <BT extends .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Buffer<T>>void writeFrom(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$BT);
+}
+final class OutStream$impl<T> implements .java.io.Serializable {
+    
+    OutStream$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OutStream<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OutStream<T> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public <BT extends .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Buffer<T>>void writeFrom(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$BT) {
+    }
+}
+class OpenFileImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    OpenFileImpl() {
+    }
+    
+    class UnbufferedOutstreamImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OutStream<.ceylon.language.Integer>, .java.io.Serializable {
+        
+        UnbufferedOutstreamImpl() {
+            this.$org$eclipse$ceylon$compiler$java$test$issues$bug15xx$OutStream$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OutStream$impl<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, this);
+        }
+        protected final .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OutStream$impl<.ceylon.language.Integer> $org$eclipse$ceylon$compiler$java$test$issues$bug15xx$OutStream$this$;
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OutStream$impl<.ceylon.language.Integer> $org$eclipse$ceylon$compiler$java$test$issues$bug15xx$OutStream$impl() {
+            return $org$eclipse$ceylon$compiler$java$test$issues$bug15xx$OutStream$this$;
+        }
+        
+        @.java.lang.Override
+        public final <BT extends .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Buffer<.ceylon.language.Integer>>void writeFrom(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$BT) {
+            $org$eclipse$ceylon$compiler$java$test$issues$bug15xx$OutStream$this$.writeFrom($reified$BT);
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OpenFileImpl.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OpenFileImpl.UnbufferedOutstreamImpl.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OpenFileImpl.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.OpenFileImpl.class);
+}

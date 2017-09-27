@@ -1,0 +1,80 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug19xx;
+
+interface Itrator<T> {
+}
+interface Itrable<T> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug19xx$Itrable$impl();
+    
+    public .java.lang.Object getIndexed();
+}
+final class Itrable$impl<T> implements .java.io.Serializable {
+    
+    Itrable$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable<T> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public final .java.lang.Object getIndexed() {
+        return (
+            let
+            {
+                
+                class anonymous_0_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable<T> {
+                    
+                    private anonymous_0_() {
+                        this.$org$eclipse$ceylon$compiler$java$test$issues$bug19xx$Itrable$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl<T>($reified$T, this);
+                    }
+                    
+                    public final .java.lang.Object iterator() {
+                        return (
+                            let
+                            {
+                                
+                                class anonymous_1_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrator<T> {
+                                    
+                                    private anonymous_1_() {
+                                    }
+                                    
+                                    @.java.lang.Override
+                                    public final .java.lang.String toString() {
+                                        return anonymous_0_.this.toString();
+                                    }
+                                    
+                                    @.java.lang.Override
+                                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable.class, .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("indexed")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("iterator")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_1_.class));
+                                    }
+                                }
+                            }
+                            returning new anonymous_1_();
+                        );
+                    }
+                    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug19xx$Itrable$this$;
+                    
+                    @.java.lang.Override
+                    public .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug19xx$Itrable$impl() {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug19xx$Itrable$this$;
+                    }
+                    
+                    @.java.lang.Override
+                    public final .java.lang.Object getIndexed() {
+                        return $org$eclipse$ceylon$compiler$java$test$issues$bug19xx$Itrable$this$.getIndexed();
+                    }
+                    
+                    @.java.lang.Override
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable.class, .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Itrable$impl.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("indexed")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+}

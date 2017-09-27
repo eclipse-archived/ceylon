@@ -1,0 +1,36 @@
+package org.eclipse.ceylon.compiler.java.test.fordebug.trace;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug2047_ {
+    
+    private bug2047_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug2047() {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> f = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1)
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0")
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String name = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(.ceylon.language.String.getUppercased(name));
+            }
+        };
+        final .java.lang.String string;
+        string = f.$call$((.java.lang.Object).ceylon.language.String.instance("hello")).toString();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.fordebug.trace.bug2047_.bug2047();
+    }
+}

@@ -1,4 +1,4 @@
-package com.redhat.ceylon.dist.osgi;
+package org.eclipse.ceylon.dist.osgi;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -21,16 +21,16 @@ import org.osgi.framework.Version;
 import org.osgi.framework.wiring.BundleWire;
 import org.osgi.framework.wiring.BundleWiring;
 
-import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.Exclusion;
-import com.redhat.ceylon.model.cmr.ModuleScope;
-import com.redhat.ceylon.model.cmr.PathFilter;
-import com.redhat.ceylon.model.cmr.Repository;
-import com.redhat.ceylon.model.cmr.RepositoryException;
-import com.redhat.ceylon.model.cmr.VisibilityType;
-import com.redhat.ceylon.model.loader.ContentAwareArtifactResult;
+import org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import org.eclipse.ceylon.model.cmr.ArtifactResult;
+import org.eclipse.ceylon.model.cmr.ArtifactResultType;
+import org.eclipse.ceylon.model.cmr.Exclusion;
+import org.eclipse.ceylon.model.cmr.ModuleScope;
+import org.eclipse.ceylon.model.cmr.PathFilter;
+import org.eclipse.ceylon.model.cmr.Repository;
+import org.eclipse.ceylon.model.cmr.RepositoryException;
+import org.eclipse.ceylon.model.cmr.VisibilityType;
+import org.eclipse.ceylon.model.loader.ContentAwareArtifactResult;
 
 public class Activator implements BundleActivator {
 
@@ -68,8 +68,8 @@ public class Activator implements BundleActivator {
                 try {
                     Class<?> moduleClass = bundleClassLoader.loadClass(bundle.getSymbolicName() + ".$module_");
                     if (moduleClass != null) {
-                        com.redhat.ceylon.compiler.java.metadata.Module moduleAnnotation =
-                                moduleClass.getAnnotation(com.redhat.ceylon.compiler.java.metadata.Module.class);
+                        org.eclipse.ceylon.compiler.java.metadata.Module moduleAnnotation =
+                                moduleClass.getAnnotation(org.eclipse.ceylon.compiler.java.metadata.Module.class);
                         if (moduleAnnotation != null) {
                             String ceylonVersion = moduleAnnotation.version();
                             if (ceylonVersion != null) {
@@ -125,7 +125,7 @@ public class Activator implements BundleActivator {
             List<ArtifactResult> results = new ArrayList<>();
             BundleWiring wiring = bundle.adapt(BundleWiring.class);
             for (BundleWire dep : wiring.getRequiredWires(null)) {
-                if (! "com.redhat.ceylon.dist".equals(dep.getProviderWiring().getBundle().getSymbolicName())) {
+                if (! "org.eclipse.ceylon.dist".equals(dep.getProviderWiring().getBundle().getSymbolicName())) {
                     results.add(new BundleArtifactResult(dep.getProviderWiring().getBundle()));
                 }
             }

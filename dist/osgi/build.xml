@@ -8,23 +8,23 @@
     <property name="name" value="Ceylon distribution OSGI bundle" />
     <property name="ceylon.repo.dir" location="${user.home}/.ceylon/repo" />
     <property name="ceylon.cache.repo" location="${user.home}/.ceylon/cache"/>
-    <property name="ceylon.common.dir" value="com/redhat/ceylon/common/${module.com.redhat.ceylon.common.version}" />
-    <property name="ceylon.common.jar" value="${ceylon.common.dir}/com.redhat.ceylon.common-${module.com.redhat.ceylon.common.version}.jar" />
+    <property name="ceylon.common.dir" value="org/eclipse/ceylon/common/${module.org.eclipse.ceylon.common.version}" />
+    <property name="ceylon.common.jar" value="${ceylon.common.dir}/org.eclipse.ceylon.common-${module.org.eclipse.ceylon.common.version}.jar" />
     <property name="ceylon.common.lib" location="${ceylon.repo.dir}/${ceylon.common.jar}" />
-    <property name="ceylon.model.dir" value="com/redhat/ceylon/model/${module.com.redhat.ceylon.model.version}" />
-    <property name="ceylon.model.jar" value="${ceylon.model.dir}/com.redhat.ceylon.model-${module.com.redhat.ceylon.model.version}.jar" />
+    <property name="ceylon.model.dir" value="org/eclipse/ceylon/model/${module.org.eclipse.ceylon.model.version}" />
+    <property name="ceylon.model.jar" value="${ceylon.model.dir}/org.eclipse.ceylon.model-${module.org.eclipse.ceylon.model.version}.jar" />
     <property name="ceylon.model.lib" location="${ceylon.repo.dir}/${ceylon.model.jar}" />
-    <property name="ceylon.typechecker.dir" value="com/redhat/ceylon/typechecker/${module.com.redhat.ceylon.typechecker.version}" />
-    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.jar" />
+    <property name="ceylon.typechecker.dir" value="org/eclipse/ceylon/typechecker/${module.org.eclipse.ceylon.typechecker.version}" />
+    <property name="ceylon.typechecker.jar" value="${ceylon.typechecker.dir}/org.eclipse.ceylon.typechecker-${module.org.eclipse.ceylon.typechecker.version}.jar" />
     <property name="ceylon.typechecker.lib" location="${ceylon.repo.dir}/${ceylon.typechecker.jar}" />
     <property name="ceylon.language.dir" value="ceylon/language/${module.ceylon.language.version}" />
     <property name="ceylon.language.car" value="${ceylon.language.dir}/ceylon.language-${module.ceylon.language.version}.car" />
     <property name="ceylon.language.lib" location="${ceylon.repo.dir}/${ceylon.language.car}" />
-    <property name="ceylon.module-resolver.dir" value="com/redhat/ceylon/module-resolver/${module.com.redhat.ceylon.module-resolver.version}" />
-    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/com.redhat.ceylon.module-resolver-${module.com.redhat.ceylon.module-resolver.version}.jar" />
+    <property name="ceylon.module-resolver.dir" value="org/eclipse/ceylon/module-resolver/${module.org.eclipse.ceylon.module-resolver.version}" />
+    <property name="ceylon.module-resolver.jar" value="${ceylon.module-resolver.dir}/org.eclipse.ceylon.module-resolver-${module.org.eclipse.ceylon.module-resolver.version}.jar" />
     <property name="ceylon.module-resolver.lib" location="${ceylon.repo.dir}/${ceylon.module-resolver.jar}" />
-    <property name="ceylon.compiler.dir" value="com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}" />
-    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar" />
+    <property name="ceylon.compiler.dir" value="org/eclipse/ceylon/compiler/java/${module.org.eclipse.ceylon.compiler.version}" />
+    <property name="ceylon.compiler.jar" value="${ceylon.compiler.dir}/org.eclipse.ceylon.compiler.java-${module.org.eclipse.ceylon.compiler.version}.jar" />
     <property name="ceylon.compiler.lib" location="${ceylon.repo.dir}/${ceylon.compiler.jar}" />
     <property name="ceylon.bootstrap.dir" value="ceylon/bootstrap/${module.ceylon.bootstrap.version}" />
     <property name="ceylon.bootstrap.jar" value="${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.jar" />
@@ -42,8 +42,8 @@
       <tstamp>
           <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
       </tstamp>        
-    <property name="ceylon.dist.osgi.jar" value="com.redhat.ceylon.dist_${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}.jar" />
-    <property name="ceylon.dist.osgi.repo.jar" value="com.redhat.ceylon.dist.repo_${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}.jar" />
+    <property name="ceylon.dist.osgi.jar" value="org.eclipse.ceylon.dist_${module.org.eclipse.ceylon.dist.osgi.osgi.version}-${qualifier}.jar" />
+    <property name="ceylon.dist.osgi.repo.jar" value="org.eclipse.ceylon.dist.repo_${module.org.eclipse.ceylon.dist.osgi.osgi.version}-${qualifier}.jar" />
     <property name="p2" location="${basedir}/p2" />
     <property name="karaf" location="${basedir}/karaf" />
     <property name="repoDir" location="${basedir}/embeddedRepository" />
@@ -81,7 +81,7 @@
         <pathelement path="${ceylon.ant.lib}"/>
     </path>
     
-    <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+    <typedef resource="org/eclipse/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
 
     <!-- ################################################################## -->
 
@@ -190,7 +190,7 @@
             </filterset>
         </copy>
         <ceylon-import-jar 
-            module="com.redhat.ceylon.dist/${module.com.redhat.ceylon.dist.osgi.version}" 
+            module="org.eclipse.ceylon.dist/${module.org.eclipse.ceylon.dist.osgi.version}" 
             jar="${build}/${ceylon.dist.osgi.jar}" 
             descriptor="${build}/module.properties"
             out="${repoDir}/repo"
@@ -242,13 +242,13 @@
     </target>
 
     <property name="osgiRuntimeBundles">
-        com.redhat.ceylon.dist
+        org.eclipse.ceylon.dist
         ceylon.bootstrap
         ceylon.language
-        com.redhat.ceylon.common
-        com.redhat.ceylon.model
-        com.redhat.ceylon.langtools.classfile
-        com.redhat.ceylon.module-resolver
+        org.eclipse.ceylon.common
+        org.eclipse.ceylon.model
+        org.eclipse.ceylon.langtools.classfile
+        org.eclipse.ceylon.module-resolver
     </property>
 
 	<target name="osgi" depends="clean,build" description="Create Ceylon Dist OSGI Bundle distribution" >
@@ -282,8 +282,8 @@
         </bindex>
         <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="ceylon.distribution.runtime"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.osgi.version}"/>
-            <property name="feature.version.ceylon" value="${module.com.redhat.ceylon.dist.osgi.version}"/>
+            <property name="feature.version" value="${module.org.eclipse.ceylon.dist.osgi.osgi.version}"/>
+            <property name="feature.version.ceylon" value="${module.org.eclipse.ceylon.dist.osgi.version}"/>
             <property name="includedBundles" value="${osgiRuntimeBundles}"/>
             <property name="xslFile" value="${karaf}/generateKarafRuntimeDistributionFeature.xsl"/>
             <property name="feature.dir" value="${build.dist}"/>
@@ -307,20 +307,20 @@
     <target name="osgi-p2" depends="osgi">
         <mkdir dir="${build.dist.features}"/>
         <ant target="generateFeatures" inheritall="true">
-            <property name="feature.id" value="com.redhat.ceylon.dist.runtime.feature"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
+            <property name="feature.id" value="org.eclipse.ceylon.dist.runtime.feature"/>
+            <property name="feature.version" value="${module.org.eclipse.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
             <property name="includedBundles" value="${osgiRuntimeBundles}"/>
             <property name="xslFile" value="${p2}/generateRuntimeDistributionFeature.xsl"/>
         </ant>
         <ant target="generateFeatures" inheritall="true">
-            <property name="feature.id" value="com.redhat.ceylon.dist.feature"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
+            <property name="feature.id" value="org.eclipse.ceylon.dist.feature"/>
+            <property name="feature.version" value="${module.org.eclipse.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
             <property name="includedBundles" value=""/>
             <property name="xslFile" value="${p2}/generateDistributionFeature.xsl"/>
         </ant>
         <ant target="generateFeatures" inheritall="true">
-            <property name="feature.id" value="com.redhat.ceylon.dist.dependencies.feature"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
+            <property name="feature.id" value="org.eclipse.ceylon.dist.dependencies.feature"/>
+            <property name="feature.version" value="${module.org.eclipse.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
             <property name="includedBundles" value=""/>
             <property name="xslFile" value="${p2}/generateFixedDependenciesFeature.xsl"/>
         </ant>
@@ -332,19 +332,19 @@
         	sysRep="${repoDir}/repo"
             out="${build.dist}"
         	repositoryName="Ceylon Distribution Bundles"
-            categoryPrefix="com.redhat.ceylon.dist"
+            categoryPrefix="org.eclipse.ceylon.dist"
             categories="${p2}/category.xml"
             fork="true">
-            <module name="com.redhat.ceylon.dist" version="${module.com.redhat.ceylon.dist.osgi.version}"/> 
-            <module name="com.redhat.ceylon.dist.repo" version="${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}"/> 
+            <module name="org.eclipse.ceylon.dist" version="${module.org.eclipse.ceylon.dist.osgi.version}"/> 
+            <module name="org.eclipse.ceylon.dist.repo" version="${module.org.eclipse.ceylon.dist.osgi.osgi.version}-${qualifier}"/> 
             <module name="ceylon.bootstrap" version="${module.ceylon.bootstrap.version}"/> 
             <module name="ceylon.runtime" version="${module.ceylon.runtime.version}"/> 
-            <module name="com.redhat.ceylon.tool.provider" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
-            <module name="com.redhat.ceylon.compiler.java" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
-            <module name="com.redhat.ceylon.compiler.js" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
-            <module name="com.redhat.ceylon.typechecker" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
-            <module name="com.redhat.ceylon.java.main" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
-            <module name="com.redhat.ceylon.tools" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.tool.provider" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.compiler.java" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.compiler.js" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.typechecker" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.java.main" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
+            <module name="org.eclipse.ceylon.tools" version="${module.org.eclipse.ceylon.dist.osgi.version}"/>
         </ceylon-p2>
     	<!--
         <exec dir="${basedir}" executable="eclipse" failonerror="true">
@@ -384,7 +384,7 @@
             <arg value="-categoryDefinition"/>
             <arg value="${categoryDefinition}"/>
             <arg value="-categoryQualifier"/>
-            <arg value="com.redhat.ceylon.dist"/>
+            <arg value="org.eclipse.ceylon.dist"/>
             <arg value="-vmargs"/>
         	<arg value="-Dorg.eclipse.equinox.simpleconfigurator.configUrl=${bundlesInfoUrl}"/>
             <arg value="-Dosgi.bundles=${bundlesToStart}"/>

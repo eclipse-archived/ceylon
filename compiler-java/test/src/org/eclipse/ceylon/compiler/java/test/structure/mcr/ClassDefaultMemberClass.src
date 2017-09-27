@@ -1,0 +1,71 @@
+package org.eclipse.ceylon.compiler.java.test.structure.mcr;
+
+class ClassDefaultMemberClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ClassDefaultMemberClass() {
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.Member Member$new$() {
+        return new Member();
+    }
+    
+    public class Member implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Member() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.Member.class));
+        }
+    }
+    
+    public final void m1(final .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass qual) {
+        Member$new$();
+        Member$new$();
+        qual.Member$new$();
+        qual.Member$new$();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.class);
+}
+class ClassDefaultMemberClass_sub extends .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass {
+    
+    ClassDefaultMemberClass_sub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.Member Member$new$() {
+        return new Member();
+    }
+    
+    public class Member extends .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass.Member {
+        
+        protected Member() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.Member.class));
+        }
+    }
+    
+    public final void m2(final .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub qual) {
+        Member$new$();
+        Member$new$();
+        qual.Member$new$();
+        qual.Member$new$();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClass_sub.class);
+}

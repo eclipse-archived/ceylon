@@ -1,0 +1,14 @@
+package org.eclipse.ceylon.compiler.java.test.structure.alias;
+
+final class classAliasFromModelLoader_ {
+    
+    private classAliasFromModelLoader_() {
+    }
+    
+    static void classAliasFromModelLoader() {
+        final .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo a = new .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAlias_Foo();
+        final .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo b = new .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo(1L, "a");
+        final .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> c = new .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+        final .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> d = new .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+    }
+}

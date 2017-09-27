@@ -1,0 +1,57 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug69xx;
+
+public class Bug6997FirstClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug6997FirstClass() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997FirstClass();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997FirstClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997FirstClass.class);
+}
+public class Bug6997SecondClass extends .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997FirstClass {
+    private static final .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.$delegation$ $delegation$ = null;
+    
+    private static final class $delegation$ {
+        
+        $delegation$() {
+        }
+    }
+    
+    private Bug6997SecondClass(.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.$delegation$ $name$) {
+        super();
+    }
+    
+    public Bug6997SecondClass() {
+        this(.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.$delegation$);
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.secondConstructor_ secondConstructor_ = null;
+    
+    public static final class secondConstructor_ {
+        
+        secondConstructor_() {
+        }
+    }
+    
+    public Bug6997SecondClass(.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.secondConstructor_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.$delegation$);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6997SecondClass.class);
+}

@@ -1,0 +1,283 @@
+package org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.javax.xml.bind.annotation.XmlAccessorType
+@.ceylon.language.SharedAnnotation$annotation$
+public class EnabledByXmlAccessorType implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public EnabledByXmlAccessorType() {
+        super();
+        this.s = null;
+    }
+    
+    public EnabledByXmlAccessorType(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.String s) {
+        this.s = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$0 = s;
+            }
+            returning $ceylontmp$0 == null ? null : $ceylontmp$0.toString();
+        );
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .java.lang.String s;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public .ceylon.language.String getS() {
+        return this.s == null ? null : .ceylon.language.String.instance(this.s);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.EnabledByXmlAccessorType.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.EnabledByXmlAccessorType.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.javax.persistence.Entity
+@.ceylon.language.SharedAnnotation$annotation$
+public class EnabledByEntity implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public EnabledByEntity() {
+        super();
+        this.s = null;
+    }
+    
+    public EnabledByEntity(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.String s) {
+        this.s = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$1 = s;
+            }
+            returning $ceylontmp$1 == null ? null : $ceylontmp$1.toString();
+        );
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .java.lang.String s;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public .ceylon.language.String getS() {
+        return this.s == null ? null : .ceylon.language.String.instance(this.s);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.EnabledByEntity.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.EnabledByEntity.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+public class EnabledByCtorInject implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public EnabledByCtorInject() {
+        super();
+        this.s = null;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .java.lang.String s;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public .ceylon.language.String getS() {
+        return this.s == null ? null : .ceylon.language.String.instance(this.s);
+    }
+    
+    @.javax.inject.Inject
+    @.ceylon.language.SharedAnnotation$annotation$
+    public EnabledByCtorInject(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String s$param$) {
+        this.s = "";
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.EnabledByCtorInject.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.EnabledByCtorInject.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public class EnabledByAttrInject implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public EnabledByAttrInject() {
+        super();
+        this.s = null;
+    }
+    
+    public EnabledByAttrInject(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.String s) {
+        this.s = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$2 = s;
+            }
+            returning $ceylontmp$2 == null ? null : $ceylontmp$2.toString();
+        );
+    }
+    @.javax.inject.Inject
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .java.lang.String s;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public .ceylon.language.String getS() {
+        return this.s == null ? null : .ceylon.language.String.instance(this.s);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.EnabledByAttrInject.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.EnabledByAttrInject.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public class EnabledByMethodInject implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public EnabledByMethodInject() {
+        super();
+        this.s = null;
+    }
+    
+    public EnabledByMethodInject(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.String s) {
+        this.s = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$3 = s;
+            }
+            returning $ceylontmp$3 == null ? null : $ceylontmp$3.toString();
+        );
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .java.lang.String s;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public .ceylon.language.String getS() {
+        return this.s == null ? null : .ceylon.language.String.instance(this.s);
+    }
+    
+    @.javax.inject.Inject
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    @.org.eclipse.ceylon.common.NonNull
+    public .java.lang.String m() {
+        return (
+            let
+            {
+                .ceylon.language.String $ceylontmp$4 = getS();
+            }
+            returning $ceylontmp$4 != null ? $ceylontmp$4 : .ceylon.language.String.instance("");
+        ).toString();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.EnabledByMethodInject.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.EnabledByMethodInject.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public class Disabled implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Disabled() {
+        super();
+        this.s = null;
+    }
+    
+    public Disabled(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.String s) {
+        this.s = s;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .ceylon.language.String s;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public final .ceylon.language.String getS() {
+        return this.s;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.Disabled.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.ee.enabledClass.Disabled.class);
+}

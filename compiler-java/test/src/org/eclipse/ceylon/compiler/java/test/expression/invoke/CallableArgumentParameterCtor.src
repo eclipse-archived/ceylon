@@ -1,0 +1,34 @@
+package org.eclipse.ceylon.compiler.java.test.expression.invoke;
+
+final class callableArgumentParameterCtor_f {
+    
+    private callableArgumentParameterCtor_f() {
+    }
+    
+    static <T>void callableArgumentParameterCtor_f(final T t) {
+    }
+}
+class CallableArgumentParameterCtor {
+    
+    CallableArgumentParameterCtor(.java.lang.String s) {
+    }
+}
+final class callableArgumentParameterCtor_m {
+    
+    private callableArgumentParameterCtor_m() {
+    }
+    
+    static void callableArgumentParameterCtor_m() {
+        .org.eclipse.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterCtor_f.<.ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.expression.invoke.C>>callableArgumentParameterCtor_f(new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterCtor>("Callable<Anything,String>") {
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterCtor $call(.java.lang.String arg0) {
+                return new .org.eclipse.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterCtor((.java.lang.String)arg0);
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.expression.invoke.callableArgumentParameterCtor_m.callableArgumentParameterCtor_m();
+    }
+}

@@ -1,0 +1,37 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug11xx;
+
+class Bug1161 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1161() {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1161.objectMember_ objectMember = new .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1161.objectMember_();
+    }
+    
+    final class objectMember_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private objectMember_() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1161.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1161.objectMember_.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1161.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1161.class);
+}
+class Bug1161_sub extends .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1161 {
+    
+    Bug1161_sub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1161_sub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1161_sub.class);
+}

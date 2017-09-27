@@ -1,16 +1,16 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Class;
-import com.redhat.ceylon.compiler.java.metadata.Defaulted;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
-import com.redhat.ceylon.compiler.java.metadata.Transient;
-import com.redhat.ceylon.compiler.java.metadata.ValueType;
-import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import org.eclipse.ceylon.compiler.java.Util;
+import org.eclipse.ceylon.compiler.java.metadata.Ceylon;
+import org.eclipse.ceylon.compiler.java.metadata.Class;
+import org.eclipse.ceylon.compiler.java.metadata.Defaulted;
+import org.eclipse.ceylon.compiler.java.metadata.Ignore;
+import org.eclipse.ceylon.compiler.java.metadata.Name;
+import org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes;
+import org.eclipse.ceylon.compiler.java.metadata.Transient;
+import org.eclipse.ceylon.compiler.java.metadata.ValueType;
+import org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType;
+import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
 @SatisfiedTypes({

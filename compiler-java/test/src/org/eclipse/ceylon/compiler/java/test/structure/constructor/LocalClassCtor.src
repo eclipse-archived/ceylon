@@ -1,0 +1,59 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+final class localClassCtor_ {
+    
+    private localClassCtor_() {
+    }
+    
+    static void localClassCtor(final long i) {
+        
+        abstract class LocalClassCtor implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            private LocalClassCtor(final long j$param$) {
+                final long sum;
+                sum = i + j$param$;
+            }
+            
+            class other_ {
+                
+                other_() {
+                }
+            }
+            
+            private LocalClassCtor(LocalClassCtor.other_ $name$, final long j$param$) {
+                final long sum;
+                sum = i + j$param$;
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.localClassCtor_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClassCtor.class));
+            }
+        }
+        
+        class LocalClassCtorSub extends LocalClassCtor {
+            
+            private LocalClassCtorSub(final long j$param$) {
+                super(j$param$);
+            }
+            
+            class other_ {
+                
+                other_() {
+                }
+            }
+            
+            private LocalClassCtorSub(LocalClassCtorSub.other_ $name$, final long j$param$) {
+                super((LocalClassCtor.other_)null, j$param$);
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.localClassCtor_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClassCtorSub.class));
+            }
+        }
+        new LocalClassCtorSub(0L);
+        new LocalClassCtorSub(0L);
+        new LocalClassCtorSub((LocalClassCtorSub.other_)null, 0L);
+    }
+}

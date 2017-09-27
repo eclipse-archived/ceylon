@@ -1,0 +1,240 @@
+package org.eclipse.ceylon.compiler.java.test.expression.operator;
+
+class SpreadOptimization implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SpreadOptimization() {
+    }
+    
+    public final void spreadListIntoEnum() {
+        final .ceylon.language.List<? extends .ceylon.language.String> list = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c")});
+        .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> it = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, list);
+        long lhs$0 = it.getSize();
+        long rhs$1 = 3L;
+        if (lhs$0 == rhs$1) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.size == 3") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
+        }
+        if (!it.longerThan(4L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.longerThan(4)"));
+        }
+        if (it.shorterThan(4L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.shorterThan(4)"));
+        }
+        if (!it.longerThan(3L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.longerThan(3)"));
+        }
+        if (!it.shorterThan(3L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(3)"));
+        }
+        if (it.longerThan(2L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.longerThan(2)"));
+        }
+        if (!it.shorterThan(2L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(2)"));
+        }
+        .java.lang.Object lhs$2 = it.sequence();
+        .ceylon.language.List<? extends .ceylon.language.String> rhs$3 = list;
+        if (lhs$2.equals(rhs$3)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.sequence() == list") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
+        }
+        it = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, list, .ceylon.language.String.instance("a"));
+        long lhs$4 = it.getSize();
+        long rhs$5 = 4L;
+        if (lhs$4 == rhs$5) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.size == 4") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$4), .ceylon.language.Integer.instance(rhs$5)));
+        }
+        if (!it.longerThan(5L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.longerThan(5)"));
+        }
+        if (it.shorterThan(5L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.shorterThan(5)"));
+        }
+        if (!it.longerThan(4L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.longerThan(4)"));
+        }
+        if (!it.shorterThan(4L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(4)"));
+        }
+        if (it.longerThan(3L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.longerThan(3)"));
+        }
+        if (!it.shorterThan(3L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(3)"));
+        }
+        .java.lang.Object lhs$6 = it.sequence();
+        .ceylon.language.Sequence<? extends .ceylon.language.String> rhs$7 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c")});
+        if (lhs$6.equals(rhs$7)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.sequence() == [\"a\", \"a\", \"b\", \"c\"]") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$6, rhs$7));
+        }
+        it = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+        long lhs$8 = it.getSize();
+        long rhs$9 = 2L;
+        if (lhs$8 == rhs$9) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.size == 2") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$8), .ceylon.language.Integer.instance(rhs$9)));
+        }
+        if (!it.longerThan(3L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.longerThan(3)"));
+        }
+        if (it.shorterThan(3L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.shorterThan(3)"));
+        }
+        if (!it.longerThan(2L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.longerThan(2)"));
+        }
+        if (!it.shorterThan(2L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(2)"));
+        }
+        if (it.longerThan(1L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.longerThan(1)"));
+        }
+        if (!it.shorterThan(1L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(1)"));
+        }
+        .java.lang.Object lhs$10 = it.sequence();
+        .ceylon.language.Sequence<? extends .ceylon.language.String> rhs$11 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b")});
+        if (lhs$10.equals(rhs$11)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.sequence() == [\"a\", \"b\"]") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$10, rhs$11));
+        }
+        final .ceylon.language.Iterable it2 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.true_.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Boolean.instance(true), .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(-1L), .ceylon.language.Float.instance(1.0), .ceylon.language.Float.instance(-1.0), .ceylon.language.Character.instance(99), .ceylon.language.String.instance(""));
+        final .java.lang.String b = "b";
+        it = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance(b);
+                
+                case 1: 
+                    return list;
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+    }
+    
+    public final void spreadJavaListIntoEnum() {
+        final .java.util.List<.ceylon.language.String> list = .java.util.Arrays.<.ceylon.language.String>asList(.ceylon.language.String.instance("hello"), .ceylon.language.String.instance("world"));
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> it = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.Util.<.ceylon.language.String>toIterable(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.Util.checkNull(list)));
+        long lhs$12 = it.getSize();
+        long rhs$13 = 2L;
+        if (lhs$12 == rhs$13) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.size == 2") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$12), .ceylon.language.Integer.instance(rhs$13)));
+        }
+        if (!it.longerThan(3L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.longerThan(3)"));
+        }
+        if (it.shorterThan(3L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.shorterThan(3)"));
+        }
+        if (!it.longerThan(2L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.longerThan(2)"));
+        }
+        if (!it.shorterThan(2L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(2)"));
+        }
+        if (it.longerThan(1L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "it.longerThan(1)"));
+        }
+        if (!it.shorterThan(1L)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!it.shorterThan(1)"));
+        }
+    }
+    
+    private final void f$priv$(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> expect, final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> args) {
+        .java.lang.Object lhs$14 = expect.sequence();
+        .java.lang.Object rhs$15 = args.sequence();
+        if (lhs$14.equals(rhs$15)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "expect.sequence() == args.sequence()") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$14, rhs$15));
+        }
+    }
+    
+    public final void spreadListIntoNamedArgs() {
+        final .ceylon.language.List<? extends .ceylon.language.String> list = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("c")});
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> arg$16$0 = list;
+                .ceylon.language.Iterable arg$16$1 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, list);
+                f$priv$(arg$16$0, arg$16$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> arg$17$0 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("a")}, .org.eclipse.ceylon.compiler.java.Util.sequentialOf(.ceylon.language.String.$TypeDescriptor$, list));
+                .ceylon.language.Iterable arg$17$1 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, list, .ceylon.language.String.instance("a"));
+                f$priv$(arg$17$0, arg$17$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.operator.SpreadOptimization.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.operator.SpreadOptimization.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class spreadOptimization_ {
+    
+    private spreadOptimization_() {
+    }
+    
+    static void spreadOptimization() {
+        new .org.eclipse.ceylon.compiler.java.test.expression.operator.SpreadOptimization().spreadListIntoEnum();
+        new .org.eclipse.ceylon.compiler.java.test.expression.operator.SpreadOptimization().spreadJavaListIntoEnum();
+        new .org.eclipse.ceylon.compiler.java.test.expression.operator.SpreadOptimization().spreadListIntoNamedArgs();
+    }
+}

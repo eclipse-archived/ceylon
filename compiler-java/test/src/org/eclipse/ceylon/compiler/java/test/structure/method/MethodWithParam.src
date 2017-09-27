@@ -1,0 +1,19 @@
+package org.eclipse.ceylon.compiler.java.test.structure.method;
+
+class MethodWithParam implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodWithParam() {
+    }
+    
+    private final void f$priv$(final long i) {
+    }
+    
+    public final void f2(final long i) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.MethodWithParam.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.MethodWithParam.class);
+}

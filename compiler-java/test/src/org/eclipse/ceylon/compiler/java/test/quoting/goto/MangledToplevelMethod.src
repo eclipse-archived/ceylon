@@ -1,0 +1,16 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.$goto;
+
+public final class mangledToplevelMethod_ {
+    
+    private mangledToplevelMethod_() {
+    }
+    
+    public static void mangledToplevelMethod() {
+        final .ceylon.language.Array<.java.lang.Object> arr = new .ceylon.language.Array(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.empty_.get_());
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.quoting.$goto.mangledToplevelMethod_.mangledToplevelMethod();
+    }
+}

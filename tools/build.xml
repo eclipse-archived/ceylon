@@ -10,7 +10,7 @@
     <property name="test.reports" location="${build.dir}/test-reports" />
 
     <!-- Local repository -->
-    <property name="ceylon.tools.src" value="${ceylon.tools.dir}/com.redhat.ceylon.tools-${module.com.redhat.ceylon.tools.version}.src" />
+    <property name="ceylon.tools.src" value="${ceylon.tools.dir}/org.eclipse.ceylon.tools-${module.org.eclipse.ceylon.tools.version}.src" />
     <property name="ceylon.tools.repo" value="${ceylon.repo.dir}/${ceylon.tools.dir}" />
     <property name="ceylon.tools.dist" value="${build.dist}/${ceylon.tools.dir}" />
 
@@ -86,8 +86,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.tools"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.tools.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.tools"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.tools.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

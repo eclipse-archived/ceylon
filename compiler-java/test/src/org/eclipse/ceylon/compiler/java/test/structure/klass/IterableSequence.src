@@ -1,0 +1,715 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Element",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {},
+                caseTypes = {},
+                defaultValue = "ceylon.language::Anything"),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Absent",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {"ceylon.language::Null"},
+                caseTypes = {},
+                defaultValue = "ceylon.language::Null")})
+interface IterableSequence<Element, Absent> {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<? extends Element, ? extends Absent> $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "[Element+]|[]&ceylon.language::Iterable<Element,Absent>",
+            erased = true,
+            untrusted = true)
+    public .ceylon.language.Sequential<? extends Element> sequence();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+final class IterableSequence$impl<Element, Absent> implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    IterableSequence$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends Absent> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$Absent = $reified$Absent;
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends Absent> $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent) {
+        this.$reified$Absent = $reified$Absent;
+        this.$reified$Element = $reified$Element;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Sequential<? extends Element> sequence() {
+        return (.ceylon.language.Sequential<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.klass::IterableSequence<Element,ceylon.language::Null>"})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Element",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Absent",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {"ceylon.language::Null"},
+                caseTypes = {},
+                defaultValue = "ceylon.language::Null")})
+class IterableSequenceMixin<Element, Absent> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<Element, .java.lang.Object>, .java.io.Serializable {
+    
+    IterableSequenceMixin(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$Absent = $reified$Absent;
+        this.$org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<Element, .java.lang.Object>($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<Element, .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<? extends Element, ? extends .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Sequential sequence() {
+        return (.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential)$org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$.sequence();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceMixin.class, $reified$Element, $reified$Absent);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.klass::IterableSequence<Element,ceylon.language::Null>"})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Element",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Absent",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {"ceylon.language::Null"},
+                caseTypes = {},
+                defaultValue = "ceylon.language::Null")})
+class IterableSequenceOverride<Element, Absent> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<Element, .java.lang.Object>, .java.io.Serializable {
+    
+    IterableSequenceOverride(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$Absent = $reified$Absent;
+        this.$org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<Element, .java.lang.Object>($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<Element, .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<? extends Element, ? extends .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "[Element+]|[]&ceylon.language::Iterable<Element,Absent>",
+            erased = true)
+    public final .ceylon.language.Sequential sequence() {
+        return (.ceylon.language.Sequential<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride.class, $reified$Element, $reified$Absent);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.klass::IterableSequence<Element,ceylon.language::Null>"})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Element",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Absent",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.OUT,
+                satisfies = {"ceylon.language::Null"},
+                caseTypes = {},
+                defaultValue = "ceylon.language::Null")})
+class IterableSequenceRefine<Element, Absent> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<Element, .java.lang.Object>, .java.io.Serializable {
+    
+    IterableSequenceRefine(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$Absent = $reified$Absent;
+        this.$org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<Element, .java.lang.Object>($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<Element, .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<? extends Element, ? extends .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "Element[2]",
+            erased = true,
+            untrusted = true)
+    public final .ceylon.language.Sequence sequence() {
+        return (.ceylon.language.Sequence<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine.class, $reified$Element, $reified$Absent);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class iterableSequence_ {
+    
+    private iterableSequence_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Element",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    static <Element>void iterableSequence(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object> possEmpty = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object> defNonempty = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object> defEmpty1 = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object> defEmpty2 = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence bug6914 = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .ceylon.language.Iterable bug6914_2 = (.ceylon.language.Iterable)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .java.lang.Object x1 = possEmpty.sequence();
+        final .ceylon.language.Sequence<? extends Element> x2 = (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)defNonempty.sequence();
+        final .ceylon.language.Empty x3 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty1.sequence();
+        final .ceylon.language.Empty x4 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty2.sequence();
+        final .ceylon.language.Sequence bug6914seq = (.ceylon.language.Sequence<? extends .java.lang.Object>)bug6914.sequence();
+        final .ceylon.language.Sequence bug6914_2seq = (.ceylon.language.Sequence<? extends .java.lang.Object>)bug6914_2.sequence();
+        final .java.lang.Object y1 = possEmpty.sequence();
+        final .ceylon.language.Sequence<? extends Element> y2 = (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)defNonempty.sequence();
+        final .ceylon.language.Empty y3 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty1.sequence();
+        final .ceylon.language.Empty y4 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty2.sequence();
+        final .ceylon.language.Callable z1 = (.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object> $instance$ = possEmpty;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "<[Element+]|[]>()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$() {
+                    return $instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>> z2 = (.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>)(.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object> $instance$ = defNonempty;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends Element>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$, "[Element+]()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Sequence<? extends Element> $call$() {
+                    return (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)$instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Empty> z3 = (.ceylon.language.Callable<? extends .ceylon.language.Empty>)(.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = defEmpty1;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$, "[Nothing+]()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Sequence<? extends .java.lang.Object> $call$() {
+                    return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)$instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Empty> z4 = (.ceylon.language.Callable<? extends .ceylon.language.Empty>)(.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = defEmpty2;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "[]()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Empty $call$() {
+                    return (.ceylon.language.Empty)$instance$.sequence();
+                }
+            };
+        );
+        final .java.lang.Object z1c = z1.$call$();
+        final .ceylon.language.Sequence<? extends Element> z2c = z2.$call$();
+        final .ceylon.language.Empty z3c = z3.$call$();
+        final .ceylon.language.Empty z4c = z4.$call$();
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> a1 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence.class, $reified$Element, .ceylon.language.Null.$TypeDescriptor$)), "<[Element+]|[]>()(IterableSequence<Element,Null>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "<[Element+]|[]>()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .java.lang.Object $call$() {
+                        return $instance$.sequence();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>> a2 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence.class, $reified$Element, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "[Element+]()(IterableSequence<Element,Nothing>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends Element, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends Element>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$, "[Element+]()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Sequence<? extends Element> $call$() {
+                        return (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)$instance$.sequence();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> a3 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "[Nothing+]()(IterableSequence<Nothing,Nothing>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$, "[Nothing+]()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Sequence<? extends .java.lang.Object> $call$() {
+                        return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)$instance$.sequence();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Empty>> a4 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Empty>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Empty>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$)), "[]()(IterableSequence<Nothing,Null>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .ceylon.language.Empty> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<? extends .java.lang.Object, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "[]()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Empty $call$() {
+                        return (.ceylon.language.Empty)$instance$.sequence();
+                    }
+                };
+            }
+        };
+        final .java.lang.Object a1c = ((.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.ceylon.language.Callable)a1).$call$((.java.lang.Object)possEmpty).$call$();
+        final .ceylon.language.Sequence<? extends Element> a2c = a2.$call$((.java.lang.Object)defNonempty).$call$();
+        final .ceylon.language.Empty a3c = (.ceylon.language.Empty)(.java.lang.Object)a3.$call$((.java.lang.Object)defEmpty1).$call$();
+        final .ceylon.language.Empty a4c = a4.$call$((.java.lang.Object)defEmpty2).$call$();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class iterableSequenceOverride_ {
+    
+    private iterableSequenceOverride_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Element",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    static <Element>void iterableSequenceOverride(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends Element, ? extends .java.lang.Object> possEmpty = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends Element, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends Element, ? extends .java.lang.Object> defNonempty = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends Element, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends .java.lang.Object, ? extends .java.lang.Object> defEmpty1 = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends .java.lang.Object, ? extends .java.lang.Object> defEmpty2 = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .java.lang.Object x1 = possEmpty.sequence();
+        final .ceylon.language.Sequence<? extends Element> x2 = (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)defNonempty.sequence();
+        final .ceylon.language.Empty x3 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty1.sequence();
+        final .ceylon.language.Empty x4 = (.ceylon.language.Empty)defEmpty2.sequence();
+        final .java.lang.Object y1 = possEmpty.sequence();
+        final .ceylon.language.Sequence<? extends Element> y2 = (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)defNonempty.sequence();
+        final .ceylon.language.Empty y3 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty1.sequence();
+        final .ceylon.language.Empty y4 = (.ceylon.language.Empty)defEmpty2.sequence();
+        final .ceylon.language.Callable z1 = (.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends Element, ? extends .java.lang.Object> $instance$ = possEmpty;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "<[Element+]|[]>()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .java.lang.Object $call$() {
+                    return $instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>> z2 = (.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>)(.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends Element, ? extends .java.lang.Object> $instance$ = defNonempty;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends Element>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$, "[Element+]()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Sequence<? extends Element> $call$() {
+                    return (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)$instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Empty> z3 = (.ceylon.language.Callable<? extends .ceylon.language.Empty>)(.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = defEmpty1;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$, "[Nothing+]()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Sequence<? extends .java.lang.Object> $call$() {
+                    return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)$instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Empty> z4 = (.ceylon.language.Callable<? extends .ceylon.language.Empty>)(.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = defEmpty2;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "[]()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Empty $call$() {
+                    return (.ceylon.language.Empty)$instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> a1 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride.class, $reified$Element, .ceylon.language.Null.$TypeDescriptor$)), "<[Element+]|[]>()(IterableSequenceOverride<Element,Null>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends Element, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends Element, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "<[Element+]|[]>()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .java.lang.Object $call$() {
+                        return $instance$.sequence();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>> a2 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride.class, $reified$Element, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "[Element+]()(IterableSequenceOverride<Element,Nothing>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends Element, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends Element, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends Element>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$, "[Element+]()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Sequence<? extends Element> $call$() {
+                        return (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)$instance$.sequence();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> a3 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "[Nothing+]()(IterableSequenceOverride<Nothing,Nothing>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends .java.lang.Object, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$, "[Nothing+]()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Sequence<? extends .java.lang.Object> $call$() {
+                        return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)$instance$.sequence();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Empty>> a4 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Empty>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Empty>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$)), "[]()(IterableSequenceOverride<Nothing,Null>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .ceylon.language.Empty> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride<? extends .java.lang.Object, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceOverride)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "[]()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Empty $call$() {
+                        return (.ceylon.language.Empty)$instance$.sequence();
+                    }
+                };
+            }
+        };
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class iterableSequenceRefine_ {
+    
+    private iterableSequenceRefine_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Element",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    static <Element>void iterableSequenceRefine(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends Element, ? extends .java.lang.Object> possEmpty = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends Element, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends Element, ? extends .java.lang.Object> defNonempty = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends Element, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends .java.lang.Object, ? extends .java.lang.Object> defEmpty1 = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends .java.lang.Object, ? extends .java.lang.Object> defEmpty2 = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .java.lang.Object x1 = possEmpty.sequence();
+        final .ceylon.language.Sequence<? extends Element> x2 = (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)defNonempty.sequence();
+        final .ceylon.language.Empty x3 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty1.sequence();
+        final .ceylon.language.Empty x4 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty2.sequence();
+        final .java.lang.Object y1 = possEmpty.sequence();
+        final .ceylon.language.Sequence<? extends Element> y2 = (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)defNonempty.sequence();
+        final .ceylon.language.Empty y3 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty1.sequence();
+        final .ceylon.language.Empty y4 = (.ceylon.language.Empty)(.java.lang.Object)defEmpty2.sequence();
+        final .ceylon.language.Callable z1 = (.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends Element, ? extends .java.lang.Object> $instance$ = possEmpty;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends Element>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$, "Element[2]()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Sequence<? extends Element> $call$() {
+                    return (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)$instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>> z2 = (.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>)(.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends Element, ? extends .java.lang.Object> $instance$ = defNonempty;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends Element>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$, "Element[2]()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Sequence<? extends Element> $call$() {
+                    return (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)$instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Empty> z3 = (.ceylon.language.Callable<? extends .ceylon.language.Empty>)(.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = defEmpty1;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$, "Nothing[2]()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Sequence<? extends .java.lang.Object> $call$() {
+                    return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)$instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Empty> z4 = (.ceylon.language.Callable<? extends .ceylon.language.Empty>)(.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = defEmpty2;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$, "Nothing[2]()", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Sequence<? extends .java.lang.Object> $call$() {
+                    return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)$instance$.sequence();
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> a1 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine.class, $reified$Element, .ceylon.language.Null.$TypeDescriptor$)), "Element[2]()(IterableSequenceRefine<Element,Null>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends Element, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends Element, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends Element>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$, "Element[2]()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Sequence<? extends Element> $call$() {
+                        return (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)$instance$.sequence();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>> a2 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine.class, $reified$Element, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "Element[2]()(IterableSequenceRefine<Element,Nothing>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends Element>> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends Element, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends Element, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequence<? extends Element>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element), .ceylon.language.Empty.$TypeDescriptor$, "Element[2]()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Sequence<? extends Element> $call$() {
+                        return (.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)$instance$.sequence();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> a3 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "Nothing[2]()(IterableSequenceRefine<Nothing,Nothing>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends .java.lang.Object, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$, "Nothing[2]()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Sequence<? extends .java.lang.Object> $call$() {
+                        return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)$instance$.sequence();
+                    }
+                };
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Empty>> a4 = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Empty>>)(.ceylon.language.Callable)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$)), "Nothing[2]()(IterableSequenceRefine<Nothing,Null>)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .java.lang.Object> $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends .java.lang.Object, ? extends .java.lang.Object> $instance$ = (.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine<? extends .java.lang.Object, ? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceRefine)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$, "Nothing[2]()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Sequence<? extends .java.lang.Object> $call$() {
+                        return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object)$instance$.sequence();
+                    }
+                };
+            }
+        };
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.AbstractAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.klass::IterableSequence<ceylon.language::Character,ceylon.language::Null>"})
+abstract class IterableSequenceAbstract implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence<.ceylon.language.Character, .java.lang.Object>, .java.io.Serializable {
+    
+    IterableSequenceAbstract() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<.ceylon.language.Character, .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequence$impl<? extends .ceylon.language.Character, ? extends .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Sequential sequence() {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)$org$eclipse$ceylon$compiler$java$test$structure$klass$IterableSequence$this$.sequence();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceAbstract.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.IterableSequenceAbstract.class);
+}

@@ -13,7 +13,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.redhat.ceylon</groupId>
+            <groupId>org.eclipse.ceylon</groupId>
             <artifactId>ceylon-common</artifactId>
         </dependency>
     </dependencies>

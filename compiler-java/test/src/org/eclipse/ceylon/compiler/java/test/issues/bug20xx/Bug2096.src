@@ -1,0 +1,20 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug20xx;
+
+final class bug2096_ {
+    
+    private bug2096_() {
+    }
+    
+    static void bug2096() {
+        final .ceylon.language.Sequence timer = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.String.instance("Hi")});
+        long lhs$0 = 0;
+        long middle$1 = ((.ceylon.language.Integer)(.java.lang.Object)timer.getFirst()).longValue();
+        long rhs$2 = 10;
+        if (lhs$0 < middle$1 && middle$1 < rhs$2) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0 < timer.first < 10") + .org.eclipse.ceylon.compiler.java.Util.assertWithinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(middle$1), .ceylon.language.Integer.instance(rhs$2)));
+        }
+    }
+}

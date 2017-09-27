@@ -1,1 +1,1 @@
-shared package com.redhat.xxx;
+shared package org.eclipse.xxx;

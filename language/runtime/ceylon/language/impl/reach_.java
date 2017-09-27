@@ -1,12 +1,12 @@
 package ceylon.language.impl;
 
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Object;
-import com.redhat.ceylon.compiler.java.metadata.Transient;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.runtime.serialization.Serializable;
+import org.eclipse.ceylon.compiler.java.metadata.Ceylon;
+import org.eclipse.ceylon.compiler.java.metadata.Ignore;
+import org.eclipse.ceylon.compiler.java.metadata.Name;
+import org.eclipse.ceylon.compiler.java.metadata.Object;
+import org.eclipse.ceylon.compiler.java.metadata.Transient;
+import org.eclipse.ceylon.compiler.java.metadata.TypeInfo;
+import org.eclipse.ceylon.compiler.java.runtime.serialization.Serializable;
 
 import ceylon.language.Array;
 import ceylon.language.Iterator;

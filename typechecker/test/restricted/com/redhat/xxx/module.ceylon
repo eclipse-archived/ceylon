@@ -1,1 +1,1 @@
-module com.redhat.xxx "1" {}
+module org.eclipse.xxx "1" {}

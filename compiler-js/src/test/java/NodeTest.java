@@ -1,7 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 
-import com.redhat.ceylon.compiler.js.CeylonRunJsTool;
+import org.eclipse.ceylon.compiler.js.CeylonRunJsTool;
 
 
 /** Runs the test() function in each js module that was generated.

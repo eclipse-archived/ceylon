@@ -23,7 +23,7 @@
         <path id="ant-tasks">
             <pathelement location="${ceylon.ant.lib}"/>
         </path>
-        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+        <typedef resource="org/eclipse/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
     </target>
 	
     <target name="default" depends="doc, run">

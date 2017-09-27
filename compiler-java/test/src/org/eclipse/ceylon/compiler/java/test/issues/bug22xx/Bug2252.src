@@ -1,0 +1,37 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug22xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public class Bug2252 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug2252() {
+        this.id = null;
+    }
+    @.javax.annotation.Generated("a")
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .ceylon.language.Integer id;
+    
+    @.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = "unusedDeclaration")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    private final .ceylon.language.Integer getId$priv$() {
+        return this.id;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2252();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2252.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2252.class);
+}

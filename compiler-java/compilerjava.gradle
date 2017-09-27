@@ -1,5 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
-import com.redhat.ceylon.model.loader.OsgiVersion
+import org.eclipse.ceylon.model.loader.OsgiVersion
 
 
 ext {
@@ -47,13 +47,13 @@ sourceSets {
             srcDirs = ['src','langtools/src/share/classes']
             source project(':common').sourceSets.main.java
             include "**/Java7Checker.java"
-            include "com/redhat/ceylon/tools/Tool.java"
-            include "com/redhat/ceylon/tools/Plugin.java"
-            include "com/redhat/ceylon/ant/**"
-            include "com/redhat/ceylon/launcher/**"
-            include "com/redhat/ceylon/common/*"
-            include "com/redhat/ceylon/common/config/*"
-            include "com/redhat/ceylon/common/tools/ModuleWildcardsHelper.java"
+            include "org/eclipse/ceylon/tools/Tool.java"
+            include "org/eclipse/ceylon/tools/Plugin.java"
+            include "org/eclipse/ceylon/ant/**"
+            include "org/eclipse/ceylon/launcher/**"
+            include "org/eclipse/ceylon/common/*"
+            include "org/eclipse/ceylon/common/config/*"
+            include "org/eclipse/ceylon/common/tools/ModuleWildcardsHelper.java"
         }
         resources {
             srcDirs = []
@@ -66,18 +66,18 @@ sourceSets {
     main {
         java {
             srcDir 'langtools/src/share/classes'
-            include "com/redhat/**"
+            include "org/eclipse/**"
             exclude "**/Java7Checker.java"
-            exclude "com/redhat/ceylon/ant/**"
-            exclude "com/redhat/ceylon/launcher/**"
+            exclude "org/eclipse/ceylon/ant/**"
+            exclude "org/eclipse/ceylon/launcher/**"
         }
         resources {
             srcDirs = [ 'src',"${project(':common').projectDir}/src",'langtools/src/share/classes' ]
-            include 'com/redhat/**/*.utf8properties'
-            include 'com/redhat/**/resources/**'
-            include 'com/redhat/**/*.properties'
-            include 'com/redhat/ceylon/common/config/**/*.properties'
-            include 'com/redhat/ceylon/langtools/tools/javac/resources/*.properties'
+            include 'org/eclipse/**/*.utf8properties'
+            include 'org/eclipse/**/resources/**'
+            include 'org/eclipse/**/*.properties'
+            include 'org/eclipse/ceylon/common/config/**/*.properties'
+            include 'org/eclipse/ceylon/langtools/tools/javac/resources/*.properties'
             include 'META-INF/**'
         }
         compileClasspath = configurations.compile + sourceSets.jdk6Stubs.output
@@ -89,31 +89,31 @@ sourceSets {
 //        }
 //        resources {
 //            srcDirs = [ 'src',"${project(':common').projectDir}/src"]
-//            include "com/redhat/ceylon/ant/antlib.xml"
-//            include "com/redhat/ceylon/common/config/messages.properties"
+//            include "org/eclipse/ceylon/ant/antlib.xml"
+//            include "org/eclipse/ceylon/common/config/messages.properties"
 //        }
 //    }
 
     test {
         java {
             srcDir 'test/ceylondoc'
-            include "com/redhat/ceylon/compiler/java/test/**"
-            include "com/redhat/ceylon/compiler/java/codegen/**"  // TODO: Not in build.xml atm
-            include "com/redhat/ceylon/tools/**"
-            include "com/redhat/ceylon/itest/**"
-            include "com/redhat/ceylon/launcher/test/**"
-            include "com/redhat/ceylon/ant/**"
-            include "com/redhat/ceylon/ceylondoc/test/**"
-            exclude "com/redhat/ceylon/tools/test/bug1183/**"
-            exclude "com/redhat/ceylon/compiler/java/test/interop/mixed/**"
-            exclude "com/redhat/ceylon/compiler/java/test/interop/nullable/**"
-            exclude "com/redhat/ceylon/compiler/java/test/interop/Bug*"
-            exclude "com/redhat/ceylon/compiler/java/test/interop/Interdep*"
-            exclude "com/redhat/ceylon/compiler/java/test/interop/JavaRepeatable.java"
-            exclude "com/redhat/ceylon/compiler/java/test/cmr/modules/bug1062/**"
-            exclude "com/redhat/ceylon/compiler/java/test/recovery/modules/bug1411/**"
-            exclude "com/redhat/ceylon/compiler/java/test/issues/*/**"
-            exclude "com/redhat/ceylon/compiler/java/test/recovery/bug6290/**"
+            include "org/eclipse/ceylon/compiler/java/test/**"
+            include "org/eclipse/ceylon/compiler/java/codegen/**"  // TODO: Not in build.xml atm
+            include "org/eclipse/ceylon/tools/**"
+            include "org/eclipse/ceylon/itest/**"
+            include "org/eclipse/ceylon/launcher/test/**"
+            include "org/eclipse/ceylon/ant/**"
+            include "org/eclipse/ceylon/ceylondoc/test/**"
+            exclude "org/eclipse/ceylon/tools/test/bug1183/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/interop/mixed/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/interop/nullable/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/interop/Bug*"
+            exclude "org/eclipse/ceylon/compiler/java/test/interop/Interdep*"
+            exclude "org/eclipse/ceylon/compiler/java/test/interop/JavaRepeatable.java"
+            exclude "org/eclipse/ceylon/compiler/java/test/cmr/modules/bug1062/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/recovery/modules/bug1411/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/issues/*/**"
+            exclude "org/eclipse/ceylon/compiler/java/test/recovery/bug6290/**"
         }
         resources {
             include "META-INF/**"
@@ -134,9 +134,9 @@ compileJava.dependsOn += compileJdk6StubsJava
 
 
 jar {
-    exclude "com/redhat/ceylon/ant/**"
-    exclude "com/redhat/ceylon/common/**"
-    exclude "com/redhat/ceylon/launcher/**"
+    exclude "org/eclipse/ceylon/ant/**"
+    exclude "org/eclipse/ceylon/common/**"
+    exclude "org/eclipse/ceylon/launcher/**"
 
     ceylon {
         importJavaxModel true
@@ -196,8 +196,8 @@ task bootstrapModule( type : Jar ) {
         into "META-INF/jbossmodules/" + cbp."ceylon.bootstrap.dir"
     }
 
-    include "com/redhat/ceylon/launcher/**"
-    exclude "com/redhat/ceylon/launcher/Start.class"
+    include "org/eclipse/ceylon/launcher/**"
+    exclude "org/eclipse/ceylon/launcher/Start.class"
 
     bootstrapModule.dependsOn osgiManifestWorkaroundForBootstrap
     bootstrapModule.manifest.classesDir = osgiManifestWorkaroundForBootstrap.destinationDir

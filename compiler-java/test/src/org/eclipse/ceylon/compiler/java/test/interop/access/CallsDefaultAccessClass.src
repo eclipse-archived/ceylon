@@ -1,0 +1,13 @@
+package org.eclipse.ceylon.compiler.java.test.interop.access;
+
+final class callsDefaultAccessClass_ {
+    
+    private callsDefaultAccessClass_() {
+    }
+    
+    static void callsDefaultAccessClass() {
+        new .org.eclipse.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass();
+        new .org.eclipse.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass2();
+        new .org.eclipse.ceylon.compiler.java.test.interop.access.JavaDefaultAccessClass3();
+    }
+}

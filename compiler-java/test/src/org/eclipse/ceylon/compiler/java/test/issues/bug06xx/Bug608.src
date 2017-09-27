@@ -1,0 +1,29 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug06xx;
+
+final class bug608_ {
+    
+    private bug608_() {
+    }
+    
+    static void bug608() {
+        final .java.lang.ProcessBuilder b = new .java.lang.ProcessBuilder();
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> args = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.String.instance("b")});
+        b.command(.org.eclipse.ceylon.compiler.java.Util.toJavaStringArray(args));
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> commandWithArgs = (
+            let
+            {
+                .java.lang.String arg$0$callable$ = "";
+                .java.lang.String arg$0$argthis$ = arg$0$callable$;
+                boolean arg$0$1 = true;
+                .ceylon.language.Callable arg$0$0 = .ceylon.language.String.instance(arg$0$argthis$).split$splitting();
+                boolean arg$0$2 = .ceylon.language.String.instance(arg$0$argthis$).split$groupSeparators(arg$0$0, arg$0$1);
+                .ceylon.language.Integer arg$0$3 = .ceylon.language.String.instance(arg$0$argthis$).split$limit(arg$0$0, arg$0$1, arg$0$2);
+            }
+            returning .ceylon.language.String.split(arg$0$callable$, arg$0$0, arg$0$1, arg$0$2, arg$0$3);
+        );
+        final .java.lang.ProcessBuilder builder = new .java.lang.ProcessBuilder(.org.eclipse.ceylon.compiler.java.Util.toJavaStringArray((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)commandWithArgs.sequence()));
+        builder.command(.org.eclipse.ceylon.compiler.java.Util.toJavaStringArray((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)commandWithArgs.sequence()));
+    }
+}

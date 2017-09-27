@@ -1,0 +1,55 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class Bug1346_A implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1346_A() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_A.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_A.class);
+}
+class Bug1346_B implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1346_B() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_B.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_B.class);
+}
+public final class bug1346_ {
+    
+    private bug1346_() {
+    }
+    
+    public static void bug1346() {
+        final .java.lang.Object x = new .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_A();
+        if (true) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_A x$4;
+            .java.lang.Object x$3 = null;
+            if ((x$3 = x) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_A) {
+                x$4 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_A)x$3;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Bug1346_A x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_A.$TypeDescriptor$, x$3));
+            }
+        } else {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_B x$2;
+            .java.lang.Object x$1 = null;
+            if ((x$1 = x) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_B) {
+                x$2 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_B)x$1;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Bug1346_B x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bug1346_B.$TypeDescriptor$, x$1));
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.statement.conditional.bug1346_.bug1346();
+    }
+}

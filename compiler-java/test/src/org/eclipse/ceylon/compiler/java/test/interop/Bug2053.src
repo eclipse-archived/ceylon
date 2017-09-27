@@ -1,0 +1,53 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+public final class bug2053_ {
+    
+    private bug2053_() {
+    }
+    
+    public static <Element>void bug2053(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.test.interop.Bug2053Varargs<.java.lang.Long> x, final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> items) {
+        x.<Element>unbounded((
+            let
+            {
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$0$0 = items.sequence();
+            }
+            returning .org.eclipse.ceylon.compiler.java.Util.<Element>toArray($ceylontmp$0$0, (Element[])new .java.lang.Object[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$0$0.getSize())]);
+        ));
+        final .ceylon.language.Iterable items$2;
+        .java.lang.Object items$1 = null;
+        if (.org.eclipse.ceylon.compiler.java.Util.isReified(items$1 = items, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Number.class), .ceylon.language.Null.$TypeDescriptor$))) {
+            items$2 = (.ceylon.language.Iterable)items$1;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Number*} items") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Number.class), .ceylon.language.Null.$TypeDescriptor$), items$1));
+        }
+        x.<.java.lang.Number>bound((
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$3$0 = items$2.sequence();
+            }
+            returning .org.eclipse.ceylon.compiler.java.Util.<.java.lang.Number>toArray($ceylontmp$3$0, new .java.lang.Number[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$3$0.getSize())]);
+        ));
+        final .ceylon.language.Iterable items$5;
+        .java.lang.Object items$4 = null;
+        if (.org.eclipse.ceylon.compiler.java.Util.isReified(items$4 = items$2, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Long.class), .ceylon.language.Null.$TypeDescriptor$))) {
+            items$5 = (.ceylon.language.Iterable)items$4;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is {Long*} items") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Long.class), .ceylon.language.Null.$TypeDescriptor$), items$4));
+        }
+        x.<.java.lang.Long>indirectBound((
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$6$0 = items$5.sequence();
+            }
+            returning .org.eclipse.ceylon.compiler.java.Util.<.java.lang.Long>toArray($ceylontmp$6$0, new .java.lang.Long[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$6$0.getSize())]);
+        ));
+        final .ceylon.language.Iterable items3 = (.ceylon.language.Iterable)(.java.lang.Object).ceylon.language.nothing_.get_();
+        ((.org.eclipse.ceylon.compiler.java.test.interop.Right)(.java.lang.Object).org.eclipse.ceylon.compiler.java.Util.checkNull(x.<.org.eclipse.ceylon.compiler.java.test.interop.Top>bound2((
+            let
+            {
+                .ceylon.language.Sequential $ceylontmp$7$0 = items3.sequence();
+            }
+            returning .org.eclipse.ceylon.compiler.java.Util.<.org.eclipse.ceylon.compiler.java.test.interop.Left>toArray($ceylontmp$7$0, new .org.eclipse.ceylon.compiler.java.test.interop.Left[.org.eclipse.ceylon.compiler.java.Util.toInt($ceylontmp$7$0.getSize())]);
+        )))).right();
+    }
+}

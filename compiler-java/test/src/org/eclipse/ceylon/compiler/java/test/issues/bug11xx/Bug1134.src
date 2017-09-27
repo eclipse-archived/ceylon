@@ -1,0 +1,58 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug11xx;
+
+final class bug1134Toplevel1_ {
+    
+    private bug1134Toplevel1_() {
+    }
+    private static final .ceylon.language.Callable<? extends .ceylon.language.String> $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = (.ceylon.language.Callable<? extends .ceylon.language.String>)(.java.lang.Object).ceylon.language.nothing_.get_();
+            .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.$init$$object$ = false;
+        }
+    }
+    
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1134Toplevel1\' before it was set");
+        }
+    }
+}
+final class bug1134Toplevel2_ {
+    
+    private bug1134Toplevel2_() {
+    }
+    private static final .java.lang.String $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel1_.get_().$callvariadic$((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Anything.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}, .ceylon.language.empty_.get_())).toString();
+            .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel2_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel2_.$init$$object$ = false;
+        }
+    }
+    
+    public static .java.lang.String get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel2_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1134Toplevel2_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1134Toplevel2\' before it was set");
+        }
+    }
+}

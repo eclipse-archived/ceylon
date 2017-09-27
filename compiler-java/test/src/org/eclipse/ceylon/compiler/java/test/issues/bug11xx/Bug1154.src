@@ -1,0 +1,83 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug11xx;
+
+final class bug1154_ {
+    
+    private bug1154_() {
+    }
+    
+    static void bug1154() {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.Boolean> b1 = new .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(true));
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.String> b2 = new .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("hello"));
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154 first = new .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, b1, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154 step = (.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154<.java.lang.Object, .ceylon.language.String, .ceylon.language.Sequence<? extends .ceylon.language.Boolean>>)((.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154)(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154)first).<.ceylon.language.String>withLeading(.ceylon.language.String.$TypeDescriptor$, b2);
+        final .ceylon.language.Sequence t = (.ceylon.language.Sequence)step.getTuple();
+    }
+}
+public class Bug1154Bar<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug1154Bar(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.element = null;
+    }
+    
+    public Bug1154Bar(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T element) {
+        this.$reified$T = $reified$T;
+        this.element = element;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final T element;
+    
+    public final T getElement() {
+        return this.element;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar.class, $reified$T);
+    }
+}
+public class Bug1154<Element, First extends Element, Rest extends .ceylon.language.Sequential<? extends Element>> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug1154(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$reified$First = $reified$First;
+        this.$reified$Rest = $reified$Rest;
+        this.tuple = null;
+    }
+    
+    public Bug1154(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<First> first, final Rest rest) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$First = $reified$First;
+        this.$reified$Rest = $reified$Rest;
+        this.tuple = new .ceylon.language.Tuple<Element, First, Rest>($reified$Element, $reified$First, $reified$Rest, ((.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<First>)(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar)first).getElement(), (Rest)rest);
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First;
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest;
+    
+    public final class TupleType {
+        
+        private TupleType() {
+        }
+    }
+    private final .ceylon.language.Sequence<? extends Element> tuple;
+    
+    public final .ceylon.language.Sequence<? extends Element> getTuple() {
+        return this.tuple;
+    }
+    
+    public final <NewFirst>.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154 withLeading(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$NewFirst, final .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<NewFirst> newFirst) {
+        return new .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$NewFirst, $reified$Element), $reified$NewFirst, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tupleWithRest($reified$Rest, $reified$Element, 2, $reified$First), newFirst, (.ceylon.language.Sequence)getTuple());
+    }
+    
+    public final void juu(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        f.$call$((.java.lang.Object)(.ceylon.language.Sequence<? extends Element>)(.ceylon.language.Sequence)getTuple());
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1154.class, $reified$Element, $reified$First, $reified$Rest);
+    }
+}

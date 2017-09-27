@@ -1,0 +1,176 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)})
+public class MemberKlass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public MemberKlass() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.Member Member$new$() {
+        return new Member();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember.class)})
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.class,
+            isStatic = false)
+    public class Member implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Member() {
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember MemberMember$new$() {
+            return new MemberMember();
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.org.eclipse.ceylon.compiler.java.metadata.Container(
+                klass = .org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.Member.class,
+                isStatic = false)
+        public class MemberMember implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            protected MemberMember() {
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember.class));
+            }
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.Member.class));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.MemberKlass.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public class ParameterisedMemberKlass<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public ParameterisedMemberKlass(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        this.foo = null;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private transient .org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_ foo;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("foo")
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.Object
+    public final class foo_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private foo_() {
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getFoo";
+            return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.this, .org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, $name$);
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public <TTT>.org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_.MemberMember<TTT> MemberMember$new$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TTT) {
+            return new MemberMember<TTT>($reified$TTT);
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.org.eclipse.ceylon.compiler.java.metadata.Container(
+                klass = .org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class,
+                isStatic = false)
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "TTT",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+        public class MemberMember<TTT> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            protected MemberMember(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TTT) {
+                this.$reified$TTT = $reified$TTT;
+            }
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$TTT;
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, .org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.MemberMember.class, $reified$TTT));
+            }
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, .org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class));
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::ParameterisedMemberKlass<T>.foo")
+    public final .org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_ getFoo() {
+        if (foo == null) foo = new .org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_();
+        return foo;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class, $reified$T);
+    }
+}

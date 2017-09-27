@@ -1,0 +1,45 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug18xx;
+
+final class feature_ {
+    
+    private feature_() {
+    }
+    
+    static <R>.ceylon.language.Callable<? extends .java.lang.Object> feature(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R) {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return null;
+            }
+        };
+    }
+}
+public final class fun_ {
+    
+    private fun_() {
+    }
+    
+    public static void fun() {
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+            }
+            returning .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.feature_.<.java.lang.Object>feature(arg$0$reified$0);
+        ).$call$();
+        final .ceylon.language.Callable<? extends .java.lang.Object> callable = (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+            }
+            returning .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.feature_.<.java.lang.Object>feature(arg$1$reified$0);
+        );
+        callable.$call$();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.fun_.fun();
+    }
+}

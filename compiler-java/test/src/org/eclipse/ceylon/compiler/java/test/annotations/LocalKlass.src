@@ -1,0 +1,258 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1Local",
+        "2Local",
+        "3Local",
+        "4Local",
+        "5Local"})
+public class LocalKlass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public LocalKlass() {
+        if (true) {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.org.eclipse.ceylon.compiler.java.metadata.Name("Local")
+            @.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = Local.Inner.class)})
+            @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+            class Local implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                Local() {
+                }
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("Inner")
+                @.org.eclipse.ceylon.compiler.java.metadata.Container(
+                        klass = Local.class,
+                        isStatic = false)
+                class Inner implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Inner() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.Inner.class));
+                    }
+                }
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
+                }
+            }
+        } else {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.org.eclipse.ceylon.compiler.java.metadata.Name("Local")
+            @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
+            class Local implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                Local() {
+                }
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
+                }
+            }
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Attribute(setterClass = getter$setter$_.class)
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("getter")
+        @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.language::Getter<java.lang::String>"})
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1Local"})
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        final class getter$getter$_ implements .org.eclipse.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private getter$getter$_() {
+            }
+            
+            @.org.eclipse.ceylon.common.NonNull
+            @.org.eclipse.ceylon.compiler.java.metadata.Transient
+            public .java.lang.String get_() {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("Local")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                class Local implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Local() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("getter")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
+                    }
+                }
+                return "";
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.Getter<.java.lang.String> getter$getter$_ = new getter$getter$_();
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        @.org.eclipse.ceylon.compiler.java.metadata.Setter(getterClass = getter$getter$_.class)
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1Local"})
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration
+        final class getter$setter$_ {
+            
+            private getter$setter$_() {
+            }
+            private .java.lang.String $object$;
+            
+            public void set_(@.org.eclipse.ceylon.compiler.java.metadata.Name("getter")
+            @.org.eclipse.ceylon.common.NonNull
+            final .java.lang.String getter) {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("Local")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                class Local implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    Local() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("getter")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class));
+                    }
+                }
+            }
+        }
+        final getter$setter$_ getter$setter$_ = new getter$setter$_();
+    }
+    
+    private final void m$priv$() {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("Local")
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<org.eclipse.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>>"})
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "T",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+        class Local<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<Local<T>>, .java.io.Serializable {
+            
+            Local(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+                this.$reified$T = $reified$T;
+                this.i1 = 1L;
+            }
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            private final long i1;
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            public final long getI1() {
+                return this.i1;
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.org.eclipse.ceylon.compiler.java.metadata.Transient
+            public final long getI2() {
+                return 1L;
+            }
+            
+            public final void setI2(@.org.eclipse.ceylon.compiler.java.metadata.Name("i2")
+            final long i2) {
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public final void m2(final long arg1) {
+                (
+                    let
+                    {
+                        .ceylon.language.Sequential<? extends T> $ceylontmp$t$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        m2$canonical$(arg1, $ceylontmp$t$1);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            private void m2$canonical$(final long arg1, final .ceylon.language.Sequential<? extends T> t) {
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            public final void m2(@.org.eclipse.ceylon.compiler.java.metadata.Name("arg1")
+            final long arg1, @.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+            @.org.eclipse.ceylon.compiler.java.metadata.Sequenced
+            @.org.eclipse.ceylon.common.NonNull
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T[]")
+            final .ceylon.language.Sequential<? extends T> t) {
+                (
+                    let
+                    {
+                        m2$canonical$(arg1, t);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.ceylon.language.ActualAnnotation$annotation$
+            @.java.lang.Override
+            @.org.eclipse.ceylon.common.NonNull
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+                    value = "org.eclipse.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>",
+                    erased = true,
+                    untrusted = true)
+            public final Local plus(@.org.eclipse.ceylon.compiler.java.metadata.Name("other")
+            @.org.eclipse.ceylon.common.NonNull
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>")
+            final Local<T> other) {
+                return (Local<T>)(.java.lang.Object).ceylon.language.nothing_.get_();
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Local.class, $reified$T));
+            }
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.annotations.LocalKlass();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.LocalKlass.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.LocalKlass.class);
+}

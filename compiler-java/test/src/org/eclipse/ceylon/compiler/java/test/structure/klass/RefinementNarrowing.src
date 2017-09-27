@@ -1,0 +1,59 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+interface RNParameters<Element, Absent> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, Absent> $org$eclipse$ceylon$compiler$java$test$structure$klass$RNParameters$impl();
+    
+    public abstract .java.lang.Object m(final .java.lang.Object p);
+    
+    public .java.lang.Object m2(final .java.lang.Object p);
+}
+final class RNParameters$impl<Element, Absent> implements .java.io.Serializable {
+    
+    RNParameters$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, .org.eclipse.ceylon.compiler.java.test.structure.klass.RNParameters<Element, Absent> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$Absent = $reified$Absent;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent;
+    private final .org.eclipse.ceylon.compiler.java.test.structure.klass.RNParameters<Element, Absent> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent) {
+        this.$reified$Absent = $reified$Absent;
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public .java.lang.Object m2(final .java.lang.Object p) {
+        return null;
+    }
+}
+class RNParametersImpl<Element> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.klass.RNParameters<Element, .java.lang.Object>, .java.io.Serializable {
+    
+    RNParametersImpl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+        this.$org$eclipse$ceylon$compiler$java$test$structure$klass$RNParameters$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object>($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$structure$klass$RNParameters$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.RNParameters$impl<Element, .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$structure$klass$RNParameters$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$RNParameters$this$;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object m2(final .java.lang.Object p) {
+        return $org$eclipse$ceylon$compiler$java$test$structure$klass$RNParameters$this$.m2(p);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m(final .java.lang.Object p) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RNParametersImpl.class, $reified$Element);
+    }
+}

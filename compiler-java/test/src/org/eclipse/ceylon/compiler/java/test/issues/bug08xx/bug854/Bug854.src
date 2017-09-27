@@ -1,0 +1,30 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug08xx.bug854;
+
+final class bug854_ {
+    
+    private bug854_() {
+    }
+    
+    static <T>T bug854(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T x) {
+        return new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.bug854.Bug854<T>().id(x);
+    }
+}
+final class bug854b_ {
+    
+    private bug854b_() {
+    }
+    
+    static <T>T bug854b(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T x) {
+        return .org.eclipse.ceylon.compiler.java.Util.checkNull(new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.bug854.Bug854<T>().id(x));
+    }
+}
+final class x_ {
+    
+    private x_() {
+    }
+    
+    static <Element>.java.lang.Object x(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        final .java.util.Iterator<Element> jit = new .java.util.ArrayList<Element>().iterator();
+        return .org.eclipse.ceylon.compiler.java.Util.checkNull(jit).next();
+    }
+}

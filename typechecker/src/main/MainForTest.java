@@ -1,14 +1,14 @@
 package main;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.compiler.typechecker.TypeChecker;
-import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
-import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
-import com.redhat.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.model.typechecker.model.Module;
-
 import java.io.File;
+
+import org.eclipse.ceylon.cmr.api.RepositoryManager;
+import org.eclipse.ceylon.cmr.ceylon.CeylonUtils;
+import org.eclipse.ceylon.compiler.typechecker.TypeChecker;
+import org.eclipse.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import org.eclipse.ceylon.compiler.typechecker.io.ClosableVirtualFile;
+import org.eclipse.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
+import org.eclipse.ceylon.compiler.typechecker.tree.Tree;
+import org.eclipse.ceylon.model.typechecker.model.Module;
 
 /**
  * Some hack before a proper unit test harness is put in place
@@ -55,10 +55,10 @@ public class MainForTest {
         }
         compilationUnit = 
                 typeChecker.getPhasedUnitFromRelativePath(
-                        "com/redhat/sample/multisource/Boo.ceylon")
+                        "org/eclipse/sample/multisource/Boo.ceylon")
                     .getCompilationUnit();
         Module module = compilationUnit.getUnit().getPackage().getModule();
-        if ( !"com.redhat.sample.multisource".equals( module.getNameAsString() ) ) {
+        if ( !"org.eclipse.sample.multisource".equals( module.getNameAsString() ) ) {
             throw new RuntimeException("Unable to extract module name");
         }
         if ( !"0.2".equals( module.getVersion() ) ) {

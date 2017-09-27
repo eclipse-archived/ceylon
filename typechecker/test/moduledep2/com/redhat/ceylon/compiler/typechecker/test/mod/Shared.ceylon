@@ -1,4 +1,4 @@
-import com.redhat.ceylon.compiler.typechecker.test.mod.internal {
+import org.eclipse.ceylon.compiler.typechecker.test.mod.internal {
     Unshared
 }
 

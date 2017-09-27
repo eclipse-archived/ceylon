@@ -1,0 +1,111 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("attr1")
+final class attr1_ {
+    
+    private attr1_() {
+    }
+    private static final long $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = 1L;
+            .org.eclipse.ceylon.compiler.java.test.annotations.attr1_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.annotations.attr1_.$init$$object$ = false;
+        }
+    }
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.annotations.attr1_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.annotations.attr1_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'attr1\' before it was set");
+        }
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("attr2")
+final class attr2_ {
+    
+    private attr2_() {
+    }
+    private static long $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            .org.eclipse.ceylon.compiler.java.test.annotations.attr2_.$object$ = 1L;
+            .org.eclipse.ceylon.compiler.java.test.annotations.attr2_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            .org.eclipse.ceylon.compiler.java.test.annotations.attr2_.$object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.annotations.attr2_.$init$$object$ = false;
+        }
+    }
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.annotations.attr2_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.annotations.attr2_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'attr2\' before it was set");
+        }
+    }
+    
+    public static void set_(@.org.eclipse.ceylon.compiler.java.metadata.Name("attr2")
+    final long attr2) {
+        if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+        .org.eclipse.ceylon.compiler.java.test.annotations.attr2_.$object$ = attr2;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("attr3")
+final class attr3_ {
+    
+    private attr3_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static long get_() {
+        return 1L;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("attr4")
+final class attr4_ {
+    
+    private attr4_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static long get_() {
+        return 1L;
+    }
+    
+    public static void set_(@.org.eclipse.ceylon.compiler.java.metadata.Name("attr4")
+    final long attr4) {
+    }
+}

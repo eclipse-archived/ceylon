@@ -2,8 +2,8 @@ package main;
 import java.io.File;
 import java.util.Arrays;
 
-import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
-import com.redhat.ceylon.compiler.typechecker.io.VFS;
+import org.eclipse.ceylon.compiler.typechecker.io.ClosableVirtualFile;
+import org.eclipse.ceylon.compiler.typechecker.io.VFS;
 
 /**
  * @author Emmanuel Bernard <emmanuel@hibernate.org>

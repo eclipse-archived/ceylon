@@ -32,5 +32,5 @@ And to run the tests type
 
 Once built, the module lives in this jar:
 
-    ~/.ceylon/repo/com/redhat/ceylon/common/0.2/com.redhat.ceylon.common-0.2.jar
+    ~/.ceylon/repo/org/eclipse/ceylon/common/0.2/org.eclipse.ceylon.common-0.2.jar
 

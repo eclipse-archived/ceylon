@@ -1,0 +1,35 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug08xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug889_ {
+    
+    private bug889_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.FunctionalParameter("(element)")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean(Element)")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "Element",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public static <Element>.ceylon.language.Callable<? extends .ceylon.language.Boolean> bug889(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("Element")
+    final Element val) {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element), "Boolean(Element)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
+                final Element element = (Element)$param$0;
+                return .ceylon.language.Boolean.instance(true);
+            }
+        };
+    }
+}

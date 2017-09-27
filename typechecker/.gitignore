@@ -6,8 +6,8 @@ output
 out
 
 # ANTLR generated
-antlr/com/redhat/ceylon/compiler/typechecker/treegen/*.java
-antlr/com/redhat/ceylon/compiler/typechecker/treegen/*.tokens
+antlr/org/eclipse/ceylon/compiler/typechecker/treegen/*.java
+antlr/org/eclipse/ceylon/compiler/typechecker/treegen/*.tokens
 
 # IDEs
 .settings

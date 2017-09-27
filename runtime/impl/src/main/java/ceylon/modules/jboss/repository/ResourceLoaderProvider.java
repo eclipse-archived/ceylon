@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.jar.JarFile;
 import java.util.zip.ZipException;
 
-import com.redhat.ceylon.cmr.api.RepositoryManager;
+import org.eclipse.ceylon.cmr.api.RepositoryManager;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaders;

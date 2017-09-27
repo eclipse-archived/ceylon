@@ -1,0 +1,179 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+class Synchronized implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Synchronized() {
+        super();
+        this.u = null;
+        this.f = null;
+        this.s = null;
+        this.t = null;
+    }
+    
+    Synchronized(final .java.lang.String s, .java.lang.String u$param$, final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+        this.s = s;
+        this.u = u$param$;
+        this.f = f;
+        this.t = getS();
+    }
+    private .java.lang.String u;
+    
+    public final synchronized .java.lang.String getU() {
+        return this.u;
+    }
+    
+    public final synchronized void setU(final .java.lang.String u) {
+        this.u = u;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> f;
+    
+    public final synchronized void f() {
+        f.$call$();
+    }
+    private final .java.lang.String s;
+    
+    public final synchronized .java.lang.String getS() {
+        return this.s;
+    }
+    private .java.lang.String t;
+    
+    public final synchronized .java.lang.String getT() {
+        return this.t;
+    }
+    
+    public final synchronized void setT(final .java.lang.String t) {
+        this.t = t;
+    }
+    
+    public final synchronized void m() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$0 = m$s();
+                m$canonical$($ceylontmp$s$0);
+            }
+            returning null;
+        );
+    }
+    
+    public final .java.lang.String m$s() {
+        return this.getS();
+    }
+    
+    private void m$canonical$(final .java.lang.String s) {
+    }
+    
+    public final synchronized void m(final .java.lang.String s) {
+        (
+            let
+            {
+                m$canonical$(s);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.Synchronized.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.Synchronized.class);
+}
+class SynchronizedStatic implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private static .java.lang.String s;
+    static {
+        .org.eclipse.ceylon.compiler.java.test.interop.SynchronizedStatic.s = "";
+    }
+    
+    public static final synchronized .java.lang.String getS() {
+        return (.java.lang.String).org.eclipse.ceylon.compiler.java.test.interop.SynchronizedStatic.s;
+    }
+    
+    public static final synchronized void setS(final .java.lang.String s) {
+        .org.eclipse.ceylon.compiler.java.test.interop.SynchronizedStatic.s = s;
+    }
+    
+    public static final synchronized .java.lang.String getGetter() {
+        return "";
+    }
+    
+    public static final synchronized void setGetter(final .java.lang.String getter) {
+    }
+    
+    public static final synchronized void m() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$1 = .org.eclipse.ceylon.compiler.java.test.interop.SynchronizedStatic.m$s();
+                m$canonical$($ceylontmp$s$1);
+            }
+            returning null;
+        );
+    }
+    
+    public static final .java.lang.String m$s() {
+        return "";
+    }
+    
+    private static void m$canonical$(final .java.lang.String s) {
+    }
+    
+    public static final synchronized void m(final .java.lang.String s) {
+        (
+            let
+            {
+                m$canonical$(s);
+            }
+            returning null;
+        );
+    }
+    
+    public SynchronizedStatic() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.SynchronizedStatic.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.SynchronizedStatic.class);
+}
+public final class synchronizedFunction_ {
+    
+    private synchronizedFunction_() {
+    }
+    
+    public static synchronized void synchronizedFunction() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$2 = .org.eclipse.ceylon.compiler.java.test.interop.synchronizedFunction_.synchronizedFunction$s();
+                synchronizedFunction($ceylontmp$s$2);
+            }
+            returning null;
+        );
+    }
+    
+    public static final .java.lang.String synchronizedFunction$s() {
+        return "";
+    }
+    
+    public static synchronized void synchronizedFunction(final .java.lang.String s) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.interop.synchronizedFunction_.synchronizedFunction();
+    }
+}
+public final class synchronizedGetter_ {
+    
+    private synchronizedGetter_() {
+    }
+    
+    public static synchronized .java.lang.String get_() {
+        return "";
+    }
+    
+    public static synchronized void set_(final .java.lang.String synchronizedGetter) {
+    }
+}

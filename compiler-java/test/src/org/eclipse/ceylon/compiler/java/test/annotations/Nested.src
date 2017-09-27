@@ -1,0 +1,627 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface NestedLeaf$annotation$ {
+    
+    public abstract long i1() default 1L;
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface NestedLeaf$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::NestedLeaf,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+final class NestedLeaf implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    NestedLeaf() {
+        (
+            let
+            {
+                long $ceylontmp$i1$0 = .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf.$default$i1();
+                this($ceylontmp$i1$0);
+            }
+            returning null;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    NestedLeaf(.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$ anno) {
+        this(anno.i1());
+    }
+    
+    NestedLeaf(@.org.eclipse.ceylon.compiler.java.metadata.Name("i1")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.ceylon.language.SharedAnnotation$annotation$
+    final long i1) {
+        this.i1 = i1;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final long i1;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final long getI1() {
+        return this.i1;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static long $default$i1() {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf.class)
+final class nestedLeafDefaultedParameter_ {
+    
+    private nestedLeafDefaultedParameter_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf nestedLeafDefaultedParameter() {
+        return (
+            let
+            {
+                long $ceylontmp$i2$1 = .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.nestedLeafDefaultedParameter$i2();
+            }
+            returning nestedLeafDefaultedParameter($ceylontmp$i2$1);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(2L)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final long nestedLeafDefaultedParameter$i2() {
+        return 2L;
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedLeaf")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf nestedLeafDefaultedParameter(@.org.eclipse.ceylon.compiler.java.metadata.Name("i2")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    final long i2) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf(i2);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {-32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf.class)
+@.org.eclipse.ceylon.compiler.java.metadata.IntegerExprs({@.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+        name = "$arg$i1",
+        value = 3L)})
+final class nestedLeafLiteralArgument_ {
+    
+    private nestedLeafLiteralArgument_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedLeaf")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf nestedLeafLiteralArgument() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf(3L);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({})
+@interface NestedBranch$annotation$ {
+    
+    public abstract .java.lang.String s();
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$ b();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@interface NestedBranch$annotations$ {
+    
+    @.org.eclipse.ceylon.common.NonNull
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$[] value();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+final class NestedBranch implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected NestedBranch() {
+        super();
+        this.s = null;
+        this.b = null;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    NestedBranch(.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$ anno) {
+        this(anno.s(), new .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf(anno.b()));
+    }
+    
+    NestedBranch(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.NonNull
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .java.lang.String s, @.org.eclipse.ceylon.compiler.java.metadata.Name("b")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedLeaf")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf b) {
+        this.s = s;
+        this.b = b;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String s;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getS() {
+        return this.s;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf b;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedLeaf")
+    public final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf getB() {
+        return this.b;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                -32768,
+                0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class)
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$s",
+        value = "nestedBranchDPClassWithLiteralArgument")})
+final class nestedBranchDPClassWithLiteralArgument_ {
+    
+    private nestedBranchDPClassWithLiteralArgument_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPClassWithLiteralArgument() {
+        return (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$2 = .org.eclipse.ceylon.compiler.java.test.annotations.nestedBranchDPClassWithLiteralArgument_.nestedBranchDPClassWithLiteralArgument$b();
+            }
+            returning nestedBranchDPClassWithLiteralArgument($ceylontmp$b$2);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+            arguments = {-32768},
+            primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf.class)
+    @.org.eclipse.ceylon.compiler.java.metadata.IntegerExprs({@.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+            name = "$arg$i1",
+            value = 100L)})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf nestedBranchDPClassWithLiteralArgument$b() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf(100L);
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPClassWithLiteralArgument(@.org.eclipse.ceylon.compiler.java.metadata.Name("b")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedLeaf")
+    final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf b) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPClassWithLiteralArgument", b);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                -32768,
+                0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class)
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$s",
+        value = "nestedBranchDPClassDefaultedArgument")})
+final class nestedBranchDPClassDefaultedArgument_ {
+    
+    private nestedBranchDPClassDefaultedArgument_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPClassDefaultedArgument() {
+        return (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$3 = .org.eclipse.ceylon.compiler.java.test.annotations.nestedBranchDPClassDefaultedArgument_.nestedBranchDPClassDefaultedArgument$b();
+            }
+            returning nestedBranchDPClassDefaultedArgument($ceylontmp$b$3);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+            arguments = {},
+            primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf.class)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf nestedBranchDPClassDefaultedArgument$b() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf();
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPClassDefaultedArgument(@.org.eclipse.ceylon.compiler.java.metadata.Name("b")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedLeaf")
+    final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf b) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPClassDefaultedArgument", b);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                -32768,
+                0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class)
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$s",
+        value = "nestedBranchDPCtorWithLiteralArgument")})
+final class nestedBranchDPCtorWithLiteralArgument_ {
+    
+    private nestedBranchDPCtorWithLiteralArgument_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPCtorWithLiteralArgument() {
+        return (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$4 = .org.eclipse.ceylon.compiler.java.test.annotations.nestedBranchDPCtorWithLiteralArgument_.nestedBranchDPCtorWithLiteralArgument$b();
+            }
+            returning nestedBranchDPCtorWithLiteralArgument($ceylontmp$b$4);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+            arguments = {-32768},
+            primary = .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.class)
+    @.org.eclipse.ceylon.compiler.java.metadata.IntegerExprs({@.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+            name = "$arg$i2",
+            value = 101L)})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf nestedBranchDPCtorWithLiteralArgument$b() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.nestedLeafDefaultedParameter(101L);
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPCtorWithLiteralArgument(@.org.eclipse.ceylon.compiler.java.metadata.Name("b")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedLeaf")
+    final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf b) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPCtorWithLiteralArgument", b);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                -32768,
+                0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class)
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$s",
+        value = "nestedBranchDPCtorNullary")})
+final class nestedBranchDPCtorNullary_ {
+    
+    private nestedBranchDPCtorNullary_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPCtorNullary() {
+        return (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$5 = .org.eclipse.ceylon.compiler.java.test.annotations.nestedBranchDPCtorNullary_.nestedBranchDPCtorNullary$b();
+            }
+            returning nestedBranchDPCtorNullary($ceylontmp$b$5);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+            arguments = {},
+            primary = .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafLiteralArgument_.class)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf nestedBranchDPCtorNullary$b() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafLiteralArgument_.nestedLeafLiteralArgument();
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPCtorNullary(@.org.eclipse.ceylon.compiler.java.metadata.Name("b")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedLeaf")
+    final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf b) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPCtorNullary", b);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                -32768,
+                0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class)
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$s",
+        value = "nestedBranchDPCtorWithDefaultedArgument")})
+final class nestedBranchDPCtorWithDefaultedArgument_ {
+    
+    private nestedBranchDPCtorWithDefaultedArgument_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPCtorWithDefaultedArgument() {
+        return (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf $ceylontmp$b$6 = .org.eclipse.ceylon.compiler.java.test.annotations.nestedBranchDPCtorWithDefaultedArgument_.nestedBranchDPCtorWithDefaultedArgument$b();
+            }
+            returning nestedBranchDPCtorWithDefaultedArgument($ceylontmp$b$6);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+            arguments = {},
+            primary = .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.class)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf nestedBranchDPCtorWithDefaultedArgument$b() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.nestedLeafDefaultedParameter();
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPCtorWithDefaultedArgument(@.org.eclipse.ceylon.compiler.java.metadata.Name("b")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedLeaf")
+    final .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf b) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPCtorWithDefaultedArgument", b);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {
+                        -32768,
+                        -1},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$s",
+        value = "nestedBranchClassNullary")})
+final class nestedBranchClassNullary_ {
+    
+    private nestedBranchClassNullary_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchClassNullary() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchClassNullary", new .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf());
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {
+                        -32768,
+                        -1},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {-32768},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$s",
+        value = "nestedBranchClassLiteral")})
+@.org.eclipse.ceylon.compiler.java.metadata.IntegerExprs({@.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+        name = "$arg$b$$arg$i1",
+        value = 110L)})
+final class nestedBranchClassLiteral_ {
+    
+    private nestedBranchClassLiteral_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchClassLiteral() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchClassLiteral", new .org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf(110L));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {
+                        -32768,
+                        -1},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafLiteralArgument_.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$s",
+        value = "nestedBranchCtorNullary")})
+final class nestedBranchCtorNullary_ {
+    
+    private nestedBranchCtorNullary_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchCtorNullary() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchCtorNullary", .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafLiteralArgument_.nestedLeafLiteralArgument());
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {
+                        -32768,
+                        -1},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$s",
+        value = "nestedBranchCtorDefaultedArgument")})
+final class nestedBranchCtorDefaultedArgument_ {
+    
+    private nestedBranchCtorDefaultedArgument_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchCtorDefaultedArgument() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchCtorDefaultedArgument", .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.nestedLeafDefaultedParameter());
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {
+                        -32768,
+                        -1},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {-32768},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.StringExprs({@.org.eclipse.ceylon.compiler.java.metadata.StringValue(
+        name = "$arg$s",
+        value = "nestedBranchCtorLiteral")})
+@.org.eclipse.ceylon.compiler.java.metadata.IntegerExprs({@.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+        name = "$arg$b$$arg$i2",
+        value = 512L)})
+final class nestedBranchCtorLiteral_ {
+    
+    private nestedBranchCtorLiteral_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::NestedBranch")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchCtorLiteral() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchCtorLiteral", (
+            let
+            {
+                long arg$7$0 = 512L;
+            }
+            returning .org.eclipse.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.nestedLeafDefaultedParameter(arg$7$0);
+        ));
+    }
+}

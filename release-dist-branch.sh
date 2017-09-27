@@ -21,7 +21,7 @@ git checkout -b version-$CEYLON_RELEASE_VERSION $CEYLON_BRANCHING_TAG 2>&1 >> $L
 
 log "Replacing files"
 
-replace common/src/com/redhat/ceylon/common/Versions.java
+replace common/src/org/eclipse/ceylon/common/Versions.java
 replace language/src/ceylon/language/module.ceylon
 replace language/src/ceylon/language/language.ceylon
 replace language/test/process.ceylon

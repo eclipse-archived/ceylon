@@ -1,10 +1,10 @@
 package main;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.compiler.typechecker.TypeChecker;
-import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
-import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
-import com.redhat.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
+import org.eclipse.ceylon.cmr.api.RepositoryManager;
+import org.eclipse.ceylon.cmr.ceylon.CeylonUtils;
+import org.eclipse.ceylon.compiler.typechecker.TypeChecker;
+import org.eclipse.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import org.eclipse.ceylon.compiler.typechecker.io.ClosableVirtualFile;
+import org.eclipse.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
 
 /**
  * Some hack before a proper unit test harness is put in place

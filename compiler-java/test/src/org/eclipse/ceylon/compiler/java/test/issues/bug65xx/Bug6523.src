@@ -1,0 +1,72 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug65xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug6523_ {
+    
+    private bug6523_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug6523() {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class fn_ implements .java.io.Serializable {
+            
+            private fn_() {
+            }
+            
+            @.org.eclipse.ceylon.common.NonNull
+            .ceylon.language.Callable<? extends .ceylon.language.Integer> fn(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+            final long i) {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Method
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                final class fn2_ implements .java.io.Serializable {
+                    
+                    private fn2_() {
+                    }
+                    
+                    long fn2() {
+                        return i;
+                    }
+                }
+                final fn2_ fn2 = new fn2_();
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Integer $call$() {
+                        return .ceylon.language.Integer.instance(fn2.fn2());
+                    }
+                };
+            }
+        }
+        final fn_ fn = new fn_();
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.Integer>> v = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer()(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends .ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return fn.fn($ceylontmp$i);
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> v1 = fn.fn(1L);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug65xx.bug6523_.bug6523();
+    }
+}

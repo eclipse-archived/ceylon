@@ -1,0 +1,68 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug22xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class Bug2273 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Bug2273() {
+        super();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2273.create_ create_ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("create")
+    public static final class create_ {
+        
+        create_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("create")
+    public Bug2273(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2273.create_ $name$) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2273.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2273.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug2273_ {
+    
+    private bug2273_() {
+    }
+    
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug22xx::Bug2273?")
+    static .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2273 bug2273() {
+        return (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2273 $ceylontmp$ifResult$0;
+                if (true) {
+                    $ceylontmp$ifResult$0 = new .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2273(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2273.create_);
+                } else {
+                    null;
+                    $ceylontmp$ifResult$0 = null;
+                }
+            }
+            returning $ceylontmp$ifResult$0;
+        );
+    }
+}

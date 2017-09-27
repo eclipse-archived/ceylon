@@ -1,0 +1,146 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug16xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.Bar2.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.Bar1.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class Bug1612<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    Bug1612(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        (
+            let
+            {
+                long $ceylontmp$i$0 = .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.<T>$default$i($reified$T);
+                <T>this($reified$T, $ceylontmp$i$0);
+            }
+            returning null;
+        );
+    }
+    
+    Bug1612(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    final long i) {
+        this.$reified$T = $reified$T;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static <T>long $default$i(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return 2L;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final <G>G $default$Bar1$j(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+        return (G)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("Bar1")
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "G",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    class Bar1<G> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        Bar1(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+            (
+                let
+                {
+                    G $ceylontmp$j$1 = $default$Bar1$j($reified$G);
+                    <G>this($reified$G, $ceylontmp$j$1);
+                }
+                returning null;
+            );
+        }
+        
+        Bar1(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G, @.org.eclipse.ceylon.compiler.java.metadata.Name("j")
+        @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("G")
+        final G j) {
+            this.$reified$G = $reified$G;
+        }
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G;
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class, .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.Bar1.class, $reified$G));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public <G>.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612<T>.Bar2<G> Bar2$new$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G, final long j) {
+        return new Bar2<G>($reified$G, j);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final <G>long $default$Bar2$j(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+        return 3L;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public <G>.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612<T>.Bar2<G> Bar2$new$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+        return (
+            let
+            {
+                long $ceylontmp$j$2 = $default$Bar2$j($reified$G);
+            }
+            returning new Bar2<G>($reified$G, $ceylontmp$j$2);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "G",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public class Bar2<G> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Bar2(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G, @.org.eclipse.ceylon.compiler.java.metadata.Name("j")
+        @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+        final long j) {
+            this.$reified$G = $reified$G;
+        }
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G;
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class, .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.Bar2.class, $reified$G));
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class, $reified$T);
+    }
+}

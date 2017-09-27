@@ -1,0 +1,20 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug63xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.issues.bug63xx::Bug6377Java.Bar")
+class Bug6377 extends .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6377Java.Bar implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug6377() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6377.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6377.class);
+}

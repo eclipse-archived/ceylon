@@ -1,0 +1,11 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+public final class bug2199_ {
+    
+    private bug2199_() {
+    }
+    
+    public static void bug2199(final long codepoint) {
+        final .java.lang.String s = .org.eclipse.ceylon.compiler.java.Util.checkNull(.org.eclipse.ceylon.compiler.java.Util.checkNull(.java.lang.Character.UnicodeScript.of((int)codepoint)).name());
+    }
+}

@@ -9,13 +9,13 @@
    <category-def name="only-dependencies-bundles" label="Ceylon Full Distribution - Only Binary Dependencies">
       <description>Fixed binary dependencies of the Ceylon Distribution -  Only needed to compile the IDE by using the distribution bundle proxy projects</description>
    </category-def>
-   <feature id="com.redhat.ceylon.dist.feature" version="0.0.0">
+   <feature id="org.eclipse.ceylon.dist.feature" version="0.0.0">
       <category name="full-distribution-bundles"/>
    </feature>
-   <feature id="com.redhat.ceylon.dist.dependencies.feature" version="0.0.0">
+   <feature id="org.eclipse.ceylon.dist.dependencies.feature" version="0.0.0">
       <category name="only-dependencies-bundles"/>
    </feature>
-   <feature id="com.redhat.ceylon.dist.runtime.feature" version="0.0.0">
+   <feature id="org.eclipse.ceylon.dist.runtime.feature" version="0.0.0">
       <category name="runtime-bundles"/>
    </feature>
 </site>

@@ -1,0 +1,274 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug08xx;
+
+public interface Bug801_Interface$MemberInterface {
+}
+public interface Bug801_Interface {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface.class);
+}
+public final class Bug801_Interface$impl implements .java.io.Serializable {
+    
+    public Bug801_Interface$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface $this;
+}
+public interface Bug801_Class$MemberInterface {
+}
+public class Bug801_Class implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug801_Class() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class.class);
+}
+public interface Bug801_ImplClass$MemberInterface2 extends .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
+}
+interface Bug801_ImplClass$method$MemberInterface2 extends .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface {
+}
+public class Bug801_ImplClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface, .java.io.Serializable {
+    
+    public Bug801_ImplClass() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.MemberInterfaceImpl MemberInterfaceImpl$new$() {
+        return new MemberInterfaceImpl();
+    }
+    
+    public class MemberInterfaceImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface, .java.io.Serializable {
+        
+        protected MemberInterfaceImpl() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.MemberInterfaceImpl.class));
+        }
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo Foo$new$() {
+        return new Foo();
+    }
+    
+    public class Foo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Foo() {
+        }
+        
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.MemberInterfaceImpl MemberInterfaceImpl$new$() {
+            return new MemberInterfaceImpl();
+        }
+        
+        public class MemberInterfaceImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface, .java.io.Serializable {
+            
+            protected MemberInterfaceImpl() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.MemberInterfaceImpl.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Foo.class));
+        }
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar Bar$new$() {
+        return new Bar();
+    }
+    
+    public class Bar implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface, .java.io.Serializable {
+        
+        protected Bar() {
+            this.$org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
+        }
+        protected final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl() {
+            return $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
+        }
+        
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.MemberInterfaceImpl MemberInterfaceImpl$new$() {
+            return new MemberInterfaceImpl();
+        }
+        
+        public class MemberInterfaceImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface, .java.io.Serializable {
+            
+            protected MemberInterfaceImpl() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.MemberInterfaceImpl.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.Bar.class));
+        }
+    }
+    
+    private final void method$priv$() {
+        
+        class MemberInterfaceImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface, .java.io.Serializable {
+            
+            MemberInterfaceImpl() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("method")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(MemberInterfaceImpl.class));
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass.class);
+}
+public interface Bug801_ImplClass2$MemberInterface2 extends .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
+}
+interface Bug801_ImplClass2$method$MemberInterface2 extends .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface {
+}
+public class Bug801_ImplClass2 extends .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class {
+    
+    public Bug801_ImplClass2() {
+        super();
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.MemberInterfaceImpl MemberInterfaceImpl$new$() {
+        return new MemberInterfaceImpl();
+    }
+    
+    public class MemberInterfaceImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface, .java.io.Serializable {
+        
+        protected MemberInterfaceImpl() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.MemberInterfaceImpl.class));
+        }
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo Foo$new$() {
+        return new Foo();
+    }
+    
+    public class Foo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Foo() {
+        }
+        
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.MemberInterfaceImpl MemberInterfaceImpl$new$() {
+            return new MemberInterfaceImpl();
+        }
+        
+        public class MemberInterfaceImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface, .java.io.Serializable {
+            
+            protected MemberInterfaceImpl() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.MemberInterfaceImpl.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Foo.class));
+        }
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar Bar$new$() {
+        return new Bar();
+    }
+    
+    public class Bar implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface, .java.io.Serializable {
+        
+        protected Bar() {
+            this.$org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl(this);
+        }
+        protected final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$impl() {
+            return $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug801_Interface$this$;
+        }
+        
+        public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.MemberInterfaceImpl MemberInterfaceImpl$new$() {
+            return new MemberInterfaceImpl();
+        }
+        
+        public class MemberInterfaceImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Interface$MemberInterface, .java.io.Serializable {
+            
+            protected MemberInterfaceImpl() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.MemberInterfaceImpl.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.Bar.class));
+        }
+    }
+    
+    private final void method$priv$() {
+        
+        class MemberInterfaceImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_Class$MemberInterface, .java.io.Serializable {
+            
+            MemberInterfaceImpl() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("method")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(MemberInterfaceImpl.class));
+            }
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug801_ImplClass2.class);
+}

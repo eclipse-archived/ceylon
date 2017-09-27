@@ -1,0 +1,86 @@
+package org.eclipse.ceylon.compiler.java.test.structure.reified;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Key",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Value",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+public interface CompositeInterface<Key, Value> {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.reified::CompositeInterface<Key,Value|ceylon.language::Integer>"})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Key",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Value",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+public class CompositeClass<Key, Value> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.reified.CompositeInterface<Key, .java.lang.Object>, .java.io.Serializable {
+    
+    public CompositeClass(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Value = $reified$Value;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.structure.reified.CompositeClass(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.CompositeClass.class, $reified$Key, $reified$Value);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class reifiedCompositeInstantiate_ {
+    
+    private reifiedCompositeInstantiate_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Key",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {}),
+            @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "Value",
+                    variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {})})
+    static <Key, Value>void reifiedCompositeInstantiate(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
+        final .org.eclipse.ceylon.compiler.java.test.structure.reified.CompositeClass c = new .org.eclipse.ceylon.compiler.java.test.structure.reified.CompositeClass(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Key, .ceylon.language.Obtainable.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union($reified$Value, .ceylon.language.Integer.$TypeDescriptor$));
+    }
+}

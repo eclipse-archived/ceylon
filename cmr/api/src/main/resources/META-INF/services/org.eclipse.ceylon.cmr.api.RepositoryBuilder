@@ -1,0 +1,6 @@
+org.eclipse.ceylon.cmr.impl.RemoteRepositoryBuilder
+org.eclipse.ceylon.cmr.impl.JDKRepositoryBuilder
+org.eclipse.ceylon.cmr.impl.MavenRepositoryBuilder
+org.eclipse.ceylon.cmr.impl.NpmRepositoryBuilder
+org.eclipse.ceylon.cmr.impl.FlatRepositoryBuilder
+org.eclipse.ceylon.cmr.impl.AssemblyRepositoryBuilder

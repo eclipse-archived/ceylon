@@ -1,0 +1,61 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+class KlassHiding implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    KlassHiding() {
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHiding.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Inner() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHiding.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHiding.Inner.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return Inner$new$().toString();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHiding.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHiding.class);
+}
+class KlassHidingSub extends .org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHiding {
+    
+    KlassHidingSub() {
+        super();
+    }
+    
+    class Inner implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Inner() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHidingSub.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHidingSub.Inner.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return new .org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHidingSub.Inner().toString();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHidingSub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.KlassHidingSub.class);
+}

@@ -1,0 +1,170 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+public @interface EnumeratedReference_X$annotation$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation$ y();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+public @interface EnumeratedReference_X$annotations$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X$annotation$[] value();
+}
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+public final class EnumeratedReference_X implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected EnumeratedReference_X() {
+        super();
+        this.y = null;
+    }
+    
+    public EnumeratedReference_X(.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X$annotation$ anno) {
+        this(new .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y(anno.y()));
+    }
+    
+    public EnumeratedReference_X(@.ceylon.language.SharedAnnotation$annotation$
+    final .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y y) {
+        this.y = y;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y y;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y getY() {
+        return this.y;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X$annotation$.class;
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+public @interface EnumeratedReference_Y$annotation$ {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.EnumerationReference
+    public abstract .java.lang.Class<? extends .ceylon.language.Comparison> c();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+public @interface EnumeratedReference_Y$annotations$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation$[] value();
+}
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+public final class EnumeratedReference_Y implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected EnumeratedReference_Y() {
+        super();
+    }
+    
+    public EnumeratedReference_Y(.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation$ anno) {
+        this(.org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.parseEnumerationReference(anno.c()));
+    }
+    
+    public EnumeratedReference_Y(final .ceylon.language.Comparison c) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X.class)
+final class enumeratedReference_z_ {
+    
+    private enumeratedReference_z_() {
+    }
+    
+    static .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X enumeratedReference_z() {
+        return (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y $ceylontmp$y$0 = .org.eclipse.ceylon.compiler.java.test.annotations.enumeratedReference_z_.enumeratedReference_z$y();
+            }
+            returning enumeratedReference_z($ceylontmp$y$0);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+            arguments = {-32768},
+            primary = .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.class)
+    @.org.eclipse.ceylon.compiler.java.metadata.ObjectExprs({@.org.eclipse.ceylon.compiler.java.metadata.ObjectValue(
+            name = "$arg$c",
+            value = .ceylon.language.smaller_.class)})
+    public static final .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y enumeratedReference_z$y() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y(.ceylon.language.smaller_.get_());
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X enumeratedReference_z(final .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y y) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X(y);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {-1},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+                arguments = {-32768},
+                primary = .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.class)})
+@.org.eclipse.ceylon.compiler.java.metadata.ObjectExprs({@.org.eclipse.ceylon.compiler.java.metadata.ObjectValue(
+        name = "$arg$y$$arg$c",
+        value = .ceylon.language.smaller_.class)})
+final class enumeratedReference_zz_ {
+    
+    private enumeratedReference_zz_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::EnumeratedReference_X")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X enumeratedReference_zz() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X(new .org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y(.ceylon.language.smaller_.get_()));
+    }
+}
+public final class enumeratedReference_callsite_ {
+    
+    private enumeratedReference_callsite_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X$annotations$({
+            @.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X$annotation$(y = @.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation$(c = .ceylon.language.smaller_.class)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_X$annotation$(y = @.org.eclipse.ceylon.compiler.java.test.annotations.EnumeratedReference_Y$annotation$(c = .ceylon.language.smaller_.class))})
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void enumeratedReference_callsite() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.annotations.enumeratedReference_callsite_.enumeratedReference_callsite();
+    }
+}

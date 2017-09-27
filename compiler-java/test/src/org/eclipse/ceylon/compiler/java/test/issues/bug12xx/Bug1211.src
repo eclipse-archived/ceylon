@@ -1,0 +1,44 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug12xx;
+
+class Bug1211Top<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1211Top(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public .java.lang.Object f(final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+        return null;
+    }
+    
+    public .java.lang.Object f2(final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1211Top.class, $reified$T);
+    }
+}
+class Bug1211Bottom extends .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1211Top<.ceylon.language.Integer> {
+    
+    Bug1211Bottom() {
+        super(.ceylon.language.Integer.$TypeDescriptor$);
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f(final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object f2(final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1211Bottom.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1211Bottom.class);
+}

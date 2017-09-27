@@ -1,0 +1,87 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug13xx;
+
+final class bug1383_ {
+    
+    private bug1383_() {
+    }
+    
+    static void bug1383(final .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1383Java j) {
+        final long h = j.hashCode();
+        final .java.lang.String s = j.toString();
+        final boolean b = j.equals(j);
+        j.setHash(j.getHash());
+        j.setEquals(j.getEquals());
+        j.setString(j.getString());
+        final boolean b5 = j.equals();
+        final boolean b6 = j.equals("hello");
+    }
+}
+public class Bug1383 extends .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1383JavaNoOverload implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug1383() {
+        super();
+        this.string = "str";
+        this.hash = 1L;
+    }
+    private final .java.lang.String string;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return this.string;
+    }
+    private final long hash;
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$0 = this.hash;
+            }
+            returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    public final boolean equals(final .java.lang.Object o) {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean getHash() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final void setHash(final boolean b) {
+    }
+    
+    @.java.lang.Override
+    public final boolean getString() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final void setString(final boolean b) {
+    }
+    
+    @.java.lang.Override
+    public final boolean getEquals() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final void setEquals(final boolean b) {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1383();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1383.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1383.class);
+}

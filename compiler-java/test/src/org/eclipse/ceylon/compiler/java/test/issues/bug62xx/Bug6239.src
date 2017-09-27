@@ -1,0 +1,65 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug62xx;
+
+public final class bug6239_ {
+    
+    private bug6239_() {
+    }
+    
+    public static void bug6239() {
+        final long x;
+        long x$0 = 0L;
+        final int $ceylontmp$first$3 = 0;
+        final int $ceylontmp$last$4 = 3;
+        final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$last$4, $ceylontmp$first$3) >= 0;
+        final int $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1 : -1;
+        int j$9 = $ceylontmp$first$3;
+        int $ceylontmp$element$8 = $ceylontmp$first$3;
+        boolean $ceylontmp$f$7 = false;
+        loop_0: do {
+            if ($ceylontmp$f$7) $ceylontmp$element$8 += $ceylontmp$incr$6;
+            $ceylontmp$f$7 = true;
+            j$9 = $ceylontmp$element$8;
+            final int j = j$9;
+            $ceylontmp$continue$2: do {
+                x$0 = 10L + j;
+                final long x$10 = x$0;
+                if (1L == 1L) {
+                    break loop_0;
+                } else {
+                    return;
+                }
+            }             while (false);
+        }         while ($ceylontmp$increasing$5 ? j$9 - $ceylontmp$last$4 != 0 : j$9 - $ceylontmp$last$4 != 0);
+        x = x$0;
+        final long y;
+        long y$12 = 0L;
+        final int $ceylontmp$first$15 = 0;
+        final int $ceylontmp$last$16 = 3;
+        final boolean $ceylontmp$increasing$17 = .ceylon.language.Integer.offset($ceylontmp$last$16, $ceylontmp$first$15) >= 0;
+        final int $ceylontmp$incr$18 = $ceylontmp$increasing$17 ? 1 : -1;
+        int j$21 = $ceylontmp$first$15;
+        int $ceylontmp$element$20 = $ceylontmp$first$15;
+        boolean $ceylontmp$f$19 = false;
+        loop_1: do {
+            if ($ceylontmp$f$19) $ceylontmp$element$20 += $ceylontmp$incr$18;
+            $ceylontmp$f$19 = true;
+            j$21 = $ceylontmp$element$20;
+            final int j = j$21;
+            $ceylontmp$continue$14: do {
+                if (1L == 0L) {
+                    y$12 = 9L;
+                    final long y$23 = y$12;
+                    break loop_1;
+                } else {
+                    return;
+                }
+            }             while (false);
+        }         while ($ceylontmp$increasing$17 ? j$21 - $ceylontmp$last$16 != 0 : j$21 - $ceylontmp$last$16 != 0);
+        y = y$12;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.bug6239_.bug6239();
+    }
+}

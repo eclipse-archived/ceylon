@@ -1,0 +1,56 @@
+package org.eclipse.ceylon.compiler.java.test.structure.toplevel;
+
+final class toplevelAttributeLateInit_ {
+    
+    private toplevelAttributeLateInit_() {
+    }
+    
+    static void toplevelAttributeLateInit() {
+        .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.set_(0L);
+        .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.set_(0L);
+    }
+}
+final class toplevelAttributeLate_ {
+    
+    private toplevelAttributeLate_() {
+    }
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$object$;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'toplevelAttributeLate\'");
+        }
+    }
+    
+    public static void set_(final long toplevelAttributeLate) {
+        if (!.org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$init$$object$) {
+            .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$object$ = toplevelAttributeLate;
+            .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$init$$object$ = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+}
+final class toplevelAttributeLateVariable_ {
+    
+    private toplevelAttributeLateVariable_() {
+    }
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$object$;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'toplevelAttributeLateVariable\'");
+        }
+    }
+    
+    public static void set_(final long toplevelAttributeLateVariable) {
+        .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$object$ = toplevelAttributeLateVariable;
+        .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$init$$object$ = true;
+    }
+}

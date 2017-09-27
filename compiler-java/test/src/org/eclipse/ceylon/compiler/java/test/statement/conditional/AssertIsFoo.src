@@ -1,0 +1,51 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsFoo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertIsFoo() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        final .org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo x$1;
+        .java.lang.Object x$0 = null;
+        if ((x$0 = x) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo) {
+            x$1 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo)x$0;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, x$0));
+        }
+        x$1.foo();
+        final .org.eclipse.ceylon.compiler.java.test.statement.conditional.FooSub x$3;
+        .java.lang.Object x$2 = null;
+        if ((x$2 = x$1) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.FooSub) {
+            x$3 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.FooSub)x$2;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.test.statement.conditional.FooSub.$TypeDescriptor$, x$2));
+        }
+        x$3.foo2();
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        final .org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo x$5;
+        .java.lang.Object x$4 = null;
+        if ((x$4 = y) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo) {
+            x$5 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo)x$4;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo x=y") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, x$4));
+        }
+        x$5.foo();
+        final .org.eclipse.ceylon.compiler.java.test.statement.conditional.FooSub z$7;
+        .java.lang.Object z$6 = null;
+        if ((z$6 = x$5) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.FooSub) {
+            z$7 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.FooSub)z$6;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub z=x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.test.statement.conditional.FooSub.$TypeDescriptor$, z$6));
+        }
+        z$7.foo2();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertIsFoo.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertIsFoo.class);
+}

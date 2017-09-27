@@ -1,0 +1,87 @@
+package org.eclipse.ceylon.compiler.java.test.expression.lambda;
+
+class AnonMemberQualClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AnonMemberQualClass() {
+    }
+    
+    public final .ceylon.language.Callable<? extends .ceylon.language.String> getS1() {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.toString());
+            }
+        };
+    }
+    
+    public final .ceylon.language.Callable<? extends .ceylon.language.String> getS2() {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.toString());
+            }
+        };
+    }
+    
+    public final .ceylon.language.Callable<? extends .ceylon.language.Integer> getH1() {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.org.eclipse.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.hashCode());
+            }
+        };
+    }
+    
+    public final .ceylon.language.Callable<? extends .ceylon.language.Integer> getH2() {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.org.eclipse.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.hashCode());
+            }
+        };
+    }
+    
+    private final void m$priv$() {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$0 = m$f();
+                m$priv$$canonical$($ceylontmp$f$0);
+            }
+            returning null;
+        );
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> m$f() {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.toString() + .org.eclipse.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.toString() + .ceylon.language.Integer.toString(.org.eclipse.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.hashCode()) + .ceylon.language.Integer.toString(.org.eclipse.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.this.hashCode()));
+            }
+        };
+    }
+    
+    private void m$priv$$canonical$(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+    }
+    
+    private final void m$priv$(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+        (
+            let
+            {
+                m$priv$$canonical$(f);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.lambda.AnonMemberQualClass.class);
+}

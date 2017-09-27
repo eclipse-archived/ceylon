@@ -10,7 +10,7 @@
     <property name="test.reports" location="${build.dir}/test-reports" />
 
     <!-- Local repository -->
-    <property name="ceylon.cli.src" value="${ceylon.cli.dir}/com.redhat.ceylon.cli-${module.com.redhat.ceylon.cli.version}.src" />
+    <property name="ceylon.cli.src" value="${ceylon.cli.dir}/org.eclipse.ceylon.cli-${module.org.eclipse.ceylon.cli.version}.src" />
     <property name="ceylon.cli.repo" value="${ceylon.repo.dir}/${ceylon.cli.dir}" />
     <property name="ceylon.cli.dist" value="${build.dist}/${ceylon.cli.dir}" />
 
@@ -83,8 +83,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.cli"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.cli.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.cli"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.cli.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">
@@ -254,7 +254,7 @@
 
             <formatter type="xml" />
             <test
-                name="com.redhat.ceylon.common.tool.AllCliTests"
+                name="org.eclipse.ceylon.common.tool.AllCliTests"
                 fork="yes"
                 todir="${test.reports}" />
         </junit>

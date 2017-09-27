@@ -1,0 +1,108 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug08xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+interface Bug832Common {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public long getSign();
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+final class Bug832Common$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    Bug832Common$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final long getSign() {
+        return 0L;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.issues.bug08xx::Bug832Common"})
+class Bug832Integer implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common, .java.io.Serializable {
+    
+    Bug832Integer() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common$impl(this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public long getSign() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$.getSign();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Integer.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Integer.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.issues.bug08xx::Bug832Common"})
+class Bug832Float implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common, .java.io.Serializable {
+    
+    Bug832Float() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common$impl(this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common$impl $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public long getSign() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug08xx$Bug832Common$this$.getSign();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Float.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Float.class);
+}
+final class bug832_ {
+    
+    private bug832_() {
+    }
+    
+    static void bug832() {
+        final .java.lang.Object n = new .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Integer();
+        final long sign = ((.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.Bug832Common)n).getSign();
+        final .java.lang.Object l = .ceylon.language.empty_.get_();
+        final long s = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)l).getSize();
+    }
+}

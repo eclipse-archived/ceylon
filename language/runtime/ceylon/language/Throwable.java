@@ -1,16 +1,16 @@
 package ceylon.language;
 
-import com.redhat.ceylon.common.NonNull;
-import com.redhat.ceylon.common.Nullable;
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Class;
-import com.redhat.ceylon.compiler.java.metadata.Defaulted;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Transient;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import org.eclipse.ceylon.common.NonNull;
+import org.eclipse.ceylon.common.Nullable;
+import org.eclipse.ceylon.compiler.java.metadata.Ceylon;
+import org.eclipse.ceylon.compiler.java.metadata.Class;
+import org.eclipse.ceylon.compiler.java.metadata.Defaulted;
+import org.eclipse.ceylon.compiler.java.metadata.Ignore;
+import org.eclipse.ceylon.compiler.java.metadata.Name;
+import org.eclipse.ceylon.compiler.java.metadata.Transient;
+import org.eclipse.ceylon.compiler.java.metadata.TypeInfo;
+import org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType;
+import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
 @Class(extendsType = "ceylon.language::Basic")

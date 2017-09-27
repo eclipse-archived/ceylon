@@ -1,0 +1,243 @@
+package org.eclipse.ceylon.compiler.java.test.structure.concrete;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+interface ConcreteString {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public void presentYourself();
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+final class ConcreteString$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    ConcreteString$impl(.org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public void presentYourself() {
+        if ($this.equals($this)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
+        }
+        long lhs$0 = 2L;
+        long rhs$1 = $this.hashCode();
+        if (lhs$0 == rhs$1) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == hash") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
+        }
+        .ceylon.language.String lhs$2 = .ceylon.language.String.instance("foo");
+        .ceylon.language.String rhs$3 = .ceylon.language.String.instance($this.toString());
+        if (lhs$2.equals(rhs$3)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == string") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
+        }
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.concrete::ConcreteString"})
+class ConcreteStringC implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString, .java.io.Serializable {
+    
+    ConcreteStringC() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString$impl(this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString$this$;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final void presentYourself() {
+        $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString$this$.presentYourself();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public final .java.lang.String toString() {
+        return "foo";
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$5 = 2L;
+            }
+            returning $ceylontmp$hash$5 ^ $ceylontmp$hash$5 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteStringC.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteStringC.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+interface ConcreteString2 {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString2$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString2$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public void presentYourself();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public .java.lang.String toString();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public int hashCode();
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString2.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+final class ConcreteString2$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    ConcreteString2$impl(.org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString2 $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString2 $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public void presentYourself() {
+        if ($this.equals($this)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
+        }
+        long lhs$6 = 3L;
+        long rhs$7 = $this.hashCode();
+        if (lhs$6 == rhs$7) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "3 == hash") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$6), .ceylon.language.Integer.instance(rhs$7)));
+        }
+        .ceylon.language.String lhs$8 = .ceylon.language.String.instance("bar");
+        .ceylon.language.String rhs$9 = .ceylon.language.String.instance($this.toString());
+        if (lhs$8.equals(rhs$9)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"bar\" == string") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$8, rhs$9));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.String toString() {
+        return "bar";
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$13 = 3L;
+            }
+            returning $ceylontmp$hash$13 ^ $ceylontmp$hash$13 >>> 32;
+        );
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.concrete::ConcreteString2"})
+class ConcreteStringC2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString2, .java.io.Serializable {
+    
+    ConcreteStringC2() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString2$impl(this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString2$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteString2$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString2$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final void presentYourself() {
+        $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.presentYourself();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public final .java.lang.String toString() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.toString();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$15 = $org$eclipse$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.hashCode();
+            }
+            returning $ceylontmp$hash$15 ^ $ceylontmp$hash$15 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteStringC2.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteStringC2.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class concreteString_ {
+    
+    private concreteString_() {
+    }
+    
+    static void concreteString() {
+        new .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteStringC().presentYourself();
+        new .org.eclipse.ceylon.compiler.java.test.structure.concrete.ConcreteStringC2().presentYourself();
+    }
+}

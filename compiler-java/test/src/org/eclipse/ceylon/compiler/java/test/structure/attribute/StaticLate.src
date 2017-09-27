@@ -1,0 +1,35 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+public class StaticLate implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private static .java.lang.String entityManager;
+    
+    private static final .java.lang.String getEntityManager$priv$() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager != null) {
+            return (.java.lang.String).org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'entityManager\'");
+        }
+    }
+    
+    private static final void setEntityManager$priv$(final .java.lang.String entityManager) {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager == null) {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager = entityManager;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    
+    public StaticLate() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticLate();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticLate.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticLate.class);
+}

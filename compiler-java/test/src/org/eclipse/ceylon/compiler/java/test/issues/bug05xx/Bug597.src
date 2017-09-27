@@ -1,0 +1,43 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug05xx;
+
+class Bug597 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.Super, .java.io.Serializable {
+    
+    Bug597() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug05xx$Super$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.Super$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.Super$impl $org$eclipse$ceylon$compiler$java$test$issues$bug05xx$Super$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.Super$impl $org$eclipse$ceylon$compiler$java$test$issues$bug05xx$Super$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug05xx$Super$this$;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String getFoo() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug05xx$Super$this$.getFoo();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.Bug597.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug05xx.Bug597.class);
+}
+public interface Super {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.Super$impl $org$eclipse$ceylon$compiler$java$test$issues$bug05xx$Super$impl();
+    
+    public .java.lang.String getFoo();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug05xx.Super.class);
+}
+public final class Super$impl implements .java.io.Serializable {
+    
+    public Super$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug05xx.Super $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.Super $this;
+    
+    public final .java.lang.String getFoo() {
+        return "foo";
+    }
+}

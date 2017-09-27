@@ -1,0 +1,12 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+final class bug6854_ {
+    
+    private bug6854_() {
+    }
+    
+    static void bug6854() {
+        .org.eclipse.ceylon.compiler.java.test.interop.Bug6854.StaticAndUppercase();
+        new .org.eclipse.ceylon.compiler.java.test.interop.Bug6854.staticAndLowercase();
+    }
+}

@@ -1,0 +1,51 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.DocAnnotation$annotation$(description = "class doc")
+class AnnonymousAnnotation implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected AnnonymousAnnotation() {
+        super();
+        this.s = null;
+    }
+    
+    AnnonymousAnnotation(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.NonNull
+    @.ceylon.language.DocAnnotation$annotation$(description = "attribute doc")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .java.lang.String s, @.org.eclipse.ceylon.compiler.java.metadata.Name("s2")
+    @.org.eclipse.ceylon.common.NonNull
+    @.ceylon.language.DocAnnotation$annotation$(description = "class param doc")
+    final .java.lang.String s2) {
+        this.s = s;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String s;
+    
+    @.ceylon.language.DocAnnotation$annotation$(description = "attribute doc")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getS() {
+        return this.s;
+    }
+    
+    @.ceylon.language.DocAnnotation$annotation$(description = "method doc")
+    private final void m$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("p")
+    @.org.eclipse.ceylon.common.NonNull
+    @.ceylon.language.DocAnnotation$annotation$(description = "method param doc")
+    final .java.lang.String p) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnonymousAnnotation.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnonymousAnnotation.class);
+}

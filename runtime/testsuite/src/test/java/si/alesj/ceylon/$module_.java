@@ -17,7 +17,7 @@
 
 package si.alesj.ceylon;
 
-import com.redhat.ceylon.compiler.java.metadata.Module;
+import org.eclipse.ceylon.compiler.java.metadata.Module;
 
 
 /**

@@ -3,7 +3,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.util.GradleVersion
-import com.redhat.ceylon.model.loader.OsgiVersion
+import org.eclipse.ceylon.model.loader.OsgiVersion
 
 /**
  * @author Schalk W. Cronjé

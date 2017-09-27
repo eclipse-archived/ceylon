@@ -1,0 +1,116 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class Bug6587 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug6587() {
+        this.variableEntityManager = (.javax.persistence.EntityManager)(.java.lang.Object).ceylon.language.nothing_.get_();
+        this.entityManager = (.javax.persistence.EntityManager)(.java.lang.Object).ceylon.language.nothing_.get_();
+        this.sharedEntityManager = (.javax.persistence.EntityManager)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    @.javax.enterprise.inject.Produces
+    @.javax.persistence.PersistenceContext
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private .javax.persistence.EntityManager lateEntityManager;
+    
+    @.ceylon.language.LateAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    private final .javax.persistence.EntityManager getLateEntityManager$priv$() {
+        if (this.lateEntityManager != null) {
+            return this.lateEntityManager;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateEntityManager\'");
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final void setLateEntityManager$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("lateEntityManager")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    final .javax.persistence.EntityManager lateEntityManager) {
+        if (this.lateEntityManager == null) {
+            this.lateEntityManager = lateEntityManager;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    @.javax.enterprise.inject.Produces
+    @.javax.persistence.PersistenceContext
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private .javax.persistence.EntityManager variableEntityManager;
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    private final .javax.persistence.EntityManager getVariableEntityManager$priv$() {
+        return this.variableEntityManager;
+    }
+    
+    private final void setVariableEntityManager$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("variableEntityManager")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    final .javax.persistence.EntityManager variableEntityManager) {
+        this.variableEntityManager = variableEntityManager;
+    }
+    @.javax.enterprise.inject.Produces
+    @.javax.persistence.PersistenceContext
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .javax.persistence.EntityManager entityManager;
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    private final .javax.persistence.EntityManager getEntityManager$priv$() {
+        return this.entityManager;
+    }
+    
+    @.javax.enterprise.inject.Produces
+    @.javax.persistence.PersistenceContext
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    private final .javax.persistence.EntityManager getTransientEntityManager$priv$() {
+        return (.javax.persistence.EntityManager)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.javax.enterprise.inject.Produces
+    @.javax.persistence.PersistenceContext
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public final .javax.persistence.EntityManager getAssignableEntityManager() {
+        return (.javax.persistence.EntityManager)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public final void setAssignableEntityManager(@.org.eclipse.ceylon.compiler.java.metadata.Name("assignableEntityManager")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    final .javax.persistence.EntityManager assignableEntityManager) {
+    }
+    @.javax.enterprise.inject.Produces
+    @.javax.persistence.PersistenceContext
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .javax.persistence.EntityManager sharedEntityManager;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
+    public final .javax.persistence.EntityManager getSharedEntityManager() {
+        return this.sharedEntityManager;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.Bug6587.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.Bug6587.class);
+}

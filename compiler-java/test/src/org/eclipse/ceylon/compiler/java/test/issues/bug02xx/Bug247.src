@@ -1,0 +1,51 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug02xx;
+
+final class bug247_ {
+    
+    private bug247_() {
+    }
+    
+    static void bug247() {
+        (
+            let
+            {
+                long $ceylontmp$op$0 = .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.get_() + 1L;
+                .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.set_($ceylontmp$op$0);
+            }
+            returning $ceylontmp$op$0;
+        );
+    }
+}
+final class bug247_toplevel_ {
+    
+    private bug247_toplevel_() {
+    }
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$init$$object$ = false;
+        }
+    }
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug247_toplevel\' before it was set");
+        }
+    }
+    
+    public static void set_(final long bug247_toplevel) {
+        if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$object$ = bug247_toplevel;
+    }
+}

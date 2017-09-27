@@ -1,0 +1,115 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class ClassAliasCtor implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected ClassAliasCtor() {
+        super();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public ClassAliasCtor(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i$param$) {
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_ other_ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("other")
+    public static final class other_ {
+        
+        other_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("other")
+    public ClassAliasCtor(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.other_ $name$, @.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i$param$) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
+final class ClassAliasCtorDefault {
+    
+    private ClassAliasCtorDefault() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    static .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorDefault$aliased$$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("j")
+    final long j) {
+        throw new .ceylon.language.Exception();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor")
+final class ClassAliasCtorQualDefault {
+    
+    private ClassAliasCtorQualDefault() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    static .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorQualDefault$aliased$$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("j")
+    final long j) {
+        throw new .ceylon.language.Exception();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Alias(
+        value = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor",
+        constructor = "other")
+final class ClassAliasCtorOther {
+    
+    private ClassAliasCtorOther() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    static .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorOther$aliased$$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("j")
+    final long j) {
+        throw new .ceylon.language.Exception();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Alias(
+        value = "org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassAliasCtor",
+        constructor = "other")
+final class ClassAliasCtorAlias {
+    
+    private ClassAliasCtorAlias() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    static .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorAlias$aliased$$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("j")
+    final long j) {
+        throw new .ceylon.language.Exception();
+    }
+}

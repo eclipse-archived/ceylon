@@ -1,0 +1,49 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "A",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "B",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+public class UseSiteVariance<A, B> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public UseSiteVariance(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
+        this.$reified$A = $reified$A;
+        this.$reified$B = $reified$B;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::UseSiteVariance<in A,out B>")
+    public final .org.eclipse.ceylon.compiler.java.test.annotations.UseSiteVariance<? super A, ? extends B> m() {
+        return (.org.eclipse.ceylon.compiler.java.test.annotations.UseSiteVariance<? super A, ? extends B>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.annotations.UseSiteVariance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.UseSiteVariance.class, $reified$A, $reified$B);
+    }
+}

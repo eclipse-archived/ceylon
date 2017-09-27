@@ -1,0 +1,121 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug69xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.CompileTimeError
+final class bug6930_ {
+    
+    private bug6930_() {
+    }
+    
+    static void bug6930() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .java.lang.Object>> listeners = (.ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .java.lang.Object>>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.awt.event.ActionEvent.class))), new .java.lang.Object[]{
+                new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.awt.event.ActionEvent.class)), "Anything(ActionEvent)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .java.awt.event.ActionEvent event = (.java.awt.event.ActionEvent)$param$0;
+                        return (
+                            let
+                            {
+                                .ceylon.language.process_.get_().writeLine("listener called");
+                            }
+                            returning null;
+                        );
+                    }
+                },
+                new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.awt.event.ActionEvent.class)), "Anything(ActionEvent)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                        final .java.awt.event.ActionEvent event = (.java.awt.event.ActionEvent)$param$0;
+                        return (
+                            let
+                            {
+                                .ceylon.language.process_.get_().writeLine("listener called");
+                            }
+                            returning null;
+                        );
+                    }
+                }});
+        final .ceylon.language.Callable<? extends .java.lang.Object> listener = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.awt.event.ActionEvent.class)), "Anything(ActionEvent)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.awt.event.ActionEvent event = (.java.awt.event.ActionEvent)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.process_.get_().writeLine("listener called");
+                    }
+                    returning null;
+                );
+            }
+        };
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6930MweJava("test");
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6930MweJava("test", new .java.awt.event.ActionListener(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.awt.event.ActionEvent event = (.java.awt.event.ActionEvent)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.process_.get_().writeLine("listener called");
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void actionPerformed(final .java.awt.event.ActionEvent arg0) {
+                $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        });
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6930MweJava("test", new .java.awt.event.ActionListener(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.awt.event.ActionEvent event = (.java.awt.event.ActionEvent)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.process_.get_().writeLine("listener called");
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void actionPerformed(final .java.awt.event.ActionEvent arg0) {
+                $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        }, new .java.awt.event.ActionListener(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.awt.event.ActionEvent event = (.java.awt.event.ActionEvent)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.process_.get_().writeLine("listener called");
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void actionPerformed(final .java.awt.event.ActionEvent arg0) {
+                $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        });
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.Bug6930MweJava("test", new .java.awt.event.ActionListener(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.awt.event.ActionEvent $ceylontmp$arg0 = (.java.awt.event.ActionEvent)$param$0;
+                return listener.$call$($ceylontmp$arg0);
+            }
+            
+            @.java.lang.Override
+            public void actionPerformed(final .java.awt.event.ActionEvent arg0) {
+                $call$(.org.eclipse.ceylon.compiler.java.Util.checkNull(arg0));
+            }
+        });
+        throw new .org.eclipse.ceylon.compiler.java.language.UnresolvedCompilationError("lambda conversions with spread arguments not supported");
+    }
+}

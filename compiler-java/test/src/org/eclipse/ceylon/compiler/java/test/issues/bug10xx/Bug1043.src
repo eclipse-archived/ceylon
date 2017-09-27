@@ -1,0 +1,47 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug10xx;
+
+final class bug1043_ {
+    
+    private bug1043_() {
+    }
+    
+    static void bug1043() {
+        
+        class Delegate<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            Delegate(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+                this.$reified$T = $reified$T;
+            }
+            private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.bug1043_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Delegate.class, $reified$T));
+            }
+        }
+        
+        class Consumer<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            Consumer(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+                (
+                    let
+                    {
+                        .ceylon.language.Sequential<? extends Delegate<? super T>> $ceylontmp$dels$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                        <T>this($reified$T, $ceylontmp$dels$0);
+                    }
+                    returning null;
+                );
+            }
+            
+            Consumer(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Sequential<? extends Delegate<? super T>> dels) {
+                this.$reified$T = $reified$T;
+            }
+            private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug10xx.bug1043_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Consumer.class, $reified$T));
+            }
+        }
+    }
+}

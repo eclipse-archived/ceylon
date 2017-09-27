@@ -20,11 +20,10 @@ import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
+import org.eclipse.ceylon.cmr.api.RepositoryManager;
+import org.eclipse.ceylon.common.ModuleUtil;
+import org.eclipse.ceylon.model.cmr.ArtifactResult;
 import org.jboss.modules.ModuleIdentifier;
-
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Per module Util registry.
@@ -63,14 +62,14 @@ public class UtilRegistryTransformer implements ClassFileTransformer {
             new Thread(){
                 @Override
                 public void run() {
-                    com.redhat.ceylon.compiler.java.Util.loadModule(name, version, result, cl);
+                    org.eclipse.ceylon.compiler.java.Util.loadModule(name, version, result, cl);
                     if(cl instanceof CeylonModuleClassLoader){
                         ((CeylonModuleClassLoader) cl).registerThreadDone();
                     }
                 }
             }.start();
         }else
-            com.redhat.ceylon.compiler.java.Util.loadModule(name, version, result, cl);
+            org.eclipse.ceylon.compiler.java.Util.loadModule(name, version, result, cl);
     }
 
     public void register(ClassLoader loader) {

@@ -1,0 +1,46 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug14xx;
+
+public final class run_ {
+    
+    private run_() {
+    }
+    
+    public static void run(final .ceylon.language.meta.model.Value nameValue) {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> getName = (.ceylon.language.Callable<? extends .ceylon.language.String>)(
+            let
+            {
+                final .ceylon.language.meta.model.Gettable $instance$ = nameValue;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.String $call$() {
+                    return (.ceylon.language.String)$instance$.get();
+                }
+            };
+        );
+        final .java.lang.String name = ((.ceylon.language.String)nameValue.get()).toString();
+    }
+}
+class Person implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Person() {
+        super();
+        this.name = null;
+    }
+    
+    Person(final .java.lang.String name) {
+        this.name = name;
+    }
+    private final .java.lang.String name;
+    
+    public final .java.lang.String getName() {
+        return this.name;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Person.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Person.class);
+}

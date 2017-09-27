@@ -1,0 +1,79 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug64xx;
+
+final class bug6447_ {
+    
+    private bug6447_() {
+    }
+    
+    static void bug6447() {
+        .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.get_().ObjMemberClass$new$();
+        .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.get_().ObjMemberClass$new$(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.ObjMemberClass$create);
+    }
+}
+final class bug6447obj_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private bug6447obj_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.get_();
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.class);
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.ObjMemberClass ObjMemberClass$new$() {
+        return new ObjMemberClass();
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.ObjMemberClass ObjMemberClass$new$(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.ObjMemberClass$create $name$) {
+        return new ObjMemberClass($name$);
+    }
+    
+    public static final class ObjMemberClass$create {
+        
+        ObjMemberClass$create() {
+        }
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.ObjMemberClass$create ObjMemberClass$create = null;
+    
+    public class ObjMemberClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public ObjMemberClass() {
+        }
+        
+        public ObjMemberClass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.ObjMemberClass$create $name$) {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.ObjMemberClass.class));
+        }
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_ $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_();
+            .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$init$$object$ = false;
+        }
+    }
+    
+    static .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug6447obj\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$TypeDescriptor$;
+    }
+}

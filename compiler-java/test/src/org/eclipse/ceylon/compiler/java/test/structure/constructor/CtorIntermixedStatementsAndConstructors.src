@@ -1,0 +1,86 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+class CtorIntermixedStatementsAndConstructors implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected CtorIntermixedStatementsAndConstructors() {
+        super();
+        this.a = 0L;
+        this.c = 0L;
+        this.b = 0L;
+        this.d = 0L;
+        this.e = 0L;
+        this.f = 0L;
+    }
+    private final long a;
+    
+    public final long getA() {
+        return this.a;
+    }
+    private final long c;
+    
+    public final long getC() {
+        return this.c;
+    }
+    private final long b;
+    
+    public final long getB() {
+        return this.b;
+    }
+    private final long d;
+    
+    public final long getD() {
+        return this.d;
+    }
+    private final long e;
+    
+    public final long getE() {
+        return this.e;
+    }
+    private final long f;
+    
+    public final long getF() {
+        return this.f;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.foo_ foo_ = null;
+    
+    public static final class foo_ {
+        
+        foo_() {
+        }
+    }
+    
+    public CtorIntermixedStatementsAndConstructors(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.foo_ $name$, final long val$param$) {
+        this.b = 6L;
+        $return$$0: do {
+            a = val$param$;
+        }         while (false);
+        c = 3L;
+        this.d = 5L;
+        e = 24L;
+        this.f = 7L;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.far_ far_ = null;
+    
+    public static final class far_ {
+        
+        far_() {
+        }
+    }
+    
+    public CtorIntermixedStatementsAndConstructors(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.far_ $name$, final long val$param$) {
+        this.b = 6L;
+        c = 3L;
+        this.d = 5L;
+        $return$$1: do {
+            a = val$param$;
+        }         while (false);
+        e = 24L;
+        this.f = 7L;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.class);
+}

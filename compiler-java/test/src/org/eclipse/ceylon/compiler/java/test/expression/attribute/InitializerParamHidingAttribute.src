@@ -1,0 +1,47 @@
+package org.eclipse.ceylon.compiler.java.test.expression.attribute;
+
+class InitializerParamHidingAttribute implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected InitializerParamHidingAttribute() {
+        super();
+    }
+    
+    InitializerParamHidingAttribute(final boolean b) {
+        final boolean b2 = b;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.attribute.InitializerParamHidingAttribute.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.attribute.InitializerParamHidingAttribute.class);
+}
+class InitializerParamHidingAttribute2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected InitializerParamHidingAttribute2() {
+        super();
+        this.b = false;
+        this.b2 = false;
+    }
+    
+    InitializerParamHidingAttribute2(final boolean b) {
+        this.b = b;
+        this.b2 = getB();
+    }
+    private final boolean b;
+    
+    public final boolean getB() {
+        return this.b;
+    }
+    private final boolean b2;
+    
+    public final boolean getB2() {
+        return this.b2;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.attribute.InitializerParamHidingAttribute2.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.attribute.InitializerParamHidingAttribute2.class);
+}

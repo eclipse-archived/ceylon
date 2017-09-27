@@ -24,11 +24,11 @@
     <tstamp/>
 
     <!-- ceylon.module-resolver -->
-    <property name="module.module-resolver.name" value="com.redhat.ceylon.module-resolver"/>
+    <property name="module.module-resolver.name" value="org.eclipse.ceylon.module-resolver"/>
 
     <!-- module archives -->
     <property name="ceylon.module-resolver.src"
-              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.com.redhat.ceylon.module-resolver.version}.src"/>
+              value="${ceylon.module-resolver.dir}/${module.module-resolver.name}-${module.org.eclipse.ceylon.module-resolver.version}.src"/>
     <property name="ceylon.module-resolver.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver.dir}"/>
     <property name="ceylon.module-resolver.dist" value="${build.dist.repo}/${ceylon.module-resolver.dir}"/>
 
@@ -285,8 +285,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-resolver"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.module-resolver"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.module-resolver.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
     </target>
@@ -328,7 +328,7 @@
             <formatter type="xml"/>
 
             <test
-                name="com.redhat.ceylon.test.smoke.test.AllCmrTests"
+                name="org.eclipse.ceylon.test.smoke.test.AllCmrTests"
                 fork="yes"
                 todir="${test.reports}" />
         </junit>

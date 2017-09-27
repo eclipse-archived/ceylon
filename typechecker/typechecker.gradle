@@ -32,7 +32,7 @@ sourceSets {
 
 // TODO: Should we delete these tokens?
 //        <delete>
-//            <fileset dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"
+//            <fileset dir="${antlr.dst}/org/eclipse/ceylon/compiler/typechecker/treegen"
 //                     includes="*.tokens"/>
 //        </delete>
 //    </target>
@@ -41,11 +41,11 @@ generateGrammarSource {
 
     destinationDirectory = "${buildDir}/gensrc"
 
-    antlrGroup 'com/redhat/ceylon/compiler/typechecker/parser',
-        fileTree("antlr/com/redhat/ceylon/compiler/typechecker/parser") { include '**/*.g' }
+    antlrGroup 'org/eclipse/ceylon/compiler/typechecker/parser',
+        fileTree("antlr/org/eclipse/ceylon/compiler/typechecker/parser") { include '**/*.g' }
 
-    antlrGroup 'com/redhat/ceylon/compiler/typechecker/treegen',
-        fileTree("antlr/com/redhat/ceylon/compiler/typechecker/treegen") { include '**/*.g' }
+    antlrGroup 'org/eclipse/ceylon/compiler/typechecker/treegen',
+        fileTree("antlr/org/eclipse/ceylon/compiler/typechecker/treegen") { include '**/*.g' }
 }
 
 compileTreegenJava {
@@ -58,11 +58,11 @@ task tree( type : JavaExec ) {
     dependsOn treegenClasses
 
     ext {
-        genDir = "${generateGrammarSource.destinationDirectory}/com/redhat/ceylon/compiler/typechecker/tree"
+        genDir = "${generateGrammarSource.destinationDirectory}/org/eclipse/ceylon/compiler/typechecker/tree"
     }
 
     outputs.dir genDir
-    main 'com.redhat.ceylon.compiler.typechecker.treegen.Generate'
+    main 'org.eclipse.ceylon.compiler.typechecker.treegen.Generate'
     classpath sourceSets.treegen.runtimeClasspath
     args "${projectDir}/antlr/Ceylon.nodes"
     workingDir buildDir

@@ -1,0 +1,25 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug02xx;
+
+class Bug233_Ceylon extends .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug233_Java implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug233_Ceylon(final .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type arg) {
+        super(arg);
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type f(final .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type arg) {
+        return (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type $ceylontmp$0 = arg;
+            }
+            returning $ceylontmp$0 != null ? $ceylontmp$0 : new .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type();
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug233_Ceylon.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug233_Ceylon.class);
+}

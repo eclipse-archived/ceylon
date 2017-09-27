@@ -82,7 +82,7 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-            	<attribute name="Main-Class" value="com.redhat.ceylon.launcher.Bootstrap"/>
+            	<attribute name="Main-Class" value="org.eclipse.ceylon.launcher.Bootstrap"/>
             	<attribute name="Bundle-SymbolicName" value="ceylon.bootstrap"/>
                 <attribute name="Bundle-Version" value="${module.ceylon.bootstrap.osgi.version}-${qualifier}"/>
             </manifest>

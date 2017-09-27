@@ -8,7 +8,7 @@
         <resource-root path="ceylon.bootstrap-@ceylon-version@.jar"/>
     </resources>
 
-    <main-class name="com.redhat.ceylon.bootstrap.Main"/>
+    <main-class name="org.eclipse.ceylon.bootstrap.Main"/>
 
     <dependencies>
         <!-- bytecode analysis says it's not used -->

@@ -1,0 +1,331 @@
+package org.eclipse.ceylon.compiler.java.test.structure.alias;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Container(
+        klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+        isStatic = false)
+public interface MemberTypeAliasClass$TypeAliasInterface {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Members({
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias4.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias3.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias2.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAlias1.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass.class)})
+public class MemberTypeAliasClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public MemberTypeAliasClass() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass TypeAliasClass$new$() {
+        return new TypeAliasClass();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+            isStatic = false)
+    public class TypeAliasClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected TypeAliasClass() {
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass.class));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+            isStatic = false)
+    public final class TypeAlias1 {
+        
+        private TypeAlias1() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+            isStatic = false)
+    public final class TypeAlias2 {
+        
+        private TypeAlias2() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+            isStatic = false)
+    public final class TypeAlias3 {
+        
+        private TypeAlias3() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+            isStatic = false)
+    public final class TypeAlias4 {
+        
+        private TypeAlias4() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface",
+            erased = true)
+    private final .java.lang.Object classAliasMethod1$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface",
+            erased = true)
+    final .java.lang.Object f) {
+        return f;
+    }
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface",
+            erased = true)
+    private final .java.lang.Object classAliasMethod2$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface",
+            erased = true)
+    final .java.lang.Object f) {
+        return f;
+    }
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass")
+    private final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass classAliasMethod3$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass")
+    final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass f) {
+        return f;
+    }
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    private final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface classAliasMethod4$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
+    final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface f) {
+        return f;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Container(
+        klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+        isStatic = false)
+public interface MemberTypeAliasInterface$TypeAliasInterface {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Members({
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAlias4.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAlias3.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAlias2.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAlias1.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface.class),
+        @.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass.class)})
+public interface MemberTypeAliasInterface {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl $org$eclipse$ceylon$compiler$java$test$structure$alias$MemberTypeAliasInterface$impl();
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass TypeAliasClass$new$();
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+public final class MemberTypeAliasInterface$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public MemberTypeAliasInterface$impl(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass TypeAliasClass$new$() {
+        return new TypeAliasClass();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+            isStatic = false)
+    public class TypeAliasClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected TypeAliasClass() {
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass.class));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+            isStatic = false)
+    public final class TypeAlias1 {
+        
+        private TypeAlias1() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+            isStatic = false)
+    public final class TypeAlias2 {
+        
+        private TypeAlias2() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+            isStatic = false)
+    public final class TypeAlias3 {
+        
+        private TypeAlias3() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+            isStatic = false)
+    public final class TypeAlias4 {
+        
+        private TypeAlias4() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface",
+            erased = true)
+    private .java.lang.Object classAliasMethod1$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass&org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface",
+            erased = true)
+    final .java.lang.Object f) {
+        return f;
+    }
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface",
+            erased = true)
+    private .java.lang.Object classAliasMethod2$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass|org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface",
+            erased = true)
+    final .java.lang.Object f) {
+        return f;
+    }
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass")
+    private .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass classAliasMethod3$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass")
+    final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass f) {
+        return f;
+    }
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
+    private .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface classAliasMethod4$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
+    final .org.eclipse.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface f) {
+        return f;
+    }
+}

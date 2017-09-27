@@ -1,0 +1,82 @@
+package org.eclipse.ceylon.compiler.java.test.expression.invoke;
+
+abstract class SelfType<T extends .org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType<T>> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SelfType(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public abstract long compareTo(final T other);
+    
+    public final long reverseCompareTo(final T other) {
+        return ((.org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType<T>)(.org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType)other).compareTo((T)this);
+    }
+    
+    public final T self() {
+        final T x = (T)this;
+        return (T)this;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType.class, $reified$T);
+    }
+}
+final class selfType_ {
+    
+    private selfType_() {
+    }
+    
+    static <X extends .org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType<X>>void selfType(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType<X> x, final .org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType<X> y) {
+        ((.org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType<X>)(.org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType)x).compareTo((X)y);
+    }
+}
+abstract class SelfType2<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SelfType2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public abstract long compareTo(final T other);
+    
+    public final T self() {
+        final T x = (T)this;
+        return (T)this;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType2.class, $reified$T);
+    }
+}
+final class selfType2_ {
+    
+    private selfType2_() {
+    }
+    
+    static <X>void selfType2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType2<X> x, final .org.eclipse.ceylon.compiler.java.test.expression.invoke.SelfType2<X> y) {
+        x.compareTo((X)y);
+    }
+}
+interface D extends .ceylon.language.Comparable<.org.eclipse.ceylon.compiler.java.test.expression.invoke.D> {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.invoke.D.class);
+}
+final class selfTypeTest_ {
+    
+    private selfTypeTest_() {
+    }
+    
+    static void selfTypeTest(final .ceylon.language.Comparable<? super .org.eclipse.ceylon.compiler.java.test.expression.invoke.D> d) {
+        final .org.eclipse.ceylon.compiler.java.test.expression.invoke.D temp = (.org.eclipse.ceylon.compiler.java.test.expression.invoke.D)d;
+        final .java.lang.Object v = (
+            let
+            {
+                .ceylon.language.print_.print(.ceylon.language.String.instance(""));
+            }
+            returning null;
+        );
+        .ceylon.language.print_.print(v);
+    }
+}

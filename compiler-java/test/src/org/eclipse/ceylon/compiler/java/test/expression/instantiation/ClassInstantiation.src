@@ -1,0 +1,107 @@
+package org.eclipse.ceylon.compiler.java.test.expression.instantiation;
+
+class ClassInstantiation implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ClassInstantiation() {
+    }
+    
+    public final .org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation m() {
+        return new .org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiation.class);
+}
+class ClassInstantiationWithParam implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected ClassInstantiationWithParam() {
+        super();
+    }
+    
+    ClassInstantiationWithParam(final long i) {
+    }
+    
+    public final .org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam m() {
+        return new .org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam(2L);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParam.class);
+}
+class ClassInstantiationWithParams implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected ClassInstantiationWithParams() {
+        super();
+    }
+    
+    ClassInstantiationWithParams(final long i, final .java.lang.String j) {
+    }
+    
+    public final .org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams m() {
+        return new .org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams(2L, "");
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.ClassInstantiationWithParams.class);
+}
+class InnerClassInstantiation implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    InnerClassInstantiation() {
+    }
+    
+    class InnerClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        InnerClass() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass.class));
+        }
+    }
+    
+    private final void m$priv$() {
+        final .org.eclipse.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass x = new .org.eclipse.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.InnerClass();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.InnerClassInstantiation.class);
+}
+class LocalClassInstantiation implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    LocalClassInstantiation() {
+    }
+    
+    private final void m$priv$() {
+        
+        class LocalClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            LocalClass() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.LocalClassInstantiation.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
+            }
+        }
+        final LocalClass x = new LocalClass();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.instantiation.LocalClassInstantiation.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.instantiation.LocalClassInstantiation.class);
+}

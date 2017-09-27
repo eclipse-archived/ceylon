@@ -10,7 +10,7 @@
     <property name="test.reports" location="${build.dir}/test-reports" />
 
     <!-- Local repository -->
-    <property name="ceylon.module-resolver-aether.src" value="${ceylon.module-resolver-aether.dir}/com.redhat.ceylon.module-resolver-aether-${module.com.redhat.ceylon.module-resolver-aether.version}.src" />
+    <property name="ceylon.module-resolver-aether.src" value="${ceylon.module-resolver-aether.dir}/org.eclipse.ceylon.module-resolver-aether-${module.org.eclipse.ceylon.module-resolver-aether.version}.src" />
     <property name="ceylon.module-resolver-aether.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver-aether.dir}" />
     <property name="ceylon.module-resolver-aether.dist" value="${build.dist}/${ceylon.module-resolver-aether.dir}" />
 
@@ -75,8 +75,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-resolver-aether"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver-aether.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.module-resolver-aether"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.module-resolver-aether.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

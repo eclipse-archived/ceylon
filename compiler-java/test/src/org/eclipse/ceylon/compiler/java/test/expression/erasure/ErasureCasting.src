@@ -1,0 +1,588 @@
+package org.eclipse.ceylon.compiler.java.test.expression.erasure;
+
+interface EC_A {
+    
+    public abstract long $int();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A.class);
+}
+interface EC_B {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_B.class);
+}
+interface EC_C {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_C.class);
+}
+interface EC_ABC extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_B, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_C {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ABC.class);
+}
+interface EC_Parameterised<T> {
+    
+    public abstract T t();
+}
+interface EC_ParameterisedSelfBound<T> {
+    
+    public abstract T t();
+}
+interface EC_DoubleParameters<T1, T2> extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<.java.lang.Object> {
+}
+final class erasureCasting_ {
+    
+    private erasureCasting_() {
+    }
+    
+    static <T>void erasureCasting(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object tripleIntersectionParam, final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised rawParam, final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>> hasRawParam, final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters<.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A> hasLostParameter, final .ceylon.language.Callable erasedReturnCallable, final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A> erasedParamCallable, final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object> hasErasedParameter, final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A a, final .ceylon.language.Sequence<? extends .ceylon.language.String> nonEmptyStringSequence, final .java.lang.Object erasedSequence) {
+        final .java.lang.Object doubleIntersectionAttr = tripleIntersectionParam;
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A aAttr = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A)tripleIntersectionParam;
+        final .java.lang.Object n = null;
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A aAttrOrNull = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A)n;
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A aAttrOrNullValue = null;
+        final .ceylon.language.Callable<? extends .java.lang.Object> callable = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A.$TypeDescriptor$), "EC_A(EC_A)", (short)-1){
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A a = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A)$param$0;
+                return a;
+            }
+        };
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A> ecACallable = (.ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>)erasedReturnCallable;
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A> ecABCCallable = erasedParamCallable;
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised parameterisedRawAttr = rawParam;
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A> parameterisedAttr = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>)rawParam;
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>> parameterisedParameterisedAttr = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>>)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)hasRawParam;
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A aAttrFromNothing = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequence = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> sequence2 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)(false ? .ceylon.language.empty_.get_() : .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(2L)));
+        .org.eclipse.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement_.<.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised>ec_boundsOnElement(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_());
+        .org.eclipse.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement2_.<.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>ec_boundsOnElement2(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        .org.eclipse.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement3_.<.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>ec_boundsOnElement3(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)hasErasedParameter);
+        final .ceylon.language.Callable<? extends .java.lang.Object> callableToBoundsOnElement3 = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), "Anything(EC_Parameterised<Nothing>)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised $ceylontmp$elements = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)$param$0;
+                return (
+                    let
+                    {
+                        .org.eclipse.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement3_.<.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>ec_boundsOnElement3(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, $ceylontmp$elements);
+                    }
+                    returning null;
+                );
+            }
+        };
+        .org.eclipse.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement4_.<.ceylon.language.Integer, .ceylon.language.Empty>ec_boundsOnElement4(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_());
+        .org.eclipse.ceylon.compiler.java.test.expression.erasure.ec_boundsOnElement5_.<.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>ec_boundsOnElement5(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_B.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_C.$TypeDescriptor$), (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A)tripleIntersectionParam);
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A> lostParamAttr = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)hasLostParameter;
+        final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> sequentialSequentialString = (.ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Sequential).org.eclipse.ceylon.compiler.java.test.expression.erasure.ec_methodWithErasedBounds_.<.ceylon.language.String>ec_methodWithErasedBounds(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(""));
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .ceylon.language.String>> parameterisedParameterisedString = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .ceylon.language.String>>)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised).org.eclipse.ceylon.compiler.java.test.expression.erasure.ec_methodWithErasedBounds2_.<.ceylon.language.String>ec_methodWithErasedBounds2(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(""));
+        if (a instanceof .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound) {
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound<? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedSelfBound)a).t();
+        }
+        if (a instanceof .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised) {
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised)a).t();
+        }
+        final .ceylon.language.Empty rawSequence = .ceylon.language.empty_.get_();
+        .ceylon.language.Empty rawSequence$5;
+        if ((rawSequence$5 = rawSequence) instanceof .ceylon.language.Sequence) {
+            final .java.lang.Object rawSequence$6 = rawSequence$5;
+        }
+        final boolean bool = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
+        .ceylon.language.String nonOptionalString$8;
+        if ((nonOptionalString$8 = (.ceylon.language.String).org.eclipse.ceylon.compiler.java.test.expression.erasure.ec_TOrOptionalString_.<.ceylon.language.String>ec_TOrOptionalString(.ceylon.language.String.$TypeDescriptor$)) != null) {
+            final .java.lang.String nonOptionalString$9 = nonOptionalString$8.toString();
+        }
+        final .ceylon.language.Sequential<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>> sequenceOfErasedMethod = (.ceylon.language.Sequential<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceOfStrings = (
+            let
+            {
+                final .ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>, ? extends .java.lang.Object> spread$10$iterable$ = sequenceOfErasedMethod;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                    return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>> spread$10$iterator$ = spread$10$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$10$element$;
+                            if (!((spread$10$element$ = spread$10$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$10$element$ = (.ceylon.language.String)((.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString<.ceylon.language.String>)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ParameterisedTOrString)spread$10$element$).t();
+                            }
+                            return spread$10$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptyIntegerSequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$11$iterable$ = nonEmptyStringSequence;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                    return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$11$iterator$ = spread$11$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$11$element$;
+                            if (!((spread$11$element$ = spread$11$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$11$element$ = .ceylon.language.Integer.instance(((.ceylon.language.String)spread$11$element$).getSize());
+                            }
+                            return spread$11$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        boolean loopentered$12 = false;
+        .java.lang.Object elem$13;
+        .ceylon.language.Iterator<? extends .java.lang.Object> erasedValue$iterator$$14 = ((.ceylon.language.Iterable)erasedSequence).iterator();
+        loop_0: while (!((elem$13 = erasedValue$iterator$$14.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$12 = true;
+            final .java.lang.Object erasedValue = elem$13;
+        }
+        if (!loopentered$12) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> sequenceOfInts = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object> spread$15$iterable$ = (.ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object>)(.ceylon.language.Iterable)erasedSequence;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
+                    return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A> spread$15$iterator$ = spread$15$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$15$element$;
+                            if (!((spread$15$element$ = spread$15$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$15$element$ = .ceylon.language.Integer.instance(((.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A)spread$15$element$).$int());
+                            }
+                            return spread$15$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        final .ceylon.language.Sequence t = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, .ceylon.language.Character.$TypeDescriptor$)), new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.String.instance("2"),
+                new .ceylon.language.Singleton<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(51))});
+        final .ceylon.language.Sequential t2 = t.span(.ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(1L));
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Tuple nonRawTuple = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Tuple(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+        final long nonRawTupleFirst = ((.ceylon.language.Integer)(.java.lang.Object)nonRawTuple.getFirst()).longValue();
+        final int unboxedInteger = ((.ceylon.language.Character)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Character>)((.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential).ceylon.language.String.sequence("abc")).<.ceylon.language.Character>withLeading(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(100))).getFirst()).intValue();
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptySequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(2)).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer c;
+                    private boolean c$exhausted$;
+                    
+                    private final boolean c() {
+                        final .java.lang.Object $ceylontmp$item$16 = $iterator$0.next();
+                        c$exhausted$ = $ceylontmp$item$16 == .ceylon.language.finished_.get_();
+                        if (c$exhausted$) {
+                            return false;
+                        } else {
+                            c = (.ceylon.language.Integer)$ceylontmp$item$16;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.c()) {
+                            final .ceylon.language.Integer c = this.c;
+                            return c;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> integerSequential = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1), .ceylon.language.Integer.instance(2)).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer c;
+                    private boolean c$exhausted$;
+                    
+                    private final boolean c() {
+                        final .java.lang.Object $ceylontmp$item$17 = $iterator$0.next();
+                        c$exhausted$ = $ceylontmp$item$17 == .ceylon.language.finished_.get_();
+                        if (c$exhausted$) {
+                            return false;
+                        } else {
+                            c = (.ceylon.language.Integer)$ceylontmp$item$17;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.c()) {
+                            final .ceylon.language.Integer c = this.c;
+                            return c;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+        final .ceylon.language.Sequence tupleOfSequentialSomething = (.ceylon.language.Sequence)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceOfStrings2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)tupleOfSequentialSomething.getFromFirst(1L);
+        final .ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> sequenceOfSequenceOfStrings = (.ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.tuple_spanFrom(tupleOfSequentialSomething, .ceylon.language.Integer.instance(1L));
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> callableOfCallable = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .ceylon.language.Callable<? extends .java.lang.Object> callableResult = .org.eclipse.ceylon.compiler.java.test.expression.erasure.ec_callableWithBonds_.<.java.lang.Object, .ceylon.language.Empty, .ceylon.language.Empty>ec_callableWithBonds(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, callableOfCallable).$call$();
+        final .java.lang.Object n1 = .ceylon.language.min_.<.ceylon.language.Comparable, .java.lang.Object>min(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable).ceylon.language.empty_.get_());
+        final .java.lang.Object n2 = (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$18$reified$0 = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$18$reified$1 = .ceylon.language.Null.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$18$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+            }
+            returning .ceylon.language.min_.<.ceylon.language.Comparable, .java.lang.Object>min(arg$18$reified$0, arg$18$reified$1, arg$18$0);
+        );
+    }
+}
+final class valueOrNada_ {
+    
+    private valueOrNada_() {
+    }
+    
+    static <Value, Nada>void valueOrNada(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada, final .java.lang.Object valueOrNada) {
+        .java.lang.Object valueOrNada$20;
+        if ((valueOrNada$20 = valueOrNada) != null) {
+            final Value valueOrNada$21 = (Value)valueOrNada$20;
+        }
+    }
+}
+interface EC_ParameterisedTOrString<T> {
+    
+    public abstract .java.lang.Object t();
+}
+final class ec_TOrOptionalString_ {
+    
+    private ec_TOrOptionalString_() {
+    }
+    
+    static <T>.java.lang.Object ec_TOrOptionalString(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return null;
+    }
+}
+final class ec_boundsOnElement_ {
+    
+    private ec_boundsOnElement_() {
+    }
+    
+    static <Element extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends Element>>void ec_boundsOnElement(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element elements) {
+    }
+}
+final class ec_boundsOnElement2_ {
+    
+    private ec_boundsOnElement2_() {
+    }
+    
+    static <Element extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>void ec_boundsOnElement2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequential<? extends Element> elements) {
+    }
+}
+final class ec_boundsOnElement3_ {
+    
+    private ec_boundsOnElement3_() {
+    }
+    
+    static <Element extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>void ec_boundsOnElement3(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends Element> elements) {
+    }
+}
+final class ec_boundsOnElement4_ {
+    
+    private ec_boundsOnElement4_() {
+    }
+    
+    static <Element, Rest>void ec_boundsOnElement4(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final .java.lang.Object elements) {
+    }
+}
+final class ec_boundsOnElement5_ {
+    
+    private ec_boundsOnElement5_() {
+    }
+    
+    static <Element extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_A>void ec_boundsOnElement5(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element t) {
+    }
+}
+final class ec_methodWithErasedBounds_ {
+    
+    private ec_methodWithErasedBounds_() {
+    }
+    
+    static <Element>.ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> ec_methodWithErasedBounds(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element data) {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .java.lang.Object>>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+final class ec_methodWithErasedBounds2_ {
+    
+    private ec_methodWithErasedBounds2_() {
+    }
+    
+    static <Element>.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>> ec_methodWithErasedBounds2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element data) {
+        return (.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Parameterised<? extends .java.lang.Object>>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+interface EC_ErasedMember<Element, Absent> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent> $org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$impl();
+    
+    public .java.lang.Object getAttr();
+    
+    public .java.lang.Object m();
+    
+    public .java.lang.Object defaultedParams();
+    
+    public abstract .java.lang.Object defaultedParams$p();
+    
+    public .java.lang.Object defaultedParams(final .java.lang.Object p);
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new$(final .java.lang.Object p);
+    
+    public abstract .java.lang.Object $default$Class$p();
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new$();
+}
+final class EC_ErasedMember$impl<Element, Absent> implements .java.io.Serializable {
+    
+    EC_ErasedMember$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember<Element, Absent> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$Absent = $reified$Absent;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent;
+    private final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember<Element, Absent> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent) {
+        this.$reified$Absent = $reified$Absent;
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public final .java.lang.Object getAttr() {
+        return .ceylon.language.nothing_.get_();
+    }
+    
+    public .java.lang.Object m() {
+        return .ceylon.language.nothing_.get_();
+    }
+    
+    public .java.lang.Object defaultedParams() {
+        return (
+            let
+            {
+                .java.lang.Object $ceylontmp$p$22 = defaultedParams$p();
+            }
+            returning defaultedParams$canonical$($ceylontmp$p$22);
+        );
+    }
+    
+    public final .java.lang.Object defaultedParams$p() {
+        return .ceylon.language.nothing_.get_();
+    }
+    
+    private .java.lang.Object defaultedParams$canonical$(final .java.lang.Object p) {
+        return null;
+    }
+    
+    public .java.lang.Object defaultedParams(final .java.lang.Object p) {
+        return defaultedParams$canonical$(p);
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new$(final .java.lang.Object p) {
+        return new Class(p);
+    }
+    
+    public final .java.lang.Object $default$Class$p() {
+        return .ceylon.language.nothing_.get_();
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, Absent>.Class Class$new$() {
+        return (
+            let
+            {
+                .java.lang.Object $ceylontmp$p$23 = $default$Class$p();
+            }
+            returning new Class($ceylontmp$p$23);
+        );
+    }
+    
+    public class Class implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Class(final .java.lang.Object p) {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember.class, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl.this.$reified$Element, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl.this.$reified$Absent), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl.Class.class));
+        }
+    }
+}
+class EC_ErasedMemberImpl<Element> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember<Element, .java.lang.Object>, .java.io.Serializable {
+    
+    EC_ErasedMemberImpl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+        this.$org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$ = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>($reified$Element, .ceylon.language.Null.$TypeDescriptor$, this);
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    protected final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object> $org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object $default$Class$p() {
+        return $org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.$default$Class$p();
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>.Class Class$new$() {
+        return $org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.Class$new$();
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMember$impl<Element, .java.lang.Object>.Class Class$new$(final .java.lang.Object p) {
+        return $org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.Class$new$(p);
+    }
+    
+    @.java.lang.Override
+    public Element getAttr() {
+        return (Element)$org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.getAttr();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object defaultedParams$p() {
+        return $org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.defaultedParams$p();
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultedParams() {
+        return (
+            let
+            {
+                .java.lang.Object $ceylontmp$p$24 = defaultedParams$p();
+            }
+            returning defaultedParams$canonical$($ceylontmp$p$24);
+        );
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object defaultedParams(final .java.lang.Object p) {
+        return $org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.defaultedParams(p);
+    }
+    
+    private .java.lang.Object defaultedParams$canonical$(final .java.lang.Object p) {
+        return $org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.defaultedParams(p);
+    }
+    
+    @.java.lang.Override
+    public Element m() {
+        return (Element)$org$eclipse$ceylon$compiler$java$test$expression$erasure$EC_ErasedMember$this$.m();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_ErasedMemberImpl.class, $reified$Element);
+    }
+}
+class EC_Tuple<Element, First extends Element> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected EC_Tuple(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First) {
+        super();
+        this.$reified$Element = $reified$Element;
+        this.$reified$First = $reified$First;
+        this.first = null;
+    }
+    
+    EC_Tuple(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final First first) {
+        this.$reified$Element = $reified$Element;
+        this.$reified$First = $reified$First;
+        this.first = first;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First;
+    private final First first;
+    
+    public final First getFirst() {
+        return this.first;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EC_Tuple.class, $reified$Element, $reified$First);
+    }
+}
+final class ec_callableWithBonds_ {
+    
+    private ec_callableWithBonds_() {
+    }
+    
+    static <Result, FirstArgs extends .ceylon.language.Sequential<? extends .java.lang.Object>, SecondArgs extends .ceylon.language.Sequential<? extends .java.lang.Object>>.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>> ec_callableWithBonds(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$FirstArgs, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$SecondArgs, final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>> c) {
+        return (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends Result>>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+class Bug1327 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1327() {
+    }
+    
+    private final <Arguments extends .ceylon.language.Sequential<? extends .ceylon.language.String>>Arguments foo$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Arguments, final Arguments args) {
+        return (Arguments)args;
+    }
+    
+    private final void m$priv$() {
+        final .ceylon.language.Empty e1 = (.ceylon.language.Empty)(.java.lang.Object)<.ceylon.language.Sequential<? extends .ceylon.language.String>>foo$priv$(.ceylon.language.Empty.$TypeDescriptor$, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        final .ceylon.language.Empty e2 = (.ceylon.language.Empty)(.java.lang.Object).org.eclipse.ceylon.compiler.java.test.expression.erasure.bug1327_foo_.<.ceylon.language.Sequential<? extends .ceylon.language.String>>bug1327_foo(.ceylon.language.Empty.$TypeDescriptor$, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+        final .ceylon.language.Empty e3 = (.ceylon.language.Empty)(.java.lang.Object)new .org.eclipse.ceylon.compiler.java.test.expression.erasure.Bug1327_2<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$).<.ceylon.language.Sequential<? extends .ceylon.language.Integer>>foo(.ceylon.language.Empty.$TypeDescriptor$, (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.erasure.Bug1327.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Bug1327.class);
+}
+class Bug1327_2<Element> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1327_2(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    public final <Arguments extends .ceylon.language.Sequential<? extends Element>>Arguments foo(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Arguments, final Arguments args) {
+        return (Arguments)args;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Bug1327_2.class, $reified$Element);
+    }
+}
+public final class bug1327_foo_ {
+    
+    private bug1327_foo_() {
+    }
+    
+    public static <Arguments extends .ceylon.language.Sequential<? extends .ceylon.language.String>>Arguments bug1327_foo(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Arguments, final Arguments args) {
+        return (Arguments)args;
+    }
+}

@@ -1,0 +1,116 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.$goto;
+
+public final class transient_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private transient_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.transient_.get_();
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.transient_.class);
+    private static final .org.eclipse.ceylon.compiler.java.test.quoting.$goto.transient_ $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.quoting.$goto.transient_();
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.transient_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.transient_.$init$$object$ = false;
+        }
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.quoting.$goto.transient_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.quoting.$goto.transient_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.transient_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'transient\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.transient_.$TypeDescriptor$;
+    }
+}
+public final class module_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private module_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.get_();
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.class);
+    private static final .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_ $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_();
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.$init$$object$ = false;
+        }
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'module\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.$TypeDescriptor$;
+    }
+}
+public final class package_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private package_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.get_();
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.class);
+    private static final .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_ $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_();
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$init$$object$ = false;
+        }
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'package\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$TypeDescriptor$;
+    }
+}

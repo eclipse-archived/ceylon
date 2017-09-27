@@ -3,18 +3,18 @@ package ceylon.modules.bootstrap;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.common.OSUtil;
-import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.config.DefaultToolOptions;
-import com.redhat.ceylon.common.tool.Description;
-import com.redhat.ceylon.common.tool.Option;
-import com.redhat.ceylon.common.tool.RemainingSections;
-import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tools.AbstractTestTool;
-import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.tools.RepoUsingTool;
+import org.eclipse.ceylon.cmr.api.ModuleQuery;
+import org.eclipse.ceylon.common.ModuleUtil;
+import org.eclipse.ceylon.common.OSUtil;
+import org.eclipse.ceylon.common.Versions;
+import org.eclipse.ceylon.common.config.DefaultToolOptions;
+import org.eclipse.ceylon.common.tool.Description;
+import org.eclipse.ceylon.common.tool.Option;
+import org.eclipse.ceylon.common.tool.RemainingSections;
+import org.eclipse.ceylon.common.tool.Summary;
+import org.eclipse.ceylon.common.tools.AbstractTestTool;
+import org.eclipse.ceylon.common.tools.CeylonTool;
+import org.eclipse.ceylon.common.tools.RepoUsingTool;
 
 @Summary("Executes tests on the JVM")
 @Description(
@@ -36,9 +36,9 @@ import com.redhat.ceylon.common.tools.RepoUsingTool;
         "    ceylon test com.example.foobar/1.0.0")
 public class CeylonTestTool extends AbstractTestTool {
 
-    private static final String COLOR_RESET = "com.redhat.ceylon.common.tool.terminal.color.reset";
-    private static final String COLOR_GREEN = "com.redhat.ceylon.common.tool.terminal.color.green";
-    private static final String COLOR_RED = "com.redhat.ceylon.common.tool.terminal.color.red";
+    private static final String COLOR_RESET = "org.eclipse.ceylon.common.tool.terminal.color.reset";
+    private static final String COLOR_GREEN = "org.eclipse.ceylon.common.tool.terminal.color.green";
+    private static final String COLOR_RED = "org.eclipse.ceylon.common.tool.terminal.color.red";
 
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
@@ -88,7 +88,7 @@ public class CeylonTestTool extends AbstractTestTool {
         processTestList(args);
         processTagList(args);
         processArgumentList(args);
-        compileFlags = processCompileFlags(compileFlags, DefaultToolOptions.getTestToolCompileFlags(com.redhat.ceylon.common.Backend.Java));
+        compileFlags = processCompileFlags(compileFlags, DefaultToolOptions.getTestToolCompileFlags(org.eclipse.ceylon.common.Backend.Java));
         processTapOption(args);
         processReportOption(args);
         processColors(args);

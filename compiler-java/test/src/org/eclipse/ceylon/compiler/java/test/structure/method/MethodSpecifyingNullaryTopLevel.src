@@ -1,0 +1,31 @@
+package org.eclipse.ceylon.compiler.java.test.structure.method;
+
+final class f_ {
+    
+    private f_() {
+    }
+    
+    static void f() {
+    }
+}
+class MethodSpecifierTopLevel implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodSpecifierTopLevel() {
+    }
+    
+    private final .java.lang.Object foo$priv$() {
+        return (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.method.f_.f();
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.MethodSpecifierTopLevel.class);
+}

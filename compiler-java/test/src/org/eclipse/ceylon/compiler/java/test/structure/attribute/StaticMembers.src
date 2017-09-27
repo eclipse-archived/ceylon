@@ -1,0 +1,81 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+interface StaticInterfaceMembers {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticInterfaceMembers$impl $org$eclipse$ceylon$compiler$java$test$structure$attribute$StaticInterfaceMembers$impl();
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static long getInt$priv$() {
+        return 0L;
+    }
+    
+    @.ceylon.language.StaticAnnotation$annotation$
+    static long $get$priv$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticInterfaceMembers.getInt$priv$();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    static long getVal$priv$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticInterfaceMembers.$get$priv$();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticInterfaceMembers.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+final class StaticInterfaceMembers$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    StaticInterfaceMembers$impl(.org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticInterfaceMembers $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticInterfaceMembers $this;
+    private static final long $int = 0L;
+    private static final long val = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticInterfaceMembers.$get$priv$();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class StaticClassMembers implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static final long $int;
+    static {
+        $int = 0L;
+    }
+    
+    @.ceylon.language.StaticAnnotation$annotation$
+    private static final long getInt$priv$() {
+        return (long).org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticClassMembers.$int;
+    }
+    
+    @.ceylon.language.StaticAnnotation$annotation$
+    private static final long $get$priv$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticClassMembers.getInt$priv$();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static final long val;
+    static {
+        val = .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticClassMembers.$get$priv$();
+    }
+    
+    @.ceylon.language.StaticAnnotation$annotation$
+    private static final long getVal$priv$() {
+        return (long).org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticClassMembers.val;
+    }
+    
+    private StaticClassMembers() {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticClassMembers.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.StaticClassMembers.class);
+}

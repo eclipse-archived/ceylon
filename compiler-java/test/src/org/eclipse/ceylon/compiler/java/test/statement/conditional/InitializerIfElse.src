@@ -1,0 +1,19 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class InitializerIfElse implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    InitializerIfElse() {
+        boolean b = false;
+        if (true) {
+            b = true;
+        } else {
+            b = false;
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.InitializerIfElse.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.InitializerIfElse.class);
+}

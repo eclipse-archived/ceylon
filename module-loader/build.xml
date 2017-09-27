@@ -12,7 +12,7 @@
     <property name="test.src" location="test"/>
 
     <!-- Jarfiles everything ends up in -->
-    <property name="ceylon.module-loader.src" value="${ceylon.module-loader.dir}/com.redhat.ceylon.module-loader-${module.com.redhat.ceylon.module-loader.version}.src" />
+    <property name="ceylon.module-loader.src" value="${ceylon.module-loader.dir}/org.eclipse.ceylon.module-loader-${module.org.eclipse.ceylon.module-loader.version}.src" />
     <property name="ceylon.module-loader.repo" value="${ceylon.repo.dir}/${ceylon.module-loader.dir}" />
     <property name="ceylon.module-loader.dist" value="${build.dist.repo}/${ceylon.module-loader.dir}" />
 
@@ -95,7 +95,7 @@
     <target name="module-loader.classes">
         <mkdir dir="${build.classes}" />
         <javac srcdir="${module-loader.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="module-loader.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
-            <include name="com/redhat/**" />
+            <include name="org/eclipse/**" />
         </javac>
     </target>
 
@@ -106,8 +106,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-loader"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-loader.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.module-loader"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.module-loader.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

@@ -1,0 +1,95 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public class Klass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public Klass(final long p1) {
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$p2$0 = .org.eclipse.ceylon.compiler.java.test.annotations.Klass.$default$p2(p1);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$p3$1 = .org.eclipse.ceylon.compiler.java.test.annotations.Klass.$default$p3(p1, $ceylontmp$p2$0);
+                this(p1, $ceylontmp$p2$0, $ceylontmp$p3$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public Klass(final long p1, final .ceylon.language.Integer p2) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$p3$2 = .org.eclipse.ceylon.compiler.java.test.annotations.Klass.$default$p3(p1, p2);
+                this(p1, p2, $ceylontmp$p3$2);
+            }
+            returning null;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Klass() {
+        super();
+    }
+    
+    public Klass(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    final long p1, @.org.eclipse.ceylon.compiler.java.metadata.Name("p2")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    final .ceylon.language.Integer p2, @.org.eclipse.ceylon.compiler.java.metadata.Name("p3")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> p3) {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static .ceylon.language.Integer $default$p2(final long p1) {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static .ceylon.language.Sequential<? extends .ceylon.language.Integer> $default$p3(final long p1, final .ceylon.language.Integer p2) {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final long m1(@.org.eclipse.ceylon.compiler.java.metadata.Name("p1")
+    final long p1) {
+        return 1L;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    public final .ceylon.language.Integer m2(@.org.eclipse.ceylon.compiler.java.metadata.Name("p2")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    final .ceylon.language.Integer p2) {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m3(@.org.eclipse.ceylon.compiler.java.metadata.Name("p3")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> p3) {
+        return (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Klass.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Klass.class);
+}

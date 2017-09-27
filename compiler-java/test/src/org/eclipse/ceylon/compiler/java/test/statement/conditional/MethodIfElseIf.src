@@ -1,0 +1,25 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfElseIf implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodIfElseIf() {
+    }
+    
+    private final long m$priv$() {
+        if (true) {
+            return 1L;
+        } else {
+            if (false) {
+                return 2L;
+            } else {
+                return 3L;
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.MethodIfElseIf.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.MethodIfElseIf.class);
+}

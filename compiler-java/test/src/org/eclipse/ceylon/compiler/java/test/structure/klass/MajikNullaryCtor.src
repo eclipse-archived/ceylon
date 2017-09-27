@@ -1,0 +1,781 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class MajikNullaryCtor implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtor() {
+        super();
+        this.i = 0L;
+        this.c = 0;
+        this.b = false;
+        this.o = 0;
+        this.f = 0.0;
+    }
+    
+    MajikNullaryCtor(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final long i, @.org.eclipse.ceylon.compiler.java.metadata.Name("c")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final int c, @.org.eclipse.ceylon.compiler.java.metadata.Name("b")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final boolean b, @.org.eclipse.ceylon.compiler.java.metadata.Name("o")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Byte")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final byte o, @.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final double f) {
+        this.i = i;
+        this.c = c;
+        this.b = b;
+        this.o = o;
+        this.f = f;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final long i;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final long getI() {
+        return this.i;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final int c;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
+    public final int getC() {
+        return this.c;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final boolean b;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final boolean getB() {
+        return this.b;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final byte o;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Byte")
+    public final byte getO() {
+        return this.o;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final double f;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final double getF() {
+        return this.f;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtor.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtor.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.AbstractAnnotation$annotation$
+abstract class MajikNullaryCtorAbstract implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorAbstract() {
+        super();
+    }
+    
+    MajikNullaryCtorAbstract(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorAbstract.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorAbstract.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class MajikNullaryCtorNullary implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MajikNullaryCtorNullary() {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorNullary.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorNullary.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorNullary")
+class MajikNullaryCtorNullarySuper extends .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorNullary {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorNullarySuper() {
+        super();
+    }
+    
+    MajikNullaryCtorNullarySuper(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i) {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorNullarySuper.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorNullarySuper.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class MajikNullaryCtorDefaulted implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    MajikNullaryCtorDefaulted() {
+        (
+            let
+            {
+                long $ceylontmp$i$0 = .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorDefaulted.$default$i();
+                this($ceylontmp$i$0);
+            }
+            returning null;
+        );
+    }
+    
+    MajikNullaryCtorDefaulted(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    final long i) {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static long $default$i() {
+        return 0L;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorDefaulted.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorDefaulted.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorDefaulted")
+class MajikNullaryCtorDefaultedSub extends .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorDefaulted {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorDefaultedSub() {
+        super();
+    }
+    
+    MajikNullaryCtorDefaultedSub(@.org.eclipse.ceylon.compiler.java.metadata.Name("j")
+    final long j) {
+        super(0L);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorDefaultedSub.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorDefaultedSub.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class MajikNullaryCtorSequenced implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    MajikNullaryCtorSequenced() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$va$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this($ceylontmp$va$1);
+            }
+            returning null;
+        );
+    }
+    
+    MajikNullaryCtorSequenced(@.org.eclipse.ceylon.compiler.java.metadata.Name("va")
+    @.org.eclipse.ceylon.compiler.java.metadata.Sequenced
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.Sequential<? extends .ceylon.language.Integer> va) {
+        this.va = va;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .ceylon.language.Sequential<? extends .ceylon.language.Integer> va;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
+    public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> getVa() {
+        return this.va;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorSequenced.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorSequenced.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class MajikNullaryCtorSequencedNonempty implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorSequencedNonempty() {
+        super();
+        this.va = null;
+    }
+    
+    MajikNullaryCtorSequencedNonempty(@.org.eclipse.ceylon.compiler.java.metadata.Name("va")
+    @.org.eclipse.ceylon.compiler.java.metadata.Sequenced
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("[ceylon.language::Integer+]")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.Sequence<? extends .ceylon.language.Integer> va) {
+        this.va = va;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .ceylon.language.Sequence<? extends .ceylon.language.Integer> va;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("[ceylon.language::Integer+]")
+    public final .ceylon.language.Sequence<? extends .ceylon.language.Integer> getVa() {
+        return this.va;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorSequencedNonempty.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorSequencedNonempty.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class MajikNullaryCtorGeneric<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorGeneric(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+        this.i = 0L;
+    }
+    
+    MajikNullaryCtorGeneric(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    final long i) {
+        this.$reified$T = $reified$T;
+        this.i = i;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final long i;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    public long getI() {
+        return this.i;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorGeneric.class, $reified$T);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorGeneric<ceylon.language::String>")
+class MajikNullaryCtorGenericSub extends .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorGeneric<.ceylon.language.String> {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorGenericSub() {
+        super(.ceylon.language.String.$TypeDescriptor$);
+        this.i = 0L;
+    }
+    
+    MajikNullaryCtorGenericSub(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    final long i) {
+        super(.ceylon.language.String.$TypeDescriptor$, i);
+        this.i = i;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final long i;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    public final long getI() {
+        return this.i;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorGenericSub.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorGenericSub.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Category<ceylon.language::String>"})
+class MajikNullaryCtorMixin implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Category<.ceylon.language.String>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorMixin() {
+        super();
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
+        this.i = 0L;
+    }
+    
+    MajikNullaryCtorMixin(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final long i) {
+        this.i = i;
+        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final long i;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final long getI() {
+        return this.i;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .ceylon.language.Category$impl<.ceylon.language.String> $ceylon$language$Category$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .ceylon.language.Category$impl<? super .ceylon.language.String> $ceylon$language$Category$impl() {
+        return $ceylon$language$Category$this$;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public boolean containsAny(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this$.containsAny(elements);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public boolean containsEvery(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
+        return $ceylon$language$Category$this$.containsEvery(elements);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    public final boolean contains(@.org.eclipse.ceylon.compiler.java.metadata.Name("element")
+    @.org.eclipse.ceylon.common.NonNull
+    final .ceylon.language.String element) {
+        return true;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorMixin.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorMixin.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Category<ceylon.language::String>"})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorMixin")
+class MajikNullaryCtorMixinSub extends .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorMixin implements .ceylon.language.Category<.ceylon.language.String> {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorMixinSub() {
+        super();
+    }
+    
+    MajikNullaryCtorMixinSub(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i) {
+        super(i);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorMixinSub.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorMixinSub.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class MajikNullaryCtorValueCtor implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("val")
+    private static final class val_ {
+        
+        val_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    private MajikNullaryCtorValueCtor(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor.val_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor val;
+    static {
+        val = new MajikNullaryCtorValueCtor((.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor.val_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtor.val")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor getMajikNullaryCtorValueCtor$val() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor.val;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor.class);
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == val) {
+            $name$ = "getMajikNullaryCtorValueCtor$val";
+        } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor.class, $name$);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class MajikNullaryCtorValueCtorAndDefault implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public MajikNullaryCtorValueCtorAndDefault() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("val")
+    private static final class val_ {
+        
+        val_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    private MajikNullaryCtorValueCtorAndDefault(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault.val_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault val;
+    static {
+        val = new MajikNullaryCtorValueCtorAndDefault((.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault.val_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtorAndDefault.val")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault getMajikNullaryCtorValueCtorAndDefault$val() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault.val;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault.class);
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == val) {
+            $name$ = "getMajikNullaryCtorValueCtorAndDefault$val";
+        } else return this;
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault.class, $name$);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class MajikNullaryCtorValueCtorAndCallable implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorValueCtorAndCallable() {
+        super();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.callable_ callable_ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("callable")
+    public static final class callable_ {
+        
+        callable_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("callable")
+    public MajikNullaryCtorValueCtorAndCallable(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.callable_ $name$) {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("val")
+    private static final class val_ {
+        
+        val_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    private MajikNullaryCtorValueCtorAndCallable(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.val_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable val;
+    static {
+        val = new MajikNullaryCtorValueCtorAndCallable((.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.val_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Enumerated
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtorAndCallable.val")
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable getMajikNullaryCtorValueCtorAndCallable$val() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.val;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.class);
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == val) {
+            $name$ = "getMajikNullaryCtorValueCtorAndCallable$val";
+        } else return this;
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.class, $name$);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.AbstractAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.CaseTypes({"org.eclipse.ceylon.compiler.java.test.structure.klass::majikNullaryCtorValueCtorOf"})
+abstract class MajikNullaryCtorValueCtorOf implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MajikNullaryCtorValueCtorOf(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorOf.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorOf.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("majikNullaryCtorValueCtorOf")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtorOf")
+final class majikNullaryCtorValueCtorOf_ extends .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorOf implements .java.io.Serializable {
+    
+    private majikNullaryCtorValueCtorOf_() {
+        super(1L);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.class);
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_();
+            .org.eclipse.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.klass::majikNullaryCtorValueCtorOf")
+    static .org.eclipse.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'majikNullaryCtorValueCtorOf\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$TypeDescriptor$;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SerializableAnnotation$annotation$
+class MajikNullaryCtorSer implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected MajikNullaryCtorSer() {
+        this((.org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$)null);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public MajikNullaryCtorSer(final .org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+    }
+    
+    MajikNullaryCtorSer(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorSer.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorSer.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        return reference;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}

@@ -8,11 +8,11 @@ replace_ide_common() {
   log "Updating versions for release"
   ../ceylon/dist/dist/bin/ceylon version --set $CEYLON_NEW_VERSION --confirm=none --update-distribution 2>&1 >> $LOG_FILE || fail "Update $DESC version"
   
-  perl -pi -e "s/(module\\.com\\.redhat\\.ceylon\\.ide\\.common\\.version=).*/\${1}${CEYLON_NEW_VERSION}/" build.properties 
+  perl -pi -e "s/(module\\.org\\.eclipse\\.ceylon\\.ide\\.common\\.version=).*/\${1}${CEYLON_NEW_VERSION}/" build.properties 
   perl -pi -e "s/(import (test\\.)?ceylon\\.(interop\\.java|test|file|collection|formatter|bootstrap)) \".*\"/\${1} \"${CEYLON_NEW_VERSION}\"/" \
-   source/com/redhat/ceylon/ide/common/module.ceylon \
-   test-source/test/com/redhat/ceylon/ide/common/module.ceylon
-  perl -pi -e "s/(\"(Ceylon: (test\\.)?(ceylon\\.(interop\\.java|test|language|collection|bootstrap|file|formatter)|com\\.redhat\\.ceylon\\.[^\/]+)))\/[^\"]*\"/\${1}\/${CEYLON_NEW_VERSION}\"/" \
+   source/org/eclipse/ceylon/ide/common/module.ceylon \
+   test-source/test/org/eclipse/ceylon/ide/common/module.ceylon
+  perl -pi -e "s/(\"(Ceylon: (test\\.)?(ceylon\\.(interop\\.java|test|language|collection|bootstrap|file|formatter)|org\\.eclipse\\.ceylon\\.[^\/]+)))\/[^\"]*\"/\${1}\/${CEYLON_NEW_VERSION}\"/" \
    ceylon-ide-common.iml
 }
 

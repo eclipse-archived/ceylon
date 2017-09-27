@@ -1,0 +1,73 @@
+package org.eclipse.ceylon.compiler.java.test.structure.alias;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+interface LocalInterfaceAlias_Toplevel {
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("InterfaceAlias_Foo")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"localInterfaceAliasMethod"},
+        companionClassName = "")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface localInterfaceAliasMethod$InterfaceAlias_Foo_ {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1Class1",
+        "1Class2",
+        "::localInterfaceAliasMethod$InterfaceAlias_Foo_"})
+final class localInterfaceAliasMethod_ {
+    
+    private localInterfaceAliasMethod_() {
+    }
+    
+    static void localInterfaceAliasMethod() {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("Class1")
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.alias::localInterfaceAliasMethod.1InterfaceAlias_Foo"})
+        class Class1 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod$InterfaceAlias_Foo_, .java.io.Serializable {
+            
+            Class1() {
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Class1.class));
+            }
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("Class2")
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.structure.alias::LocalInterfaceAlias_Toplevel"})
+        class Class2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.alias.LocalInterfaceAlias_Toplevel, .java.io.Serializable {
+            
+            Class2() {
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.alias.localInterfaceAliasMethod_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Class2.class));
+            }
+        }
+        final Class1 foo1 = new Class1();
+        final Class2 foo2 = new Class2();
+    }
+}

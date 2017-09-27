@@ -1,0 +1,126 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class EnumSwitch implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    EnumSwitch() {
+    }
+    
+    private final void exhaustive$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("e")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.interop::JavaEnum")
+    final .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum e) {
+        switch_0: switch (e) {
+        case ONE: 
+            {
+            }
+            break switch_0;
+        
+        case TWO: 
+            {
+            }
+            break switch_0;
+        
+        default: 
+            throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+        
+        }
+    }
+    
+    private final void notExhaustive$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("e")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.interop::JavaEnum")
+    final .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum e) {
+        switch_1: switch (e) {
+        case ONE: 
+            {
+            }
+            break switch_1;
+        
+        default: 
+            {
+            }
+        
+        }
+    }
+    
+    private final void optionalExhaustive$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("e")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.interop::JavaEnum?")
+    final .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum e) {
+        {
+            .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum sel$0 = e;
+            if (sel$0 == null) {
+            } else {
+                switch_2: switch (sel$0) {
+                case ONE: 
+                    {
+                    }
+                    break switch_2;
+                
+                case TWO: 
+                    {
+                    }
+                    break switch_2;
+                
+                default: 
+                    throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+                
+                }
+            }
+        }
+    }
+    
+    private final void optionalExhaustive2$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("e")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.interop::JavaEnum?")
+    final .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum e) {
+        {
+            .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum sel$1 = e;
+            if (sel$1 == null) {
+            } else {
+                switch_3: switch (sel$1) {
+                case ONE: 
+                
+                case TWO: 
+                    {
+                    }
+                    break switch_3;
+                
+                default: 
+                    throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
+                
+                }
+            }
+        }
+    }
+    
+    private final void union$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("e")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.interop::JavaEnum|java.lang::Thread.State",
+            erased = true)
+    final .java.lang.Object e) {
+        {
+            .java.lang.Object sel$2 = e;
+            if (sel$2 == .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum.ONE) {
+            } else if (sel$2 == .org.eclipse.ceylon.compiler.java.test.interop.JavaEnum.TWO) {
+            } else if (sel$2 == .java.lang.Thread.State.NEW) {
+            } else if (sel$2 == .java.lang.Thread.State.RUNNABLE) {
+            } else if (sel$2 == .java.lang.Thread.State.BLOCKED) {
+            } else {
+                final .java.lang.Thread.State e$3 = (.java.lang.Thread.State)sel$2;
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.EnumSwitch.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.EnumSwitch.class);
+}

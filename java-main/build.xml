@@ -13,7 +13,7 @@
     <property name="test.reports" location="${build.dir}/test-reports" />
 
     <!-- Jarfiles everything ends up in -->
-    <property name="ceylon.java.main.src" value="${ceylon.java.main.dir}/com.redhat.ceylon.java.main-${module.com.redhat.ceylon.java.main.version}.src" />
+    <property name="ceylon.java.main.src" value="${ceylon.java.main.dir}/org.eclipse.ceylon.java.main-${module.org.eclipse.ceylon.java.main.version}.src" />
     <property name="ceylon.java.main.repo" value="${ceylon.repo.dir}/${ceylon.java.main.dir}" />
     <property name="ceylon.java.main.dist" value="${build.dist.repo}/${ceylon.java.main.dir}" />
 
@@ -95,18 +95,18 @@
         <mkdir dir="${build.classes}" />
         <javac srcdir="${java.main.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="java.main.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
             <compilerarg value="-XDignore.symbol.file" />
-            <include name="com/redhat/**" />
+            <include name="org/eclipse/**" />
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${java.main.src}">
-                <exclude name="com/redhat/**/*.utf8properties" />
-                <include name="com/redhat/**/resources/**" />
-                <include name="com/redhat/**/*.properties" />
+                <exclude name="org/eclipse/**/*.utf8properties" />
+                <include name="org/eclipse/**/resources/**" />
+                <include name="org/eclipse/**/*.properties" />
                 <include name="META-INF/**" />
             </fileset>
         </copy>
         <native2ascii dest="${build.classes}" src="${java.main.src}" encoding="UTF-8" ext=".properties">
-            <include name="com/redhat/**/*.utf8properties" />
+            <include name="org/eclipse/**/*.utf8properties" />
         </native2ascii>
     </target>
 
@@ -118,8 +118,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.java.main"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.java.main.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.java.main"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.java.main.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">
@@ -234,7 +234,7 @@
 
             <formatter type="xml" />
             <test
-                name="com.redhat.ceylon.compiler.java.runtime.AllJavaMainTests"
+                name="org.eclipse.ceylon.compiler.java.runtime.AllJavaMainTests"
                 fork="yes"
                 todir="${test.reports}" />
         </junit>

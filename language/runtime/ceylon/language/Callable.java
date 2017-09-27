@@ -1,10 +1,10 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-import com.redhat.ceylon.compiler.java.metadata.Variance;
+import org.eclipse.ceylon.compiler.java.metadata.Ceylon;
+import org.eclipse.ceylon.compiler.java.metadata.Ignore;
+import org.eclipse.ceylon.compiler.java.metadata.TypeParameter;
+import org.eclipse.ceylon.compiler.java.metadata.TypeParameters;
+import org.eclipse.ceylon.compiler.java.metadata.Variance;
 
 @Ceylon(major = 8)
 @TypeParameters({

@@ -1,19 +1,18 @@
 package ceylon.modules.jboss.runtime;
 
+import org.eclipse.ceylon.common.ModuleUtil;
+import org.eclipse.ceylon.model.cmr.RuntimeResolver;
 import org.jboss.modules.ModuleClassLoader;
 import org.jboss.modules.ModuleClassLoaderFactory;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
-
-import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.model.cmr.RuntimeResolver;
 
 /**
  * Class used in the language module to be able to force metamodel registration from the transformer.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class CeylonModuleClassLoader extends ModuleClassLoader implements com.redhat.ceylon.model.runtime.CeylonModuleClassLoader {
+public class CeylonModuleClassLoader extends ModuleClassLoader implements org.eclipse.ceylon.model.runtime.CeylonModuleClassLoader {
 
     static {
         boolean parallelOk = true;
@@ -138,12 +137,12 @@ public class CeylonModuleClassLoader extends ModuleClassLoader implements com.re
     }
 
     @Override
-    public com.redhat.ceylon.model.runtime.CeylonModuleClassLoader loadModule(String name, String version) throws ModuleLoadException {
+    public org.eclipse.ceylon.model.runtime.CeylonModuleClassLoader loadModule(String name, String version) throws ModuleLoadException {
         ModuleLoader moduleLoader = getModule().getModuleLoader();
         try {
             ModuleClassLoader classLoader = moduleLoader.loadModule(ModuleIdentifier.create(name, version)).getClassLoader();
-            return classLoader instanceof com.redhat.ceylon.model.runtime.CeylonModuleClassLoader
-                    ? (com.redhat.ceylon.model.runtime.CeylonModuleClassLoader)classLoader : null; 
+            return classLoader instanceof org.eclipse.ceylon.model.runtime.CeylonModuleClassLoader
+                    ? (org.eclipse.ceylon.model.runtime.CeylonModuleClassLoader)classLoader : null; 
         } catch (org.jboss.modules.ModuleLoadException e) {
             throw new ModuleLoadException(e);
         }

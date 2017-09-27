@@ -1,0 +1,90 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1Foo"})
+public final class bug2169_ {
+    
+    private bug2169_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug2169() {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("Foo")
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+        class Foo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName(
+                    delegation = true,
+                    value = "")
+            class $delegation$ {
+                
+                $delegation$() {
+                }
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            private Foo(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            Foo.$delegation$ $name$) {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            private Foo() {
+                this((Foo.$delegation$)null);
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("e");
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("baz")
+            class baz_ {
+                
+                baz_() {
+                }
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.org.eclipse.ceylon.compiler.java.metadata.Name("baz")
+            private Foo(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            Foo.baz_ $name$) {
+                this((Foo.$delegation$)null);
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
+                $return$$0: do {
+                    .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("d");
+                }                 while (false);
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("e");
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.bug2169_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class));
+            }
+        }
+        new Foo((Foo.baz_)null);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[a, b, c, d, e]");
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.bug2169_.bug2169();
+    }
+}

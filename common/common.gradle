@@ -13,7 +13,7 @@ dependencies {
 
 ext {
     generatedSrcDir = "${buildDir}/generated-java"
-    versionsTemplate = 'com/redhat/ceylon/common/Versions.java'
+    versionsTemplate = 'org/eclipse/ceylon/common/Versions.java'
 }
 
 sourceSets {

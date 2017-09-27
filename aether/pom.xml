@@ -109,7 +109,7 @@
 	<packaging>jar</packaging>
  
 	<build>
-    <finalName>com.redhat.ceylon.aether-3.3.9</finalName>
+    <finalName>org.eclipse.ceylon.aether-3.3.9</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -148,7 +148,7 @@
               <relocations>
                 <relocation>
                   <pattern>org.</pattern>
-                  <shadedPattern>com.redhat.ceylon.aether.</shadedPattern>
+                  <shadedPattern>org.eclipse.ceylon.aether.</shadedPattern>
                   <excludes>
                     <exclude>org.ietf.jgss.*</exclude>
                     <exclude>org.w3c.dom.*</exclude>
@@ -158,7 +158,7 @@
                 </relocation>
                 <relocation>
                   <pattern>com.</pattern>
-                  <shadedPattern>com.redhat.ceylon.aether.</shadedPattern>
+                  <shadedPattern>org.eclipse.ceylon.aether.</shadedPattern>
                   <excludes>
                   </excludes>
                 </relocation>

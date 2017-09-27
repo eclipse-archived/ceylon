@@ -2,6 +2,7 @@ package ceylon.modules.bootstrap.loader;
 
 import java.util.Set;
 
+import org.eclipse.ceylon.model.cmr.JDKUtils;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalModuleFinder;
 import org.jboss.modules.ModuleFinder;
@@ -9,8 +10,6 @@ import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
-
-import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class InitialModuleLoader extends ModuleLoader {
 

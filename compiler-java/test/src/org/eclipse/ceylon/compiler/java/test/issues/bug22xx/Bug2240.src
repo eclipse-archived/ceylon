@@ -1,0 +1,36 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug22xx;
+
+final class bug2240GetSome_ {
+    
+    private bug2240GetSome_() {
+    }
+    
+    static <T>T bug2240GetSome(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+final class bug2240_ {
+    
+    private bug2240_() {
+    }
+    
+    static <Return, Params, First extends Params, Rest extends .ceylon.language.Sequential<? extends Params>>Return bug2240(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Return, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Params, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$First, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Rest, final .ceylon.language.Callable<? extends Return> func) {
+        final First firstValue = (First)(.java.lang.Object).org.eclipse.ceylon.compiler.java.test.issues.bug22xx.bug2240GetSome_.<First>bug2240GetSome($reified$First);
+        .java.lang.Object func$1;
+        if (.org.eclipse.ceylon.compiler.java.Util.isReified(func$1 = func, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Return, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$First)))) {
+            final .ceylon.language.Callable<? extends Return> func$5 = (.ceylon.language.Callable<? extends Return>)(.ceylon.language.Callable)func$1;
+            return func$5.$call$((.java.lang.Object)firstValue);
+        } else {
+            final .ceylon.language.Callable<? extends Return> func$2 = (.ceylon.language.Callable<? extends Return>)(.ceylon.language.Callable)func$1;
+            final .ceylon.language.Callable<? extends Return> littleFunc = .ceylon.language.curry_.<Return, Params, First, Rest>curry($reified$Return, $reified$Params, $reified$First, $reified$Rest, func$2).$call$((.java.lang.Object)firstValue);
+            final .ceylon.language.Callable<? extends Return> littleFunc$4;
+            .java.lang.Object littleFunc$3 = null;
+            if (.org.eclipse.ceylon.compiler.java.Util.isReified(littleFunc$3 = littleFunc, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Return, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Params, $reified$Params, .ceylon.language.Anything.$TypeDescriptor$)))) {
+                littleFunc$4 = (.ceylon.language.Callable<? extends Return>)(.ceylon.language.Callable)littleFunc$3;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Return(*Tuple<Params,Params,Anything>) littleFunc") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, $reified$Return, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Tuple.class, $reified$Params, $reified$Params, .ceylon.language.Anything.$TypeDescriptor$)), littleFunc$3));
+            }
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.bug2240_.<Return, Params, Params, .ceylon.language.Sequential<? extends Params>>bug2240($reified$Return, $reified$Params, $reified$Params, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, $reified$Params), littleFunc$4);
+        }
+    }
+}

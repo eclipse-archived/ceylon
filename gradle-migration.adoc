@@ -120,7 +120,7 @@ If those files could simply be moved to the `src/main/resources` folder the whol
 to be built.
 
 .TODO
-* `addModule 'com.redhat.ceylon.dist.repo', "${project.version}${versionQualifier}"` is current disabled.
+* `addModule 'org.eclipse.ceylon.dist.repo', "${project.version}${versionQualifier}"` is current disabled.
   Not sure if it is needed as the Ant build produces the same warning.
 
 
@@ -424,15 +424,15 @@ Karaf features
 The first step of this is to build a small piece of code that will provide an Osgi BundleActivator
 class that can be used by all OSGI bundles. This code is built in the ./ceylon/dist/osgi/build.xml file
 
-and the generated code is inside an additional OSGI bundle archive : com.redhat.ceylon.dist-<version>.jar
+and the generated code is inside an additional OSGI bundle archive : org.eclipse.ceylon.dist-<version>.jar
 and the second step is to create the necessary metadata and structure for OSGI provisionning tools
 There is also another part done by this file, but not directly related to provisionning tools: the creation of a Ceylon
-repository that contains all the Ceylon distribution artifacts, plus the com.redhat.ceylon.dist-<version>.jar
+repository that contains all the Ceylon distribution artifacts, plus the org.eclipse.ceylon.dist-<version>.jar
 bundle + the OSGI core bundle archive (org.osgi.core-4.3.1.jar)
 
 David Festal @davidfestal 11:28
 This Ceylon repository will also be embedded inside an additional OSGI bundle
-(com.redhat.ceylon.dist.repo_<version>.jar), to provide an embedded Ceylon repository inside OSGI containers
+(org.eclipse.ceylon.dist.repo_<version>.jar), to provide an embedded Ceylon repository inside OSGI containers
 (eclipse for example)
 
 @ysb33r : to avoid bad surprises in P2 provisionning because of version ordering between - and C

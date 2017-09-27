@@ -1,0 +1,80 @@
+package org.eclipse.ceylon.compiler.java.test.statement.loop.optim;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class Bug1467 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1467() {
+        this.size = 1024L * 1024L / 4L;
+        this.buff = new int[(int)getSize$priv$()];
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final long size;
+    
+    private final long getSize$priv$() {
+        return this.size;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final int[] buff;
+    
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("java.lang::IntArray")
+    private final int[] getBuff$priv$() {
+        return this.buff;
+    }
+    
+    private final void bufferTest$priv$() {
+        final int start$1 = 0;
+        final long length$2 = getSize$priv$() - 1;
+        loop_0: for (long i$3 = 0; i$3 < length$2; i$3++) {
+            final long i = i$3 + start$1;
+            getBuff$priv$()[(int)i] = (int)i;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void buffer() {
+        final long startTime = .ceylon.language.system_.get_().getNanoseconds();
+        final int $ceylontmp$first$6 = 1;
+        final int $ceylontmp$last$7 = 100;
+        final boolean $ceylontmp$increasing$8 = .ceylon.language.Integer.offset($ceylontmp$last$7, $ceylontmp$first$6) >= 0;
+        final int $ceylontmp$incr$9 = $ceylontmp$increasing$8 ? 1 : -1;
+        int i$12 = $ceylontmp$first$6;
+        int $ceylontmp$element$11 = $ceylontmp$first$6;
+        boolean $ceylontmp$f$10 = false;
+        loop_1: do {
+            if ($ceylontmp$f$10) $ceylontmp$element$11 += $ceylontmp$incr$9;
+            $ceylontmp$f$10 = true;
+            i$12 = $ceylontmp$element$11;
+            final int i = i$12;
+            $ceylontmp$continue$5: do {
+                bufferTest$priv$();
+            }             while (false);
+        }         while ($ceylontmp$increasing$8 ? i$12 - $ceylontmp$last$7 != 0 : i$12 - $ceylontmp$last$7 != 0);
+        .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Duration: ").append((.ceylon.language.system_.get_().getNanoseconds() - startTime) / 100L).append("\n").toString()));
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.loop.optim.Bug1467.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.loop.optim.Bug1467.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug1467_ {
+    
+    private bug1467_() {
+    }
+    
+    static void bug1467() {
+        final .org.eclipse.ceylon.compiler.java.test.statement.loop.optim.Bug1467 b = new .org.eclipse.ceylon.compiler.java.test.statement.loop.optim.Bug1467();
+        b.buffer();
+    }
+}

@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.common.Versions;
+import org.eclipse.ceylon.common.Versions;
 
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.ArgumentType;
