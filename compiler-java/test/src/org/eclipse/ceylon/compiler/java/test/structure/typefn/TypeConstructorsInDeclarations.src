@@ -1,0 +1,205 @@
+package org.eclipse.ceylon.compiler.java.test.structure.typefn;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class consumesTc_ {
+    
+    private consumesTc_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void consumesTc(@.org.eclipse.ceylon.compiler.java.metadata.Name("tc")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    final .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor tc) {
+        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)tc.apply(new .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType})).$call$();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class producesTc_ {
+    
+    private producesTc_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    static .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor producesTc() {
+        return (.org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor).ceylon.language.nothing_.get_();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class ConsumesTc implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected ConsumesTc() {
+        super();
+    }
+    
+    ConsumesTc(@.org.eclipse.ceylon.compiler.java.metadata.Name("tc")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    final .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor tc) {
+        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)tc.apply(new .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType})).$call$();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public final .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor getValueTc() {
+        return (.org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor).ceylon.language.nothing_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void consumesTc(@.org.eclipse.ceylon.compiler.java.metadata.Name("tc")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any(Any)",
+            erased = true)
+    final .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor tc) {
+        final .java.lang.Object a = ((.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)tc.apply(new .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor[]{.ceylon.language.String.$TypeDescriptor$})).$call$((.java.lang.Object).ceylon.language.String.instance(""));
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    public final .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor producesTc() {
+        return (.org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor).ceylon.language.nothing_.get_();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void use$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("other")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.typefn::ConsumesTc")
+    final .org.eclipse.ceylon.compiler.java.test.structure.typefn.ConsumesTc other) {
+        final .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor pipeRef = (
+            let
+            {
+                
+                class Anonymous#identity<Value> extends .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor {
+                    
+                    Anonymous#identity() {
+                        super("<Value> => Value(Value)");
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable apply(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        return $apply$(applied);
+                    }
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    private .ceylon.language.Callable<? extends Value> $apply$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value = applied[0];
+                        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<Value>($reified$Value, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Value), "Value(Value)", (short)-1){
+                            
+                            @.java.lang.Override
+                            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                            public Value $call$(final .java.lang.Object $param$0) {
+                                final Value $ceylontmp$argument = (Value)$param$0;
+                                return .ceylon.language.identity_.<Value>identity(applied[0], $ceylontmp$argument);
+                            }
+                        };
+                    }
+                }
+            }
+            returning new Anonymous#identity();
+        );
+        this.consumesTc((
+            let
+            {
+                
+                class Anonymous#identity<Value> extends .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor {
+                    
+                    Anonymous#identity() {
+                        super("<Value> => Value(Value)");
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable apply(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        return $apply$(applied);
+                    }
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    private .ceylon.language.Callable<? extends Value> $apply$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value = applied[0];
+                        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<Value>($reified$Value, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Value), "Value(Value)", (short)-1){
+                            
+                            @.java.lang.Override
+                            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                            public Value $call$(final .java.lang.Object $param$0) {
+                                final Value $ceylontmp$argument = (Value)$param$0;
+                                return .ceylon.language.identity_.<Value>identity(applied[0], $ceylontmp$argument);
+                            }
+                        };
+                    }
+                }
+            }
+            returning new Anonymous#identity();
+        ));
+        other.consumesTc((
+            let
+            {
+                
+                class Anonymous#identity<Value> extends .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor {
+                    
+                    Anonymous#identity() {
+                        super("<Value> => Value(Value)");
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.Callable apply(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        return $apply$(applied);
+                    }
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    private .ceylon.language.Callable<? extends Value> $apply$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor[] applied) {
+                        final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value = applied[0];
+                        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<Value>($reified$Value, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Value), "Value(Value)", (short)-1){
+                            
+                            @.java.lang.Override
+                            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                            public Value $call$(final .java.lang.Object $param$0) {
+                                final Value $ceylontmp$argument = (Value)$param$0;
+                                return .ceylon.language.identity_.<Value>identity(applied[0], $ceylontmp$argument);
+                            }
+                        };
+                    }
+                }
+            }
+            returning new Anonymous#identity();
+        ));
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.typefn.ConsumesTc.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.typefn.ConsumesTc.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("valueTc")
+final class valueTc_ {
+    
+    private valueTc_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "<Any> => Any()",
+            erased = true)
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public static .org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor get_() {
+        return (.org.eclipse.ceylon.compiler.java.language.AbstractTypeConstructor).ceylon.language.nothing_.get_();
+    }
+}

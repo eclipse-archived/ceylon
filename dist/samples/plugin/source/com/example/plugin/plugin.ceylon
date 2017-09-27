@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import com.redhat.ceylon.common.tool {
+import org.eclipse.ceylon.common.tool {
     CeylonBaseTool,
     summary,
     description,

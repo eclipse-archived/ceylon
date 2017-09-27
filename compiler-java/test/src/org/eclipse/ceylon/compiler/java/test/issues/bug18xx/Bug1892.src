@@ -1,0 +1,58 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug18xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug1892_1_ {
+    
+    private bug1892_1_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation(
+            value = "val",
+            foo = (int)2L)
+    static void bug1892_1() {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug1892_2_ {
+    
+    private bug1892_2_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation("val")
+    static void bug1892_2() {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug1892_3_ {
+    
+    private bug1892_3_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation("val")
+    static void bug1892_3() {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug1892_4_ {
+    
+    private bug1892_4_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1892Annotation(
+            value = "val",
+            foo = (int)2L)
+    static void bug1892_4() {
+    }
+}

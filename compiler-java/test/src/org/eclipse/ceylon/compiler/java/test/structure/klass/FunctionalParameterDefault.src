@@ -1,0 +1,60 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+class FunctionalParameterDefault implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    FunctionalParameterDefault() {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$m$0 = .org.eclipse.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$default$m();
+                this($ceylontmp$m$0);
+            }
+            returning null;
+        );
+    }
+    
+    FunctionalParameterDefault(final .ceylon.language.Callable<? extends .ceylon.language.String> m) {
+        this.m = m;
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> m;
+    
+    public .java.lang.String m(final .java.lang.String arg) {
+        return m.$call$(.ceylon.language.String.instance(arg)).toString();
+    }
+    
+    public static .ceylon.language.Callable<? extends .ceylon.language.String> $default$m() {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String arg = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(arg);
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault.class);
+}
+class FunctionalParameterDefaultSub extends .org.eclipse.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefault {
+    
+    FunctionalParameterDefaultSub() {
+        super(new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String arg = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(arg + "!");
+            }
+        });
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.FunctionalParameterDefaultSub.class);
+}

@@ -1,0 +1,52 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug22xx;
+
+class Bug2279<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug2279(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        final .java.lang.Object bar = (
+            let
+            {
+                
+                class anonymous_0_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_0_() {
+                    }
+                    
+                    class Baz implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                        
+                        Baz() {
+                        }
+                        
+                        private final void qux$priv$(final .java.lang.Object that) {
+                            final anonymous_0_.Baz that$1;
+                            .java.lang.Object that$0 = null;
+                            if (.org.eclipse.ceylon.compiler.java.Util.isReified(that$0 = that, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2279.class, .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2279.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.Baz.class)))) {
+                                that$1 = (anonymous_0_.Baz)that$0;
+                            } else {
+                                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Baz that") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2279.class, .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2279.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.Baz.class)), that$0));
+                            }
+                        }
+                        
+                        @.java.lang.Override
+                        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2279.class, .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2279.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.Baz.class));
+                        }
+                    }
+                    
+                    @.java.lang.Override
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2279.class, .org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2279.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug22xx.Bug2279.class, $reified$T);
+    }
+}

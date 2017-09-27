@@ -1,0 +1,27 @@
+package org.eclipse.ceylon.compiler.java.test.structure.method;
+
+class CE implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    CE() {
+    }
+    
+    private final long call$priv$() {
+        return 1L;
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> bar$priv$() {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.org.eclipse.ceylon.compiler.java.test.structure.method.CE.this.call$priv$());
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.CE.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.CE.class);
+}

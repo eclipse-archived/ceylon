@@ -1,0 +1,36 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+interface Base<T> {
+    
+    public abstract void baseMethod();
+}
+interface A<T> extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.Base<T> {
+    
+    public abstract void aMethod();
+}
+interface B<T> extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.Base<T> {
+    
+    public abstract void bMethod();
+}
+class MethodIfIsGeneric {
+    
+    public final void m(final .java.lang.Object x) {
+        final .java.lang.Object $x$0 = x;
+        if ($x$0 instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Base) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.Base<int> $x$1 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.Base<int>)$x$0;
+            {
+                $x$1.baseMethod();
+            }
+        }
+        final .java.lang.Object $x$2 = x;
+        if ($x$2 instanceof .java.lang.Object) {
+            final .java.lang.Object $x$3 = (.java.lang.Object)$x$2;
+            {
+                ((.org.eclipse.ceylon.compiler.java.test.statement.conditional.Base<int>)$x$3).baseMethod();
+            }
+        }
+    }
+    
+    MethodIfIsGeneric() {
+    }
+}

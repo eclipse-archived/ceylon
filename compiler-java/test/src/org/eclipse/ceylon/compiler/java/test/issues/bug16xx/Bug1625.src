@@ -1,0 +1,162 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug16xx;
+
+interface Bug1625<T> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug16xx$Bug1625$impl();
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625$impl<T>.Inner Inner$new$();
+}
+final class Bug1625$impl<T> implements .java.io.Serializable {
+    
+    Bug1625$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625<T> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public abstract class Inner implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Inner() {
+        }
+        
+        private final .ceylon.language.Sequential<? extends T> t$priv$(final T t) {
+            return (.ceylon.language.Sequence<? extends T>).ceylon.language.Tuple.instance($reified$T, new .java.lang.Object[]{t});
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625.class, .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625$impl.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625$impl.Inner.class));
+        }
+    }
+}
+interface Bug1625_2<T> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_2$impl<T> $org$eclipse$ceylon$compiler$java$test$issues$bug16xx$Bug1625_2$impl();
+    
+    public abstract .java.lang.Object f(final T t);
+    
+    public abstract .ceylon.language.Sequential<? extends T> f$ts(final T t);
+    
+    public abstract .java.lang.Object f(final T t, final .ceylon.language.Sequential<? extends T> ts);
+}
+final class Bug1625_2$impl<T> implements .java.io.Serializable {
+    
+    Bug1625_2$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_2<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_2<T> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public final .ceylon.language.Sequential<? extends T> f$ts(final T t) {
+        return (.ceylon.language.Sequence<? extends T>).ceylon.language.Tuple.instance($reified$T, new .java.lang.Object[]{t});
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface Bug1625_3<T> {
+    
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object f(@.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T t, @.org.eclipse.ceylon.compiler.java.metadata.Name("ts")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T[]")
+    final .ceylon.language.Sequential<? extends T> ts);
+    
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T[]")
+    public abstract .ceylon.language.Sequential<? extends T> getTs();
+}
+class Bug1625_3Impl<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3<T>, .java.io.Serializable {
+    
+    Bug1625_3Impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public final .java.lang.Object f(final T t, final .ceylon.language.Sequential<? extends T> ts) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Sequential<? extends T> getTs() {
+        return (.ceylon.language.Sequential<? extends T>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3Impl.class, $reified$T);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("Empty")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"bug1625"},
+        companionClassName = "")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface bug1625$Empty_ {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"::bug1625$Empty_"})
+final class bug1625_ {
+    
+    private bug1625_() {
+    }
+    
+    static void bug1625() {
+    }
+}
+interface Bug1625_Top<T> {
+}
+class Bug1625_Middle implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Top<.java.lang.Object>, .java.io.Serializable {
+    
+    Bug1625_Middle() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Middle.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Middle.class);
+}
+class Bug1625_Bottom extends .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Middle implements .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Top<.ceylon.language.String> {
+    
+    Bug1625_Bottom() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Bottom.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.Bug1625_Bottom.class);
+}

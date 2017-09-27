@@ -1,0 +1,95 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug23xx;
+
+public final class bug2328Name_ {
+    
+    private bug2328Name_() {
+    }
+    private static final .java.lang.String $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = "Gavin";
+            .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328Name_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328Name_.$init$$object$ = false;
+        }
+    }
+    
+    public static .java.lang.String get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328Name_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328Name_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2328Name\' before it was set");
+        }
+    }
+}
+public final class bug2328Name2_ {
+    
+    private bug2328Name2_() {
+    }
+    
+    public static .java.lang.String get_() {
+        return "Gavin";
+    }
+}
+public final class bug2328ReferenceDeclaration_ {
+    
+    private bug2328ReferenceDeclaration_() {
+    }
+    private static final .ceylon.language.meta.declaration.ValueDeclaration $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = .org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("org.eclipse.ceylon.compiler.java.test.issues", "1"), "org.eclipse.ceylon.compiler.java.test.issues", "1").findPackage("org.eclipse.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name");
+            .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration_.$init$$object$ = false;
+        }
+    }
+    
+    public static .ceylon.language.meta.declaration.ValueDeclaration get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2328ReferenceDeclaration\' before it was set");
+        }
+    }
+}
+public final class bug2328ReferenceDeclaration2_ {
+    
+    private bug2328ReferenceDeclaration2_() {
+    }
+    private static final .ceylon.language.meta.declaration.ValueDeclaration $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = .org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("org.eclipse.ceylon.compiler.java.test.issues", "1"), "org.eclipse.ceylon.compiler.java.test.issues", "1").findPackage("org.eclipse.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name2");
+            .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration2_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration2_.$init$$object$ = false;
+        }
+    }
+    
+    public static .ceylon.language.meta.declaration.ValueDeclaration get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration2_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration2_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2328ReferenceDeclaration2\' before it was set");
+        }
+    }
+}

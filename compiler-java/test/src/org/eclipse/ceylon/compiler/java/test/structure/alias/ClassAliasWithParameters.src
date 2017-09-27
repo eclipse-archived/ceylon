@@ -1,0 +1,74 @@
+package org.eclipse.ceylon.compiler.java.test.structure.alias;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+public class ClassAliasWithParameters_Foo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public ClassAliasWithParameters_Foo(final long i) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$0 = .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo.$default$s(i);
+                this(i, $ceylontmp$s$0);
+            }
+            returning null;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected ClassAliasWithParameters_Foo() {
+        super();
+    }
+    
+    public ClassAliasWithParameters_Foo(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i, @.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String s) {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static .java.lang.String $default$s(final long i) {
+        return "foo";
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.alias::ClassAliasWithParameters_Foo")
+public final class ClassAliasWithParameters {
+    
+    private ClassAliasWithParameters() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    public static .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo ClassAliasWithParameters$aliased$(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i, @.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String s) {
+        throw new .ceylon.language.Exception();
+    }
+}
+final class classAliasWithParametersMethod_ {
+    
+    private classAliasWithParametersMethod_() {
+    }
+    
+    static void classAliasWithParametersMethod() {
+        final .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo foo = new .org.eclipse.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo(1L, "a");
+    }
+}

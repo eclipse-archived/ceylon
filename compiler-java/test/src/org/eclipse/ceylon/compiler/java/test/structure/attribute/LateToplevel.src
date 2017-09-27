@@ -1,0 +1,72 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+final class lateToplevel_ {
+    
+    private lateToplevel_() {
+    }
+    private static .java.lang.String $object$;
+    
+    public static .java.lang.String get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel_.$object$ != null) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel_.$object$;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateToplevel\'");
+        }
+    }
+    
+    public static void set_(final .java.lang.String lateToplevel) {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel_.$object$ == null) {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel_.$object$ = lateToplevel;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+}
+final class lateToplevel2_ {
+    
+    private lateToplevel2_() {
+    }
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel2_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel2_.$object$;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateToplevel2\'");
+        }
+    }
+    
+    public static void set_(final long lateToplevel2) {
+        if (!.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel2_.$init$$object$) {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel2_.$object$ = lateToplevel2;
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel2_.$init$$object$ = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+}
+final class lateToplevel3_ {
+    
+    private lateToplevel3_() {
+    }
+    private static .ceylon.language.String $object$;
+    private static volatile boolean $init$$object$ = false;
+    
+    public static .ceylon.language.String get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel3_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel3_.$object$;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateToplevel3\'");
+        }
+    }
+    
+    public static void set_(final .ceylon.language.String lateToplevel3) {
+        if (!.org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel3_.$init$$object$) {
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel3_.$object$ = lateToplevel3;
+            .org.eclipse.ceylon.compiler.java.test.structure.attribute.lateToplevel3_.$init$$object$ = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+}

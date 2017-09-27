@@ -1,0 +1,65 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug15xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Integer(ceylon.language::Integer)(ceylon.language::Integer, ceylon.language::Integer)")
+@.ceylon.language.SharedAnnotation$annotation$
+public final class Bug1583Mixer {
+    
+    private Bug1583Mixer() {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("mixers")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+public final class mixers_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private mixers_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.mixers_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.mixers_.class);
+    private static final .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.mixers_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.mixers_();
+            .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.mixers_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.mixers_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.ceylon.language.DocAnnotation$annotation$(description = "Nice stuff")
+    @.ceylon.language.SeeAnnotation$annotations$({@.ceylon.language.SeeAnnotation$annotation$(programElements = "::1:org.eclipse.ceylon.compiler.java.test.issues:bug15xx:ABug1583Mixer")})
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug15xx::mixers")
+    public static .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.mixers_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.mixers_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.mixers_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'mixers\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.mixers_.$TypeDescriptor$;
+    }
+}

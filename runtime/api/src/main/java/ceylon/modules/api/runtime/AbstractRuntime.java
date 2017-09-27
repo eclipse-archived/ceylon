@@ -19,12 +19,12 @@ package ceylon.modules.api.runtime;
 
 import java.lang.reflect.Modifier;
 
+import org.eclipse.ceylon.common.JVMModuleUtil;
+
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.Configuration;
 import ceylon.modules.spi.Constants;
 import ceylon.modules.spi.runtime.ClassLoaderHolder;
-
-import com.redhat.ceylon.common.JVMModuleUtil;
 
 /**
  * Abstract Ceylon Modules runtime.

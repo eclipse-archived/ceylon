@@ -1,0 +1,106 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug63xx;
+
+final class bug6379_ {
+    
+    private bug6379_() {
+    }
+    
+    static void bug6379() {
+        
+        final class evalMe1_ implements .java.io.Serializable {
+            
+            private evalMe1_() {
+            }
+            
+            .ceylon.language.String evalMe1(final .java.lang.String toEval) {
+                return (.ceylon.language.String)(
+                    let
+                    {
+                        .java.lang.Object $ceylontmp$ifResult$0;
+                        if (1L == 1L) {
+                            $ceylontmp$ifResult$0 = .ceylon.language.nothing_.get_();
+                        } else {
+                            null;
+                            $ceylontmp$ifResult$0 = null;
+                        }
+                    }
+                    returning $ceylontmp$ifResult$0;
+                );
+            }
+        }
+        final evalMe1_ evalMe1 = new evalMe1_();
+        
+        final class evalMe2_ implements .java.io.Serializable {
+            
+            private evalMe2_() {
+            }
+            
+            .java.lang.String evalMe2() {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$ifResult$2;
+                        if (1L == 1L) {
+                            $ceylontmp$ifResult$2 = (.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_();
+                        } else {
+                            $ceylontmp$ifResult$2 = .ceylon.language.String.instance("");
+                        }
+                    }
+                    returning $ceylontmp$ifResult$2;
+                ).toString();
+            }
+        }
+        final evalMe2_ evalMe2 = new evalMe2_();
+        
+        final class evalMe3_ implements .java.io.Serializable {
+            
+            private evalMe3_() {
+            }
+            
+            .ceylon.language.String evalMe3(final .java.lang.String toEval) {
+                return (.ceylon.language.String)(
+                    let
+                    {
+                        .java.lang.Object $ceylontmp$ifResult$4;
+                        if (1L == 1L) {
+                            $ceylontmp$ifResult$4 = .ceylon.language.nothing_.get_();
+                        } else {
+                            null;
+                            $ceylontmp$ifResult$4 = null;
+                        }
+                    }
+                    returning $ceylontmp$ifResult$4;
+                );
+            }
+        }
+        final evalMe3_ evalMe3 = new evalMe3_();
+        
+        final class evalMe4_ implements .java.io.Serializable {
+            
+            private evalMe4_() {
+            }
+            
+            .ceylon.language.String evalMe4(final .java.lang.String toEval) {
+                if (1L == 1L) {
+                    return (.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_();
+                }
+                return null;
+            }
+        }
+        final evalMe4_ evalMe4 = new evalMe4_();
+        final .ceylon.language.String foo1 = (.ceylon.language.String)(
+            let
+            {
+                .java.lang.Object $ceylontmp$ifResult$7;
+                if (1L == 1L) {
+                    $ceylontmp$ifResult$7 = .ceylon.language.nothing_.get_();
+                } else {
+                    null;
+                    $ceylontmp$ifResult$7 = null;
+                }
+            }
+            returning $ceylontmp$ifResult$7;
+        );
+        final .ceylon.language.String foo2 = null;
+    }
+}

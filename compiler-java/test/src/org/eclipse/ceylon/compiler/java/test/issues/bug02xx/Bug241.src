@@ -1,0 +1,23 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug02xx;
+
+class Bug241<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug241(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug241.class, $reified$T);
+    }
+}
+final class bug241_ {
+    
+    private bug241_() {
+    }
+    
+    static <Key extends .ceylon.language.Summable<.ceylon.language.Integer>, Item extends .ceylon.language.Summable<.ceylon.language.Integer>>void bug241(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug241<.ceylon.language.Entry<? extends Key, ? extends Item>> builder = new .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.Bug241<.ceylon.language.Entry<? extends Key, ? extends Item>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Key, $reified$Item));
+    }
+}

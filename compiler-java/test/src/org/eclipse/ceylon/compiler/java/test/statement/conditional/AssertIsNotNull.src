@@ -1,0 +1,32 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsNotNull implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertIsNotNull() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        if (!(x == null)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Null x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.Null.$TypeDescriptor$, x));
+        }
+        .ceylon.language.print_.print(.ceylon.language.String.instance(x.toString()));
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        final .java.lang.Object x$2;
+        .java.lang.Object x$1 = null;
+        if (!((x$1 = y) == null)) {
+            x$2 = x$1;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Null x=y") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(true, .ceylon.language.Null.$TypeDescriptor$, x$1));
+        }
+        .ceylon.language.print_.print(.ceylon.language.String.instance(x$2.toString()));
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertIsNotNull.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertIsNotNull.class);
+}

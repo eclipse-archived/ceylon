@@ -18,7 +18,8 @@
 package ceylon.modules.jboss.runtime;
 
 import ceylon.modules.Configuration;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
+
+import org.eclipse.ceylon.cmr.api.RepositoryManager;
 import org.jboss.modules.ModuleLoader;
 
 /**

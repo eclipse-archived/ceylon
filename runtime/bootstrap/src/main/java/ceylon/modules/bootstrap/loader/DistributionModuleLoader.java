@@ -17,14 +17,13 @@
 
 package ceylon.modules.bootstrap.loader;
 
+import org.eclipse.ceylon.common.FileUtil;
 import org.jboss.modules.LocalModuleLoader;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 import org.jboss.modules.ModuleSpec;
-
-import com.redhat.ceylon.common.FileUtil;
 
 import java.io.Closeable;
 import java.io.File;

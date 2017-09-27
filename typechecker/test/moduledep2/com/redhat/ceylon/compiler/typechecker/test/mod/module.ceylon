@@ -1,1 +1,1 @@
-module com.redhat.ceylon.compiler.typechecker.test.mod "1" {}
+module org.eclipse.ceylon.compiler.typechecker.test.mod "1" {}

@@ -1,0 +1,403 @@
+package org.eclipse.ceylon.compiler.java.test.statement.trycatch;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+interface Intersect {
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.Intersect.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.statement.trycatch::Intersect"})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
+class ExceptionIntersection extends .ceylon.language.Exception implements .org.eclipse.ceylon.compiler.java.test.statement.trycatch.Intersect {
+    
+    ExceptionIntersection() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
+class ExceptionSub extends .ceylon.language.Exception {
+    
+    ExceptionSub() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.statement.trycatch::Intersect"})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.statement.trycatch::ExceptionSub")
+class ExceptionSubIntersection extends .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub implements .org.eclipse.ceylon.compiler.java.test.statement.trycatch.Intersect {
+    
+    ExceptionSubIntersection() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSubIntersection.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSubIntersection.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
+class ExceptionGeneric<T> extends .ceylon.language.Exception {
+    
+    ExceptionGeneric(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super();
+        this.$reified$T = $reified$T;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, $reified$T);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "org.eclipse.ceylon.compiler.java.test.statement.trycatch::ExceptionGeneric<ceylon.language::Integer>")
+class ExceptionGenericSub extends .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer> {
+    
+    ExceptionGenericSub() {
+        super(.ceylon.language.Integer.$TypeDescriptor$);
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGenericSub.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGenericSub.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class TryCatchGenericIntersection implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    TryCatchGenericIntersection() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void catchIntersection(@.org.eclipse.ceylon.compiler.java.metadata.Name("exception")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
+    final .java.lang.Exception exception) {
+        try {
+            throw exception;
+        } catch (final .java.lang.Exception exception$0) {
+            if (exception$0 instanceof .java.lang.Exception && exception$0 instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.Intersect) {
+                final .java.lang.Object e = exception$0;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught Exception&Intersect"));
+            } else throw exception$0;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void catchExceptionSubIntersection(@.org.eclipse.ceylon.compiler.java.metadata.Name("exception")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
+    final .java.lang.Exception exception) {
+        try {
+            throw exception;
+        } catch (final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub exception$1) {
+            if (exception$1 instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub && exception$1 instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.Intersect) {
+                final .java.lang.Object e = exception$1;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionSub&Intersect"));
+            } else throw exception$1;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void catchExceptionGenericString(@.org.eclipse.ceylon.compiler.java.metadata.Name("exception")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
+    final .java.lang.Exception exception) {
+        try {
+            throw exception;
+        } catch (final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric exception$2) {
+            if (.org.eclipse.ceylon.compiler.java.Util.isReified(exception$2, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.String.$TypeDescriptor$))) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String> e = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)exception$2;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionGeneric<String>"));
+            } else throw exception$2;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void catchExceptionGenericStringOrInteger(@.org.eclipse.ceylon.compiler.java.metadata.Name("exception")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
+    final .java.lang.Exception exception) {
+        try {
+            throw exception;
+        } catch (final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric exception$3) {
+            if (.org.eclipse.ceylon.compiler.java.Util.isReified(exception$3, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.String.$TypeDescriptor$))) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String> e = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)exception$3;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionGeneric<String>"));
+            } else if (.org.eclipse.ceylon.compiler.java.Util.isReified(exception$3, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer> e = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)exception$3;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionGeneric<Integer>"));
+            } else throw exception$3;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void catchExceptionGenericStringOrInteger2(@.org.eclipse.ceylon.compiler.java.metadata.Name("exception")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
+    final .java.lang.Exception exception) {
+        try {
+            throw exception;
+        } catch (final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric exception$4) {
+            if (.org.eclipse.ceylon.compiler.java.Util.isReified(exception$4, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.String.$TypeDescriptor$)) || .org.eclipse.ceylon.compiler.java.Util.isReified(exception$4, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+                final .java.lang.Object e = exception$4;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionGeneric<String>|ExceptionGeneric<Integer>"));
+            } else throw exception$4;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void catchExceptionGenericStringOrIntegerOrExceptionSub(@.org.eclipse.ceylon.compiler.java.metadata.Name("exception")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
+    final .java.lang.Exception exception) {
+        try {
+            throw exception;
+        } catch (final .java.lang.Throwable exception$5) {
+            if (exception$5 instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .org.eclipse.ceylon.compiler.java.Util.isReified(exception$5, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.String.$TypeDescriptor$))) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String> e = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)exception$5;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionGeneric<String>"));
+            } else if (exception$5 instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .org.eclipse.ceylon.compiler.java.Util.isReified(exception$5, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer> e = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)exception$5;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionGeneric<Integer>"));
+            } else if (exception$5 instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub e = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub)exception$5;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionSub"));
+            } else throw exception$5;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void catchExceptionGenericStringOrIntegerOrExceptionSubIntersect(@.org.eclipse.ceylon.compiler.java.metadata.Name("exception")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
+    final .java.lang.Exception exception) {
+        try {
+            throw exception;
+        } catch (final .java.lang.Throwable exception$6) {
+            if (exception$6 instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .org.eclipse.ceylon.compiler.java.Util.isReified(exception$6, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.String.$TypeDescriptor$))) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String> e = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)exception$6;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionGeneric<String>"));
+            } else if (exception$6 instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .org.eclipse.ceylon.compiler.java.Util.isReified(exception$6, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer> e = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)exception$6;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionGeneric<Integer>"));
+            } else if (exception$6 instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub && exception$6 instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.Intersect) {
+                final .java.lang.Object e = exception$6;
+                .ceylon.language.print_.print(.ceylon.language.String.instance("Caught ExceptionSub&Intersect"));
+            } else throw exception$6;
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.trycatch.TryCatchGenericIntersection.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.TryCatchGenericIntersection.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class tryCatchGenericIntersection_ {
+    
+    private tryCatchGenericIntersection_() {
+    }
+    
+    static void tryCatchGenericIntersection() {
+        final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.TryCatchGenericIntersection t = new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.TryCatchGenericIntersection();
+        t.catchIntersection(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection());
+        try {
+            t.catchIntersection(new .ceylon.language.Exception());
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+        }
+        t.catchExceptionSubIntersection(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSubIntersection());
+        try {
+            t.catchExceptionSubIntersection(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub());
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub e$8;
+            .java.lang.Object e$7 = null;
+            if ((e$7 = e) instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub) {
+                e$8 = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub)e$7;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionSub e") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub.$TypeDescriptor$, e$7));
+            }
+        }
+        try {
+            t.catchExceptionSubIntersection(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection());
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection e$10;
+            .java.lang.Object e$9 = null;
+            if ((e$9 = e) instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection) {
+                e$10 = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection)e$9;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionIntersection e") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionIntersection.$TypeDescriptor$, e$9));
+            }
+        }
+        t.catchExceptionGenericString(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$));
+        try {
+            t.catchExceptionGenericString(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer> e$12;
+            .java.lang.Object e$11 = null;
+            if ((e$11 = e) instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .org.eclipse.ceylon.compiler.java.Util.isReified(e$11, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+                e$12 = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$11;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionGeneric<Integer> e") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Integer.$TypeDescriptor$), e$11));
+            }
+        }
+        try {
+            t.catchExceptionGenericString(new .ceylon.language.Exception());
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+        }
+        t.catchExceptionGenericStringOrInteger(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$));
+        t.catchExceptionGenericStringOrInteger(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$));
+        try {
+            t.catchExceptionGenericStringOrInteger(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$14;
+            .java.lang.Object e$13 = null;
+            if ((e$13 = e) instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .org.eclipse.ceylon.compiler.java.Util.isReified(e$13, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
+                e$14 = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$13;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionGeneric<Boolean> e") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$), e$13));
+            }
+        }
+        t.catchExceptionGenericStringOrInteger2(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$));
+        t.catchExceptionGenericStringOrInteger2(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$));
+        try {
+            t.catchExceptionGenericStringOrInteger2(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$16;
+            .java.lang.Object e$15 = null;
+            if ((e$15 = e) instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .org.eclipse.ceylon.compiler.java.Util.isReified(e$15, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
+                e$16 = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$15;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionGeneric<Boolean> e") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$), e$15));
+            }
+        }
+        t.catchExceptionGenericStringOrIntegerOrExceptionSub(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$));
+        t.catchExceptionGenericStringOrIntegerOrExceptionSub(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$));
+        t.catchExceptionGenericStringOrIntegerOrExceptionSub(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub());
+        try {
+            t.catchExceptionGenericStringOrInteger2(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$18;
+            .java.lang.Object e$17 = null;
+            if ((e$17 = e) instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .org.eclipse.ceylon.compiler.java.Util.isReified(e$17, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
+                e$18 = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$17;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionGeneric<Boolean> e") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$), e$17));
+            }
+        }
+        try {
+            t.catchExceptionGenericStringOrInteger2(new .ceylon.language.Exception());
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+        }
+        t.catchExceptionGenericStringOrIntegerOrExceptionSubIntersect(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$));
+        t.catchExceptionGenericStringOrIntegerOrExceptionSubIntersect(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$));
+        t.catchExceptionGenericStringOrIntegerOrExceptionSubIntersect(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSubIntersection());
+        try {
+            t.catchExceptionGenericStringOrInteger2(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$));
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean> e$20;
+            .java.lang.Object e$19 = null;
+            if ((e$19 = e) instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric && .org.eclipse.ceylon.compiler.java.Util.isReified(e$19, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
+                e$20 = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric<.ceylon.language.Boolean>)(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric)e$19;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionGeneric<Boolean> e") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionGeneric.class, .ceylon.language.Boolean.$TypeDescriptor$), e$19));
+            }
+        }
+        try {
+            t.catchExceptionGenericStringOrInteger2(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub());
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+        } catch (final .ceylon.language.AssertionError e) {
+            throw e;
+        } catch (final .java.lang.Exception e) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub e$22;
+            .java.lang.Object e$21 = null;
+            if ((e$21 = e) instanceof .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub) {
+                e$22 = (.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub)e$21;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is ExceptionSub e") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionSub.$TypeDescriptor$, e$21));
+            }
+        }
+    }
+}

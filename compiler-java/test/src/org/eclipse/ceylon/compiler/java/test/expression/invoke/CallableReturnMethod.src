@@ -1,0 +1,59 @@
+package org.eclipse.ceylon.compiler.java.test.expression.invoke;
+
+class CallableReturnMethod implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    CallableReturnMethod() {
+    }
+    
+    private final long f$priv$() {
+        return 1L;
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m$priv$() {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.org.eclipse.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod.this.f$priv$());
+            }
+        };
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m2$priv$() {
+        return (
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod $instance$ = .org.eclipse.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod.this;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call$() {
+                    return .ceylon.language.Integer.instance($instance$.f$priv$());
+                }
+            };
+        );
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> m3$priv$(final .org.eclipse.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod c) {
+        return (
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod $instance$ = c;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer $call$() {
+                    return .ceylon.language.Integer.instance($instance$.f$priv$());
+                }
+            };
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.invoke.CallableReturnMethod.class);
+}

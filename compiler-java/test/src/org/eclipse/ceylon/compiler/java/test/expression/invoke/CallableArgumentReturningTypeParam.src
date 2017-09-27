@@ -1,0 +1,50 @@
+package org.eclipse.ceylon.compiler.java.test.expression.invoke;
+
+final class callableArgumentReturningTypeParam_f_ {
+    
+    private callableArgumentReturningTypeParam_f_() {
+    }
+    
+    static <T extends .ceylon.language.Numeric<T>>void callableArgumentReturningTypeParam_f(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Callable<? extends T> foo) {
+    }
+}
+final class callableArgumentReturningTypeParam_bar_ {
+    
+    private callableArgumentReturningTypeParam_bar_() {
+    }
+    
+    static <X>X callableArgumentReturningTypeParam_bar(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+}
+final class callableArgumentReturningTypeParam_baz_ {
+    
+    private callableArgumentReturningTypeParam_baz_() {
+    }
+    
+    static long callableArgumentReturningTypeParam_baz() {
+        return 1L;
+    }
+}
+final class callableArgumentReturningTypeParam_m_ {
+    
+    private callableArgumentReturningTypeParam_m_() {
+    }
+    
+    static void callableArgumentReturningTypeParam_m() {
+        .org.eclipse.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(.ceylon.language.Integer.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .org.eclipse.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_bar_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_bar(.ceylon.language.Integer.$TypeDescriptor$);
+            }
+        });
+        .org.eclipse.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_f_.<.ceylon.language.Integer>callableArgumentReturningTypeParam_f(.ceylon.language.Integer.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.org.eclipse.ceylon.compiler.java.test.expression.invoke.callableArgumentReturningTypeParam_baz_.callableArgumentReturningTypeParam_baz());
+            }
+        });
+    }
+}

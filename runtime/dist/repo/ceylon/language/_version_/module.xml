@@ -29,11 +29,11 @@
 
     <!--
       WARNING! Make sure this list is always the same as the one in
-      /compiler-java/src/com/redhat/ceylon/compiler/loader/AbstractModelLoader.java
+      /compiler-java/src/org/eclipse/ceylon/compiler/loader/AbstractModelLoader.java
     -->
     <dependencies>
-        <module name="com.redhat.ceylon.common" slot="@ceylon-version@" export="true"/>
-        <module name="com.redhat.ceylon.model" slot="@ceylon-version@" export="true"/>
+        <module name="org.eclipse.ceylon.common" slot="@ceylon-version@" export="true"/>
+        <module name="org.eclipse.ceylon.model" slot="@ceylon-version@" export="true"/>
         <module name="java.base" slot="7" export="true"/>
     </dependencies>
 </module>

@@ -1,0 +1,200 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SerializableAnnotation$annotation$
+class SerializableLate implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public SerializableLate(final .org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        this.late = null;
+        this.lateVariable = null;
+        this.lateOpt = null;
+        this.$init$lateOpt = false;
+        this.lateVariableOpt = null;
+        this.$init$lateVariableOpt = false;
+    }
+    
+    SerializableLate() {
+        this.$init$lateOpt = false;
+        this.$init$lateVariableOpt = false;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private .java.lang.String late;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.LateAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getLate() {
+        if (this.late != null) {
+            return this.late;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'late\'");
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final void setLate(@.org.eclipse.ceylon.compiler.java.metadata.Name("late")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String late) {
+        if (this.late == null) {
+            this.late = late;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private .java.lang.String lateVariable;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.LateAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getLateVariable() {
+        if (this.lateVariable != null) {
+            return this.lateVariable;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateVariable\'");
+        }
+    }
+    
+    public final void setLateVariable(@.org.eclipse.ceylon.compiler.java.metadata.Name("lateVariable")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String lateVariable) {
+        this.lateVariable = lateVariable;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private .ceylon.language.String lateOpt;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private volatile transient boolean $init$lateOpt = false;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.LateAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public final .ceylon.language.String getLateOpt() {
+        if (this.$init$lateOpt) {
+            return this.lateOpt;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateOpt\'");
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final void setLateOpt(@.org.eclipse.ceylon.compiler.java.metadata.Name("lateOpt")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    final .ceylon.language.String lateOpt) {
+        if (!this.$init$lateOpt) {
+            this.lateOpt = lateOpt;
+            this.$init$lateOpt = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private .ceylon.language.String lateVariableOpt;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private volatile transient boolean $init$lateVariableOpt = false;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.LateAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public final .ceylon.language.String getLateVariableOpt() {
+        if (this.$init$lateVariableOpt) {
+            return this.lateVariableOpt;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateVariableOpt\'");
+        }
+    }
+    
+    public final void setLateVariableOpt(@.org.eclipse.ceylon.compiler.java.metadata.Name("lateVariableOpt")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    final .ceylon.language.String lateVariableOpt) {
+        this.lateVariableOpt = lateVariableOpt;
+        this.$init$lateVariableOpt = true;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableLate.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableLate.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableLate.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "late")));
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableLate.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "lateVariable")));
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableLate.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "lateOpt")));
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.structure.klass.SerializableLate.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "lateVariableOpt")));
+        return reference;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "org.eclipse.ceylon.compiler.java.test.structure.klass::SerializableLate.late": 
+            if (this.late == null) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            return .ceylon.language.String.instance(this.getLate());
+        
+        case "org.eclipse.ceylon.compiler.java.test.structure.klass::SerializableLate.lateVariable": 
+            if (this.lateVariable == null) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            return .ceylon.language.String.instance(this.getLateVariable());
+        
+        case "org.eclipse.ceylon.compiler.java.test.structure.klass::SerializableLate.lateOpt": 
+            if (!this.$init$lateOpt) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            return this.getLateOpt();
+        
+        case "org.eclipse.ceylon.compiler.java.test.structure.klass::SerializableLate.lateVariableOpt": 
+            if (!this.$init$lateVariableOpt) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            return this.getLateVariableOpt();
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "org.eclipse.ceylon.compiler.java.test.structure.klass::SerializableLate.late": 
+            if (instance instanceof .ceylon.language.serialization.UninitializedLateValue) break;
+            this.setLate(((.ceylon.language.String)instance).toString());
+            break;
+        
+        case "org.eclipse.ceylon.compiler.java.test.structure.klass::SerializableLate.lateVariable": 
+            if (instance instanceof .ceylon.language.serialization.UninitializedLateValue) break;
+            this.setLateVariable(((.ceylon.language.String)instance).toString());
+            break;
+        
+        case "org.eclipse.ceylon.compiler.java.test.structure.klass::SerializableLate.lateOpt": 
+            if (instance instanceof .ceylon.language.serialization.UninitializedLateValue) break;
+            this.setLateOpt((.ceylon.language.String)instance);
+            break;
+        
+        case "org.eclipse.ceylon.compiler.java.test.structure.klass::SerializableLate.lateVariableOpt": 
+            if (instance instanceof .ceylon.language.serialization.UninitializedLateValue) break;
+            this.setLateVariableOpt((.ceylon.language.String)instance);
+            break;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}

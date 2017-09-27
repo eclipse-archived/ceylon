@@ -30,15 +30,15 @@
                                 <copy file="../bootstrap/target/modules-bootstrap-${project.version}.jar"
                                       tofile="../build/dist/lib/ceylon-runtime-bootstrap.jar"/>
 
-                                <copy file="${user.home}/.ceylon/repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"
-                                      tofile="../build/dist/runtime-repo/ceylon/language/${version.com.redhat.ceylon.language}/ceylon.language-${version.com.redhat.ceylon.language}.car"/>
+                                <copy file="${user.home}/.ceylon/repo/ceylon/language/${version.org.eclipse.ceylon.language}/ceylon.language-${version.org.eclipse.ceylon.language}.car"
+                                      tofile="../build/dist/runtime-repo/ceylon/language/${version.org.eclipse.ceylon.language}/ceylon.language-${version.org.eclipse.ceylon.language}.car"/>
 
-                                <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-spi/${version.com.redhat.ceylon.cmr}/cmr-spi-${version.com.redhat.ceylon.cmr}.jar"
-                                      tofile="../build/dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-spi.jar"/>
-                                <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-api/${version.com.redhat.ceylon.cmr}/cmr-api-${version.com.redhat.ceylon.cmr}.jar"
-                                      tofile="../build/dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-api.jar"/>
-                                <copy file="${user.home}/.m2/repository/com/redhat/ceylon/cmr/cmr-impl/${version.com.redhat.ceylon.cmr}/cmr-impl-${version.com.redhat.ceylon.cmr}.jar"
-                                      tofile="../build/dist/runtime-repo/com/redhat/ceylon/cmr/main/cmr-impl.jar"/>
+                                <copy file="${user.home}/.m2/repository/org/eclipse/ceylon/cmr/cmr-spi/${version.org.eclipse.ceylon.cmr}/cmr-spi-${version.org.eclipse.ceylon.cmr}.jar"
+                                      tofile="../build/dist/runtime-repo/org/eclipse/ceylon/cmr/main/cmr-spi.jar"/>
+                                <copy file="${user.home}/.m2/repository/org/eclipse/ceylon/cmr/cmr-api/${version.org.eclipse.ceylon.cmr}/cmr-api-${version.org.eclipse.ceylon.cmr}.jar"
+                                      tofile="../build/dist/runtime-repo/org/eclipse/ceylon/cmr/main/cmr-api.jar"/>
+                                <copy file="${user.home}/.m2/repository/org/eclipse/ceylon/cmr/cmr-impl/${version.org.eclipse.ceylon.cmr}/cmr-impl-${version.org.eclipse.ceylon.cmr}.jar"
+                                      tofile="../build/dist/runtime-repo/org/eclipse/ceylon/cmr/main/cmr-impl.jar"/>
 
                                 <copy file="../spi/target/modules-spi-${project.version}.jar"
                                       tofile="../build/dist/runtime-repo/ceylon/runtime/main/ceylon.modules.spi.jar"/>
@@ -98,7 +98,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.redhat.ceylon.cmr</groupId>
+            <groupId>org.eclipse.ceylon.cmr</groupId>
             <artifactId>cmr-maven</artifactId>
             <scope>test</scope>
         </dependency>

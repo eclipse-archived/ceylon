@@ -1,0 +1,23 @@
+package org.eclipse.ceylon.compiler.java.test.expression.invoke;
+
+class MplMemberQualClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MplMemberQualClass() {
+    }
+    
+    private final .ceylon.language.Callable<? extends .ceylon.language.String> mpl$priv$() {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$() {
+                return .ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.expression.invoke.MplMemberQualClass.this.toString() + .ceylon.language.Integer.toString(.org.eclipse.ceylon.compiler.java.test.expression.invoke.MplMemberQualClass.this.hashCode()));
+            }
+        };
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.invoke.MplMemberQualClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.invoke.MplMemberQualClass.class);
+}

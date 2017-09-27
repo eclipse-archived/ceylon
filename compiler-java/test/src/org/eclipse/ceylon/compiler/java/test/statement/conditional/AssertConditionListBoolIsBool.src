@@ -1,0 +1,59 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class AssertConditionListBoolIsBool implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertConditionListBoolIsBool() {
+    }
+    
+    private final boolean m$priv$(final .java.lang.Object x, final long z) {
+        final long x$3;
+        long lhs$0 = z;
+        long rhs$1 = 10L;
+        if (lhs$0 < rhs$1) {
+            .java.lang.Object x$2 = null;
+            if ((x$2 = x) instanceof .ceylon.language.Integer) {
+                x$3 = ((.ceylon.language.Integer)x$2).longValue();
+                long lhs$4 = x$3;
+                long rhs$5 = 0L;
+                if (lhs$4 > rhs$5) {
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer x" + .java.lang.System.lineSeparator() + "\tviolated " + "x > 0") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$4), .ceylon.language.Integer.instance(rhs$5)));
+                }
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer x" + .java.lang.System.lineSeparator() + "\tuntested " + "x > 0") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, x$2));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer x" + .java.lang.System.lineSeparator() + "\tuntested " + "x > 0") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
+        }
+        return x$3 == 1L;
+    }
+    
+    private final boolean mvar$priv$(final .java.lang.Object x, final long z) {
+        final long y$9;
+        long lhs$6 = z;
+        long rhs$7 = 10L;
+        if (lhs$6 < rhs$7) {
+            .java.lang.Object y$8 = null;
+            if ((y$8 = x) instanceof .ceylon.language.Integer) {
+                y$9 = ((.ceylon.language.Integer)y$8).longValue();
+                long lhs$10 = y$9;
+                long rhs$11 = 0L;
+                if (lhs$10 > rhs$11) {
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tunviolated " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tviolated " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$10), .ceylon.language.Integer.instance(rhs$11)));
+                }
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tviolated " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Integer.$TypeDescriptor$, y$8));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + .java.lang.System.lineSeparator() + "\tuntested " + "is Integer y = x" + .java.lang.System.lineSeparator() + "\tuntested " + "y > 0") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$6), .ceylon.language.Integer.instance(rhs$7)));
+        }
+        return y$9 == 1L;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertConditionListBoolIsBool.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertConditionListBoolIsBool.class);
+}

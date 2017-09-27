@@ -7,7 +7,7 @@
         <artifactId>jboss-parent</artifactId>
         <version>15</version>
     </parent>
-    <groupId>com.redhat.ceylon.cmr</groupId>
+    <groupId>org.eclipse.ceylon.cmr</groupId>
     <artifactId>cmr-build</artifactId>
     <version>1.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -67,7 +67,7 @@
                 <configuration>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <includes>
-                        <include>com/redhat/ceylon/test/**/*TestCase.java</include>
+                        <include>org/eclipse/ceylon/test/**/*TestCase.java</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -120,44 +120,44 @@
         <dependencies>
 
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-impl</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-maven</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-maven</artifactId>
                 <version>${project.version}</version>
                 <type>test-jar</type>
             </dependency>
 
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-webdav</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -165,7 +165,7 @@
             <!-- Common -->
 
             <dependency>
-                <groupId>com.redhat.ceylon</groupId>
+                <groupId>org.eclipse.ceylon</groupId>
                 <artifactId>ceylon-common</artifactId>
                 <version>${version.ceylon.common}</version>
             </dependency>

@@ -1,0 +1,197 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+class CtorDelegationClassRefsSuper implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected CtorDelegationClassRefsSuper() {
+        super();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.sup_ sup_ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("sup")
+    public static final class sup_ {
+        
+        sup_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("sup")
+    public CtorDelegationClassRefsSuper(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.sup_ $name$) {
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Super");
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(
+        constructors = true,
+        extendsType = "org.eclipse.ceylon.compiler.java.test.structure.constructor::CtorDelegationClassRefsSuper")
+class CtorDelegationClassRefs extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected CtorDelegationClassRefs() {
+        super();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.abstract_ abstract_ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("abstract")
+    private static final class abstract_ {
+        
+        abstract_() {
+        }
+    }
+    
+    @.ceylon.language.AbstractAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("abstract")
+    private CtorDelegationClassRefs(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.abstract_ $name$) {
+        super(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefsSuper.sup_);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Abstract");
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete$delegation$_ concrete$delegation$_ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName(
+            delegation = true,
+            value = "concrete")
+    private static final class concrete$delegation$_ {
+        
+        concrete$delegation$_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private CtorDelegationClassRefs(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete$delegation$_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.abstract_);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Concrete");
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete_ concrete_ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("concrete")
+    public static final class concrete_ {
+        
+        concrete_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("concrete")
+    public CtorDelegationClassRefs(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.abstract_);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
+        $return$$0: do {
+            .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Concrete");
+        }         while (false);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete2_ concrete2_ = null;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("concrete2")
+    public static final class concrete2_ {
+        
+        concrete2_() {
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Name("concrete2")
+    public CtorDelegationClassRefs(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete2_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete$delegation$_);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("3");
+        $return$$1: do {
+            .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Concrete2");
+        }         while (false);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("4");
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class runCtorDelegationClassRefs_ {
+    
+    private runCtorDelegationClassRefs_() {
+    }
+    
+    static void runCtorDelegationClassRefs() {
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+        .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs> ref = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs>(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "CtorDelegationClassRefs.concrete()", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs $call$() {
+                return new .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete_);
+            }
+        };
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[]");
+        ref.$call$();
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[Super, 1, Abstract, 2, Concrete, 3, 4]");
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
+        ref = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs>(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "CtorDelegationClassRefs.concrete2()", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs $call$() {
+                return new .org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs(.org.eclipse.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.concrete2_);
+            }
+        };
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[]");
+        ref.$call$();
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[Super, 1, Abstract, 2, Concrete, 3, Concrete2, 4]");
+    }
+}

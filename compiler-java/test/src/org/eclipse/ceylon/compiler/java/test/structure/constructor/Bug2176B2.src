@@ -1,0 +1,30 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+final class bug2176B_ {
+    
+    private bug2176B_() {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176B1 $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176B1.getBug2176B1$true_();
+            .org.eclipse.ceylon.compiler.java.test.structure.constructor.bug2176B_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.structure.constructor.bug2176B_.$init$$object$ = false;
+        }
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.structure.constructor.Bug2176B1 get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.constructor.bug2176B_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.constructor.bug2176B_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2176B\' before it was set");
+        }
+    }
+}

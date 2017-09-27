@@ -1,0 +1,31 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug06xx;
+
+class Bug630Impl extends .java.lang.Object implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug630, .java.io.Serializable {
+    
+    Bug630Impl() {
+        super();
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug630$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$;
+    }
+    
+    @.java.lang.Override
+    public boolean equals(final .java.lang.Object that) {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$.equals(that);
+    }
+    
+    @.java.lang.Override
+    public int hashCode() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug630$this$.hashCode();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug630Impl.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug630Impl.class);
+}

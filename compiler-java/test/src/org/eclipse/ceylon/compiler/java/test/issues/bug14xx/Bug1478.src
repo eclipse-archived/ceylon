@@ -1,0 +1,81 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug14xx;
+
+public interface Bug1478Bla {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla.class);
+}
+public interface Bug1478AbstractFoo$InnerInterface<T> {
+    
+    public abstract long execute2(final T t);
+}
+public abstract class Bug1478AbstractFoo<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug1478AbstractFoo(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T>.Inner Inner$new$();
+    
+    public abstract class Inner implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Inner() {
+        }
+        
+        public abstract long execute(final T t);
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo.class, .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo.Inner.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo.class, $reified$T);
+    }
+}
+public class Bug1478Foo<T> extends .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T> implements .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478Bla {
+    
+    public Bug1478Foo(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo<T>.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner extends .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo<T>.Inner implements .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478AbstractFoo$InnerInterface<T> {
+        
+        protected Inner() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public final long execute(final T t) {
+            return 77L;
+        }
+        
+        @.java.lang.Override
+        public final long execute2(final T t) {
+            return 77L;
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo.class, .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo.Inner.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug14xx.Bug1478Foo.class, $reified$T);
+    }
+}

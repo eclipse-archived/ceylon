@@ -19,11 +19,11 @@
     <property name="build.ceylon.cars" location="${build.dir}/ceylon-cars" />
 
     <!-- Jarfiles everything ends up in -->
-    <property name="ceylon.compiler.src" value="${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.src" />
+    <property name="ceylon.compiler.src" value="${ceylon.compiler.dir}/org.eclipse.ceylon.compiler.java-${module.org.eclipse.ceylon.compiler.version}.src" />
     <property name="ceylon.compiler.repo" value="${ceylon.repo.dir}/${ceylon.compiler.dir}" />
     <property name="ceylon.compiler.dist" value="${build.dist.repo}/${ceylon.compiler.dir}" />
-    <property name="ceylon-tests.dir" location="${build.ceylon.cars}/com/redhat/ceylon/compiler/java/test/ceylon/${module.com.redhat.ceylon.compiler.version}" />
-    <property name="ceylon-tests.car" location="${ceylon-tests.dir}/com.redhat.ceylon.compiler.java.test.ceylon-${module.com.redhat.ceylon.compiler.version}.car" />
+    <property name="ceylon-tests.dir" location="${build.ceylon.cars}/org/eclipse/ceylon/compiler/java/test/ceylon/${module.org.eclipse.ceylon.compiler.version}" />
+    <property name="ceylon-tests.car" location="${ceylon-tests.dir}/org.eclipse.ceylon.compiler.java.test.ceylon-${module.org.eclipse.ceylon.compiler.version}.car" />
 
     <!-- The directory that parser tests live in, and
        the directory test results get written into -->
@@ -138,11 +138,11 @@
         <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
             <compilerarg value="-XDignore.symbol.file" />
             <exclude name="**/Java7Checker.java" />
-            <exclude name="com/redhat/ceylon/ant/**" />
-            <include name="com/redhat/**" />
-            <include name="com/redhat/ceylon/langtools/tools/javac/**" />
-            <include name="com/redhat/ceylon/langtools/source/**" />
-            <include name="com/redhat/ceylon/javax/**" />
+            <exclude name="org/eclipse/ceylon/ant/**" />
+            <include name="org/eclipse/**" />
+            <include name="org/eclipse/ceylon/langtools/tools/javac/**" />
+            <include name="org/eclipse/ceylon/langtools/source/**" />
+            <include name="org/eclipse/ceylon/javax/**" />
         </javac>
         <!-- 
           We need a second compilation step to compile entry points compatible with Java 5
@@ -152,33 +152,33 @@
         -->
         <delete dir="${build.classes}">
             <include name="**/Java7Checker.class" />
-            <include name="com/redhat/ceylon/ant/**" />
-            <include name="com/redhat/ceylon/launcher/**" />
+            <include name="org/eclipse/ceylon/ant/**" />
+            <include name="org/eclipse/ceylon/launcher/**" />
         </delete>
         <javac srcdir="${javac.src}:${ceylonc.src}:${common.src}:${bootstrap.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="1.6" source="1.6" includeantruntime="true">
             <include name="**/Java7Checker.java" />
-            <include name="com/redhat/ceylon/tools/Tool.java" />
-            <include name="com/redhat/ceylon/tools/Plugin.java" />
-            <include name="com/redhat/ceylon/ant/**" />
-            <include name="com/redhat/ceylon/common/*" />
-            <include name="com/redhat/ceylon/common/config/*" />
-            <include name="com/redhat/ceylon/common/tools/ModuleWildcardsHelper.java" />
-            <include name="com/redhat/ceylon/launcher/*" />
+            <include name="org/eclipse/ceylon/tools/Tool.java" />
+            <include name="org/eclipse/ceylon/tools/Plugin.java" />
+            <include name="org/eclipse/ceylon/ant/**" />
+            <include name="org/eclipse/ceylon/common/*" />
+            <include name="org/eclipse/ceylon/common/config/*" />
+            <include name="org/eclipse/ceylon/common/tools/ModuleWildcardsHelper.java" />
+            <include name="org/eclipse/ceylon/launcher/*" />
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${ceylonc.src}">
-                <exclude name="com/redhat/**/*.utf8properties" />
-                <include name="com/redhat/**/resources/**" />
-                <include name="com/redhat/**/*.properties" />
-                <include name="com/redhat/ceylon/ant/antlib.xml" />
+                <exclude name="org/eclipse/**/*.utf8properties" />
+                <include name="org/eclipse/**/resources/**" />
+                <include name="org/eclipse/**/*.properties" />
+                <include name="org/eclipse/ceylon/ant/antlib.xml" />
                 <include name="META-INF/**" />
             </fileset>
             <fileset dir="${common.src}">
-                <include name="com/redhat/ceylon/common/config/**/*.properties" />
+                <include name="org/eclipse/ceylon/common/config/**/*.properties" />
             </fileset>
         </copy>
         <native2ascii dest="${build.classes}" src="${ceylonc.src}" encoding="UTF-8" ext=".properties">
-            <include name="com/redhat/**/*.utf8properties" />
+            <include name="org/eclipse/**/*.utf8properties" />
         </native2ascii>
     </target>
 
@@ -188,23 +188,23 @@
         <javac destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="test.compile.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="false">
             <src path="${test.ceylond.src}"/>
             <src path="${test.src}"/>
-            <include name="com/redhat/ceylon/compiler/java/test/**" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/interop/nullable/**" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/interop/Bug*" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/interop/Interdep*" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/interop/JavaRepeatable.java" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/interop/Lambda*" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/cmr/modules/bug1062/**" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/recovery/modules/bug1411/**" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/issues/*/**" />
-            <include name="com/redhat/ceylon/tools/**" />
-            <exclude name="com/redhat/ceylon/tools/test/bug1183/**" />
-            <include name="com/redhat/ceylon/itest/**" />
-            <include name="com/redhat/ceylon/launcher/test/**" />
-            <include name="com/redhat/ceylon/ant/**" />
-            <include name="com/redhat/ceylon/ceylondoc/test/**" />
-            <exclude name="com/redhat/ceylon/compiler/java/test/recovery/bug6290/**"/>
+            <include name="org/eclipse/ceylon/compiler/java/test/**" />
+            <exclude name="org/eclipse/ceylon/compiler/java/test/interop/mixed/**" />
+            <exclude name="org/eclipse/ceylon/compiler/java/test/interop/nullable/**" />
+            <exclude name="org/eclipse/ceylon/compiler/java/test/interop/Bug*" />
+            <exclude name="org/eclipse/ceylon/compiler/java/test/interop/Interdep*" />
+            <exclude name="org/eclipse/ceylon/compiler/java/test/interop/JavaRepeatable.java" />
+            <exclude name="org/eclipse/ceylon/compiler/java/test/interop/Lambda*" />
+            <exclude name="org/eclipse/ceylon/compiler/java/test/cmr/modules/bug1062/**" />
+            <exclude name="org/eclipse/ceylon/compiler/java/test/recovery/modules/bug1411/**" />
+            <exclude name="org/eclipse/ceylon/compiler/java/test/issues/*/**" />
+            <include name="org/eclipse/ceylon/tools/**" />
+            <exclude name="org/eclipse/ceylon/tools/test/bug1183/**" />
+            <include name="org/eclipse/ceylon/itest/**" />
+            <include name="org/eclipse/ceylon/launcher/test/**" />
+            <include name="org/eclipse/ceylon/ant/**" />
+            <include name="org/eclipse/ceylon/ceylondoc/test/**" />
+            <exclude name="org/eclipse/ceylon/compiler/java/test/recovery/bug6290/**"/>
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${test.src}">
@@ -224,21 +224,21 @@
             <fileset dir="${build.classes}">
                 <exclude name="ceylon/**" />
                 <exclude name="javax/**" />
-                <exclude name="com/redhat/ceylon/compiler/java/test/**" />
-                <exclude name="com/redhat/ceylon/compiler/java/codegen/NamingTests*" />
-                <exclude name="com/redhat/ceylon/ceylondoc/test/**" />
-                <exclude name="com/redhat/ceylon/itest/**" />
-                <exclude name="com/redhat/ceylon/tools/**" />
-                <exclude name="com/redhat/ceylon/ant/**" />
-                <exclude name="com/redhat/ceylon/common/**" />
-                <exclude name="com/redhat/ceylon/launcher/**" />
+                <exclude name="org/eclipse/ceylon/compiler/java/test/**" />
+                <exclude name="org/eclipse/ceylon/compiler/java/codegen/NamingTests*" />
+                <exclude name="org/eclipse/ceylon/ceylondoc/test/**" />
+                <exclude name="org/eclipse/ceylon/itest/**" />
+                <exclude name="org/eclipse/ceylon/tools/**" />
+                <exclude name="org/eclipse/ceylon/ant/**" />
+                <exclude name="org/eclipse/ceylon/common/**" />
+                <exclude name="org/eclipse/ceylon/launcher/**" />
             </fileset>
             <fileset dir="${javac.src}">
-                <include name="com/redhat/ceylon/langtools/tools/javac/resources/*.properties" />
+                <include name="org/eclipse/ceylon/langtools/tools/javac/resources/*.properties" />
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.compiler.java"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.compiler.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.compiler.java"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.compiler.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">
@@ -251,9 +251,9 @@
         <mkdir dir="${build.lib}" />
         <jar destfile="${build.lib}/ceylon-ant.jar">
             <fileset dir="${build.classes}">
-                <include name="com/redhat/ceylon/ant/**" />
-                <include name="com/redhat/ceylon/common/**" />
-                <include name="com/redhat/ceylon/launcher/**" />
+                <include name="org/eclipse/ceylon/ant/**" />
+                <include name="org/eclipse/ceylon/common/**" />
+                <include name="org/eclipse/ceylon/launcher/**" />
             </fileset>
         </jar>
     </target>
@@ -320,12 +320,12 @@
 
             <batchtest fork="yes" todir="${test.reports}">
                 <fileset dir="${test.src}">
-                    <include name="com/redhat/ceylon/compiler/java/test/ConcurrentTests.java" />
+                    <include name="org/eclipse/ceylon/compiler/java/test/ConcurrentTests.java" />
                 </fileset>
             </batchtest>
         	<!--
             <test fork="yes" todir="${test.reports}"
-            	name="com.redhat.ceylon.compiler.java.test.model.ModelLoaderTests"
+            	name="org.eclipse.ceylon.compiler.java.test.model.ModelLoaderTests"
             	methods="loadJavaKeywords">
             </test>
             -->
@@ -402,19 +402,19 @@
 			<param name="archivePath" value="${ceylon.compiler.lib}"/>
 		</antcall>
 	    
-		<delete dir="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/lib/" includes="compiler-tests-*.jar" failonerror="false"/>
-        <jar destfile="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/lib/compiler-tests-${module.com.redhat.ceylon.compiler.version}.jar">
+		<delete dir="${eclipse.project.path}/tests/org.eclipse.ceylon.eclipse.ui.test/lib/" includes="compiler-tests-*.jar" failonerror="false"/>
+        <jar destfile="${eclipse.project.path}/tests/org.eclipse.ceylon.eclipse.ui.test/lib/compiler-tests-${module.org.eclipse.ceylon.compiler.version}.jar">
             <fileset dir="${build.classes}">
-                <include name="com/redhat/ceylon/compiler/java/test/**" />
+                <include name="org/eclipse/ceylon/compiler/java/test/**" />
             </fileset>
         </jar>
-        <delete dir="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations" excludes="module.ceylon,package.ceylon,run.ceylon" />
-        <copy todir="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
-            <fileset dir="${test.src}/com/redhat/ceylon/compiler/java/test/model" includes="*.ceylon" excludes="*test.ceylon,bogus*.ceylon,module.ceylon,package.ceylon" />
+        <delete dir="${eclipse.project.path}/tests/org.eclipse.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations" excludes="module.ceylon,package.ceylon,run.ceylon" />
+        <copy todir="${eclipse.project.path}/tests/org.eclipse.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
+            <fileset dir="${test.src}/org/eclipse/ceylon/compiler/java/test/model" includes="*.ceylon" excludes="*test.ceylon,bogus*.ceylon,module.ceylon,package.ceylon" />
         </copy>
-        <copy todir="${eclipse.project.path}/tests/com.redhat.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
-            <fileset dir="${test.src}/com/redhat/ceylon/compiler/java/test/model" includes="*.java" excludes="?ogus*.java,*Tests.java,*Test.java" />
-            <filterset beginToken=" " endToken=";"><filter token="com.redhat.ceylon.compiler.java.test.model" value=" declarations;" /></filterset>
+        <copy todir="${eclipse.project.path}/tests/org.eclipse.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
+            <fileset dir="${test.src}/org/eclipse/ceylon/compiler/java/test/model" includes="*.java" excludes="?ogus*.java,*Tests.java,*Test.java" />
+            <filterset beginToken=" " endToken=";"><filter token="org.eclipse.ceylon.compiler.java.test.model" value=" declarations;" /></filterset>
         </copy>
     </target>
 	

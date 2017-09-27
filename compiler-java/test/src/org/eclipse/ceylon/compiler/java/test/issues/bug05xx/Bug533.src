@@ -1,0 +1,12 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug05xx;
+
+final class bug533_ {
+    
+    private bug533_() {
+    }
+    
+    static void bug533(final .java.util.Map<.java.lang.Object, .java.lang.Object> jmap) {
+        final .java.util.Map.Entry<.java.lang.Object, .java.lang.Object> foo = .org.eclipse.ceylon.compiler.java.Util.checkNull(.org.eclipse.ceylon.compiler.java.Util.checkNull(jmap.entrySet()).iterator()).next();
+        final .java.util.Set<.java.util.Map.Entry<.java.lang.Object, .java.lang.Object>> es = jmap.entrySet();
+    }
+}

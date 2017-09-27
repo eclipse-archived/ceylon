@@ -1,0 +1,73 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.$goto;
+
+class MangledMembers_class implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MangledMembers_class() {
+    }
+    
+    public final .java.lang.String $clone() {
+        return "";
+    }
+    
+    public final .java.lang.String $hashCode() {
+        return "";
+    }
+    
+    public final boolean $toString() {
+        return true;
+    }
+    
+    public final .java.lang.String $notify() {
+        return "";
+    }
+    
+    public final .java.lang.String $notifyAll() {
+        return "";
+    }
+    
+    public final .java.lang.String $getClass() {
+        return "";
+    }
+    
+    public final .java.lang.String $finalize() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.MangledMembers_class.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.MangledMembers_class.class);
+}
+class MangledMembers_clone implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MangledMembers_clone() {
+    }
+    
+    public final .java.lang.String getClone() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.MangledMembers_clone.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.MangledMembers_clone.class);
+}
+interface MangledMembers_interface {
+    
+    public abstract .java.lang.String $clone();
+    
+    public abstract .java.lang.String $hashCode();
+    
+    public abstract boolean $toString();
+    
+    public abstract .java.lang.String $notify();
+    
+    public abstract .java.lang.String $notifyAll();
+    
+    public abstract .java.lang.String $getClass();
+    
+    public abstract .java.lang.String $finalize();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.MangledMembers_interface.class);
+}

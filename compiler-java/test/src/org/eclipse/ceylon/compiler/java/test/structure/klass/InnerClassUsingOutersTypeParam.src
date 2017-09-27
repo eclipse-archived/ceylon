@@ -1,0 +1,50 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+public class InnerClassUsingOutersTypeParam<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public InnerClassUsingOutersTypeParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public final T item(final .org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cell) {
+        return cell.getCar();
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell Cell$new$(final T car, final .org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
+        return new Cell(car, cdr);
+    }
+    
+    public class Cell implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Cell(final T car, final .org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr) {
+            this.car = car;
+            this.cdr = cdr;
+        }
+        private final T car;
+        
+        public final T getCar() {
+            return this.car;
+        }
+        private final .org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell cdr;
+        
+        public final .org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam<T>.Cell getCdr() {
+            return this.cdr;
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.class, .org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.Cell.class));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.InnerClassUsingOutersTypeParam.class, $reified$T);
+    }
+}

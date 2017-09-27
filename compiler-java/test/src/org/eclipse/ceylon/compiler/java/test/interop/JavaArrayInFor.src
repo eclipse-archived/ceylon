@@ -1,0 +1,89 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("java.lang::ObjectArray<java.lang::String>")
+final class JStrings {
+    
+    private JStrings() {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeAlias("java.lang::ObjectArray<ceylon.language::String>")
+final class Strings {
+    
+    private Strings() {
+    }
+}
+final class javaArrayInFor_ {
+    
+    private javaArrayInFor_() {
+    }
+    
+    static void javaArrayInFor() {
+        long sum = 0L;
+        final .ceylon.language.String[] array$1 = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_0: for (int i$3 = 0; i$3 < array$1.length; i$3++) {
+            final .java.lang.String s = array$1[i$3].toString();
+            sum += .ceylon.language.String.hashCode(.org.eclipse.ceylon.compiler.java.Util.checkNull(s));
+        }
+        final .java.lang.String[] array$5 = (.java.lang.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_1: for (int i$7 = 0; i$7 < array$5.length; i$7++) {
+            final .java.lang.String s = array$5[i$7];
+            sum += .org.eclipse.ceylon.compiler.java.Util.checkNull(s).hashCode();
+        }
+        final boolean[] array$9 = (boolean[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_2: for (int i$11 = 0; i$11 < array$9.length; i$11++) {
+            final boolean s = array$9[i$11];
+            sum += .ceylon.language.Boolean.hashCode(s);
+        }
+        final byte[] array$13 = (byte[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_3: for (int i$15 = 0; i$15 < array$13.length; i$15++) {
+            final byte s = array$13[i$15];
+            sum += .ceylon.language.Byte.hashCode(s);
+        }
+        final short[] array$17 = (short[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_4: for (int i$19 = 0; i$19 < array$17.length; i$19++) {
+            final long s = array$17[i$19];
+            sum += .ceylon.language.Integer.hashCode(s);
+        }
+        final int[] array$21 = (int[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_5: for (int i$23 = 0; i$23 < array$21.length; i$23++) {
+            final long s = array$21[i$23];
+            sum += .ceylon.language.Integer.hashCode(s);
+        }
+        final long[] array$25 = (long[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_6: for (int i$27 = 0; i$27 < array$25.length; i$27++) {
+            final long s = array$25[i$27];
+            sum += .ceylon.language.Integer.hashCode(s);
+        }
+        final float[] array$29 = (float[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_7: for (int i$31 = 0; i$31 < array$29.length; i$31++) {
+            final double s = array$29[i$31];
+            sum += .ceylon.language.Float.hashCode(s);
+        }
+        final double[] array$33 = (double[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_8: for (int i$35 = 0; i$35 < array$33.length; i$35++) {
+            final double s = array$33[i$35];
+            sum += .ceylon.language.Float.hashCode(s);
+        }
+        final char[] array$37 = (char[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_9: for (int i$39 = 0; i$39 < array$37.length; i$39++) {
+            final int s = array$37[i$39];
+            sum += .ceylon.language.Character.hashCode(s);
+        }
+        final .ceylon.language.String[] array$41 = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_10: for (int i$43 = 0; i$43 < array$41.length; i$43++) {
+            final .java.lang.String s = array$41[i$43].toString();
+            sum += .ceylon.language.String.hashCode(.org.eclipse.ceylon.compiler.java.Util.checkNull(s));
+        }
+        final .java.lang.String[] array$45 = (.java.lang.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        loop_11: for (int i$47 = 0; i$47 < array$45.length; i$47++) {
+            final .java.lang.String s = array$45[i$47];
+            sum += .org.eclipse.ceylon.compiler.java.Util.checkNull(s).hashCode();
+        }
+    }
+}

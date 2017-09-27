@@ -1,0 +1,40 @@
+package org.eclipse.ceylon.compiler.java.test.structure.alias;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public interface InterfaceAliasWithTypeParameters_Foo<T> {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.alias::InterfaceAliasWithTypeParameters_Foo<T>")
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public interface InterfaceAliasWithTypeParameters<T> {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Alias("org.eclipse.ceylon.compiler.java.test.structure.alias::InterfaceAliasWithTypeParameters_Foo<ceylon.language::Integer>")
+public interface InterfaceAliasWithTypeParameters2 {
+}
+final class interfaceAliasWithTypeParametersMethod_ {
+    
+    private interfaceAliasWithTypeParametersMethod_() {
+    }
+    
+    static void interfaceAliasWithTypeParametersMethod(final .org.eclipse.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<.ceylon.language.Integer> a, final .org.eclipse.ceylon.compiler.java.test.structure.alias.InterfaceAliasWithTypeParameters_Foo<.ceylon.language.Integer> b) {
+    }
+}

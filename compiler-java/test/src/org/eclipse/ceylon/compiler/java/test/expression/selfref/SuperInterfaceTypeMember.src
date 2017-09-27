@@ -1,0 +1,70 @@
+package org.eclipse.ceylon.compiler.java.test.expression.selfref;
+
+interface SuperInterfaceTypeMember {
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$impl();
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner Inner$new$();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember.class);
+}
+final class SuperInterfaceTypeMember$impl implements .java.io.Serializable {
+    
+    SuperInterfaceTypeMember$impl(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember $this;
+    
+    public .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Inner() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner.class));
+        }
+    }
+}
+class SuperInterfaceTypeMember_Sub implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember, .java.io.Serializable {
+    
+    SuperInterfaceTypeMember_Sub() {
+        this.$org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this$ = new .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this$;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner extends .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember$impl.Inner {
+        
+        protected Inner() {
+            $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this$.super();
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.Inner.class));
+        }
+    }
+    
+    private final void m$priv$() {
+        $org$eclipse$ceylon$compiler$java$test$expression$selfref$SuperInterfaceTypeMember$this$.Inner$new$();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.selfref.SuperInterfaceTypeMember_Sub.class);
+}

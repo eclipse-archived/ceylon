@@ -15,16 +15,16 @@
     <property name="runtime" value="${build.dir}/runtime" />
     <property name="language.dir" location="${basedir}/../language" />
 
-    <property name="jslangpath" value="ceylon/language/${module.com.redhat.ceylon.compiler.js.version}" />
-    <property name="jslangmodule" value="${jslangpath}/ceylon.language-${module.com.redhat.ceylon.compiler.js.version}.js" />
-    <property name="jslangmodel" value="${jslangpath}/ceylon.language-${module.com.redhat.ceylon.compiler.js.version}-model.js" />
+    <property name="jslangpath" value="ceylon/language/${module.org.eclipse.ceylon.compiler.js.version}" />
+    <property name="jslangmodule" value="${jslangpath}/ceylon.language-${module.org.eclipse.ceylon.compiler.js.version}.js" />
+    <property name="jslangmodel" value="${jslangpath}/ceylon.language-${module.org.eclipse.ceylon.compiler.js.version}-model.js" />
     
     <tstamp />
 
     <!-- Local repository -->
     <property name="ceylon.js.repo" value="${ceylon.repo.dir}/${ceylon.js.dir}" />
     <property name="ceylon.js.dist" value="${build.dist.repo}/${ceylon.js.dir}"/>
-    <property name="ceylon.js.src" value="${ceylon.js.dir}/com.redhat.ceylon.compiler.js-${module.com.redhat.ceylon.compiler.js.version}.src" />
+    <property name="ceylon.js.src" value="${ceylon.js.dir}/org.eclipse.ceylon.compiler.js-${module.org.eclipse.ceylon.compiler.js.version}.src" />
 
     <path id="test.run.classpath">
         <pathelement path="${antlr.lib}"/>
@@ -68,8 +68,8 @@
         <copy todir="${build.classes}">
             <fileset dir="${src}">
                 <include name="META-INF/**/*"/>
-                <include name="com/redhat/**/resources/**" />
-                <include name="com/redhat/**/*.properties" />
+                <include name="org/eclipse/**/resources/**" />
+                <include name="org/eclipse/**/*.properties" />
             </fileset>
         </copy>
         <!-- 
@@ -103,8 +103,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.compiler.js"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.compiler.js.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.compiler.js"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.compiler.js.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">
@@ -114,7 +114,7 @@
 
     <!-- generate the ceylon.language.js file -->
     <target name="build-js-language-module" depends="compile" unless="skip.language.module">
-        <java classname="com.redhat.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath" fork="true" failonerror="yes">
+        <java classname="org.eclipse.ceylon.compiler.js.Stitcher" classpathref="test.run.classpath" fork="true" failonerror="yes">
             <arg value="../language/runtime-js/MASTER.txt" />
             <arg value="${runtime}/${jslangmodule}" />
         </java>

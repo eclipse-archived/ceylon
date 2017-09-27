@@ -2,7 +2,7 @@ package ceylon.modules.bootstrap;
 
 import java.util.ResourceBundle;
 
-import com.redhat.ceylon.common.Messages;
+import org.eclipse.ceylon.common.Messages;
 
 public class CeylonMessages extends Messages {
 

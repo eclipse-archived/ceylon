@@ -1,0 +1,155 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder.class)})
+public interface Charset {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl $org$eclipse$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$impl();
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder Decoder$new$();
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+public final class Charset$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public Charset$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset.class,
+            isStatic = false)
+    public abstract class Decoder implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Decoder() {
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.ceylon.language.FormalAnnotation$annotation$
+        @.org.eclipse.ceylon.common.Nullable
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+                value = "ceylon.language::Anything",
+                declaredVoid = true)
+        public abstract .java.lang.Object decode();
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder.class));
+        }
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("utf8")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::Charset"})
+public final class utf8_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset {
+    
+    private utf8_() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl(this);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.Decoder Decoder$new$() {
+        return new Decoder();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Container(
+            klass = .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.class,
+            isStatic = false)
+    @.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "<ceylon.language::Basic&org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::Charset>.Decoder")
+    public class Decoder extends .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder {
+        
+        protected Decoder() {
+            $org$eclipse$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$this$.super();
+        }
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.ceylon.language.ActualAnnotation$annotation$
+        @.java.lang.Override
+        @.org.eclipse.ceylon.common.Nullable
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+                value = "ceylon.language::Anything",
+                declaredVoid = true)
+        public final .java.lang.Object decode() {
+            return null;
+        }
+        
+        @.java.lang.Override
+        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.Decoder.class));
+        }
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl $org$eclipse$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl $org$eclipse$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug17xx$bug1755$mod1$Charset$this$;
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_();
+            .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::utf8")
+    public static .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'utf8\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.$TypeDescriptor$;
+    }
+}

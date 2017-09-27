@@ -1,0 +1,57 @@
+package org.eclipse.ceylon.compiler.java.test.structure.concrete;
+
+interface IntersectionSatisfier_X<T, N> {
+    
+    public abstract .java.lang.Object getX();
+}
+interface IntersectionSatisfier_I1<T> extends .org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_X<T, .java.lang.Object> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<? extends T> $org$eclipse$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$impl();
+    
+    @.java.lang.Override
+    public T getX();
+}
+final class IntersectionSatisfier_I1$impl<T> implements .java.io.Serializable {
+    
+    IntersectionSatisfier_I1$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<? extends T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<? extends T> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public final T getX() {
+        return null;
+    }
+}
+interface IntersectionSatisfier_I2 extends .org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<.java.lang.Object> {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2.class);
+}
+class IntersectionSatisfier_C<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I2, .org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<T>, .java.io.Serializable {
+    
+    IntersectionSatisfier_C(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+        this.$org$eclipse$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<T>($reified$T, (.org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1<T>)(.org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1)this);
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<T> $org$eclipse$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1$impl<? extends T> $org$eclipse$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this$;
+    }
+    
+    @.java.lang.Override
+    public T getX() {
+        return (T)$org$eclipse$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$this$.getX();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_C.class, $reified$T);
+    }
+}

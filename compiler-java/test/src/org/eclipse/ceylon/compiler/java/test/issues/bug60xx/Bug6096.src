@@ -1,0 +1,51 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug60xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class f_ {
+    
+    private f_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    static <T>T f(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug6096_ {
+    
+    private bug6096_() {
+    }
+    
+    static void bug6096() {
+        final double y = 1L * ((.ceylon.language.Float).ceylon.language.sum_.<.ceylon.language.Float>sum(.ceylon.language.Float.$TypeDescriptor$, (.ceylon.language.Iterable)new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0)))).doubleValue();
+        final double z = 1L * ((.ceylon.language.Float)(
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Float.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$0$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0));
+            }
+            returning .ceylon.language.sum_.<.ceylon.language.Float>sum(arg$0$reified$0, arg$0$0);
+        )).doubleValue();
+        final double x = .ceylon.language.Integer.$power$(1L, ((.ceylon.language.Float)(
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Float.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$1$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Float.instance(1.0));
+            }
+            returning .ceylon.language.sum_.<.ceylon.language.Float>sum(arg$1$reified$0, arg$1$0);
+        )).doubleValue());
+    }
+}

@@ -1,0 +1,63 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug66xx;
+
+class Bug6606 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug6606() {
+        final .java.lang.String equals = "";
+    }
+    
+    private final void string$priv$() {
+    }
+    
+    private final void hash$priv$() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug66xx.Bug6606.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug66xx.Bug6606.class);
+}
+class Bug6606_2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    private final void string$priv$() {
+    }
+    
+    private final void hash$priv$() {
+    }
+    
+    public Bug6606_2() {
+        final .java.lang.String equals = "";
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug66xx.Bug6606_2.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug66xx.Bug6606_2.class);
+}
+class Bug6606_3 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private static final .java.lang.String equals;
+    static {
+        equals = "";
+    }
+    
+    private static final .java.lang.String getEquals$priv$() {
+        return (.java.lang.String).org.eclipse.ceylon.compiler.java.test.issues.bug66xx.Bug6606_3.equals;
+    }
+    
+    private final void string$priv$() {
+    }
+    
+    private final void hash$priv$() {
+    }
+    
+    public Bug6606_3() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug66xx.Bug6606_3.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug66xx.Bug6606_3.class);
+}

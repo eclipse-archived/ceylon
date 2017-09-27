@@ -1,0 +1,160 @@
+package org.eclipse.ceylon.compiler.java.test.structure.concrete;
+
+public interface MultipleInheritance {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$impl();
+    
+    public long getA();
+    
+    public void setA(final long a);
+    
+    public .java.lang.Object m();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance.class);
+}
+public final class MultipleInheritance$impl implements .java.io.Serializable {
+    
+    public MultipleInheritance$impl(.org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance $this;
+    
+    public final long getA() {
+        return 1L;
+    }
+    
+    public final void setA(final long a) {
+    }
+    
+    public .java.lang.Object m() {
+        return null;
+    }
+}
+class MultipleInheritanceImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance, .java.io.Serializable {
+    
+    MultipleInheritanceImpl() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$;
+    }
+    
+    @.java.lang.Override
+    public long getA() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.getA();
+    }
+    
+    @.java.lang.Override
+    public void setA(final long a) {
+        $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.setA(a);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object m() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl.class);
+}
+interface MultipleInheritanceSub extends .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub.class);
+}
+class MultipleInheritanceSubImpl implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub, .java.io.Serializable {
+    
+    MultipleInheritanceSubImpl() {
+        this.$org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$ = new .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance$impl $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$;
+    }
+    
+    @.java.lang.Override
+    public long getA() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.getA();
+    }
+    
+    @.java.lang.Override
+    public void setA(final long a) {
+        $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.setA(a);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object m() {
+        return $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl.class);
+}
+class MultipleInheritanceImplSub extends .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImpl implements .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSub {
+    
+    MultipleInheritanceImplSub() {
+        super();
+        this.a = 1L;
+    }
+    private long a;
+    
+    @.java.lang.Override
+    public final long getA() {
+        return this.a;
+    }
+    
+    @.java.lang.Override
+    public final void setA(final long a) {
+        this.a = a;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m() {
+        $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImplSub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceImplSub.class);
+}
+class MultipleInheritanceSubImplSub extends .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImpl implements .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritance {
+    
+    MultipleInheritanceSubImplSub() {
+        super();
+        this.a = 1L;
+    }
+    private long a;
+    
+    @.java.lang.Override
+    public final long getA() {
+        return this.a;
+    }
+    
+    @.java.lang.Override
+    public final void setA(final long a) {
+        this.a = a;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m() {
+        $org$eclipse$ceylon$compiler$java$test$structure$concrete$MultipleInheritance$this$.m();
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImplSub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.concrete.MultipleInheritanceSubImplSub.class);
+}

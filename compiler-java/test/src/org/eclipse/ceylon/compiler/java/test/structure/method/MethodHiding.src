@@ -1,0 +1,43 @@
+package org.eclipse.ceylon.compiler.java.test.structure.method;
+
+class MethodHiding implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodHiding() {
+    }
+    
+    public final .java.lang.String m() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return m();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.MethodHiding.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.MethodHiding.class);
+}
+class MethodHidingSub extends .org.eclipse.ceylon.compiler.java.test.structure.method.MethodHiding {
+    
+    MethodHidingSub() {
+        super();
+    }
+    
+    private final .java.lang.String m$priv$() {
+        return "";
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return m$priv$();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.MethodHidingSub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.MethodHidingSub.class);
+}

@@ -1,2 +1,2 @@
-restricted (`module com.redhat.zzz`)
+restricted (`module org.eclipse.zzz`)
 shared class Bar() {}

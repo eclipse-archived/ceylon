@@ -1,0 +1,11 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug10xx;
+
+final class bug1079_ {
+    
+    private bug1079_() {
+    }
+    
+    static .java.lang.String bug1079(final .java.lang.String str) {
+        return str + ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
+    }
+}

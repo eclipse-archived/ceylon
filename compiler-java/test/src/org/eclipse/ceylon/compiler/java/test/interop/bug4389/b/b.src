@@ -1,0 +1,21 @@
+package org.eclipse.ceylon.compiler.java.test.interop.bug4389.b;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class b_ {
+    
+    private b_() {
+    }
+    
+    static void b() {
+        final .org.eclipse.ceylon.compiler.java.test.interop.bug4389.a.A a = new .org.eclipse.ceylon.compiler.java.test.interop.bug4389.a.A();
+        loop_0: for (.java.lang.String s$iterator$$2 : a) {
+            final .java.lang.String s = (.java.lang.String)s$iterator$$2;
+        }
+        loop_1: for (.java.lang.String s$iterator$$5 : .org.eclipse.ceylon.compiler.java.Util.checkNull(a.getIterable())) {
+            final .java.lang.String s = (.java.lang.String)s$iterator$$5;
+        }
+    }
+}

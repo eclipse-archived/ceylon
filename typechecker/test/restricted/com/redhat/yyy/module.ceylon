@@ -1,3 +1,3 @@
-module com.redhat.yyy "1.0.0" {
-    import com.redhat.xxx "1";
+module org.eclipse.yyy "1.0.0" {
+    import org.eclipse.xxx "1";
 }

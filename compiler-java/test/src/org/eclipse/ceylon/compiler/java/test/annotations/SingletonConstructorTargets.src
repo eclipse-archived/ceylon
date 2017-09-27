@@ -1,0 +1,78 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+class SingletonConstructorTargets implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    private static final class fieldAnnotated_ {
+        
+        fieldAnnotated_() {
+        }
+    }
+    
+    private SingletonConstructorTargets(.org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets fieldAnnotated;
+    static {
+        fieldAnnotated = new SingletonConstructorTargets((.org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static final .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$fieldAnnotated() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated;
+    }
+    
+    private static final class methodAnnotated_ {
+        
+        methodAnnotated_() {
+        }
+    }
+    
+    private SingletonConstructorTargets(.org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.methodAnnotated_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets methodAnnotated;
+    static {
+        methodAnnotated = new SingletonConstructorTargets((.org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.methodAnnotated_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static final .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$methodAnnotated() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.methodAnnotated;
+    }
+    
+    private static final class constructorAnnotated_ {
+        
+        constructorAnnotated_() {
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.ConstructorTarget
+    @.org.eclipse.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
+    private SingletonConstructorTargets(.org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.constructorAnnotated_ $name$) {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets constructorAnnotated;
+    static {
+        constructorAnnotated = new SingletonConstructorTargets((.org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.constructorAnnotated_)null);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static final .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$constructorAnnotated() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.constructorAnnotated;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == constructorAnnotated) {
+            $name$ = "getSingletonConstructorTargets$constructorAnnotated";
+        } else if (this == methodAnnotated) {
+            $name$ = "getSingletonConstructorTargets$methodAnnotated";
+        } else if (this == fieldAnnotated) {
+            $name$ = "getSingletonConstructorTargets$fieldAnnotated";
+        } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.class, $name$);
+    }
+}

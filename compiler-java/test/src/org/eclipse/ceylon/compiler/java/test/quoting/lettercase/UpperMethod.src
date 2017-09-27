@@ -1,0 +1,50 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.lettercase;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class UpperMethod {
+    
+    private UpperMethod() {
+    }
+    
+    static void UpperMethod() {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class UpperMethodC implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    UpperMethodC() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void UpperMethod() {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class LocalUpperMethod implements .java.io.Serializable {
+            
+            private LocalUpperMethod() {
+            }
+            
+            void LocalUpperMethod() {
+            }
+        }
+        final LocalUpperMethod LocalUpperMethod = new LocalUpperMethod();
+        LocalUpperMethod.LocalUpperMethod();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.lettercase.UpperMethodC.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.lettercase.UpperMethodC.class);
+}

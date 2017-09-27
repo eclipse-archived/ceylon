@@ -1,0 +1,741 @@
+package org.eclipse.ceylon.compiler.java.test.expression.erasure;
+
+interface Top {
+    
+    public abstract .java.lang.Object top();
+    
+    public abstract long getTopAttribute();
+    
+    public abstract .java.lang.Object getLeftAndRightAttribute();
+    
+    public abstract .java.lang.Object leftAndRightMethod(final .java.lang.Object param);
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top.class);
+}
+interface Left extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top {
+    
+    public abstract .java.lang.Object left();
+    
+    public abstract long getLeftAttribute();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left.class);
+}
+interface Right extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top {
+    
+    public abstract .java.lang.Object right();
+    
+    public abstract long getRightAttribute();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Right.class);
+}
+class CMiddle implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left, .org.eclipse.ceylon.compiler.java.test.expression.erasure.Right, .java.io.Serializable {
+    
+    CMiddle() {
+        this.topAttribute = 1L;
+        this.leftAttribute = 1L;
+        this.rightAttribute = 1L;
+        this.leftAndRightAttribute = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object left() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object top() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object right() {
+        return null;
+    }
+    private final long topAttribute;
+    
+    @.java.lang.Override
+    public final long getTopAttribute() {
+        return this.topAttribute;
+    }
+    private final long leftAttribute;
+    
+    @.java.lang.Override
+    public final long getLeftAttribute() {
+        return this.leftAttribute;
+    }
+    private final long rightAttribute;
+    
+    @.java.lang.Override
+    public final long getRightAttribute() {
+        return this.rightAttribute;
+    }
+    private final .java.lang.Object leftAndRightAttribute;
+    
+    @.java.lang.Override
+    public final .java.lang.Object getLeftAndRightAttribute() {
+        return this.leftAndRightAttribute;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object leftAndRightMethod(final .java.lang.Object param) {
+        return param;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle.class);
+}
+class CLeft implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left, .java.io.Serializable {
+    
+    CLeft() {
+        this.topAttribute = 1L;
+        this.leftAttribute = 1L;
+        this.leftAndRightAttribute = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object left() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object top() {
+        return null;
+    }
+    private final long topAttribute;
+    
+    @.java.lang.Override
+    public final long getTopAttribute() {
+        return this.topAttribute;
+    }
+    private final long leftAttribute;
+    
+    @.java.lang.Override
+    public final long getLeftAttribute() {
+        return this.leftAttribute;
+    }
+    private final .java.lang.Object leftAndRightAttribute;
+    
+    @.java.lang.Override
+    public final .java.lang.Object getLeftAndRightAttribute() {
+        return this.leftAndRightAttribute;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object leftAndRightMethod(final .java.lang.Object param) {
+        return param;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.erasure.CLeft.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.CLeft.class);
+}
+interface EmptyInterface {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.EmptyInterface.class);
+}
+class MyException extends .ceylon.language.Exception implements .org.eclipse.ceylon.compiler.java.test.expression.erasure.EmptyInterface {
+    
+    protected MyException() {
+        super();
+    }
+    
+    MyException(final .ceylon.language.String m, final .java.lang.Exception x) {
+        super(m, x);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyException.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyException.class);
+}
+interface MyNumeric extends .ceylon.language.Numeric<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Integral<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Comparable<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Exponentiable<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric, .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Scalable<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric, .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric> {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric.class);
+}
+interface MyList<Element> extends .ceylon.language.Collection<Element>, .ceylon.language.Correspondence<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric, Element>, .ceylon.language.Ranged<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric, Element, .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyList<? extends Element>> {
+}
+interface MySequence<Element> extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyList<Element>, .ceylon.language.Ranged<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric, Element, .org.eclipse.ceylon.compiler.java.test.expression.erasure.MySequence<? extends Element>> {
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.expression.erasure.MySequence span(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric from, final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric to);
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.expression.erasure.MySequence spanFrom(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric from);
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.expression.erasure.MySequence spanTo(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric to);
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.expression.erasure.MySequence measure(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric from, final long length);
+}
+interface MyEmpty extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyList<.java.lang.Object>, .ceylon.language.Correspondence<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric, .java.lang.Object>, .ceylon.language.Ranged<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric, .java.lang.Object, .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyEmpty> {
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyEmpty span(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric from, final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric to);
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyEmpty spanFrom(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric from);
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyEmpty spanTo(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric to);
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyEmpty measure(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric from, final long length);
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyEmpty.class);
+}
+class Test implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Test() {
+        super();
+        this.n = null;
+        this.leftAttribute = null;
+        this.middleAttribute = null;
+    }
+    
+    Test(final .java.lang.Object n) {
+        this.n = n;
+        this.leftAttribute = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CLeft();
+        this.middleAttribute = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle();
+    }
+    private final .java.lang.Object n;
+    
+    private final .java.lang.Object getN$priv$() {
+        return this.n;
+    }
+    
+    private final void takesTop$priv$(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top top) {
+    }
+    
+    private final void takesLeft$priv$(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left left) {
+    }
+    
+    private final .java.lang.Object givesLeftAndRight$priv$() {
+        return new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle();
+    }
+    private .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left leftAttribute;
+    
+    public final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left getLeftAttribute() {
+        return this.leftAttribute;
+    }
+    
+    public final void setLeftAttribute(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left leftAttribute) {
+        this.leftAttribute = leftAttribute;
+    }
+    private .java.lang.Object middleAttribute;
+    
+    public final .java.lang.Object getMiddleAttribute() {
+        return this.middleAttribute;
+    }
+    
+    public final void setMiddleAttribute(final .java.lang.Object middleAttribute) {
+        this.middleAttribute = middleAttribute;
+    }
+    
+    private final void testUnion$priv$() {
+        final .java.lang.Object middle = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CLeft();
+        ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)middle).top();
+        final .ceylon.language.Callable<? extends .java.lang.Object> mtopref = (
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top $instance$ = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)middle;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.top();
+                }
+            };
+        );
+        final long n1 = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)middle).getTopAttribute();
+        takesTop$priv$((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)middle);
+        .java.lang.Object middle$1;
+        if ((middle$1 = middle) instanceof .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left) {
+            final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left middle$2 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middle$1;
+            final long n2 = middle$2.getLeftAttribute();
+            middle$2.left();
+            final .ceylon.language.Callable<? extends .java.lang.Object> mleftref = (
+                let
+                {
+                    final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left $instance$ = middle$2;
+                }
+                returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .java.lang.Object $call$() {
+                        return $instance$.left();
+                    }
+                };
+            );
+            takesLeft$priv$(middle$2);
+        }
+    }
+    
+    private final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left testIntersection$priv$(final .java.lang.Object p1, final .java.lang.Object p1OrNull, final .java.lang.Object tops, final .java.lang.Object topsOrNull, final .java.lang.Object erasedTest) {
+        final .java.lang.Object middle = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle();
+        ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)middle).top();
+        final .ceylon.language.Callable<? extends .java.lang.Object> mtopref = (
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top $instance$ = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)middle;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.top();
+                }
+            };
+        );
+        ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middle).left();
+        final .ceylon.language.Callable<? extends .java.lang.Object> mlrefref = (
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left $instance$ = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middle;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.left();
+                }
+            };
+        );
+        ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Right)middle).right();
+        final .ceylon.language.Callable<? extends .java.lang.Object> mrightref = (
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Right $instance$ = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Right)middle;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.right();
+                }
+            };
+        );
+        ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)givesLeftAndRight$priv$()).top();
+        final .ceylon.language.Callable<? extends .java.lang.Object> lrtopref = (
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top $instance$ = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top).org.eclipse.ceylon.compiler.java.test.expression.erasure.Test.this.givesLeftAndRight$priv$();
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.top();
+                }
+            };
+        );
+        new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle().top();
+        long sync = 0L;
+        sync = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)middle).getTopAttribute();
+        sync = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middle).getLeftAttribute();
+        sync = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Right)middle).getRightAttribute();
+        sync = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)givesLeftAndRight$priv$()).getTopAttribute();
+        sync = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle().getTopAttribute();
+        takesTop$priv$((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)middle);
+        takesLeft$priv$((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middle);
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top arg$3$0 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)middle;
+                takesTop$priv$(arg$3$0);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left arg$4$0 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middle;
+                takesLeft$priv$(arg$4$0);
+            }
+            returning null;
+        );
+        .java.lang.Object middleVar = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle();
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left left = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middleVar;
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left left2;
+        left2 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middleVar;
+        .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left left3 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middleVar;
+        left3 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middleVar;
+        setLeftAttribute((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middleVar);
+        ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Test)erasedTest).setLeftAttribute((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middleVar);
+        ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle)(
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle $ceylontmp$op$5 = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle();
+                middleVar = $ceylontmp$op$5;
+            }
+            returning $ceylontmp$op$5;
+        )).left();
+        ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)(
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.erasure.Test $ceylontmp$opE$6 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Test)erasedTest;
+                .java.lang.Object $ceylontmp$opV$7 = middleVar;
+                $ceylontmp$opE$6.setMiddleAttribute($ceylontmp$opV$7);
+            }
+            returning $ceylontmp$opV$7;
+        )).left();
+        final .ceylon.language.Entry entry = new .ceylon.language.Entry(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Obtainable.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.ceylon.language.Obtainable.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor$), p1, p1);
+        if (true || true) {
+            final .java.lang.Object x = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyException(null, null);
+            ((.java.lang.Throwable)x).printStackTrace();
+            final .java.lang.Throwable cause = ((.java.lang.Throwable)x).getCause();
+            throw (.java.lang.Throwable)x;
+        }
+        return (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)middle;
+    }
+    
+    private final void testNullHandlingOperators$priv$(final .java.lang.Object p1, final .java.lang.Object p1OrNull) {
+        .java.lang.Object p1OrNull$10;
+        if ((p1OrNull$10 = p1OrNull) != null) {
+            final .java.lang.Object p1OrNull$11 = p1OrNull$10;
+        }
+        boolean bSync = false;
+        bSync = p1OrNull != null;
+        final .java.lang.Object p2 = (
+            let
+            {
+                .java.lang.Object $ceylontmp$12 = p1OrNull;
+            }
+            returning $ceylontmp$12 != null ? $ceylontmp$12 : p1;
+        );
+        final .ceylon.language.Obtainable n = (.ceylon.language.Obtainable)(
+            let
+            {
+                .java.lang.Object $ceylontmp$13 = p1OrNull;
+            }
+            returning $ceylontmp$13 != null ? $ceylontmp$13 : p1;
+        );
+    }
+    
+    private final void testArithmeticOperators$priv$(final .java.lang.Object p1, final .java.lang.Object erasedTest) {
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric unboxed = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1;
+        final .java.lang.Object boxed = this.getN$priv$();
+        .java.lang.Object n = this.getN$priv$();
+        .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric sync = null;
+        sync = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).plus((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).minus((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).times((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).remainder((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).divided((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        sync = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n).power((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric $ceylontmp$op$14 = sync.plus((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+                sync = $ceylontmp$op$14;
+            }
+            returning $ceylontmp$op$14;
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric $ceylontmp$op$15 = sync.minus((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+                sync = $ceylontmp$op$15;
+            }
+            returning $ceylontmp$op$15;
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric $ceylontmp$op$16 = sync.times((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+                sync = $ceylontmp$op$16;
+            }
+            returning $ceylontmp$op$16;
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric $ceylontmp$op$17 = sync.divided((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+                sync = $ceylontmp$op$17;
+            }
+            returning $ceylontmp$op$17;
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric $ceylontmp$op$18 = sync.remainder((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n);
+                sync = $ceylontmp$op$18;
+            }
+            returning $ceylontmp$op$18;
+        );
+        sync = ((.ceylon.language.Invertible<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Invertible)n).getNegated();
+        sync = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n;
+        sync = (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric scale$20 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)n;
+                .ceylon.language.Scalable<? super .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric, ? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric> scalable$19 = (.ceylon.language.Scalable<? super .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric, ? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Scalable)n;
+            }
+            returning scalable$19.scale(scale$20);
+        );
+    }
+    
+    private final void testBitwiseAssignmentOperators$priv$(final .java.lang.Object p1) {
+        .ceylon.language.Set<? extends .ceylon.language.Integer> sync = null;
+        sync = ((.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)p1).<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)p1);
+        sync = ((.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)p1).<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)p1);
+        sync = ((.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)p1).<.ceylon.language.Integer>complement(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)p1);
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$21 = sync.<.ceylon.language.Integer>intersection(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)p1);
+                sync = $ceylontmp$op$21;
+            }
+            returning $ceylontmp$op$21;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$22 = sync.<.ceylon.language.Integer>union(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)p1);
+                sync = $ceylontmp$op$22;
+            }
+            returning $ceylontmp$op$22;
+        );
+        (
+            let
+            {
+                .ceylon.language.Set<? extends .ceylon.language.Integer> $ceylontmp$op$23 = sync.<.ceylon.language.Integer>complement(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.ceylon.language.Set)p1);
+                sync = $ceylontmp$op$23;
+            }
+            returning $ceylontmp$op$23;
+        );
+    }
+    
+    private final void testComparisonOperators$priv$(final .java.lang.Object p1, final .java.lang.Object erasedTest, final .java.lang.Object container) {
+        boolean sync = false;
+        sync = erasedTest == erasedTest;
+        sync = p1.equals(p1);
+        sync = ((.ceylon.language.Comparable)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1).smallerThan((.ceylon.language.Comparable)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
+        final .ceylon.language.Comparison cmp = ((.ceylon.language.Comparable)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1).compare((.ceylon.language.Comparable)(.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
+        sync = (
+            let
+            {
+                .java.lang.Object $ceylontmp$24 = p1;
+            }
+            returning ((.ceylon.language.Category<? super .java.lang.Object>)(.ceylon.language.Category)container).contains($ceylontmp$24);
+        );
+        if (p1 instanceof .ceylon.language.Category && .org.eclipse.ceylon.compiler.java.Util.isReified(p1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Category.class, .ceylon.language.Object.$TypeDescriptor$))) {
+        }
+        sync = (
+            let
+            {
+                .java.lang.Object $ceylontmp$27 = p1;
+            }
+            returning $ceylontmp$27 instanceof .ceylon.language.Category && .org.eclipse.ceylon.compiler.java.Util.isReified($ceylontmp$27, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Category.class, .ceylon.language.Object.$TypeDescriptor$));
+        );
+    }
+    
+    private final <T>void testSequences$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object p1, final .java.lang.Object leftsAndRights, final .java.lang.Object leftsAndRightsEntries, final .java.lang.Object topsOrNull) {
+        final .java.lang.Object naturals = .ceylon.language.nothing_.get_();
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric n5 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)((.ceylon.language.Correspondence)naturals).get((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
+        final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top t = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)((.ceylon.language.Correspondence)leftsAndRights).get((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
+        final .java.lang.Object naturalsOrNull = .ceylon.language.nothing_.get_();
+        .java.lang.Object subrange = null;
+        subrange = ((.ceylon.language.Ranged)naturals).span((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1, (.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
+        subrange = ((.ceylon.language.Ranged)naturals).spanFrom((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
+        subrange = ((.ceylon.language.Ranged)naturals).spanTo((.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric)p1);
+        final .ceylon.language.Sequential<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric> plainIntegers = (.ceylon.language.Sequential<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.EmptyInterface.$TypeDescriptor$), new .java.lang.Object[]{p1});
+        .java.lang.Object elem$29;
+        .ceylon.language.Iterator<? extends .java.lang.Object> it$iterator$$30 = ((.ceylon.language.Iterable)naturals).iterator();
+        loop_0: while (!((elem$29 = it$iterator$$30.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.Object it = elem$29;
+            final .ceylon.language.Numeric<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric> n6 = (.ceylon.language.Numeric<.org.eclipse.ceylon.compiler.java.test.expression.erasure.MyNumeric>)(.ceylon.language.Numeric)it;
+        }
+        .java.lang.Object elem$32;
+        .ceylon.language.Iterator<? extends .java.lang.Object> itLeft$iterator$$33 = ((.ceylon.language.Iterable)leftsAndRights).iterator();
+        loop_1: while (!((elem$32 = itLeft$iterator$$33.next()) instanceof .ceylon.language.Finished)) {
+            final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left itLeft = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)elem$32;
+            itLeft.top();
+            itLeft.left();
+        }
+        .java.lang.Object elem$35;
+        .ceylon.language.Iterator<? extends .java.lang.Object> itErased$iterator$$36 = ((.ceylon.language.Iterable)leftsAndRights).iterator();
+        loop_2: while (!((elem$35 = itErased$iterator$$36.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.Object itErased = elem$35;
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)itErased).top();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)itErased).left();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Right)itErased).right();
+        }
+        .java.lang.Object elem$38;
+        .ceylon.language.Iterator<? extends .java.lang.Object> itErasedValue$iterator$$39 = ((.ceylon.language.Iterable)leftsAndRights).iterator();
+        loop_3: while (!((elem$38 = itErasedValue$iterator$$39.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.Object itErasedValue = elem$38;
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)itErasedValue).top();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)itErasedValue).left();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Right)itErasedValue).right();
+        }
+        .java.lang.Object elem$41;
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>> elem$41$iterator$ = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRightsEntries).iterator();
+        loop_4: while (!((elem$41 = elem$41$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left itLeft1 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)((.ceylon.language.Entry)elem$41).getKey();
+            final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left itLeft2 = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)((.ceylon.language.Entry)elem$41).getItem();
+            itLeft1.top();
+            itLeft1.left();
+            itLeft2.top();
+            itLeft2.left();
+        }
+        .java.lang.Object elem$43;
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>> elem$43$iterator$ = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRightsEntries).iterator();
+        loop_5: while (!((elem$43 = elem$43$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.Object itErased1 = ((.ceylon.language.Entry)elem$43).getKey();
+            final .java.lang.Object itErased2 = ((.ceylon.language.Entry)elem$43).getItem();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)itErased1).top();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)itErased1).left();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Right)itErased1).right();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)itErased2).top();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)itErased2).left();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Right)itErased2).right();
+        }
+        .java.lang.Object elem$45;
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>> elem$45$iterator$ = ((.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .java.lang.Object, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRightsEntries).iterator();
+        loop_6: while (!((elem$45 = elem$45$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            final .java.lang.Object itErasedValue1 = ((.ceylon.language.Entry)elem$45).getKey();
+            final .java.lang.Object itErasedValue2 = ((.ceylon.language.Entry)elem$45).getItem();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)itErasedValue1).top();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)itErasedValue1).left();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Right)itErasedValue1).right();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)itErasedValue2).top();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left)itErasedValue2).left();
+            ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Right)itErasedValue2).right();
+        }
+        final .ceylon.language.Sequence<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top> topSequence = (.ceylon.language.Sequence<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle.$TypeDescriptor$, new .java.lang.Object[]{new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle()});
+        boolean loopentered$46 = false;
+        .java.lang.Object elem$47;
+        .ceylon.language.Iterator<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top> it$iterator$$48 = topSequence.iterator();
+        loop_7: while (!((elem$47 = it$iterator$$48.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$46 = true;
+            final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top it = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)elem$47;
+            it.top();
+        }
+        if (!loopentered$46) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        long sync = 0L;
+        sync = ((.ceylon.language.Iterable)naturals).getSize();
+        sync = ((.ceylon.language.Iterable)leftsAndRights).getSize();
+        final .ceylon.language.Sequential spreadMember = (.ceylon.language.Sequential)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$49$iterable$ = (.ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator iterator() {
+                    return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$)){
+                        final .ceylon.language.Iterator<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top> spread$49$iterator$ = spread$49$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$49$element$;
+                            if (!((spread$49$element$ = spread$49$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$49$element$ = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)spread$49$element$).getLeftAndRightAttribute();
+                            }
+                            return spread$49$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        .ceylon.language.Sequential spreadInvocation = null;
+        spreadInvocation = (.ceylon.language.Sequential)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$50$iterable$ = (.ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
+                final .java.lang.Object spread$50$arg$0 = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle();
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator iterator() {
+                    return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$)){
+                        final .ceylon.language.Iterator<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top> spread$50$iterator$ = spread$50$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$50$element$;
+                            if (!((spread$50$element$ = spread$50$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$50$element$ = ((.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)spread$50$element$).leftAndRightMethod(spread$50$arg$0);
+                            }
+                            return spread$50$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        spreadInvocation = (.ceylon.language.Sequential)(
+            let
+            {
+                final .ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object> spread$52$iterable$ = (.ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top, ? extends .java.lang.Object>)(.ceylon.language.Iterable)leftsAndRights;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator iterator() {
+                    return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Left.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.expression.erasure.Right.$TypeDescriptor$)){
+                        final .ceylon.language.Iterator<? extends .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top> spread$52$iterator$ = spread$52$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$52$element$;
+                            if (!((spread$52$element$ = spread$52$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$52$element$ = (
+                                    let
+                                    {
+                                        .org.eclipse.ceylon.compiler.java.test.expression.erasure.Top arg$51$callable$ = (.org.eclipse.ceylon.compiler.java.test.expression.erasure.Top)spread$52$element$;
+                                        .java.lang.Object arg$51$0 = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CMiddle();
+                                    }
+                                    returning arg$51$callable$.leftAndRightMethod(arg$51$0);
+                                );
+                            }
+                            return spread$52$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.erasure.Test.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.erasure.Test.class);
+}
+final class topLevelLeftAttribute_ {
+    
+    private topLevelLeftAttribute_() {
+    }
+    private static .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            .org.eclipse.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$object$ = new .org.eclipse.ceylon.compiler.java.test.expression.erasure.CLeft();
+            .org.eclipse.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            .org.eclipse.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$init$$object$ = false;
+        }
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelLeftAttribute\' before it was set");
+        }
+    }
+    
+    public static void set_(final .org.eclipse.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
+        if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+        .org.eclipse.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$object$ = topLevelLeftAttribute;
+    }
+}

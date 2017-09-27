@@ -1,0 +1,52 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.$goto;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class package_ {
+    
+    private package_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static long $package() {
+        return 0L;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$package();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class module_ {
+    
+    private module_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static long module() {
+        return 0L;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.module();
+    }
+}
+final class user_ {
+    
+    private user_() {
+    }
+    
+    static void user() {
+        final long a = .org.eclipse.ceylon.compiler.java.test.quoting.$goto.package_.$package();
+        final long b = .org.eclipse.ceylon.compiler.java.test.quoting.$goto.module_.module();
+    }
+}

@@ -1,4 +1,4 @@
-import com.redhat.ceylon.model.loader.OsgiVersion
+import org.eclipse.ceylon.model.loader.OsgiVersion
 
 apply plugin : CeylonCommonBuildProperties
 
@@ -6,7 +6,7 @@ ext {
     ceylonModuleName = 'model'
     dynamicImportsValue = [
         "ceylon.language" : "ceylon.language",
-        "com.redhat.ceylon.compiler.java" : "com.redhat.ceylon.compiler"]
+        "org.eclipse.ceylon.compiler.java" : "org.eclipse.ceylon.compiler"]
             .collectEntries { pkg , mod ->
             [ ("${pkg}.*") : OsgiVersion.fromCeylonVersion(cbp."module.${mod}.version")]
         }

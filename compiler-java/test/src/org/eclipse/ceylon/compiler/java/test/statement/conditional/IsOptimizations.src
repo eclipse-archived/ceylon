@@ -1,0 +1,287 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class IsOptInvar<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IsOptInvar(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar.class, $reified$T);
+    }
+}
+class IsOptCov<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IsOptCov(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov.class, $reified$T);
+    }
+}
+class IsOptContra<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IsOptContra(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContra.class, $reified$T);
+    }
+}
+class IsOptTop implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IsOptTop() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop.class);
+}
+class IsOptMiddle extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop {
+    
+    IsOptMiddle() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptMiddle.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptMiddle.class);
+}
+class IsOptInvarBound<T extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptMiddle> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IsOptInvarBound(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound.class, $reified$T);
+    }
+}
+class IsOptCovBound<T extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptMiddle> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IsOptCovBound(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCovBound.class, $reified$T);
+    }
+}
+class IsOptContraBound<T extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptMiddle> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IsOptContraBound(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContraBound.class, $reified$T);
+    }
+}
+abstract class IsOptConstrained<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IsOptConstrained(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained.class, $reified$T);
+    }
+}
+class IsOptConstrainedSub<T> extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<T> {
+    
+    IsOptConstrainedSub(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrainedSub.class, $reified$T);
+    }
+}
+abstract class IsOptSelfType<T extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<T>> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IsOptSelfType(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType.class, $reified$T);
+    }
+}
+class IsOptSelfTypeA extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeA> {
+    
+    IsOptSelfTypeA() {
+        super(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeA.$TypeDescriptor$);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeA.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeA.class);
+}
+class IsOptSelfTypeB extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeB> {
+    
+    IsOptSelfTypeB() {
+        super(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeB.$TypeDescriptor$);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeB.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeB.class);
+}
+class IsOpt implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IsOpt() {
+    }
+    
+    private final void testClassShortcircuit$priv$(final .java.lang.Object val, final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .java.lang.Object> val2) {
+        .java.lang.Object val$1;
+        if ((val$1 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov && .org.eclipse.ceylon.compiler.java.Util.isReified(val$1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .ceylon.language.Integer> val$2 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .ceylon.language.Integer>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov)val$1;
+        }
+        .java.lang.Object val2$4;
+        if (.org.eclipse.ceylon.compiler.java.Util.isReified(val2$4 = val2, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .ceylon.language.Integer> val2$5 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .ceylon.language.Integer>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov)val2$4;
+        }
+    }
+    
+    private final <Y extends .ceylon.language.Integer>void testTpShortcircuit$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final .java.lang.Object val, final long val2) {
+        .java.lang.Object val$7;
+        if ((val$7 = val) instanceof .ceylon.language.Integer && .org.eclipse.ceylon.compiler.java.Util.isReified(val$7, $reified$Y)) {
+            final Y val$8 = (Y)val$7;
+        }
+        .java.lang.Object val2$10;
+        if (.org.eclipse.ceylon.compiler.java.Util.isReified(val2$10 = .ceylon.language.Integer.instance(val2), $reified$Y)) {
+            final Y val2$11 = (Y)val2$10;
+        }
+    }
+    
+    private final <T>void testTypeParamAnything$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object val) {
+        .java.lang.Object val$13;
+        if ((val$13 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar && .org.eclipse.ceylon.compiler.java.Util.isReified(val$13, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar.class, .ceylon.language.Anything.$TypeDescriptor$))) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.java.lang.Object> val$14 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar)val$13;
+        }
+        .java.lang.Object val$16;
+        if ((val$16 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .java.lang.Object> val$17 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov<? extends .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCov)val$16;
+        }
+        .java.lang.Object val$19;
+        if ((val$19 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContra && .org.eclipse.ceylon.compiler.java.Util.isReified(val$19, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContra.class, .ceylon.language.Anything.$TypeDescriptor$))) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContra<? super .java.lang.Object> val$20 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContra<? super .java.lang.Object>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContra)val$19;
+        }
+    }
+    
+    private final void testTypeParamSupertypeOfUpperBound$priv$(final .java.lang.Object val) {
+        .java.lang.Object val$22;
+        if ((val$22 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound && .org.eclipse.ceylon.compiler.java.Util.isReified(val$22, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound.class, .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop.$TypeDescriptor$))) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound<.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop> val$23 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound<.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvarBound)val$22;
+        }
+        .java.lang.Object val$25;
+        if ((val$25 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCovBound) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCovBound<? extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop> val$26 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCovBound<? extends .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptCovBound)val$25;
+        }
+        .java.lang.Object val$28;
+        if ((val$28 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContraBound && .org.eclipse.ceylon.compiler.java.Util.isReified(val$28, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContraBound.class, .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop.$TypeDescriptor$))) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContraBound<? super .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop> val$29 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContraBound<? super .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptTop>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptContraBound)val$28;
+        }
+    }
+    
+    private final <T>void testConstrainedTypes$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object val) {
+        .java.lang.Object val$31;
+        if ((val$31 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained && .org.eclipse.ceylon.compiler.java.Util.isReified(val$31, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained.class, $reified$T))) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<T> val$38 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<T>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained)val$31;
+        } else {
+            .java.lang.Object val$33;
+            if ((val$33 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained && .org.eclipse.ceylon.compiler.java.Util.isReified(val$33, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$)))) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained val$37 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained)val$33;
+            } else {
+                .java.lang.Object val$35;
+                if ((val$35 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained && .org.eclipse.ceylon.compiler.java.Util.isReified(val$35, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained.class, .ceylon.language.Boolean.$TypeDescriptor$))) {
+                    final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<.ceylon.language.Boolean> val$36 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained<.ceylon.language.Boolean>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptConstrained)val$35;
+                }
+            }
+        }
+    }
+    
+    private final <T>void testSelfTypes$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object val) {
+        .java.lang.Object val$40;
+        if ((val$40 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType && .org.eclipse.ceylon.compiler.java.Util.isReified(val$40, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType.class, $reified$T))) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<T> val$51 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<T>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType)val$40;
+        } else {
+            .java.lang.Object val$42;
+            if ((val$42 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType && .org.eclipse.ceylon.compiler.java.Util.isReified(val$42, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeA.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeB.$TypeDescriptor$)))) {
+                final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType val$50 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType)val$42;
+            } else {
+                .java.lang.Object val$44;
+                if ((val$44 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeA) {
+                    final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeA> val$49 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfTypeA>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType)val$44;
+                } else {
+                    .java.lang.Object val$46;
+                    if ((
+                        let
+                        {
+                            .java.lang.Object $ceylontmp$47 = val$46 = val;
+                        }
+                        returning false;
+                    )) {
+                        final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<.ceylon.language.Boolean> val$48 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType<.ceylon.language.Boolean>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptSelfType)val$46;
+                    }
+                }
+            }
+        }
+    }
+    
+    private final <T>void testComplement$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object val) {
+        .java.lang.Object val$53;
+        if (!((val$53 = val) instanceof .ceylon.language.String || val$53 instanceof .ceylon.language.Integer)) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar<T> val$57 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar<T>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar)val$53;
+        } else {
+            .java.lang.Object val$55;
+            if ((val$55 = val) instanceof .ceylon.language.Integer) {
+                final long val$56 = ((.ceylon.language.Integer)val$55).longValue();
+            }
+        }
+    }
+    
+    private final <T>void testComplement2$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.Object val) {
+        if (!(val instanceof .ceylon.language.String || val instanceof .ceylon.language.Integer)) {
+        }
+        .java.lang.Object val$61;
+        if (!((val$61 = val) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar && .org.eclipse.ceylon.compiler.java.Util.isReified(val$61, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar.class, .ceylon.language.String.$TypeDescriptor$)) || val$61 instanceof .ceylon.language.String || val$61 instanceof .ceylon.language.Integer)) {
+            final .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.ceylon.language.Integer> val$62 = (.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar<.ceylon.language.Integer>)(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOptInvar)val$61;
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOpt.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.IsOpt.class);
+}

@@ -1,0 +1,47 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class AssertConditionListIsBool implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertConditionListIsBool() {
+    }
+    
+    private final void m$priv$(final .java.lang.Object x) {
+        final .java.lang.String x$1;
+        .java.lang.Object x$0 = null;
+        if ((x$0 = x) instanceof .ceylon.language.String) {
+            x$1 = ((.ceylon.language.String)x$0).toString();
+            .ceylon.language.String lhs$2 = .ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$1));
+            .ceylon.language.String rhs$3 = .ceylon.language.String.instance("S");
+            if (lhs$2.equals(rhs$3)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is String x" + .java.lang.System.lineSeparator() + "\tviolated " + "x.uppercased==\"S\"") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$2, rhs$3));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String x" + .java.lang.System.lineSeparator() + "\tuntested " + "x.uppercased==\"S\"") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.String.$TypeDescriptor$, x$0));
+        }
+        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(x$1)));
+    }
+    
+    private final void mvar$priv$(final .java.lang.Object x) {
+        final .java.lang.String z$5;
+        .java.lang.Object z$4 = null;
+        if ((z$4 = x) instanceof .ceylon.language.String) {
+            z$5 = ((.ceylon.language.String)z$4).toString();
+            .ceylon.language.String lhs$6 = .ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$5));
+            .ceylon.language.String rhs$7 = .ceylon.language.String.instance("S");
+            if (lhs$6.equals(rhs$7)) {
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tunviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tviolated " + "z.uppercased==\"S\"") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$6, rhs$7));
+            }
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String z=x" + .java.lang.System.lineSeparator() + "\tuntested " + "z.uppercased==\"S\"") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.String.$TypeDescriptor$, z$4));
+        }
+        .ceylon.language.print_.print(.ceylon.language.String.instance(.ceylon.language.String.getUppercased(z$5)));
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsBool.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertConditionListIsBool.class);
+}

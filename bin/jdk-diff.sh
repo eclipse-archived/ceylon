@@ -34,27 +34,27 @@ ln -s "../$OLD" "$OLD"
 
 # Rename packages to where the JDK expects them
 renamePackage langtools/src/share/classes \
-  com.redhat.ceylon.javax.annotation.processing \
+  org.eclipse.ceylon.javax.annotation.processing \
   javax.annotation.processing \
   renames
 
 renamePackage langtools/src/share/classes \
-  com.redhat.ceylon.javax.lang.model \
+  org.eclipse.ceylon.javax.lang.model \
   javax.lang.model \
   renames
   
 renamePackage langtools/src/share/classes \
-  com.redhat.ceylon.javax.tools \
+  org.eclipse.ceylon.javax.tools \
   javax.tools \
   renames
   
 renamePackage langtools/src/share/classes \
-  com.redhat.ceylon.langtools.source \
+  org.eclipse.ceylon.langtools.source \
   com.sun.source \
   renames
   
 renamePackage langtools/src/share/classes \
-  com.redhat.ceylon.langtools.tools.javac \
+  org.eclipse.ceylon.langtools.tools.javac \
   com.sun.tools.javac \
   renames
 
@@ -77,7 +77,7 @@ cd langtools-classfile
 ln -s "../$OLD/src/share/classes" "src-old"
 
 renamePackage ./src \
-  com.redhat.ceylon.langtools.classfile \
+  org.eclipse.ceylon.langtools.classfile \
   com.sun.tools.classfile \
   renames
   

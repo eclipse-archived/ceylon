@@ -1,0 +1,41 @@
+package org.eclipse.ceylon.compiler.java.test.quoting.$goto;
+
+class KeywordInClassObject implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    KeywordInClassObject() {
+        this.$goto = null;
+    }
+    private transient .org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ $goto;
+    
+    final class goto_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private goto_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getGoto$priv$";
+            return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.this, .org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.class, $name$);
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_.class));
+        }
+    }
+    
+    private final .org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_ getGoto$priv$() {
+        if ($goto == null) $goto = new .org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.goto_();
+        return $goto;
+    }
+    
+    private final void m$priv$() {
+        final .java.lang.String s = getGoto$priv$().toString();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.quoting.$goto.KeywordInClassObject.class);
+}

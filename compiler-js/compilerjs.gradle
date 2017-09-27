@@ -24,9 +24,9 @@ dependencies {
 }
 
 ext {
-    jsLangPath = "ceylon/language/${cbp.'module.com.redhat.ceylon.compiler.js.version'}"
-    jsLangModule = "${jsLangPath}/ceylon.language-${cbp.'module.com.redhat.ceylon.compiler.js.version'}.js"
-    jsLangModel = "${jsLangPath}/ceylon.language-${cbp.'module.com.redhat.ceylon.compiler.js.version'}-model.js"
+    jsLangPath = "ceylon/language/${cbp.'module.org.eclipse.ceylon.compiler.js.version'}"
+    jsLangModule = "${jsLangPath}/ceylon.language-${cbp.'module.org.eclipse.ceylon.compiler.js.version'}.js"
+    jsLangModel = "${jsLangPath}/ceylon.language-${cbp.'module.org.eclipse.ceylon.compiler.js.version'}-model.js"
     runtimeDir = "${buildDir}/runtime"
 }
 
@@ -38,8 +38,8 @@ sourceSets {
         // TODO: If these files could be moved to all be under src/main/resources then this block can be eliminated
         resources {
             srcDirs = ['src/main/java']
-            include "com/redhat/**/resources/**"
-            include "com/redhat/**/*.properties"
+            include "org/eclipse/**/resources/**"
+            include "org/eclipse/**/*.properties"
             include "META-INF/**"
         }
     }
@@ -75,7 +75,7 @@ task buildLanguageModule( type : JavaExec ) {
 
     group 'Build'
     description 'Generates the ceylon.language.js file'
-    main 'com.redhat.ceylon.compiler.js.Stitcher'
+    main 'org.eclipse.ceylon.compiler.js.Stitcher'
     args file("${project(':language').projectDir}/runtime-js/MASTER.txt")
     args file("${runtimeDir}/${jsLangModule}")
     outputs.file "${runtimeDir}/${jsLangModule}"

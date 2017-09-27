@@ -25,6 +25,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.ceylon.cmr.api.RepositoryManager;
+import org.eclipse.ceylon.common.FileUtil;
+import org.eclipse.ceylon.common.Versions;
 import org.jboss.modules.Main;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.exporter.ZipExporter;
@@ -33,10 +36,6 @@ import org.junit.Assert;
 import ceylon.modules.bootstrap.loader.InitialModuleLoader;
 import ceylon.modules.spi.Argument;
 import ceylon.modules.spi.Constants;
-
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.Versions;
 
 /**
  * Modules test helper.

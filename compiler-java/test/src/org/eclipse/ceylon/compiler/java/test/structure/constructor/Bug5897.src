@@ -1,0 +1,152 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1C",
+        "1C2"})
+final class bug5897_ {
+    
+    private bug5897_() {
+    }
+    
+    static void bug5897() {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("C")
+        @.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = C.D.class)})
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        class C implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            C() {
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object D$new$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            C.D$create $name$) {
+                return new D($name$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("create")
+            class D$create {
+                
+                D$create() {
+                }
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.org.eclipse.ceylon.compiler.java.metadata.Container(
+                    klass = C.class,
+                    isStatic = false)
+            @.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+            class D implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                @.ceylon.language.SharedAnnotation$annotation$
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("create")
+                private D(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                C.D$create $name$) {
+                }
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.bug5897_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.D.class));
+                }
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.bug5897_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
+            }
+        }
+        final C c = new C();
+        final C.D d = (C.D)c.D$new$((C.D$create)null);
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("C2")
+        @.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = C2.D.class)})
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        class C2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            C2() {
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object D$new$(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            C2.D$create $name$) {
+                return new D($name$);
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            @.org.eclipse.ceylon.compiler.java.metadata.ConstructorName("create")
+            class D$create {
+                
+                D$create() {
+                }
+            }
+            
+            @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.org.eclipse.ceylon.compiler.java.metadata.Container(
+                    klass = C2.class,
+                    isStatic = false)
+            @.org.eclipse.ceylon.compiler.java.metadata.Class(constructors = true)
+            class D implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                @.ceylon.language.SharedAnnotation$annotation$
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("create")
+                private D(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                C2.D$create $name$) {
+                }
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.bug5897_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C2.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C2.D.class));
+                }
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.bug5897_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C2.class));
+            }
+        }
+        final C2 c2 = new C2();
+        final C2.D d2 = ((.ceylon.language.Callable<? extends C2.D>)new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends C2.D>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.bug5897_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C2.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C2.D.class)), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.bug5897_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C2.class))), "C2.D.create()(C2)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.Callable<? extends C2.D> $call$(final .java.lang.Object $param$0) {
+                final C2 $instance$ = (C2)$param$0;
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<C2.D>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.constructor.bug5897_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C2.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C2.D.class)), .ceylon.language.Empty.$TypeDescriptor$, "C2.D.create()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public C2.D $call$() {
+                        return (C2.D)$instance$.D$new$((C2.D$create)null);
+                    }
+                };
+            }
+        }.$call$(c2)).$call$();
+    }
+}

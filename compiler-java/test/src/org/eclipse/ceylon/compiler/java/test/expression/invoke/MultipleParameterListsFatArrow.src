@@ -1,0 +1,18 @@
+package org.eclipse.ceylon.compiler.java.test.expression.invoke;
+
+final class mplFatArrow_ {
+    
+    private mplFatArrow_() {
+    }
+    
+    static .ceylon.language.Callable<? extends .java.lang.Object> mplFatArrow() {
+        return new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                new .ceylon.language.String(new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Character.instance(32)));
+                return null;
+            }
+        };
+    }
+}

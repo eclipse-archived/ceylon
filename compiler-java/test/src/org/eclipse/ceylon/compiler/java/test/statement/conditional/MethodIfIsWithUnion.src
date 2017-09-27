@@ -1,0 +1,27 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfIsUnion implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodIfIsUnion() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        if (x instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo || x instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bar) {
+            ((.org.eclipse.ceylon.compiler.java.test.statement.conditional.Common)x).common();
+        }
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        .java.lang.Object x$3;
+        if ((x$3 = y) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo || x$3 instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bar) {
+            final .java.lang.Object x$4 = x$3;
+            ((.org.eclipse.ceylon.compiler.java.test.statement.conditional.Common)x$4).common();
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.MethodIfIsUnion.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.MethodIfIsUnion.class);
+}

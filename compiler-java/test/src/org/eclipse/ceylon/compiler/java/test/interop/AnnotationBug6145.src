@@ -1,0 +1,25 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+@.ceylon.language.SharedAnnotation$annotation$
+public class AnnotationBug6145 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public AnnotationBug6145() {
+    }
+    
+    @.javax.ws.rs.Produces(.javax.ws.rs.core.MediaType.TEXT_PLAIN)
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final .java.lang.String $getString() {
+        return "Hello!";
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.interop.AnnotationBug6145();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.AnnotationBug6145.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.AnnotationBug6145.class);
+}

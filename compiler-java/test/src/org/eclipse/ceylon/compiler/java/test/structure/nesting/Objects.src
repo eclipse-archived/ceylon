@@ -1,0 +1,166 @@
+package org.eclipse.ceylon.compiler.java.test.structure.nesting;
+
+interface Objects$objects_o$DummyI {
+}
+interface Objects$ObjectsI {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl $org$eclipse$ceylon$compiler$java$test$structure$nesting$Objects$ObjectsI$impl();
+}
+class Objects implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Objects() {
+        final .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_ objects_o = new .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_();
+    }
+    
+    abstract class Dummy implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Dummy() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.Dummy.class));
+        }
+    }
+    
+    final class objects_o_ extends .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+        
+        private objects_o_() {
+            super();
+        }
+        
+        class DummyC implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            DummyC() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.DummyC.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.class));
+        }
+    }
+    
+    class ObjectsC implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        ObjectsC() {
+            final .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_ objectsc_o = new .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_();
+        }
+        
+        final class objectsc_o_ extends .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+            
+            private objectsc_o_() {
+                super();
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_.class));
+            }
+        }
+        
+        class ObjectsCC implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            ObjectsCC() {
+                final .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_ objectscc_o = new .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_();
+            }
+            
+            final class objectscc_o_ extends .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+                
+                private objectscc_o_() {
+                    super();
+                }
+                
+                @.java.lang.Override
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class));
+        }
+    }
+    
+    final class ObjectsI$impl implements .java.io.Serializable {
+        
+        ObjectsI$impl(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this) {
+            this.$this = $this;
+        }
+        private final .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this;
+        
+        class ObjectsIC implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            ObjectsIC() {
+                final .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_ objectsic_o = new .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_();
+            }
+            
+            final class objectsic_o_ extends .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+                
+                private objectsic_o_() {
+                    super();
+                }
+                
+                @.java.lang.Override
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.class));
+            }
+        }
+    }
+    
+    private final void local$priv$() {
+        
+        final class local_o_ extends .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+            
+            private local_o_() {
+                super();
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("local")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(local_o_.class));
+            }
+        }
+        final local_o_ local_o = new local_o_();
+        try {
+            
+            final class local_o2_ extends .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+                
+                private local_o2_() {
+                    super();
+                }
+                
+                @.java.lang.Override
+                public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("local")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(local_o2_.class));
+                }
+            }
+            final local_o2_ local_o2 = new local_o2_();
+        } finally {
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.Objects.class);
+}

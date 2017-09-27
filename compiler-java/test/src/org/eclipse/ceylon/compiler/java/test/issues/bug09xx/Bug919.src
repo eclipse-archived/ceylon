@@ -1,0 +1,226 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug09xx;
+
+class Bug919 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug919() {
+    }
+    
+    private final void m$priv$() {
+        final .ceylon.language.Sequence t = new .ceylon.language.Tuple(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.String.instance("a"), new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Sequential<? extends .ceylon.language.Empty>>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_(), (.ceylon.language.Sequential).ceylon.language.empty_.get_()));
+        final .ceylon.language.Sequence t2 = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .java.lang.Object[]{
+                .ceylon.language.String.instance("a"),
+                .ceylon.language.empty_.get_()});
+        final .ceylon.language.Iterable t3 = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 5, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.empty_.get_();
+                
+                case 1: 
+                    return new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 5, false){
+                        
+                        @.java.lang.Override
+                        protected final .java.lang.Object $evaluate$(int $index$) {
+                            switch ($index$) {
+                            case 0: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+                            
+                            case 1: 
+                                return .ceylon.language.empty_.get_();
+                            
+                            case 2: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("c"));
+                            
+                            case 3: 
+                                return .ceylon.language.empty_.get_();
+                            
+                            case 4: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("d"), .ceylon.language.String.instance("e"));
+                            
+                            default: 
+                                return null;
+                            
+                            }
+                        }
+                    };
+                
+                case 2: 
+                    return .ceylon.language.empty_.get_();
+                
+                case 3: 
+                    return new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 5, false){
+                        
+                        @.java.lang.Override
+                        protected final .java.lang.Object $evaluate$(int $index$) {
+                            switch ($index$) {
+                            case 0: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+                            
+                            case 1: 
+                                return .ceylon.language.empty_.get_();
+                            
+                            case 2: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("c"));
+                            
+                            case 3: 
+                                return .ceylon.language.empty_.get_();
+                            
+                            case 4: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("d"), .ceylon.language.String.instance("e"));
+                            
+                            default: 
+                                return null;
+                            
+                            }
+                        }
+                    };
+                
+                case 4: 
+                    return .ceylon.language.empty_.get_();
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final .ceylon.language.Sequence t4 = new .ceylon.language.Tuple(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$)), .ceylon.language.empty_.get_(), new .ceylon.language.Tuple<.ceylon.language.Sequence<? extends .ceylon.language.String>, .ceylon.language.Sequence<? extends .ceylon.language.String>, .ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.String.instance("c"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()), (.ceylon.language.Sequential).ceylon.language.empty_.get_()));
+        final .ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> t5 = new .ceylon.language.Tuple<.ceylon.language.Sequential<? extends .ceylon.language.String>, .ceylon.language.Sequential<? extends .ceylon.language.String>, .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, (.ceylon.language.Sequential).ceylon.language.empty_.get_(), (.ceylon.language.Sequential).ceylon.language.empty_.get_());
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug919.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug09xx.Bug919.class);
+}
+public final class bug919_2_ {
+    
+    private bug919_2_() {
+    }
+    
+    public static void bug919_2() {
+        .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.bug919_3_.bug919_3((.ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Empty.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Empty, .java.lang.Object>(.ceylon.language.Empty.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                        
+                        @.java.lang.Override
+                        protected final .java.lang.Object $evaluate$(int $index$) {
+                            switch ($index$) {
+                            case 0: 
+                                return .ceylon.language.empty_.get_();
+                            
+                            default: 
+                                return null;
+                            
+                            }
+                        }
+                    };
+                
+                case 1: 
+                    return .ceylon.language.empty_.get_();
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        });
+        .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.bug919_3_.bug919_3((.ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)new .ceylon.language.Tuple(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Empty.$TypeDescriptor$), new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Sequential<? extends .ceylon.language.Empty>>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_(), (.ceylon.language.Sequential).ceylon.language.empty_.get_()), new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Sequential<? extends .ceylon.language.Empty>>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_(), (.ceylon.language.Sequential).ceylon.language.empty_.get_())));
+        .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.bug919_3_.bug919_3((.ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 5, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.empty_.get_();
+                
+                case 1: 
+                    return new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 5, false){
+                        
+                        @.java.lang.Override
+                        protected final .java.lang.Object $evaluate$(int $index$) {
+                            switch ($index$) {
+                            case 0: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+                            
+                            case 1: 
+                                return .ceylon.language.empty_.get_();
+                            
+                            case 2: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("c"));
+                            
+                            case 3: 
+                                return .ceylon.language.empty_.get_();
+                            
+                            case 4: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("d"), .ceylon.language.String.instance("e"));
+                            
+                            default: 
+                                return null;
+                            
+                            }
+                        }
+                    };
+                
+                case 2: 
+                    return .ceylon.language.empty_.get_();
+                
+                case 3: 
+                    return new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .ceylon.language.Empty.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 5, false){
+                        
+                        @.java.lang.Override
+                        protected final .java.lang.Object $evaluate$(int $index$) {
+                            switch ($index$) {
+                            case 0: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"));
+                            
+                            case 1: 
+                                return .ceylon.language.empty_.get_();
+                            
+                            case 2: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("c"));
+                            
+                            case 3: 
+                                return .ceylon.language.empty_.get_();
+                            
+                            case 4: 
+                                return new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("d"), .ceylon.language.String.instance("e"));
+                            
+                            default: 
+                                return null;
+                            
+                            }
+                        }
+                    };
+                
+                case 4: 
+                    return .ceylon.language.empty_.get_();
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug09xx.bug919_2_.bug919_2();
+    }
+}
+public final class bug919_3_ {
+    
+    private bug919_3_() {
+    }
+    
+    public static void bug919_3(final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object>, ? extends .java.lang.Object> iterables) {
+    }
+}

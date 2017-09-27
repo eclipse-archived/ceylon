@@ -1,0 +1,189 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.DocAnnotation$annotation$(description = "Targeting annotations on a class")
+@.org.eclipse.ceylon.compiler.java.test.annotations.TypeTarget
+class HeuristicTarget1 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    HeuristicTarget1() {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.HeuristicTarget1.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.HeuristicTarget1.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.DocAnnotation$annotation$(description = "Targeting annotations on parameters and attributes")
+class HeuristicTarget2 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected HeuristicTarget2() {
+        super();
+        this.s = null;
+        this.s2 = null;
+        this.s3 = null;
+    }
+    
+    HeuristicTarget2(@.org.eclipse.ceylon.compiler.java.metadata.Name("s")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.test.annotations.ParameterTarget
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .java.lang.String s, @.org.eclipse.ceylon.compiler.java.metadata.Name("s2")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.test.annotations.ParameterTarget
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .java.lang.String s2) {
+        this.s = s;
+        this.s2 = s2;
+        this.s3 = getS();
+    }
+    @.org.eclipse.ceylon.compiler.java.test.annotations.FieldTarget
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String s;
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.MethodTarget
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getS() {
+        return this.s;
+    }
+    @.org.eclipse.ceylon.compiler.java.test.annotations.FieldTarget
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String s2;
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.MethodTarget
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getS2() {
+        return this.s2;
+    }
+    @.org.eclipse.ceylon.compiler.java.test.annotations.FieldTarget
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private .java.lang.String s3;
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.MethodTarget
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getS3() {
+        return this.s3;
+    }
+    
+    public final void setS3(@.org.eclipse.ceylon.compiler.java.metadata.Name("s3")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String s3) {
+        this.s3 = s3;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.HeuristicTarget2.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.HeuristicTarget2.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("heuristicTarget3")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+final class heuristicTarget3_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private heuristicTarget3_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.heuristicTarget3_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.heuristicTarget3_.class);
+    @.org.eclipse.ceylon.compiler.java.test.annotations.FieldTarget
+    private static final .org.eclipse.ceylon.compiler.java.test.annotations.heuristicTarget3_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.annotations.heuristicTarget3_();
+            .org.eclipse.ceylon.compiler.java.test.annotations.heuristicTarget3_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.annotations.heuristicTarget3_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.ceylon.language.DocAnnotation$annotation$(description = "Targeting annotations on object definitions")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::heuristicTarget3")
+    static .org.eclipse.ceylon.compiler.java.test.annotations.heuristicTarget3_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.annotations.heuristicTarget3_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.annotations.heuristicTarget3_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'heuristicTarget3\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.heuristicTarget3_.$TypeDescriptor$;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationTypeTarget
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface HeuristicAnnotationClass$annotation$ {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.test.annotations.TypeTarget
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::HeuristicAnnotationClass,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
+final class HeuristicAnnotationClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass, .ceylon.language.meta.declaration.ClassDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    HeuristicAnnotationClass(.org.eclipse.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass$annotation$ anno) {
+        this();
+    }
+    
+    HeuristicAnnotationClass() {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.HeuristicAnnotationClass$annotation$.class;
+    }
+}

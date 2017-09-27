@@ -1,0 +1,71 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug17xx;
+
+interface Bug1765_I1<Element> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1$impl<? extends Element> $org$eclipse$ceylon$compiler$java$test$issues$bug17xx$Bug1765_I1$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element> bar1();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element> bar2();
+}
+final class Bug1765_I1$impl<Element> implements .java.io.Serializable {
+    
+    Bug1765_I1$impl(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element> $this) {
+        this.$reified$Element = $reified$Element;
+        this.$this = $this;
+    }
+    private .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element> $this;
+    
+    public void $refine$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element> bar1() {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element> bar2() {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+interface Bug1765_I2 extends .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<.ceylon.language.Integer> {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I2.class);
+}
+interface Bug1765_I3 extends .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<.ceylon.language.String> {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I3.class);
+}
+class Bug1765_Foo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I2, .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I3, .java.io.Serializable {
+    
+    Bug1765_Foo() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug17xx$Bug1765_I1$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1$impl<.ceylon.language.Integer>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends .ceylon.language.Integer>)(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1)this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1$impl<.ceylon.language.Integer> $org$eclipse$ceylon$compiler$java$test$issues$bug17xx$Bug1765_I1$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1$impl<? extends .ceylon.language.Integer> $org$eclipse$ceylon$compiler$java$test$issues$bug17xx$Bug1765_I1$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug17xx$Bug1765_I1$this$;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends .ceylon.language.Integer> bar2() {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends .ceylon.language.Integer>)(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1)((.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1$impl)$org$eclipse$ceylon$compiler$java$test$issues$bug17xx$Bug1765_I1$this$).bar2();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1 bar1() {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_I1<? extends .ceylon.language.Integer>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_Foo.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug17xx.Bug1765_Foo.class);
+}

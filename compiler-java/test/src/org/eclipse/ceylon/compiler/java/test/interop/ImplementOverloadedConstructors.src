@@ -1,0 +1,42 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+class ImplementOverloadedConstructor1 extends .org.eclipse.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.ceylon.language.Integer> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ImplementOverloadedConstructor1() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor1.class);
+}
+class ImplementOverloadedConstructor2 extends .org.eclipse.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.ceylon.language.Integer> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    ImplementOverloadedConstructor2() {
+        super(2L);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor2.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor2.class);
+}
+class ImplementOverloadedConstructor3 extends .org.eclipse.ceylon.compiler.java.test.interop.JavaWithOverloadedMembers<.ceylon.language.Integer> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    protected ImplementOverloadedConstructor3() {
+        super();
+    }
+    
+    ImplementOverloadedConstructor3(final long i) {
+        super(i);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor3.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.ImplementOverloadedConstructor3.class);
+}

@@ -1,0 +1,58 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+class SingletonExtendingNamed implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected SingletonExtendingNamed() {
+        super();
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed.foo_ foo_ = null;
+    
+    public static final class foo_ {
+        
+        foo_() {
+        }
+    }
+    
+    public SingletonExtendingNamed(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed.foo_ $name$) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed.class);
+}
+class SingletonExtendingNamed_Bar extends .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed implements .java.io.Serializable {
+    
+    private static final class bar_ {
+        
+        bar_() {
+        }
+    }
+    
+    private SingletonExtendingNamed_Bar(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.bar_ $name$) {
+        super(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed.foo_);
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar bar;
+    static {
+        bar = new SingletonExtendingNamed_Bar((.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.bar_)null);
+    }
+    
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar getSingletonExtendingNamed_Bar$bar() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.bar;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == bar) {
+            $name$ = "getSingletonExtendingNamed_Bar$bar";
+        } else throw new .org.eclipse.ceylon.compiler.java.language.EnumeratedTypeError("Instance not of any constructor");
+        return new .org.eclipse.ceylon.compiler.java.language.SerializationProxy(.org.eclipse.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.class, $name$);
+    }
+}

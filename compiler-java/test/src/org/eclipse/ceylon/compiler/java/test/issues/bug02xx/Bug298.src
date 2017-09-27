@@ -1,0 +1,38 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug02xx;
+
+class OuterClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    OuterClass() {
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass InnerClass$new$() {
+        return new InnerClass();
+    }
+    
+    public class InnerClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected InnerClass() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug02xx.OuterClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.OuterClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug02xx.OuterClass.class);
+}
+final class m_ {
+    
+    private m_() {
+    }
+    
+    static void m() {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.OuterClass o = new .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.OuterClass();
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug02xx.OuterClass.InnerClass i = o.InnerClass$new$();
+    }
+}

@@ -26,7 +26,7 @@ There are a few steps needed to be able to build and test the project.
 
 mvn install:install-file -Dfile=ceylon.language-0.6.car -DgroupId=ceylon.language -DartifactId=ceylon-language -Dversion=0.6 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
 
-mvn install:install-file -Dfile=com.redhat.ceylon.common-0.6.jar -DgroupId=com.redhat.ceylon -DartifactId=ceylon-common -Dversion=0.6 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
+mvn install:install-file -Dfile=org.eclipse.ceylon.common-0.6.jar -DgroupId=org.eclipse.ceylon -DartifactId=ceylon-common -Dversion=0.6 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
 
  * We need to checkout and build (mvn clean install) Ceylon Module Resolver project (CMR).
 

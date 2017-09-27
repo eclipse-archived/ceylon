@@ -1,0 +1,65 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+final class ctorDefaultedParam_callsite_ {
+    
+    private ctorDefaultedParam_callsite_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotations$({
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 2L),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 3L)})
+    @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotations$({
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPClassWithLiteralArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 100L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPClassDefaultedArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPClassWithLiteralArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPClassWithLiteralArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 3L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPClassWithLiteralArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 4L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPClassWithLiteralArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 2L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPClassWithLiteralArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 5L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPClassWithLiteralArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 6L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPClassWithLiteralArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 3L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPCtorWithLiteralArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 101L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPCtorNullary",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 3L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchDPCtorWithDefaultedArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 2L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchClassNullary",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchClassLiteral",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 110L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchCtorNullary",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 3L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchCtorDefaultedArgument",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 2L)),
+            @.org.eclipse.ceylon.compiler.java.test.annotations.NestedBranch$annotation$(
+                    s = "nestedBranchCtorLiteral",
+                    b = @.org.eclipse.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$(i1 = 512L))})
+    static void ctorDefaultedParam_callsite() {
+    }
+}

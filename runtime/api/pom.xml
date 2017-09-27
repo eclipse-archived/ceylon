@@ -22,7 +22,7 @@
             <artifactId>ceylon-language</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.redhat.ceylon.cmr</groupId>
+            <groupId>org.eclipse.ceylon.cmr</groupId>
             <artifactId>cmr-impl</artifactId>
         </dependency>
     </dependencies>

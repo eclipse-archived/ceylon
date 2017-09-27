@@ -1,0 +1,47 @@
+package org.eclipse.ceylon.compiler.java.test.structure.mcr;
+
+class ClassDefaultMemberClassSpecifier implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected ClassDefaultMemberClassSpecifier() {
+        super();
+        this.other = null;
+    }
+    
+    ClassDefaultMemberClassSpecifier(final .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other) {
+        this.other = other;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other;
+    
+    private final .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier getOther$priv$() {
+        return this.other;
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member Member$new$() {
+        return new Member();
+    }
+    
+    public class Member implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Member() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member.class));
+        }
+    }
+    
+    private final .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s$priv$() {
+        return this.Member$new$();
+    }
+    
+    private final .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member s2$priv$() {
+        return getOther$priv$().Member$new$();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.class);
+}

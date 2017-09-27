@@ -1,0 +1,55 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+class AttributeHiding implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AttributeHiding() {
+        this.name = "";
+    }
+    private .java.lang.String name;
+    
+    public final .java.lang.String getName() {
+        return this.name;
+    }
+    
+    public final void setName(final .java.lang.String name) {
+        this.name = name;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return getName();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.AttributeHiding.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.AttributeHiding.class);
+}
+class AttributeHidingSub extends .org.eclipse.ceylon.compiler.java.test.structure.attribute.AttributeHiding {
+    
+    AttributeHidingSub() {
+        super();
+        this.name = "";
+    }
+    private .java.lang.String name;
+    
+    private final .java.lang.String getName$priv$() {
+        return this.name;
+    }
+    
+    private final void setName$priv$(final .java.lang.String name) {
+        this.name = name;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return getName$priv$();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.AttributeHidingSub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.AttributeHidingSub.class);
+}

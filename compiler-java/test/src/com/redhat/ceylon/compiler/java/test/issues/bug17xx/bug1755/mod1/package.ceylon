@@ -1,1 +1,0 @@
-shared package com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1;

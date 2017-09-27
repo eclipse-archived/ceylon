@@ -1,0 +1,54 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug06xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+interface Bug630 {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug630$impl $org$eclipse$ceylon$compiler$java$test$issues$bug06xx$Bug630$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public int hashCode();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    public boolean equals(@.org.eclipse.ceylon.compiler.java.metadata.Name("other")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other);
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug630.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+final class Bug630$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    Bug630$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug630 $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug630 $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$2 = 42L;
+            }
+            returning $ceylontmp$hash$2 ^ $ceylontmp$hash$2 >>> 32;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public boolean equals(final .java.lang.Object other) {
+        return false;
+    }
+}

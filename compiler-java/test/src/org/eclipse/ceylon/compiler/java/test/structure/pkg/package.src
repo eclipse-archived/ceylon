@@ -1,0 +1,16 @@
+package org.eclipse.ceylon.compiler.java.test.structure.pkg;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Package(
+        name = "org.eclipse.ceylon.compiler.java.test.structure.pkg",
+        doc = "Great documentation",
+        shared = true)
+@.ceylon.language.DocAnnotation$annotation$(description = "Great documentation")
+@.ceylon.language.SharedAnnotation$annotation$
+final class $package_ {
+    
+    private $package_() {
+    }
+}

@@ -1,0 +1,96 @@
+package org.eclipse.ceylon.compiler.java.test.expression.invoke;
+
+public final class namedArgumentInvocationTopLevelF_ {
+    
+    private namedArgumentInvocationTopLevelF_() {
+    }
+    
+    public static long namedArgumentInvocationTopLevelF(final long n, final .java.lang.String s) {
+        return n;
+    }
+}
+public final class namedArgumentInvocationTopLevelV_ {
+    
+    private namedArgumentInvocationTopLevelV_() {
+    }
+    
+    public static void namedArgumentInvocationTopLevelV(final long n, final .java.lang.String s) {
+    }
+}
+final class namedArgumentInvocationTopLevelX_ {
+    
+    private namedArgumentInvocationTopLevelX_() {
+    }
+    private static final long $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = (
+                let
+                {
+                    .java.lang.String arg$0$1 = "abc";
+                    long arg$0$0 = 123L;
+                }
+                returning .org.eclipse.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelF_.namedArgumentInvocationTopLevelF(arg$0$0, arg$0$1);
+            );
+            .org.eclipse.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelX_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelX_.$init$$object$ = false;
+        }
+    }
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelX_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelX_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'namedArgumentInvocationTopLevelX\' before it was set");
+        }
+    }
+}
+final class namedArgumentInvocationTopLevelY_ {
+    
+    private namedArgumentInvocationTopLevelY_() {
+    }
+    private static final .java.lang.Object $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = (
+                let
+                {
+                    (
+                        let
+                        {
+                            .java.lang.String arg$1$1 = "abc";
+                            long arg$1$0 = 123L;
+                            .org.eclipse.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelV_.namedArgumentInvocationTopLevelV(arg$1$0, arg$1$1);
+                        }
+                        returning null;
+                    );
+                }
+                returning null;
+            );
+            .org.eclipse.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelY_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelY_.$init$$object$ = false;
+        }
+    }
+    
+    public static .java.lang.Object get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelY_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelY_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'namedArgumentInvocationTopLevelY\' before it was set");
+        }
+    }
+}

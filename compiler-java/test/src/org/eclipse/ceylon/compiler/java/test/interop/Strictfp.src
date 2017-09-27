@@ -1,0 +1,174 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+class Strictfp implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Strictfp() {
+        this.s = 1.0 + 1.0;
+    }
+    private double s;
+    
+    public final strictfp double getS() {
+        return this.s;
+    }
+    
+    public final strictfp void setS(final double s) {
+        this.s = s;
+    }
+    
+    public final strictfp double getT() {
+        return getS();
+    }
+    
+    public final strictfp void setT(final double t) {
+        setS(t);
+    }
+    
+    public final strictfp double m() {
+        return (
+            let
+            {
+                double $ceylontmp$x$0 = m$x();
+            }
+            returning m$canonical$($ceylontmp$x$0);
+        );
+    }
+    
+    public final strictfp double m$x() {
+        return 1.0;
+    }
+    
+    private strictfp double m$canonical$(final double x) {
+        return getS() + getT();
+    }
+    
+    public final strictfp double m(final double x) {
+        return m$canonical$(x);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.Strictfp.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.Strictfp.class);
+}
+strictfp class StrictfpClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    StrictfpClass() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.StrictfpClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.StrictfpClass.class);
+}
+strictfp interface StrictfpInterface {
+    
+    public .org.eclipse.ceylon.compiler.java.test.interop.StrictfpInterface$impl $org$eclipse$ceylon$compiler$java$test$interop$StrictfpInterface$impl();
+    
+    public double m();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.StrictfpInterface.class);
+}
+final strictfp class StrictfpInterface$impl implements .java.io.Serializable {
+    
+    StrictfpInterface$impl(.org.eclipse.ceylon.compiler.java.test.interop.StrictfpInterface $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.interop.StrictfpInterface $this;
+    
+    public double m() {
+        return 1.0;
+    }
+}
+final strictfp class strictfpFunction_ {
+    
+    private strictfpFunction_() {
+    }
+    
+    static strictfp double strictfpFunction() {
+        return 0.0;
+    }
+}
+final strictfp class strictfpObject_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private strictfpObject_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.strictfpObject_.get_();
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.strictfpObject_.class);
+    private static final .org.eclipse.ceylon.compiler.java.test.interop.strictfpObject_ $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.interop.strictfpObject_();
+            .org.eclipse.ceylon.compiler.java.test.interop.strictfpObject_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.interop.strictfpObject_.$init$$object$ = false;
+        }
+    }
+    
+    static .org.eclipse.ceylon.compiler.java.test.interop.strictfpObject_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.interop.strictfpObject_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.interop.strictfpObject_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'strictfpObject\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.strictfpObject_.$TypeDescriptor$;
+    }
+}
+final strictfp class strictfpGetter_ {
+    
+    private strictfpGetter_() {
+    }
+    
+    public static strictfp double get_() {
+        return 0.0;
+    }
+    
+    public static strictfp void set_(final double strictfpGetter) {
+    }
+}
+final strictfp class strictfpVariable_ {
+    
+    private strictfpVariable_() {
+    }
+    private static double $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            .org.eclipse.ceylon.compiler.java.test.interop.strictfpVariable_.$object$ = 0.0;
+            .org.eclipse.ceylon.compiler.java.test.interop.strictfpVariable_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            .org.eclipse.ceylon.compiler.java.test.interop.strictfpVariable_.$object$ = 0.0;
+            .org.eclipse.ceylon.compiler.java.test.interop.strictfpVariable_.$init$$object$ = false;
+        }
+    }
+    
+    public static strictfp double get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.interop.strictfpVariable_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.interop.strictfpVariable_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'strictfpVariable\' before it was set");
+        }
+    }
+    
+    public static strictfp void set_(final double strictfpVariable) {
+        if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+        .org.eclipse.ceylon.compiler.java.test.interop.strictfpVariable_.$object$ = strictfpVariable;
+    }
+}

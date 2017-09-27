@@ -1,0 +1,119 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug67xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug6719_ {
+    
+    private bug6719_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug6719() {
+        .ceylon.language.print_.print(.ceylon.language.String.instance(.org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_.get_().getXval()));
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719_.bug6719();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+interface Bug6719 {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.Bug6719$impl $org$eclipse$ceylon$compiler$java$test$issues$bug67xx$Bug6719$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public .java.lang.String getXval();
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug67xx.Bug6719.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+final class Bug6719$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    Bug6719$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug67xx.Bug6719 $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.Bug6719 $this;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.String getXval() {
+        return "x";
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("bug6719obj")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.issues.bug67xx::Bug6719"})
+final class bug6719obj_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.Bug6719 {
+    
+    private bug6719obj_() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug67xx$Bug6719$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.Bug6719$impl(this);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_.class);
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.Bug6719$impl $org$eclipse$ceylon$compiler$java$test$issues$bug67xx$Bug6719$this$;
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.Bug6719$impl $org$eclipse$ceylon$compiler$java$test$issues$bug67xx$Bug6719$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug67xx$Bug6719$this$;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.String getXval() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug67xx$Bug6719$this$.getXval();
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_();
+            .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug67xx::bug6719obj")
+    static .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug6719obj\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug67xx.bug6719obj_.$TypeDescriptor$;
+    }
+}

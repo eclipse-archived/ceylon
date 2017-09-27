@@ -26,6 +26,18 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.eclipse.ceylon.cmr.api.ArtifactContext;
+import org.eclipse.ceylon.cmr.api.MavenArtifactContext;
+import org.eclipse.ceylon.cmr.api.ModuleDependencyInfo;
+import org.eclipse.ceylon.cmr.api.RepositoryManager;
+import org.eclipse.ceylon.common.Constants;
+import org.eclipse.ceylon.common.ModuleUtil;
+import org.eclipse.ceylon.common.Versions;
+import org.eclipse.ceylon.model.cmr.ArtifactResult;
+import org.eclipse.ceylon.model.cmr.ArtifactResultType;
+import org.eclipse.ceylon.model.cmr.JDKUtils;
+import org.eclipse.ceylon.model.cmr.ModuleScope;
+import org.eclipse.ceylon.model.cmr.RuntimeResolver;
 import org.jboss.modules.AliasModuleSpec;
 import org.jboss.modules.DependencySpec;
 import org.jboss.modules.LocalLoader;
@@ -41,19 +53,6 @@ import org.jboss.modules.ResourceLoader;
 import org.jboss.modules.ResourceLoaderSpec;
 import org.jboss.modules.filter.PathFilter;
 import org.jboss.modules.filter.PathFilters;
-
-import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.MavenArtifactContext;
-import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
-import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.JDKUtils;
-import com.redhat.ceylon.model.cmr.ModuleScope;
-import com.redhat.ceylon.model.cmr.RuntimeResolver;
 
 import ceylon.modules.api.runtime.LogChecker;
 import ceylon.modules.api.util.ModuleVersion;
@@ -97,17 +96,17 @@ public class CeylonModuleLoader extends ModuleLoader
     static {
         final String defaultVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, Versions.CEYLON_VERSION_NUMBER);
         LANGUAGE = ModuleIdentifier.create("ceylon.language", defaultVersion);
-        COMMON = ModuleIdentifier.create("com.redhat.ceylon.common", defaultVersion);
-        MODEL = ModuleIdentifier.create("com.redhat.ceylon.model", defaultVersion);
-        CMR = ModuleIdentifier.create("com.redhat.ceylon.module-resolver", defaultVersion);
-        TYPECHECKER = ModuleIdentifier.create("com.redhat.ceylon.typechecker", defaultVersion);
-        COMPILER = ModuleIdentifier.create("com.redhat.ceylon.compiler.java", defaultVersion);
-        LANGTOOLS_CLASSFILE = ModuleIdentifier.create("com.redhat.ceylon.langtools.classfile", defaultVersion);
-        TOOL_PROVIDER = ModuleIdentifier.create("com.redhat.ceylon.tool.provider", defaultVersion);
-        CLI = ModuleIdentifier.create("com.redhat.ceylon.cli", defaultVersion);
+        COMMON = ModuleIdentifier.create("org.eclipse.ceylon.common", defaultVersion);
+        MODEL = ModuleIdentifier.create("org.eclipse.ceylon.model", defaultVersion);
+        CMR = ModuleIdentifier.create("org.eclipse.ceylon.module-resolver", defaultVersion);
+        TYPECHECKER = ModuleIdentifier.create("org.eclipse.ceylon.typechecker", defaultVersion);
+        COMPILER = ModuleIdentifier.create("org.eclipse.ceylon.compiler.java", defaultVersion);
+        LANGTOOLS_CLASSFILE = ModuleIdentifier.create("org.eclipse.ceylon.langtools.classfile", defaultVersion);
+        TOOL_PROVIDER = ModuleIdentifier.create("org.eclipse.ceylon.tool.provider", defaultVersion);
+        CLI = ModuleIdentifier.create("org.eclipse.ceylon.cli", defaultVersion);
 
         // Maven support
-        AETHER = ModuleIdentifier.create("com.redhat.ceylon.aether", "3.3.9");
+        AETHER = ModuleIdentifier.create("org.eclipse.ceylon.aether", "3.3.9");
         
         MODULES = ModuleIdentifier.create("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION);
         LOGMANAGER = ModuleIdentifier.create("org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION);
@@ -285,7 +284,7 @@ public class CeylonModuleLoader extends ModuleLoader
     
     @Override
     public String resolveVersion(String moduleName, String moduleVersion) {
-        if (com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME.equals(moduleName)) {
+        if (org.eclipse.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME.equals(moduleName)) {
             // JBoss Modules turns default/null into default:main
             return null;
         }

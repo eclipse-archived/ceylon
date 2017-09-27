@@ -1,0 +1,171 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug19xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1$1o_",
+        "1val$getter$_",
+        "1val1$getter$_"})
+public final class bug1955r_ {
+    
+    private bug1955r_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug1955r() {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Attribute
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("val1")
+        @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.language::Getter<java.lang::String>"})
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1o_"})
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class val1$getter$_ implements .org.eclipse.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private val1$getter$_() {
+            }
+            
+            @.org.eclipse.ceylon.common.NonNull
+            @.org.eclipse.ceylon.compiler.java.metadata.Transient
+            public .java.lang.String get_() {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("o")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.org.eclipse.ceylon.compiler.java.metadata.Object
+                final class o_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private o_() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.bug1955r_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("1val1")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+                    }
+                }
+                final o_ o = new o_();
+                return "Hello, World!";
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.Getter<.java.lang.String> val1$getter$_ = new val1$getter$_();
+        (
+            let
+            {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Attribute
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+                @.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.language::Getter<java.lang::String>"})
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({"1o_"})
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                final class val$getter$_ implements .org.eclipse.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private val$getter$_() {
+                    }
+                    
+                    @.org.eclipse.ceylon.common.NonNull
+                    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+                    public .java.lang.String get_() {
+                        
+                        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                                major = 8,
+                                minor = 1)
+                        @.org.eclipse.ceylon.compiler.java.metadata.Name("o")
+                        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                        @.org.eclipse.ceylon.compiler.java.metadata.Object
+                        final class o_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+                            
+                            private o_() {
+                            }
+                            
+                            @.java.lang.Override
+                            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.bug1955r_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("1val")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+                            }
+                        }
+                        final o_ o = new o_();
+                        return "Hello, World!";
+                    }
+                }
+                final .org.eclipse.ceylon.compiler.java.language.Getter<.java.lang.String> val$getter$_ = new val$getter$_();
+                final .java.lang.Object arg$0$0 = .ceylon.language.String.instance(val$getter$_.get_());
+                .ceylon.language.print_.print(arg$0$0);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Callable arg$1$0 = new @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2") @.org.eclipse.ceylon.compiler.java.metadata.Name("val") @.org.eclipse.ceylon.compiler.java.metadata.Method .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "String()", (short)-1)
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("val")
+                @.org.eclipse.ceylon.compiler.java.metadata.Method
+                {
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .ceylon.language.String $call$() {
+                        
+                        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                                major = 8,
+                                minor = 1)
+                        @.org.eclipse.ceylon.compiler.java.metadata.Name("o")
+                        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                        @.org.eclipse.ceylon.compiler.java.metadata.Object
+                        final class o_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+                            
+                            private o_() {
+                            }
+                            
+                            @.java.lang.Override
+                            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.bug1955r_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("2val")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+                            }
+                        }
+                        final o_ o = new o_();
+                        return .ceylon.language.String.instance("Hello, World!");
+                    }
+                };
+                .ceylon.language.print_.print(arg$1$0);
+            }
+            returning null;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.bug1955r_.bug1955r();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug1955_ {
+    
+    private bug1955_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug1955() {
+        ((.ceylon.language.meta.model.Function<? extends .java.lang.Object, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Function).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("org.eclipse.ceylon.compiler.java.test.issues", "1"), "org.eclipse.ceylon.compiler.java.test.issues", "1").findPackage("org.eclipse.ceylon.compiler.java.test.issues.bug19xx").getFunction("bug1955r").apply(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)).$call$();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.bug1955_.bug1955();
+    }
+}

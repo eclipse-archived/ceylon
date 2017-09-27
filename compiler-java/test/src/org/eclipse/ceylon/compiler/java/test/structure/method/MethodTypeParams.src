@@ -1,0 +1,17 @@
+package org.eclipse.ceylon.compiler.java.test.structure.method;
+
+class MethodTypeParams implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodTypeParams() {
+    }
+    
+    private final <U, V>U f$priv$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final U u, final V v) {
+        return u;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.method.MethodTypeParams.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.method.MethodTypeParams.class);
+}

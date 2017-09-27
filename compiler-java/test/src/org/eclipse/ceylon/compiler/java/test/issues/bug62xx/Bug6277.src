@@ -1,0 +1,63 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug62xx;
+
+abstract class Bug6277 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug6277() {
+    }
+    
+    public abstract <R>.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277.V<? extends R> V$new$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R);
+    
+    public abstract class V<R> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected V(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R) {
+            this.$reified$R = $reified$R;
+        }
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R;
+        
+        public final R visit() {
+            return (R)(.java.lang.Object).ceylon.language.nothing_.get_();
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277.V.class, $reified$R));
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277.class);
+}
+class Bug6277B extends .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277 {
+    
+    Bug6277B() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public <R>.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277B.V<R> V$new$(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R) {
+        return new V<R>($reified$R);
+    }
+    
+    public class V<R> extends .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277.V<R> {
+        
+        protected V(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R) {
+            super($reified$R);
+            this.$reified$R = $reified$R;
+        }
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$R;
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277B.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277B.V.class, $reified$R));
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277B.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug62xx.Bug6277B.class);
+}

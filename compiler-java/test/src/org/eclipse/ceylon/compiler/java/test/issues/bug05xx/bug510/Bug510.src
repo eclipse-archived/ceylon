@@ -1,0 +1,128 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("Bug510inner")
+@.org.eclipse.ceylon.compiler.java.metadata.Container(
+        klass = .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510.class,
+        isStatic = false)
+interface Bug510$Bug510inner {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Members({@.org.eclipse.ceylon.compiler.java.metadata.Member(klass = .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner.class)})
+interface Bug510 {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$impl $org$eclipse$ceylon$compiler$java$test$issues$bug05xx$bug510$Bug510$impl();
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+final class Bug510$impl implements .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    Bug510$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510 $this) {
+        this.$this = $this;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510 $this;
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class goto_ {
+    
+    private goto_() {
+    }
+    
+    static void $goto() {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("synchronized")
+@.org.eclipse.ceylon.compiler.java.metadata.Object
+final class synchronized_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private synchronized_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.get_();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.class);
+    private static final .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_ $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_();
+            .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510::synchronized")
+    static .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'synchronized\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.$TypeDescriptor$;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("volatile")
+final class volatile_ {
+    
+    private volatile_() {
+    }
+    private static final long $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = 5L;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.volatile_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = 0L;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.volatile_.$init$$object$ = false;
+        }
+    }
+    
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.volatile_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug05xx.bug510.volatile_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'volatile\' before it was set");
+        }
+    }
+}

@@ -14,9 +14,9 @@
 *.gif binary
 
 # Very specific cases for testing purposes!
-test/src/com/redhat/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712CR.ceylon -text
-test/src/com/redhat/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712CRLF.ceylon -text
-test/src/com/redhat/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712LF.ceylon -text
-test/src/com/redhat/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712Mixed.ceylon -text
+test/src/org/eclipse/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712CR.ceylon -text
+test/src/org/eclipse/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712CRLF.ceylon -text
+test/src/org/eclipse/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712LF.ceylon -text
+test/src/org/eclipse/ceylon/compiler/java/test/issues/bug17xx/bug1712/Bug1712Mixed.ceylon -text
 
 

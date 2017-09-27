@@ -1,0 +1,46 @@
+package org.eclipse.ceylon.compiler.java.test.expression.invoke;
+
+public final class innerMethodInvocation_ {
+    
+    private innerMethodInvocation_() {
+    }
+    
+    public static void innerMethodInvocation() {
+        
+        final class fib_ implements .java.io.Serializable {
+            
+            private fib_() {
+            }
+            
+            long fib(final long n) {
+                if (n == 0L) {
+                    return 1L;
+                } else {
+                    return n * fib_.this.fib(.ceylon.language.Integer.getPredecessor(n));
+                }
+            }
+        }
+        final fib_ fib = new fib_();
+        final int $ceylontmp$first$3 = 0;
+        final int $ceylontmp$last$4 = 50;
+        final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$last$4, $ceylontmp$first$3) >= 0;
+        final int $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1 : -1;
+        int n$9 = $ceylontmp$first$3;
+        int $ceylontmp$element$8 = $ceylontmp$first$3;
+        boolean $ceylontmp$f$7 = false;
+        loop_0: do {
+            if ($ceylontmp$f$7) $ceylontmp$element$8 += $ceylontmp$incr$6;
+            $ceylontmp$f$7 = true;
+            n$9 = $ceylontmp$element$8;
+            final int n = n$9;
+            $ceylontmp$continue$2: do {
+                .ceylon.language.print_.print(.ceylon.language.String.instance("n! = " + .ceylon.language.Integer.toString(fib.fib(n))));
+            }             while (false);
+        }         while ($ceylontmp$increasing$5 ? n$9 - $ceylontmp$last$4 != 0 : n$9 - $ceylontmp$last$4 != 0);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.expression.invoke.innerMethodInvocation_.innerMethodInvocation();
+    }
+}

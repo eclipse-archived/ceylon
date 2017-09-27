@@ -1,0 +1,216 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface AnnotationClassParam$annotation$ {
+    
+    public abstract .java.lang.String name();
+}
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+final class AnnotationClassParam implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected AnnotationClassParam() {
+        super();
+    }
+    
+    AnnotationClassParam(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$ anno) {
+        this(anno.name());
+    }
+    
+    AnnotationClassParam(final .java.lang.String name) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam.class)
+final class annotationClassParam_ {
+    
+    private annotationClassParam_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam annotationClassParam(final .java.lang.String name) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam(name);
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface AnnotationClassAnnotationClass$annotation$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$ param();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface AnnotationClassAnnotationClass$annotations$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation$[] value();
+}
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+final class AnnotationClassAnnotationClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected AnnotationClassAnnotationClass() {
+        super();
+    }
+    
+    AnnotationClassAnnotationClass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation$ anno) {
+        this(new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam(anno.param()));
+    }
+    
+    AnnotationClassAnnotationClass(final .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam param) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation$.class;
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface AnnotationClassAnnotationClassSequence$annotation$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$[] params();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface AnnotationClassAnnotationClassSequence$annotations$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotation$[] value();
+}
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+final class AnnotationClassAnnotationClassSequence implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected AnnotationClassAnnotationClassSequence() {
+        super();
+    }
+    
+    AnnotationClassAnnotationClassSequence(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotation$ anno) {
+        this($annotationSequence$(anno.params()));
+    }
+    
+    AnnotationClassAnnotationClassSequence(final .ceylon.language.Sequential<? extends .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam> params) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence.class);
+    
+    private static .ceylon.language.Sequential<? extends .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam> $annotationSequence$(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$[] $array$) {
+        final .java.lang.Object[] $sb$ = new .java.lang.Object[$array$.length];
+        int $index$ = 0;
+        for (.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$ $element$ : $array$) $sb$[$index$++] = new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam($element$);
+        return new .ceylon.language.Tuple(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam.$TypeDescriptor$, $sb$, .ceylon.language.empty_.get_(), false);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence.class)
+final class annotationClassAnnotationClassSequence_ {
+    
+    private annotationClassAnnotationClassSequence_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence annotationClassAnnotationClassSequence(final .ceylon.language.Sequential<? extends .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam> params) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence(params);
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface AnnotationClassAnnotationClassDefaulted$annotation$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$ a() default @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$(name = "defaulted");
+}
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+final class AnnotationClassAnnotationClassDefaulted implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    AnnotationClassAnnotationClassDefaulted() {
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam $ceylontmp$a$0 = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$default$a();
+                this($ceylontmp$a$0);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassAnnotationClassDefaulted(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted$annotation$ anno) {
+        this(new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam(anno.a()));
+    }
+    
+    AnnotationClassAnnotationClassDefaulted(final .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam a) {
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam $default$a() {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam("defaulted");
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassDefaulted$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass.class)
+final class annotationClassAnnotationClass_ {
+    
+    private annotationClassAnnotationClass_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass annotationClassAnnotationClass(final .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam a) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass(a);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation$(param = @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$(name = "class")),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass$annotation$(param = @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$(name = "constructor"))})
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotations$({@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClassSequence$annotation$(params = {
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$(name = "constructor"),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassParam$annotation$(name = "class")})})
+class AnnotationClassAnnotationClass_callsite implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AnnotationClassAnnotationClass_callsite() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass_callsite.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassAnnotationClass_callsite.class);
+}

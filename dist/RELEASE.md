@@ -30,7 +30,7 @@ How to do a release of Ceylon.
 2. Reversion the new branch
   - $ ./dist/reversion.sh ${RELVER}-SNAPSHOT ${RELVER}
   - $ ./dist/reversion.sh ${RELVER}.osgi-4 ${RELVER}.osgi-5
-  - Update `common/com/redhat/ceylon/common/Versions.java` (the `CEYLON_VERSION_QUALIFIER`)
+  - Update `common/org/eclipse/ceylon/common/Versions.java` (the `CEYLON_VERSION_QUALIFIER`)
   - Change `versionQualifier` in `language/src/ceylon/language/language.ceylon` from `"SNAPSHOT"` to `""`
   - Make sure `compiler-js/.../JsModuleSourceMapper.java#loadModuleFromMap()` has been updated!
   - Make sure `ceylon-module-resolver/.../dist-overrides.xml` has been updated!
@@ -41,7 +41,7 @@ How to do a release of Ceylon.
   - $ ./dist/reversion.sh ${RELVER}.osgi-4 **NEW_VERSION**.osgi-4
   - [Choose a new release name](https://en.wikipedia.org/wiki/List_of_spacecraft_in_the_Culture_series)
   - $ ./dist/reversion.sh "**The Old Release Name**" "**The New Release Name**"
-  - Update `common/com/redhat/ceylon/common/Versions.java` (the `VERSION_*` and `V*_VERSION` constants and the `VersionDetails` arrays)
+  - Update `common/org/eclipse/ceylon/common/Versions.java` (the `VERSION_*` and `V*_VERSION` constants and the `VersionDetails` arrays)
   - Commit and push
 4. Tag every project
   - $ git tag ${RELVER}

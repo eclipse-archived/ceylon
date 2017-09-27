@@ -22,7 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.redhat.ceylon.common.FileUtil;
+import org.eclipse.ceylon.common.FileUtil;
 
 /**
  * Plain copy compiler adapter.

@@ -1,0 +1,107 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug13xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Summable<org.eclipse.ceylon.compiler.java.test.issues.bug13xx::Bug1313>"})
+class Bug1313 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Summable<.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313>, .java.io.Serializable {
+    
+    Bug1313() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.issues.bug13xx::Bug1313",
+            erased = true,
+            untrusted = true)
+    public final .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313 plus(@.org.eclipse.ceylon.compiler.java.metadata.Name("other")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug13xx::Bug1313")
+    final .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313 other) {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug1313_ {
+    
+    private bug1313_() {
+    }
+    
+    static void bug1313() {
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodReference = (
+            let
+            {
+                final long $instance$ = 1L;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                    final long $ceylontmp$other = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(.ceylon.language.Integer.plus($instance$, $ceylontmp$other));
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.String> methodReference2 = (
+            let
+            {
+                final .java.lang.String $instance$ = "";
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.String $ceylontmp$other = ((.ceylon.language.String)$param$0).toString();
+                    return .ceylon.language.String.instance(.ceylon.language.String.plus($instance$, $ceylontmp$other));
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .ceylon.language.String> methodReference3 = (
+            let
+            {
+                final .java.lang.String $instance$ = "";
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), "String(String, String)", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .ceylon.language.String $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                    final .java.lang.String $ceylontmp$substring = ((.ceylon.language.String)$param$0).toString();
+                    final .java.lang.String $ceylontmp$replacement = ((.ceylon.language.String)$param$1).toString();
+                    return .ceylon.language.String.instance(.ceylon.language.String.replace($instance$, $ceylontmp$substring, $ceylontmp$replacement));
+                }
+            };
+        );
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313> methodReference4 = (.ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313>)(.ceylon.language.Callable)(
+            let
+            {
+                final .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313 $instance$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313();
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313>(.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313.$TypeDescriptor$), "Bug1313(Bug1313)", (short)-1){
+                
+                @.java.lang.Override
+                @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                public .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313 $call$(final .java.lang.Object $param$0) {
+                    final .org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313 $ceylontmp$other = (.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313)$param$0;
+                    return (.org.eclipse.ceylon.compiler.java.test.issues.bug13xx.Bug1313)$instance$.plus($ceylontmp$other);
+                }
+            };
+        );
+    }
+}

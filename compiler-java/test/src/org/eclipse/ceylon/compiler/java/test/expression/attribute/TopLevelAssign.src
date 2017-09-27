@@ -1,0 +1,112 @@
+package org.eclipse.ceylon.compiler.java.test.expression.attribute;
+
+class TopLevelAssign implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    TopLevelAssign() {
+    }
+    
+    private final void m$priv$() {
+        .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.set_(false);
+        .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.set_(false);
+        .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB3_.set_(false);
+        .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB4_.set_(false);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.attribute.TopLevelAssign.class);
+}
+final class topLevelAssignB1_ {
+    
+    private topLevelAssignB1_() {
+    }
+    private static boolean $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.$object$ = true;
+            .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.$object$ = false;
+            .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.$init$$object$ = false;
+        }
+    }
+    
+    public static boolean get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelAssignB1\' before it was set");
+        }
+    }
+    
+    public static void set_(final boolean topLevelAssignB1) {
+        if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+        .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB1_.$object$ = topLevelAssignB1;
+    }
+}
+public final class topLevelAssignB2_ {
+    
+    private topLevelAssignB2_() {
+    }
+    private static boolean $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.$object$ = true;
+            .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.$object$ = false;
+            .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.$init$$object$ = false;
+        }
+    }
+    
+    public static boolean get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelAssignB2\' before it was set");
+        }
+    }
+    
+    public static void set_(final boolean topLevelAssignB2) {
+        if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+        .org.eclipse.ceylon.compiler.java.test.expression.attribute.topLevelAssignB2_.$object$ = topLevelAssignB2;
+    }
+}
+final class topLevelAssignB3_ {
+    
+    private topLevelAssignB3_() {
+    }
+    
+    public static boolean get_() {
+        return true;
+    }
+    
+    public static void set_(final boolean topLevelAssignB3) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+}
+public final class topLevelAssignB4_ {
+    
+    private topLevelAssignB4_() {
+    }
+    
+    public static boolean get_() {
+        return true;
+    }
+    
+    public static void set_(final boolean topLevelAssignB4) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+}

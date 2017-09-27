@@ -1,0 +1,130 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+class StaticMemberClass<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public static class Member<T, U> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+        private final T t;
+        
+        public final T getT() {
+            return this.t;
+        }
+        private final U u;
+        
+        public final U getU() {
+            return this.u;
+        }
+        
+        public Member(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+            this.$reified$T = $reified$T;
+            this.$reified$U = $reified$U;
+            $return$$0: do {
+            }             while (false);
+            this.t = null;
+            this.u = null;
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.class, .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member.class, $reified$U));
+        }
+    }
+    
+    public StaticMemberClass(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.class, $reified$T);
+    }
+}
+final class staticMemberClassUse_ {
+    
+    private staticMemberClassUse_() {
+    }
+    
+    static void staticMemberClassUse() {
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> mem1 = new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
+        .ceylon.language.Integer t = mem1.getT();
+        .ceylon.language.String s = mem1.getU();
+        final .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> mem2 = (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor$;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>(arg$1$reified$0, arg$1$reified$1);
+        );
+        t = mem2.getT();
+        s = mem2.getU();
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>> memref = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.class, .ceylon.language.Integer.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member.class, .ceylon.language.String.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "StaticMemberClass<Integer>.Member<String>()", (short)-1){
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> $call$() {
+                return new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
+            }
+        };
+        t = memref.$call$().getT();
+        s = memref.$call$().getU();
+    }
+}
+class StaticMemberClassBoxing<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public static class Inner<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public Inner(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+            this.$reified$T = $reified$T;
+            this.t = t;
+        }
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        private final T t;
+        
+        private final T getT$priv$() {
+            return this.t;
+        }
+        
+        public final T get() {
+            return getT$priv$();
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.class, .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.Inner.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.Inner.class));
+        }
+    }
+    
+    public StaticMemberClassBoxing(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.class, $reified$T);
+    }
+}
+public final class run_ {
+    
+    private run_() {
+    }
+    
+    public static void run() {
+        int character = new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.Inner<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(88)).get().intValue();
+        character = (
+            let
+            {
+                .ceylon.language.Character arg$2$0 = .ceylon.language.Character.instance(88);
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .ceylon.language.Character.$TypeDescriptor$;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.Inner<.ceylon.language.Character>(arg$2$reified$0, arg$2$0);
+        ).get().intValue();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.structure.klass.run_.run();
+    }
+}

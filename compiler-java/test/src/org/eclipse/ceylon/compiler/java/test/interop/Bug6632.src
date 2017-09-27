@@ -1,0 +1,22 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+final class bug6632_ {
+    
+    private bug6632_() {
+    }
+    
+    static void bug6632(final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>[] entries, final .ceylon.language.Sequence<? extends .java.lang.Object>[] twoTuple, final .ceylon.language.Sequence<? extends .java.lang.Object>[] moreTuple) {
+        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>[] array$1 = entries;
+        loop_0: for (int i$3 = 0; i$3 < array$1.length; i$3++) {
+            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = (.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull(array$1[i$3])).getItem();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry).org.eclipse.ceylon.compiler.java.Util.checkNull(array$1[i$3])).getKey()).longValue();
+            aggregator.$call$((.java.lang.Object).ceylon.language.Integer.instance(i));
+        }
+        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$5 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])twoTuple;
+        loop_1: for (int i$7 = 0; i$7 < array$5.length; i$7++) {
+            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = (.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$5[i$7])).getFromFirst(1);
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).org.eclipse.ceylon.compiler.java.Util.checkNull(array$5[i$7])).getFromFirst(0)).longValue();
+            aggregator.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
+        }
+    }
+}

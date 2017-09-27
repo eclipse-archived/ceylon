@@ -1,0 +1,81 @@
+package org.eclipse.ceylon.compiler.java.test.structure.reified;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class reifiedInstantiateFromModelLoader_ {
+    
+    private reifiedInstantiateFromModelLoader_() {
+    }
+    
+    static void reifiedInstantiateFromModelLoader() {
+        final .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c = new .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
+        final .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c2 = (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$1 = .ceylon.language.String.$TypeDescriptor$;
+                long arg$0$0 = .org.eclipse.ceylon.compiler.java.test.structure.reified.Class.$default$a(arg$0$reified$0, arg$0$reified$1);
+                long arg$0$1 = .org.eclipse.ceylon.compiler.java.test.structure.reified.Class.$default$b(arg$0$reified$0, arg$0$reified$1, arg$0$0);
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(arg$0$reified$0, arg$0$reified$1, arg$0$0, arg$0$1);
+        );
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>> constr = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.reified.Class.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), "Class<Integer,String>(Integer=, Integer=)", (short)-1){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> $call$() {
+                return new .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$a = ((.ceylon.language.Integer)$param$0).longValue();
+                return new .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, $ceylontmp$a);
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long $ceylontmp$a = ((.ceylon.language.Integer)$param$0).longValue();
+                final long $ceylontmp$b = ((.ceylon.language.Integer)$param$1).longValue();
+                return new .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, $ceylontmp$a, $ceylontmp$b);
+            }
+        };
+        final .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c3 = constr.$call$((.java.lang.Object).ceylon.language.Integer.instance(3L), .ceylon.language.Integer.instance(4L));
+        final .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String> c4 = (
+            let
+            {
+                long arg$1$1 = 5L;
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor$;
+                long arg$1$0 = .org.eclipse.ceylon.compiler.java.test.structure.reified.Class.$default$a(arg$1$reified$0, arg$1$reified$1);
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.ceylon.language.Integer, .ceylon.language.String>(arg$1$reified$0, arg$1$reified$1, arg$1$0, arg$1$1);
+        );
+        final .org.eclipse.ceylon.compiler.java.test.structure.reified.Class<.java.lang.Object, .java.lang.Object> c5 = new .org.eclipse.ceylon.compiler.java.test.structure.reified.Class(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class reifiedMethodsFromModelLoader_ {
+    
+    private reifiedMethodsFromModelLoader_() {
+    }
+    
+    static void reifiedMethodsFromModelLoader() {
+        .org.eclipse.ceylon.compiler.java.test.structure.reified.method_.<.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor$);
+        .org.eclipse.ceylon.compiler.java.test.structure.reified.method_.<.java.lang.Object>method(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+        final .org.eclipse.ceylon.compiler.java.test.structure.reified.MethodClass mc = new .org.eclipse.ceylon.compiler.java.test.structure.reified.MethodClass();
+        mc.<.ceylon.language.Integer>method(.ceylon.language.Integer.$TypeDescriptor$);
+        mc.<.java.lang.Object>method(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+        mc.getMethodSpec().$call$();
+        mc.<.ceylon.language.Integer>methodWithOverloads(.ceylon.language.Integer.$TypeDescriptor$);
+        mc.<.ceylon.language.Integer>methodWithOverloads(.ceylon.language.Integer.$TypeDescriptor$, 1L, 2L);
+        mc.<.java.lang.Object>methodWithOverloads(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1L, 2L);
+    }
+}

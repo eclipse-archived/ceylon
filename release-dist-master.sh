@@ -18,7 +18,7 @@ git checkout master || fail "Git checkout master"
 
 log "Replacing files"
 
-replace common/src/com/redhat/ceylon/common/Versions.java
+replace common/src/org/eclipse/ceylon/common/Versions.java
 replace language/src/ceylon/language/module.ceylon
 replace language/src/ceylon/language/language.ceylon
 replace language/test/process.ceylon
@@ -60,8 +60,8 @@ EOF
     else
         echo "$LINE"
     fi
-done < common/src/com/redhat/ceylon/common/Versions.java > common/src/com/redhat/ceylon/common/Versions.java2  || fail "Replace Versions.java"
-mv common/src/com/redhat/ceylon/common/Versions.java2 common/src/com/redhat/ceylon/common/Versions.java  || fail "Move Versions.java"
+done < common/src/org/eclipse/ceylon/common/Versions.java > common/src/org/eclipse/ceylon/common/Versions.java2  || fail "Replace Versions.java"
+mv common/src/org/eclipse/ceylon/common/Versions.java2 common/src/org/eclipse/ceylon/common/Versions.java  || fail "Move Versions.java"
 
 while IFS='' read -r LINE || [[ -n "$LINE" ]]
 do
@@ -75,8 +75,8 @@ EOF
     else
         echo "$LINE"
     fi
-done < compiler-js/src/main/java/com/redhat/ceylon/compiler/js/loader/JsModuleSourceMapper.java > compiler-js/src/main/java/com/redhat/ceylon/compiler/js/loader/JsModuleSourceMapper.java2  || fail "Replace JsModulesourceMapper"
-mv compiler-js/src/main/java/com/redhat/ceylon/compiler/js/loader/JsModuleSourceMapper.java2 compiler-js/src/main/java/com/redhat/ceylon/compiler/js/loader/JsModuleSourceMapper.java  || fail "Move JsModulesourceMapper"
+done < compiler-js/src/main/java/org/eclipse/ceylon/compiler/js/loader/JsModuleSourceMapper.java > compiler-js/src/main/java/org/eclipse/ceylon/compiler/js/loader/JsModuleSourceMapper.java2  || fail "Replace JsModulesourceMapper"
+mv compiler-js/src/main/java/org/eclipse/ceylon/compiler/js/loader/JsModuleSourceMapper.java2 compiler-js/src/main/java/org/eclipse/ceylon/compiler/js/loader/JsModuleSourceMapper.java  || fail "Move JsModulesourceMapper"
 
 while IFS='' read -r LINE || [[ -n "$LINE" ]]
 do
@@ -93,50 +93,50 @@ do
         <replace module="ceylon.runtime" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
             <with module="ceylon.runtime" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.cli" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.cli" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.cli" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.cli" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.common" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.common" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.common" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.common" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.compiler.java" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.compiler.java" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.compiler.java" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.compiler.java" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.compiler.js" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.compiler.js" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.compiler.js" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.compiler.js" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.java.main" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.java.main" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.java.main" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.java.main" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.langtools.classfile" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.langtools.classfile" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.langtools.classfile" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.langtools.classfile" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.model" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.model" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.model" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.model" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.module-loader" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.module-loader" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.module-loader" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.module-loader" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.module-resolver" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.module-resolver" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.module-resolver" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.module-resolver" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.module-resolver-aether" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.module-resolver-aether" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.module-resolver-aether" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.module-resolver-aether" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.module-resolver-javascript" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.module-resolver-javascript" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.module-resolver-javascript" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.module-resolver-javascript" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.module-resolver-webdav" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.module-resolver-webdav" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.module-resolver-webdav" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.module-resolver-webdav" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.tool.provider" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.tool.provider" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.tool.provider" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.tool.provider" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.tools" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.tools" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.tools" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.tools" version="\${uv}" />
         </replace>
-        <replace module="com.redhat.ceylon.typechecker" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
-            <with module="com.redhat.ceylon.typechecker" version="\${uv}" />
+        <replace module="org.eclipse.ceylon.typechecker" version="${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}">
+            <with module="org.eclipse.ceylon.typechecker" version="\${uv}" />
         </replace>
 
         <!-- @NEW_VERSION@ -->
@@ -144,8 +144,8 @@ EOF
     else
         echo "$LINE"
     fi
-done < cmr/api/src/main/resources/com/redhat/ceylon/cmr/api/dist-overrides.xml > cmr/api/src/main/resources/com/redhat/ceylon/cmr/api/dist-overrides.xml2  || fail "Replace dist-overrides"
-mv cmr/api/src/main/resources/com/redhat/ceylon/cmr/api/dist-overrides.xml2 cmr/api/src/main/resources/com/redhat/ceylon/cmr/api/dist-overrides.xml  || fail "Move dist-overrides"
+done < cmr/api/src/main/resources/org/eclipse/ceylon/cmr/api/dist-overrides.xml > cmr/api/src/main/resources/org/eclipse/ceylon/cmr/api/dist-overrides.xml2  || fail "Replace dist-overrides"
+mv cmr/api/src/main/resources/org/eclipse/ceylon/cmr/api/dist-overrides.xml2 cmr/api/src/main/resources/org/eclipse/ceylon/cmr/api/dist-overrides.xml  || fail "Move dist-overrides"
 
 find compiler-java/test/src/ -name '*.ceylon' -or -name '*.src' -or -name '*.properties' | xargs perl -pi -e "s/${CEYLON_RELEASE_VERSION_MAJOR}\.${CEYLON_RELEASE_VERSION_MINOR}\.${CEYLON_RELEASE_VERSION_RELEASE}-SNAPSHOT/${CEYLON_NEW_VERSION_MAJOR}.${CEYLON_NEW_VERSION_MINOR}.${CEYLON_NEW_VERSION_RELEASE}/g"
 

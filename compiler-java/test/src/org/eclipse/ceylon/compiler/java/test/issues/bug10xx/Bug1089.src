@@ -1,0 +1,45 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug10xx;
+
+final class bug1089_ {
+    
+    private bug1089_() {
+    }
+    
+    static void bug1089() {
+        int lhs$0 = 0;
+        int middle$1 = 0;
+        int rhs$2 = 2;
+        if (lhs$0 <= middle$1 && middle$1 < rhs$2) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=0<2") + .org.eclipse.ceylon.compiler.java.Util.assertWithinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(middle$1), .ceylon.language.Integer.instance(rhs$2)));
+        }
+        int lhs$3 = 0;
+        int middle$4 = 1;
+        int rhs$5 = 2;
+        if (lhs$3 < middle$4 && middle$4 < rhs$5) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<1<2") + .org.eclipse.ceylon.compiler.java.Util.assertWithinOpFailed(.ceylon.language.Integer.instance(lhs$3), .ceylon.language.Integer.instance(middle$4), .ceylon.language.Integer.instance(rhs$5)));
+        }
+        int lhs$6 = 0;
+        int middle$7 = 1;
+        int rhs$8 = 2;
+        if (lhs$6 <= middle$7 && middle$7 < rhs$8) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=1<2") + .org.eclipse.ceylon.compiler.java.Util.assertWithinOpFailed(.ceylon.language.Integer.instance(lhs$6), .ceylon.language.Integer.instance(middle$7), .ceylon.language.Integer.instance(rhs$8)));
+        }
+        int lhs$9 = 0;
+        int middle$10 = 1;
+        int rhs$11 = 2;
+        if (lhs$9 < middle$10 && middle$10 <= rhs$11) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<1<=2") + .org.eclipse.ceylon.compiler.java.Util.assertWithinOpFailed(.ceylon.language.Integer.instance(lhs$9), .ceylon.language.Integer.instance(middle$10), .ceylon.language.Integer.instance(rhs$11)));
+        }
+        int lhs$12 = 0;
+        int middle$13 = 1;
+        int rhs$14 = 2;
+        if (lhs$12 <= middle$13 && middle$13 <= rhs$14) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=1<=2") + .org.eclipse.ceylon.compiler.java.Util.assertWithinOpFailed(.ceylon.language.Integer.instance(lhs$12), .ceylon.language.Integer.instance(middle$13), .ceylon.language.Integer.instance(rhs$14)));
+        }
+    }
+}

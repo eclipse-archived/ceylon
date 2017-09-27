@@ -1,0 +1,182 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+class RWInvParam<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RWInvParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWInvParam.class, $reified$T);
+    }
+}
+class RWInvParamExt<T> extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInvParam<T> {
+    
+    RWInvParamExt(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWInvParamExt.class, $reified$T);
+    }
+}
+class RWCovParam<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RWCovParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWCovParam.class, $reified$T);
+    }
+}
+class RWCovParamExt<T> extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWCovParam<T> {
+    
+    RWCovParamExt(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWCovParamExt.class, $reified$T);
+    }
+}
+class RWContrParam<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RWContrParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWContrParam.class, $reified$T);
+    }
+}
+class RWContrParamExt<T> extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWContrParam<T> {
+    
+    RWContrParamExt(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        super($reified$T);
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWContrParamExt.class, $reified$T);
+    }
+}
+interface RWTopI {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWTopI.class);
+}
+interface RWLeft extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWTopI {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWLeft.class);
+}
+interface RWRight extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWTopI {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWRight.class);
+}
+interface RWNumber {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber.class);
+}
+interface RWInteger extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWInteger.class);
+}
+interface RWFloat extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber {
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWFloat.class);
+}
+abstract class RWTop<X, Y> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RWTop(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
+        this.$reified$X = $reified$X;
+        this.$reified$Y = $reified$Y;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInvParam<.org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber> m();
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWCovParam<? extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber> m2();
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWCovParam<? extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber> m2_erasure();
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWContrParam<? super .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInteger> m3();
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWContrParam<? super .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInteger> m3_erasure();
+    
+    public abstract <T>T tParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
+    
+    public abstract <T>T tParamErasure(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
+    
+    public abstract <T extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInteger>T tCovBoundParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T);
+    
+    public abstract X typeBound();
+    
+    public abstract X typeCovBound();
+    
+    public abstract Y classBound();
+    
+    public abstract Y classBound_erasure();
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWTop.class, $reified$X, $reified$Y);
+    }
+}
+abstract class RWBottom<Z> extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWTop<.org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber, Z> {
+    
+    RWBottom(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z) {
+        super(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber.$TypeDescriptor$, $reified$Z);
+        this.$reified$Z = $reified$Z;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Z;
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInvParamExt<.org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber> m();
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWCovParamExt<? extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInteger> m2();
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWCovParam m2_erasure();
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWContrParamExt<? super .org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber> m3();
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWContrParam m3_erasure();
+    
+    @.java.lang.Override
+    public abstract <S>S tParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S);
+    
+    @.java.lang.Override
+    public abstract <S>S tParamErasure(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S);
+    
+    @.java.lang.Override
+    public abstract <S extends .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInteger>S tCovBoundParam(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S);
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWNumber typeBound();
+    
+    @.java.lang.Override
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.klass.RWInteger typeCovBound();
+    
+    @.java.lang.Override
+    public abstract Z classBound();
+    
+    @.java.lang.Override
+    public abstract Z classBound_erasure();
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.RWBottom.class, $reified$Z);
+    }
+}

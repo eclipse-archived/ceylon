@@ -44,7 +44,7 @@ Note that some of the tests currently fail. See more info in README.tests.
 
 Once built, the compiler lives in this jar:
 
-    ~/.ceylon/repo/com/redhat/ceylon/compiler/java/X.Y.Z/com.redhat.ceylon.compiler.java-X.Y.Z.jar
+    ~/.ceylon/repo/org/eclipse/ceylon/compiler/java/X.Y.Z/org.eclipse.ceylon.compiler.java-X.Y.Z.jar
 
 If you want to build and run the Ceylon compiler in Eclipse
 then please see README.eclipse for setup instructions.
@@ -77,8 +77,8 @@ Building the project on Mac with JDK7
 4) Build it (ant clean publish)
 
     publish:
-        [copy] Copying 2 files to /Users/alesj/.ceylon/repo/com/redhat/ceylon/compiler/java/0.6
-        [copy] Copying 2 files to /Users/alesj/.ceylon/repo/com/redhat/ceylon/ant/0.6
+        [copy] Copying 2 files to /Users/alesj/.ceylon/repo/org/eclipse/ceylon/compiler/java/0.6
+        [copy] Copying 2 files to /Users/alesj/.ceylon/repo/org/eclipse/ceylon/ant/0.6
 
 BUILD SUCCESSFUL
 

@@ -1,0 +1,76 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+class InnerAttributeGetterSetter implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    InnerAttributeGetterSetter() {
+    }
+    
+    private final void m$priv$() {
+        
+        final class innerGetterSetter$getter$_ implements .org.eclipse.ceylon.compiler.java.language.GetterLong {
+            
+            private innerGetterSetter$getter$_() {
+            }
+            
+            public long get_() {
+                return 0L;
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.GetterLong innerGetterSetter$getter$_ = new innerGetterSetter$getter$_();
+        
+        final class innerGetterSetter$setter$_ {
+            
+            private innerGetterSetter$setter$_() {
+            }
+            private long $object$;
+            
+            public void set_(final long innerGetterSetter) {
+            }
+        }
+        final innerGetterSetter$setter$_ innerGetterSetter$setter$_ = new innerGetterSetter$setter$_();
+        final long n = innerGetterSetter$getter$_.get_();
+        innerGetterSetter$setter$_.set_(1L);
+    }
+    
+    private final void m2$priv$() {
+        final .org.eclipse.ceylon.compiler.java.language.VariableBoxLong m = new .org.eclipse.ceylon.compiler.java.language.VariableBoxLong(0L);
+        
+        final class innerGetterSetter$getter$_ implements .org.eclipse.ceylon.compiler.java.language.GetterLong {
+            
+            private innerGetterSetter$getter$_() {
+            }
+            
+            public long get_() {
+                return m.ref;
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.GetterLong innerGetterSetter$getter$_ = new innerGetterSetter$getter$_();
+        
+        final class innerGetterSetter$setter$_ {
+            
+            private innerGetterSetter$setter$_() {
+            }
+            private long $object$;
+            
+            public void set_(final long innerGetterSetter) {
+                (
+                    let
+                    {
+                        long $ceylontmp$op$0 = innerGetterSetter;
+                        m.ref = $ceylontmp$op$0;
+                    }
+                    returning $ceylontmp$op$0;
+                );
+            }
+        }
+        final innerGetterSetter$setter$_ innerGetterSetter$setter$_ = new innerGetterSetter$setter$_();
+        final long n = innerGetterSetter$getter$_.get_();
+        innerGetterSetter$setter$_.set_(1L);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.InnerAttributeGetterSetter.class);
+}

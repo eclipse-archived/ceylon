@@ -31,27 +31,27 @@ echo "Package renaming"
 cd compiler-java
 renamePackage langtools/src/share/classes \
   javax.annotation.processing \
-  com.redhat.ceylon.javax.annotation.processing \
+  org.eclipse.ceylon.javax.annotation.processing \
   rev_renames
 
 renamePackage langtools/src/share/classes \
   javax.lang.model \
-  com.redhat.ceylon.javax.lang.model \
+  org.eclipse.ceylon.javax.lang.model \
   rev_renames
   
 renamePackage langtools/src/share/classes \
   javax.tools \
-  com.redhat.ceylon.javax.tools \
+  org.eclipse.ceylon.javax.tools \
   rev_renames
   
 renamePackage langtools/src/share/classes \
   com.sun.source \
-  com.redhat.ceylon.langtools.source \
+  org.eclipse.ceylon.langtools.source \
   rev_renames
   
 renamePackage langtools/src/share/classes \
   com.sun.tools.javac \
-  com.redhat.ceylon.langtools.tools.javac \
+  org.eclipse.ceylon.langtools.tools.javac \
   rev_renames
 
 cd ..
@@ -59,7 +59,7 @@ cd ..
 cd langtools-classfile
 renamePackage ./src \
   com.sun.tools.classfile \
-  com.redhat.ceylon.langtools.classfile \
+  org.eclipse.ceylon.langtools.classfile \
   rev_renames
 
 cd ..

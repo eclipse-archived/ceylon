@@ -1,16 +1,16 @@
 package ceylon.language;
 
-import com.redhat.ceylon.compiler.java.Util;
-import com.redhat.ceylon.compiler.java.language.AbstractCallable;
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Method;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
-import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import org.eclipse.ceylon.compiler.java.Util;
+import org.eclipse.ceylon.compiler.java.language.AbstractCallable;
+import org.eclipse.ceylon.compiler.java.metadata.Ceylon;
+import org.eclipse.ceylon.compiler.java.metadata.FunctionalParameter;
+import org.eclipse.ceylon.compiler.java.metadata.Ignore;
+import org.eclipse.ceylon.compiler.java.metadata.Method;
+import org.eclipse.ceylon.compiler.java.metadata.Name;
+import org.eclipse.ceylon.compiler.java.metadata.TypeInfo;
+import org.eclipse.ceylon.compiler.java.metadata.TypeParameter;
+import org.eclipse.ceylon.compiler.java.metadata.TypeParameters;
+import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
 @Method

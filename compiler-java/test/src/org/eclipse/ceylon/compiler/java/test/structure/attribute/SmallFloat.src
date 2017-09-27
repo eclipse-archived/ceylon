@@ -1,0 +1,292 @@
+package org.eclipse.ceylon.compiler.java.test.structure.attribute;
+
+class SmallFloat implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected SmallFloat() {
+        super();
+        this.floatp = 0.0F;
+        this.floata = 0.0F;
+    }
+    
+    SmallFloat(final float floatp) {
+        this.floatp = floatp;
+        this.floata = getFloatp();
+        final float floatad;
+        floatad = (float)1.0;
+    }
+    private final float floatp;
+    
+    public final float getFloatp() {
+        return this.floatp;
+    }
+    private float floata;
+    
+    private final float getFloata$priv$() {
+        return this.floata;
+    }
+    
+    private final void setFloata$priv$(final float floata) {
+        this.floata = floata;
+    }
+    
+    public final float getFloatgs() {
+        return (float)1.0;
+    }
+    
+    public final void setFloatgs(final float floatgs) {
+    }
+    
+    private final void floatassignmentOps$priv$() {
+        double $double = 1000.0 * 1000.0 * 1000.0 * 1000.0;
+        setFloata$priv$((float)$double);
+        this.setFloata$priv$((float)1.0);
+        this.setFloata$priv$((float)$double);
+        setFloatgs((float)$double);
+        $double = getFloata$priv$();
+        setFloata$priv$((float)2.147483647E9);
+        setFloata$priv$((float)-2.147483648E9);
+        setFloata$priv$((float)2.147483648E9);
+        setFloata$priv$((float)-2.147483649E9);
+        
+        final class localfloatgs$getter$_ implements .org.eclipse.ceylon.compiler.java.language.GetterFloat {
+            
+            private localfloatgs$getter$_() {
+            }
+            
+            public float get_() {
+                return (float)1.0;
+            }
+        }
+        final .org.eclipse.ceylon.compiler.java.language.GetterFloat localfloatgs$getter$_ = new localfloatgs$getter$_();
+        
+        final class localfloatgs$setter$_ {
+            
+            private localfloatgs$setter$_() {
+            }
+            private float $object$;
+            
+            public void set_(final float localfloatgs) {
+            }
+        }
+        final localfloatgs$setter$_ localfloatgs$setter$_ = new localfloatgs$setter$_();
+        localfloatgs$setter$_.set_((float)$double);
+        $double = localfloatgs$getter$_.get_();
+        $double = (
+            let
+            {
+                double $ceylontmp$op$0 = 2.147483647E9;
+                setFloata$priv$((float)$ceylontmp$op$0);
+            }
+            returning $ceylontmp$op$0;
+        );
+        setFloata$priv$((float)(
+            let
+            {
+                double $ceylontmp$op$1 = 2.147483647E9;
+                $double = $ceylontmp$op$1;
+            }
+            returning $ceylontmp$op$1;
+        ));
+    }
+    
+    public final float floatCalc(final float floatp) {
+        final float intl = this.getFloatp();
+        setFloata$priv$((float)((float)(floatp * this.getFloata$priv$()) * intl));
+        return getFloata$priv$();
+    }
+    
+    public final void intSmallArithmeticOperators() {
+        setFloata$priv$((float)(getFloata$priv$() + getFloatp()));
+        setFloata$priv$((float)(getFloata$priv$() - getFloatp()));
+        setFloata$priv$((float)(getFloata$priv$() * getFloatp()));
+        setFloata$priv$((float)(getFloata$priv$() / getFloatp()));
+        setFloata$priv$(.ceylon.language.Float.$power$(getFloata$priv$(), getFloatp()));
+        (
+            let
+            {
+                float $ceylontmp$op$2 = (float)(getFloata$priv$() + getFloatp());
+                setFloata$priv$($ceylontmp$op$2);
+            }
+            returning $ceylontmp$op$2;
+        );
+        (
+            let
+            {
+                float $ceylontmp$op$3 = (float)(getFloata$priv$() - getFloatp());
+                setFloata$priv$($ceylontmp$op$3);
+            }
+            returning $ceylontmp$op$3;
+        );
+        (
+            let
+            {
+                float $ceylontmp$op$4 = (float)(getFloata$priv$() * getFloatp());
+                setFloata$priv$($ceylontmp$op$4);
+            }
+            returning $ceylontmp$op$4;
+        );
+        (
+            let
+            {
+                float $ceylontmp$op$5 = (float)(getFloata$priv$() / getFloatp());
+                setFloata$priv$($ceylontmp$op$5);
+            }
+            returning $ceylontmp$op$5;
+        );
+    }
+    
+    public final void intMixedArithmeticOperators() {
+        final double $double = 0.0;
+        setFloata$priv$((float)(getFloata$priv$() + $double));
+        setFloata$priv$((float)(getFloata$priv$() - $double));
+        setFloata$priv$((float)(getFloata$priv$() * $double));
+        setFloata$priv$((float)(getFloata$priv$() / $double));
+        setFloata$priv$((float).ceylon.language.Float.$power$(getFloata$priv$(), $double));
+        (
+            let
+            {
+                double $ceylontmp$op$6 = getFloata$priv$() + $double;
+                setFloata$priv$((float)$ceylontmp$op$6);
+            }
+            returning $ceylontmp$op$6;
+        );
+        (
+            let
+            {
+                double $ceylontmp$op$7 = getFloata$priv$() - $double;
+                setFloata$priv$((float)$ceylontmp$op$7);
+            }
+            returning $ceylontmp$op$7;
+        );
+        (
+            let
+            {
+                double $ceylontmp$op$8 = getFloata$priv$() * $double;
+                setFloata$priv$((float)$ceylontmp$op$8);
+            }
+            returning $ceylontmp$op$8;
+        );
+        (
+            let
+            {
+                double $ceylontmp$op$9 = getFloata$priv$() / $double;
+                setFloata$priv$((float)$ceylontmp$op$9);
+            }
+            returning $ceylontmp$op$9;
+        );
+    }
+    
+    public final void intComparisonOps() {
+        boolean c = getFloata$priv$() == getFloatp();
+        c = !(getFloata$priv$() == getFloatp());
+        c = getFloata$priv$() < getFloatp();
+        c = getFloata$priv$() <= getFloatp();
+        c = getFloata$priv$() > getFloatp();
+        c = getFloata$priv$() >= getFloatp();
+        c = (
+            let
+            {
+                float middle$10 = getFloata$priv$();
+            }
+            returning 0.0 < middle$10 && middle$10 < getFloatp();
+        );
+        c = (
+            let
+            {
+                float middle$11 = getFloata$priv$();
+            }
+            returning 0.0 <= middle$11 && middle$11 <= getFloatp();
+        );
+        .ceylon.language.Comparison cmp = .ceylon.language.Float.compare(getFloata$priv$(), getFloatp());
+    }
+    
+    private final void floatparamDefault$priv$() {
+        (
+            let
+            {
+                float $ceylontmp$p1$12 = floatparamDefault$p1();
+                float $ceylontmp$p2$13 = floatparamDefault$p2($ceylontmp$p1$12);
+                floatparamDefault$priv$$canonical$($ceylontmp$p1$12, $ceylontmp$p2$13);
+            }
+            returning null;
+        );
+    }
+    
+    private final float floatparamDefault$p1() {
+        return (float)1.0;
+    }
+    
+    private final void floatparamDefault$priv$(final float p1) {
+        (
+            let
+            {
+                float $ceylontmp$p2$14 = floatparamDefault$p2(p1);
+                floatparamDefault$priv$$canonical$(p1, $ceylontmp$p2$14);
+            }
+            returning null;
+        );
+    }
+    
+    private final float floatparamDefault$p2(final float p1) {
+        return p1;
+    }
+    
+    private void floatparamDefault$priv$$canonical$(final float p1, final float p2) {
+    }
+    
+    private final void floatparamDefault$priv$(final float p1, final float p2) {
+        (
+            let
+            {
+                floatparamDefault$priv$$canonical$(p1, p2);
+            }
+            returning null;
+        );
+    }
+    
+    private final void powerMethodIsNotSmall$priv$(final float x, final float y) {
+        float addition = (float)(x + y);
+        addition = (float).ceylon.language.Float.plus(x, y);
+        float exponentiation = .ceylon.language.Float.$power$(x, y);
+        exponentiation = (float).ceylon.language.Float.power(x, y);
+    }
+    
+    private final void argumentConversion$priv$() {
+        powerMethodIsNotSmall$priv$((float)1.0, (float)1.0);
+        (
+            let
+            {
+                float arg$15$0 = (float)1.0;
+                float arg$15$1 = (float)1.0;
+                powerMethodIsNotSmall$priv$(arg$15$0, arg$15$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                float arg$16$0 = (float)1.0;
+                
+                final class y$getter$_ implements .org.eclipse.ceylon.compiler.java.language.GetterFloat {
+                    
+                    private y$getter$_() {
+                    }
+                    
+                    public float get_() {
+                        return (float)1.0;
+                    }
+                }
+                final .org.eclipse.ceylon.compiler.java.language.GetterFloat y$getter$_ = new y$getter$_();
+                final float arg$16$1 = y$getter$_.get_();
+                powerMethodIsNotSmall$priv$(arg$16$0, arg$16$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.attribute.SmallFloat.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.attribute.SmallFloat.class);
+}

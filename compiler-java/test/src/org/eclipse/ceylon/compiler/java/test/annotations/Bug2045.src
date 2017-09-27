@@ -1,0 +1,133 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+public @interface Bug2045Annotation$annotation$ {
+    
+    public abstract long order();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<org.eclipse.ceylon.compiler.java.test.annotations::Bug2045Annotation,ceylon.language.meta.declaration::ValueDeclaration,ceylon.language::Anything>"})
+public final class Bug2045Annotation implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.Bug2045Annotation, .ceylon.language.meta.declaration.ValueDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Bug2045Annotation() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public Bug2045Annotation(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2045Annotation$annotation$ anno) {
+        this(anno.order());
+    }
+    
+    public Bug2045Annotation(@.org.eclipse.ceylon.compiler.java.metadata.Name("order")
+    final long order) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2045Annotation.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2045Annotation.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2045Annotation$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.Bug2045Annotation.class)
+public final class bug2045_ {
+    
+    private bug2045_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static .org.eclipse.ceylon.compiler.java.test.annotations.Bug2045Annotation bug2045() {
+        return (
+            let
+            {
+                long $ceylontmp$order$0 = .org.eclipse.ceylon.compiler.java.test.annotations.bug2045_.bug2045$order();
+            }
+            returning bug2045($ceylontmp$order$0);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(-1L)
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final long bug2045$order() {
+        return -1L;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.annotations::Bug2045Annotation")
+    public static .org.eclipse.ceylon.compiler.java.test.annotations.Bug2045Annotation bug2045(@.org.eclipse.ceylon.compiler.java.metadata.Name("order")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    final long order) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.Bug2045Annotation(order);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.annotations.bug2045_.bug2045();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("bug2045Use")
+final class bug2045Use_ {
+    
+    private bug2045Use_() {
+    }
+    private static final .java.lang.String $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = "";
+            .org.eclipse.ceylon.compiler.java.test.annotations.bug2045Use_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.annotations.bug2045Use_.$init$$object$ = false;
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.Bug2045Annotation$annotation$(order = -1L)
+    @.org.eclipse.ceylon.common.NonNull
+    public static .java.lang.String get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.annotations.bug2045Use_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.annotations.bug2045Use_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2045Use\' before it was set");
+        }
+    }
+}

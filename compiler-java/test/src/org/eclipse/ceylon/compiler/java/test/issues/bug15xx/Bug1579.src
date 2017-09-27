@@ -1,0 +1,72 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug15xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class Foo implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected Foo() {
+        super();
+    }
+    
+    Foo(@.org.eclipse.ceylon.compiler.java.metadata.Name("number")
+    final long number) {
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class do_ {
+    
+    private do_() {
+    }
+    
+    static void $do() {
+        final .ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> iterable = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo(1L);
+                
+                case 1: 
+                    return new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo(2L);
+                
+                case 2: 
+                    return new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo(3L);
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        final .ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object>)iterable.<.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo>follow(.org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.test.issues.bug15xx.Foo(2L));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug1579_ {
+    
+    private bug1579_() {
+    }
+    
+    static void bug1579() {
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("a")).<.ceylon.language.String>follow(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("a"));
+    }
+}

@@ -30,9 +30,9 @@
     </organization>
 
     <properties>
-        <version.com.redhat.ceylon.language>1.1.1</version.com.redhat.ceylon.language>
-        <version.com.redhat.ceylon.common>1.1.1</version.com.redhat.ceylon.common>
-        <version.com.redhat.ceylon.cmr>1.1.1-SNAPSHOT</version.com.redhat.ceylon.cmr>
+        <version.org.eclipse.ceylon.language>1.1.1</version.org.eclipse.ceylon.language>
+        <version.org.eclipse.ceylon.common>1.1.1</version.org.eclipse.ceylon.common>
+        <version.org.eclipse.ceylon.cmr>1.1.1-SNAPSHOT</version.org.eclipse.ceylon.cmr>
         <version.org.jboss.modules>1.4.4.Final</version.org.jboss.modules>
         <version.org.jboss.shrinkwrap>1.1.0</version.org.jboss.shrinkwrap>
         <version.junit>4.10</version.junit>
@@ -168,32 +168,32 @@
             <dependency>
                 <groupId>ceylon.language</groupId>
                 <artifactId>ceylon-language</artifactId>
-                <version>${version.com.redhat.ceylon.language}</version>
+                <version>${version.org.eclipse.ceylon.language}</version>
             </dependency>
             <dependency>
-                <groupId>com.redhat.ceylon</groupId>
+                <groupId>org.eclipse.ceylon</groupId>
                 <artifactId>ceylon-common</artifactId>
-                <version>${version.com.redhat.ceylon.common}</version>
+                <version>${version.org.eclipse.ceylon.common}</version>
             </dependency>
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-api</artifactId>
-                <version>${version.com.redhat.ceylon.cmr}</version>
+                <version>${version.org.eclipse.ceylon.cmr}</version>
             </dependency>
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-impl</artifactId>
-                <version>${version.com.redhat.ceylon.cmr}</version>
+                <version>${version.org.eclipse.ceylon.cmr}</version>
             </dependency>
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-utils</artifactId>
-                <version>${version.com.redhat.ceylon.cmr}</version>
+                <version>${version.org.eclipse.ceylon.cmr}</version>
             </dependency>
             <dependency>
-                <groupId>com.redhat.ceylon.cmr</groupId>
+                <groupId>org.eclipse.ceylon.cmr</groupId>
                 <artifactId>cmr-maven</artifactId>
-                <version>${version.com.redhat.ceylon.cmr}</version>
+                <version>${version.org.eclipse.ceylon.cmr}</version>
             </dependency>
 
             <dependency>

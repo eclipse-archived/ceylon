@@ -1,0 +1,35 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug16xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Attribute
+@.org.eclipse.ceylon.compiler.java.metadata.Name("bug1659")
+final class bug1659_ {
+    
+    private bug1659_() {
+    }
+    private static long $object$;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
+    
+    @.ceylon.language.LateAnnotation$annotation$
+    public static long get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.bug1659_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.bug1659_.$object$;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'bug1659\'");
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void set_(@.org.eclipse.ceylon.compiler.java.metadata.Name("bug1659")
+    final long bug1659) {
+        if (!.org.eclipse.ceylon.compiler.java.test.issues.bug16xx.bug1659_.$init$$object$) {
+            .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.bug1659_.$object$ = bug1659;
+            .org.eclipse.ceylon.compiler.java.test.issues.bug16xx.bug1659_.$init$$object$ = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+        }
+    }
+}

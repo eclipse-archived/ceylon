@@ -1,0 +1,76 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug20xx;
+
+interface I<Element> {
+    
+    public abstract <Result>.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.I<? extends Result> map(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting);
+}
+interface J<Element> extends .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.I<Element> {
+    
+    @.java.lang.Override
+    public abstract <Result>.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.J<? extends Result> map(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting);
+}
+interface K extends .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.J<.java.lang.Object> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.K$impl $org$eclipse$ceylon$compiler$java$test$issues$bug20xx$K$impl();
+    
+    @.java.lang.Override
+    public <Result>.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.J map(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting);
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.K.class);
+}
+final class K$impl {
+    
+    K$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.K $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.K $this;
+    
+    public <Result>.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.J map(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.J<? extends Result>)(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.J)$this;
+    }
+}
+final class k_ implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.K {
+    
+    private k_() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug20xx$K$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.K$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.K$impl $org$eclipse$ceylon$compiler$java$test$issues$bug20xx$K$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.K$impl $org$eclipse$ceylon$compiler$java$test$issues$bug20xx$K$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug20xx$K$this$;
+    }
+    
+    @.java.lang.Override
+    public final <Result>.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.J map(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result, final .ceylon.language.Callable<? extends Result> collecting) {
+        return (.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.J)(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.I)$org$eclipse$ceylon$compiler$java$test$issues$bug20xx$K$this$.map($reified$Result, collecting);
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.k_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.k_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.k_ get_() {
+        if (k_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'k\' before it was set");
+        }
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug20xx.k_.class);
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug20xx.k_.$TypeDescriptor$;
+    }
+}

@@ -17,7 +17,7 @@
 
 package ceylon.modules;
 
-import com.redhat.ceylon.common.tool.ToolError;
+import org.eclipse.ceylon.common.tool.ToolError;
 
 /**
  * @author Stephane Epardaud

@@ -1,0 +1,278 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug69xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class foo_ {
+    
+    private foo_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter$annotation$(name = "")
+    @.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters$annotation$(
+            name = "",
+            list = {})
+    static void foo() {
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter.class)
+public final class withOneDefaultParameter_ {
+    
+    private withOneDefaultParameter_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter withOneDefaultParameter() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$name$0 = .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.withOneDefaultParameter_.withOneDefaultParameter$name();
+            }
+            returning withOneDefaultParameter($ceylontmp$name$0);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.StringValue("")
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .java.lang.String withOneDefaultParameter$name() {
+        return "";
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug69xx::AnnotationWithOneDefaultParameter")
+    public static .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter withOneDefaultParameter(@.org.eclipse.ceylon.compiler.java.metadata.Name("name")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String name) {
+        return new .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter(name);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.withOneDefaultParameter_.withOneDefaultParameter();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+public @interface AnnotationWithOneDefaultParameter$annotation$ {
+    
+    public abstract .java.lang.String name();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<org.eclipse.ceylon.compiler.java.test.issues.bug69xx::AnnotationWithOneDefaultParameter,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+public final class AnnotationWithOneDefaultParameter implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected AnnotationWithOneDefaultParameter() {
+        super();
+        this.name = null;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public AnnotationWithOneDefaultParameter(.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter$annotation$ anno) {
+        this(anno.name());
+    }
+    
+    public AnnotationWithOneDefaultParameter(@.org.eclipse.ceylon.compiler.java.metadata.Name("name")
+    @.org.eclipse.ceylon.common.NonNull
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .java.lang.String name) {
+        this.name = name;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String name;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getName() {
+        return this.name;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithOneDefaultParameter$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                0,
+                1},
+        primary = .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters.class)
+public final class withTwoDefaultParameters_ {
+    
+    private withTwoDefaultParameters_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters withTwoDefaultParameters() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$name$1 = .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.withTwoDefaultParameters_.withTwoDefaultParameters$name();
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$list$2 = .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.withTwoDefaultParameters_.withTwoDefaultParameters$list($ceylontmp$name$1);
+            }
+            returning withTwoDefaultParameters($ceylontmp$name$1, $ceylontmp$list$2);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.StringValue("")
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .java.lang.String withTwoDefaultParameters$name() {
+        return "";
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters withTwoDefaultParameters(final .java.lang.String name) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$list$3 = .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.withTwoDefaultParameters_.withTwoDefaultParameters$list(name);
+            }
+            returning withTwoDefaultParameters(name, $ceylontmp$list$3);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.StringValue({})
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .ceylon.language.Sequential<? extends .ceylon.language.String> withTwoDefaultParameters$list(final .java.lang.String name) {
+        return (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug69xx::AnnotationWithTwoDefaultParameters")
+    public static .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters withTwoDefaultParameters(@.org.eclipse.ceylon.compiler.java.metadata.Name("name")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String name, @.org.eclipse.ceylon.compiler.java.metadata.Name("list")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String[]")
+    final .ceylon.language.Sequential<? extends .ceylon.language.String> list) {
+        return new .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters(name, list);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.withTwoDefaultParameters_.withTwoDefaultParameters();
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+@.java.lang.annotation.Target({
+        .java.lang.annotation.ElementType.PARAMETER,
+        .java.lang.annotation.ElementType.METHOD})
+public @interface AnnotationWithTwoDefaultParameters$annotation$ {
+    
+    public abstract .java.lang.String name();
+    
+    public abstract .java.lang.String[] list();
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::OptionalAnnotation<org.eclipse.ceylon.compiler.java.test.issues.bug69xx::AnnotationWithTwoDefaultParameters,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
+public final class AnnotationWithTwoDefaultParameters implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters, .ceylon.language.meta.declaration.FunctionDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Jpa
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    protected AnnotationWithTwoDefaultParameters() {
+        super();
+        this.name = null;
+        this.list = null;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public AnnotationWithTwoDefaultParameters(.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters$annotation$ anno) {
+        this(anno.name(), .org.eclipse.ceylon.compiler.java.Util.sequentialWrapperBoxed(anno.list()));
+    }
+    
+    public AnnotationWithTwoDefaultParameters(@.org.eclipse.ceylon.compiler.java.metadata.Name("name")
+    @.org.eclipse.ceylon.common.NonNull
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .java.lang.String name, @.org.eclipse.ceylon.compiler.java.metadata.Name("list")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String[]")
+    @.ceylon.language.SharedAnnotation$annotation$
+    final .ceylon.language.Sequential<? extends .ceylon.language.String> list) {
+        this.name = name;
+        this.list = list;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .java.lang.String name;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    public final .java.lang.String getName() {
+        return this.name;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private final .ceylon.language.Sequential<? extends .ceylon.language.String> list;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String[]")
+    public final .ceylon.language.Sequential<? extends .ceylon.language.String> getList() {
+        return this.list;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug69xx.AnnotationWithTwoDefaultParameters$annotation$.class;
+    }
+}

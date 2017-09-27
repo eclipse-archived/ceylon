@@ -1,0 +1,16 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug07xx.bug711;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class bug711_ {
+    
+    private bug711_() {
+    }
+    
+    static void bug711() {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.bug711.ClassWithGetterAndSetter klazz = new .org.eclipse.ceylon.compiler.java.test.issues.bug07xx.bug711.ClassWithGetterAndSetter();
+        klazz.setSomeString("foobar");
+    }
+}

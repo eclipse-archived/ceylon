@@ -1,0 +1,40 @@
+package org.eclipse.ceylon.compiler.java.test.expression.attribute;
+
+class AttributeAccess implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AttributeAccess() {
+        this.b1 = true;
+        this.b2 = true;
+    }
+    private final boolean b1;
+    
+    private final boolean getB1$priv$() {
+        return this.b1;
+    }
+    private final boolean b2;
+    
+    public final boolean getB2() {
+        return this.b2;
+    }
+    
+    private final boolean getB3$priv$() {
+        return true;
+    }
+    
+    public final boolean getB4() {
+        return true;
+    }
+    
+    private final void m$priv$() {
+        final boolean bb1 = getB1$priv$();
+        final boolean bb2 = getB2();
+        final boolean bb3 = getB3$priv$();
+        final boolean bb4 = getB4();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.attribute.AttributeAccess.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.attribute.AttributeAccess.class);
+}

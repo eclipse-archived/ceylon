@@ -1,0 +1,45 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug18xx;
+
+interface Bug1849Foo {
+    
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl $org$eclipse$ceylon$compiler$java$test$issues$bug18xx$Bug1849Foo$impl();
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl.Bar Bar$new$();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo.class);
+}
+final class Bug1849Foo$impl implements .java.io.Serializable {
+    
+    Bug1849Foo$impl(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo $this) {
+        this.$this = $this;
+    }
+    private final .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo $this;
+    
+    public abstract class Bar implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Bar() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl.Bar.class));
+        }
+    }
+}
+abstract class Bug1849Baz implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo, .java.io.Serializable {
+    
+    Bug1849Baz() {
+        this.$org$eclipse$ceylon$compiler$java$test$issues$bug18xx$Bug1849Foo$this$ = new .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl(this);
+    }
+    protected final .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl $org$eclipse$ceylon$compiler$java$test$issues$bug18xx$Bug1849Foo$this$;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Foo$impl $org$eclipse$ceylon$compiler$java$test$issues$bug18xx$Bug1849Foo$impl() {
+        return $org$eclipse$ceylon$compiler$java$test$issues$bug18xx$Bug1849Foo$this$;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Baz.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug18xx.Bug1849Baz.class);
+}

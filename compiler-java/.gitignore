@@ -13,7 +13,7 @@ samples/helloworld/modules
 /allSources/
 /JDTClasses/
 /build
-test/trace/com/redhat/ceylon/compiler/java/test/trace/**/*.class
-test/trace/com/redhat/ceylon/compiler/java/test/trace/*.class
+test/trace/org/eclipse/ceylon/compiler/java/test/trace/**/*.class
+test/trace/org/eclipse/ceylon/compiler/java/test/trace/*.class
 .ceylon/config.old
 hs_err_pid*

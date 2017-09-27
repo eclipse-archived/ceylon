@@ -1,0 +1,45 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug11xx;
+
+public class Bug1135 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug1135() {
+        this.listeners = new .ceylon.language.Array<.ceylon.language.Callable<? extends .java.lang.Object>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), (.ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_());
+    }
+    
+    final class Listener {
+        
+        private Listener() {
+        }
+    }
+    private .ceylon.language.Array<.ceylon.language.Callable<? extends .java.lang.Object>> listeners;
+    
+    private final .ceylon.language.Array<.ceylon.language.Callable<? extends .java.lang.Object>> getListeners$priv$() {
+        return this.listeners;
+    }
+    
+    private final void setListeners$priv$(final .ceylon.language.Array<.ceylon.language.Callable<? extends .java.lang.Object>> listeners) {
+        this.listeners = listeners;
+    }
+    
+    public final void fireEvent() {
+        getListeners$priv$().<.java.lang.Object>map(.ceylon.language.Anything.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$)), "Anything(Bug1135.Listener)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Callable<? extends .java.lang.Object> listener = (.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)$param$0;
+                return listener.$call$();
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1135();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1135.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1135.class);
+}

@@ -1,0 +1,247 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug19xx;
+
+interface One1935<Item> {
+}
+class OneClass1935<Item> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.One1935<Item>, .java.io.Serializable {
+    
+    protected OneClass1935(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        super();
+        this.$reified$Item = $reified$Item;
+    }
+    
+    OneClass1935(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> t) {
+        this.$reified$Item = $reified$Item;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.OneClass1935.class, $reified$Item);
+    }
+}
+final class one1935_ {
+    
+    private one1935_() {
+    }
+    
+    static <Item>.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> one1935(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> t) {
+        return new .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.OneClass1935<Item>($reified$Item, t);
+    }
+}
+interface Two1935<Key, Item> {
+}
+class TwoClass1935<Key, Item> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Two1935<Key, Item>, .java.io.Serializable {
+    
+    protected TwoClass1935(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item) {
+        super();
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+    }
+    
+    TwoClass1935(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> t) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.TwoClass1935.class, $reified$Key, $reified$Item);
+    }
+}
+final class two1935_ {
+    
+    private two1935_() {
+    }
+    
+    static <Key, Item>.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> two1935(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> t) {
+        return new .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.TwoClass1935<Key, Item>($reified$Key, $reified$Item, t);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Key",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Object"},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Item",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "X",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Y",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+interface Parameter1935<Key, Item, X, Y> {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object oneObject(@.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug19xx::One1935<Item&ceylon.language::Object>")
+    final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> t);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object oneXy(@.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.issues.bug19xx::One1935<X&Y>",
+            erased = true)
+    final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.One1935 t);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object twoObject(@.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug19xx::Two1935<Key,Item&ceylon.language::Object>")
+    final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> t);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object twoXy(@.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.issues.bug19xx::Two1935<Key,X&Y>",
+            erased = true)
+    final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Two1935 t);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"org.eclipse.ceylon.compiler.java.test.issues.bug19xx::Parameter1935<Key,Item,X,Y>"})
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Key",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Object"},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Item",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"ceylon.language::Object"},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "X",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {"Y"},
+                caseTypes = {}),
+        @.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+                value = "Y",
+                variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+                satisfies = {},
+                caseTypes = {})})
+class ParameterSub1935<Key, Item, X extends Y, Y> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Parameter1935<Key, Item, X, Y>, .java.io.Serializable {
+    
+    ParameterSub1935(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Item = $reified$Item;
+        this.$reified$X = $reified$X;
+        this.$reified$Y = $reified$Y;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Item;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object oneObject(@.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug19xx::One1935<Item>")
+    final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.One1935<? extends Item> t) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object oneXy(@.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.issues.bug19xx::One1935<X>",
+            erased = true)
+    final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.One1935 t) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object twoObject(@.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.issues.bug19xx::Two1935<Key,Item>")
+    final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Two1935<? extends Key, ? extends Item> t) {
+        return null;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public final .java.lang.Object twoXy(@.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "org.eclipse.ceylon.compiler.java.test.issues.bug19xx::Two1935<Key,X>",
+            erased = true)
+    final .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Two1935 t) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.ParameterSub1935.class, $reified$Key, $reified$Item, $reified$X, $reified$Y);
+    }
+}

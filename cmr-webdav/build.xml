@@ -10,7 +10,7 @@
     <property name="test.reports" location="${build.dir}/test-reports" />
 
     <!-- Local repository -->
-    <property name="ceylon.module-resolver-webdav.src" value="${ceylon.module-resolver-webdav.dir}/com.redhat.ceylon.module-resolver-webdav-${module.com.redhat.ceylon.module-resolver-webdav.version}.src" />
+    <property name="ceylon.module-resolver-webdav.src" value="${ceylon.module-resolver-webdav.dir}/org.eclipse.ceylon.module-resolver-webdav-${module.org.eclipse.ceylon.module-resolver-webdav.version}.src" />
     <property name="ceylon.module-resolver-webdav.repo" value="${ceylon.repo.dir}/${ceylon.module-resolver-webdav.dir}" />
     <property name="ceylon.module-resolver-webdav.dist" value="${build.dist}/${ceylon.module-resolver-webdav.dir}" />
 
@@ -75,8 +75,8 @@
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-resolver-webdav"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver-webdav.osgi.version}${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.module-resolver-webdav"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.module-resolver-webdav.osgi.version}${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

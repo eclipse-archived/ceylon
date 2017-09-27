@@ -1,0 +1,15 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug06xx;
+
+interface bug674$X_<T> {
+}
+interface bug674$Y_ {
+}
+final class bug674_ {
+    
+    private bug674_() {
+    }
+    
+    static void bug674() {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_> y = (.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.bug674$X_<.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.bug674$Y_>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}

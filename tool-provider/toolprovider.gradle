@@ -21,9 +21,9 @@ sourceSets {
         // TODO: If these files could be moved to all be under src/main/resources then this block can be eliminated
         resources {
             srcDirs = ['src']
-            include "com/redhat/**/resources/**"
-            include "com/redhat/**/*.properties"
-            include "com/redhat/**/*.utf8properties"
+            include "org/eclipse/**/resources/**"
+            include "org/eclipse/**/*.properties"
+            include "org/eclipse/**/*.utf8properties"
             include "META-INF/**"
         }
     }

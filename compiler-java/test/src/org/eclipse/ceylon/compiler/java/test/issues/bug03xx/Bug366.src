@@ -1,0 +1,15 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug03xx;
+
+public class Bug366<T> extends .java.lang.ref.WeakReference<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    public Bug366(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T obj, final .java.lang.ref.ReferenceQueue<T> q) {
+        super(obj, q);
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug03xx.Bug366.class, $reified$T);
+    }
+}

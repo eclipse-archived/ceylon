@@ -1,11 +1,10 @@
 package ceylon.language;
 
+import org.eclipse.ceylon.compiler.java.ArrayBuilderTest;
+import org.eclipse.ceylon.compiler.java.TypeDescriptorTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
-import com.redhat.ceylon.compiler.java.ArrayBuilderTest;
-import com.redhat.ceylon.compiler.java.TypeDescriptorTest;
 
 @RunWith(Suite.class) 
 @SuiteClasses({

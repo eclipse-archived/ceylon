@@ -1,0 +1,37 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug08xx;
+
+public final class bug899_ {
+    
+    private bug899_() {
+    }
+    
+    public static void bug899() {
+        
+        final class o_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private o_() {
+                this.i = 1L;
+            }
+            private final long i;
+            
+            private final long getI$priv$() {
+                return this.i;
+            }
+            
+            public final long f() {
+                return getI$priv$() + 1L;
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug08xx.bug899_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+            }
+        }
+        final o_ o = new o_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug08xx.bug899_.bug899();
+    }
+}

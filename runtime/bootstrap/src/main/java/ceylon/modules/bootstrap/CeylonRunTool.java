@@ -27,32 +27,31 @@ import java.util.Set;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import org.eclipse.ceylon.cmr.api.ModuleQuery;
+import org.eclipse.ceylon.cmr.api.ModuleQuery.Type;
+import org.eclipse.ceylon.cmr.impl.AssemblyRepositoryBuilder;
+import org.eclipse.ceylon.cmr.util.JarUtils;
+import org.eclipse.ceylon.common.Constants;
+import org.eclipse.ceylon.common.ModuleUtil;
+import org.eclipse.ceylon.common.Versions;
+import org.eclipse.ceylon.common.config.DefaultToolOptions;
+import org.eclipse.ceylon.common.tool.Argument;
+import org.eclipse.ceylon.common.tool.Description;
+import org.eclipse.ceylon.common.tool.Option;
+import org.eclipse.ceylon.common.tool.OptionArgument;
+import org.eclipse.ceylon.common.tool.RemainingSections;
+import org.eclipse.ceylon.common.tool.Rest;
+import org.eclipse.ceylon.common.tool.Summary;
+import org.eclipse.ceylon.common.tools.CeylonTool;
+import org.eclipse.ceylon.common.tools.RepoUsingTool;
+import org.eclipse.ceylon.compiler.java.runtime.tools.Backend;
+import org.eclipse.ceylon.compiler.java.runtime.tools.CeylonToolProvider;
+import org.eclipse.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
+import org.eclipse.ceylon.compiler.java.runtime.tools.ModuleNotFoundException;
+import org.eclipse.ceylon.compiler.java.runtime.tools.Runner;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
-
-import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
-import com.redhat.ceylon.cmr.impl.AssemblyRepositoryBuilder;
-import com.redhat.ceylon.cmr.util.JarUtils;
-import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.config.DefaultToolOptions;
-import com.redhat.ceylon.common.tool.Argument;
-import com.redhat.ceylon.common.tool.Description;
-import com.redhat.ceylon.common.tool.Option;
-import com.redhat.ceylon.common.tool.OptionArgument;
-import com.redhat.ceylon.common.tool.RemainingSections;
-import com.redhat.ceylon.common.tool.Rest;
-import com.redhat.ceylon.common.tool.Summary;
-import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.tools.RepoUsingTool;
-import com.redhat.ceylon.compiler.java.runtime.tools.Backend;
-import com.redhat.ceylon.compiler.java.runtime.tools.CeylonToolProvider;
-import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
-import com.redhat.ceylon.compiler.java.runtime.tools.ModuleNotFoundException;
-import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
 
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.bootstrap.loader.InitialModuleLoader;
@@ -250,13 +249,13 @@ public class CeylonRunTool extends RepoUsingTool {
         }
         
         if (moduleNameOptVersion == null) {
-            moduleNameOptVersion = DefaultToolOptions.getRunToolModule(com.redhat.ceylon.common.Backend.Java);
+            moduleNameOptVersion = DefaultToolOptions.getRunToolModule(org.eclipse.ceylon.common.Backend.Java);
             if (moduleNameOptVersion != null) {
                 if (run == null) {
-                    run = DefaultToolOptions.getRunToolRun(com.redhat.ceylon.common.Backend.Java);
+                    run = DefaultToolOptions.getRunToolRun(org.eclipse.ceylon.common.Backend.Java);
                 }
                 if (args == null || args.isEmpty()) {
-                    args = DefaultToolOptions.getRunToolArgs(com.redhat.ceylon.common.Backend.Java);
+                    args = DefaultToolOptions.getRunToolArgs(org.eclipse.ceylon.common.Backend.Java);
                 }
             } else {
                 throw new IllegalArgumentException("Missing required argument 'module' to command 'run'");
@@ -266,7 +265,7 @@ public class CeylonRunTool extends RepoUsingTool {
 
     @Override
     public void run() throws IOException {
-        compileFlags = processCompileFlags(compileFlags, DefaultToolOptions.getRunToolCompileFlags(com.redhat.ceylon.common.Backend.Java));
+        compileFlags = processCompileFlags(compileFlags, DefaultToolOptions.getRunToolCompileFlags(org.eclipse.ceylon.common.Backend.Java));
         
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(
@@ -390,7 +389,7 @@ public class CeylonRunTool extends RepoUsingTool {
 
     private static String prependModuleName(String module, String run) {
         if (run==null) return null;
-        if (!com.redhat.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME
+        if (!org.eclipse.ceylon.model.typechecker.model.Module.DEFAULT_MODULE_NAME
                     .equals(module)
                 && !run.contains("::")
                 && !run.contains(".")) {

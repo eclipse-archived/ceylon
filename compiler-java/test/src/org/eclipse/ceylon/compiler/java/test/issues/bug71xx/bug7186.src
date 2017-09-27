@@ -1,0 +1,166 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug71xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.SerializableAnnotation$annotation$
+public class Bug7186 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.serialization.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public Bug7186(final .org.eclipse.ceylon.compiler.java.runtime.serialization.$Serialization$ ignored) {
+        this.someInt = null;
+        this.someInt2 = 0L;
+        this.someString = null;
+        this.someString2 = null;
+    }
+    
+    public Bug7186() {
+        this.someInt = null;
+        this.someInt2 = 2L;
+        this.someString = null;
+        this.someString2 = "foo";
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private .java.lang.Long someInt;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    public .ceylon.language.Integer getSomeInt() {
+        return this.someInt == null ? null : .ceylon.language.Integer.instance(this.someInt.longValue());
+    }
+    
+    public void setSomeInt(@.org.eclipse.ceylon.compiler.java.metadata.Name("someInt")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    final .ceylon.language.Integer someInt) {
+        this.someInt = someInt == null ? null : .java.lang.Long.valueOf(someInt.longValue());
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private long someInt2;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    public long getSomeInt2() {
+        return this.someInt2;
+    }
+    
+    public void setSomeInt2(@.org.eclipse.ceylon.compiler.java.metadata.Name("someInt2")
+    final long someInt2) {
+        this.someInt2 = someInt2;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private .java.lang.String someString;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public .ceylon.language.String getSomeString() {
+        return this.someString == null ? null : .ceylon.language.String.instance(this.someString);
+    }
+    
+    public void setSomeString(@.org.eclipse.ceylon.compiler.java.metadata.Name("someString")
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    final .ceylon.language.String someString) {
+        this.someString = someString == null ? null : someString.toString();
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.NonNull
+    private .java.lang.String someString2;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.org.eclipse.ceylon.compiler.java.metadata.Final
+    @.org.eclipse.ceylon.common.NonNull
+    public .java.lang.String getSomeString2() {
+        return this.someString2;
+    }
+    
+    public void setSomeString2(@.org.eclipse.ceylon.compiler.java.metadata.Name("someString2")
+    @.org.eclipse.ceylon.common.NonNull
+    final .java.lang.String someString2) {
+        this.someString2 = someString2;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        new .org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7186();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7186.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7186.class);
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.util.Collection<.ceylon.language.serialization.ReachableReference> $references$() {
+        .java.util.Collection<.ceylon.language.serialization.ReachableReference> reference = new .java.util.ArrayList<.ceylon.language.serialization.ReachableReference>();
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7186.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "someInt")));
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7186.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "someInt2")));
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7186.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "someString")));
+        reference.add(new .ceylon.language.impl.MemberImpl(((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.issues.bug71xx.Bug7186.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getDeclaredMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "someString2")));
+        return reference;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.Object $get$(final .ceylon.language.serialization.ReachableReference reference) {
+        switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "org.eclipse.ceylon.compiler.java.test.issues.bug71xx::Bug7186.someInt": 
+            return this.someInt == null ? null : .ceylon.language.Integer.instance(this.someInt.longValue());
+        
+        case "org.eclipse.ceylon.compiler.java.test.issues.bug71xx::Bug7186.someInt2": 
+            return .ceylon.language.Integer.instance(this.someInt2);
+        
+        case "org.eclipse.ceylon.compiler.java.test.issues.bug71xx::Bug7186.someString": 
+            return this.someString == null ? null : .ceylon.language.String.instance(this.someString);
+        
+        case "org.eclipse.ceylon.compiler.java.test.issues.bug71xx::Bug7186.someString2": 
+            return .ceylon.language.String.instance(this.someString2);
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        }
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public void $set$(final .ceylon.language.serialization.ReachableReference reference, final .java.lang.Object instance) {
+        if (reference instanceof .ceylon.language.serialization.Member) switch (((.ceylon.language.serialization.Member)reference).getAttribute().getQualifiedName()) {
+        case "org.eclipse.ceylon.compiler.java.test.issues.bug71xx::Bug7186.someInt": 
+            this.someInt = instance == null ? null : .java.lang.Long.valueOf(((.ceylon.language.Integer)instance).longValue());
+            break;
+        
+        case "org.eclipse.ceylon.compiler.java.test.issues.bug71xx::Bug7186.someInt2": 
+            this.someInt2 = ((.ceylon.language.Integer)instance).longValue();
+            break;
+        
+        case "org.eclipse.ceylon.compiler.java.test.issues.bug71xx::Bug7186.someString": 
+            this.someString = instance == null ? null : ((.ceylon.language.String)instance).toString();
+            break;
+        
+        case "org.eclipse.ceylon.compiler.java.test.issues.bug71xx::Bug7186.someString2": 
+            this.someString2 = ((.ceylon.language.String)instance).toString();
+            break;
+        
+        default: 
+            throw new .java.lang.RuntimeException("unknown attribute");
+        
+        } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
+    }
+}

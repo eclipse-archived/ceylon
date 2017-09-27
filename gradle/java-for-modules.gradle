@@ -1,6 +1,6 @@
 import org.apache.tools.ant.filters.EscapeUnicode
 import org.apache.tools.ant.filters.ReplaceTokens
-import com.redhat.ceylon.model.loader.OsgiVersion
+import org.eclipse.ceylon.model.loader.OsgiVersion
 
 // Shorten the recipes required in Gradle scripts byt moving
 // a lot of the common code here.
@@ -26,7 +26,7 @@ if(!ext.properties.containsKey('ceylonPublishModuleName')) {
 }
 
 if(!ext.properties.containsKey('ceylonNamespace')) {
-    ext.ceylonNamespace = 'com.redhat.ceylon'
+    ext.ceylonNamespace = 'org.eclipse.ceylon'
 }
 
 // ----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ assemble {
 }
 
 processResources {
-    filesMatching 'com/redhat/**/*.utf8properties', { fcd ->
+    filesMatching 'org/eclipse/**/*.utf8properties', { fcd ->
         fcd.filter EscapeUnicode
         fcd.name = fcd.name.replace('.utf8properties','.properties')
     }

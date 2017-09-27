@@ -1,0 +1,37 @@
+package org.eclipse.ceylon.compiler.java.test.expression.operator;
+
+class ScaleOp implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Scalable<.ceylon.language.Float, .org.eclipse.ceylon.compiler.java.test.expression.operator.ScaleOp>, .java.io.Serializable {
+    
+    ScaleOp() {
+    }
+    
+    @.java.lang.Override
+    public final .org.eclipse.ceylon.compiler.java.test.expression.operator.ScaleOp scale(final .ceylon.language.Float other) {
+        return (.org.eclipse.ceylon.compiler.java.test.expression.operator.ScaleOp)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    private final void m$priv$() {
+        final .org.eclipse.ceylon.compiler.java.test.expression.operator.ScaleOp twice = (
+            let
+            {
+                .ceylon.language.Float scale$1 = .ceylon.language.Float.instance(2.0);
+                .ceylon.language.Scalable<? super .ceylon.language.Float, ? extends .org.eclipse.ceylon.compiler.java.test.expression.operator.ScaleOp> scalable$0 = this;
+            }
+            returning scalable$0.scale(scale$1);
+        );
+        final .org.eclipse.ceylon.compiler.java.test.expression.operator.ScaleOp thrice = (
+            let
+            {
+                .ceylon.language.Float scale$3 = .ceylon.language.Float.instance(2L + 2L);
+                .ceylon.language.Scalable<? super .ceylon.language.Float, ? extends .org.eclipse.ceylon.compiler.java.test.expression.operator.ScaleOp> scalable$2 = this;
+            }
+            returning scalable$2.scale(scale$3);
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.expression.operator.ScaleOp.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.expression.operator.ScaleOp.class);
+}

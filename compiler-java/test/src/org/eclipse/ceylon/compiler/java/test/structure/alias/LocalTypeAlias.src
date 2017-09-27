@@ -1,0 +1,120 @@
+package org.eclipse.ceylon.compiler.java.test.structure.alias;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalContainer(
+        path = {"localTypeAliasMethod"},
+        companionClassName = "")
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+interface localTypeAliasMethod$TypeAliasInterface_ {
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1TypeAliasClass",
+        "::localTypeAliasMethod$TypeAliasInterface_"})
+final class localTypeAliasMethod_ {
+    
+    private localTypeAliasMethod_() {
+    }
+    
+    static void localTypeAliasMethod() {
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Name("TypeAliasClass")
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        class TypeAliasClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            TypeAliasClass() {
+            }
+            
+            @.java.lang.Override
+            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(TypeAliasClass.class));
+            }
+        }
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class classAliasMethod1_ implements .java.io.Serializable {
+            
+            private classAliasMethod1_() {
+            }
+            
+            @.org.eclipse.ceylon.common.NonNull
+            .java.lang.Object classAliasMethod1(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+            @.org.eclipse.ceylon.common.NonNull
+            final .java.lang.Object f) {
+                return f;
+            }
+        }
+        final classAliasMethod1_ classAliasMethod1 = new classAliasMethod1_();
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class classAliasMethod2_ implements .java.io.Serializable {
+            
+            private classAliasMethod2_() {
+            }
+            
+            @.org.eclipse.ceylon.common.NonNull
+            .java.lang.Object classAliasMethod2(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+            @.org.eclipse.ceylon.common.NonNull
+            final .java.lang.Object f) {
+                return f;
+            }
+        }
+        final classAliasMethod2_ classAliasMethod2 = new classAliasMethod2_();
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class classAliasMethod3_ implements .java.io.Serializable {
+            
+            private classAliasMethod3_() {
+            }
+            
+            @.org.eclipse.ceylon.common.NonNull
+            TypeAliasClass classAliasMethod3(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+            @.org.eclipse.ceylon.common.NonNull
+            final TypeAliasClass f) {
+                return f;
+            }
+        }
+        final classAliasMethod3_ classAliasMethod3 = new classAliasMethod3_();
+        
+        @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.org.eclipse.ceylon.compiler.java.metadata.Method
+        @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        final class classAliasMethod4_ implements .java.io.Serializable {
+            
+            private classAliasMethod4_() {
+            }
+            
+            @.org.eclipse.ceylon.common.NonNull
+            .org.eclipse.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod$TypeAliasInterface_ classAliasMethod4(@.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+            @.org.eclipse.ceylon.common.NonNull
+            final .org.eclipse.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod$TypeAliasInterface_ f) {
+                return f;
+            }
+        }
+        final classAliasMethod4_ classAliasMethod4 = new classAliasMethod4_();
+    }
+}

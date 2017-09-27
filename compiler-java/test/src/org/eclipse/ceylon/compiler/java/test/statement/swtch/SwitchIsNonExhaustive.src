@@ -1,0 +1,28 @@
+package org.eclipse.ceylon.compiler.java.test.statement.swtch;
+
+class SwitchIsNonExhaustive implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SwitchIsNonExhaustive() {
+    }
+    
+    private final .java.lang.String m$priv$(final .java.lang.Object b) {
+        final .java.lang.String name;
+        {
+            .java.lang.Object sel$0 = b;
+            if (.org.eclipse.ceylon.compiler.java.Util.isBasic(sel$0)) {
+                final .java.lang.Object b$2 = (.java.lang.Object)sel$0;
+                name = "Basic";
+            } else {
+                final .java.lang.Object b$1 = (.java.lang.Object)sel$0;
+                name = "Un-Basic";
+            }
+        }
+        return name;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.swtch.SwitchIsNonExhaustive.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.swtch.SwitchIsNonExhaustive.class);
+}

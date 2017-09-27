@@ -1,0 +1,19 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.ceylon.language.SharedAnnotation$annotation$
+public class Bug2160Use implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug2160Use() {
+        super();
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.test.annotations.Bug2160
+    public Bug2160Use(final .java.lang.String constructorInjected) {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.Bug2160Use.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.Bug2160Use.class);
+}

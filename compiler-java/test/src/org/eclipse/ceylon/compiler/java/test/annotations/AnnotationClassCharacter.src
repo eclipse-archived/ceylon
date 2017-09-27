@@ -1,0 +1,140 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface AnnotationClassCharacter$annotation$ {
+    
+    public abstract int c();
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface AnnotationClassCharacter$annotations$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation$[] value();
+}
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+final class AnnotationClassCharacter implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    protected AnnotationClassCharacter() {
+        super();
+        this.c = 0;
+    }
+    
+    AnnotationClassCharacter(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation$ anno) {
+        this(anno.c());
+    }
+    
+    AnnotationClassCharacter(@.ceylon.language.SharedAnnotation$annotation$
+    final int c) {
+        this.c = c;
+    }
+    private final int c;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final int getC() {
+        return this.c;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation$.class;
+    }
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface AnnotationClassCharacterDefaulted$annotation$ {
+    
+    public abstract int c() default 97;
+}
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+final class AnnotationClassCharacterDefaulted implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.OptionalAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    AnnotationClassCharacterDefaulted() {
+        (
+            let
+            {
+                int $ceylontmp$c$0 = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$default$c();
+                this($ceylontmp$c$0);
+            }
+            returning null;
+        );
+    }
+    
+    AnnotationClassCharacterDefaulted(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted$annotation$ anno) {
+        this(anno.c());
+    }
+    
+    AnnotationClassCharacterDefaulted(@.ceylon.language.SharedAnnotation$annotation$
+    final int c) {
+        this.c = c;
+    }
+    private final int c;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final int getC() {
+        return this.c;
+    }
+    
+    public static int $default$c() {
+        return 97;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacterDefaulted$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter.class)
+final class annotationClassCharacter_ {
+    
+    private annotationClassCharacter_() {
+    }
+    
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter annotationClassCharacter() {
+        return (
+            let
+            {
+                int $ceylontmp$c$1 = .org.eclipse.ceylon.compiler.java.test.annotations.annotationClassCharacter_.annotationClassCharacter$c();
+            }
+            returning annotationClassCharacter($ceylontmp$c$1);
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.CharacterValue(122)
+    public static final int annotationClassCharacter$c() {
+        return 122;
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter annotationClassCharacter(final int c) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter(c);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotations$({@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter$annotation$(c = 122)})
+class AnnotationClassCharacter_callsite implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AnnotationClassCharacter_callsite() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter_callsite.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassCharacter_callsite.class);
+}

@@ -1,0 +1,32 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsUnion implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertIsUnion() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        if (x instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo || x instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bar) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bar.$TypeDescriptor$), x));
+        }
+        ((.org.eclipse.ceylon.compiler.java.test.statement.conditional.Common)x).common();
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        final .java.lang.Object x$2;
+        .java.lang.Object x$1 = null;
+        if ((x$1 = y) instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo || x$1 instanceof .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bar) {
+            x$2 = x$1;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Foo|Bar x=y") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.test.statement.conditional.Foo.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.statement.conditional.Bar.$TypeDescriptor$), x$1));
+        }
+        ((.org.eclipse.ceylon.compiler.java.test.statement.conditional.Common)x$2).common();
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertIsUnion.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertIsUnion.class);
+}

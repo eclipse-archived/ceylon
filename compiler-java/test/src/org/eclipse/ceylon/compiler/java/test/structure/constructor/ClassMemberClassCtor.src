@@ -1,0 +1,359 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+class ClassMemberClassCtor implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ClassMemberClassCtor() {
+    }
+    
+    public final long Member$i() {
+        return 1L;
+    }
+    
+    public static final class Member$other {
+        
+        Member$other() {
+        }
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other Member$other = null;
+    
+    public final long Member$other$i() {
+        return 2L;
+    }
+    
+    class Member implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Member() {
+            (
+                let
+                {
+                    long $ceylontmp$i$0 = Member$i();
+                    this($ceylontmp$i$0);
+                }
+                returning null;
+            );
+        }
+        
+        Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other $name$) {
+            (
+                let
+                {
+                    long $ceylontmp$i$1 = Member$other$i();
+                    this($name$, $ceylontmp$i$1);
+                }
+                returning null;
+            );
+        }
+        
+        public Member(final long i$param$) {
+        }
+        
+        public Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other $name$, final long i$param$) {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member.class));
+        }
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$(final long i$param$) {
+        return new SharedMember(i$param$);
+    }
+    
+    public final long SharedMember$i() {
+        return 3L;
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$() {
+        return (
+            let
+            {
+                long $ceylontmp$i$2 = SharedMember$i();
+            }
+            returning new SharedMember($ceylontmp$i$2);
+        );
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other $name$, final long i$param$) {
+        return new SharedMember($name$, i$param$);
+    }
+    
+    public static final class SharedMember$other {
+        
+        SharedMember$other() {
+        }
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other SharedMember$other = null;
+    
+    public final long SharedMember$other$i() {
+        return 4L;
+    }
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other $name$) {
+        return (
+            let
+            {
+                long $ceylontmp$i$3 = SharedMember$other$i();
+            }
+            returning new SharedMember($name$, $ceylontmp$i$3);
+        );
+    }
+    
+    public class SharedMember implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public SharedMember(final long i$param$) {
+        }
+        
+        public SharedMember(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other $name$, final long i$param$) {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember.class));
+        }
+    }
+    
+    private final void use$priv$(final .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor other) {
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(0L);
+        (
+            let
+            {
+                long arg$4$0 = 1L;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(arg$4$0);
+        );
+        (
+            let
+            {
+                long arg$5$0 = Member$i();
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(arg$5$0);
+        );
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(2L);
+        (
+            let
+            {
+                long arg$6$0 = 3L;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(arg$6$0);
+        );
+        (
+            let
+            {
+                long arg$7$0 = Member$i();
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(arg$7$0);
+        );
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other, 4L);
+        (
+            let
+            {
+                long arg$8$0 = 5L;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other, arg$8$0);
+        );
+        (
+            let
+            {
+                long arg$9$0 = Member$other$i();
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other, arg$9$0);
+        );
+        SharedMember$new$(6L);
+        (
+            let
+            {
+                long arg$10$0 = 7L;
+            }
+            returning SharedMember$new$(arg$10$0);
+        );
+        SharedMember$new$(8L);
+        (
+            let
+            {
+                long arg$11$0 = 9L;
+            }
+            returning SharedMember$new$(arg$11$0);
+        );
+        SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other, 10L);
+        (
+            let
+            {
+                long arg$12$0 = 11L;
+            }
+            returning SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other, arg$12$0);
+        );
+        this.new Member(12L);
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$13$callable$ = this;
+                long arg$13$0 = 13L;
+            }
+            returning arg$13$callable$.new Member(arg$13$0);
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$14$callable$ = this;
+                long arg$14$0 = arg$14$callable$.Member$i();
+            }
+            returning arg$14$callable$.new Member(arg$14$0);
+        );
+        this.new Member(14L);
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$15$callable$ = this;
+                long arg$15$0 = 15L;
+            }
+            returning arg$15$callable$.new Member(arg$15$0);
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$16$callable$ = this;
+                long arg$16$0 = arg$16$callable$.Member$i();
+            }
+            returning arg$16$callable$.new Member(arg$16$0);
+        );
+        this.new Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other, 16L);
+        (
+            let
+            {
+                long arg$17$0 = 17L;
+            }
+            returning this.new Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other, arg$17$0);
+        );
+        (
+            let
+            {
+                long arg$18$0 = Member$other$i();
+            }
+            returning this.new Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other, arg$18$0);
+        );
+        this.SharedMember$new$(18L);
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$19$callable$ = this;
+                long arg$19$0 = 19L;
+            }
+            returning arg$19$callable$.SharedMember$new$(arg$19$0);
+        );
+        this.SharedMember$new$(20L);
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$20$callable$ = this;
+                long arg$20$0 = 21L;
+            }
+            returning arg$20$callable$.SharedMember$new$(arg$20$0);
+        );
+        this.SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other, 22L);
+        (
+            let
+            {
+                long arg$21$0 = 23L;
+            }
+            returning this.SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other, arg$21$0);
+        );
+        other.new Member(24L);
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$22$callable$ = other;
+                long arg$22$0 = 25L;
+            }
+            returning arg$22$callable$.new Member(arg$22$0);
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$23$callable$ = other;
+                long arg$23$0 = arg$23$callable$.Member$i();
+            }
+            returning arg$23$callable$.new Member(arg$23$0);
+        );
+        other.new Member(26L);
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$24$callable$ = other;
+                long arg$24$0 = 27L;
+            }
+            returning arg$24$callable$.new Member(arg$24$0);
+        );
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$25$callable$ = other;
+                long arg$25$0 = arg$25$callable$.Member$i();
+            }
+            returning arg$25$callable$.new Member(arg$25$0);
+        );
+        other.new Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other, 28L);
+        (
+            let
+            {
+                long arg$26$0 = 29L;
+            }
+            returning other.new Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other, arg$26$0);
+        );
+        (
+            let
+            {
+                long arg$27$0 = Member$other$i();
+            }
+            returning other.new Member(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other, arg$27$0);
+        );
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class useClassMemberClassCtor_ {
+    
+    private useClassMemberClassCtor_() {
+    }
+    
+    static void useClassMemberClassCtor(@.org.eclipse.ceylon.compiler.java.metadata.Name("other")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("org.eclipse.ceylon.compiler.java.test.structure.constructor::ClassMemberClassCtor")
+    final .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor other) {
+        final long i = 0L;
+        other.SharedMember$new$(i);
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$28$callable$ = other;
+                long arg$28$0 = 1L;
+            }
+            returning arg$28$callable$.SharedMember$new$(arg$28$0);
+        );
+        other.SharedMember$new$(i);
+        (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor arg$29$callable$ = other;
+                long arg$29$0 = 1L;
+            }
+            returning arg$29$callable$.SharedMember$new$(arg$29$0);
+        );
+        other.SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other, i);
+        (
+            let
+            {
+                long arg$30$0 = 1L;
+            }
+            returning other.SharedMember$new$(.org.eclipse.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other, arg$30$0);
+        );
+    }
+}

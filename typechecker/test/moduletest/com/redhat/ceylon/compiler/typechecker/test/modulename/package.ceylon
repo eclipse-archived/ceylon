@@ -1,1 +1,1 @@
-$error package com.redhat.ceylon.compiler.typechecker.test.wrongmodulename;
+$error package org.eclipse.ceylon.compiler.typechecker.test.wrongmodulename;

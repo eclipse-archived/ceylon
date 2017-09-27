@@ -1,0 +1,16 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class method_ {
+    
+    private method_() {
+    }
+    
+    static long method(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i) {
+        return 1L;
+    }
+}

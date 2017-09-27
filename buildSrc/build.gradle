@@ -14,7 +14,7 @@ ext {
 
 task copySrc(type : Copy) {
     from modelSrc, {
-        include 'com/redhat/ceylon/model/loader/OsgiVersion.java'
+        include 'org/eclipse/ceylon/model/loader/OsgiVersion.java'
     }
     into modelDest
 }

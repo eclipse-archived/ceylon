@@ -1,0 +1,39 @@
+package org.eclipse.ceylon.compiler.java.test.interop;
+
+class JavaxValidationMax implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    JavaxValidationMax() {
+        this.maxOnGetter = 4L;
+        this.maxOnField = 4L;
+    }
+    private long maxOnGetter;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.javax.validation.constraints.Max(5L)
+    public final long getMaxOnGetter() {
+        return this.maxOnGetter;
+    }
+    
+    public final void setMaxOnGetter(final long maxOnGetter) {
+        this.maxOnGetter = maxOnGetter;
+    }
+    @.javax.validation.constraints.Max(5L)
+    private long maxOnField;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    public final long getMaxOnField() {
+        return this.maxOnField;
+    }
+    
+    public final void setMaxOnField(final long maxOnField) {
+        this.maxOnField = maxOnField;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.JavaxValidationMax.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.JavaxValidationMax.class);
+}

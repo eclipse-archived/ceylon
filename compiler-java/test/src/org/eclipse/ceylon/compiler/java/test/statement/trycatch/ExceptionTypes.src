@@ -1,0 +1,181 @@
+package org.eclipse.ceylon.compiler.java.test.statement.trycatch;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::Exception")
+class ExceptionTypesException extends .ceylon.language.Exception {
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    ExceptionTypesException() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$description$0 = .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$description();
+                .java.lang.Throwable $ceylontmp$cause$1 = .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$cause($ceylontmp$description$0);
+                this($ceylontmp$description$0, $ceylontmp$cause$1);
+            }
+            returning null;
+        );
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    ExceptionTypesException(final .ceylon.language.String description) {
+        (
+            let
+            {
+                .java.lang.Throwable $ceylontmp$cause$2 = .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$cause(description);
+                this(description, $ceylontmp$cause$2);
+            }
+            returning null;
+        );
+    }
+    
+    ExceptionTypesException(@.org.eclipse.ceylon.compiler.java.metadata.Name("description")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    final .ceylon.language.String description, @.org.eclipse.ceylon.compiler.java.metadata.Name("cause")
+    @.org.eclipse.ceylon.compiler.java.metadata.Defaulted
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Throwable?")
+    final .java.lang.Throwable cause) {
+        super(description, cause);
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static .ceylon.language.String $default$description() {
+        return null;
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static .java.lang.Throwable $default$cause(final .ceylon.language.String description) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Class(extendsType = "ceylon.language::AssertionError")
+class ExceptionTypesAssertionError extends .ceylon.language.AssertionError {
+    
+    ExceptionTypesAssertionError() {
+        super("");
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class exceptionTypesUsage_ {
+    
+    private exceptionTypesUsage_() {
+    }
+    
+    static void exceptionTypesUsage(@.org.eclipse.ceylon.compiler.java.metadata.Name("i")
+    final long i, @.org.eclipse.ceylon.compiler.java.metadata.Name("f")
+    @.org.eclipse.ceylon.compiler.java.metadata.FunctionalParameter("()")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Throwable()")
+    final .ceylon.language.Callable<? extends .java.lang.Throwable> f) {
+        {
+            long sel$3 = i;
+            if (sel$3 == 0L) {
+                throw f.$call$();
+            } else if (sel$3 == 1L) {
+                throw new .ceylon.language.Exception();
+            } else if (sel$3 == 2L) {
+                throw new .ceylon.language.AssertionError("");
+            } else if (sel$3 == 3L) {
+                throw new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException();
+            } else if (sel$3 == 4L) {
+                throw new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError();
+            } else {
+            }
+        }
+        {
+            long sel$4 = i;
+            if (sel$4 == 10L) {
+                try {
+                    f.$call$();
+                } catch (final .java.lang.Throwable t) {
+                }
+            } else if (sel$4 == 11L) {
+                try {
+                    f.$call$();
+                } catch (final .java.lang.Exception t) {
+                }
+            } else if (sel$4 == 13L) {
+                try {
+                    f.$call$();
+                } catch (final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException t) {
+                }
+            } else if (sel$4 == 14L) {
+                try {
+                    f.$call$();
+                } catch (final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError t) {
+                }
+            } else {
+            }
+        }
+        final .ceylon.language.Sequence<? extends .java.lang.Throwable> throwables = (.ceylon.language.Sequence<? extends .java.lang.Throwable>).ceylon.language.Tuple.instance(.ceylon.language.Throwable.$TypeDescriptor$, new .java.lang.Object[]{
+                f.$call$(),
+                f.$call$()});
+        final .ceylon.language.Sequence<? extends .java.lang.Exception> exceptions = (.ceylon.language.Sequence<? extends .java.lang.Exception>).ceylon.language.Tuple.instance(.ceylon.language.Exception.$TypeDescriptor$, new .java.lang.Object[]{
+                new .ceylon.language.Exception(),
+                new .ceylon.language.Exception()});
+        final .ceylon.language.Sequence<? extends .java.lang.Throwable> throwablesAndExceptions = (.ceylon.language.Sequence<? extends .java.lang.Throwable>).ceylon.language.Tuple.instance(.ceylon.language.Throwable.$TypeDescriptor$, new .java.lang.Object[]{
+                f.$call$(),
+                new .ceylon.language.Exception()});
+        final .ceylon.language.Sequence subclasses = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError.$TypeDescriptor$), new .java.lang.Object[]{
+                new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException(),
+                new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError()});
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class exceptionTypeAssignment_ {
+    
+    private exceptionTypeAssignment_() {
+    }
+    
+    static void exceptionTypeAssignment() {
+        final .org.eclipse.ceylon.compiler.java.test.statement.trycatch.JavaThrower jt = new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.JavaThrower();
+        .java.lang.Throwable t = null;
+        t = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveThrowable());
+        t = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveError());
+        t = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveOome());
+        t = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveException());
+        t = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveIoException());
+        t = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveRuntimeException());
+        t = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveNpe());
+        .java.lang.Exception ex = null;
+        ex = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveException());
+        ex = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveIoException());
+        ex = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveRuntimeException());
+        ex = .org.eclipse.ceylon.compiler.java.Util.checkNull(jt.getGiveNpe());
+        jt.takeThrowable(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesAssertionError());
+        jt.takeThrowable(new .ceylon.language.Exception());
+        jt.takeThrowable(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException());
+        jt.takeException(new .ceylon.language.Exception());
+        jt.takeException(new .org.eclipse.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException());
+    }
+}

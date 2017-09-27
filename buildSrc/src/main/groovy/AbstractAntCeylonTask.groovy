@@ -13,7 +13,7 @@ abstract class AbstractAntCeylonTask extends DefaultTask {
     protected String loadAntTask() {
         this.ant.typedef(
             format : 'xml',
-            resource : 'com/redhat/ceylon/ant/antlib.xml',
+            resource : 'org/eclipse/ceylon/ant/antlib.xml',
             classpath : project.files(antClasspath).asPath
         )
     }

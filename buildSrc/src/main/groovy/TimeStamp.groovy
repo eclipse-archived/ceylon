@@ -1,6 +1,6 @@
 import groovy.transform.CompileStatic
 import java.text.SimpleDateFormat
-import com.redhat.ceylon.model.loader.OsgiVersion
+import org.eclipse.ceylon.model.loader.OsgiVersion
 
 @CompileStatic
 class TimeStamp {

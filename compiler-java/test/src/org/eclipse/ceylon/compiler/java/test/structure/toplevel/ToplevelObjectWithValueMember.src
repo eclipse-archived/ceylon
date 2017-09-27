@@ -1,0 +1,46 @@
+package org.eclipse.ceylon.compiler.java.test.structure.toplevel;
+
+final class toplevelObjectWithValueMember_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private toplevelObjectWithValueMember_() {
+        this.value = (byte)0L;
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelObjectWithValueMember_.get_();
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelObjectWithValueMember_.class);
+    private final byte value;
+    
+    public final byte getValue() {
+        return this.value;
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelObjectWithValueMember_ $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelObjectWithValueMember_();
+            .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelObjectWithValueMember_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelObjectWithValueMember_.$init$$object$ = false;
+        }
+    }
+    
+    static .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelObjectWithValueMember_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelObjectWithValueMember_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelObjectWithValueMember_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelObjectWithValueMember\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.toplevel.toplevelObjectWithValueMember_.$TypeDescriptor$;
+    }
+}

@@ -1,0 +1,52 @@
+package org.eclipse.ceylon.compiler.java.test.structure.toplevel;
+
+public final class topLevelObjectShared_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private topLevelObjectShared_() {
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.get_();
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.class);
+    
+    public final void y() {
+    }
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_ $object$;
+    private static volatile boolean $init$$object$ = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            $object$ = new .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_();
+            .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$$object$ = true;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            $object$ = null;
+            .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$$object$ = false;
+        }
+    }
+    
+    public static .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_ get_() {
+        if (.org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$$object$) {
+            return .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$object$;
+        } else {
+            if ($initException$ != null) .org.eclipse.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObjectShared\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$TypeDescriptor$;
+    }
+}
+final class accessTopLevelObjectShared_ {
+    
+    private accessTopLevelObjectShared_() {
+    }
+    
+    static void accessTopLevelObjectShared() {
+        .org.eclipse.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.get_().y();
+    }
+}

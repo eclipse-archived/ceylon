@@ -1,3 +1,0 @@
-module com.redhat.ceylon.tools.test.bug1183 "1.0" {
-    
-}

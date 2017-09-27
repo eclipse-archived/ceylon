@@ -1,18 +1,19 @@
 package ceylon.language.meta;
 
-import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.findLoadedModule;
-import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getDefaultModule;
-import static com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getModuleList;
+import static org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.findLoadedModule;
+import static org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getDefaultModule;
+import static org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getModuleList;
+
+import org.eclipse.ceylon.compiler.java.metadata.Ceylon;
+import org.eclipse.ceylon.compiler.java.metadata.Ignore;
+import org.eclipse.ceylon.compiler.java.metadata.Name;
+import org.eclipse.ceylon.compiler.java.metadata.Object;
+import org.eclipse.ceylon.compiler.java.metadata.TypeInfo;
+import org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType;
+import org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor;
+
 import ceylon.language.Sequential;
 import ceylon.language.meta.declaration.Module;
-
-import com.redhat.ceylon.compiler.java.metadata.Ceylon;
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.compiler.java.metadata.Object;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
 @Object

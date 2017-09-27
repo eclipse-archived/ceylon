@@ -1,0 +1,34 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug63xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.ceylon.language.AbstractAnnotation$annotation$
+@.org.eclipse.ceylon.compiler.java.metadata.SatisfiedTypes({"java.lang::Appendable"})
+abstract class Bug6344 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.lang.Appendable, .java.io.Serializable {
+    
+    Bug6344() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo(
+            value = "java.lang::Appendable",
+            uncheckedNull = true)
+    public final .java.lang.Appendable append(@.org.eclipse.ceylon.compiler.java.metadata.Name("cs")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("java.lang::CharSequence")
+    final .java.lang.CharSequence cs) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6344.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug63xx.Bug6344.class);
+}

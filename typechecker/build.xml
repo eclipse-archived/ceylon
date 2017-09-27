@@ -34,7 +34,7 @@
     <property name="db.style.info" value="texinfo.xsl"/>
 
     <!-- Local repository -->
-    <property name="ceylon.typechecker.src" value="${ceylon.typechecker.dir}/com.redhat.ceylon.typechecker-${module.com.redhat.ceylon.typechecker.version}.src"/>
+    <property name="ceylon.typechecker.src" value="${ceylon.typechecker.dir}/org.eclipse.ceylon.typechecker-${module.org.eclipse.ceylon.typechecker.version}.src"/>
     <property name="ceylon.typechecker.repo" value="${ceylon.repo.dir}/${ceylon.typechecker.dir}"/>
     <property name="ceylon.typechecker.dist" value="${build.dist.repo}/${ceylon.typechecker.dir}"/>
 
@@ -64,7 +64,7 @@
     </path>
 
     <!-- ANTLR -->
-    <property name="antlr.src" location="antlr/com/redhat/ceylon/compiler/typechecker/parser/Ceylon.g"/>
+    <property name="antlr.src" location="antlr/org/eclipse/ceylon/compiler/typechecker/parser/Ceylon.g"/>
     <property name="antlr.dst" location="gensrc"/>
 
     <!-- ################################################################## -->
@@ -364,10 +364,10 @@
 
     <target name="antlr.parser"
             description="Generate code from ANTLR grammar">
-        <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
+        <mkdir dir="${antlr.dst}/org/eclipse/ceylon/compiler/typechecker/parser"/>
         <java classname="org.antlr.Tool">
             <arg value="-o"/>
-            <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
+            <arg value="${antlr.dst}/org/eclipse/ceylon/compiler/typechecker/parser"/>
             <arg value="${antlr.src}"/>
             <classpath>
                 <pathelement location="${antlr.lib}"/>
@@ -377,22 +377,22 @@
 
     <target name="antlr.tree"
             description="Generate code from ANTLR grammar">
-        <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"/>
+        <mkdir dir="${antlr.dst}/org/eclipse/ceylon/compiler/typechecker/treegen"/>
         <java classname="org.antlr.Tool" dir="${basedir}" fork="yes">
             <arg value="-fo"/>
-            <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"/>
-            <arg value="antlr/com/redhat/ceylon/compiler/typechecker/treegen/Treegen.g"/>
-            <!--arg value="com/redhat/ceylon/compiler/typechecker/treegen/Buildergen.g"-->
-            <arg value="antlr/com/redhat/ceylon/compiler/typechecker/treegen/Walkergen.g"/>
-            <arg value="antlr/com/redhat/ceylon/compiler/typechecker/treegen/Visitorgen.g"/>
-            <arg value="antlr/com/redhat/ceylon/compiler/typechecker/treegen/VisitorAdaptorgen.g"/>
-            <arg value="antlr/com/redhat/ceylon/compiler/typechecker/treegen/Validatorgen.g"/>
+            <arg value="${antlr.dst}/org/eclipse/ceylon/compiler/typechecker/treegen"/>
+            <arg value="antlr/org/eclipse/ceylon/compiler/typechecker/treegen/Treegen.g"/>
+            <!--arg value="org/eclipse/ceylon/compiler/typechecker/treegen/Buildergen.g"-->
+            <arg value="antlr/org/eclipse/ceylon/compiler/typechecker/treegen/Walkergen.g"/>
+            <arg value="antlr/org/eclipse/ceylon/compiler/typechecker/treegen/Visitorgen.g"/>
+            <arg value="antlr/org/eclipse/ceylon/compiler/typechecker/treegen/VisitorAdaptorgen.g"/>
+            <arg value="antlr/org/eclipse/ceylon/compiler/typechecker/treegen/Validatorgen.g"/>
             <classpath>
                 <pathelement location="${antlr.lib}"/>
             </classpath>
         </java>
         <delete>
-            <fileset dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"
+            <fileset dir="${antlr.dst}/org/eclipse/ceylon/compiler/typechecker/treegen"
                      includes="*.tokens"/>
         </delete>
     </target>
@@ -408,14 +408,14 @@
                 target="${compile.java.target}"
                 source="${compile.java.source}"
                 bootclasspath="${compile.java.bootclasspath}">
-            <include name="com/redhat/ceylon/compiler/typechecker/treegen/*.java"/>
+            <include name="org/eclipse/ceylon/compiler/typechecker/treegen/*.java"/>
         </javac>
     </target>
 
     <target name="tree" depends="treegen"
             description="Generate the tree builder code">
-        <mkdir dir="${gensrc}/com/redhat/ceylon/compiler/typechecker/tree"/>
-        <java classname="com.redhat.ceylon.compiler.typechecker.treegen.Generate" dir="${basedir}" fork="yes">
+        <mkdir dir="${gensrc}/org/eclipse/ceylon/compiler/typechecker/tree"/>
+        <java classname="org.eclipse.ceylon.compiler.typechecker.treegen.Generate" dir="${basedir}" fork="yes">
             <arg value="antlr/Ceylon.nodes"/>
             <classpath>
                 <pathelement location="${antlr.lib}"/>
@@ -542,8 +542,8 @@
                 <include name="**/*.class"/>
             </fileset>
             <manifest>
-                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.typechecker"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.typechecker.osgi.version}-${qualifier}"/>
+                <attribute name="Bundle-SymbolicName" value="org.eclipse.ceylon.typechecker"/>
+                <attribute name="Bundle-Version" value="${module.org.eclipse.ceylon.typechecker.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

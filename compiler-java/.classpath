@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="**/*.ceylon" including="**/*Suite.java|**/*Tests.java|**/*Tests?.java|**/IssuesTests_*.java|com/redhat/ceylon/ant/*.java|com/redhat/ceylon/compiler/java/test/*.java|com/redhat/ceylon/compiler/java/test/cmr/*.java|com/redhat/ceylon/compiler/java/test/fordebug/*.java|com/redhat/ceylon/compiler/java/test/model/RunnableTest.java|com/redhat/ceylon/launcher/test/**/*.java|com/redhat/ceylon/tools/*|com/redhat/ceylon/tools/help/*|com/redhat/ceylon/tools/test/CleanupClassLoader.java" kind="src" path="test/src"/>
+	<classpathentry excluding="**/*.ceylon" including="**/*Suite.java|**/*Tests.java|**/*Tests?.java|**/IssuesTests_*.java|org/eclipse/ceylon/ant/*.java|org/eclipse/ceylon/compiler/java/test/*.java|org/eclipse/ceylon/compiler/java/test/cmr/*.java|org/eclipse/ceylon/compiler/java/test/fordebug/*.java|org/eclipse/ceylon/compiler/java/test/model/RunnableTest.java|org/eclipse/ceylon/launcher/test/**/*.java|org/eclipse/ceylon/tools/*|org/eclipse/ceylon/tools/help/*|org/eclipse/ceylon/tools/test/CleanupClassLoader.java" kind="src" path="test/src"/>
 	<classpathentry kind="src" path="test/satisfaction"/>
 	<classpathentry excluding="**/*.ceylon" kind="src" path="test/runtime"/>
 	<classpathentry kind="src" path="langtools/src/share/classes"/>

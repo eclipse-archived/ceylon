@@ -1,0 +1,158 @@
+package org.eclipse.ceylon.compiler.java.test.annotations;
+
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({})
+@interface AnnotationClassInteger$annotation$ {
+    
+    public abstract long i();
+    
+    public abstract long j() default 1L;
+}
+@.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
+@.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
+@interface AnnotationClassInteger$annotations$ {
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$[] value();
+}
+@.ceylon.language.AnnotationAnnotation$annotation$
+@.ceylon.language.FinalAnnotation$annotation$
+final class AnnotationClassInteger implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.SequencedAnnotation<.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger, .ceylon.language.meta.declaration.ClassOrInterfaceDeclaration, .java.lang.Object>, .java.io.Serializable {
+    
+    AnnotationClassInteger(final long i) {
+        (
+            let
+            {
+                long $ceylontmp$j$0 = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$default$j(i);
+                this(i, $ceylontmp$j$0);
+            }
+            returning null;
+        );
+    }
+    
+    protected AnnotationClassInteger() {
+        super();
+    }
+    
+    AnnotationClassInteger(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$ anno) {
+        this(anno.i(), anno.j());
+    }
+    
+    AnnotationClassInteger(final long i, final long j) {
+    }
+    
+    public static long $default$j(final long i) {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class);
+    
+    @.java.lang.Override
+    public .java.lang.Class<? extends .java.lang.annotation.Annotation> annotationType() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$.class;
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
+final class annotationClassIntegerDefault_ {
+    
+    private annotationClassIntegerDefault_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerDefault(final long i) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger(i);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                1,
+                0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
+final class annotationClassIntegerSwapped_ {
+    
+    private annotationClassIntegerSwapped_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerSwapped(final long j, final long i) {
+        return new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger(i, j);
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                1,
+                0},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
+final class annotationClassIntegerNames_ {
+    
+    private annotationClassIntegerNames_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerNames(final long jj, final long ii) {
+        return (
+            let
+            {
+                long arg$1$0 = ii;
+                long arg$1$1 = jj;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger(arg$1$0, arg$1$1);
+        );
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.AnnotationInstantiation(
+        arguments = {
+                -32768,
+                -32768},
+        primary = .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger.class)
+@.org.eclipse.ceylon.compiler.java.metadata.IntegerExprs({
+        @.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+                name = "$arg$i",
+                value = 40L),
+        @.org.eclipse.ceylon.compiler.java.metadata.IntegerValue(
+                name = "$arg$j",
+                value = 41L)})
+final class annotationClassIntegerStatic_ {
+    
+    private annotationClassIntegerStatic_() {
+    }
+    
+    @.ceylon.language.AnnotationAnnotation$annotation$
+    static .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger annotationClassIntegerStatic() {
+        return (
+            let
+            {
+                long arg$2$0 = 40L;
+                long arg$2$1 = 41L;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger(arg$2$0, arg$2$1);
+        );
+    }
+}
+@.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotations$({
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$(i = -10L),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$(
+                i = 20L,
+                j = 21L),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$(
+                i = 30L,
+                j = 31L),
+        @.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger$annotation$(
+                i = 40L,
+                j = 41L)})
+class AnnotationClassInteger_callsite implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AnnotationClassInteger_callsite() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger_callsite.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.annotations.AnnotationClassInteger_callsite.class);
+}

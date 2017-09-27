@@ -1,1 +1,1 @@
-shared package com.redhat.ceylon.compiler.typechecker.test.moduleWithExportedType;
+shared package org.eclipse.ceylon.compiler.typechecker.test.moduleWithExportedType;

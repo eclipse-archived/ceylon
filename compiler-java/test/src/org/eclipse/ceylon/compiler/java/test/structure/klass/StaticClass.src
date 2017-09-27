@@ -1,0 +1,135 @@
+package org.eclipse.ceylon.compiler.java.test.structure.klass;
+
+class StaticClass implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public static class SharedStatic<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public SharedStatic(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+            (
+                let
+                {
+                    .java.lang.String $ceylontmp$s$0 = .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.<T>$default$SharedStatic$s($reified$T);
+                    T $ceylontmp$t$1 = .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.<T>$default$SharedStatic$t($reified$T, $ceylontmp$s$0);
+                    <T>this($reified$T, $ceylontmp$s$0, $ceylontmp$t$1);
+                }
+                returning null;
+            );
+        }
+        
+        public SharedStatic(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s) {
+            (
+                let
+                {
+                    T $ceylontmp$t$2 = .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.<T>$default$SharedStatic$t($reified$T, s);
+                    <T>this($reified$T, s, $ceylontmp$t$2);
+                }
+                returning null;
+            );
+        }
+        
+        public SharedStatic(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s, final T t) {
+            this.$reified$T = $reified$T;
+        }
+        private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        
+        public static <T>.java.lang.String $default$SharedStatic$s(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+            return "";
+        }
+        
+        public static <T>T $default$SharedStatic$t(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s) {
+            return null;
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.class, $reified$T));
+        }
+    }
+    
+    static class Static extends .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> {
+        
+        Static() {
+            super(.ceylon.language.Integer.$TypeDescriptor$);
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.Static.class));
+        }
+    }
+    
+    public StaticClass() {
+        new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.Static();
+        new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.class);
+}
+final class staticClass_ {
+    
+    private staticClass_() {
+    }
+    
+    static void staticClass() {
+        .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> sharedStat = new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
+        sharedStat = (
+            let
+            {
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .java.lang.String arg$3$0 = .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$s(arg$3$reified$0);
+                .ceylon.language.Integer arg$3$1 = .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$t(arg$3$reified$0, arg$3$0);
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>(arg$3$reified$0, arg$3$0, arg$3$1);
+        );
+        sharedStat = (
+            let
+            {
+                .java.lang.String arg$4$0 = "";
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .ceylon.language.Integer arg$4$1 = .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$t(arg$4$reified$0, arg$4$0);
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>(arg$4$reified$0, arg$4$0, arg$4$1);
+        );
+        sharedStat = (
+            let
+            {
+                .java.lang.String arg$5$0 = "";
+                .ceylon.language.Integer arg$5$1 = .ceylon.language.Integer.instance(1L);
+                .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor arg$5$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>(arg$5$reified$0, arg$5$0, arg$5$1);
+        );
+        final .ceylon.language.Callable<? extends .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>> ref = new .org.eclipse.ceylon.compiler.java.language.AbstractCallable<.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.class, .ceylon.language.Integer.$TypeDescriptor$)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)), "StaticClass.SharedStatic<Integer>(String=, Integer?=)", (short)-1){
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> $call$() {
+                final .java.lang.String s = .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$s(.ceylon.language.Integer.$TypeDescriptor$);
+                final .ceylon.language.Integer t = .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$t(.ceylon.language.Integer.$TypeDescriptor$, s);
+                return $calltyped$(s, t);
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Integer t = .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$t(.ceylon.language.Integer.$TypeDescriptor$, s);
+                return $calltyped$(s, t);
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Integer t = (.ceylon.language.Integer)$param$1;
+                return $calltyped$(s, t);
+            }
+            
+            private .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> $calltyped$(final .java.lang.String s, final .ceylon.language.Integer t) {
+                return new .org.eclipse.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic(.ceylon.language.Integer.$TypeDescriptor$, s, t);
+            }
+        };
+        ref.$call$((.java.lang.Object).ceylon.language.String.instance(""), .ceylon.language.Integer.instance(1L));
+    }
+}

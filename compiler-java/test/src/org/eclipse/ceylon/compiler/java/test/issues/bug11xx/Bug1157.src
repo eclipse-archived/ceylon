@@ -1,0 +1,24 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug11xx;
+
+interface Bug1157_Anno<Value extends .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value>> {
+}
+interface Bug1157_AnnoSub<Value extends .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends Value>> extends .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<Value> {
+}
+final class bug1157_annotations_ {
+    
+    private bug1157_annotations_() {
+    }
+    
+    static <A extends .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno<? extends A>>.ceylon.language.Sequential<? extends A> bug1157_annotations(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A) {
+        return (.ceylon.language.Sequential<? extends A>)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+final class bug1157_call_ {
+    
+    private bug1157_call_() {
+    }
+    
+    static void bug1157_call() {
+        .org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1157_annotations_.<.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1157_Anno>bug1157_annotations(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.Bug1157_AnnoSub.class, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType));
+    }
+}

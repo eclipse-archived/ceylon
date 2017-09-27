@@ -26,15 +26,15 @@
             <artifactId>ceylon-language</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.redhat.ceylon</groupId>
+            <groupId>org.eclipse.ceylon</groupId>
             <artifactId>ceylon-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.redhat.ceylon.cmr</groupId>
+            <groupId>org.eclipse.ceylon.cmr</groupId>
             <artifactId>cmr-impl</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.redhat.ceylon.cmr</groupId>
+            <groupId>org.eclipse.ceylon.cmr</groupId>
             <artifactId>cmr-utils</artifactId>
         </dependency>
         <dependency>

@@ -1,0 +1,63 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug12xx;
+
+interface Bug1288_Foo<T> {
+    
+    public abstract T foo(final .java.lang.Object t);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+        value = "Element",
+        variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class Bug1288<Element> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1288(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("Element")
+    private final Element plus$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("x")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("Element")
+    final Element x, @.org.eclipse.ceylon.compiler.java.metadata.Name("inc")
+    final long inc) {
+        if (x instanceof .ceylon.language.Integer) {
+            final long result = ((.ceylon.language.Integer)x).longValue() + inc;
+            final .java.lang.Object result$3;
+            .java.lang.Object result$2 = null;
+            if (.org.eclipse.ceylon.compiler.java.Util.isReified(result$2 = .ceylon.language.Integer.instance(result), $reified$Element)) {
+                result$3 = result$2;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, $reified$Element, result$2));
+            }
+            return (Element)result$3;
+        }
+        final Element x$4 = (Element)x;
+        .java.lang.Object x$6;
+        if ((x$6 = x$4) instanceof .org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo && .org.eclipse.ceylon.compiler.java.Util.isReified(x$6, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo.class, .ceylon.language.Integer.$TypeDescriptor$))) {
+            final .java.lang.Object x$7 = x$6;
+            final long result = ((.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo<.ceylon.language.Integer>)(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1288_Foo)x$7).foo(.ceylon.language.Boolean.instance(true)).longValue();
+            final .java.lang.Object result$9;
+            .java.lang.Object result$8 = null;
+            if (.org.eclipse.ceylon.compiler.java.Util.isReified(result$8 = .ceylon.language.Integer.instance(result), $reified$Element)) {
+                result$9 = result$8;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Element result") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, $reified$Element, result$8));
+            }
+            return (Element)result$9;
+        }
+        final Element x$10 = (Element)x$4;
+        return (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug12xx.Bug1288.class, $reified$Element);
+    }
+}

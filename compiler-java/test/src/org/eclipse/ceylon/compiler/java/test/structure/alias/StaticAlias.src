@@ -1,0 +1,51 @@
+package org.eclipse.ceylon.compiler.java.test.structure.alias;
+
+class StaticAlias implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public static final class Foo {
+        
+        private Foo() {
+        }
+    }
+    
+    public static class Bar implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public Bar() {
+        }
+        
+        @.java.lang.Override
+        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.structure.alias.StaticAlias.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.StaticAlias.Bar.class));
+        }
+    }
+    
+    public static final class Baz {
+        
+        private Baz() {
+        }
+        
+        public static .org.eclipse.ceylon.compiler.java.test.structure.alias.StaticAlias.Bar Baz$aliased$() {
+            throw new .ceylon.language.Exception();
+        }
+    }
+    
+    public StaticAlias() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.alias.StaticAlias.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.alias.StaticAlias.class);
+}
+final class staticAlias_ {
+    
+    private staticAlias_() {
+    }
+    
+    static void staticAlias() {
+        final .java.lang.Object f = .ceylon.language.String.instance("");
+        final .org.eclipse.ceylon.compiler.java.test.structure.alias.StaticAlias.Bar bar = new .org.eclipse.ceylon.compiler.java.test.structure.alias.StaticAlias.Bar();
+        final .org.eclipse.ceylon.compiler.java.test.structure.alias.StaticAlias.Bar baz = new .org.eclipse.ceylon.compiler.java.test.structure.alias.StaticAlias.Bar();
+    }
+}

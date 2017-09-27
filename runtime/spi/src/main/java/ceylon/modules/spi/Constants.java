@@ -33,8 +33,8 @@ public enum Constants {
     CLASSES("classes"),
     MODULE_PATH("-mp"),
     CEYLON_RUNTIME_MODULE("ceylon.runtime"),
-    MERGE_STRATEGY("com.redhat.ceylon.cmr.spi.MergeStrategy"),
-    CONTENT_TRANSFORMER("com.redhat.ceylon.cmr.spi.ContentTransformer");
+    MERGE_STRATEGY("org.eclipse.ceylon.cmr.spi.MergeStrategy"),
+    CONTENT_TRANSFORMER("org.eclipse.ceylon.cmr.spi.ContentTransformer");
 
     private String value;
 

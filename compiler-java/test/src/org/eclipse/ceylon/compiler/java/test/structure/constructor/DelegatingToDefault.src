@@ -1,0 +1,53 @@
+package org.eclipse.ceylon.compiler.java.test.structure.constructor;
+
+class DelegatingToDefault implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.$delegation$ $delegation$ = null;
+    
+    private static final class $delegation$ {
+        
+        $delegation$() {
+        }
+    }
+    
+    private DelegatingToDefault(.org.eclipse.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.$delegation$ $name$) {
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
+    }
+    
+    public DelegatingToDefault() {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.$delegation$);
+    }
+    public static final .org.eclipse.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.baz_ baz_ = null;
+    
+    public static final class baz_ {
+        
+        baz_() {
+        }
+    }
+    
+    public DelegatingToDefault(.org.eclipse.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.baz_ $name$) {
+        this(.org.eclipse.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.$delegation$);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("c");
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.class);
+}
+public final class delegatingToDefault_ {
+    
+    private delegatingToDefault_() {
+    }
+    
+    public static void delegatingToDefault() {
+        new .org.eclipse.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault(.org.eclipse.ceylon.compiler.java.test.structure.constructor.DelegatingToDefault.baz_);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.checker_.get_().check("[a, b, c]");
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.structure.constructor.delegatingToDefault_.delegatingToDefault();
+    }
+}

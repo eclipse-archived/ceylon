@@ -1,0 +1,45 @@
+package org.eclipse.ceylon.compiler.java.test.structure.nesting;
+
+interface MethodReturningInner$CI<T> {
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl $org$eclipse$ceylon$compiler$java$test$structure$nesting$MethodReturningInner$CI$impl();
+    
+    public .org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl.CIC CIC$new$();
+    
+    public abstract .org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl.CIC m3();
+}
+class MethodReturningInner<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodReturningInner(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    final class CI$impl implements .java.io.Serializable {
+        
+        CI$impl(.org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner$CI<T> $this) {
+            this.$this = $this;
+        }
+        private final .org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner$CI<T> $this;
+        
+        public .org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner<T>.CI$impl.CIC CIC$new$() {
+            return new CIC();
+        }
+        
+        public class CIC implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            protected CIC() {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner.class, .org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner.this.$reified$T), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner$CI.class)), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner.CI$impl.CIC.class));
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.structure.nesting.MethodReturningInner.class, $reified$T);
+    }
+}

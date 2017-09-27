@@ -1,0 +1,114 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug19xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.LocalDeclarations({
+        "1$1$1anonymous_0_",
+        "1anonymous_1_"})
+class Bug1942 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1942() {
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> first = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Basic.$TypeDescriptor$){
+                    {
+                        $iterator$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.Integer.instance(1L)).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer aa;
+                    private boolean aa$exhausted$;
+                    
+                    private final boolean aa() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        aa$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (aa$exhausted$) {
+                            return false;
+                        } else {
+                            aa = (.ceylon.language.Integer)$ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.aa()) {
+                            final .ceylon.language.Integer aa = this.aa;
+                            return (
+                                let
+                                {
+                                    
+                                    @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                                            major = 8,
+                                            minor = 1)
+                                    @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#0")
+                                    @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                                    @.org.eclipse.ceylon.compiler.java.metadata.Object
+                                    class anonymous_0_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+                                        
+                                        private anonymous_0_() {
+                                        }
+                                        
+                                        @.java.lang.Override
+                                        @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                                        public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                                            return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Bug1942.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                                        }
+                                    }
+                                }
+                                returning new anonymous_0_();
+                            );
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+    }
+    
+    private final void f$priv$(@.org.eclipse.ceylon.compiler.java.metadata.Name("g")
+    @.org.eclipse.ceylon.compiler.java.metadata.FunctionalParameter("!()")
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
+    final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+        f$priv$(g);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.NonNull
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    @.org.eclipse.ceylon.compiler.java.metadata.Transient
+    public final .java.lang.Object getA() {
+        return (
+            let
+            {
+                
+                @.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.org.eclipse.ceylon.compiler.java.metadata.Name("anonymous#1")
+                @.org.eclipse.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.org.eclipse.ceylon.compiler.java.metadata.Object
+                class anonymous_1_ implements .java.io.Serializable, .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_1_() {
+                    }
+                    
+                    @.java.lang.Override
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Bug1942.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("a")), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_1_.class));
+                    }
+                }
+            }
+            returning new anonymous_1_();
+        );
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Bug1942.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Bug1942.class);
+}

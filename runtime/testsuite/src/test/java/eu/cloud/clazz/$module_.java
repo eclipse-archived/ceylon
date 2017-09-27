@@ -17,8 +17,8 @@
 
 package eu.cloud.clazz;
 
-import com.redhat.ceylon.compiler.java.metadata.Import;
-import com.redhat.ceylon.compiler.java.metadata.Module;
+import org.eclipse.ceylon.compiler.java.metadata.Import;
+import org.eclipse.ceylon.compiler.java.metadata.Module;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>

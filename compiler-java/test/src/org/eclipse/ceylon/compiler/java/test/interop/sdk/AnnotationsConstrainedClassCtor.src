@@ -1,0 +1,31 @@
+package org.eclipse.ceylon.compiler.java.test.interop.sdk;
+
+@.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationTypeTarget
+class ConstraintedClassCtorWithInit implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationCtorTarget
+    ConstraintedClassCtorWithInit() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.sdk.ConstraintedClassCtorWithInit.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.sdk.ConstraintedClassCtorWithInit.class);
+}
+@.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationTypeTarget
+@.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationTypeCtorTarget
+class ConstraintedClassCtorWithCtor implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationCtorTarget
+    @.org.eclipse.ceylon.compiler.java.test.interop.sdk.JavaAnnotationTypeCtorTarget
+    @.ceylon.language.SharedAnnotation$annotation$
+    public ConstraintedClassCtorWithCtor() {
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.interop.sdk.ConstraintedClassCtorWithCtor.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.interop.sdk.ConstraintedClassCtorWithCtor.class);
+}

@@ -1,0 +1,128 @@
+package org.eclipse.ceylon.compiler.java.test.metamodel;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+class BugCL634 implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    BugCL634() {
+        this.good = null;
+        this.\ud835\udcb7\ud835\udcb6\ud835\udcb9 = null;
+        this.\ud801\udc28 = null;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .java.lang.Object good;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null")
+    public final .java.lang.Object getGood() {
+        return this.good;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .java.lang.Object \ud835\udcb7\ud835\udcb6\ud835\udcb9;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null")
+    public final .java.lang.Object get\ud835\udcb7\ud835\udcb6\ud835\udcb9() {
+        return this.\ud835\udcb7\ud835\udcb6\ud835\udcb9;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    @.org.eclipse.ceylon.common.Nullable
+    private final .java.lang.Object \ud801\udc28;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.org.eclipse.ceylon.common.Nullable
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null")
+    public final .java.lang.Object get\ud801\udc00() {
+        return this.\ud801\udc28;
+    }
+    
+    @.java.lang.Override
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$;
+    }
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.class);
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bugCL634_ {
+    
+    private bugCL634_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bugCL634() {
+        long lhs$0 = ((.ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.NestableDeclaration>)(.ceylon.language.Sequential)((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).org.eclipse.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.class)).<.ceylon.language.meta.declaration.NestableDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.NestableDeclaration.$TypeDescriptor$)).getSize();
+        long rhs$1 = 3L;
+        if (lhs$0 == rhs$1) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`class BugCL634`.declaredMemberDeclarations<NestableDeclaration>().size == 3") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$0), .ceylon.language.Integer.instance(rhs$1)));
+        }
+        long lhs$2 = ((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).<.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, .java.lang.Object, .java.lang.Object>getDeclaredAttributes(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType).getSize();
+        long rhs$3 = 3L;
+        if (lhs$2 == rhs$3) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`BugCL634`.getDeclaredAttributes<BugCL634>().size == 3") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$2), .ceylon.language.Integer.instance(rhs$3)));
+        }
+        .ceylon.language.Sequential<? extends .ceylon.language.meta.model.Method> lhs$4 = (.ceylon.language.Sequential<? extends .ceylon.language.meta.model.Method>)(.ceylon.language.Sequential)((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).<.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, .java.lang.Object, .ceylon.language.Sequential<? extends .java.lang.Object>>getDeclaredMethods(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType);
+        .ceylon.language.Empty rhs$5 = .ceylon.language.empty_.get_();
+        if (lhs$4.equals(rhs$5)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`BugCL634`.getDeclaredMethods<BugCL634>() == []") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$4, rhs$5));
+        }
+        if ((.ceylon.language.meta.model.Attribute)(.ceylon.language.meta.model.Attribute)((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).getAttribute(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "good") != null) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "(`BugCL634.good` of Anything) exists"));
+        }
+        if ((.ceylon.language.meta.model.Attribute)(.ceylon.language.meta.model.Attribute)((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).getAttribute(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "\ud835\udcb7\ud835\udcb6\ud835\udcb9") != null) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "(`BugCL634.\ud835\udcb7\ud835\udcb6\ud835\udcb9` of Anything) exists"));
+        }
+        if ((.ceylon.language.meta.model.Attribute)(.ceylon.language.meta.model.Attribute)((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).getAttribute(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "\ud801\udc28") != null) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "(`BugCL634.\ud801\udc28` of Anything) exists"));
+        }
+        if (!((.ceylon.language.meta.model.Method)(.ceylon.language.meta.model.Method)((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).<.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, .java.lang.Object, .ceylon.language.Sequential<? extends .java.lang.Object>>getMethod(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "getGood") != null)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!`BugCL634`.getMethod<BugCL634>(\"getGood\") exists"));
+        }
+        if (!((.ceylon.language.meta.model.Method)(.ceylon.language.meta.model.Method)((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).<.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, .java.lang.Object, .ceylon.language.Sequential<? extends .java.lang.Object>>getMethod(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "get\ud835\udcb7\ud835\udcb6\ud835\udcb9") != null)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!`BugCL634`.getMethod<BugCL634>(\"get\ud835\udcb7\ud835\udcb6\ud835\udcb9\") exists"));
+        }
+        if (!((.ceylon.language.meta.model.Method)(.ceylon.language.meta.model.Method)((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).<.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, .java.lang.Object, .ceylon.language.Sequential<? extends .java.lang.Object>>getMethod(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "get\ud801\udc28") != null)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!`BugCL634`.getMethod<BugCL634>(\"get\ud801\udc28\") exists"));
+        }
+        if (!((.ceylon.language.meta.model.Method)(.ceylon.language.meta.model.Method)((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).<.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, .java.lang.Object, .ceylon.language.Sequential<? extends .java.lang.Object>>getMethod(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "get\ud801\udc00") != null)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!`BugCL634`.getMethod<BugCL634>(\"get\ud801\udc00\") exists"));
+        }
+        if (((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).<.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, .java.lang.Object, .java.lang.Object>getAttribute(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "good") != null) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`BugCL634`.getAttribute<BugCL634>(\"good\") exists"));
+        }
+        if (((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).<.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, .java.lang.Object, .java.lang.Object>getAttribute(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "\ud835\udcb7\ud835\udcb6\ud835\udcb9") != null) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`BugCL634`.getAttribute<BugCL634>(\"\ud835\udcb7\ud835\udcb6\ud835\udcb9\") exists"));
+        }
+        if (((.ceylon.language.meta.model.ClassOrInterface<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634>)(.ceylon.language.meta.model.Class<? extends .org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, ? super .ceylon.language.Empty>).ceylon.language.meta.typeLiteral_.typeLiteral(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$)).<.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634, .java.lang.Object, .java.lang.Object>getAttribute(.org.eclipse.ceylon.compiler.java.test.metamodel.BugCL634.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "\ud801\udc28") != null) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "`BugCL634`.getAttribute<BugCL634>(\"\ud801\udc28\") exists"));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.metamodel.bugCL634_.bugCL634();
+    }
+}

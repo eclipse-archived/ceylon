@@ -13,7 +13,7 @@ replace_converter() {
   perl -pi -e "s/(import ceylon\\.(interop\\.java|test)) \".*\"/\${1} \"${CEYLON_NEW_VERSION}\"/" \
    source/ceylon/tool/converter/java2ceylon/module.ceylon \
    source/test/ceylon/tool/converter/java2ceylon/module.ceylon
-  perl -pi -e "s/(\"(Ceylon: (ceylon\\.(interop\\.java|test|language|collection)|com\\.redhat\\.ceylon\\.[^\/]+)))\/[^\"]*\"/\${1}\/${CEYLON_NEW_VERSION}\"/" \
+  perl -pi -e "s/(\"(Ceylon: (ceylon\\.(interop\\.java|test|language|collection)|org\\.eclipse\\.ceylon\\.[^\/]+)))\/[^\"]*\"/\${1}\/${CEYLON_NEW_VERSION}\"/" \
    Java-to-Ceylon-Converter.iml
 }
 

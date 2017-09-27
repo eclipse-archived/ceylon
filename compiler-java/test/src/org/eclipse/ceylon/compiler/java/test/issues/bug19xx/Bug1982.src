@@ -1,0 +1,63 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1982_ {
+    
+    private bug1982_() {
+    }
+    
+    static void bug1982() {
+        
+        final class f_ implements .java.io.Serializable {
+            
+            private f_() {
+            }
+            
+            long f() {
+                return 1L;
+            }
+        }
+        final f_ f = new f_();
+        long var1 = 42L;
+        final long foo1 = (
+            let
+            {
+                final long bar1 = (
+                    let
+                    {
+                        long $ceylontmp$op$0 = f.f();
+                        var1 = $ceylontmp$op$0;
+                    }
+                    returning $ceylontmp$op$0;
+                );
+            }
+            returning 2L;
+        );
+        long lhs$1 = var1;
+        long rhs$2 = 1L;
+        if (lhs$1 == rhs$2) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "var1 == 1") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$1), .ceylon.language.Integer.instance(rhs$2)));
+        }
+        long var2 = 42L;
+        final long foo2 = (
+            let
+            {
+                final long bar2 = (
+                    let
+                    {
+                        long $ceylontmp$op$3 = f.f();
+                        var2 = $ceylontmp$op$3;
+                    }
+                    returning $ceylontmp$op$3;
+                );
+            }
+            returning var2;
+        );
+        long lhs$4 = var2;
+        long rhs$5 = 1L;
+        if (lhs$4 == rhs$5) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "var2 == 1") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(.ceylon.language.Integer.instance(lhs$4), .ceylon.language.Integer.instance(rhs$5)));
+        }
+    }
+}

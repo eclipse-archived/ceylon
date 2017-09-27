@@ -1,0 +1,70 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug16xx;
+
+final class bug1652_ {
+    
+    private bug1652_() {
+    }
+    
+    static void bug1652() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> v = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.null_.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{
+                null,
+                .ceylon.language.String.instance("a")});
+        boolean loopentered$0 = false;
+        .java.lang.Object elem$1;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$2 = ((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)v).iterator();
+        loop_0: while (!((elem$1 = item$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$0 = true;
+            final .ceylon.language.String item = (.ceylon.language.String)elem$1;
+            .ceylon.language.print_.print(item);
+        }
+        if (!loopentered$0) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        final .ceylon.language.Sequence<? extends .ceylon.language.String> v2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("b"),
+                .ceylon.language.String.instance("a")});
+        boolean loopentered$3 = false;
+        .java.lang.Object elem$4;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$5 = ((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)v2).iterator();
+        loop_1: while (!((elem$4 = item$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$3 = true;
+            final .java.lang.String item = ((.ceylon.language.String)elem$4).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(item));
+        }
+        if (!loopentered$3) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> v3 = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.null_.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return null;
+                
+                case 1: 
+                    return .ceylon.language.String.instance("a");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        };
+        boolean loopentered$6 = false;
+        .java.lang.Object elem$7;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$8 = v3.iterator();
+        loop_2: while (!((elem$7 = item$iterator$$8.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$6 = true;
+            final .ceylon.language.String item = (.ceylon.language.String)elem$7;
+            .ceylon.language.print_.print(item);
+        }
+        if (!loopentered$6) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> v4 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("b"), .ceylon.language.String.instance("a"));
+        boolean loopentered$9 = false;
+        .java.lang.Object elem$10;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$11 = v4.iterator();
+        loop_3: while (!((elem$10 = item$iterator$$11.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$9 = true;
+            final .java.lang.String item = ((.ceylon.language.String)elem$10).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(item));
+        }
+        if (!loopentered$9) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+    }
+}

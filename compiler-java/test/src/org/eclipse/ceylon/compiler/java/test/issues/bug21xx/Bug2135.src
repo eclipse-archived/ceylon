@@ -1,0 +1,480 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug21xx;
+
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+final class notCalled_ {
+    
+    private notCalled_() {
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeParameters({@.org.eclipse.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .org.eclipse.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    static <T>T notCalled(@.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.org.eclipse.ceylon.compiler.java.metadata.Name("t")
+    @.org.eclipse.ceylon.compiler.java.metadata.TypeInfo("T")
+    final T t) {
+        throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
+    }
+}
+@.org.eclipse.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.org.eclipse.ceylon.compiler.java.metadata.Method
+public final class bug2135_ {
+    
+    private bug2135_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug2135() {
+        (
+            let
+            {
+                .ceylon.language.Iterable arg$0$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                    
+                    public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                        return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                            {
+                            }
+                            private boolean $next$0$exhausted$;
+                            
+                            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                            private final boolean $next$0() {
+                                if ($next$0$exhausted$) return false;
+                                $next$0$exhausted$ = true;
+                                if (1L == 2L) {
+                                    return true;
+                                }
+                                return false;
+                            }
+                            private .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$1;
+                            
+                            private final boolean $iterator$1() {
+                                if ($iterator$1 != null) return true;
+                                if (!this.$next$0()) return false;
+                                $iterator$1 = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(3L)})).iterator();
+                                return true;
+                            }
+                            private .ceylon.language.Integer fd;
+                            private boolean fd$exhausted$;
+                            
+                            private final boolean fd() {
+                                while (this.$iterator$1()) {
+                                    final .java.lang.Object $ceylontmp$item$1 = $iterator$1.next();
+                                    fd$exhausted$ = $ceylontmp$item$1 == .ceylon.language.finished_.get_();
+                                    if (fd$exhausted$) {
+                                        $iterator$1 = null;
+                                    } else {
+                                        fd = (.ceylon.language.Integer)$ceylontmp$item$1;
+                                        return true;
+                                    }
+                                }
+                                fd$exhausted$ = true;
+                                return false;
+                            }
+                            
+                            @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                            private final boolean $next$2() {
+                                ifcomp_2: while (true) {
+                                    if (!this.fd()) break ifcomp_2;
+                                    final .ceylon.language.Integer fd = this.fd;
+                                    if (1L == 1L) {
+                                        break ifcomp_2;
+                                    }
+                                }
+                                return !fd$exhausted$;
+                            }
+                            
+                            public final .java.lang.Object next() {
+                                if (this.$next$2()) {
+                                    final .ceylon.language.Integer fd = this.fd;
+                                    return .ceylon.language.String.instance(fd.toString());
+                                } else return .ceylon.language.finished_.get_();
+                            }
+                        };
+                    }
+                });
+                .java.lang.String arg$0$1 = .ceylon.language.printAll_.printAll$separator(arg$0$0);
+                .ceylon.language.printAll_.printAll(arg$0$0, arg$0$1);
+            }
+            returning null;
+        );
+        final boolean t1 = false;
+        final boolean t2 = true;
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> seq = .ceylon.language.empty_.get_();
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> seq2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                    }
+                    private boolean $next$0$exhausted$;
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    private final boolean $next$0() {
+                        if ($next$0$exhausted$) return false;
+                        $next$0$exhausted$ = true;
+                        if (t1) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    private .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$1;
+                    
+                    private final boolean $iterator$1() {
+                        if ($iterator$1 != null) return true;
+                        if (!this.$next$0()) return false;
+                        $iterator$1 = .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.notCalled_.<.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>notCalled(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), seq).iterator();
+                        return true;
+                    }
+                    private .java.lang.Object elem;
+                    private boolean elem$exhausted$;
+                    
+                    private final boolean elem() {
+                        while (this.$iterator$1()) {
+                            final .java.lang.Object $ceylontmp$item$2 = $iterator$1.next();
+                            elem$exhausted$ = $ceylontmp$item$2 == .ceylon.language.finished_.get_();
+                            if (elem$exhausted$) {
+                                $iterator$1 = null;
+                            } else {
+                                elem = $ceylontmp$item$2;
+                                return true;
+                            }
+                        }
+                        elem$exhausted$ = true;
+                        return false;
+                    }
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    private final boolean $next$2() {
+                        ifcomp_2: while (true) {
+                            if (!this.elem()) break ifcomp_2;
+                            final .java.lang.Object elem = this.elem;
+                            if (.org.eclipse.ceylon.compiler.java.test.issues.bug21xx.notCalled_.<.ceylon.language.Boolean>notCalled(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Boolean.instance(t2)).booleanValue()) {
+                                break ifcomp_2;
+                            }
+                        }
+                        return !elem$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$2()) {
+                            final .java.lang.Object elem = this.elem;
+                            return .ceylon.language.String.instance(elem.toString());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+        .java.lang.Object lhs$3 = iter.sequence();
+        .ceylon.language.Empty rhs$4 = .ceylon.language.empty_.get_();
+        if (lhs$3.equals(rhs$4)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter.sequence() == []") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$3, rhs$4));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter2 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                    }
+                    private boolean $next$0$exhausted$;
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    private final boolean $next$0() {
+                        if ($next$0$exhausted$) return false;
+                        $next$0$exhausted$ = true;
+                        if (t1) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    private .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$1;
+                    
+                    private final boolean $iterator$1() {
+                        if ($iterator$1 != null) return true;
+                        if (!this.$next$0()) return false;
+                        $iterator$1 = .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.notCalled_.<.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>>notCalled(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), seq).iterator();
+                        return true;
+                    }
+                    private .java.lang.Object elem;
+                    private boolean elem$exhausted$;
+                    
+                    private final boolean elem() {
+                        while (this.$iterator$1()) {
+                            final .java.lang.Object $ceylontmp$item$5 = $iterator$1.next();
+                            elem$exhausted$ = $ceylontmp$item$5 == .ceylon.language.finished_.get_();
+                            if (elem$exhausted$) {
+                                $iterator$1 = null;
+                            } else {
+                                elem = $ceylontmp$item$5;
+                                return true;
+                            }
+                        }
+                        elem$exhausted$ = true;
+                        return false;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.elem()) {
+                            final .java.lang.Object elem = this.elem;
+                            return .ceylon.language.String.instance(elem.toString());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+        .java.lang.Object lhs$6 = iter2.sequence();
+        .ceylon.language.Empty rhs$7 = .ceylon.language.empty_.get_();
+        if (lhs$6.equals(rhs$7)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter2.sequence() == []") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$6, rhs$7));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter3 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                    }
+                    private boolean $next$0$exhausted$;
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    private final boolean $next$0() {
+                        if ($next$0$exhausted$) return false;
+                        $next$0$exhausted$ = true;
+                        if (t2) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    private .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$1;
+                    
+                    private final boolean $iterator$1() {
+                        if ($iterator$1 != null) return true;
+                        if (!this.$next$0()) return false;
+                        $iterator$1 = seq.iterator();
+                        return true;
+                    }
+                    private .java.lang.Object elem;
+                    private boolean elem$exhausted$;
+                    
+                    private final boolean elem() {
+                        while (this.$iterator$1()) {
+                            final .java.lang.Object $ceylontmp$item$8 = $iterator$1.next();
+                            elem$exhausted$ = $ceylontmp$item$8 == .ceylon.language.finished_.get_();
+                            if (elem$exhausted$) {
+                                $iterator$1 = null;
+                            } else {
+                                elem = $ceylontmp$item$8;
+                                return true;
+                            }
+                        }
+                        elem$exhausted$ = true;
+                        return false;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.elem()) {
+                            final .java.lang.Object elem = this.elem;
+                            return .ceylon.language.String.instance(elem.toString());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+        .java.lang.Object lhs$9 = iter3.sequence();
+        .ceylon.language.Empty rhs$10 = .ceylon.language.empty_.get_();
+        if (lhs$9.equals(rhs$10)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter3.sequence() == []") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$9, rhs$10));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter4 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                        $iterator$0 = seq.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
+                    private .java.lang.Object elem;
+                    private boolean elem$exhausted$;
+                    
+                    private final boolean elem() {
+                        final .java.lang.Object $ceylontmp$item$11 = $iterator$0.next();
+                        elem$exhausted$ = $ceylontmp$item$11 == .ceylon.language.finished_.get_();
+                        if (elem$exhausted$) {
+                            return false;
+                        } else {
+                            elem = $ceylontmp$item$11;
+                            return true;
+                        }
+                    }
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.elem()) break ifcomp_1;
+                            final .java.lang.Object elem = this.elem;
+                            if (t2) {
+                                break ifcomp_1;
+                            }
+                        }
+                        return !elem$exhausted$;
+                    }
+                    private .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$2;
+                    
+                    private final boolean $iterator$2() {
+                        if (elem$exhausted$) return false;
+                        if ($iterator$2 != null) return true;
+                        if (!this.$next$1()) return false;
+                        final .java.lang.Object elem = this.elem;
+                        $iterator$2 = seq.iterator();
+                        return true;
+                    }
+                    private .java.lang.Object elem2;
+                    private boolean elem2$exhausted$;
+                    
+                    private final boolean elem2() {
+                        while (this.$iterator$2()) {
+                            final .java.lang.Object $ceylontmp$item$12 = $iterator$2.next();
+                            elem2$exhausted$ = $ceylontmp$item$12 == .ceylon.language.finished_.get_();
+                            if (elem2$exhausted$) {
+                                $iterator$2 = null;
+                            } else {
+                                elem2 = $ceylontmp$item$12;
+                                return true;
+                            }
+                        }
+                        if (elem$exhausted$) elem2$exhausted$ = true;
+                        return false;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.elem2()) {
+                            final .java.lang.Object elem2 = this.elem2;
+                            final .java.lang.Object elem = this.elem;
+                            return .ceylon.language.String.instance(elem2.toString());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+        .java.lang.Object lhs$13 = iter4.sequence();
+        .ceylon.language.Empty rhs$14 = .ceylon.language.empty_.get_();
+        if (lhs$13.equals(rhs$14)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter4.sequence() == []") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$13, rhs$14));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter5 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                        $iterator$0 = seq2.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
+                    private .java.lang.Object elem;
+                    private boolean elem$exhausted$;
+                    
+                    private final boolean elem() {
+                        final .java.lang.Object $ceylontmp$item$15 = $iterator$0.next();
+                        elem$exhausted$ = $ceylontmp$item$15 == .ceylon.language.finished_.get_();
+                        if (elem$exhausted$) {
+                            return false;
+                        } else {
+                            elem = $ceylontmp$item$15;
+                            return true;
+                        }
+                    }
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.elem()) break ifcomp_1;
+                            final .java.lang.Object elem = this.elem;
+                            if (t1) {
+                                break ifcomp_1;
+                            }
+                        }
+                        return !elem$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$1()) {
+                            final .java.lang.Object elem = this.elem;
+                            return .ceylon.language.String.instance(elem.toString());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+        .java.lang.Object lhs$16 = iter5.sequence();
+        .ceylon.language.Empty rhs$17 = .ceylon.language.empty_.get_();
+        if (lhs$16.equals(rhs$17)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter5.sequence() == []") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$16, rhs$17));
+        }
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iter6 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                        $iterator$0 = seq2.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
+                    private .java.lang.Object elem;
+                    private boolean elem$exhausted$;
+                    
+                    private final boolean elem() {
+                        final .java.lang.Object $ceylontmp$item$18 = $iterator$0.next();
+                        elem$exhausted$ = $ceylontmp$item$18 == .ceylon.language.finished_.get_();
+                        if (elem$exhausted$) {
+                            return false;
+                        } else {
+                            elem = $ceylontmp$item$18;
+                            return true;
+                        }
+                    }
+                    
+                    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.elem()) break ifcomp_1;
+                            final .java.lang.Object elem = this.elem;
+                            if (t2) {
+                                break ifcomp_1;
+                            }
+                        }
+                        return !elem$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$1()) {
+                            final .java.lang.Object elem = this.elem;
+                            return .ceylon.language.String.instance(elem.toString());
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+        .java.lang.Object lhs$19 = iter6.sequence();
+        .ceylon.language.Sequence<? extends .ceylon.language.String> rhs$20 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("1")});
+        if (lhs$19.equals(rhs$20)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "iter6.sequence() == [\"1\"]") + .org.eclipse.ceylon.compiler.java.Util.assertBinOpFailed(lhs$19, rhs$20));
+        }
+    }
+    
+    @.org.eclipse.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug21xx.bug2135_.bug2135();
+    }
+}

@@ -1,0 +1,18 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod2;
+
+public final class bug1755_ {
+    
+    private bug1755_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public static void bug1755() {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.Decoder x = .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.get_().Decoder$new$();
+        x.decode();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .org.eclipse.ceylon.compiler.java.Util.storeArgs(args);
+        .org.eclipse.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod2.bug1755_.bug1755();
+    }
+}

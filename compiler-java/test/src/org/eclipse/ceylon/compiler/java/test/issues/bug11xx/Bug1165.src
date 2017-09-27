@@ -1,0 +1,117 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug11xx;
+
+final class bug1165_ {
+    
+    private bug1165_() {
+    }
+    
+    static void bug1165() {
+        
+        class B implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            B(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> data) {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class));
+            }
+        }
+        
+        class P implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            P(final .ceylon.language.Iterable params) {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(P.class));
+            }
+        }
+        
+        class Body implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            Body(final P p) {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Body.class));
+            }
+        }
+        
+        class Html implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            Html(final Head head, final Body body) {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Html.class));
+            }
+        }
+        
+        class Head implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            Head(final .java.lang.String title) {
+            }
+            
+            @.java.lang.Override
+            public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Head.class));
+            }
+        }
+        final Html html = (
+            let
+            {
+                Head arg$0$0 = (
+                    let
+                    {
+                        .java.lang.String arg$1$0 = "Hello";
+                    }
+                    returning new Head(arg$1$0);
+                );
+                Body arg$0$1 = (
+                    let
+                    {
+                        P arg$2$0 = (
+                            let
+                            {
+                                .ceylon.language.Iterable arg$3$0 = new .org.eclipse.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.org.eclipse.ceylon.compiler.java.test.issues.bug11xx.bug1165_.class), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(B.class))), .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+                                    
+                                    @.java.lang.Override
+                                    protected final .java.lang.Object $evaluate$(int $index$) {
+                                        switch ($index$) {
+                                        case 0: 
+                                            return .ceylon.language.String.instance("Hello ");
+                                        
+                                        case 1: 
+                                            return (
+                                                let
+                                                {
+                                                    .ceylon.language.Iterable arg$4$0 = new .org.eclipse.ceylon.compiler.java.language.ConstantIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, null, .ceylon.language.String.instance("JUDCon"));
+                                                }
+                                                returning new B(arg$4$0);
+                                            );
+                                        
+                                        case 2: 
+                                            return .ceylon.language.String.instance(" guys");
+                                        
+                                        default: 
+                                            return null;
+                                        
+                                        }
+                                    }
+                                };
+                            }
+                            returning new P(arg$3$0);
+                        );
+                    }
+                    returning new Body(arg$2$0);
+                );
+            }
+            returning new Html(arg$0$0, arg$0$1);
+        );
+        .ceylon.language.print_.print(html);
+    }
+}

@@ -1,0 +1,49 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1973_ {
+    
+    private bug1973_() {
+    }
+    
+    static void bug1973(final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> g, final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> h) {
+        final .ceylon.language.Sequence v = g.$call$();
+        final .ceylon.language.Sequence w = ((.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Callable)h).$call$();
+    }
+}
+class Bug1973<T> implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1973(final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public .java.lang.Object refined(final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> g, final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> h) {
+        final .ceylon.language.Sequence v = g.$call$();
+        final .ceylon.language.Sequence w = ((.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Callable)h).$call$();
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Bug1973.class, $reified$T);
+    }
+}
+class Bug1973Sub extends .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Bug1973<.ceylon.language.String> {
+    
+    Bug1973Sub() {
+        super(.ceylon.language.String.$TypeDescriptor$);
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object refined(final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> g, final .ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> h) {
+        final .ceylon.language.Sequence v = g.$call$();
+        final .ceylon.language.Sequence w = ((.ceylon.language.Callable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Callable)h).$call$();
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Bug1973Sub.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug19xx.Bug1973Sub.class);
+}

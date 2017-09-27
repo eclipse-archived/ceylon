@@ -1,0 +1,20 @@
+package org.eclipse.ceylon.compiler.java.test.statement.conditional;
+
+class AssertIsNothing implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertIsNothing() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        if (x == null) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x") + .org.eclipse.ceylon.compiler.java.Util.assertIsFailed(false, .ceylon.language.Null.$TypeDescriptor$, x));
+        }
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertIsNothing.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.statement.conditional.AssertIsNothing.class);
+}

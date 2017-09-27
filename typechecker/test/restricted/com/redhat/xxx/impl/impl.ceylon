@@ -1,4 +1,4 @@
-import com.redhat.xxx { ... }
+import org.eclipse.xxx { ... }
 
 void impl() {
     $error Foo().bar();

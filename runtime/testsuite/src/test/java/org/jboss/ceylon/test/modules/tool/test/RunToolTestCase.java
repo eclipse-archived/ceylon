@@ -29,17 +29,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.ceylon.common.tool.AbstractToolTest;
+import org.eclipse.ceylon.common.tool.OptionArgumentException;
+import org.eclipse.ceylon.common.tool.ToolLoader;
+import org.eclipse.ceylon.common.tool.ToolModel;
+import org.eclipse.ceylon.common.tools.CeylonToolLoader;
 import org.junit.Assert;
 
 import org.junit.Test;
 
 import ceylon.modules.bootstrap.CeylonRunTool;
-
-import com.redhat.ceylon.common.tool.AbstractToolTest;
-import com.redhat.ceylon.common.tool.OptionArgumentException;
-import com.redhat.ceylon.common.tool.ToolLoader;
-import com.redhat.ceylon.common.tool.ToolModel;
-import com.redhat.ceylon.common.tools.CeylonToolLoader;
 
 public class RunToolTestCase extends AbstractToolTest {
 

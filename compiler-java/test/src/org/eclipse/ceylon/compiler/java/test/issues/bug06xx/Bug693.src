@@ -1,0 +1,54 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug06xx;
+
+public interface Bug693_Interface {
+    
+    public abstract .ceylon.language.Integer getX();
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface.class);
+}
+public class Bug693_Class implements .org.eclipse.ceylon.compiler.java.runtime.model.ReifiedType, .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug693_Interface, .java.io.Serializable {
+    
+    public Bug693_Class(final .ceylon.language.Integer x) {
+        (
+            let
+            {
+                boolean $ceylontmp$b$0 = .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.$default$b(x);
+                this(x, $ceylontmp$b$0);
+            }
+            returning null;
+        );
+    }
+    
+    protected Bug693_Class() {
+        super();
+        this.x = null;
+    }
+    
+    public Bug693_Class(final .ceylon.language.Integer x, final boolean b) {
+        this.x = x;
+    }
+    
+    public static boolean $default$b(final .ceylon.language.Integer x) {
+        return false;
+    }
+    private final .ceylon.language.Integer x;
+    
+    @.java.lang.Override
+    public final .ceylon.language.Integer getX() {
+        return this.x;
+    }
+    
+    @.java.lang.Override
+    public .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.$TypeDescriptor$;
+    }
+    public static final .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .org.eclipse.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class.class);
+}
+final class bug693_ {
+    
+    private bug693_() {
+    }
+    
+    static void bug693() {
+        final .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class c = new .org.eclipse.ceylon.compiler.java.test.issues.bug06xx.Bug693_Class(.ceylon.language.Integer.instance(0L), true);
+    }
+}

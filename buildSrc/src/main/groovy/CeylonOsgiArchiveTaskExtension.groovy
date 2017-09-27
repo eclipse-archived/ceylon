@@ -1,4 +1,4 @@
-import com.redhat.ceylon.model.loader.OsgiVersion
+import org.eclipse.ceylon.model.loader.OsgiVersion
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
 
 /** This extension will be added to each Archive task if

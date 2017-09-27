@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ceylon Distribution Embedded Repository
-Bundle-SymbolicName: com.redhat.ceylon.dist.repo
+Bundle-SymbolicName: org.eclipse.ceylon.dist.repo
 Bundle-Version: @ceylon-version@-qualifier
 Eclipse-BundleShape: dir
 Bundle-Vendor: RedHat

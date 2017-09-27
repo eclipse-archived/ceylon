@@ -648,7 +648,7 @@ shared class Constructors<T> {
     shared void testMemberModels() {
         value member = Member();
         //JS prints ceylon.language.jsint::AppliedMemberClassCallableConstructor<metamodel::Constructors<ceylon.language::String>,metamodel::Constructors.Member,[]>
-        //JVM prints com.redhat.ceylon.compiler.java.runtime.metamodel.meta::MemberClassCallableConstructorImpl<metamodel::Constructors<ceylon.language::String>,metamodel::Constructors<ceylon.language::String>.Member,ceylon.language::Sequential<ceylon.language::Anything>>
+        //JVM prints org.eclipse.ceylon.compiler.java.runtime.metamodel.meta::MemberClassCallableConstructorImpl<metamodel::Constructors<ceylon.language::String>,metamodel::Constructors<ceylon.language::String>.Member,ceylon.language::Sequential<ceylon.language::Anything>>
         print(type(`Member`.getConstructor("")));
         assert(is MemberClassCallableConstructor<Constructors<T>,Member,[T?]|[]> memberMember = `Member`.getConstructor<[T?]|[]>(""));
         value memberOther = `Member.otherCtor`;

@@ -1,0 +1,49 @@
+package org.eclipse.ceylon.compiler.java.test.issues.bug05xx;
+
+final class bug568_ {
+    
+    private bug568_() {
+    }
+    
+    static void bug568() {
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> childPaths = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$2 = (
+            let
+            {
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$7$iterable$ = childPaths;
+            }
+            returning new .org.eclipse.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
+                    return new .org.eclipse.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$7$iterator$ = spread$7$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$7$element$;
+                            if (!((spread$7$element$ = spread$7$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$7$element$ = .ceylon.language.String.instance(((.ceylon.language.Integer)spread$7$element$).toString());
+                            }
+                            return spread$7$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
+        .java.lang.Object elem$1 = null;
+        int i$4 = 0;
+        final int length$5;
+        if (isTuple$3) {
+            length$5 = (int)iterable$2.getSize();
+        } else {
+            length$5 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$6 = isTuple$3 ? null : iterable$2.iterator();
+        loop_0: while (isTuple$3 ? i$4 < length$5 : !((elem$1 = s$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$3) elem$1 = iterable$2.getFromFirst(i$4++);
+            final .java.lang.String s = ((.ceylon.language.String)elem$1).toString();
+        }
+    }
+}

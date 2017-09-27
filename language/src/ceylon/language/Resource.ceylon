@@ -20,14 +20,14 @@ import ceylon.language.meta.declaration {
      in the module repository.
    
    Suppose the following code occurs in a module named
-   `com.redhat.example`:
+   `org.eclipse.example`:
        
        assert (exists resource 
           = `module`.resourceByPath("file.txt"));
        print(resource.textContent());
    
    Then the resource named `file.text` should be placed in 
-   the subdirectory `com/redhat/example/` of the resource 
+   the subdirectory `org/eclipse/example/` of the resource 
    directory.
    
    Paths with no leading `/` are relative to the module's
@@ -36,7 +36,7 @@ import ceylon.language.meta.declaration {
    beginning with `/`, for example:
    
        assert (exists resource 
-          = `module`.resourceByPath("/com/redhat/example/file.txt"));
+          = `module`.resourceByPath("/org/eclipse/example/file.txt"));
        print(resource.textContent());"""
 by("Enrique Zamudio")
 see (function Module.resourceByPath)

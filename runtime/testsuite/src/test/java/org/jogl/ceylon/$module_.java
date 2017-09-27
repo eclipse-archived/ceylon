@@ -17,8 +17,8 @@
 
 package org.jogl.ceylon;
 
-import com.redhat.ceylon.compiler.java.metadata.Import;
-import com.redhat.ceylon.compiler.java.metadata.Module;
+import org.eclipse.ceylon.compiler.java.metadata.Import;
+import org.eclipse.ceylon.compiler.java.metadata.Module;
 
 
 /**
