@@ -80,7 +80,7 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                         } else if ("1.3.2".equals(depv)) {
                             depv = Versions.CEYLON_VERSION_NUMBER;
                         } else if ("1.3.3".equals(depv)) {
-                            depv = Versions.CEYLON_VERSION;
+                            depv = Versions.CEYLON_VERSION_NUMBER;
                         } /*@NEW_VERSION@*/
                     }
                 } else {

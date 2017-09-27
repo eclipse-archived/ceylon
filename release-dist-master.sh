@@ -69,7 +69,7 @@ do
     then
         cat <<EOF
                         } else if ("${CEYLON_RELEASE_VERSION_MAJOR}.${CEYLON_RELEASE_VERSION_MINOR}.${CEYLON_RELEASE_VERSION_RELEASE}".equals(depv)) {
-                            depv = Versions.CEYLON_VERSION;
+                            depv = Versions.CEYLON_VERSION_NUMBER;
                         } /*@NEW_VERSION@*/
 EOF
     else
