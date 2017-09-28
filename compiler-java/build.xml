@@ -402,17 +402,17 @@
 			<param name="archivePath" value="${ceylon.compiler.lib}"/>
 		</antcall>
 	    
-		<delete dir="${eclipse.project.path}/tests/org.eclipse.ceylon.eclipse.ui.test/lib/" includes="compiler-tests-*.jar" failonerror="false"/>
-        <jar destfile="${eclipse.project.path}/tests/org.eclipse.ceylon.eclipse.ui.test/lib/compiler-tests-${module.org.eclipse.ceylon.compiler.version}.jar">
+		<delete dir="${eclipse.project.path}/tests/org.eclipse.ceylon.ide.eclipse.ui.test/lib/" includes="compiler-tests-*.jar" failonerror="false"/>
+        <jar destfile="${eclipse.project.path}/tests/org.eclipse.ceylon.ide.eclipse.ui.test/lib/compiler-tests-${module.org.eclipse.ceylon.compiler.version}.jar">
             <fileset dir="${build.classes}">
                 <include name="org/eclipse/ceylon/compiler/java/test/**" />
             </fileset>
         </jar>
-        <delete dir="${eclipse.project.path}/tests/org.eclipse.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations" excludes="module.ceylon,package.ceylon,run.ceylon" />
-        <copy todir="${eclipse.project.path}/tests/org.eclipse.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
+        <delete dir="${eclipse.project.path}/tests/org.eclipse.ceylon.ide.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations" excludes="module.ceylon,package.ceylon,run.ceylon" />
+        <copy todir="${eclipse.project.path}/tests/org.eclipse.ceylon.ide.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
             <fileset dir="${test.src}/org/eclipse/ceylon/compiler/java/test/model" includes="*.ceylon" excludes="*test.ceylon,bogus*.ceylon,module.ceylon,package.ceylon" />
         </copy>
-        <copy todir="${eclipse.project.path}/tests/org.eclipse.ceylon.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
+        <copy todir="${eclipse.project.path}/tests/org.eclipse.ceylon.ide.eclipse.ui.test/resources/model-loader-tests/declarations/src/declarations">
             <fileset dir="${test.src}/org/eclipse/ceylon/compiler/java/test/model" includes="*.java" excludes="?ogus*.java,*Tests.java,*Test.java" />
             <filterset beginToken=" " endToken=";"><filter token="org.eclipse.ceylon.compiler.java.test.model" value=" declarations;" /></filterset>
         </copy>
