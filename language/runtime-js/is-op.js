@@ -131,16 +131,16 @@ function is$(obj,type,containers){
               if(iance===null)_omm=getrtmm$$(_omm.$cont);
             }
           }
+          var _targ=tmpobj.$$targs$$[i];
           if (iance === 'out') {
-            if (!extendsType(tmpobj.$$targs$$[i], cmptype,true)) {
+            if (!extendsType(_targ,cmptype,true)) {
               return false;
             }
           } else if (iance === 'in') {
-            if (!extendsType(cmptype, tmpobj.$$targs$$[i],true) && (!tmpobj.$$targs$$[i] || tmpobj.$$targs$$[i].t!==Nothing)) {
+            if (!extendsType(cmptype,_targ,true)) {
               return false;
             }
           } else if (iance === undefined) {
-            var _targ=tmpobj.$$targs$$[i];
             if (!(_targ && _targ.t && (_targ.t.$$ || _targ.t==='i' || _targ.t==='u')))return false;
             if (_targ.t.$$) {
               if (cmptype && cmptype.t && cmptype.t.$$) {
