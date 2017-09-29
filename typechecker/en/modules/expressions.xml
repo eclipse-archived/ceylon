@@ -1632,11 +1632,12 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             
             <itemizedlist>
                 <listitem>
-                    <para>all cases must be disjoint, and</para>
+                    <para>every pair of <literal>case</literal>s must be disjoint, 
+                    unless one is an <literal>else case</literal>, and</para>
                 </listitem>
                 <listitem>
-                    <para>if there is no <literal>else</literal> expression,
-                    the cases must be exhaustive.</para>
+                    <para>if there is no <literal>else</literal> expression, the 
+                    cases must be exhaustive.</para>
                 </listitem>
             </itemizedlist>
             
