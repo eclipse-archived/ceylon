@@ -2263,17 +2263,23 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     }
     
     public Type getCallableReturnType(Type t) {
-        if (t==null) return null;
-        if (t.isNothing()) return t;
-        Interface cd = getCallableDeclaration();
-        Type ct = t.getSupertype(cd);
-        if (ct!=null) {
-            List<Type> typeArgs = ct.getTypeArgumentList();
-            if (typeArgs.size()>=1) {
-                return typeArgs.get(0);
-            }
+        if (t==null) {
+            return null;
         }
-        return null;
+        else if (t.isExactlyNothing()) {
+            return getNothingType();
+        }
+        else {
+            Interface cd = getCallableDeclaration();
+            Type ct = t.getSupertype(cd);
+            if (ct!=null) {
+                List<Type> typeArgs = ct.getTypeArgumentList();
+                if (typeArgs.size()>=1) {
+                    return typeArgs.get(0);
+                }
+            }
+            return null;
+        }
     }
     
     public boolean isIterableParameterType(Type t) {

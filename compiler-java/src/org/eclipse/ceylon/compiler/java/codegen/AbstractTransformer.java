@@ -2723,11 +2723,8 @@ public abstract class AbstractTransformer implements Transformation {
         typeModel = typeModel.resolveAliases();
         if (!isCeylonCallableSubtype(typeModel)) {
             throw new BugException("expected Callable<...>, but was " + typeModel);
-        } else if (typeFact().getNothingType().isExactly(typeModel)) {
-            return typeFact().getNothingType();
         }
-        Type ct = typeModel.getSupertype(typeFact().getCallableDeclaration());
-        return ct.getTypeArgumentList().get(0);
+        return typeFact().getCallableReturnType(typeModel);
     }
     
     Type getParameterTypeOfCallable(Type callableType, int parameter) {
