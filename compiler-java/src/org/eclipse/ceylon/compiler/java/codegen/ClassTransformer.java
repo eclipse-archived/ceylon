@@ -2183,9 +2183,15 @@ public class ClassTransformer extends AbstractTransformer {
             Function method = (Function)paramModel.getModel();
 
             java.util.List<Parameter> parameters = method.getFirstParameterList().getParameters();
+            JCExpression fieldRef;
+            if (method.getMemberOrParameter(typeFact(), method.getName(), null, false)!=method) {
+                fieldRef = naming.makeQualifiedName(naming.makeThis(), method, Naming.NA_IDENT);
+            }
+            else {
+                fieldRef = naming.makeName(method, Naming.NA_IDENT);
+            }
             CallBuilder callBuilder = CallBuilder.instance(this).invoke(
-                    naming.makeQualIdent(naming.makeName(method, Naming.NA_IDENT), 
-                            Naming.getCallableMethodName(method)));
+                    naming.makeQualIdent(fieldRef, Naming.getCallableMethodName(method)));
             for (Parameter parameter : parameters) {
                 JCExpression parameterExpr = naming.makeName(parameter.getModel(), Naming.NA_IDENT);
                 parameterExpr = expressionGen().applyErasureAndBoxing(parameterExpr, parameter.getType(), 
