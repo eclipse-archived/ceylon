@@ -1,3 +1,12 @@
+/********************************************************************************
+ * Copyright (c) {date} Red Hat Inc. and/or its affiliates and others
+ *
+ * This program and the accompanying materials are made available under the 
+ * terms of the Apache License, Version 2.0 which is available at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * SPDX-License-Identifier: Apache-2.0 
+ ********************************************************************************/
 "Create an array of the specified [[size]], populating every 
  index with the given [[element]]. The specified `size` must 
  be no larger than [[runtime.maxArraySize]]. If `size<=0`, 

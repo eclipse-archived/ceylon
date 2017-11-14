@@ -1,3 +1,12 @@
+/********************************************************************************
+ * Copyright (c) {date} Red Hat Inc. and/or its affiliates and others
+ *
+ * This program and the accompanying materials are made available under the 
+ * terms of the Apache License, Version 2.0 which is available at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * SPDX-License-Identifier: Apache-2.0 
+ ********************************************************************************/
 "Thrown when a mathematical operation caused a number to 
  overflow from its bounds, or when a numeric narrowing
  conversion fails because the number cannot be represented

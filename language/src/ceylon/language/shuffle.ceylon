@@ -1,3 +1,12 @@
+/********************************************************************************
+ * Copyright (c) {date} Red Hat Inc. and/or its affiliates and others
+ *
+ * This program and the accompanying materials are made available under the 
+ * terms of the Apache License, Version 2.0 which is available at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * SPDX-License-Identifier: Apache-2.0 
+ ********************************************************************************/
 "Given a function with two parameter lists, return a 
  function with the order of the argument lists reversed. The 
  parameter lists may have any number of parameters.

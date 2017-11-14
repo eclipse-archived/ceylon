@@ -1,3 +1,12 @@
+/********************************************************************************
+ * Copyright (c) {date} Red Hat Inc. and/or its affiliates and others
+ *
+ * This program and the accompanying materials are made available under the 
+ * terms of the Apache License, Version 2.0 which is available at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * SPDX-License-Identifier: Apache-2.0 
+ ********************************************************************************/
 "Given two streams, form a new stream consisting of all 
  [[entries|Entry]] where, for any given index in the 
  resulting stream, the [[key|Entry.key]] of the entry is the 
