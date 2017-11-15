@@ -1,3 +1,16 @@
+package org.eclipse.ceylon.common;
+
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+
+/*
+ * Really crappy proxy class for org.eclipse.ceylon.compiler.ModuleDescriptorReader 
+ * to prevent a problem with that class accessing all kinds of needed dependencies
+ * before we have been able to configure our class loader with the required paths
+ */
 public class ModuleDescriptorReader {
     private Object instance;
     private Method moduleVersion;
