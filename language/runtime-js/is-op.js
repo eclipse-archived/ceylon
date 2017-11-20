@@ -260,6 +260,13 @@ function extendsType(t1, t2, tparm) {
       return true;
     } else if (t1 === null) {
       return isNullType(t2);
+               //This is an ugly ugly hack. The real problem is to check type parameters of type parameters, when you
+               //pass a type parameter such as Empty in t1 which has no type parameters defined in it (but are in the superclass)
+               //because you have to compare them (in this example, to find that Absent is Null in Empty, so that if fails
+               //when passed a non-empty Iterable)
+    } else if (t1.t === Empty && t2 && t2.a && t2.a.Absent$Iterable &&
+               t2.a.Absent$Iterable.t === Nothing && extendsType({t:t2.t},{t:Iterable},tparm)) {
+      return false;
     }
     if (t1.t === 'u' || t1.t === 'i') {
         if (t1.t==='i')removeSupertypes(t1.l);
